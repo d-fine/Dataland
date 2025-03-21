@@ -54,6 +54,7 @@ class SingleDataRequestManager
             val companyId: String,
             val userId: String,
             val dataType: DataTypeEnum,
+            val emailOnUpdate: Boolean,
             val contacts: Set<String>?,
             val message: String?,
             val correlationId: String,
@@ -128,6 +129,7 @@ class SingleDataRequestManager
                 companyId = companyId,
                 userId = userIdToUse,
                 dataType = singleDataRequest.dataType,
+                emailOnUpdate = singleDataRequest.emailOnUpdate,
                 contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 correlationId = UUID.randomUUID().toString(),
@@ -161,9 +163,13 @@ class SingleDataRequestManager
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    userId = preprocessedRequest.userId, datalandCompanyId = preprocessedRequest.companyId,
-                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
-                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
+                    userId = preprocessedRequest.userId,
+                    datalandCompanyId = preprocessedRequest.companyId,
+                    dataType = preprocessedRequest.dataType,
+                    emailOnUpdate = preprocessedRequest.emailOnUpdate,
+                    reportingPeriod = reportingPeriod,
+                    contacts = preprocessedRequest.contacts,
+                    message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }

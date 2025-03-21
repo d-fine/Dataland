@@ -36,7 +36,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DataRequestUploadListenerTest {
+class DataAvailabilityListenerTest {
     val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentControllerApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
@@ -74,6 +74,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = mapOfIds["companyId"].toString(),
                 dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
                 reportingPeriods = setOf("2022", "2023"),
+                emailOnUpdate = false,
                 contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             )
@@ -114,6 +115,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = testCompanyWithParent.companyId,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = setOf("2023"),
+                emailOnUpdate = false,
                 contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),
@@ -123,6 +125,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = testParentCompany.companyId,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = setOf("2023"),
+                emailOnUpdate = false,
                 contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),

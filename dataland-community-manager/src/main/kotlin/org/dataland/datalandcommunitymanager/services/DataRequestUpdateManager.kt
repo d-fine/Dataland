@@ -3,6 +3,8 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
@@ -26,10 +28,11 @@ import kotlin.jvm.optionals.getOrElse
  */
 @Suppress("LongParameterList")
 @Service
-class DataRequestAlterationManager
+class DataRequestUpdateManager
     @Autowired
     constructor(
         private val dataRequestRepository: DataRequestRepository,
+        private val notificationService: NotificationService,
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
@@ -38,6 +41,23 @@ class DataRequestAlterationManager
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
+
+        /**
+         * Patches the email-on-update-field if necessary anr returns if it was updated.
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @return true if the emailOnUpdate was updated, false otherwise
+         */
+        private fun updateEmailOnUpdateIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+        ): Boolean {
+            if (dataRequestPatch.emailOnUpdate != null && dataRequestEntity.emailOnUpdate != dataRequestPatch.emailOnUpdate) {
+                dataRequestEntity.emailOnUpdate = dataRequestPatch.emailOnUpdate
+                return true
+            }
+            return false
+        }
 
         /**
          * Updates the request status history if the request status changed
@@ -132,7 +152,6 @@ class DataRequestAlterationManager
          * Method to patch a data request
          * @param dataRequestId the id of the data request to patch
          * @param dataRequestPatch the patch object containing information about the required changes
-         * @param adminComment the admin comment of the data request
          *
          * @return the updated data request object
          */
@@ -140,7 +159,7 @@ class DataRequestAlterationManager
         fun patchDataRequest(
             dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
-            correlationId: String? = null,
+            correlationId: String,
             answeringDataId: String? = null,
         ): StoredDataRequest {
             val dataRequestEntity =
@@ -150,6 +169,7 @@ class DataRequestAlterationManager
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
+                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
                     updateRequestStatusHistoryIfRequired(
                         dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
                     ),
@@ -159,11 +179,92 @@ class DataRequestAlterationManager
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            requestEmailManager.sendEmailsWhenStatusChanged(
-                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.accessStatus, correlationId,
-            )
+            if (dataRequestEntity.getLatestRequestStatus() != RequestStatus.Withdrawn) {
+                if (
+                    (dataRequestPatch.requestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
+                    dataRequestPatch.accessStatus == AccessStatus.Granted
+                ) {
+                    requestEmailManager.sendNotificationsSpecificToAccessRequests(
+                        dataRequestEntity,
+                        dataRequestPatch,
+                        correlationId,
+                    )
+                }
+
+                if (dataRequestPatch.requestStatus == RequestStatus.Answered ||
+                    dataRequestPatch.requestStatus == RequestStatus.NonSourceable
+                ) {
+                    if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
+                        requestEmailManager.sendEmailsWhenRequestStatusChanged(
+                            dataRequestEntity, dataRequestPatch.requestStatus, correlationId,
+                        )
+                    } else {
+                        val immediateNotificationWasSent =
+                            sendImmediateNotificationOnRequestStatusChangeIfApplicable(
+                                dataRequestEntity,
+                                dataRequestPatch,
+                                correlationId,
+                            )
+                        resetImmediateNotificationFlagIfApplicable(
+                            dataRequestEntity,
+                            dataRequestPatch,
+                            immediateNotificationWasSent,
+                        )
+                        val earlierQaApprovedVersionExists =
+                            metaDataControllerApi
+                                .getListOfDataMetaInfo(
+                                    companyId = dataRequestEntity.datalandCompanyId,
+                                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType),
+                                    reportingPeriod = dataRequestEntity.reportingPeriod,
+                                    showOnlyActive = true,
+                                    qaStatus = QaStatus.Accepted,
+                                ).isNotEmpty()
+                        notificationService.createUserSpecificNotificationEvent(
+                            dataRequestEntity,
+                            dataRequestPatch.requestStatus,
+                            immediateNotificationWasSent,
+                            earlierQaApprovedVersionExists,
+                        )
+                    }
+                }
+            }
 
             return dataRequestEntity.toStoredDataRequest()
+        }
+
+        /**
+         * If applicable, send an immediate notification email corresponding to the status change to the user.
+         * @returns whether an immediate notification was sent
+         */
+        private fun sendImmediateNotificationOnRequestStatusChangeIfApplicable(
+            dataRequestEntity: DataRequestEntity,
+            dataRequestPatch: DataRequestPatch,
+            correlationId: String,
+        ): Boolean {
+            if (dataRequestEntity.emailOnUpdate) {
+                requestEmailManager.sendEmailsWhenRequestStatusChanged(
+                    dataRequestEntity, dataRequestPatch.requestStatus, correlationId,
+                )
+            }
+            return dataRequestEntity.emailOnUpdate
+        }
+
+        /**
+         * Reset the immediate notification flag of the data request entity from true to false if the request status is
+         * about to change from Open to Answered.
+         */
+        private fun resetImmediateNotificationFlagIfApplicable(
+            dataRequestEntity: DataRequestEntity,
+            dataRequestPatch: DataRequestPatch,
+            immediateNotificationWasSent: Boolean,
+        ) {
+            if (
+                immediateNotificationWasSent &&
+                dataRequestEntity.getLatestRequestStatus() == RequestStatus.Open &&
+                dataRequestPatch.requestStatus == RequestStatus.Answered
+            ) {
+                dataRequestEntity.emailOnUpdate = false
+            }
         }
 
         /**
@@ -171,10 +272,10 @@ class DataRequestAlterationManager
          * @param dataRequestEntity the entity specifying the data request
          * @param correlationId the correlation ID of the QA event
          */
-        private fun patchRequestStatusByDataRequestEntity(
+        private fun patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataRequestEntity(
             dataRequestEntity: DataRequestEntity,
             answeringDataId: String,
-            correlationId: String?,
+            correlationId: String,
             requestStatusChangeReason: String? = null,
         ) {
             if (dataRequestEntity.dataType == DataTypeEnum.vsme.name && dataRequestEntity.accessStatus != AccessStatus.Granted) {
@@ -210,7 +311,7 @@ class DataRequestAlterationManager
          * @param dataType the framework for which data requests shall be patched
          * @param correlationId the correlation ID of the QA event
          */
-        private fun patchRequestStatusOfSingleCompany(
+        private fun patchRequestStatusOfSingleCompanyFromOpenOrNonSourceableToAnsweredByDataId(
             companyId: String,
             reportingPeriod: String,
             dataType: DataTypeEnum,
@@ -232,7 +333,7 @@ class DataRequestAlterationManager
                     ),
                 )
             dataRequestEntities.forEach {
-                patchRequestStatusByDataRequestEntity(it, answeringDataId, correlationId)
+                patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataRequestEntity(it, answeringDataId, correlationId)
             }
         }
 
@@ -243,7 +344,7 @@ class DataRequestAlterationManager
          * @param dataType the framework for which data requests shall be patched
          * @param correlationId the correlation ID of the QA event
          */
-        private fun patchRequestStatusOfSubsidiaries(
+        private fun patchRequestStatusOfSubsidiariesFromOpenOrNonSourceableToAnsweredByDataId(
             companyId: String,
             reportingPeriod: String,
             dataType: DataTypeEnum,
@@ -272,7 +373,7 @@ class DataRequestAlterationManager
                     ),
                 )
             dataRequestEntities.forEach {
-                patchRequestStatusByDataRequestEntity(
+                patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataRequestEntity(
                     it,
                     answeringDataId,
                     correlationId,
@@ -292,10 +393,10 @@ class DataRequestAlterationManager
             correlationId: String,
         ) {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            patchRequestStatusOfSingleCompany(
+            patchRequestStatusOfSingleCompanyFromOpenOrNonSourceableToAnsweredByDataId(
                 metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId, dataId,
             )
-            patchRequestStatusOfSubsidiaries(
+            patchRequestStatusOfSubsidiariesFromOpenOrNonSourceableToAnsweredByDataId(
                 metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId, dataId,
             )
         }
@@ -308,31 +409,78 @@ class DataRequestAlterationManager
          * @param correlationId The correlation id of the QA approval event.
          */
         @Transactional
-        fun notifyUsersWithClosedOrResolvedRequests(
+        fun processAnsweredOrClosedOrResolvedRequests(
             dataId: String,
             correlationId: String,
         ) {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            logger.info(
-                "Sending out e-mail notifications to users with a closed request" +
-                    "concerning company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name} " +
-                    "because there is a new dataset with QA status Accepted. Correlation ID: $correlationId",
-            )
             val dataRequestEntities =
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
                         datalandCompanyIds = setOf(metaData.companyId),
                         reportingPeriod = metaData.reportingPeriod,
-                        requestStatus = setOf(RequestStatus.Closed, RequestStatus.Resolved),
+                        requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
                     ),
                 )
 
             dataRequestEntities.forEach {
-                requestEmailManager.sendEmailToUserWithClosedOrResolvedRequest(
-                    it,
-                    correlationId,
+                if (it.emailOnUpdate) {
+                    requestEmailManager.sendDataUpdatedEmail(
+                        it,
+                        correlationId,
+                    )
+                }
+                val earlierQaApprovedVersionExists =
+                    metaDataControllerApi
+                        .getListOfDataMetaInfo(
+                            companyId = it.datalandCompanyId,
+                            dataType = DataTypeEnum.decode(it.dataType),
+                            reportingPeriod = it.reportingPeriod,
+                            showOnlyActive = true,
+                            qaStatus = QaStatus.Accepted,
+                        ).isNotEmpty()
+                notificationService.createUserSpecificNotificationEvent(
+                    dataRequestEntity = it,
+                    immediateNotificationWasSent = it.emailOnUpdate,
+                    earlierQaApprovedVersionExists = earlierQaApprovedVersionExists,
+                )
+            }
+        }
+
+        /**
+         * Method to patch all data request corresponding to a dataset
+         * @param nonSourceableInfo the info on the non-sourceable dataset
+         * @param correlationId correlationId
+         */
+        fun patchAllRequestsForThisDatasetToStatusNonSourceable(
+            nonSourceableInfo: NonSourceableInfo,
+            correlationId: String,
+        ) {
+            if (nonSourceableInfo.isNonSourceable) {
+                val dataRequestEntities =
+                    dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                        datalandCompanyId = nonSourceableInfo.companyId,
+                        dataType = nonSourceableInfo.dataType.toString(),
+                        reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    )
+
+                dataRequestEntities?.forEach {
+                    patchDataRequest(
+                        dataRequestId = it.dataRequestId,
+                        dataRequestPatch =
+                            DataRequestPatch(
+                                requestStatus = RequestStatus.NonSourceable,
+                                requestStatusChangeReason = nonSourceableInfo.reason,
+                            ),
+                        correlationId = correlationId,
+                    )
+                }
+            } else {
+                throw IllegalArgumentException(
+                    "Expected information about a non-sourceable dataset but received information " +
+                        "about a sourceable dataset. No requests are patched if a dataset is reported as " +
+                        "sourceable until the dataset is uplaoded.",
                 )
             }
         }

@@ -22,7 +22,7 @@ import java.util.UUID
 
 @Service("DataRequestTimeScheduler")
 class DataRequestTimeScheduler(
-    @Autowired private val alterationManager: DataRequestAlterationManager,
+    @Autowired private val alterationManager: DataRequestUpdateManager,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: Long,
@@ -48,7 +48,11 @@ class DataRequestTimeScheduler(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
             )
-            alterationManager.patchDataRequest(it.dataRequestId, DataRequestPatch(requestStatus = RequestStatus.Closed))
+            alterationManager.patchDataRequest(
+                it.dataRequestId,
+                DataRequestPatch(requestStatus = RequestStatus.Closed),
+                correlationId = UUID.randomUUID().toString(),
+            )
         }
     }
 }

@@ -241,6 +241,7 @@ export default defineComponent({
           contacts as unknown as Set<string>,
           message,
           undefined,
+          undefined,
           this.getKeycloakPromise
         );
       } catch (e) {

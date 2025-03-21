@@ -1,5 +1,4 @@
 <#include "../general/general_makros_html.ftl">
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,14 +17,26 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
+        <td colspan="3">Great news! 📣 <br><br>Your data request has been answered.</td>
+    </tr>
+    <@spacerRow/>
+    <@notificationSetting url="${baseUrl}/requests/${dataRequestId}"/>
+    <@spacerRow/>
+    <tr>
         <td colspan="3">
-            Great news! 📣<br>You've successfully claimed company ownership for ${companyName}.<br>
-            <br>Now, take the next step to access your company overview, view your data requests, and provide data.<br>
-            <br>Please note, that ${companyName} has ${numberOfOpenDataRequestsForCompany} open data requests.
+            <#include "../general/data_request_information.ftl">
         </td>
     </tr>
     <@spacerRow/>
-    <@buttonLink url="${baseUrl}/companies/${companyId}" linkText="TO MY COMPANY OVERVIEW" />
+    <@howToProceedDataRequest/>
+    <@spacerRowTiny/>
+    <@buttonLink url="${baseUrl}/requests/${dataRequestId}" linkText="REVIEW YOUR DATA REQUEST" />
+    <@spacerRow/>
+    <tr>
+        <td colspan="3"> Without any actions, your data request will be set to closed automatically
+            in <b>${closedInDays} days</b>.
+        </td>
+    </tr>
     <@spacerRow/>
     </tbody>
 </table>

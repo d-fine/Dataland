@@ -1,4 +1,5 @@
 <#include "../general/general_makros_html.ftl">
+<#include "../general/format_number_of_days.ftl">
 <#include "../general/format_first_and_last_name.ftl">
 <#include "../general/dataset_request_information.ftl">
 
@@ -12,7 +13,6 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
 <#include "../general/header.ftl">
-
 <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
     <tr>
@@ -22,7 +22,7 @@
     </tr>
     <tr>
         <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland!
-            <@formatFirstAndLastName requesterFirstName requesterLastName/> is requesting access to your data from ${companyName} on dataland.</td>
+            <@formatFirstAndLastName firstName lastName/> is requesting data from ${companyName}.</td>
     </tr>
     <@spacerRow/>
     <tr>
@@ -32,14 +32,22 @@
     </tr>
     <@spacerRow/>
     <@spacerRow/>
-    <@howToProceed items=["Verify the access request on dataland.",
-                          "If you want to share the dataset, grant access."]/>
+    <@howToProceed items=["Unlock all your account features by claiming ownership of your company.",
+                          "Provide your data."]/>
     <@spacerRow/>
-    <@buttonLink url="${baseUrl}/companyrequests" linkText="VERIFY AND GRANT ACCESS ON DATALAND" />
+    <@buttonLink url="${baseUrl}/companies/${companyId}" linkText="REGISTER AND CLAIM OWNERSHIP" />
+    <@spacerRow/>
+    <tr>
+        <td colspan="3">Claiming ownership process usually requires 1-2 business days.<br />
+            You will be notified by email.</td>
+    </tr>
     <@spacerRow/>
     </tbody>
 </table>
+
 <#include "../general/why_me.ftl">
 <#include "../general/footer.ftl">
+<#include "../general/unsubscribe.ftl">
+
 </body>
 </html>

@@ -54,6 +54,7 @@ class DataAccessManagerTest {
             DataRequestEntity(
                 userId = userId,
                 dataType = DataTypeEnum.vsme.toString(),
+                emailOnUpdate = false,
                 reportingPeriod = grantedAccessReportingYear,
                 creationTimestamp = 0,
                 datalandCompanyId = companyId,
@@ -79,6 +80,7 @@ class DataAccessManagerTest {
             DataRequestEntity(
                 userId = userId,
                 dataType = DataTypeEnum.vsme.toString(),
+                emailOnUpdate = false,
                 reportingPeriod = revokedAccessReportingYear,
                 creationTimestamp = 0,
                 datalandCompanyId = companyId,

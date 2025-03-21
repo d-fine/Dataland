@@ -8,7 +8,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
@@ -47,37 +46,6 @@ class DataRequestResponseEmailSender(
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
         return dateFormat.format(creationTimestamp)
-    }
-
-    /**
-     * Method to inform the respective user by mail that his request is closed.
-     * @param dataRequestEntity the dataRequestEntity
-     * @param correlationId the correlation id
-     */
-    fun sendDataRequestClosedEmail(
-        dataRequestEntity: DataRequestEntity,
-        correlationId: String,
-    ) {
-        val dataRequestClosed =
-            DataRequestClosed(
-                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
-                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
-                reportingPeriod = dataRequestEntity.reportingPeriod,
-                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-                dataRequestId = dataRequestEntity.dataRequestId,
-                closedInDays = staleDaysThreshold.toInt(),
-            )
-        val message =
-            EmailMessage(
-                dataRequestClosed, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
-            )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SEND_EMAIL,
-            correlationId,
-            ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.EMAIL,
-        )
     }
 
     /**
@@ -147,11 +115,11 @@ class DataRequestResponseEmailSender(
      * has been a QA approval for a dataset with regard to the same company, reporting period and
      * framework.
      */
-    fun sendEmailToUserWithClosedOrResolvedRequest(
+    fun sendDataUpdatedEmail(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val message = buildEmailMessageForUserWithClosedOrResolvedRequest(dataRequestEntity)
+        val message = buildDataUpdatedEmailMessage(dataRequestEntity)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(message),
             type = MessageType.SEND_EMAIL,
@@ -165,7 +133,7 @@ class DataRequestResponseEmailSender(
      * Function to build the EmailMessage object corresponding to the e-mail sent to
      * a user with a closed request after a relevant QA status update event happened.
      */
-    fun buildEmailMessageForUserWithClosedOrResolvedRequest(dataRequestEntity: DataRequestEntity): EmailMessage {
+    fun buildDataUpdatedEmailMessage(dataRequestEntity: DataRequestEntity): EmailMessage {
         val dataRequestUpdatedMail =
             DataRequestUpdated(
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),

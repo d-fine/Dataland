@@ -124,6 +124,7 @@ class DataRequestQueryManagerTest {
             DataRequestEntity(
                 userId = keycloakUserAlpha.userId,
                 dataType = DataTypeEnum.p2p.value,
+                emailOnUpdate = false,
                 reportingPeriod = testReportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
                 datalandCompanyId = testCompanyId,
@@ -132,6 +133,7 @@ class DataRequestQueryManagerTest {
             DataRequestEntity(
                 userId = keycloakUserBeta.userId,
                 dataType = DataTypeEnum.lksg.value,
+                emailOnUpdate = false,
                 reportingPeriod = testReportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
                 datalandCompanyId = testCompanyId,
