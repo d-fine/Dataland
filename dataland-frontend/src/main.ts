@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; // use this for icons embedded in inputs and declarative elements such as menus -> decent alignment
 import 'material-icons/iconfont/material-icons.css'; // prefer these icons in most cases such as stand-alone or in buttons -> recommended by UI/UX
 import 'primeflex/primeflex.min.css';

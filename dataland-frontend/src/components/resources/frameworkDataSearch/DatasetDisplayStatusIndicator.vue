@@ -81,6 +81,7 @@ export default defineComponent({
       }
     },
     existsAcceptedVersion(): boolean {
+      //is currently false in test
       return this.receivedMapOfReportingPeriodsToActiveDataMetaInfo.has(this.displayedDataset?.reportingPeriod ?? '');
     },
     areMoreDatasetsViewableSimultaneously(): boolean {
