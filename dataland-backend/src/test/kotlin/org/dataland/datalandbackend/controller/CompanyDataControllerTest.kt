@@ -4,12 +4,14 @@ import jakarta.transaction.Transactional
 import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
@@ -18,6 +20,7 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,6 +43,7 @@ internal class CompanyDataControllerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired val companyBaseManager: CompanyBaseManager,
+    @Autowired private val dataPointUtils: DataPointUtils,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
@@ -53,10 +57,12 @@ internal class CompanyDataControllerTest(
                 companyQueryManager,
                 companyIdentifierRepositoryInterface,
                 companyBaseManager,
+                dataPointUtils,
             )
     }
 
     private final val testLei = "testLei"
+    private final val testChildLei = "testChildLei"
     val companyWithTestLei =
         CompanyInformation(
             companyName = "Test Company",
@@ -76,11 +82,17 @@ internal class CompanyDataControllerTest(
                 ),
             parentCompanyLei = null,
         )
+    val companyWithParent =
+        companyWithTestLei.copy(
+            companyName = "Test Company Child",
+            identifiers = mapOf(IdentifierType.Lei to listOf(testChildLei)),
+            parentCompanyLei = testLei,
+        )
 
-    fun postCompany(): String =
+    fun postCompany(company: CompanyInformation = companyWithTestLei): String =
         companyController
             .postCompany(
-                companyWithTestLei,
+                company,
             ).body!!
             .companyId
 
@@ -171,5 +183,34 @@ internal class CompanyDataControllerTest(
 
             assertTrue(violations.isEmpty())
         }
+    }
+
+    @Test
+    fun `getCompanySubsidiariesByParentId fails when parentId is not found`() {
+        mockSecurityContext()
+
+        postCompany(companyWithTestLei)
+
+        assertThrows<ResourceNotFoundApiException> {
+            companyController.getCompanySubsidiariesByParentId("invalid company id")
+        }
+    }
+
+    @Test
+    fun `getCompanySubsidiariesByParentId returns child as expected`() {
+        mockSecurityContext()
+
+        val parentCompanyId = postCompany(companyWithTestLei)
+        val childCompanyId = postCompany(companyWithParent)
+
+        assertIterableEquals(
+            companyController.getCompanySubsidiariesByParentId(childCompanyId).body,
+            listOf<BasicCompanyInformation>(),
+        )
+        val basicChildCompanyInformationList = companyController.getCompanySubsidiariesByParentId(parentCompanyId).body
+        assertEquals(basicChildCompanyInformationList?.size, 1)
+        assertEquals(basicChildCompanyInformationList?.get(0)?.companyId, childCompanyId)
+        assertEquals(basicChildCompanyInformationList?.get(0)?.companyName, companyWithParent.companyName)
+        assertEquals(basicChildCompanyInformationList?.get(0)?.lei, testChildLei)
     }
 }

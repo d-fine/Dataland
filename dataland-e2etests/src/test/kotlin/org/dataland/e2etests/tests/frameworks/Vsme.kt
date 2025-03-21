@@ -14,8 +14,9 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
 import org.dataland.e2etests.utils.VsmeTestUtils
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -92,14 +93,15 @@ class Vsme {
             executeDataRetrievalWithRetries(
                 apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
             )
-        assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
+        requireNotNull(persistedDataMetaInfo)
+        assertDataMetaInfoMatches(actualDataMetaInfo = persistedDataMetaInfo, expectedDataMetaInfo = dataMetaInfoInResponse)
 
-        val dataId = persistedDataMetaInfo!!.dataId
+        val dataId = persistedDataMetaInfo.dataId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assertAccessDeniedWrapper { vsmeDataControllerApi.getCompanyAssociatedVsmeData(dataId) }
         assertAccessDeniedWrapper { vsmeDataControllerApi.getPrivateDocument(dataId, hashAlpha) }
 
-        for (role in CompanyRole.values()) {
+        for (role in CompanyRole.entries) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 role,
                 companyId = UUID.fromString(companyId),
@@ -120,7 +122,7 @@ class Vsme {
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2021", testVsmeData)
         val rolesThatShouldBeAllowedToPost = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
-        for (role in CompanyRole.values()) {
+        for (role in CompanyRole.entries) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 role, companyId = UUID.fromString(companyId), userId = dataAdminUserId,
             )

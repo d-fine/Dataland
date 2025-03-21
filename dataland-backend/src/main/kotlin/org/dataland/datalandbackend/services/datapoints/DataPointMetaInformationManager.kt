@@ -33,6 +33,15 @@ class DataPointMetaInformationManager
             }
 
         /**
+         * Get meta info about a batch of data points
+         * @param dataPointIds filters the requested meta info to one specific data ID
+         * @return meta info about data behind the dataId
+         */
+        @Transactional(readOnly = true)
+        fun getDataPointMetaInformationByIds(dataPointIds: List<String>): List<DataPointMetaInformationEntity> =
+            dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds)
+
+        /**
          * Get the currently active data id for a specific set of data point dimensions
          * @param dataPointDimensions the data point dimensions to get the currently active data id for
          * @return the id of the currently active data point
@@ -98,4 +107,40 @@ class DataPointMetaInformationManager
             dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
             dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
         }
+
+        /**
+         * Method to get the reporting periods with active data points for a specific set of data point types and one company
+         * @param dataPointTypes the data point types to filter for
+         * @param companyId the company to filter for
+         * @return the reporting periods with at least one active data point
+         */
+        fun getReportingPeriodsWithActiveDataPoints(
+            dataPointTypes: Set<String>,
+            companyId: String,
+        ): Set<String> =
+            dataPointMetaInformationRepositoryInterface
+                .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
+                    dataPointTypes = dataPointTypes,
+                    companyId = companyId,
+                ).map { it.reportingPeriod }
+                .toSet()
+
+        /**
+         * Method to get the latest upload time of active data points given a set of data point types for a specific company
+         * @param dataPointTypes the data point types to filter for
+         * @param companyId the company to filter for
+         * @return the latest upload time of active data points as a long
+         */
+        fun getLatestUploadTimeOfActiveDataPoints(
+            dataPointTypes: Set<String>,
+            companyId: String,
+            reportingPeriod: String,
+        ): Long =
+            dataPointMetaInformationRepositoryInterface
+                .findByDataPointTypeInAndCompanyIdAndReportingPeriodAndCurrentlyActiveTrue(
+                    dataPointTypes = dataPointTypes,
+                    companyId = companyId,
+                    reportingPeriod = reportingPeriod,
+                ).map { it.uploadTime }
+                .maxOf { it }
     }

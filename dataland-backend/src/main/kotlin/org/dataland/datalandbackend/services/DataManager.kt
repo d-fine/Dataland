@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
@@ -106,15 +109,18 @@ class DataManager
          * @return stringified data entry from the temporary store
          */
         fun selectPublicDatasetFromTemporaryStorage(dataId: String): String {
-            val rawValue =
-                publicDataInMemoryStorage.getOrElse(dataId) {
-                    throw ResourceNotFoundApiException(
-                        "Data ID not found in temporary storage",
-                        "Dataland does not know the data id $dataId",
-                    )
-                }
+            val rawValue = selectRawPublicDatasetFromTemporaryStorage(dataId)
             return objectMapper.writeValueAsString(rawValue)
         }
+
+        /**
+         * Retrieve public data from the temporary storage
+         */
+        fun selectRawPublicDatasetFromTemporaryStorage(dataId: String): String =
+            publicDataInMemoryStorage[dataId] ?: throw ResourceNotFoundApiException(
+                "Data ID not found in temporary storage",
+                "Dataland does not know the data id $dataId",
+            )
 
         /**
          * Store data in the temporary storage
@@ -273,5 +279,32 @@ class DataManager
                         message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
                     )
             return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
+        }
+
+        override fun getAllDatasetsAndMetaInformation(
+            searchFilter: DataMetaInformationSearchFilter,
+            correlationId: String,
+        ): List<PlainDataAndMetaInformation> {
+            requireNotNull(searchFilter.companyId) { "Company ID must be provided" }
+            val metaInfos = metaDataManager.searchDataMetaInfo(searchFilter)
+            val authentication = DatalandAuthentication.fromContextOrNull()
+            val listOfFrameworkDataAndMetaInfo = mutableListOf<PlainDataAndMetaInformation>()
+            metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
+                val data =
+                    getDatasetData(
+                        BasicDataDimensions(
+                            companyId = searchFilter.companyId, dataType = it.dataType, reportingPeriod = it.reportingPeriod,
+                        ),
+                        correlationId,
+                    )
+                requireNotNull(data) { "Data not found for dataId: ${it.dataId}" }
+                listOfFrameworkDataAndMetaInfo.add(
+                    PlainDataAndMetaInformation(
+                        metaInfo = it.toApiModel(),
+                        data = data,
+                    ),
+                )
+            }
+            return listOfFrameworkDataAndMetaInfo
         }
     }

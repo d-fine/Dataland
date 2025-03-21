@@ -7,8 +7,8 @@ import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentMechanism
 import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.assertThrows
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Lksg {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
 
     private val listOfOneLksgDataset = apiAccessor.testDataProviderForLksgData.getTData(1)
     private val listOfOneCompanyInformation =

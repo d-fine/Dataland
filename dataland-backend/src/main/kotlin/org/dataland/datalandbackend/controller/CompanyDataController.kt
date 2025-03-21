@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.slf4j.LoggerFactory
@@ -38,6 +39,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val companyBaseManager: CompanyBaseManager,
+    @Autowired private val dataPointUtils: DataPointUtils,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -193,7 +195,12 @@ class CompanyDataController(
     override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
         ResponseEntity.ok(
             DataType.values.associateWith {
-                AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
+                AggregatedFrameworkDataSummary(
+                    (
+                        companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
+                            dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
+                    ).size.toLong(),
+                )
             },
         )
 
@@ -207,4 +214,9 @@ class CompanyDataController(
     override fun isCompanyIdValid(companyId: String) {
         companyQueryManager.verifyCompanyIdExists(companyId)
     }
+
+    override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
+        ResponseEntity.ok(
+            companyQueryManager.getCompanySubsidiariesByParentId(companyId),
+        )
 }

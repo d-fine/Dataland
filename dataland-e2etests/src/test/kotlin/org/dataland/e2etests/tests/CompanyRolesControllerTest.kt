@@ -9,7 +9,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.CompanyRolesTestUtils
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
 import org.dataland.e2etests.utils.communityManager.assertErrorCodeInCommunityManagerClientException
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,7 +24,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CompanyRolesControllerTest {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
 
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)

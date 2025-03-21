@@ -102,6 +102,7 @@ class DataRequestProcessingUtils
          * @param message a message to equip the notification with
          */
         fun storeDataRequestEntityAsOpen(
+            userId: String,
             datalandCompanyId: String,
             dataType: DataTypeEnum,
             reportingPeriod: String,
@@ -112,7 +113,7 @@ class DataRequestProcessingUtils
 
             val dataRequestEntity =
                 DataRequestEntity(
-                    DatalandAuthentication.fromContext().userId,
+                    userId,
                     dataType.value,
                     reportingPeriod,
                     datalandCompanyId,
@@ -167,9 +168,12 @@ class DataRequestProcessingUtils
             accessStatus: AccessStatus,
             requestStatusChangeReason: String?,
             modificationTime: Long,
+            answeringDataId: String? = null,
         ) {
             val requestStatusObject =
-                StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus, requestStatusChangeReason)
+                StoredDataRequestStatusObject(
+                    requestStatus, modificationTime, accessStatus, requestStatusChangeReason, answeringDataId,
+                )
             val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 
             requestStatusRepository.save(requestStatusEntity)
@@ -184,22 +188,23 @@ class DataRequestProcessingUtils
          * @param requestStatus the status of the data request
          * @return a list of the found data requests, or null if none was found
          */
-        fun findAlreadyExistingDataRequestForCurrentUser(
+        fun findAlreadyExistingDataRequestForUser(
+            userId: String,
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
             requestStatus: RequestStatus,
         ): List<DataRequestEntity>? {
-            val requestingUserId = DatalandAuthentication.fromContext().userId
             val foundRequests =
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        requestingUserId, companyId, framework.value, reportingPeriod,
+                        userId, companyId, framework.value, reportingPeriod,
                     )?.filter {
                         it.requestStatus == requestStatus
                     }
             if (!foundRequests.isNullOrEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
+                    userId,
                     companyId,
                     framework,
                     reportingPeriod,
@@ -220,14 +225,15 @@ class DataRequestProcessingUtils
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
+            userId: String,
         ): Boolean {
             val openDataRequests =
-                findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Open,
+                findAlreadyExistingDataRequestForUser(
+                    userId, companyId, framework, reportingPeriod, RequestStatus.Open,
                 )
             val answeredDataRequests =
-                findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Answered,
+                findAlreadyExistingDataRequestForUser(
+                    userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
                 )
             return !(openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty())
         }
@@ -246,12 +252,13 @@ class DataRequestProcessingUtils
             reportingPeriod: String,
         ): String? {
             val foundRequests = mutableListOf<DataRequestEntity>()
-            findAlreadyExistingDataRequestForCurrentUser(
-                companyId, framework, reportingPeriod, RequestStatus.Open,
+            val userId = DatalandAuthentication.fromContext().userId
+            findAlreadyExistingDataRequestForUser(
+                userId, companyId, framework, reportingPeriod, RequestStatus.Open,
             )?.forEach { foundRequests.add(it) }
 
-            findAlreadyExistingDataRequestForCurrentUser(
-                companyId, framework, reportingPeriod, RequestStatus.Answered,
+            findAlreadyExistingDataRequestForUser(
+                userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
             )?.forEach { foundRequests.add(it) }
 
             return foundRequests.firstOrNull()?.dataRequestId

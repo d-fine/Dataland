@@ -1,0 +1,7 @@
+{
+  "id" : "plainDate",
+  "name" : "Just a date",
+  "businessDefinition" : "A date without a time-zone represented by a LocalDate. The date has to comply with ISO-8601.",
+  "validatedBy" : "java.time.LocalDate",
+  "example" : "2007-03-05"
+}

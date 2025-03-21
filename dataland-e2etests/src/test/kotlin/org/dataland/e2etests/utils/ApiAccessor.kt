@@ -34,8 +34,8 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
-import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 
 class ApiAccessor {
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
@@ -281,12 +281,14 @@ class ApiAccessor {
     fun uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EutaxonomyNonFinancialsData,
+        ensureQaPassed: Boolean = true,
     ): Map<String, String> {
         val listOfUploadInfo =
             uploadCompanyAndFrameworkDataForOneFramework(
                 listOf(companyInformation),
                 listOf(euTaxonomyDataForNonFinancials),
                 this::euTaxonomyNonFinancialsUploaderFunction,
+                ensureQaPassed = ensureQaPassed,
             )
         val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId

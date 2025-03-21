@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Triggers the migration of stored datasets to assembled datasets when the backend starts
  */
-@Service
+@Service("AssembledDataMigrationTrigger")
 class AssembledDataMigrationTrigger
     @Autowired
     constructor(
@@ -52,7 +52,7 @@ class AssembledDataMigrationTrigger
             val allDatasetsThatNeedToBeMigrated =
                 dataMetaInformationRepository
                     .getAllDataMetaInformationThatDoNotHaveDataPoints(allFrameworksThatSupportDataPoints)
-            return allDatasetsThatNeedToBeMigrated.map { it.dataId }
+            return allDatasetsThatNeedToBeMigrated.sortedBy { it.uploadTime }.map { it.dataId }
         }
 
         /**

@@ -129,11 +129,7 @@
                     v-if="slotProps.data.requestStatus == RequestStatus.Answered"
                     class="text-right text-primary no-underline font-bold"
                   >
-                    <span
-                      id="resolveButton"
-                      style="cursor: pointer"
-                      data-test="requested-Datasets-Resolve"
-                      @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
+                    <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve"
                       >RESOLVE</span
                     >
                     <span class="ml-3">></span>
@@ -184,7 +180,6 @@ import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
-import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -274,16 +269,6 @@ export default defineComponent({
     getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
     /**
-     * Navigates to the company view page
-     * @param companyId Dataland companyId
-     * @param framework Dataland framework
-     * @returns the promise of the router push action
-     */
-    goToResolveDataRequestPage(companyId: string, framework: DataTypeEnum) {
-      const url = `/companies/${companyId}/frameworks/${framework}`;
-      return router.push(url);
-    },
-    /**
      * Navigates to the bulk data request page
      * @returns the promise of the router push action
      */
@@ -319,12 +304,8 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     onRowClick(event: DataTableRowClickEvent) {
-      const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick = clickedElement.id === 'resolveButton';
-      if (!isResolveButtonClick) {
-        const requestIdOfClickedRow = event.data.dataRequestId;
-        return router.push(`/requests/${requestIdOfClickedRow}`);
-      }
+      const requestIdOfClickedRow = event.data.dataRequestId;
+      return router.push(`/requests/${requestIdOfClickedRow}`);
     },
     /**
      * Sorts the list of storedDataRequests

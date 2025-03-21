@@ -17,7 +17,7 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" />
+            <FormKit type="hidden" name="companyId" :model-value="props.companyID" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
@@ -104,7 +104,7 @@
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import { inject, computed, ref, onMounted, provide } from 'vue';
+import { computed, inject, onMounted, provide, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
@@ -112,7 +112,7 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { lksgDataModel } from '@/frameworks/lksg/UploadConfig';
 import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationUtils';
 
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
@@ -126,17 +126,15 @@ import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 
 import { getFilledKpis } from '@/utils/DataPoint';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-
-import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
-import type { BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition.ts';
 import { getComponentByName } from '@/components/forms/UploadPageComponentDictionary.ts';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const route = useRoute();
 const emit = defineEmits(['datasetCreated']);
-defineProps<{
+const props = defineProps<{
   companyID: string;
 }>();
 
@@ -150,6 +148,8 @@ const postLkSGDataProcessed = ref(false);
 const messageCounter = ref(0);
 const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload>());
 const listOfFilledKpis = ref([] as Array<string>);
+const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
+const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod;
 
 const yearOfDataDate = computed({
   get(): string {
@@ -175,27 +175,41 @@ const subcategoryVisibility = computed(() => {
  */
 const buildLksgDataApi = (): PublicFrameworkDataApi<LksgData> | undefined => {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksg) as
-    | BasePublicFrameworkDefinition<LksgData>
-    | undefined;
-  if (frameworkDefinition) {
-    return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+  const frameworkDataApi = getFrameworkDataApiForIdentifier(
+    DataTypeEnum.Lksg,
+    apiClientProvider
+  ) as PublicFrameworkDataApi<LksgData>;
+  if (frameworkDataApi) {
+    return frameworkDataApi;
   } else return undefined;
 };
 
 /**
- * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
- * from the dataset
- * @param dataId the id of the dataset to load
+ * Loads the LkSG-Dataset identified either by the provided reportingPeriod and companyId,
+ * or the dataId, and pre-configures the form to contain the data from the dataset
  */
-const loadLKSGData = async (dataId: string): Promise<void> => {
+const loadLKSGData = async (): Promise<void> => {
   waitingForData.value = true;
   const lksgDataControllerApi = buildLksgDataApi();
-  const dataResponse = await lksgDataControllerApi!.getFrameworkData(dataId);
-  const lksgResponseData = dataResponse.data;
-  listOfFilledKpis.value = getFilledKpis(lksgResponseData.data);
-  companyAssociatedLksgData.value = objectDropNull(lksgResponseData);
-  waitingForData.value = false;
+  if (lksgDataControllerApi) {
+    let dataResponse;
+    if (templateDataId) {
+      dataResponse = await lksgDataControllerApi.getFrameworkData(templateDataId.toString());
+    } else if (templateReportingPeriod) {
+      dataResponse = await lksgDataControllerApi.getCompanyAssociatedDataByDimensions(
+        templateReportingPeriod.toString(),
+        props.companyID
+      );
+    }
+    if (!dataResponse) {
+      waitingForData.value = false;
+      throw ReferenceError('DataResponse from LksgDataController invalid.');
+    }
+    const lksgResponseData = dataResponse.data;
+    listOfFilledKpis.value = getFilledKpis(lksgResponseData.data);
+    companyAssociatedLksgData.value = objectDropNull(lksgResponseData);
+    waitingForData.value = false;
+  }
 };
 
 /**
@@ -221,13 +235,14 @@ const postLkSGData = async (): Promise<void> => {
       await uploadFiles(Array.from(fieldSpecificDocuments.value.values()), assertDefined(getKeycloakPromise));
     }
     const lksgDataControllerApi = buildLksgDataApi();
+    if (!lksgDataControllerApi) return;
 
     const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
       companyAssociatedLksgData.value.companyId,
       getKeycloakPromise
     );
 
-    await lksgDataControllerApi!.postFrameworkData(companyAssociatedLksgData.value, isCompanyOwnerOrDataUploader);
+    await lksgDataControllerApi.postFrameworkData(companyAssociatedLksgData.value, isCompanyOwnerOrDataUploader);
 
     emit('datasetCreated');
     dataDate.value = undefined;
@@ -248,9 +263,11 @@ const postLkSGData = async (): Promise<void> => {
 };
 
 onMounted(() => {
-  const dataId = route.query.templateDataId;
-  if (dataId && typeof dataId === 'string') {
-    void loadLKSGData(dataId);
+  if (
+    (templateDataId && typeof templateDataId === 'string') ||
+    (templateReportingPeriod && typeof templateReportingPeriod === 'string')
+  ) {
+    void loadLKSGData();
   } else {
     waitingForData.value = false;
   }

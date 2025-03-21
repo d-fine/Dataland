@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,8 +34,13 @@ class NonSourceableDataManager(
 
             dataRequestEntities?.forEach {
                 dataRequestAlterationManager.patchDataRequest(
-                    dataRequestId = it.dataRequestId, requestStatus = RequestStatus.NonSourceable,
-                    correlationId = correlationId, requestStatusChangeReason = nonSourceableInfo.reason,
+                    dataRequestId = it.dataRequestId,
+                    dataRequestPatch =
+                        DataRequestPatch(
+                            requestStatus = RequestStatus.NonSourceable,
+                            requestStatusChangeReason = nonSourceableInfo.reason,
+                        ),
+                    correlationId = correlationId,
                 )
             }
         } else {

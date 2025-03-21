@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -37,10 +38,7 @@ class DataRequestTimeScheduler(
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
         val searchFilterForAnsweredDataRequests =
-            DataRequestsFilter(
-                null, null, null, null, null,
-                setOf(RequestStatus.Answered), null, null, null,
-            )
+            DataRequestsFilter(requestStatus = setOf(RequestStatus.Answered))
         val staleAnsweredRequests =
             dataRequestRepository
                 .searchDataRequestEntity(searchFilterForAnsweredDataRequests)
@@ -50,7 +48,7 @@ class DataRequestTimeScheduler(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
             )
-            alterationManager.patchDataRequest(it.dataRequestId, RequestStatus.Closed)
+            alterationManager.patchDataRequest(it.dataRequestId, DataRequestPatch(requestStatus = RequestStatus.Closed))
         }
     }
 }

@@ -1,16 +1,18 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaReportMetaInformation
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.dataland.e2etests.utils.UploadConfiguration
 import org.dataland.e2etests.utils.UploadInfo
-import org.dataland.e2etests.utils.testDataProvivders.QaReportTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.QaReportTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -24,10 +26,14 @@ import org.dataland.datalandqaservice.openApiClient.model.SfdrData as SfdrQaRepo
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaReportControllerTest {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
     private val qaApiAccessor = QaApiAccessor()
 
-    private val testSfdrDataset = apiAccessor.testDataProviderForSfdrData.getTData(1)
+    private val testSfdrDataset =
+        FrameworkTestDataProvider
+            .forFrameworkPreparedFixtures(SfdrData::class.java)
+            .getByCompanyName("Sfdr-dataset-with-no-null-fields")
+            .t
     private val testEuTaxonomyNonFinancialsDataset =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)
     private val testCompanyInformationForSfdrData =
@@ -36,6 +42,7 @@ class QaReportControllerTest {
     private val testCompanyInformationForEuTaxonomyNonFinancialsData =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1)
+    private val sfdrQaReportTestDataProvider = QaReportTestDataProvider(SfdrQaReport::class.java, "sfdr")
 
     @BeforeAll
     fun postTestDocuments() {
@@ -50,7 +57,7 @@ class QaReportControllerTest {
             is SfdrQaReport ->
                 apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                     testCompanyInformationForSfdrData,
-                    testSfdrDataset,
+                    listOf(testSfdrDataset),
                     apiAccessor::sfdrUploaderFunction,
                     uploadConfig = UploadConfiguration(bypassQa = bypassQa),
                     ensureQaPassed = bypassQa,
@@ -143,7 +150,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post an sfdr qa report and check retrieval permissions`() {
-        val sfdrQaReport = SfdrQaReport()
+        val sfdrQaReport = sfdrQaReportTestDataProvider.getTData(1).first()
         val reportMetaInfo = postQaReportForNewDataId(sfdrQaReport, bypassQa = false)
 
         withTechnicalUser(TechnicalUser.Admin) { assertCanAccessQaDataset(sfdrQaReport, reportMetaInfo) }
@@ -154,7 +161,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post an sfdr qa report and check that it is deleted with the dataset`() {
-        val sfdrQaReport = SfdrQaReport()
+        val sfdrQaReport = sfdrQaReportTestDataProvider.getTData(1).first()
         val reportMetaInfo = postQaReportForNewDataId(sfdrQaReport, bypassQa = true)
         withTechnicalUser(TechnicalUser.Admin) {
             assertCanAccessQaDataset(sfdrQaReport, reportMetaInfo)
@@ -173,8 +180,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post an sfdr qa report and check that the report can be retrieved`() {
-        val qaReportTestDataProvider = QaReportTestDataProvider(SfdrQaReport::class.java, "sfdr")
-        val sfdrQaReportWithOneCorrection = qaReportTestDataProvider.getTData(1).first()
+        val sfdrQaReportWithOneCorrection = sfdrQaReportTestDataProvider.getTData(1).first()
 
         val sfdrQaReportMetaInfo = postQaReportForNewDataId(sfdrQaReportWithOneCorrection, true)
 

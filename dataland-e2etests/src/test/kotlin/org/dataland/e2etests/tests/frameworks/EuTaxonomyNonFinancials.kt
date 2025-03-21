@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.assertThrows
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EuTaxonomyNonFinancials {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
 
     private val listOfOneEuTaxonomyNonFinancialsDataset =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
