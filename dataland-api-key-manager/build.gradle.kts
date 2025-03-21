@@ -79,7 +79,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-backend-utils:assemble")
     dependsOn(":dataland-keycloak-adapter:assemble")
 }
-
-tasks.compileTestKotlin {
-    dependsOn(":dataland-api-key-manager:kaptKotlin")
-}
