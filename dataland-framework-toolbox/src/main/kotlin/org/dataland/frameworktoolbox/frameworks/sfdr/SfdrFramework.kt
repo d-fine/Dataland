@@ -24,7 +24,7 @@ class SfdrFramework :
         label = "SFDR",
         explanation = "Sustainability Finance Disclosure Regulation",
         File("./dataland-framework-toolbox/inputs/sfdr/sfdr.xlsx"),
-        order = 6,
+        order = 1,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = SfdrComponentGenerationUtils()

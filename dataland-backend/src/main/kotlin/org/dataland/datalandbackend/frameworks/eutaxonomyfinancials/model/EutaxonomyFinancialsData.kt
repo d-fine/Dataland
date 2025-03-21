@@ -18,7 +18,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.valida
  * The root data-model for the Eutaxonomy-financials Framework
  */
 @Suppress("MagicNumber", "MaxLineLength")
-@DataType("eutaxonomy-financials", 1)
+@DataType("eutaxonomy-financials", 2)
 @ReferencedReportsListValidator()
 data class EutaxonomyFinancialsData(
     @field:Valid()

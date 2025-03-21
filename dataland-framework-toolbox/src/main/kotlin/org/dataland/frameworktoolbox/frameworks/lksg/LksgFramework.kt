@@ -23,7 +23,7 @@ class LksgFramework :
         label = "LkSG",
         explanation = "Lieferkettensorgfaltspflichtengesetz",
         File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
-        order = 4,
+        order = 5,
         enabledFeatures =
             FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
     ) {

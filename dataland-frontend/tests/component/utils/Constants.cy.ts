@@ -6,13 +6,13 @@ import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrame
 describe('Unit test for the data type sorting in the Constants', () => {
   it('Check framework order of esg datenkatalog, heimathafen, and additional company information', () => {
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 3]).to.equal(
-      DataTypeEnum.EsgDatenkatalog
+      DataTypeEnum.Vsme
     );
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 2]).to.equal(
-      DataTypeEnum.Heimathafen
+      DataTypeEnum.EsgDatenkatalog
     );
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 1]).to.equal(
-      DataTypeEnum.AdditionalCompanyInformation
+      DataTypeEnum.Heimathafen
     );
   });
 

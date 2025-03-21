@@ -20,7 +20,7 @@ class AdditionalCompanyInformationFramework :
         label = "Additional Company Information",
         explanation = "Additional Company Information",
         File("./dataland-framework-toolbox/inputs/additional-company-information/additional-company-information.xlsx"),
-        order = 10,
+        order = 6,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
