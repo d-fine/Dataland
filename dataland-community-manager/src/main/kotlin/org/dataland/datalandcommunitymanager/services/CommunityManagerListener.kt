@@ -27,16 +27,16 @@ import org.springframework.transaction.annotation.Transactional
  * This service checks if freshly uploaded and validated data answers a data request
  */
 @Service("DataRequestUpdater")
-class DataAvailabilityListener(
+class CommunityManagerListener(
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
-    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
+    @Autowired private val investorRelationshipsManager: InvestorRelationshipsManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
-     * and data type and sets their status to answered
+     * Checks if, for a given dataset, there are open or nonsourceable requests with matching company identifier,
+     * reporting period and data type and sets their status to answered.
      * @param jsonString the message describing the result of the completed QA process
      * @param type the type of the message
      */
@@ -75,13 +75,16 @@ class DataAvailabilityListener(
             return
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
+            dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
                 dataId = dataId,
                 correlationId = id,
             )
-            dataRequestAlterationManager.processAnsweredOrClosedOrResolvedRequests(
+            dataRequestUpdateManager.processAnsweredOrClosedOrResolvedRequests(
                 dataId = dataId,
                 correlationId = id,
+            )
+            investorRelationshipsManager.saveNotificationEventForIREmails(
+                dataId = dataId,
             )
         }
     }
@@ -122,7 +125,7 @@ class DataAvailabilityListener(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
+            dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 
@@ -174,7 +177,7 @@ class DataAvailabilityListener(
         )
 
         MessageQueueUtils.rejectMessageOnException {
-            nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId)
+            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId)
         }
     }
 }

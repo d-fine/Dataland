@@ -4,13 +4,11 @@ import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGran
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
@@ -83,13 +81,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "Your data request has been updated with new data.",
         )
 
-    val dataRequestClosed =
-        DataRequestClosed(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS,
-        ).also {
-            it.baseUrl = BASE_URL
-        }
-
     val dataRequestClosedKeywords =
         listOf(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
@@ -153,14 +144,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "You have now access to the following dataset on Dataland",
         )
 
-    val singleDatasetUploadedEngagement =
-        SingleDatasetUploadedEngagement(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A,
-        ).also {
-            it.baseUrl = BASE_URL
-            it.subscriptionUuid = subscriptionUuid
-        }
-
     val singleDatasetUploadedEngagementKeywords =
         listOf(
             companyId, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, BASE_URL, subscriptionUuid,
@@ -177,7 +160,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
                 MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
                 MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
             ),
-            NUMBER_OF_DAYS.toLong(),
         ).also {
             it.baseUrl = BASE_URL
             it.subscriptionUuid = subscriptionUuid
@@ -228,13 +210,11 @@ class TypedEmailContentTestData : ArgumentsProvider {
         Stream.of(
             Arguments.of(datasetRequestedClaimOwnership, datasetRequestedClaimOwnershipKeywords),
             Arguments.of(dataRequestAnswered, dataRequestAnsweredKeywords),
-            Arguments.of(dataRequestClosed, dataRequestClosedKeywords),
             Arguments.of(dataRequestUpdated, dataRequestUpdatedKeywords),
             Arguments.of(dataRequestNonSourceableMail, dataRequestNonSourceableKeywords),
             Arguments.of(companyOwnershipClaimApproved, companyOwnershipClaimApprovedKeywords),
             Arguments.of(accessToDatasetRequested, accessToDatasetRequestedKeywords),
             Arguments.of(accessToDatasetGranted, accessToDatasetGrantedKeywords),
-            Arguments.of(singleDatasetUploadedEngagement, singleDatasetUploadedEngagementKeywords),
             Arguments.of(multipleDatasetsUploadedEngagement, multipleDatasetsUploadedEngagementKeywords),
             Arguments.of(internalEmailContentTable, keyValueTableKeywords),
         )

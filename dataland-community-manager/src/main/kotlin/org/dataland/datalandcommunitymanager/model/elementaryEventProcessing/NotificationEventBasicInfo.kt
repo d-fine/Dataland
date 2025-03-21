@@ -10,4 +10,6 @@ data class NotificationEventBasicInfo(
     val companyId: UUID,
     val framework: DataTypeEnum,
     val reportingPeriod: String,
+    val userId: UUID? = null,
+    val isProcessed: Boolean,
 )

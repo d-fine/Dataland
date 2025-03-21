@@ -25,7 +25,7 @@ import java.util.UUID
 
 class DataRequestTimeSchedulerTest {
     private val testUtils = TestUtils()
-    private lateinit var mockDataRequestAlterationManager: DataRequestAlterationManager
+    private lateinit var mockDataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestTimeScheduler: DataRequestTimeScheduler
     private val dataRequestIdStaleAndAnswered = UUID.randomUUID().toString()
@@ -72,16 +72,18 @@ class DataRequestTimeSchedulerTest {
     @BeforeEach
     fun setUpDataRequestTimeScheduler() {
         testUtils.mockSecurityContext()
-        mockDataRequestAlterationManager = mock(DataRequestAlterationManager::class.java)
+        mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
         `when`(
-            mockDataRequestAlterationManager.patchDataRequest(
-                dataRequestIdStaleAndAnswered, DataRequestPatch(requestStatus = RequestStatus.Closed),
+            mockDataRequestUpdateManager.patchDataRequest(
+                dataRequestIdStaleAndAnswered,
+                DataRequestPatch(requestStatus = RequestStatus.Closed),
+                UUID.randomUUID().toString(),
             ),
         ).thenReturn(null)
         mockDataRequestRepository = mock(DataRequestRepository::class.java)
         dataRequestTimeScheduler =
             DataRequestTimeScheduler(
-                mockDataRequestAlterationManager,
+                mockDataRequestUpdateManager,
                 mockDataRequestRepository,
                 staleDaysThreshold,
             )
@@ -107,10 +109,11 @@ class DataRequestTimeSchedulerTest {
             ),
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
-        verify(mockDataRequestAlterationManager, times(2))
+        verify(mockDataRequestUpdateManager, times(2))
             .patchDataRequest(
                 dataRequestIdStaleAndAnswered,
                 DataRequestPatch(requestStatus = RequestStatus.Closed),
+                UUID.randomUUID().toString(),
             )
     }
 
@@ -136,6 +139,6 @@ class DataRequestTimeSchedulerTest {
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
 
-        verifyNoInteractions(mockDataRequestAlterationManager)
+        verifyNoInteractions(mockDataRequestUpdateManager)
     }
 }

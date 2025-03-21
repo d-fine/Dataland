@@ -1,17 +1,9 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
-import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 /**
  * A service used to send external engagement emails and internal emails in the NotificationService.
@@ -25,7 +17,6 @@ class NotificationEmailSender(
     private val internalEmailSubject = "Dataland Notification Email has been sent"
     private val internalEmailTextTitle = "An IR Notification Email has been sent"
     private val internalEmailHtmlTitle = "IR Notification Email has been sent"
-     */
 
     /**
      * Sends both external and internal notification emails based on the specified parameters.
@@ -60,7 +51,6 @@ class NotificationEmailSender(
         return
     }
 
-    /*
     private fun buildExternalAndInternalInvestorRelationshipSummaryEmail(
         unprocessedEvents: List<NotificationEventEntity>,
         companyId: String,
@@ -140,7 +130,6 @@ class NotificationEmailSender(
 
     private fun reportingPeriodsValue(reportingPeriods: List<String>): Value =
         Value.List(reportingPeriods.map(Value::Text), separator = " ", start = " (", end = ")")
-     */
 
     private fun sendEmailMessage(
         typedEmailContent: TypedEmailContent,
@@ -157,4 +146,5 @@ class NotificationEmailSender(
             RoutingKeyNames.EMAIL,
         )
     }
+     */
 }

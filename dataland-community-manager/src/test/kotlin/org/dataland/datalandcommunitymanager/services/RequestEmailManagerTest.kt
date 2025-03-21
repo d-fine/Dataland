@@ -68,7 +68,7 @@ class RequestEmailManagerTest {
         val dataRequestEntity = DataRequestEntity("", "", false, "", "", 0L)
         for (accessStatus in AccessStatus.entries) {
             val dataRequestPatch = DataRequestPatch(accessStatus = accessStatus)
-            requestEmailManager.sendNotificationsForAccessRequests(dataRequestEntity, dataRequestPatch, UUID.randomUUID().toString())
+            requestEmailManager.sendNotificationsSpecificToAccessRequests(dataRequestEntity, dataRequestPatch, UUID.randomUUID().toString())
 
             if (accessStatus == AccessStatus.Granted) {
                 verify(accessRequestEmailSender, times(1))
@@ -93,7 +93,7 @@ class RequestEmailManagerTest {
                     "Message", 0L, dataRequestEntity,
                 ),
             )
-        requestEmailManager.sendNotificationsForAccessRequests(
+        requestEmailManager.sendNotificationsSpecificToAccessRequests(
             dataRequestEntity,
             DataRequestPatch(
                 requestStatus = RequestStatus.Answered,

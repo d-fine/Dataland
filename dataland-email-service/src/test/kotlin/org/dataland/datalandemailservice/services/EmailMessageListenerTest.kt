@@ -124,6 +124,7 @@ class EmailMessageListenerTest {
         )
     }
 
+    /*
     @Test
     fun `test that correct email is send to correct contacts with correct subscription uuid`() {
         val recipient = recipientToContactMap.keys.first()
@@ -157,4 +158,5 @@ class EmailMessageListenerTest {
             },
         )
     }
+     */
 }

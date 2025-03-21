@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
-import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
@@ -15,7 +14,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -46,19 +44,19 @@ import java.util.Optional
 import java.util.UUID
 
 class DataRequestAlterationManagerTest {
-    private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
+    private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var nonSourceableDataManager: NonSourceableDataManager
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestRepository: DataRequestRepository
-    private lateinit var mockNotificationEventRepository: NotificationEventRepository
+    private lateinit var mockNotificationService: NotificationService
     private lateinit var mockMetaControllerApi: MetaDataControllerApi
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockRequestEmailManager: RequestEmailManager
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
-    private val dataRequestId = IdUtils.generateUUID()
-    private val correlationId = IdUtils.generateUUID()
+    private val dataRequestId = UUID.randomUUID().toString()
+    private val correlationId = UUID.randomUUID().toString()
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
 
     private val dummyRequestChangeReason = "dummy reason"
@@ -110,7 +108,7 @@ class DataRequestAlterationManagerTest {
         `when`<Any>(
             mockDataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
-        mockNotificationEventRepository = mock(NotificationEventRepository::class.java)
+        mockNotificationService = mock(NotificationService::class.java)
         dummyDataRequestEntities.forEach {
             `when`<Any>(
                 mockDataRequestRepository.findById(it.dataRequestId),
@@ -174,8 +172,8 @@ class DataRequestAlterationManagerTest {
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
 
-        dataRequestAlterationManager =
-            DataRequestAlterationManager(
+        dataRequestUpdateManager =
+            DataRequestUpdateManager(
                 dataRequestRepository = mockDataRequestRepository,
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 metaDataControllerApi = mockMetaControllerApi,
@@ -183,7 +181,7 @@ class DataRequestAlterationManagerTest {
                 companyRolesManager = mockCompanyRolesManager,
                 utils = mockDataRequestProcessingUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
-                notificationEventRepository = mockNotificationEventRepository,
+                notificationService = mockNotificationService,
             )
     }
 
@@ -250,7 +248,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that a request response email is sent when a request status is patched to answered or closed`() {
-        dataRequestAlterationManager.patchDataRequest(
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             correlationId,
@@ -259,7 +257,7 @@ class DataRequestAlterationManagerTest {
             .sendEmailsWhenRequestStatusChanged(
                 any(), eq(RequestStatus.Answered), eq(correlationId),
             )
-        dataRequestAlterationManager.patchDataRequest(
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Closed),
             correlationId,
@@ -282,8 +280,8 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that no email is sent and the history is updated when an access status is patched`() {
-        val randomUUID = IdUtils.generateUUID()
-        dataRequestAlterationManager.patchDataRequest(
+        val randomUUID = UUID.randomUUID().toString()
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
             randomUUID,
@@ -304,7 +302,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
-        dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
+        dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(mockRequestEmailManager)
                 .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(correlationId))
@@ -335,7 +333,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
-        dataRequestAlterationManager.patchDataRequest(
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
@@ -365,7 +363,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that no email is sent when both request priority and admin comment are patched`() {
-        dataRequestAlterationManager.patchDataRequest(
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
@@ -385,7 +383,7 @@ class DataRequestAlterationManagerTest {
     fun `validate that the modification time remains unchanged when only the admin comment is patched`() {
         val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
 
-        dataRequestAlterationManager.patchDataRequest(
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch = DataRequestPatch(adminComment = dummyAdminComment),
             correlationId = correlationId,
@@ -399,7 +397,7 @@ class DataRequestAlterationManagerTest {
     fun `validate that the modification time changes if the request priority is patched`() {
         val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
 
-        dataRequestAlterationManager.patchDataRequest(
+        dataRequestUpdateManager.patchDataRequest(
             dataRequestId = dataRequestId,
             dataRequestPatch = DataRequestPatch(requestPriority = RequestPriority.High),
             correlationId = correlationId,
@@ -411,12 +409,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that patching corresponding requests for a dataset only changed the corresponding requests`() {
-        nonSourceableDataManager =
-            NonSourceableDataManager(
-                dataRequestAlterationManager = dataRequestAlterationManager,
-                dataRequestRepository = mockDataRequestRepository,
-            )
-        nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
+        dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -428,14 +421,8 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
-        nonSourceableDataManager =
-            NonSourceableDataManager(
-                dataRequestAlterationManager = dataRequestAlterationManager,
-                dataRequestRepository = mockDataRequestRepository,
-            )
-
         assertThrows<IllegalArgumentException> {
-            nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummySourceableInfo, correlationId)
+            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummySourceableInfo, correlationId)
         }
     }
 }

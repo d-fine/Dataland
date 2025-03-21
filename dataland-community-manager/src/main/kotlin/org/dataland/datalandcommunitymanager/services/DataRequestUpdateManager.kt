@@ -3,18 +3,16 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
-import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -23,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.util.UUID
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -31,11 +28,11 @@ import kotlin.jvm.optionals.getOrElse
  */
 @Suppress("LongParameterList")
 @Service
-class DataRequestAlterationManager
+class DataRequestUpdateManager
     @Autowired
     constructor(
         private val dataRequestRepository: DataRequestRepository,
-        private val notificationEventRepository: NotificationEventRepository,
+        private val notificationService: NotificationService,
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
@@ -182,47 +179,54 @@ class DataRequestAlterationManager
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            val dataRequestStatus = dataRequestEntity.getLatestRequestStatus()
-
-            if (
-                (dataRequestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
-                dataRequestPatch.accessStatus == AccessStatus.Granted
-            ) {
-                requestEmailManager.sendNotificationsForAccessRequests(dataRequestEntity, dataRequestPatch, correlationId)
-            }
-
-            if (dataRequestStatus != RequestStatus.Withdrawn &&
-                (
-                    dataRequestPatch.requestStatus == RequestStatus.Answered ||
-                        dataRequestPatch.requestStatus == RequestStatus.NonSourceable
-                )
-            ) {
-                val immediateNotificationWasSent =
-                    sendImmediateNotificationOnRequestStatusChangeIfApplicable(
+            if (dataRequestEntity.getLatestRequestStatus() != RequestStatus.Withdrawn) {
+                if (
+                    (dataRequestPatch.requestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
+                    dataRequestPatch.accessStatus == AccessStatus.Granted
+                ) {
+                    requestEmailManager.sendNotificationsSpecificToAccessRequests(
                         dataRequestEntity,
                         dataRequestPatch,
                         correlationId,
                     )
-                resetImmediateNotificationFlagIfApplicable(
-                    dataRequestEntity,
-                    dataRequestPatch,
-                    immediateNotificationWasSent,
-                )
-                val earlierQaApprovedVersionExists =
-                    metaDataControllerApi
-                        .getListOfDataMetaInfo(
-                            companyId = dataRequestEntity.datalandCompanyId,
-                            dataType = DataTypeEnum.decode(dataRequestEntity.dataType),
-                            reportingPeriod = dataRequestEntity.reportingPeriod,
-                            showOnlyActive = true,
-                            qaStatus = QaStatus.Accepted,
-                        ).isNotEmpty()
-                createUserSpecificNotificationEvent(
-                    dataRequestEntity,
-                    dataRequestPatch.requestStatus,
-                    immediateNotificationWasSent,
-                    earlierQaApprovedVersionExists,
-                )
+                }
+
+                if (dataRequestPatch.requestStatus == RequestStatus.Answered ||
+                    dataRequestPatch.requestStatus == RequestStatus.NonSourceable
+                ) {
+                    if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
+                        requestEmailManager.sendEmailsWhenRequestStatusChanged(
+                            dataRequestEntity, dataRequestPatch.requestStatus, correlationId,
+                        )
+                    } else {
+                        val immediateNotificationWasSent =
+                            sendImmediateNotificationOnRequestStatusChangeIfApplicable(
+                                dataRequestEntity,
+                                dataRequestPatch,
+                                correlationId,
+                            )
+                        resetImmediateNotificationFlagIfApplicable(
+                            dataRequestEntity,
+                            dataRequestPatch,
+                            immediateNotificationWasSent,
+                        )
+                        val earlierQaApprovedVersionExists =
+                            metaDataControllerApi
+                                .getListOfDataMetaInfo(
+                                    companyId = dataRequestEntity.datalandCompanyId,
+                                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType),
+                                    reportingPeriod = dataRequestEntity.reportingPeriod,
+                                    showOnlyActive = true,
+                                    qaStatus = QaStatus.Accepted,
+                                ).isNotEmpty()
+                        notificationService.createUserSpecificNotificationEvent(
+                            dataRequestEntity,
+                            dataRequestPatch.requestStatus,
+                            immediateNotificationWasSent,
+                            earlierQaApprovedVersionExists,
+                        )
+                    }
+                }
             }
 
             return dataRequestEntity.toStoredDataRequest()
@@ -260,81 +264,6 @@ class DataRequestAlterationManager
                 dataRequestPatch.requestStatus == RequestStatus.Answered
             ) {
                 dataRequestEntity.emailOnUpdate = false
-            }
-        }
-
-        /**
-         * Create the suitable user-specific notification event in the "QA Status Accepted" and "Data Non-Sourceable" pipelines.
-         * Do note that this function is also called by the "patch data request" endpoint of MetaDataController, but it will
-         * only do something in the cases that are naturally covered by the pipelines.
-         * @param dataRequestEntity represents the data request in question
-         */
-        private fun createUserSpecificNotificationEvent(
-            dataRequestEntity: DataRequestEntity,
-            requestStatusAfter: RequestStatus? = null,
-            immediateNotificationWasSent: Boolean,
-            earlierQaApprovedVersionExists: Boolean = false,
-        ) {
-            val requestStatusBefore = dataRequestEntity.getLatestRequestStatus()
-
-            val requestStatusBeforeIsOpenOrNonSourceable =
-                requestStatusBefore == RequestStatus.Open || requestStatusBefore == RequestStatus.NonSourceable
-
-            if (requestStatusBeforeIsOpenOrNonSourceable && requestStatusAfter == RequestStatus.Answered) {
-                notificationEventRepository.save(
-                    NotificationEventEntity(
-                        notificationEventType =
-                            if (earlierQaApprovedVersionExists) {
-                                NotificationEventType.UpdatedEvent
-                            } else {
-                                NotificationEventType.AvailableEvent
-                            },
-                        userId = UUID.fromString(dataRequestEntity.userId),
-                        isProcessed = immediateNotificationWasSent,
-                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
-                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                        reportingPeriod = dataRequestEntity.reportingPeriod,
-                    ),
-                )
-            }
-
-            val requestStatusBeforeIsAnsweredOrClosedOrResolved =
-                requestStatusBefore == RequestStatus.Answered ||
-                    requestStatusBefore == RequestStatus.Closed ||
-                    requestStatusBefore == RequestStatus.Resolved
-
-            if (
-                requestStatusBeforeIsAnsweredOrClosedOrResolved &&
-                (requestStatusAfter == requestStatusBefore || requestStatusAfter == null)
-            ) {
-                notificationEventRepository.save(
-                    NotificationEventEntity(
-                        notificationEventType =
-                            if (earlierQaApprovedVersionExists) {
-                                NotificationEventType.UpdatedEvent
-                            } else {
-                                NotificationEventType.AvailableEvent
-                            },
-                        userId = UUID.fromString(dataRequestEntity.userId),
-                        isProcessed = immediateNotificationWasSent,
-                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
-                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                        reportingPeriod = dataRequestEntity.reportingPeriod,
-                    ),
-                )
-            }
-
-            if (requestStatusBefore == RequestStatus.Open && requestStatusAfter == RequestStatus.NonSourceable) {
-                notificationEventRepository.save(
-                    NotificationEventEntity(
-                        notificationEventType = NotificationEventType.NonSourceableEvent,
-                        userId = UUID.fromString(dataRequestEntity.userId),
-                        isProcessed = immediateNotificationWasSent,
-                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
-                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                        reportingPeriod = dataRequestEntity.reportingPeriod,
-                    ),
-                )
             }
         }
 
@@ -511,10 +440,47 @@ class DataRequestAlterationManager
                             showOnlyActive = true,
                             qaStatus = QaStatus.Accepted,
                         ).isNotEmpty()
-                createUserSpecificNotificationEvent(
+                notificationService.createUserSpecificNotificationEvent(
                     dataRequestEntity = it,
                     immediateNotificationWasSent = it.emailOnUpdate,
                     earlierQaApprovedVersionExists = earlierQaApprovedVersionExists,
+                )
+            }
+        }
+
+        /**
+         * Method to patch all data request corresponding to a dataset
+         * @param nonSourceableInfo the info on the non-sourceable dataset
+         * @param correlationId correlationId
+         */
+        fun patchAllRequestsForThisDatasetToStatusNonSourceable(
+            nonSourceableInfo: NonSourceableInfo,
+            correlationId: String,
+        ) {
+            if (nonSourceableInfo.isNonSourceable) {
+                val dataRequestEntities =
+                    dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                        datalandCompanyId = nonSourceableInfo.companyId,
+                        dataType = nonSourceableInfo.dataType.toString(),
+                        reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    )
+
+                dataRequestEntities?.forEach {
+                    patchDataRequest(
+                        dataRequestId = it.dataRequestId,
+                        dataRequestPatch =
+                            DataRequestPatch(
+                                requestStatus = RequestStatus.NonSourceable,
+                                requestStatusChangeReason = nonSourceableInfo.reason,
+                            ),
+                        correlationId = correlationId,
+                    )
+                }
+            } else {
+                throw IllegalArgumentException(
+                    "Expected information about a non-sourceable dataset but received information " +
+                        "about a sourceable dataset. No requests are patched if a dataset is reported as " +
+                        "sourceable until the dataset is uplaoded.",
                 )
             }
         }

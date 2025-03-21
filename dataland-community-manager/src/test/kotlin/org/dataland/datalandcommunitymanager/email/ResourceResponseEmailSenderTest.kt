@@ -11,7 +11,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
@@ -94,44 +93,6 @@ class ResourceResponseEmailSenderTest {
             assertEquals(RoutingKeyNames.EMAIL, it.getArgument<String>(4))
         }
         return cloudEventMessageHandlerMock
-    }
-
-    private fun assertClosedEmailData(
-        dataRequestId: String,
-        dataTypeLabel: String,
-    ): (TypedEmailContent) -> Unit =
-        { emailData ->
-            assertTrue(emailData is DataRequestClosed)
-            val dataRequestAnswered = emailData as DataRequestClosed
-            assertEquals(companyName, dataRequestAnswered.companyName)
-            assertEquals(dataTypeLabel, dataRequestAnswered.dataTypeLabel)
-            assertEquals(reportingPeriod, dataRequestAnswered.reportingPeriod)
-            assertEquals(creationTimestampAsDate, dataRequestAnswered.creationDate)
-            assertEquals(dataRequestId, dataRequestAnswered.dataRequestId)
-            assertEquals(staleDaysThreshold, dataRequestAnswered.closedInDays)
-        }
-
-    @Test
-    fun `validate that the output of the closed request email message sender is correctly build for all frameworks`() {
-        dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
-            val dataRequestId = dataRequestEntity.dataRequestId
-            val cloudEventMessageHandlerMock =
-                getMockCloudEventMessageHandlerAndSetChecks(
-                    assertClosedEmailData(dataRequestId, it.value),
-                )
-
-            val dataRequestClosedEmailMessageSender =
-                DataRequestResponseEmailSender(
-                    cloudEventMessageHandlerMock,
-                    objectMapper,
-                    getCompanyDataControllerMock(),
-                    staleDaysThreshold.toString(),
-                )
-            dataRequestClosedEmailMessageSender.sendDataRequestClosedEmail(
-                dataRequestEntity, correlationId,
-            )
-        }
     }
 
     private fun assertAnsweredEmailData(

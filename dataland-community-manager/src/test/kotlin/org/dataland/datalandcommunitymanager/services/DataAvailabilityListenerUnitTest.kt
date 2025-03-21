@@ -1,9 +1,9 @@
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
-import org.dataland.datalandcommunitymanager.services.DataAvailabilityListener
-import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
-import org.dataland.datalandcommunitymanager.services.NonSourceableDataManager
+import org.dataland.datalandcommunitymanager.services.CommunityManagerListener
+import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
+import org.dataland.datalandcommunitymanager.services.InvestorRelationshipsManager
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.junit.jupiter.api.BeforeEach
@@ -16,9 +16,9 @@ import org.mockito.Mockito.verify
  * Tests if the listener processes the incoming non-sourceable data information correctly.
  */
 class DataAvailabilityListenerUnitTest {
-    private lateinit var dataAvailabilityListener: DataAvailabilityListener
-    private lateinit var mockDataRequestAlterationManager: DataRequestAlterationManager
-    private lateinit var mockNonSourceableDataManager: NonSourceableDataManager
+    private lateinit var communityManagerListener: CommunityManagerListener
+    private lateinit var mockDataRequestUpdateManager: DataRequestUpdateManager
+    private lateinit var mockInvestorRelationshipsManager: InvestorRelationshipsManager
 
     private val jacksonObjectMapper = jacksonObjectMapper()
     private val correlationId = "test correlation id"
@@ -62,33 +62,33 @@ class DataAvailabilityListenerUnitTest {
 
     @BeforeEach
     fun setUp() {
-        mockDataRequestAlterationManager = mock(DataRequestAlterationManager::class.java)
-        mockNonSourceableDataManager = mock(NonSourceableDataManager::class.java)
-        dataAvailabilityListener =
-            DataAvailabilityListener(
+        mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
+        mockInvestorRelationshipsManager = mock(InvestorRelationshipsManager::class.java)
+        communityManagerListener =
+            CommunityManagerListener(
                 jacksonObjectMapper,
-                mockDataRequestAlterationManager,
-                mockNonSourceableDataManager,
+                mockDataRequestUpdateManager,
+                mockInvestorRelationshipsManager,
             )
     }
 
     @Test
     fun `should process non sourceable message successfully`() {
-        dataAvailabilityListener.processDataReportedNotSourceableMessage(
+        communityManagerListener.processDataReportedNotSourceableMessage(
             jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoValid), type, correlationId,
         )
-        verify(mockNonSourceableDataManager).patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfoValid, correlationId)
+        verify(mockDataRequestUpdateManager).patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfoValid, correlationId)
     }
 
     @Test
     fun `should throw exception for incomplete data`() {
         assertThrows<MessageQueueRejectException> {
-            dataAvailabilityListener.processDataReportedNotSourceableMessage(
+            communityManagerListener.processDataReportedNotSourceableMessage(
                 jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoCompanyId), type, correlationId,
             )
         }
         assertThrows<MessageQueueRejectException> {
-            dataAvailabilityListener.processDataReportedNotSourceableMessage(
+            communityManagerListener.processDataReportedNotSourceableMessage(
                 jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoReportingPeriod), type, correlationId,
             )
         }
@@ -97,7 +97,7 @@ class DataAvailabilityListenerUnitTest {
     @Test
     fun `should throw exception when isNonSourceable is false`() {
         assertThrows<MessageQueueRejectException> {
-            dataAvailabilityListener
+            communityManagerListener
                 .processDataReportedNotSourceableMessage(
                     jacksonObjectMapper.writeValueAsString(nonSourceableInfoValidButSourceable), type, correlationId,
                 )

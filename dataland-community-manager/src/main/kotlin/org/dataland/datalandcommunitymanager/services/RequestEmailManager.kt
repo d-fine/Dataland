@@ -86,7 +86,7 @@ class RequestEmailManager(
     /**
      * Function to send relevant e-mail notifications on a patch event for an access request.
      */
-    fun sendNotificationsForAccessRequests(
+    fun sendNotificationsSpecificToAccessRequests(
         dataRequestEntity: DataRequestEntity,
         dataRequestPatch: DataRequestPatch,
         correlationId: String,

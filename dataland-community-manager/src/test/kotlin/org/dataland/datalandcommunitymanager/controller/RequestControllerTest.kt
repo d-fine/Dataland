@@ -6,8 +6,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataAccessManager
-import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
+import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -28,7 +28,7 @@ class RequestControllerTest {
     private val mockBulkDataRequestManager = mock<BulkDataRequestManager>()
     private val mockSingleDataRequestManager = mock<SingleDataRequestManager>()
     private val mockDataRequestQueryManager = mock<DataRequestQueryManager>()
-    private val mockDataRequestAlterationManager = mock<DataRequestAlterationManager>()
+    private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
     private val mockDataAccessManager = mock<DataAccessManager>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val requestController =
@@ -36,7 +36,7 @@ class RequestControllerTest {
             mockBulkDataRequestManager,
             mockSingleDataRequestManager,
             mockDataRequestQueryManager,
-            mockDataRequestAlterationManager,
+            mockDataRequestUpdateManager,
             mockDataAccessManager,
             mockCompanyRolesManager,
         )
@@ -47,7 +47,7 @@ class RequestControllerTest {
             mockBulkDataRequestManager,
             mockSingleDataRequestManager,
             mockDataRequestQueryManager,
-            mockDataRequestAlterationManager,
+            mockDataRequestUpdateManager,
             mockDataAccessManager,
             mockCompanyRolesManager,
         )
