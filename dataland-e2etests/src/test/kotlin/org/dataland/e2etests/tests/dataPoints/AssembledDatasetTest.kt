@@ -191,7 +191,7 @@ class AssembledDatasetTest {
                 bypassQa = false,
             )
         val uploadedQaReport =
-            ApiAwait.waitForData {
+            ApiAwait.waitForData(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
                 QaService.additionalCompanyInformationDataQaReportControllerApi.postAdditionalCompanyInformationDataQaReport(
                     uploadedDataset.dataId,
                     linkedQaReportData.qaReport,

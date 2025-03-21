@@ -36,7 +36,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
@@ -128,7 +127,7 @@ class AssembledDataManagerTest {
             )
         }
         verify(messageQueuePublications, times(expectedDataPointTypes.size))
-            .publishDataPointUploadedMessage(any(), any(), any(), eq(null), any())
+            .publishDataPointUploadedMessage(any(), any(), any(), any())
         verify(messageQueuePublications, times(1)).publishDatasetQaRequiredMessage(any(), any(), any())
         verify(messageQueuePublications, times(0)).publishDatasetUploadedMessage(any(), any(), any())
         verify(datasetDatapointRepository, times(1)).save(
