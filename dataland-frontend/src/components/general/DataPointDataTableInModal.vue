@@ -18,6 +18,7 @@
                 :label="dataSourceLabel"
                 :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
                 :file-reference="dataPointDisplay.dataSource.fileReference"
+                :page="dataSourcePage"
                 show-icon
               />
             </td>
@@ -34,7 +35,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
@@ -55,12 +55,19 @@ export default defineComponent({
         (!!this.dataPointDisplay?.comment && this.dataPointDisplay?.comment !== '')
       );
     },
-    dataSourceLabel() {
-      return this.dataPointDisplay?.dataSource?.page
-        ? `${this.dataPointDisplay?.dataSource.fileName ?? ''}, page ${
-            this.dataPointDisplay?.dataSource?.page as number
-          }`
-        : this.dataPointDisplay?.dataSource?.fileName;
+    dataSourceLabel(): string | undefined {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (!dataSource || !dataSource.fileName) return undefined;
+      if ('page' in dataSource && dataSource.page != null) {
+        return `${dataSource.fileName}, page(s) ${dataSource.page}`;
+      }
+      return dataSource.fileName;
+    },
+    dataSourcePage(): number | undefined {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return Number(dataSource.page.split('-')[0]);
+      } else return undefined;
     },
   },
 });
