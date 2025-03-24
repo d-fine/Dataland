@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -19,6 +18,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataP
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 /**
@@ -199,22 +199,15 @@ class DataPointQaReviewManager
         /**
          * Asserts that the QA service knows the dataId
          */
-        @Transactional
+        @Transactional(readOnly = true)
         fun assertQaServiceKnowsDataPointId(dataPointId: String) {
-            if (!checkIfQaServiceKnowsDataPointId(dataPointId)) {
+            if (dataPointQaReviewRepository.findFirstByDataPointIdOrderByTimestampDesc(dataPointId) == null) {
                 throw ResourceNotFoundApiException(
                     "Data Point ID not known to QA service",
                     "Dataland does not know the data point with id $dataPointId",
                 )
             }
         }
-
-        /**
-         * Checks if the QA service knows the dataId
-         */
-        @Transactional
-        fun checkIfQaServiceKnowsDataPointId(dataPointId: String): Boolean =
-            dataPointQaReviewRepository.findFirstByDataPointIdOrderByTimestampDesc(dataPointId) != null
 
         private fun createDataPointReviewEntities(tasks: List<ReviewDataPointTask>): List<Pair<DataPointQaReviewEntity, String>> {
             val anyExistingReviewEntity =
