@@ -117,6 +117,9 @@ class DataRequestUpdateManagerTest {
         doReturn(Optional.of(dummyChildCompanyDataRequestEntity1))
             .whenever(mockDataRequestRepository)
             .findById(dummyChildCompanyDataRequestEntity1.dataRequestId)
+        doReturn(Optional.of(dummyChildCompanyDataRequestEntity2))
+            .whenever(mockDataRequestRepository)
+            .findById(dummyChildCompanyDataRequestEntity2.dataRequestId)
         `when`(
             mockDataRequestRepository.searchDataRequestEntity(
                 searchFilter =
@@ -128,22 +131,13 @@ class DataRequestUpdateManagerTest {
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
-        doReturn(listOf(dummyChildCompanyDataRequestEntity1))
+        doReturn(listOf(dummyChildCompanyDataRequestEntity1, dummyChildCompanyDataRequestEntity2))
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId1"), metaData.reportingPeriod,
-                        setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
-                    ),
-            )
-        doReturn(listOf(dummyChildCompanyDataRequestEntity2))
-            .whenever(mockDataRequestRepository)
-            .searchDataRequestEntity(
-                searchFilter =
-                    DataRequestsFilter(
-                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId2"), metaData.reportingPeriod,
-                        setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
+                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
+                        metaData.reportingPeriod, setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
                     ),
             )
 
@@ -175,8 +169,22 @@ class DataRequestUpdateManagerTest {
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(any())
-        doReturn(listOf(BasicCompanyInformation(companyName = "", companyId = "dummyChildCompanyId", headquarters = "", countryCode = "")))
-            .whenever(mockCompanyDataControllerApi)
+        doReturn(
+            listOf(
+                BasicCompanyInformation(
+                    companyName = "",
+                    companyId = "dummyChildCompanyId1",
+                    headquarters = "",
+                    countryCode = "",
+                ),
+                BasicCompanyInformation(
+                    companyName = "",
+                    companyId = "dummyChildCompanyId2",
+                    headquarters = "",
+                    countryCode = "",
+                ),
+            ),
+        ).whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
 
         dataRequestUpdateManager =
@@ -354,22 +362,27 @@ class DataRequestUpdateManagerTest {
             )
     }
 
-    /*
     @Test
-    fun `validate that an answer email is sent for subsidiary with active flag when request statuses are patched from open to answered`() {
-        dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
-        dummyDataRequestEntities.forEach {
-            if (it.emailOnUpdate) {
-                verify(mockRequestEmailManager)
-                    .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(correlationId))
-            } else {
-                verify(mockRequestEmailManager, times(0))
-                    .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(correlationId))
-            }
-        }
+    fun `validate that answer emails for subsidiaries are sent according to flag on request status patch from open to answered`() {
+        dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
+            metaData.dataId,
+            correlationId,
+        )
+        verify(mockRequestEmailManager)
+            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[0]), eq(RequestStatus.Answered), eq(correlationId))
+        verify(mockRequestEmailManager, times(0))
+            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[1]), eq(RequestStatus.Answered), eq(correlationId))
+        verify(mockRequestEmailManager)
+            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[2]), eq(RequestStatus.Answered), eq(correlationId))
         verify(mockRequestEmailManager)
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity1),
+                eq(RequestStatus.Answered),
+                anyString(),
+            )
+        verify(mockRequestEmailManager, times(0))
+            .sendEmailsWhenRequestStatusChanged(
+                eq(dummyChildCompanyDataRequestEntity2),
                 eq(RequestStatus.Answered),
                 anyString(),
             )
@@ -385,12 +398,17 @@ class DataRequestUpdateManagerTest {
                 any(), anyString(),
                 any(), any(),
             )
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                eq(dummyChildCompanyDataRequestEntity2), any(),
+                any(), anyString(),
+                any(), any(),
+            )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
                 any(), anySet(), anyString(), any(),
             )
     }
-     */
 
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
@@ -470,7 +488,10 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that patching corresponding requests for a dataset only changed the corresponding requests`() {
-        dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
+        dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
+            dummyNonSourceableInfo,
+            correlationId,
+        )
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -483,7 +504,10 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
         assertThrows<IllegalArgumentException> {
-            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummySourceableInfo, correlationId)
+            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
+                dummySourceableInfo,
+                correlationId,
+            )
         }
     }
 }
