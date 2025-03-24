@@ -66,7 +66,9 @@ class QaServiceTest {
     fun setAllPendingDatasetsToRejected() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             while (getNumberOfPendingDatasets() > 0) {
-                getInfoOnPendingDatasets().forEach { changeQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
+                getInfoOnPendingDatasets().forEach {
+                    changeQaStatus(it.dataId, QaServiceQaStatus.Rejected)
+                }
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 getNumberOfPendingDatasets() == 0 && getInfoOnPendingDatasets().isEmpty()
