@@ -1,13 +1,19 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploaded
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -22,12 +28,12 @@ class NotificationService
     constructor(
         val notificationEventRepository: NotificationEventRepository,
         val companyRolesManager: CompanyRolesManager,
-        /*val companyDataControllerApi: CompanyDataControllerApi,
-        val notificationEmailSender: NotificationEmailSender,*/
+        val companyDataControllerApi: CompanyDataControllerApi,
+        val notificationEmailSender: CompanyOwnershipClaimDatasetUploaded,
+        val dataRequestSummaryEmailSender: DataRequestSummaryEmailSender,
     ) {
-        // private val logger = LoggerFactory.getLogger(this.javaClass)
+        private val logger = LoggerFactory.getLogger(this.javaClass)
 
-        /*
         /**
          * Checks if there are unprocessed notification events.
          * If yes, sends Investor Relationship and/or Data Request Summary notification emails.
@@ -37,9 +43,8 @@ class NotificationService
             // Investor Relationship Emails
             val unprocessedInvestorRelationshipEvents =
                 notificationEventRepository
-                    .findAllByNotificationEventTypeAndIsProcessedFalse(
-                        notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
-                    )
+                    .findAllByNotificationEventTypesAndIsProcessedFalse(
+                        listOf(NotificationEventType.InvestorRelationshipsEvent))
             if (unprocessedInvestorRelationshipEvents.isNotEmpty()) {
                 processInvestorRelationshipEvents(unprocessedInvestorRelationshipEvents)
                 markEventsAsProcessed(unprocessedInvestorRelationshipEvents)
@@ -54,7 +59,7 @@ class NotificationService
                 )
             val unprocessedDataRequestSummaryEvents =
                 notificationEventRepository
-                    .findAllByUserIdAndNotificationEventTypeInAndIsProcessedFalse(dataRequestSummaryEventTypes)
+                    .findAllByNotificationEventTypesAndIsProcessedFalse(dataRequestSummaryEventTypes)
             if (unprocessedDataRequestSummaryEvents.isNotEmpty()) {
                 processDataRequestSummaryEvents(unprocessedDataRequestSummaryEvents)
                 markEventsAsProcessed(unprocessedDataRequestSummaryEvents)
@@ -69,7 +74,7 @@ class NotificationService
             eventsGroupedByCompany.forEach { (companyId, companyEvents) ->
                 val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
                 val emailReceivers = companyInfo.companyContactDetails
-                val correlationId = UUID.randomUUID().toString() // toto: generate oder get
+                val correlationId = UUID.randomUUID().toString() // TODO: due to multiple receivers?
 
                 if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
                     logger.info(
@@ -90,13 +95,22 @@ class NotificationService
          * Processes data request summary events and sends emails to appropriate recipients.
          */
         private fun processDataRequestSummaryEvents(events: List<NotificationEventEntity>) {
-//            toto
-            if (events.isEmpty()) return // line added so events is used and detekt does not complain
-            notificationEmailSender.sendDataRequestSummaryEmail() // toto
+            val eventsGroupedByUser = events.groupBy { it.userId }
+            eventsGroupedByUser.forEach { (userId, userEvents) ->
+                if (userId != null) {
+                    logger.info(
+                        "Requirements for Data Request Summary notification are met. Sending notification email."
+                        )
+                    dataRequestSummaryEmailSender.sendDataRequestSummaryEmail(
+                        unprocessedEvents = userEvents,
+                        userId = userId,
+                    )
+                }
+                }
         }
 
         /**
-         * Marks all given events as processed by setting isProcessed to true.
+         * Marks all given events as processed, viz. email was sent if ???, by setting isProcessed to true.
          */
         private fun markEventsAsProcessed(events: List<NotificationEventEntity>) {
             events.forEach { event ->
@@ -119,7 +133,6 @@ class NotificationService
 
             return companyOwner.isNotEmpty()
         }
-         */
 
         /**
          * Create the suitable user-specific notification event in the "QA Status Accepted" and "Data Non-Sourceable" pipelines.

@@ -1,28 +1,38 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
+import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
- * A service used to send external engagement emails and internal emails in the NotificationService.
+ * A service used to send external claim company ownership, when dataset is uploaded emails
+ * and related internal emails in the NotificationService.
  */
 @Service("NotificationEmailSender")
-class NotificationEmailSender(
+class CompanyOwnershipClaimDatasetUploaded(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired val objectMapper: ObjectMapper,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
-    /*
-    private val internalEmailSubject = "Dataland Notification Email has been sent"
-    private val internalEmailTextTitle = "An IR Notification Email has been sent"
-    private val internalEmailHtmlTitle = "IR Notification Email has been sent"
-
     /**
-     * Sends both external and internal notification emails based on the specified parameters.
+     * Sends both external and internal Investor Relationship notification emails based on the specified parameters.
      *
-     * @param latestElementaryEvent The most recent elementary event entity. That triggered the notification email.
-     * @param unprocessedElementaryEvents A list of elementary event entities that are unprocessed
+     * @param unprocessedEvents A list of notification event entities that are unprocessed
      * and contained in the summary email.
      * @param companyId TODO
      * @param receiver A list of recipient email addresses for the company.
@@ -44,16 +54,9 @@ class NotificationEmailSender(
         sendEmailMessage(internalEmailContent, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), correlationId)
     }
 
-    /**
-     * Function for sending the weekly data request summary email.
-     */
-    fun sendDataRequestSummaryEmail() {
-        return
-    }
-
     private fun buildExternalAndInternalInvestorRelationshipSummaryEmail(
         unprocessedEvents: List<NotificationEventEntity>,
-        companyId: String,
+        companyId: UUID,
         receiver: List<String>,
     ): Pair<TypedEmailContent, TypedEmailContent> {
         val frameworkData =
@@ -63,8 +66,8 @@ class NotificationEmailSender(
 
         val externalEmailContent =
             MultipleDatasetsUploadedEngagement(
-                companyName = getCompanyName(companyId), // toto: from companyRolesManager?
-                companyId = companyId,
+                companyName = "TESTCOMPANY", // TODO getCompanyName(companyId)
+                companyId = companyId.toString(),
                 frameworkData =
                     frameworkData.map {
                         MultipleDatasetsUploadedEngagement.FrameworkData(
@@ -74,6 +77,9 @@ class NotificationEmailSender(
                     },
             )
 
+        val internalEmailSubject = "Dataland Notification Email has been sent"
+        val internalEmailTextTitle = "An IR Notification Email has been sent"
+        val internalEmailHtmlTitle = "IR Notification Email has been sent"
         val internalEmailContent =
             InternalEmailContentTable(
                 internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
@@ -90,10 +96,6 @@ class NotificationEmailSender(
             )
 
         return Pair(externalEmailContent, internalEmailContent)
-    }
-
-    private fun buildDataRequestSummaryEmail() {
-        // toto
     }
 
     private fun companyIdAndNameValue(
@@ -146,5 +148,4 @@ class NotificationEmailSender(
             RoutingKeyNames.EMAIL,
         )
     }
-     */
 }
