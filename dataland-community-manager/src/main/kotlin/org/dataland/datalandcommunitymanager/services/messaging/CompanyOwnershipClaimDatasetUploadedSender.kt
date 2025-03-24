@@ -24,7 +24,7 @@ import java.util.UUID
  * and related internal emails in the NotificationService.
  */
 @Service("NotificationEmailSender")
-class CompanyOwnershipClaimDatasetUploaded(
+class CompanyOwnershipClaimDatasetUploadedSender(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
@@ -57,19 +57,19 @@ class CompanyOwnershipClaimDatasetUploaded(
     /**
      * Builds the content for external and internal Investor Relationship summary emails.
      *
-     * @param unprocessedEvents List of NotificationEventEntity objects to process.
+     * @param events List of NotificationEventEntity objects to process.
      * @param companyId UUID of the company for the email.
      * @param receiver List of recipient email addresses.
      * @return A pair of TypedEmailContent representing external and internal emails.
      */
     private fun buildExternalAndInternalInvestorRelationshipSummaryEmail(
-        unprocessedEvents: List<NotificationEventEntity>,
+        events: List<NotificationEventEntity>,
         companyId: UUID,
         receiver: List<String>,
     ): Pair<TypedEmailContent, TypedEmailContent> {
         // Group unprocessed events by framework and map them to reporting periods
         val frameworkData =
-            unprocessedEvents
+            events
                 .groupBy { it.framework }
                 .mapValues { entry -> entry.value.map { it.reportingPeriod } }
 

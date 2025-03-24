@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploaded
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
@@ -29,7 +29,7 @@ class NotificationService
         val notificationEventRepository: NotificationEventRepository,
         val companyRolesManager: CompanyRolesManager,
         val companyDataControllerApi: CompanyDataControllerApi,
-        val notificationEmailSender: CompanyOwnershipClaimDatasetUploaded,
+        val notificationEmailSender: CompanyOwnershipClaimDatasetUploadedSender,
         val dataRequestSummaryEmailSender: DataRequestSummaryEmailSender,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
