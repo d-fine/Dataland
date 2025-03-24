@@ -25,7 +25,7 @@
     <@spacerRow/>
     <tr>
         <td colspan="3">
-            <#include "../general/data_request_information.ftl">
+            <#include "../general/data_request_information_html.ftl">
         </td>
     </tr>
     <@spacerRow/>

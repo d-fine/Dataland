@@ -1,14 +1,10 @@
 <#import "../general/general_makros_text.ftl" as text>
 Great news!
-
 Your data request has been answered.
 
 <@text.immediateNotification url="${baseUrl}/requests/${dataRequestId}" />
 
-Company: ${companyName}
-Framework: ${dataTypeLabel}
-Reporting period: ${reportingPeriod}
-Request created: ${creationDate}
+<#include "../general/data_request_information_text.ftl">
 
 <@text.howToProceed />
 

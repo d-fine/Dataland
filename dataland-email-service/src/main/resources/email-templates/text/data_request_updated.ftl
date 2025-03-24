@@ -3,10 +3,7 @@ Your data request has been updated with new data.
 
 <@text.immediateNotification url="${baseUrl}/requests/${dataRequestId}"/>
 
-Company: ${companyName}
-Framework: ${dataTypeLabel}
-Reporting period: ${reportingPeriod}
-Request created: ${creationDate}
+<#include "../general/data_request_information_text.ftl">
 
 View your data request:
 ${baseUrl}/requests/${dataRequestId}
