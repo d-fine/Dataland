@@ -1,12 +1,12 @@
 <#macro renderTable(data)>
 <#assign previousFramework = "">
 <#list data as item>
-    <#if (item_index != 0) && (item.framework != previousFramework)>
+    <#if (item_index != 0) && (item.dataTypeLabel != previousFramework)>
 
     ------------------------
 
     <#else></#if>
-    <#if item.framework != previousFramework>Framework: ${item.framework}</#if>
+    <#if item.dataTypeLabel != previousFramework>Framework: ${item.dataTypeLabel}</#if>
 
         Reporting period: ${item.reportingPeriod}
         <#if (item.companies?size > 1)>Companies<#else>Company</#if>:
@@ -18,7 +18,7 @@
                 </#if>
             </#if>
         </#list>
-    <#assign previousFramework = item.framework>
+    <#assign previousFramework = item.dataTypeLabel>
 </#list>
 </#macro>
 Weekly Summary 📣
