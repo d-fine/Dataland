@@ -191,27 +191,6 @@ class DataPointManager
         ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
 
         /**
-         * Update the currently active data point for specific data point dimensions
-         * @param dataPointDimensions the data point dimension to update the currently active data point for
-         * @param newActiveDataId the id of the new active data point
-         * @param correlationId the correlation id for the operation
-         */
-        @Transactional
-        fun updateCurrentlyActiveDataPoint(
-            dataPointDimensions: BasicDataPointDimensions,
-            newActiveDataId: String?,
-            correlationId: String,
-        ) {
-            metaDataManager.updateCurrentlyActiveDataPointBulk(
-                listOf(
-                    DataPointMetaInformationManager.UpdateCurrentlyActiveDataPointTask(
-                        dataPointDimensions, newActiveDataId, correlationId,
-                    ),
-                ),
-            )
-        }
-
-        /**
          * Retrieves the currently active data points for a list of specific data point dimensions
          * @param dataPointDimensions the data dimensions to retrieve the data points for
          * @return the id of the currently active data point
