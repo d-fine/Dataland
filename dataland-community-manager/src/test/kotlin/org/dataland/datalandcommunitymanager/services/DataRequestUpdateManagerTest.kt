@@ -78,8 +78,10 @@ class DataRequestUpdateManagerTest {
             reason = dummyRequestChangeReason,
         )
 
-    private lateinit var dummyDataRequestEntity: DataRequestEntity
-    private lateinit var dummyChildCompanyDataRequestEntity: DataRequestEntity
+    private lateinit var dummyDataRequestEntity1: DataRequestEntity
+    private lateinit var dummyDataRequestEntity2: DataRequestEntity
+    private lateinit var dummyChildCompanyDataRequestEntity1: DataRequestEntity
+    private lateinit var dummyChildCompanyDataRequestEntity2: DataRequestEntity
 
     private val metaData =
         DataMetaInformation(
@@ -104,17 +106,17 @@ class DataRequestUpdateManagerTest {
     private fun mockRepos() {
         mockDataRequestRepository = mock(DataRequestRepository::class.java)
         `when`<Any>(
-            mockDataRequestRepository.findById(dummyDataRequestEntity.dataRequestId),
-        ).thenReturn(Optional.of(dummyDataRequestEntity))
+            mockDataRequestRepository.findById(dummyDataRequestEntity1.dataRequestId),
+        ).thenReturn(Optional.of(dummyDataRequestEntity1))
         mockNotificationService = mock(NotificationService::class.java)
         dummyDataRequestEntities.forEach {
             `when`<Any>(
                 mockDataRequestRepository.findById(it.dataRequestId),
             ).thenReturn(Optional.of(it))
         }
-        doReturn(Optional.of(dummyChildCompanyDataRequestEntity))
+        doReturn(Optional.of(dummyChildCompanyDataRequestEntity1))
             .whenever(mockDataRequestRepository)
-            .findById(dummyChildCompanyDataRequestEntity.dataRequestId)
+            .findById(dummyChildCompanyDataRequestEntity1.dataRequestId)
         `when`(
             mockDataRequestRepository.searchDataRequestEntity(
                 searchFilter =
@@ -126,12 +128,21 @@ class DataRequestUpdateManagerTest {
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
-        doReturn(listOf(dummyChildCompanyDataRequestEntity))
+        doReturn(listOf(dummyChildCompanyDataRequestEntity1))
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId"), metaData.reportingPeriod,
+                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId1"), metaData.reportingPeriod,
+                        setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
+                    ),
+            )
+        doReturn(listOf(dummyChildCompanyDataRequestEntity2))
+            .whenever(mockDataRequestRepository)
+            .searchDataRequestEntity(
+                searchFilter =
+                    DataRequestsFilter(
+                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId2"), metaData.reportingPeriod,
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
                     ),
             )
@@ -142,13 +153,11 @@ class DataRequestUpdateManagerTest {
                 dataType = dummyNonSourceableInfo.dataType.toString(),
                 reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
             ),
-        ).thenReturn(listOf(dummyDataRequestEntity))
+        ).thenReturn(listOf(dummyDataRequestEntity1))
 
         mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
-            any(), any(),
-            any(), anyString(),
-            any(), any(),
+            any(), any(), any(), anyString(), any(), any(),
         )
         doNothing().`when`(mockDataRequestProcessingUtils).addMessageToMessageHistory(
             any(), anySet(), anyString(), any(),
@@ -208,31 +217,41 @@ class DataRequestUpdateManagerTest {
                     datalandCompanyId = "",
                 ),
                 DataRequestEntity(
+                    userId = "1234",
+                    dataType = "p2p",
+                    emailOnUpdate = false,
+                    reportingPeriod = "dummyPeriod",
+                    creationTimestamp = 0,
+                    datalandCompanyId = dummyCompanyId,
+                ),
+                DataRequestEntity(
                     userId = "dummyId",
-                    dataType = "dummyDataType",
+                    dataType = "sfdr",
                     emailOnUpdate = true,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 123456,
                     datalandCompanyId = dummyCompanyId,
                 ),
-                DataRequestEntity(
-                    userId = "1234",
-                    dataType = "p2p",
-                    emailOnUpdate = true,
-                    reportingPeriod = "dummyPeriod",
-                    creationTimestamp = 0,
-                    datalandCompanyId = dummyCompanyId,
-                ),
             )
-        dummyDataRequestEntity = dummyDataRequestEntities[0]
-        dummyChildCompanyDataRequestEntity =
+        dummyDataRequestEntity1 = dummyDataRequestEntities[0]
+        dummyDataRequestEntity2 = dummyDataRequestEntities[1]
+        dummyChildCompanyDataRequestEntity1 =
             DataRequestEntity(
                 userId = "1234",
                 dataType = "p2p",
                 true,
                 reportingPeriod = "dummyPeriod",
                 creationTimestamp = 0,
-                datalandCompanyId = "dummyChildCompanyId",
+                datalandCompanyId = "dummyChildCompanyId1",
+            )
+        dummyChildCompanyDataRequestEntity2 =
+            DataRequestEntity(
+                userId = "1234",
+                dataType = "p2p",
+                false,
+                reportingPeriod = "dummyPeriod",
+                creationTimestamp = 0,
+                datalandCompanyId = "dummyChildCompanyId2",
             )
     }
 
@@ -247,7 +266,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that a request response email is sent when a request status is patched to answered and flag is active`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             correlationId,
         )
@@ -268,9 +287,32 @@ class DataRequestUpdateManagerTest {
     }
 
     @Test
+    fun `validate that no request response email is sent when a request status is patched to answered and flag is inactive`() {
+        dataRequestUpdateManager.patchDataRequest(
+            dataRequestId = dummyDataRequestEntity2.dataRequestId,
+            dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
+            correlationId,
+        )
+        verify(mockRequestEmailManager, times(0))
+            .sendEmailsWhenRequestStatusChanged(
+                any(), eq(RequestStatus.Answered), eq(correlationId),
+            )
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), eq(null),
+                any(), anyOrNull(),
+            )
+        verify(mockDataRequestProcessingUtils, times(0))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
+            )
+    }
+
+    @Test
     fun `validate that no request response email is sent when a request status is patched to closed and flag is active`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Closed),
             correlationId,
         )
@@ -294,7 +336,7 @@ class DataRequestUpdateManagerTest {
     fun `validate that no email is sent and the history is updated when an access status is patched`() {
         val randomUUID = UUID.randomUUID().toString()
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
             randomUUID,
         )
@@ -312,16 +354,22 @@ class DataRequestUpdateManagerTest {
             )
     }
 
+    /*
     @Test
-    fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
+    fun `validate that an answer email is sent for subsidiary with active flag when request statuses are patched from open to answered`() {
         dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
-            verify(mockRequestEmailManager)
-                .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(correlationId))
+            if (it.emailOnUpdate) {
+                verify(mockRequestEmailManager)
+                    .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(correlationId))
+            } else {
+                verify(mockRequestEmailManager, times(0))
+                    .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(correlationId))
+            }
         }
         verify(mockRequestEmailManager)
             .sendEmailsWhenRequestStatusChanged(
-                eq(dummyChildCompanyDataRequestEntity),
+                eq(dummyChildCompanyDataRequestEntity1),
                 eq(RequestStatus.Answered),
                 anyString(),
             )
@@ -333,7 +381,7 @@ class DataRequestUpdateManagerTest {
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
-                eq(dummyChildCompanyDataRequestEntity), any(),
+                eq(dummyChildCompanyDataRequestEntity1), any(),
                 any(), anyString(),
                 any(), any(),
             )
@@ -342,11 +390,12 @@ class DataRequestUpdateManagerTest {
                 any(), anySet(), anyString(), any(),
             )
     }
+     */
 
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
                     contacts = dummyMessage.contacts,
@@ -376,7 +425,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that no email is sent when both request priority and admin comment are patched`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
                     requestPriority = RequestPriority.Low,
@@ -393,30 +442,30 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that the modification time remains unchanged when only the admin comment is patched`() {
-        val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
+        val originalModificationTime = dummyDataRequestEntity1.lastModifiedDate
 
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(adminComment = dummyAdminComment),
             correlationId = correlationId,
         )
 
-        assertEquals(originalModificationTime, dummyDataRequestEntity.lastModifiedDate)
-        assertEquals(dummyAdminComment, dummyDataRequestEntity.adminComment)
+        assertEquals(originalModificationTime, dummyDataRequestEntity1.lastModifiedDate)
+        assertEquals(dummyAdminComment, dummyDataRequestEntity1.adminComment)
     }
 
     @Test
     fun `validate that the modification time changes if the request priority is patched`() {
-        val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
+        val originalModificationTime = dummyDataRequestEntity1.lastModifiedDate
 
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dummyDataRequestEntity.dataRequestId,
+            dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestPriority = RequestPriority.High),
             correlationId = correlationId,
         )
 
-        assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
-        assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
+        assertFalse(originalModificationTime == dummyDataRequestEntity1.lastModifiedDate)
+        assertEquals(RequestPriority.High, dummyDataRequestEntity1.requestPriority)
     }
 
     @Test

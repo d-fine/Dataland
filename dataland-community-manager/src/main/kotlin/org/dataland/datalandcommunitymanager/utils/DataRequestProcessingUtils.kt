@@ -162,7 +162,7 @@ class DataRequestProcessingUtils
         /**
          * For a given dataRequestEntity, this function adds and persists a new entry to
          * the requestStatusHistory of the dataRequestEntity.
-         * The new entry contains a requestStatis, an accessStatus and a modificationTime.
+         * The new entry contains a requestStatus, an accessStatus and a modificationTime.
          * This function should be called within a transaction.
          */
         fun addNewRequestStatusToHistory(

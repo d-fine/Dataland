@@ -1,10 +1,9 @@
 package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -63,18 +62,11 @@ class ResourceResponseEmailSenderTest {
             creationTimestamp = creationTimestamp,
         )
 
-    private fun getCompanyDataControllerMock(): CompanyDataControllerApi {
-        val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
-        `when`(companyDataControllerMock.getCompanyInfo(companyId))
-            .thenReturn(
-                CompanyInformation(
-                    companyName = companyName,
-                    headquarters = "",
-                    identifiers = emptyMap(),
-                    countryCode = "",
-                ),
-            )
-        return companyDataControllerMock
+    private fun getCompanyInfoServiceMock(): CompanyInfoService {
+        val companyInfoServiceMock = mock(CompanyInfoService::class.java)
+        `when`(companyInfoServiceMock.checkIfCompanyIdIsValidAndReturnNameOrId(companyId))
+            .thenReturn(companyName)
+        return companyInfoServiceMock
     }
 
     private fun getMockCloudEventMessageHandlerAndSetChecks(assertEmailData: (TypedEmailContent) -> Unit): CloudEventMessageHandler {
@@ -111,7 +103,7 @@ class ResourceResponseEmailSenderTest {
         }
 
     @Test
-    fun `check that the output of the answered request email message sender is correctly build for all frameworks`() {
+    fun `check that the output of the answered request email message sender is correctly built for all frameworks`() {
         dataTypes.forEach {
             val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
@@ -123,8 +115,8 @@ class ResourceResponseEmailSenderTest {
             val dataRequestClosedEmailMessageSender =
                 DataRequestResponseEmailSender(
                     cloudEventMessageHandlerMock,
+                    getCompanyInfoServiceMock(),
                     objectMapper,
-                    getCompanyDataControllerMock(),
                     staleDaysThreshold.toString(),
                 )
             dataRequestClosedEmailMessageSender.sendDataRequestAnsweredEmail(
