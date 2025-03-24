@@ -85,6 +85,10 @@ class CategoryBuilder(
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
             "Data point base type id $dataPointBaseTypeId does not exist in the database."
         }
+        require(id.length < 255) {
+            "The length of the data-point-id field in the databases (e.g., the QA database) is limited to 255 chars. " +
+                "Therefore, the id of the data point type must be shorter than 255 chars."
+        }
         val newDatapointType =
             DataPointType(
                 id = id,

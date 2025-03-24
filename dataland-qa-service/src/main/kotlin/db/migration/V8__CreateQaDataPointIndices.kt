@@ -4,7 +4,8 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script creates an index for a faster search for data point QA updates
+ * Migration to create indices on the data_point_qa_review table.
+ * The indices are required for the QA service to efficiently compute the QA status of data points.
  */
 @Suppress("ClassName")
 class V8__CreateQaDataPointIndices : BaseJavaMigration() {

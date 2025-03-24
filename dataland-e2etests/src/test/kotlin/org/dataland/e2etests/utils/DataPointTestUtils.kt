@@ -27,11 +27,11 @@ class IgnoreLocalDateAdapter : JsonAdapter<LocalDate>() {
 }
 
 /**
- * Asserts that the data of two objects are equal, ignoring the publication dates
+ * Asserts that the data of two objects are equal, ignoring dates and the referenced reports field
  * @param expected The expected object
  * @param actual The actual object
  */
-inline fun <reified T> assertDataEqualsIgnoringPublicationDates(
+inline fun <reified T> assertDataEqualsIgnoringDatesAndReferencedReports(
     expected: T,
     actual: T,
     referencedReportsGetter: (T) -> Map<String, CompanyReport>?,
@@ -80,7 +80,7 @@ class DataPointTestUtils {
         actual: SfdrData,
     ) {
         assertEquals(expected.general?.general?.referencedReports, actual.general?.general?.referencedReports)
-        assertDataEqualsIgnoringPublicationDates(
+        assertDataEqualsIgnoringDatesAndReferencedReports(
             getCopyWithoutReferencedReports(expected),
             getCopyWithoutReferencedReports(actual),
             { it.general?.general?.referencedReports },
