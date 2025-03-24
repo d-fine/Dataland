@@ -120,14 +120,14 @@ class DataPointMetaInformationManager
             require(dataPointDimensions.toSet().size == tasks.size) {
                 "The data point dimensions must be unique for each task."
             }
-            val atLeastTheActiveInvolvedEntities =
+            val allPotentiallyInvolvedEntities =
                 dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
                     companyIds = dataPointDimensions.map { it.companyId },
                     dataPointTypes = dataPointDimensions.map { it.dataPointType },
                     reportingPeriods = dataPointDimensions.map { it.reportingPeriod },
                 )
             val currentlyActiveEntityByDimension =
-                atLeastTheActiveInvolvedEntities.associateBy {
+                allPotentiallyInvolvedEntities.associateBy {
                     BasicDataPointDimensions(it.companyId, it.dataPointType, it.reportingPeriod)
                 }
             val newlyActiveDataEntities =
@@ -157,7 +157,7 @@ class DataPointMetaInformationManager
                     newlyActive?.currentlyActive = true
                 }
             }
-            dataPointMetaInformationRepositoryInterface.saveAll(atLeastTheActiveInvolvedEntities)
+            dataPointMetaInformationRepositoryInterface.saveAll(allPotentiallyInvolvedEntities)
             dataPointMetaInformationRepositoryInterface.saveAll(newlyActiveDataEntities.values)
         }
 
