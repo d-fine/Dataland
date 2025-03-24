@@ -92,8 +92,8 @@ class DataPointQaReviewManager
             initialQaStatus: CopyQaStatusFromDataset,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataPointQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
-            if (dataPointQaReviewEntity == null) {
+            val dataSetQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
+            if (dataSetQaReviewEntity == null) {
                 logger.warn(
                     "Could not find QA review entity for dataset ${initialQaStatus.datasetId} " +
                         "- Setting DataPoint status to Pending (correlationID: $correlationId)",
@@ -110,10 +110,10 @@ class DataPointQaReviewManager
                 companyName = message.companyName,
                 dataPointType = message.dataPointType,
                 reportingPeriod = message.reportingPeriod,
-                timestamp = dataPointQaReviewEntity.timestamp,
-                qaStatus = dataPointQaReviewEntity.qaStatus,
-                triggeringUserId = dataPointQaReviewEntity.triggeringUserId,
-                comment = dataPointQaReviewEntity.comment,
+                timestamp = dataSetQaReviewEntity.timestamp,
+                qaStatus = dataSetQaReviewEntity.qaStatus,
+                triggeringUserId = dataSetQaReviewEntity.triggeringUserId,
+                comment = "Status copied from stored dataset during migration.",
             )
         }
 
