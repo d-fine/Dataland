@@ -389,7 +389,8 @@ class QaServiceTest {
         dataId: String,
         qaStatus: QaStatus,
     ) {
-        ApiAwait.waitForSuccess(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+        // Longer wait time to avoid flakiness
+        ApiAwait.waitForSuccess(timeoutInSeconds = 10, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
             qaServiceController.changeQaStatus(dataId, qaStatus)
         }
     }

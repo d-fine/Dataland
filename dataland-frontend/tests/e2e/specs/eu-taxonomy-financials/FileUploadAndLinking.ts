@@ -39,98 +39,93 @@ describeIf(
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
       let areBothDocumentsStillUploaded = true;
       let storedCompanyId: string;
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-          storedCompanyId = storedCompany.companyId;
-          cy.ensureLoggedIn(admin_name, admin_pw);
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+        const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName));
+        storedCompanyId = storedCompany.companyId;
+        cy.ensureLoggedIn(admin_name, admin_pw);
 
-          cy.visitAndCheckAppMount(
-            '/companies/' + storedCompanyId + '/frameworks/' + DataTypeEnum.EutaxonomyFinancials + '/upload'
-          );
-          cy.get('h1').should('contain', companyName);
+        cy.visitAndCheckAppMount(
+          '/companies/' + storedCompanyId + '/frameworks/' + DataTypeEnum.EutaxonomyFinancials + '/upload'
+        );
+        cy.get('h1').should('contain', companyName);
 
-          uploadReports.selectFile(TEST_PDF_FILE_NAME);
-          uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
-          uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+        uploadReports.selectFile(TEST_PDF_FILE_NAME);
+        uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+        uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
 
-          uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
+        uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+        uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
+        uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
 
-          uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
+        uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
 
-          cy.get('div.form-field:contains("Assurance")').find('div.p-dropdown').click();
-          cy.get('.p-dropdown-item').contains('None').click();
+        cy.get('div.form-field:contains("Assurance")').find('div.p-dropdown').click();
+        cy.get('.p-dropdown-item').contains('None').click();
 
-          cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').click();
-          selectReportForDatapoint('Total (gross) Carrying Amount', TEST_PDF_FILE_NAME);
+        cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').click();
+        selectReportForDatapoint('Total (gross) Carrying Amount', TEST_PDF_FILE_NAME);
 
-          cy.get(
-            'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
-          ).click();
-          selectReportForDatapoint(
-            'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)',
-            `${TEST_PDF_FILE_NAME}2`
-          );
+        cy.get(
+          'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
+        ).click();
+        selectReportForDatapoint(
+          'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)',
+          `${TEST_PDF_FILE_NAME}2`
+        );
 
-          cy.intercept(
-            {
-              method: 'POST',
-              url: `**/api/data/**`,
-              times: 1,
-            },
-            (request) => {
-              const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
-              expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
-                areBothDocumentsStillUploaded
-              );
-              expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(
-                true
-              );
-            }
-          ).as('postDataWithTwoReports');
-          cy.get('button[data-test="submitButton"]').click();
-          cy.wait('@postDataWithTwoReports', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
-            (interception) => {
-              expect(interception.response?.statusCode).to.eq(200);
-            }
-          );
-          cy.get('[data-test="datasets-table"]').should('be.visible');
-          checkIfLinkedReportsAreDownloadable(storedCompanyId);
-          gotoEditForm(storedCompanyId, true);
-          uploadReports.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
-          cy.get('.p-dialog.p-component').should('exist').get('[data-pc-section="closebutton"]').click();
-          cy.get('.p-dialog.p-component').should('not.exist');
+        cy.intercept(
+          {
+            method: 'POST',
+            url: `**/api/data/**`,
+            times: 1,
+          },
+          (request) => {
+            const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
+            expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
+              areBothDocumentsStillUploaded
+            );
+            expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
+          }
+        ).as('postDataWithTwoReports');
+        cy.get('button[data-test="submitButton"]').click();
+        cy.wait('@postDataWithTwoReports', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
+          (interception) => {
+            expect(interception.response?.statusCode).to.eq(200);
+          }
+        );
+        cy.get('[data-test="datasets-table"]').should('be.visible');
+        checkIfLinkedReportsAreDownloadable(storedCompanyId);
+        gotoEditForm(storedCompanyId, true);
+        uploadReports.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
+        cy.get('.p-dialog.p-component').should('exist').get('[data-pc-section="closebutton"]').click();
+        cy.get('.p-dialog.p-component').should('not.exist');
 
-          uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
-            areBothDocumentsStillUploaded = false;
-          });
-
-          cy.intercept(
-            {
-              method: 'POST',
-              url: `**/api/data/**`,
-              times: 1,
-            },
-            (request) => {
-              const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
-              expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
-                areBothDocumentsStillUploaded
-              );
-              expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(
-                true
-              );
-            }
-          ).as('postDataWithOneReport');
-          cy.get('button[data-test="submitButton"]').click();
-          cy.wait('@postDataWithOneReport', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
-            (interception) => {
-              expect(interception.response?.statusCode).to.eq(200);
-            }
-          );
-          cy.get('[data-test="datasets-table"]').should('be.visible');
-          gotoEditForm(storedCompanyId, false);
+        uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
+          areBothDocumentsStillUploaded = false;
         });
+
+        cy.intercept(
+          {
+            method: 'POST',
+            url: `**/api/data/**`,
+            times: 1,
+          },
+          (request) => {
+            const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
+            expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
+              areBothDocumentsStillUploaded
+            );
+            expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
+          }
+        ).as('postDataWithOneReport');
+        cy.get('button[data-test="submitButton"]').click();
+        cy.wait('@postDataWithOneReport', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
+          (interception) => {
+            expect(interception.response?.statusCode).to.eq(200);
+          }
+        );
+        cy.get('[data-test="datasets-table"]').should('be.visible');
+        gotoEditForm(storedCompanyId, false);
       });
     });
   }
