@@ -144,7 +144,6 @@ describeIf(
         const expectedRequest: SingleDataRequestTypeInInterception = {
           companyIdentifier: testStoredCompany.companyId,
           dataType: DataTypeEnum.Lksg,
-          emailOnUpdate: false,
           reportingPeriods: [testYear],
           contacts: [testEmail],
           message: testMessage,
