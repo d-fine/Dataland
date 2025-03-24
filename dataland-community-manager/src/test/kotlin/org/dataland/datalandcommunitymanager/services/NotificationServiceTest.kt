@@ -1,13 +1,103 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
+import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationServiceTest {
+    private lateinit var notificationEventRepository: NotificationEventRepository
+    private lateinit var companyRolesManager: CompanyRolesManager
+    private lateinit var companyDataControllerApi: CompanyDataControllerApi
+    private lateinit var notificationEmailSender: CompanyOwnershipClaimDatasetUploadedSender
+    private lateinit var dataRequestSummaryEmailSender: DataRequestSummaryEmailSender
+    private lateinit var notificationService: NotificationService
+
+    private val userUUID = UUID.randomUUID()
+    private val companyUUID = UUID.randomUUID()
+
+    @BeforeEach
+    fun setupNotificationService() {
+        notificationEventRepository = mock(NotificationEventRepository::class.java)
+        companyRolesManager = mock(CompanyRolesManager::class.java)
+        companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
+        notificationEmailSender = mock(CompanyOwnershipClaimDatasetUploadedSender::class.java)
+        dataRequestSummaryEmailSender = mock(DataRequestSummaryEmailSender::class.java)
+
+        notificationService =
+            NotificationService(
+                notificationEventRepository, companyRolesManager, companyDataControllerApi, notificationEmailSender,
+                dataRequestSummaryEmailSender,
+            )
+    }
+
     @Test
-    fun `I will always pass`() {
-        return
+    fun `Test scheduledWeeklyEmailSending with no message`() {
+        notificationService.scheduledWeeklyEmailSending()
+
+        verifyNoMoreInteractions(notificationEmailSender)
+        verifyNoMoreInteractions(dataRequestSummaryEmailSender)
+    }
+
+    @Test
+    fun `Test scheduledWeeklyEmailSending with messages`() {
+        val notificationEventEntity =
+            NotificationEventEntity(
+                UUID.randomUUID(),
+                NotificationEventType.AvailableEvent,
+                userUUID,
+                false,
+                companyUUID,
+                DataTypeEnum.lksg,
+                "2024",
+            )
+        val entityList = listOf(notificationEventEntity, notificationEventEntity)
+        val companyInformation =
+            CompanyInformation(
+                companyName = "Sample Company",
+                headquarters = "headquarters",
+                identifiers = mapOf(),
+                countryCode = "DE",
+                companyContactDetails = listOf("sampleCompany@example.com"),
+            )
+        `when`(notificationEventRepository.findAllByNotificationEventTypesAndIsProcessedFalse(any()))
+            .thenReturn(entityList)
+        `when`(companyDataControllerApi.getCompanyInfo(companyUUID.toString())).thenReturn(companyInformation)
+
+        notificationService.scheduledWeeklyEmailSending()
+
+        // One E-mail should be sent with both events for the same company
+        verify(
+            notificationEmailSender, times(1),
+        ).sendExternalAndInternalInvestorRelationshipSummaryEmail(
+            unprocessedEvents = eq(entityList),
+            companyId = eq(companyUUID),
+            receiver = eq(listOf("sampleCompany@example.com")),
+            correlationId = any(),
+        )
+        verify(
+            dataRequestSummaryEmailSender, times(1),
+        ).sendDataRequestSummaryEmail(
+            unprocessedEvents = eq(entityList),
+            userId = eq(userUUID),
+        )
+        verify(notificationEventRepository, times(2)).saveAll<NotificationEventEntity>(any())
     }
 
     /* This entire test needs to be reviewed to see which test functions (if any) we still need.
