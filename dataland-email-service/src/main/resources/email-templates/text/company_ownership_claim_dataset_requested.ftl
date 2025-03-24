@@ -3,7 +3,6 @@
 Exciting news! 📣
 
 Your data are in high demand on Dataland!
-
 <@formatFirstAndLastName firstName lastName/> is requesting data from ${companyName}.
 
 Framework Details:

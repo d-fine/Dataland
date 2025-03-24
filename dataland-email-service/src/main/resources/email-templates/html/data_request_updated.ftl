@@ -25,10 +25,10 @@
     <@spacerRow/>
     <tr>
         <td colspan="3">
-            <#include "../general/data_request_information.ftl">
+            <#include "../general/data_request_information_html.ftl">
         </td>
     </tr>
-    <@spacerRowTiny/>
+    <@spacerRow/>
     <@buttonLink url="${baseUrl}/requests/${dataRequestId}" linkText="VIEW YOUR DATA REQUEST" />
     <@spacerRow/>
     </tbody>

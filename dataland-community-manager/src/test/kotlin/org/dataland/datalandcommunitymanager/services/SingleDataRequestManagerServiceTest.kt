@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -50,7 +50,7 @@ class SingleDataRequestManagerServiceTest(
     @Autowired val companyRolesManager: CompanyRolesManager,
 ) {
     @MockitoBean
-    private val mockCompanyIdValidator = mock<CompanyIdValidator>()
+    private val mockCompanyInfoService = mock<CompanyInfoService>()
 
     @MockitoBean
     private val mockDataAccessManager = mock<DataAccessManager>()
@@ -87,7 +87,7 @@ class SingleDataRequestManagerServiceTest(
         spyDataRequestProcessingUtils = spy(dataRequestProcessingUtils)
 
         reset(
-            mockCompanyIdValidator,
+            mockCompanyInfoService,
             mockDataAccessManager,
             mockSingleDataRequestEmailMessageSender,
             mockSecurityContext,
@@ -116,7 +116,7 @@ class SingleDataRequestManagerServiceTest(
             SingleDataRequestManager(
                 dataRequestLogger = dataRequestLogger,
                 dataRequestRepository = dataRequestRepository,
-                companyIdValidator = mockCompanyIdValidator,
+                companyInfoService = mockCompanyInfoService,
                 singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
                 utils = spyDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,

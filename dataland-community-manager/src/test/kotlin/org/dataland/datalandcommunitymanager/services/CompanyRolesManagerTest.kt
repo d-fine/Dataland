@@ -12,7 +12,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssig
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -37,7 +37,7 @@ class CompanyRolesManagerTest {
     private lateinit var companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender
 
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    private lateinit var mockCompanyIdValidator: CompanyIdValidator
+    private lateinit var mockCompanyInfoService: CompanyInfoService
 
     private val testUserId = UUID.randomUUID().toString()
 
@@ -68,11 +68,11 @@ class CompanyRolesManagerTest {
         ).thenReturn(5)
 
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        mockCompanyIdValidator = CompanyIdValidator(mockCompanyDataControllerApi)
+        mockCompanyInfoService = CompanyInfoService(mockCompanyDataControllerApi)
 
         companyRolesManager =
             CompanyRolesManager(
-                mockCompanyIdValidator,
+                mockCompanyInfoService,
                 mockCompanyRoleAssignmentRepository,
                 mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
                 companyOwnershipAcceptedEmailMessageSender,

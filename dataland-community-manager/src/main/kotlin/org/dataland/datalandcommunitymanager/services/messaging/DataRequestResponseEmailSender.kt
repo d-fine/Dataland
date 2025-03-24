@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -19,24 +19,16 @@ import java.text.SimpleDateFormat
 import java.util.TimeZone
 
 /**
- * A class that provided utility for generating emails messages for data request responses
+ * A class that provided utility for generating emails messages for immediate data request responses
  */
 @Service("DataRequestResponseEmailSender")
 class DataRequestResponseEmailSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: String,
 ) {
-    /**
-     * Method to retrieve companyName by companyId
-     * @param companyId dataland companyId
-     * @returns companyName as string
-     */
-    private fun getCompanyNameById(companyId: String): String =
-        companyDataControllerApi.getCompanyInfo(companyId).companyName.ifEmpty { companyId }
-
     /**
      * Method to convert unit time in ms to human-readable date
      * @param creationTimestamp unix time in ms
@@ -59,7 +51,7 @@ class DataRequestResponseEmailSender(
     ) {
         val dataRequestAnswered =
             DataRequestAnswered(
-                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
@@ -90,7 +82,7 @@ class DataRequestResponseEmailSender(
     ) {
         val dataRequestNonSourceableMail =
             DataRequestNonSourceable(
-                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
@@ -136,7 +128,7 @@ class DataRequestResponseEmailSender(
     fun buildDataUpdatedEmailMessage(dataRequestEntity: DataRequestEntity): EmailMessage {
         val dataRequestUpdatedMail =
             DataRequestUpdated(
-                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),

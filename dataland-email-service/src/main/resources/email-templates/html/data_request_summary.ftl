@@ -9,12 +9,12 @@
             <tbody>
             <#assign previousFramework = "">
             <#list data as item>
-                <#if (item_index != 0) && (item.framework != previousFramework)>
+                <#if (item_index != 0) && (item.dataTypeLabel != previousFramework)>
                     <@spacerRowHorizontalLine position="top"/>
                 </#if>
                 <tr>
                     <td>
-                        <#if item.framework != previousFramework>Framework</#if>
+                        <#if item.dataTypeLabel != previousFramework>Framework</#if>
                     </td>
                     <td>Reporting period</td>
                     <td>
@@ -24,7 +24,7 @@
                 <@spacerRowTiny />
                 <tr>
                     <td style="vertical-align: top; font-weight: bold; font-size:19px">
-                        <#if item.framework != previousFramework>${item.framework}</#if>
+                        <#if item.dataTypeLabel != previousFramework>${item.dataTypeLabel}</#if>
                     </td>
                     <td style="vertical-align: top; font-weight: bold; font-size:19px">${item.reportingPeriod}</td>
                     <td style="vertical-align: top; font-weight: bold; font-size:19px">
@@ -37,7 +37,7 @@
                 <#if item_index + 1 != data?size>
                     <@spacerRow />
                 </#if>
-                <#assign previousFramework = item.framework>
+                <#assign previousFramework = item.dataTypeLabel>
             </#list>
             </tbody>
         </table>

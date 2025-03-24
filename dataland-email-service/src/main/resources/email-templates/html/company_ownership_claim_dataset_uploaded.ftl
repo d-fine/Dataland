@@ -55,7 +55,7 @@
         </td>
     </tr>
     <@spacerRow/>
-    <@spacerRow/>
+    <@spacerRowTiny/>
     <@howToProceed items=["Gain sovereignty over your data by claiming company ownership.",
                           "Inspect, add, correct, remove data of your company."]/>
     <@spacerRowTiny/>

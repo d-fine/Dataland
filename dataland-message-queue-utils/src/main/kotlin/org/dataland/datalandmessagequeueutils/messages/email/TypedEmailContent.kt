@@ -225,6 +225,33 @@ data class DataRequestNonSourceable(
 }
 
 /**
+ * A class for the DataRequestNonSourceable email.
+ */
+data class DataRequestSummary(
+    val newData: List<FrameworkData>,
+    val updatedData: List<FrameworkData>,
+    val nonsourceableData: List<FrameworkData>,
+) : TypedEmailContent(),
+    InitializeBaseUrlLater {
+    override val subject = "Summary for your data requests changes!"
+    override val textTemplate = "/text/data_request_summary.ftl"
+    override val htmlTemplate = "/html/data_request_summary.ftl"
+
+    /**
+     * A class that stores the information about the multiple frameworks that have been uploaded for the company.
+     */
+    data class FrameworkData(
+        val dataTypeLabel: String,
+        val reportingPeriod: String,
+        val companies: List<String>,
+    )
+
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
  * A class for the KeyValueTable email. User for internal purposes.
  */
 data class InternalEmailContentTable(

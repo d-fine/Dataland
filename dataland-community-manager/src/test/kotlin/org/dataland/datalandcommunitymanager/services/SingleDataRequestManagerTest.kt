@@ -13,7 +13,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
@@ -49,7 +49,7 @@ class SingleDataRequestManagerTest {
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockSecurityUtilsService: SecurityUtilsService
-    private lateinit var mockCompanyIdValidator: CompanyIdValidator
+    private lateinit var mockCompanyInfoService: CompanyInfoService
     private lateinit var mockAccessRequestEmailSender: AccessRequestEmailSender
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
     private lateinit var mockDataAccessManager: DataAccessManager
@@ -75,8 +75,8 @@ class SingleDataRequestManagerTest {
         mockSingleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
         mockSecurityUtilsService = mock(SecurityUtilsService::class.java)
-        mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
-        doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValid(anyString())
+        mockCompanyInfoService = mock(CompanyInfoService::class.java)
+        doNothing().`when`(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
         mockDataRequestRepository = createDataRequestRepositoryMock()
         mockAccessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
@@ -86,7 +86,7 @@ class SingleDataRequestManagerTest {
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
-                companyIdValidator = mockCompanyIdValidator,
+                companyInfoService = mockCompanyInfoService,
                 singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
                 utils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
