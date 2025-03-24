@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
@@ -35,7 +35,7 @@ class SingleDataRequestManager
     constructor(
         @Autowired private val dataRequestLogger: DataRequestLogger,
         @Autowired private val dataRequestRepository: DataRequestRepository,
-        @Autowired private val companyIdValidator: CompanyIdValidator,
+        @Autowired private val companyInfoService: CompanyInfoService,
         @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
         @Autowired private val utils: DataRequestProcessingUtils,
         @Autowired private val dataAccessManager: DataAccessManager,
@@ -269,7 +269,7 @@ class SingleDataRequestManager
         private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
             val datalandCompanyId: String? =
                 if (companyIdRegex.matches(companyIdentifier)) {
-                    companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
+                    companyInfoService.checkIfCompanyIdIsValid(companyIdentifier)
                     companyIdentifier
                 } else {
                     utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
