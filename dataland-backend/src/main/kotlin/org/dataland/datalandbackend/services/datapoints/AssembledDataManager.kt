@@ -289,7 +289,7 @@ class AssembledDataManager
         /**
          * Retrieves a key value map containing the IDs of the data points contained in a dataset mapped to their technical IDs
          * @param datasetId the ID of the dataset
-         * @return a map of data point IDs to the corresponding technical IDs that are contained in the dataset
+         * @return a map of data point IDs to the corresponding technical UUIDs that are contained in the dataset
          */
         @Transactional(readOnly = true)
         fun getDataPointIdsForDataset(datasetId: String): Map<String, String> {
