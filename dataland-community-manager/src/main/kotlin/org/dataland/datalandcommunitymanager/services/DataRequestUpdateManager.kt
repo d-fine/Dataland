@@ -185,9 +185,7 @@ class DataRequestUpdateManager
                     dataRequestPatch.accessStatus == AccessStatus.Granted
                 ) {
                     requestEmailManager.sendNotificationsSpecificToAccessRequests(
-                        dataRequestEntity,
-                        dataRequestPatch,
-                        correlationId,
+                        dataRequestEntity, dataRequestPatch, correlationId,
                     )
                 }
 
@@ -201,14 +199,10 @@ class DataRequestUpdateManager
                     } else {
                         val immediateNotificationWasSent =
                             sendImmediateNotificationOnRequestStatusChangeIfApplicable(
-                                dataRequestEntity,
-                                dataRequestPatch,
-                                correlationId,
+                                dataRequestEntity, dataRequestPatch, correlationId,
                             )
                         resetImmediateNotificationFlagIfApplicable(
-                            dataRequestEntity,
-                            dataRequestPatch,
-                            immediateNotificationWasSent,
+                            dataRequestEntity, dataRequestPatch, immediateNotificationWasSent,
                         )
                         val earlierQaApprovedVersionExists =
                             metaDataControllerApi
@@ -220,10 +214,8 @@ class DataRequestUpdateManager
                                     qaStatus = QaStatus.Accepted,
                                 ).isNotEmpty()
                         notificationService.createUserSpecificNotificationEvent(
-                            dataRequestEntity,
-                            dataRequestPatch.requestStatus,
-                            immediateNotificationWasSent,
-                            earlierQaApprovedVersionExists,
+                            dataRequestEntity, dataRequestPatch.requestStatus,
+                            immediateNotificationWasSent, earlierQaApprovedVersionExists,
                         )
                     }
                 }

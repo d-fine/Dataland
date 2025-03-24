@@ -36,7 +36,12 @@ class QueryDataRequestsCountingTests {
         reportingPeriods: Set<String>,
     ) {
         api.postSingleDataRequest(
-            SingleDataRequest(companyIdentifier = companyId, dataType = dataType, reportingPeriods = reportingPeriods),
+            SingleDataRequest(
+                companyIdentifier = companyId,
+                dataType = dataType,
+                reportingPeriods = reportingPeriods,
+                emailOnUpdate = false,
+            ),
         )
     }
 

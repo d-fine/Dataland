@@ -45,7 +45,6 @@ import java.util.UUID
 
 class DataRequestAlterationManagerTest {
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
-    private lateinit var nonSourceableDataManager: NonSourceableDataManager
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockNotificationService: NotificationService
