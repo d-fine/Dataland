@@ -1,4 +1,5 @@
 <#include "../general/general_makros_html.ftl">
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +29,7 @@
         </td>
     </tr>
     <@spacerRow/>
+    <@spacerRowTiny/>
     <@howToProceedDataRequest/>
     <@spacerRowTiny/>
     <@buttonLink url="${baseUrl}/requests/${dataRequestId}" linkText="REVIEW YOUR DATA REQUEST" />

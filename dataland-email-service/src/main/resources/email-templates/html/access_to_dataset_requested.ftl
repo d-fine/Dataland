@@ -1,6 +1,5 @@
 <#include "../general/general_makros_html.ftl">
 <#include "../general/format_first_and_last_name.ftl">
-<#include "../general/dataset_request_information.ftl">
 
 <!DOCTYPE html>
 <html>
@@ -31,10 +30,10 @@
         </td>
     </tr>
     <@spacerRow/>
-    <@spacerRow/>
+    <@spacerRowTiny/>
     <@howToProceed items=["Verify the access request on dataland.",
                           "If you want to share the dataset, grant access."]/>
-    <@spacerRow/>
+    <@spacerRowTiny/>
     <@buttonLink url="${baseUrl}/companyrequests" linkText="VERIFY AND GRANT ACCESS ON DATALAND" />
     <@spacerRow/>
     </tbody>

@@ -27,8 +27,9 @@
         </td>
     </tr>
     <@spacerRow/>
+    <@spacerRowTiny/>
     <@howToProceedDataRequest/>
-    <@spacerRow/>
+    <@spacerRowTiny/>
     <@buttonLink url="${baseUrl}/companies/${companyId}/frameworks/${dataType}" linkText="REVIEW THE PROVIDED DATA" />
     <@spacerRow/>
     <@spacerRow/>

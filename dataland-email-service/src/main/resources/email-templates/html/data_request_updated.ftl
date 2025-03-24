@@ -28,7 +28,7 @@
             <#include "../general/data_request_information.ftl">
         </td>
     </tr>
-    <@spacerRowTiny/>
+    <@spacerRow/>
     <@buttonLink url="${baseUrl}/requests/${dataRequestId}" linkText="VIEW YOUR DATA REQUEST" />
     <@spacerRow/>
     </tbody>

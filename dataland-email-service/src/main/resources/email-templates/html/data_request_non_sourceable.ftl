@@ -1,4 +1,5 @@
 <#include "../general/general_makros_html.ftl">
+
 <!DOCTYPE html>
 <html>
 <head>

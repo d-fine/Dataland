@@ -1,7 +1,6 @@
 <#include "../general/general_makros_html.ftl">
 <#include "../general/format_number_of_days.ftl">
 <#include "../general/format_first_and_last_name.ftl">
-<#include "../general/dataset_request_information.ftl">
 
 <!DOCTYPE html>
 <html>
@@ -31,10 +30,10 @@
         </td>
     </tr>
     <@spacerRow/>
-    <@spacerRow/>
+    <@spacerRowTiny/>
     <@howToProceed items=["Unlock all your account features by claiming ownership of your company.",
                           "Provide your data."]/>
-    <@spacerRow/>
+    <@spacerRowTiny/>
     <@buttonLink url="${baseUrl}/companies/${companyId}" linkText="REGISTER AND CLAIM OWNERSHIP" />
     <@spacerRow/>
     <tr>
