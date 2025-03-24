@@ -1,9 +1,9 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -26,8 +26,8 @@ import java.util.UUID
 @Service("NotificationEmailSender")
 class CompanyOwnershipClaimDatasetUploaded(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     /**
      * Sends both external and internal Investor Relationship notification emails based on the specified parameters.
@@ -66,7 +66,7 @@ class CompanyOwnershipClaimDatasetUploaded(
 
         val externalEmailContent =
             MultipleDatasetsUploadedEngagement(
-                companyName = "TESTCOMPANY", // TODO getCompanyName(companyId)
+                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(companyId.toString()),
                 companyId = companyId.toString(),
                 frameworkData =
                     frameworkData.map {
