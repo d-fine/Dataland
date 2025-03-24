@@ -211,7 +211,7 @@ class CommunityManagerListenerTest {
     }
 
     @Test
-    fun `as a premium user assert that patching the status of a non answered request to closed is forbidden`() {
+    fun `as a premium user assert that patching the status of a non answered request to resolved is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
@@ -228,7 +228,7 @@ class CommunityManagerListenerTest {
         assertEquals(
             RequestStatus.Resolved,
             closedDataRequest.requestStatus,
-            "The status of the patched data request is not 'Closed' although this was expected.",
+            "The status of the patched data request is not 'Resolved' although this was expected.",
         )
     }
 
@@ -244,7 +244,7 @@ class CommunityManagerListenerTest {
     }
 
     @Test
-    fun `patch an answered but not owned data request to closed as a premium user and check that it is forbidden`() {
+    fun `patch an answered but not owned data request to resolved as a premium user and check that it is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.Admin)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -257,7 +257,7 @@ class CommunityManagerListenerTest {
     }
 
     @Test
-    fun `assert that patching an open or withdrawn request status is forbidden`() {
+    fun `assert that patching a resolved or withdrawn request status is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
