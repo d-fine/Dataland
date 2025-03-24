@@ -74,7 +74,7 @@ class NotificationService
             eventsGroupedByCompany.forEach { (companyId, companyEvents) ->
                 val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
                 val emailReceivers = companyInfo.companyContactDetails
-                val correlationId = UUID.randomUUID().toString() // TODO: due to multiple receivers?
+                val correlationId = UUID.randomUUID().toString()
 
                 if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
                     logger.info(
