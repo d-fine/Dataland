@@ -15,14 +15,14 @@ import java.util.UUID
 
 /**
  * Implementation of a time scheduler for data requests
- * @param alterationManager DataRequestAlterationManager
+ * @param dataRequestUpdateManager DataRequestAlterationManager
  * @param dataRequestRepository DataRequestRepository,
  * @param staleDaysThreshold limit for answered request to remain answered
  */
 
 @Service("DataRequestTimeScheduler")
 class DataRequestTimeScheduler(
-    @Autowired private val alterationManager: DataRequestUpdateManager,
+    @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: Long,
@@ -48,10 +48,10 @@ class DataRequestTimeScheduler(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
             )
-            alterationManager.patchDataRequest(
+            dataRequestUpdateManager.patchDataRequest(
                 it.dataRequestId,
                 DataRequestPatch(requestStatus = RequestStatus.Closed),
-                correlationId = UUID.randomUUID().toString(),
+                correlationId,
             )
         }
     }

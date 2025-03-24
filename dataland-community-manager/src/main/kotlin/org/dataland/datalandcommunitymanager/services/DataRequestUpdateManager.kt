@@ -179,7 +179,7 @@ class DataRequestUpdateManager
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            if (dataRequestEntity.getLatestRequestStatus() != RequestStatus.Withdrawn) {
+            if (dataRequestEntity.requestStatus != RequestStatus.Withdrawn) {
                 if (
                     (dataRequestPatch.requestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
                     dataRequestPatch.accessStatus == AccessStatus.Granted
@@ -252,7 +252,7 @@ class DataRequestUpdateManager
         ) {
             if (
                 immediateNotificationWasSent &&
-                dataRequestEntity.getLatestRequestStatus() == RequestStatus.Open &&
+                dataRequestEntity.requestStatus == RequestStatus.Open &&
                 dataRequestPatch.requestStatus == RequestStatus.Answered
             ) {
                 dataRequestEntity.emailOnUpdate = false

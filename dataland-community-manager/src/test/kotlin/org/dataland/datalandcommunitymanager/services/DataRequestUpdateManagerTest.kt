@@ -43,7 +43,7 @@ import java.time.Instant
 import java.util.Optional
 import java.util.UUID
 
-class DataRequestAlterationManagerTest {
+class DataRequestUpdateManagerTest {
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestRepository: DataRequestRepository
@@ -54,7 +54,6 @@ class DataRequestAlterationManagerTest {
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
-    private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
 
@@ -105,7 +104,7 @@ class DataRequestAlterationManagerTest {
     private fun mockRepos() {
         mockDataRequestRepository = mock(DataRequestRepository::class.java)
         `when`<Any>(
-            mockDataRequestRepository.findById(dataRequestId),
+            mockDataRequestRepository.findById(dummyDataRequestEntity.dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
         mockNotificationService = mock(NotificationService::class.java)
         dummyDataRequestEntities.forEach {
@@ -203,7 +202,7 @@ class DataRequestAlterationManagerTest {
                 DataRequestEntity(
                     userId = "",
                     dataType = "p2p",
-                    emailOnUpdate = false,
+                    emailOnUpdate = true,
                     reportingPeriod = "",
                     creationTimestamp = 0,
                     datalandCompanyId = "",
@@ -211,7 +210,7 @@ class DataRequestAlterationManagerTest {
                 DataRequestEntity(
                     userId = "dummyId",
                     dataType = "dummyDataType",
-                    emailOnUpdate = false,
+                    emailOnUpdate = true,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 123456,
                     datalandCompanyId = dummyCompanyId,
@@ -219,7 +218,7 @@ class DataRequestAlterationManagerTest {
                 DataRequestEntity(
                     userId = "1234",
                     dataType = "p2p",
-                    emailOnUpdate = false,
+                    emailOnUpdate = true,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 0,
                     datalandCompanyId = dummyCompanyId,
@@ -230,7 +229,7 @@ class DataRequestAlterationManagerTest {
             DataRequestEntity(
                 userId = "1234",
                 dataType = "p2p",
-                false,
+                true,
                 reportingPeriod = "dummyPeriod",
                 creationTimestamp = 0,
                 datalandCompanyId = "dummyChildCompanyId",
@@ -246,9 +245,9 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that a request response email is sent when a request status is patched to answered or closed`() {
+    fun `validate that a request response email is sent when a request status is patched to answered and flag is active`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             correlationId,
         )
@@ -256,16 +255,30 @@ class DataRequestAlterationManagerTest {
             .sendEmailsWhenRequestStatusChanged(
                 any(), eq(RequestStatus.Answered), eq(correlationId),
             )
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), eq(null),
+                any(), anyOrNull(),
+            )
+        verify(mockDataRequestProcessingUtils, times(0))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
+            )
+    }
+
+    @Test
+    fun `validate that no request response email is sent when a request status is patched to closed and flag is active`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Closed),
             correlationId,
         )
-        verify(mockRequestEmailManager, times(1))
+        verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
                 any(), eq(RequestStatus.Closed), eq(correlationId),
             )
-        verify(mockDataRequestProcessingUtils, times(2))
+        verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), eq(null),
@@ -281,7 +294,7 @@ class DataRequestAlterationManagerTest {
     fun `validate that no email is sent and the history is updated when an access status is patched`() {
         val randomUUID = UUID.randomUUID().toString()
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
             randomUUID,
         )
@@ -310,7 +323,7 @@ class DataRequestAlterationManagerTest {
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity),
                 eq(RequestStatus.Answered),
-                eq(null),
+                anyString(),
             )
         verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
@@ -333,7 +346,7 @@ class DataRequestAlterationManagerTest {
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
                     contacts = dummyMessage.contacts,
@@ -363,7 +376,7 @@ class DataRequestAlterationManagerTest {
     @Test
     fun `validate that no email is sent when both request priority and admin comment are patched`() {
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
                     requestPriority = RequestPriority.Low,
@@ -383,7 +396,7 @@ class DataRequestAlterationManagerTest {
         val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
 
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch = DataRequestPatch(adminComment = dummyAdminComment),
             correlationId = correlationId,
         )
@@ -397,7 +410,7 @@ class DataRequestAlterationManagerTest {
         val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
 
         dataRequestUpdateManager.patchDataRequest(
-            dataRequestId = dataRequestId,
+            dataRequestId = dummyDataRequestEntity.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestPriority = RequestPriority.High),
             correlationId = correlationId,
         )
