@@ -4,7 +4,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="grid-container">
       <div class="paper-section">
-        <div class="card documents-card">
+        <div class="card">
           <div class="card__title">Latest Documents</div>
           <div class="card__separator" />
           <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
