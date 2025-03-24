@@ -34,6 +34,7 @@ class DataRequestNonSourceableTest {
             reportingPeriods = setOf("2023"),
             contacts = null,
             message = null,
+            emailOnUpdate = false,
         )
     private val firstUserRequest2024 =
         SingleDataRequest(
@@ -42,6 +43,7 @@ class DataRequestNonSourceableTest {
             reportingPeriods = setOf("2022"),
             contacts = null,
             message = null,
+            emailOnUpdate = false,
         )
 
     private val secondUserRequest2023 =
@@ -51,6 +53,7 @@ class DataRequestNonSourceableTest {
             reportingPeriods = setOf("2023"),
             contacts = null,
             message = null,
+            emailOnUpdate = false,
         )
 
     private val nonSourceableInfoRequest2023 =
