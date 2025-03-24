@@ -66,13 +66,15 @@ describeIf(
 
     it('Navigate to the single request page via the company cockpit', () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}`);
-      cy.get('[data-test="singleDataRequestButton"]').should('exist').click();
+      cy.closeCookieBannerIfItExists();
+      cy.get('[data-test="singleDataRequestButton"]').click();
       cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
     });
 
     it('Navigate to the single request page via the view page and verify that the viewed framework is preselected.', () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="singleDataRequestButton"]').should('exist').click();
+      cy.closeCookieBannerIfItExists();
+      cy.get('[data-test="singleDataRequestButton"]').click();
       cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
       cy.get('[data-test="datapoint-framework"]').find('span').should('have.text', 'LkSG');
     });
@@ -80,6 +82,7 @@ describeIf(
     it('Fill out the request page and check correct validation, request and success message', () => {
       cy.intercept('POST', '**/community/requests/single').as('postRequestData');
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
+      cy.closeCookieBannerIfItExists();
       checkCompanyInfoSheet();
       checkValidation();
       singleDataRequestPage.chooseReportingPeriod(testYear);
@@ -88,7 +91,8 @@ describeIf(
 
       cy.get('[data-test="contactEmail"]').type(testEmail);
       cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
-      cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible').click();
+      cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible');
+      cy.get('[data-test="acceptConditionsCheckbox"]').click();
       clickSubmitButton();
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
@@ -98,6 +102,32 @@ describeIf(
       cy.get('[data-test=requestStatusText]').should('contain.text', 'Submitting your data request was successful.');
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should('contain', '/companies/');
+      checkCompanyInfoSheet();
+
+      // Check if the request is listed on the request page
+      cy.visit('/requests');
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests');
+      cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().scrollIntoView();
+      cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().click();
+
+      // Inspect the page for a single request
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests/');
+      cy.get(`div.card__data:contains("${testStoredCompany.companyInformation.companyName}")`).should('be.visible');
+      cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Openand Access is:Public since');
+      cy.get('[data-test="emailOnUpdateInput"]').scrollIntoView();
+      cy.get('[data-test="emailOnUpdateInput"]').should('not.have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="emailOnUpdateInput"]').click();
+      cy.reload(); // Check if the data was persisted in the backend
+      cy.get('[data-test="emailOnUpdateInput"]').should('have.class', 'p-inputswitch-checked');
+
+      // Withdraw request and verify that it's withdrawn
+      cy.get('a:contains("Withdraw request")').scrollIntoView();
+      cy.get('a:contains("Withdraw request")').click();
+      cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
+      cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
+      cy.get('[data-test="back-button"]').scrollIntoView();
+      cy.get('[data-test="back-button"]').click();
+      cy.get(`tr:contains("${testStoredCompany.companyInformation.companyName}")`).should('contain.text', 'Withdrawn');
     });
 
     /**
@@ -118,6 +148,7 @@ describeIf(
           reportingPeriods: [testYear],
           contacts: [testEmail],
           message: testMessage,
+          emailOnUpdate: false,
         };
         expect(requestBody).to.deep.equal(expectedRequest);
       }
@@ -126,14 +157,14 @@ describeIf(
      * Clicks submit button
      */
     function clickSubmitButton(): void {
-      cy.get("button[type='submit']").should('exist').click();
+      cy.get("button[type='submit']").click();
     }
 
     /**
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      cy.get("[data-test='datapoint-framework']").should('exist').click();
+      cy.get("[data-test='datapoint-framework']").click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         cy.get('.p-dropdown-item').contains(humanizeStringOrNumber(framework)).should('exist');
       });
@@ -145,7 +176,7 @@ describeIf(
      */
     function checkValidation(): void {
       clickSubmitButton();
-      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
+      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage']")
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 
