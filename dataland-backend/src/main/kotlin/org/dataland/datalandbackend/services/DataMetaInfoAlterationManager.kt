@@ -29,10 +29,13 @@ class DataMetaInfoAlterationManager
 
         /**
          * Patch dataMetaInformation for dataset with given [dataId]
-         * This function retrieves behaves differently for assembled and non-assembled datasets.
-         * For
-         * and  the full dataset from either temporary or internal storage, patches it, and then sends a
-         * message to the internal storage to persist the changed dataset.
+         * This function behaves differently for assembled and non-assembled datasets.
+         * For non-assembled datasets, the stored dataset needs to be updated as well to avoid inconsistency errors as
+         * it contains the meta info itself.
+         * For assembled datasets, only the meta info needs to be updated. Currently, the changes are not propagated to
+         * the datapoints the assembled dataset consists of.
+         * After updating the meta info, messages are sent to update the data in the internal storage and/or the QA
+         * event related to the upload of the dataset.
          * Currently, only public datasets are supported.
          */
         @Transactional
