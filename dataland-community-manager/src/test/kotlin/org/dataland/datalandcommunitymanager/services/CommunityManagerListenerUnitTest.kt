@@ -15,7 +15,7 @@ import org.mockito.Mockito.verify
 /**
  * Tests if the listener processes the incoming non-sourceable data information correctly.
  */
-class DataAvailabilityListenerUnitTest {
+class CommunityManagerListenerUnitTest {
     private lateinit var communityManagerListener: CommunityManagerListener
     private lateinit var mockDataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var mockInvestorRelationshipsManager: InvestorRelationshipsManager

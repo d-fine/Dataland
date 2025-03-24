@@ -36,7 +36,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DataAvailabilityListenerTest {
+class CommunityManagerListenerTest {
     val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentControllerApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
