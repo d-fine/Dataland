@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
@@ -49,7 +50,7 @@ class DataRequestTimeSchedulerTest {
                 dataType = "dummyDataType",
                 reportingPeriod = "dummyReportingPeriod",
                 datalandCompanyId = "dummyCompanyId",
-                emailOnUpdate = false,
+                emailOnUpdate = true,
                 messageHistory = emptyList(),
                 dataRequestStatusHistory = emptyList(),
                 lastModifiedDate = lastModifiedDate,
@@ -111,9 +112,10 @@ class DataRequestTimeSchedulerTest {
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
         verify(mockDataRequestUpdateManager, times(2))
             .patchDataRequest(
-                dataRequestIdStaleAndAnswered,
-                DataRequestPatch(requestStatus = RequestStatus.Closed),
-                UUID.randomUUID().toString(),
+                eq(dataRequestIdStaleAndAnswered),
+                eq(DataRequestPatch(requestStatus = RequestStatus.Closed)),
+                anyString(),
+                eq(null),
             )
     }
 

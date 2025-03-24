@@ -179,15 +179,13 @@ class DataRequestUpdateManager
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            if (dataRequestEntity.getLatestRequestStatus() != RequestStatus.Withdrawn) {
+            if (dataRequestEntity.requestStatus != RequestStatus.Withdrawn) {
                 if (
                     (dataRequestPatch.requestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
                     dataRequestPatch.accessStatus == AccessStatus.Granted
                 ) {
                     requestEmailManager.sendNotificationsSpecificToAccessRequests(
-                        dataRequestEntity,
-                        dataRequestPatch,
-                        correlationId,
+                        dataRequestEntity, dataRequestPatch, correlationId,
                     )
                 }
 
@@ -201,14 +199,10 @@ class DataRequestUpdateManager
                     } else {
                         val immediateNotificationWasSent =
                             sendImmediateNotificationOnRequestStatusChangeIfApplicable(
-                                dataRequestEntity,
-                                dataRequestPatch,
-                                correlationId,
+                                dataRequestEntity, dataRequestPatch, correlationId,
                             )
                         resetImmediateNotificationFlagIfApplicable(
-                            dataRequestEntity,
-                            dataRequestPatch,
-                            immediateNotificationWasSent,
+                            dataRequestEntity, dataRequestPatch, immediateNotificationWasSent,
                         )
                         val earlierQaApprovedVersionExists =
                             metaDataControllerApi
@@ -220,10 +214,8 @@ class DataRequestUpdateManager
                                     qaStatus = QaStatus.Accepted,
                                 ).isNotEmpty()
                         notificationService.createUserSpecificNotificationEvent(
-                            dataRequestEntity,
-                            dataRequestPatch.requestStatus,
-                            immediateNotificationWasSent,
-                            earlierQaApprovedVersionExists,
+                            dataRequestEntity, dataRequestPatch.requestStatus,
+                            immediateNotificationWasSent, earlierQaApprovedVersionExists,
                         )
                     }
                 }
@@ -260,7 +252,7 @@ class DataRequestUpdateManager
         ) {
             if (
                 immediateNotificationWasSent &&
-                dataRequestEntity.getLatestRequestStatus() == RequestStatus.Open &&
+                dataRequestEntity.requestStatus == RequestStatus.Open &&
                 dataRequestPatch.requestStatus == RequestStatus.Answered
             ) {
                 dataRequestEntity.emailOnUpdate = false

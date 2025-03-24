@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+/**
+ * A class for handling the investor-relationships part of the "QA Status Accepted" pipeline.
+ */
 @Service
 class InvestorRelationshipsManager(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,

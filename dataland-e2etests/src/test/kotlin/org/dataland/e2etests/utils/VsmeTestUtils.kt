@@ -63,5 +63,6 @@ class VsmeTestUtils {
             reportingPeriods = reportingPeriods,
             contacts = setOf("someContact@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+            emailOnUpdate = false,
         )
 }

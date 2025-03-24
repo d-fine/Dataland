@@ -133,7 +133,7 @@ class NotificationService
             immediateNotificationWasSent: Boolean,
             earlierQaApprovedVersionExists: Boolean = false,
         ) {
-            val requestStatusBefore = dataRequestEntity.getLatestRequestStatus()
+            val requestStatusBefore = dataRequestEntity.requestStatus
 
             val requestStatusBeforeIsOpenOrNonSourceable =
                 requestStatusBefore == RequestStatus.Open || requestStatusBefore == RequestStatus.NonSourceable

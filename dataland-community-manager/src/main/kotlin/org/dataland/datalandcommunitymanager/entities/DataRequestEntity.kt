@@ -123,9 +123,4 @@ data class DataRequestEntity(
     fun getDataTypeDescription(): String =
         DataTypeEnum.entries.find { it.value == dataType }.let { readableFrameworkNameMapping[it] }
             ?: dataType
-
-    /**
-     * This method returns the latest request status in the history of this entity.
-     */
-    fun getLatestRequestStatus() = dataRequestStatusHistory.maxBy { it.creationTimestamp }.requestStatus
 }
