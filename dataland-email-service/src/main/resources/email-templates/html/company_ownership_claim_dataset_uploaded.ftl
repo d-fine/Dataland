@@ -10,8 +10,6 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
 <#include "../general/header.ftl">
-<#include "../general/format_number_of_days.ftl">
-
 <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
     <tr>
@@ -34,7 +32,7 @@
     <tr>
         <td colspan="3">
             <div style="background-color: #f6f6f6; padding: 20px; border-radius: 15px">
-                <table style="background-color: #f6f6f6; border-collapse: collapse; margin: 0; width: 100%">
+                <table style="background-color: #f6f6f6; padding: 20px; border-collapse: collapse; margin: 0; width: 100%">
                     <tbody>
                     <#list frameworkData as framework>
                         <@dataLabel label="Framework"/>
@@ -68,9 +66,8 @@
     <@spacerRow/>
     </tbody>
 </table>
-
-<#include "../general/your_benefits_with_dataland.ftl"><#include "../general/footer.ftl">
+<#include "../general/your_benefits_with_dataland.ftl">
+<#include "../general/footer.ftl">
 <#include "../general/unsubscribe.ftl">
-
 </body>
 </html>

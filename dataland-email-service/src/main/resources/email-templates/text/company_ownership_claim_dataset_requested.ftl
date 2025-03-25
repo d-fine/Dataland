@@ -1,4 +1,3 @@
-<#include "../general/format_number_of_days.ftl">
 <#include "../general/format_first_and_last_name.ftl">
 Exciting news! 📣
 
