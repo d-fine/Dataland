@@ -40,7 +40,7 @@ class NotificationService
          * Scheduled to run every Sunday at midnight.
          */
 //        @Scheduled(cron = "0 0 0 ? * SUN")
-        @Scheduled(cron = "0 */10 * * * *")
+        @Scheduled(cron = "0 */1 * * * *")
         fun scheduledWeeklyEmailSending() {
             // Investor Relationship Emails
             val unprocessedInvestorRelationshipEvents =
@@ -49,8 +49,12 @@ class NotificationService
                         listOf(NotificationEventType.InvestorRelationshipsEvent),
                     )
             if (unprocessedInvestorRelationshipEvents.isNotEmpty()) {
-                processInvestorRelationshipEvents(unprocessedInvestorRelationshipEvents)
-                markEventsAsProcessed(unprocessedInvestorRelationshipEvents)
+                try {
+                    processInvestorRelationshipEvents(unprocessedInvestorRelationshipEvents)
+                    markEventsAsProcessed(unprocessedInvestorRelationshipEvents)
+                } catch (e: Exception) {
+                    logger.error("Failed to process Investor Relationship notification events: ${e.message}", e)
+                }
             }
 
             // Data Request Summary Emails
@@ -64,8 +68,12 @@ class NotificationService
                 notificationEventRepository
                     .findAllByNotificationEventTypesAndIsProcessedFalse(dataRequestSummaryEventTypes)
             if (unprocessedDataRequestSummaryEvents.isNotEmpty()) {
-                processDataRequestSummaryEvents(unprocessedDataRequestSummaryEvents)
-                markEventsAsProcessed(unprocessedDataRequestSummaryEvents)
+                try {
+                    processDataRequestSummaryEvents(unprocessedDataRequestSummaryEvents)
+                    markEventsAsProcessed(unprocessedDataRequestSummaryEvents)
+                } catch (e: Exception) {
+                    logger.error("Failed to process Data Request Summary notification events: ${e.message}", e)
+                }
             }
         }
 
