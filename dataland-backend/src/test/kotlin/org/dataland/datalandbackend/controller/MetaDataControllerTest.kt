@@ -240,7 +240,7 @@ internal class MetaDataControllerTest(
         addMetainformation(company = storedCompanies[2])
         addMetainformation(company = storedCompanies[0], currentlyActive = null, qaStatus = QaStatus.Rejected)
         addMetainformation(company = storedCompanies[0], dataType = singleDataType)
-        val allDimensions =
+        val expectedDimensions =
             listOf(
                 BasicDataDimensions(
                     companyId = storedCompanies[0].companyId,
@@ -249,11 +249,6 @@ internal class MetaDataControllerTest(
                 ),
                 BasicDataDimensions(
                     companyId = storedCompanies[1].companyId,
-                    dataType = defaultDataType.toString(),
-                    reportingPeriod = defaultReportingPeriod,
-                ),
-                BasicDataDimensions(
-                    companyId = storedCompanies[2].companyId,
                     dataType = defaultDataType.toString(),
                     reportingPeriod = defaultReportingPeriod,
                 ),
@@ -270,7 +265,7 @@ internal class MetaDataControllerTest(
                     listOf(defaultDataType.toString()),
                     listOf(singleReportingPeriod),
                 )
-        assertTrue(combinedSingleFilters.first() == allDimensions.first())
+        assertTrue(combinedSingleFilters.first() == expectedDimensions.first())
 
         val combinedMultipleFilters =
             dataMetaInformationManager
@@ -282,7 +277,7 @@ internal class MetaDataControllerTest(
                     ),
                     listOf(singleReportingPeriod, defaultReportingPeriod),
                 )
-        assertTrue(combinedMultipleFilters == listOf(allDimensions[0], allDimensions[1], allDimensions[3]))
+        assertTrue(combinedMultipleFilters == expectedDimensions)
     }
 
     private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {
@@ -295,7 +290,7 @@ internal class MetaDataControllerTest(
     }
 
     // Helper function that will crash if one of the optional parameters is explicitly set to null (except for currentlyActive)
-    @Suppress("kotlin:S138", "LongParameterList")
+    @Suppress("LongParameterList")
     private fun addMetainformation(
         dataId: String? = UUID.randomUUID().toString(),
         company: StoredCompanyEntity? = storedCompany,
