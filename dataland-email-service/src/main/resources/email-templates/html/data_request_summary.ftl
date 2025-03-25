@@ -122,6 +122,5 @@
         </table>
     </div>
     <#include "../general/footer.ftl">
-    <#include "../general/unsubscribe.ftl">
 </body>
 </html>
