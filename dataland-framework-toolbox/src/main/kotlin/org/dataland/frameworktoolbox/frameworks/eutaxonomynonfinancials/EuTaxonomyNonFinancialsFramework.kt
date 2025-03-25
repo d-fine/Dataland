@@ -22,7 +22,7 @@ class EuTaxonomyNonFinancialsFramework :
         File(
             "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
         ),
-        order = 2,
+        order = 3,
         enabledFeatures =
             FrameworkGenerationFeatures
                 .allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.DataPointSpecifications),
