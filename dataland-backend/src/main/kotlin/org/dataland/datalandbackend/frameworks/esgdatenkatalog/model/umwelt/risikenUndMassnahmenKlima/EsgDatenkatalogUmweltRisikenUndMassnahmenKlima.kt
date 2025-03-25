@@ -2,6 +2,8 @@
 package org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.risikenUndMassnahmenKlima
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.risikenUndMassnahmenKlima
+    .PhysischeKlimaUndUmweltrisikenOptions
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa

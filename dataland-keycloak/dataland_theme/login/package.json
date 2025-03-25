@@ -15,7 +15,7 @@
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-en": "^3.0.2",
     "material-icons": "^1.13.13",
-    "primeflex": "^3.3.1",
+    "primeflex": "^4.0.0",
     "primeicons": "^7.0.0"
   },
   "devDependencies": {
