@@ -3,57 +3,62 @@
 		"general": {
 			"general": {
 				"referencedReports": {
-					"ESEFReport": {
+					"AnnualReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "ESEFReport",
-						"publicationDate": "2023-09-24"
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-10-22"
 					},
-					"SustainabilityReport": {
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"fileName": "SustainabilityReport",
-						"publicationDate": "2023-12-21"
+					"ESEFReport": {
+						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+						"fileName": "ESEFReport",
+						"publicationDate": "2024-01-04"
+					},
+					"IntegratedReport": {
+						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-09-16"
 					}
 				}
 			},
 			"financialInformation": {
 				"equity": {
-					"value": 5925197060.02,
+					"value": 7451409111.95,
 					"dataSource": {
-						"page": "574-877",
-						"fileName": "SustainabilityReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "AI",
+						"page": "445",
+						"fileName": "ESEFReport",
+						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+						"tagName": "communities",
 						"publicationDate": null
 					},
-					"comment": "navigate multi-byte sensor",
-					"quality": "Audited",
-					"currency": "BSD"
+					"comment": "override auxiliary monitor",
+					"quality": "Incomplete",
+					"currency": "UYU"
 				},
 				"debt": {
-					"value": 2535600674.39,
+					"value": 8942640892.53,
 					"dataSource": {
-						"page": "793",
-						"fileName": "ESEFReport",
+						"page": "372-1084",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "relationships",
+						"tagName": "models",
 						"publicationDate": null
 					},
-					"comment": "parse cross-platform circuit",
-					"quality": "Estimated",
-					"currency": "TJS"
+					"comment": "generate digital matrix",
+					"quality": "NoDataFound",
+					"currency": "MKD"
 				},
 				"evic": {
-					"value": 9757891598.3,
+					"value": 7117288694.36,
 					"dataSource": {
-						"page": "240-480",
-						"fileName": "SustainabilityReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "initiatives",
+						"page": "498",
+						"fileName": "IntegratedReport",
+						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
+						"tagName": "paradigms",
 						"publicationDate": null
 					},
-					"comment": "back up haptic port",
-					"quality": "Estimated",
-					"currency": "AMD"
+					"comment": "index redundant sensor",
+					"quality": "Reported",
+					"currency": "QAR"
 				}
 			}
 		}
@@ -75,17 +80,17 @@
 					"verdict": "QaRejected",
 					"comment": "EVIC is not correct",
 					"correctedData": {
-						"value": 9294439715.69,
+						"value": 9801827824,
 						"dataSource": {
-							"page": "747",
-							"fileName": "SustainabilityReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"page": "566-1239",
+							"fileName": "ESEFReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
 							"tagName": "markets",
 							"publicationDate": null
 						},
-						"comment": "bypass 1080p interface",
-						"quality": "Estimated",
-						"currency": "GBP"
+						"comment": "calculate optical firewall",
+						"quality": "Audited",
+						"currency": "UZS"
 					}
 				}
 			}

@@ -3,9 +3,10 @@
 		"dataRequestId": "3a1709fb-4090-4d94-8c34-56897de74039",
 		"userId": "c90439b6-73c9-4f39-8414-46ea114a59e8",
 		"creationTimestamp": 440,
-		"dataType": "p2p",
-		"reportingPeriod": "2022",
-		"datalandCompanyId": "d22a4b1b-a88a-4714-a055-a07d1e5fd311",
+		"emailOnUpdate": true,
+		"dataType": "sfdr",
+		"reportingPeriod": "2024",
+		"datalandCompanyId": "22a4b1ba-88a7-4140-855a-07d1e5fd3118",
 		"messageHistory": [
 			{
 				"contacts": [
@@ -63,71 +64,78 @@
 		"requestPriority": "Low"
 	},
 	{
-		"dataRequestId": "fd1b21a2-7a5b-40f3-9bf1-e20272ad33ff",
-		"userId": "028510e7-360f-4ee4-aa58-d6ce5a81743c",
-		"creationTimestamp": 479,
+		"dataRequestId": "ce5a8174-3c8f-48e5-bfd7-46426913d343",
+		"userId": "4423f6c3-c5c7-41ff-9357-5b671c59cfe5",
+		"creationTimestamp": 179,
+		"emailOnUpdate": false,
 		"dataType": "lksg",
 		"reportingPeriod": "2021",
 		"datalandCompanyId": "Mock-Company-Id",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Jackie.OConner90@example.com",
-					"Hipolito62@example.com",
-					"Efrain40@example.com",
-					"Arvilla.Cronin@example.com"
+					"Oral_Borer@example.com",
+					"Verdie62@example.com",
+					"Efrain40@example.com"
 				],
-				"message": "program open-source firewall",
-				"creationTimestamp": 7813
+				"message": "bypass neural bandwidth",
+				"creationTimestamp": 3710
+			},
+			{
+				"contacts": [
+					"Jarret78@example.com"
+				],
+				"message": "override cross-platform transmitter",
+				"creationTimestamp": 9829
+			},
+			{
+				"contacts": [
+					"Ariel.Crona65@example.com",
+					"Jeramy0@example.com",
+					"Clare.Will90@example.com",
+					"Andy67@example.com",
+					"Dagmar_Will29@example.com"
+				],
+				"message": "calculate neural driver",
+				"creationTimestamp": 656
+			},
+			{
+				"contacts": [
+					"Susan1@example.com"
+				],
+				"message": "reboot virtual card",
+				"creationTimestamp": 6494
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 479,
+				"creationTimestamp": 179,
 				"accessStatus": "Public"
 			},
 			{
-				"status": "Answered",
-				"creationTimestamp": 823,
-				"accessStatus": "Revoked"
+				"status": "Closed",
+				"creationTimestamp": 750,
+				"accessStatus": "Pending"
 			}
 		],
-		"lastModifiedDate": 823,
+		"lastModifiedDate": 750,
 		"requestStatus": "Open",
-		"accessStatus": "Revoked",
+		"accessStatus": "Pending",
 		"requestPriority": "Low"
 	},
 	{
 		"dataRequestId": "1c219217-9daa-4451-872b-4baa61e1f721",
 		"userId": "bf0ba200-f6b3-4925-a69c-48c3c8052a53",
 		"creationTimestamp": 234,
+		"emailOnUpdate": false,
 		"dataType": "lksg",
 		"reportingPeriod": "2022",
 		"datalandCompanyId": "Mock-Company-Id",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Conor.Kling@example.com",
-					"Irwin57@example.com",
-					"Zackary.Hessel51@example.com",
-					"Madisen71@example.com",
-					"Vance_Kihn@example.com"
-				],
-				"message": "bypass mobile capacitor",
-				"creationTimestamp": 8860
-			},
-			{
-				"contacts": [
-					"Estella2@example.com",
-					"Giovani.Feest@example.com",
-					"Leopold44@example.com"
-				],
-				"message": "reboot solid state pixel",
-				"creationTimestamp": 6113
-			},
-			{
-				"contacts": [
+					"Renee_Thompson61@example.com",
 					"Crawford99@example.com",
 					"Ena38@example.com"
 				],
@@ -173,135 +181,127 @@
 		"requestPriority": "Low"
 	},
 	{
-		"dataRequestId": "66cf17dd-3e7f-4462-bf7e-f014be1f7294",
-		"userId": "c43abf3d-8724-43b9-8b91-ec1d62c91ffe",
-		"creationTimestamp": 314,
+		"dataRequestId": "59651e24-9464-4a5a-96d2-66cf17dd3e7f",
+		"userId": "62f7ef01-4be1-4f72-894e-c43abf3d8724",
+		"creationTimestamp": 82,
+		"emailOnUpdate": false,
 		"dataType": "lksg",
 		"reportingPeriod": "2024",
 		"datalandCompanyId": "Mock-Company-Id",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Susanna63@example.com",
-					"Clark7@example.com",
-					"David82@example.com",
-					"Alena_Roberts49@example.com"
+					"Destiny_Sawayn81@example.com",
+					"Liana.Schaden99@example.com",
+					"Dariana_Johns93@example.com",
+					"Roxanne.Spinka@example.com",
+					"Vernie_Hirthe60@example.com"
 				],
-				"message": "index wireless firewall",
-				"creationTimestamp": 3755
+				"message": "bypass primary transmitter",
+				"creationTimestamp": 4894
 			},
 			{
 				"contacts": [
-					"Lea_Bosco@example.com",
-					"Olen_Upton58@example.com",
-					"Armani.Wilkinson@example.com",
-					"Lynn.Robel@example.com"
+					"Stephany_Tromp0@example.com",
+					"Eduardo_Hammes-Gusikowski@example.com",
+					"Naomie55@example.com",
+					"Aileen_Shields91@example.com"
 				],
-				"message": "input optical alarm",
-				"creationTimestamp": 2376
+				"message": "compress back-end program",
+				"creationTimestamp": 9471
 			},
 			{
 				"contacts": [
-					"Jovan11@example.com",
-					"Ulices33@example.com",
-					"Cara.Von@example.com",
-					"Taya_Oberbrunner-Hermiston@example.com",
-					"Neoma_Blick61@example.com"
+					"Trinity15@example.com"
 				],
-				"message": "generate cross-platform transmitter",
-				"creationTimestamp": 4741
+				"message": "synthesize multi-byte feed",
+				"creationTimestamp": 5110
 			},
 			{
 				"contacts": [
-					"Alfonso66@example.com",
-					"Neha.Bins@example.com",
-					"Graham.Wintheiser28@example.com",
-					"Ricky_Donnelly-Harvey@example.com",
-					"Aurore.Crona59@example.com"
+					"Vicenta_Hermiston@example.com",
+					"Neoma_Blick61@example.com",
+					"Gavin.Windler80@example.com",
+					"Eula84@example.com",
+					"Irma_Hodkiewicz@example.com"
 				],
-				"message": "generate digital monitor",
-				"creationTimestamp": 3748
+				"message": "program wireless alarm",
+				"creationTimestamp": 2832
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 314,
+				"creationTimestamp": 82,
 				"accessStatus": "Public"
 			},
 			{
 				"status": "NonSourceable",
-				"creationTimestamp": 708,
+				"creationTimestamp": 916,
 				"accessStatus": "Declined"
 			}
 		],
-		"lastModifiedDate": 708,
+		"lastModifiedDate": 916,
 		"requestStatus": "Answered",
 		"accessStatus": "Declined",
 		"requestPriority": "Low"
 	},
 	{
-		"dataRequestId": "71ac4e66-49e2-443b-887a-73311d4c41fa",
-		"userId": "7e4eae3b-183f-4aea-b395-3ef7814694f5",
-		"creationTimestamp": 437,
+		"dataRequestId": "d4b09c3d-be24-45f2-b36d-85c07d8c471a",
+		"userId": "4e6649e2-43b8-47a7-b331-1d4c41fa27e4",
+		"creationTimestamp": 370,
+		"emailOnUpdate": false,
 		"dataType": "eutaxonomy-non-financials",
 		"reportingPeriod": "1996",
 		"datalandCompanyId": "550e8400-e29b-11d4-a716-446655440000",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Sean_Zieme@example.com",
-					"Bryon_Wolf@example.com",
-					"Sheila_Heidenreich@example.com",
-					"Sonia34@example.com"
+					"Asha72@example.com",
+					"Adele90@example.com",
+					"Adeline75@example.com",
+					"Melissa.McKenzie-Purdy14@example.com"
 				],
-				"message": "back up bluetooth circuit",
-				"creationTimestamp": 8588
+				"message": "transmit neural transmitter",
+				"creationTimestamp": 4158
 			},
 			{
 				"contacts": [
-					"Justice28@example.com",
-					"Garnett.Muller58@example.com",
-					"Christopher.Bartoletti52@example.com",
-					"Lizeth31@example.com",
-					"Elena_Kshlerin80@example.com"
+					"Candice61@example.com",
+					"Bailey.Turner93@example.com",
+					"Corbin_Stokes@example.com",
+					"Ellis_Grady37@example.com",
+					"Lisa.McGlynn18@example.com"
 				],
-				"message": "program redundant system",
-				"creationTimestamp": 2690
+				"message": "back up mobile interface",
+				"creationTimestamp": 1179
 			},
 			{
 				"contacts": [
-					"Prince.Carroll@example.com",
-					"Gonzalo69@example.com",
-					"Nadia.Mraz82@example.com"
+					"Chaim.Dickinson88@example.com",
+					"Dagmar27@example.com",
+					"Percy_Glover80@example.com",
+					"Beulah.Kilback39@example.com"
 				],
-				"message": "program 1080p microchip",
-				"creationTimestamp": 7517
-			},
-			{
-				"contacts": [
-					"Ryann.Watsica26@example.com",
-					"Vito.Fay@example.com"
-				],
-				"message": "copy redundant application",
-				"creationTimestamp": 4378
+				"message": "index neural panel",
+				"creationTimestamp": 7040
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 437,
+				"creationTimestamp": 370,
 				"accessStatus": "Public"
 			},
 			{
-				"status": "Closed",
-				"creationTimestamp": 756,
-				"accessStatus": "Granted"
+				"status": "Withdrawn",
+				"creationTimestamp": 679,
+				"accessStatus": "Declined"
 			}
 		],
-		"lastModifiedDate": 756,
+		"lastModifiedDate": 679,
 		"requestStatus": "Answered",
-		"accessStatus": "Granted",
+		"accessStatus": "Declined",
 		"requestPriority": "Low"
 	}
 ]

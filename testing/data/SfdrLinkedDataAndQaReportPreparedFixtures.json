@@ -2,14 +2,19 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-06-26",
-				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2024-04-21",
+				"dataDate": "2024-09-21",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2024-03-10",
 				"referencedReports": {
 					"AnnualReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 						"fileName": "AnnualReport",
-						"publicationDate": "2023-11-18"
+						"publicationDate": "2023-11-23"
+					},
+					"IntegratedReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-04-26"
 					}
 				}
 			}
@@ -17,44 +22,44 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 7671,
+					"value": 7610,
 					"dataSource": {
-						"page": "642-1241",
+						"page": "400-419",
 						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "convergence",
+						"tagName": "models",
 						"publicationDate": null
 					},
-					"comment": "input 1080p pixel",
-					"quality": "NoDataFound"
+					"comment": "transmit bluetooth capacitor",
+					"quality": "Incomplete"
 				}
 			}
 		},
 		"environmental": {
 			"biodiversity": {
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-					"value": "Yes",
+					"value": "No",
 					"dataSource": {
-						"page": "1139",
+						"page": "324",
 						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "applications",
+						"tagName": "ROI",
 						"publicationDate": null
 					},
-					"comment": "transmit online panel",
+					"comment": "hack optical microchip",
 					"quality": "Reported"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "No",
 					"dataSource": {
-						"page": "758-1040",
-						"fileName": "AnnualReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "users",
+						"page": "642-1241",
+						"fileName": "IntegratedReport",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "convergence",
 						"publicationDate": null
 					},
-					"comment": "quantify digital driver",
-					"quality": "Reported"
+					"comment": "bypass cross-platform port",
+					"quality": "Audited"
 				}
 			}
 		}
