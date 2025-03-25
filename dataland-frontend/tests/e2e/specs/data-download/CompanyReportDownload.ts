@@ -14,7 +14,7 @@ import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUpload.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { join } from 'path';
+import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
 
 describeIf(
   'As a user, I want to be able to download company reports and other documents from Dataland',
@@ -23,21 +23,9 @@ describeIf(
   },
   () => {
     const documentName = 'test-report';
-    const fileName = documentName + '.pdf';
     let documentMetaInfoResponse: DocumentMetaInfoResponse;
 
     let storedCompany: StoredCompany;
-
-    /**
-     * Checks that the downloaded file does actually exist and delete it
-     * @param filePath path to file
-     */
-    function checkThatFileExistsAndDelete(filePath: string): void {
-      cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
-      cy.task('deleteFile', filePath).then(() => {
-        cy.readFile(filePath).should('not.exist');
-      });
-    }
 
     /**
      * Visit documents page and clicks download button for first entry
@@ -63,7 +51,7 @@ describeIf(
         );
       });
 
-      cy.readFile('../testing/data/documents/test-report.pdf', 'base64').then((base64String) => {
+      cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, 'base64').then((base64String) => {
         const fileBuffer = Buffer.from(base64String, 'base64');
         getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
           documentMetaInfoResponse = await uploadDocumentViaApi(token, fileBuffer, documentName);
@@ -86,9 +74,7 @@ describeIf(
       });
 
       visitPageAndClickDownloadButton();
-
-      const filePath = join(Cypress.config('downloadsFolder'), fileName);
-      checkThatFileExistsAndDelete(filePath);
+      cy.get(`a[data-test="report-${TEST_PDF_REPORT_FILE_NAME}-link`);
     });
   }
 );

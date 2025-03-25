@@ -12,7 +12,6 @@ describe('check that the document link component works and is displayed correctl
     cy.mountWithPlugins(DocumentLink, {
       keycloak: minimalKeycloakMock({}),
 
-      // @ts-ignore
       props: {
         downloadName: 'Test',
         fileReference: 'dummyFileReference',
@@ -28,7 +27,6 @@ describe('check that the document link component works and is displayed correctl
   });
   it('Check that Download Progress Spinner appears if the prop changes', function (): void {
     cy.mountWithPlugins(DocumentLink, {
-      // @ts-ignore
       props: {
         downloadName: 'Test',
         fileReference: 'dummyFileReference',
@@ -56,7 +54,6 @@ describe('check that the document link component works and is displayed correctl
 
   it('Check that Download Progress Spinner disappears and the checkmark appears', function (): void {
     cy.mountWithPlugins(DocumentLink, {
-      // @ts-ignore
       props: {
         downloadName: 'Test',
         fileReference: 'dummyFileReference',
@@ -83,7 +80,6 @@ describe('check that the document link component works and is displayed correctl
   });
   it('Check that Download Progress Checkmark disappears again', function (): void {
     cy.mountWithPlugins(DocumentLink, {
-      // @ts-ignore
       props: {
         downloadName: 'Test',
         fileReference: 'dummyFileReference',
@@ -110,7 +106,6 @@ describe('check that the document link component works and is displayed correctl
     cy.mountWithPlugins(DataPointDataTable, {
       keycloak: minimalKeycloakMock({}),
 
-      // @ts-ignore
       props: {},
       data() {
         return {
@@ -125,16 +120,17 @@ describe('check that the document link component works and is displayed correctl
               comment: 'Some comment',
             },
             dataId: '12345',
-            dataType: DataTypeEnum.Heimathafen,
+            dataType: DataTypeEnum.EutaxonomyFinancials,
           },
         };
       },
     }).then(() => {
       cy.get("[data-test='Report-Download-FileName']").should('contain', 'FileName');
-      cy.get("[data-test='Report-Download-FileName']").should('not.contain', 'page null');
+      cy.get("[data-test='Report-Download-FileName']").should('not.contain', 'page');
     });
   });
 });
+
 /**
  * Checks that no icons exist
  */
