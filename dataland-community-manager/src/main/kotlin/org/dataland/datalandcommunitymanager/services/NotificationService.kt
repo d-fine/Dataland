@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -12,6 +13,7 @@ import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepos
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -39,8 +41,7 @@ class NotificationService
          * If yes, sends Investor Relationship and/or Data Request Summary notification emails.
          * Scheduled to run every Sunday at midnight.
          */
-//        @Scheduled(cron = "0 0 0 ? * SUN")
-        @Scheduled(cron = "0 */1 * * * *")
+        @Scheduled(cron = "0 */1 * * * *") //        @Scheduled(cron = "0 0 0 ? * SUN")
         fun scheduledWeeklyEmailSending() {
             // Investor Relationship Emails
             val unprocessedInvestorRelationshipEvents =
@@ -52,11 +53,23 @@ class NotificationService
                 try {
                     processInvestorRelationshipEvents(unprocessedInvestorRelationshipEvents)
                     markEventsAsProcessed(unprocessedInvestorRelationshipEvents)
-                } catch (e: Exception) {
-                    logger.error("Failed to process Investor Relationship notification events: ${e.message}", e)
+                } catch (uoe: UnsupportedOperationException) {
+                    logger.error(
+                        "Failed to process IR notification events due to UnsupportedOperationException: ${uoe.message}",
+                        uoe,
+                    )
+                } catch (ce: ClientException) {
+                    logger.error(
+                        "Failed to process IR notification events due to ClientException: ${ce.message}",
+                        ce,
+                    )
+                } catch (ae: AmqpException) {
+                    logger.error(
+                        "Failed to process IR notification events due to AmqpException: ${ae.message}",
+                        ae,
+                    )
                 }
             }
-
             // Data Request Summary Emails
             val dataRequestSummaryEventTypes =
                 listOf(
@@ -71,8 +84,21 @@ class NotificationService
                 try {
                     processDataRequestSummaryEvents(unprocessedDataRequestSummaryEvents)
                     markEventsAsProcessed(unprocessedDataRequestSummaryEvents)
-                } catch (e: Exception) {
-                    logger.error("Failed to process Data Request Summary notification events: ${e.message}", e)
+                } catch (uoe: UnsupportedOperationException) {
+                    logger.error(
+                        "Failed to process Data Request Summary notification events due to UnsupportedOperationException: ${uoe.message}",
+                        uoe,
+                    )
+                } catch (ce: ClientException) {
+                    logger.error(
+                        "Failed to process Data Request Summary notification events due to ClientException: ${ce.message}",
+                        ce,
+                    )
+                } catch (ae: AmqpException) {
+                    logger.error(
+                        "Failed to process Data Request Summary notification events due to AmqpException: ${ae.message}",
+                        ae,
+                    )
                 }
             }
         }
