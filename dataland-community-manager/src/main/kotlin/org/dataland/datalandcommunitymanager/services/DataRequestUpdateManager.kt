@@ -167,18 +167,6 @@ class DataRequestUpdateManager
                 dataRequestRepository.findById(dataRequestId).getOrElse {
                     throw DataRequestNotFoundApiException(dataRequestId)
                 }
-            val modificationTime = Instant.now().toEpochMilli()
-            val anyChanges =
-                listOf(
-                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
-                    updateRequestStatusHistoryIfRequired(
-                        dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
-                    ),
-                    updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
-                    checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
-                ).any { it }
-
-            if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
             if (dataRequestEntity.requestStatus != RequestStatus.Withdrawn) {
                 if (
@@ -222,6 +210,18 @@ class DataRequestUpdateManager
                     }
                 }
             }
+
+            val modificationTime = Instant.now().toEpochMilli()
+            val anyChanges =
+                listOf(
+                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
+                    updateRequestStatusHistoryIfRequired(
+                        dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
+                    ),
+                    updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
+                    checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
+                ).any { it }
+            if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
             return dataRequestEntity.toStoredDataRequest()
         }
