@@ -27,6 +27,7 @@
                 :file-reference="dialogData.dataPointDisplay.dataSource.fileReference"
                 :data-id="dialogData.dataId"
                 :data-type="dialogData.dataType"
+                :page="dataSourcePage"
                 show-icon
               />
             </td>
@@ -78,6 +79,12 @@ export default defineComponent({
       } else {
         return dataSource.fileName ?? '';
       }
+    },
+    dataSourcePage(): number | undefined {
+      const dataSource = this.dialogData.dataPointDisplay.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return Number(dataSource.page.split('-')[0]) || undefined;
+      } else return undefined;
     },
   },
 });
