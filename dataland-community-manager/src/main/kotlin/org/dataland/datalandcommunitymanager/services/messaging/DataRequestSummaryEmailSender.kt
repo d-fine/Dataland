@@ -19,13 +19,12 @@ import java.util.UUID
 /**
  * A service used to send data request summary emails.
  */
-@Service("NotificationEmailSender")
+@Service("DataRequestSummaryEmailSender")
 class DataRequestSummaryEmailSender(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
 ) {
-
     /**
      * Sends the Data Request summary email.
      * @param unprocessedEvents A list of notification event entities that are unprocessed
@@ -55,9 +54,7 @@ class DataRequestSummaryEmailSender(
      * @param events A list of notification event entities to process.
      * @return The email content that encapsulates the summary of data requests.
      */
-    private fun dataRequestSummaryEmailContent(
-        events: List<NotificationEventEntity>,
-    ): TypedEmailContent {
+    private fun dataRequestSummaryEmailContent(events: List<NotificationEventEntity>): TypedEmailContent {
         // Aggregate data for each type of event
         val newData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.AvailableEvent)
         val updatedData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.UpdatedEvent)
@@ -74,7 +71,7 @@ class DataRequestSummaryEmailSender(
      */
     private fun aggregateFrameworkDataForOneEventType(
         events: List<NotificationEventEntity>,
-        eventType: NotificationEventType
+        eventType: NotificationEventType,
     ): List<DataRequestSummary.FrameworkData> {
         val filteredEventTypeEvents = events.filter { it.notificationEventType == eventType }
         val groupedEvents = filteredEventTypeEvents.groupBy { Pair(it.framework.toString(), it.reportingPeriod) }
@@ -88,7 +85,7 @@ class DataRequestSummaryEmailSender(
             DataRequestSummary.FrameworkData(
                 dataTypeLabel = dataTypeLabel,
                 reportingPeriod = reportingPeriod,
-                companies = companies
+                companies = companies,
             )
         }
     }

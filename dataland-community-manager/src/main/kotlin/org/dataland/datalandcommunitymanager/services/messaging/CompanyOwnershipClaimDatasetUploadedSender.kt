@@ -23,7 +23,7 @@ import java.util.UUID
  * A service used to send external claim company ownership, when dataset is uploaded emails
  * and related internal emails in the NotificationService.
  */
-@Service("NotificationEmailSender")
+@Service("CompanyOwnershipClaimDatasetUploadedSender")
 class CompanyOwnershipClaimDatasetUploadedSender(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
@@ -79,12 +79,12 @@ class CompanyOwnershipClaimDatasetUploadedSender(
                 companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(companyId.toString()),
                 companyId = companyId.toString(),
                 frameworkData =
-                frameworkData.map {
-                    MultipleDatasetsUploadedEngagement.FrameworkData(
-                        readableFrameworkNameMapping[it.key] ?: "",
-                        it.value,
-                    )
-                },
+                    frameworkData.map {
+                        MultipleDatasetsUploadedEngagement.FrameworkData(
+                            readableFrameworkNameMapping[it.key] ?: "",
+                            it.value,
+                        )
+                    },
             )
 
         // Prepare details for the internal email content
@@ -96,10 +96,10 @@ class CompanyOwnershipClaimDatasetUploadedSender(
                 internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
                 listOf(
                     "Company" to
-                            companyIdAndNameValue(
-                                externalEmailContent.companyId,
-                                externalEmailContent.companyName,
-                            ),
+                        companyIdAndNameValue(
+                            externalEmailContent.companyId,
+                            externalEmailContent.companyName,
+                        ),
                     "Frameworks" to frameworkValue(frameworkData, externalEmailContent.companyId),
                     "Notification Email Type" to Value.Text("Summary"),
                     "Receiver" to receiver.map(Value::EmailAddressWithSubscriptionStatus).let(Value::List),
