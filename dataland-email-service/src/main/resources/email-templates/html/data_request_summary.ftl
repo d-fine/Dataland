@@ -12,7 +12,7 @@
                 <#if (item_index != 0) && (item.dataTypeLabel != previousFramework)>
                     <@spacerRowHorizontalLine position="top"/>
                 </#if>
-                <tr>
+                <tr style="height: 30px; padding-bottom: 12px;">
                     <td>
                         <#if item.dataTypeLabel != previousFramework>Framework</#if>
                     </td>
@@ -21,8 +21,7 @@
                         <#if (item.companies?size > 1)>Companies<#else>Company</#if>
                     </td>
                 </tr>
-                <@spacerRowTiny />
-                <tr>
+                <tr style="padding-bottom: 12px;">
                     <td style="vertical-align: top; font-weight: bold; font-size:19px">
                         <#if item.dataTypeLabel != previousFramework>${item.dataTypeLabel}</#if>
                     </td>
@@ -57,7 +56,7 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
     <#include "../general/header.ftl">
-    <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
+    <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0 40px; margin: 0">
         <tbody>
         <tr>
             <td rowspan="20" style="width: 40px">&nbsp;</td>
