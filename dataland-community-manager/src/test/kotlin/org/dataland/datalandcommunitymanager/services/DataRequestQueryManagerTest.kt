@@ -15,9 +15,8 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,8 +29,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.eq
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.Optional
 import java.util.UUID
@@ -46,7 +43,6 @@ class DataRequestQueryManagerTest {
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockKeycloakUserService: KeycloakUserService
     private lateinit var mockDataRequestMasker: DataRequestMasker
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
     private val userId = "1234-221-1111elf"
 
     private val dataRequestLogger = mock(DataRequestLogger::class.java)
@@ -192,35 +188,9 @@ class DataRequestQueryManagerTest {
         ).thenReturn(DataTypeEnum.sfdr)
     }
 
-    private fun setupAdminAuthentication() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "userEmail",
-                userId,
-                setOf(DatalandRealmRole.ROLE_ADMIN),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun setupUserAuthentication(userInfo: KeycloakUserInfo) {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                userInfo.email ?: "userEmail",
-                userInfo.userId,
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
     @BeforeEach
     fun setupDataRequestQueryManager() {
-        setupAdminAuthentication()
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
         setupDataRequestEntities()
         setupMocks()
         mockDataRequestMasker = DataRequestMasker(mockKeycloakUserService)
@@ -272,7 +242,11 @@ class DataRequestQueryManagerTest {
 
     @Test
     fun `simulate getDataRequestsForRequestingUser call `() {
-        setupUserAuthentication(keycloakUserAlpha)
+        TestUtils.mockSecurityContext(
+            keycloakUserAlpha.email ?: "userEmail",
+            keycloakUserAlpha.userId,
+            DatalandRealmRole.ROLE_USER,
+        )
         val queryResults = dataRequestQueryManager.getDataRequestsForRequestingUser()
 
         verify(mockDataRequestRepository, times(1)).findByUserId(keycloakUserAlpha.userId)

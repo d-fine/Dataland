@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -14,7 +15,6 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -22,8 +22,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class ResourceResponseEmailSenderTest {
@@ -40,16 +38,7 @@ class ResourceResponseEmailSenderTest {
 
     @BeforeEach
     fun setupAuthentication() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        val authenticationMock =
-            AuthenticationMock.mockJwtAuthentication(
-                "userEmail",
-                userId,
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        `when`(authenticationMock.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
     }
 
     private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity =

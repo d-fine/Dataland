@@ -25,7 +25,6 @@ import java.time.Instant
 import java.util.UUID
 
 class DataRequestTimeSchedulerTest {
-    private val testUtils = TestUtils()
     private lateinit var mockDataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestTimeScheduler: DataRequestTimeScheduler
@@ -72,7 +71,7 @@ class DataRequestTimeSchedulerTest {
 
     @BeforeEach
     fun setUpDataRequestTimeScheduler() {
-        testUtils.mockSecurityContext()
+        TestUtils.mockSecurityContext()
         mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
         `when`(
             mockDataRequestUpdateManager.patchDataRequest(

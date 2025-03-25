@@ -8,9 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDat
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -18,8 +16,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 /**
@@ -27,7 +23,6 @@ import java.util.UUID
  * */
 class DataRequestMaskerTest {
     private lateinit var dataRequestMasker: DataRequestMasker
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockKeycloakUserService: KeycloakUserService
     private val userId = "1234-221-1111elf"
     private val testComment = "test comment"
@@ -91,35 +86,9 @@ class DataRequestMaskerTest {
         return extendedStoredDataRequestWithAdminComment
     }
 
-    private fun setupAdminAuthentication() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "userEmail",
-                userId,
-                setOf(DatalandRealmRole.ROLE_ADMIN),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun setupNonAdminAuthentication() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "userEmail",
-                userId,
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
     @Test
     fun `validates that admin comments are not visible to non admins for a list of ExtendedStoredDataRequests`() {
-        setupNonAdminAuthentication()
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
         val modifiedDataRequestEntityList =
             dataRequestMasker.hideAdminCommentForNonAdmins(
                 listOf(getExtendedStoredDataRequestEntityWithAdminComment()),
@@ -130,7 +99,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are visible to admins for a list of ExtendedStoredDataRequests`() {
-        setupAdminAuthentication()
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
 
         val modifiedDataRequestEntityList =
             dataRequestMasker.hideAdminCommentForNonAdmins(
@@ -142,7 +111,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are not visible to non admins for single StoredDataRequest`() {
-        setupNonAdminAuthentication()
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
         val modifiedStoredDataRequest =
             dataRequestMasker.hideAdminCommentForNonAdmins(storedDataRequestEntityWithAdminComment)
         assertNull(modifiedStoredDataRequest.adminComment)
@@ -150,7 +119,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are visible to admins for single StoredDataRequest`() {
-        setupAdminAuthentication()
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
         val modifiedStoredDataRequest =
             dataRequestMasker.hideAdminCommentForNonAdmins(storedDataRequestEntityWithAdminComment)
         assertEquals(testComment, modifiedStoredDataRequest.adminComment)
