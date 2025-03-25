@@ -25,13 +25,13 @@
 </#macro>
 
 <#macro dataLabel(label)>
-    <tr>
+    <tr style="height: 30px; padding-bottom: 12px;">
         <td colspan="3" style="height: 7px;">${label}</td>
     </tr>
 </#macro>
 
 <#macro dataValue(value)>
-    <tr>
+    <tr style="height: 30px; padding-bottom: 12px;">
         <td colspan="3" style="font-weight: bold; font-size:19px;">${value}</td>
     </tr>
 </#macro>
