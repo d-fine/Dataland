@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.cloudevents.core)
     implementation(libs.spring.cloud.function.context)
     implementation(libs.spring.amqp)
+    implementation(libs.json)
     implementation(project(":dataland-backend-utils"))
 }
 
