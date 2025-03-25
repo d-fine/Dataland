@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.datalandqaservice.utils.TestJwtSecurityConfig
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -89,8 +90,12 @@ class DataPointQaReviewRepositoryTest {
     fun `check that the currently active data ID is null if no accepted data sets exist`() {
         dataPointQaReviewRepository.save(getDummyEntity(qaStatus = QaStatus.Pending))
         dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId, qaStatus = QaStatus.Pending))
-        val results = dataPointQaReviewRepository.getDataPointIdOfCurrentlyActiveDataPoint(dummyDataPointDimensions)
-        assertEquals(null, results)
+        val results =
+            dataPointQaReviewRepository.getActiveDataPointsForAllTriplets(
+                listOf(dummyDataPointDimensions.companyId), listOf(dummyDataPointDimensions.dataPointType),
+                listOf(dummyDataPointDimensions.reportingPeriod),
+            )
+        assertTrue(results.isEmpty())
     }
 
     @Test
@@ -98,7 +103,12 @@ class DataPointQaReviewRepositoryTest {
         val firstEntity = dataPointQaReviewRepository.save(getDummyEntity())
         dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId))
         dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId, qaStatus = QaStatus.Rejected))
-        val results = dataPointQaReviewRepository.getDataPointIdOfCurrentlyActiveDataPoint(dummyDataPointDimensions)
-        assertEquals(firstEntity.dataPointId, results)
+        val results =
+            dataPointQaReviewRepository.getActiveDataPointsForAllTriplets(
+                listOf(dummyDataPointDimensions.companyId), listOf(dummyDataPointDimensions.dataPointType),
+                listOf(dummyDataPointDimensions.reportingPeriod),
+            )
+        assertEquals(1, results.size)
+        assertEquals(firstEntity.dataPointId, results[0].dataPointId)
     }
 }

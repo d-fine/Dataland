@@ -25,6 +25,22 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
     ): String?
 
     /**
+     * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods
+     */
+    @Query(
+        "SELECT dataPointMetaInformation FROM DataPointMetaInformationEntity dataPointMetaInformation " +
+            "WHERE dataPointMetaInformation.reportingPeriod IN :#{#reportingPeriods} " +
+            "AND dataPointMetaInformation.companyId IN :#{#companyIds} " +
+            "AND dataPointMetaInformation.dataPointType IN :#{#dataPointTypes} " +
+            "AND dataPointMetaInformation.currentlyActive = true ",
+    )
+    fun getBulkActiveDataPoints(
+        @Param("companyIds") companyIds: List<String>,
+        @Param("dataPointTypes") dataPointTypes: List<String>,
+        @Param("reportingPeriods") reportingPeriods: List<String>,
+    ): List<DataPointMetaInformationEntity>
+
+    /**
      * Retrieves all data meta information of active data points matching one of the data point types and the company
      */
     fun findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(

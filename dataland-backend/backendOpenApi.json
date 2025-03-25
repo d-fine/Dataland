@@ -20398,16 +20398,16 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "sector": {
@@ -20497,16 +20497,16 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "sfdr",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "nuclear-and-gas",
-          "lksg",
           "p2p",
-          "sfdr",
+          "lksg",
+          "additional-company-information",
           "vsme",
           "esg-datenkatalog",
-          "heimathafen",
-          "additional-company-information"
+          "heimathafen"
         ]
       },
       "ErrorDetails": {

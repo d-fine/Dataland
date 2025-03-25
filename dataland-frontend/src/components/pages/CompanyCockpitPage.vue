@@ -267,7 +267,7 @@ export default defineComponent({
 }
 .grid-container {
   display: grid;
-  grid-template-columns: 5fr 6fr 30px;
+  grid-template-columns: 3fr 6fr 30px;
   padding: 40px;
   gap: 40px;
   @media only screen and (max-width: newVariables.$small) {
