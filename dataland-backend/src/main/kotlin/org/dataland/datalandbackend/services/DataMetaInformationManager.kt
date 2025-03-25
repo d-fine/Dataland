@@ -113,4 +113,20 @@ class DataMetaInformationManager(
         dataMetaInformationRepository
             .getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
+
+    /**
+     * Method to get all data dimensions for which a dataset is active given a set of filters
+     * @param companyIds the company IDs to filter for
+     * @param dataTypes the data types to filter for
+     * @param reportingPeriods the reporting periods to filter for
+     * @return a list of data dimensions for which a dataset is active
+     */
+    fun getAllActiveDatasets(
+        companyIds: List<String>?,
+        dataTypes: List<String>?,
+        reportingPeriods: List<String>?,
+    ): List<BasicDataDimensions> {
+        val dataMetaInformationEntities = dataMetaInformationRepository.getBulkActiveDatasets(companyIds, dataTypes, reportingPeriods)
+        return dataMetaInformationEntities.map { BasicDataDimensions(it.company.companyId, it.dataType, it.reportingPeriod) }
+    }
 }

@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -189,5 +190,19 @@ class MetaDataController(
             )
         }
         return ResponseEntity.ok(dataPoints)
+    }
+
+    override fun getAvailableData(
+        companyIds: List<String>?,
+        dataTypes: List<String>?,
+        reportingPeriods: List<String>?,
+    ): ResponseEntity<List<BasicDataDimensions>> {
+        if (companyIds.isNullOrEmpty() && dataTypes.isNullOrEmpty() && reportingPeriods.isNullOrEmpty()) {
+            throw InvalidInputApiException(
+                summary = "All filters are empty.",
+                message = "At least one filter must be provided.",
+            )
+        }
+        return ResponseEntity.ok(dataMetaInformationManager.getAllActiveDatasets(companyIds, dataTypes, reportingPeriods))
     }
 }

@@ -131,4 +131,23 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         @Param("companyId") companyId: String,
         @Param("dataType") dataType: String,
     ): DataMetaInformationEntity?
+
+    /**
+     * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods
+     */
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "WHERE (:#{#reportingPeriods == null || #reportingPeriods.isEmpty()} = true " +
+            "OR dataMetaInformation.reportingPeriod IN :#{#reportingPeriods}) " +
+            "AND (:#{#companyIds == null || #companyIds.isEmpty()} = true " +
+            "OR dataMetaInformation.company.companyId IN :#{#companyIds}) " +
+            "AND (:#{#dataTypes == null || #dataTypes.isEmpty()} = true " +
+            "OR dataMetaInformation.dataType IN :#{#dataTypes}) " +
+            "AND dataMetaInformation.currentlyActive = true",
+    )
+    fun getBulkActiveDatasets(
+        @Param("companyIds") companyIds: List<String>?,
+        @Param("dataTypes") dataTypes: List<String>?,
+        @Param("reportingPeriods") reportingPeriods: List<String>?,
+    ): List<DataMetaInformationEntity>
 }
