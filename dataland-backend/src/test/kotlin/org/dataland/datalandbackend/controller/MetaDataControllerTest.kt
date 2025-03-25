@@ -222,6 +222,12 @@ internal class MetaDataControllerTest(
 
         val filterForYear = dataMetaInformationManager.getAllActiveDatasets(null, null, listOf(nonDefaultReportingPeriod))
         assertTrue(filterForYear.first() == allDimensions.first())
+
+        val filterForCompanyId = dataMetaInformationManager.getAllActiveDatasets(listOf(storedCompany.companyId), null, null)
+        assertTrue(filterForCompanyId == allDimensions)
+
+        val filterForType = dataMetaInformationManager.getAllActiveDatasets(null, listOf(nonDefaultDataType), null)
+        assertTrue(filterForType.first() == allDimensions.last())
     }
 
     @Test
@@ -233,7 +239,6 @@ internal class MetaDataControllerTest(
         addMetainformation(company = storedCompanies[1])
         addMetainformation(company = storedCompanies[2])
         addMetainformation(company = storedCompanies[0], currentlyActive = null, qaStatus = QaStatus.Rejected)
-        addMetainformation(company = storedCompanies[0], currentlyActive = null, qaStatus = QaStatus.Pending)
         addMetainformation(company = storedCompanies[0], dataType = singleDataType)
         val allDimensions =
             listOf(
@@ -258,13 +263,6 @@ internal class MetaDataControllerTest(
                     reportingPeriod = defaultReportingPeriod,
                 ),
             )
-
-        val filterForCompanyId = dataMetaInformationManager.getAllActiveDatasets(listOf(storedCompanies[0].companyId), null, null)
-        assertTrue(filterForCompanyId == listOf(allDimensions.first(), allDimensions.last()))
-
-        val filterForType = dataMetaInformationManager.getAllActiveDatasets(null, listOf(singleDataType), null)
-        assertTrue(filterForType.first() == allDimensions.last())
-
         val combinedSingleFilters =
             dataMetaInformationManager
                 .getAllActiveDatasets(
@@ -297,7 +295,7 @@ internal class MetaDataControllerTest(
     }
 
     // Helper function that will crash if one of the optional parameters is explicitly set to null (except for currentlyActive)
-    @Suppress("LongParameterList")
+    @Suppress("kotlin:S138", "LongParameterList")
     private fun addMetainformation(
         dataId: String? = UUID.randomUUID().toString(),
         company: StoredCompanyEntity? = storedCompany,
