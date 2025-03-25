@@ -36,11 +36,9 @@
                     <tbody>
                     <#list frameworkData as framework>
                         <@dataLabel label="Framework"/>
-                        <@spacerRowTiny/>
                         <@dataValue value=framework.dataTypeLabel/>
                         <@spacerRow/>
                         <@dataLabel label="Reporting year${(framework.reportingPeriods?size > 1)?string('s', '')}"/>
-                        <@spacerRowTiny/>
                         <@dataValue value=framework.reportingPeriods?join(", ")/>
                         <#if !framework?is_last>
                             <@spacerRowHorizontalLine position="bottom"/>
