@@ -97,8 +97,6 @@ Discuss findings with the team.
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
     - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template and the internal wiki page have been updated to reflect the latest state of tasks required and known issues with upgrades
-- [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in
-  future commits
 
 # Review (to be completed by the reviewer)
 
