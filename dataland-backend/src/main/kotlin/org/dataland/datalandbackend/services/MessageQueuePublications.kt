@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -13,6 +12,8 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
+import org.dataland.datalandmessagequeueutils.messages.data.InitialQaStatus
+import org.dataland.datalandmessagequeueutils.messages.data.PresetQaStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -48,8 +49,11 @@ class MessageQueuePublications(
         publishDataPointUploadedMessage(
             dataPointMetaInformation = dataPointMetaInformation,
             companyInformation = companyInformation,
-            initialQaStatus = qaStatus,
-            initialQaComment = comment,
+            initialQa =
+                PresetQaStatus(
+                    qaStatus = qaStatus,
+                    qaComment = comment,
+                ),
             correlationId = correlationId,
         )
     }
@@ -58,15 +62,13 @@ class MessageQueuePublications(
      * Method to publish a message that a data point has been uploaded
      * @param dataPointMetaInformation The meta information of the uploaded data point
      * @param companyInformation The company information of the company the data point belongs to
-     * @param initialQaStatus The initial QA status of the data point
-     * @param initialQaComment The initial QA status message of the data point
+     * @param initialQa The initial QA status of the data point
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessage(
         dataPointMetaInformation: DataPointMetaInformation,
         companyInformation: StoredCompany,
-        initialQaStatus: QaStatus,
-        initialQaComment: String?,
+        initialQa: InitialQaStatus,
         correlationId: String,
     ) {
         logger
@@ -86,8 +88,7 @@ class MessageQueuePublications(
                         uploadTime = dataPointMetaInformation.uploadTime,
                         uploaderUserId =
                             dataPointMetaInformation.uploaderUserId,
-                        initialQaStatus = initialQaStatus.toString(),
-                        initialQaComment = initialQaComment,
+                        initialQa = initialQa,
                     ),
                 ),
             type = MessageType.PUBLIC_DATA_RECEIVED,

@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView && isUserAllowedToView ? 'summary-panel--interactive' : ''}`"
+    :class="`summary-panel ${showViewDataButton && !useMobileView ? 'summary-panel--interactive' : ''}`"
     @click="onClickPanel"
   >
     <div>
@@ -22,16 +22,26 @@
         </span>
       </div>
     </div>
-    <a
-      v-if="showProvideDataButton && !useMobileView"
-      class="summary-panel__provide-button"
-      @click="router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
-      @pointerenter="onCursorEnterProvideButton"
-      @pointerleave="onCursorLeaveProvideButton"
-      :data-test="`${framework}-provide-data-button`"
-    >
-      PROVIDE DATA
-    </a>
+    <div>
+      <a
+        v-if="showViewDataButton && !useMobileView"
+        class="summary-panel__button"
+        @click="router.push(`/companies/${props.companyId}/frameworks/${props.framework}`)"
+        :data-test="`${framework}-view-data-button`"
+      >
+        VIEW DATA
+      </a>
+      <a
+        v-if="showProvideDataButton && !useMobileView"
+        class="summary-panel__button mt-2"
+        @click="router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
+        @pointerenter="onCursorEnterProvideButton"
+        @pointerleave="onCursorLeaveProvideButton"
+        :data-test="`${framework}-provide-data-button`"
+      >
+        PROVIDE DATA
+      </a>
+    </div>
   </div>
 </template>
 
@@ -81,6 +91,10 @@ const showProvideDataButton = computed(() => {
   return props.isUserAllowedToUpload && FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
 
+const showViewDataButton = computed(() => {
+  return !!hasAccessibleViewPage.value && props.isUserAllowedToView;
+});
+
 const authenticated = inject<{ value: boolean }>('authenticated');
 const hasAccessibleViewPage = computed(() => {
   return (
@@ -94,7 +108,7 @@ let provideDataButtonHovered: boolean = false;
 
 /**
  * If no other clickable component on the panel is hovered and the user can access the viewpage of the provided framework
- * the view page is visted
+ * the view page is visited
  */
 function onClickPanel(): void {
   if (!provideDataButtonHovered && hasAccessibleViewPage.value && props.isUserAllowedToView) {
@@ -135,9 +149,10 @@ function onCursorLeaveProvideButton(): void {
 
   &--interactive {
     cursor: pointer;
+    box-shadow: 0 0 12px hsl(from var(--primary-color) h 40% l);
 
     &:hover {
-      box-shadow: 0 0 32px 8px #1e1e1e14;
+      box-shadow: 0 0 24px 2px hsl(from var(--primary-color) h 40% l);
 
       .summary-panel__separator {
         border-bottom-color: var(--primary-color);
@@ -153,14 +168,14 @@ function onCursorLeaveProvideButton(): void {
       padding: 24px;
       border-radius: 8px;
       text-align: left;
-      box-shadow: 0 0 12px #9494943d;
+      box-shadow: 0 0 12px hsl(from var(--primary-color) h 40% l);
       display: flex;
       flex-direction: column;
       cursor: pointer;
       justify-content: space-between;
 
       &:hover {
-        box-shadow: 0 0 32px 8px #1e1e1e14;
+        box-shadow: 0 0 24px 2px hsl(from var(--primary-color) h 40% l);
 
         .summary-panel__separator {
           border-bottom-color: var(--primary-color);
@@ -205,7 +220,7 @@ function onCursorLeaveProvideButton(): void {
     font-weight: 600;
   }
 
-  &__provide-button {
+  &__button {
     display: block;
     cursor: pointer;
     width: 100%;
