@@ -1,4 +1,4 @@
-package org.dataland.e2etests.utils.testDataProvivders
+package org.dataland.e2etests.utils.testDataProviders
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType

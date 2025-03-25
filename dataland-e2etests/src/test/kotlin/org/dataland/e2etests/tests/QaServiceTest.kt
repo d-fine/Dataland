@@ -12,7 +12,7 @@ import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
-import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -66,7 +66,9 @@ class QaServiceTest {
     fun setAllPendingDatasetsToRejected() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             while (getNumberOfPendingDatasets() > 0) {
-                getInfoOnPendingDatasets().forEach { changeQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
+                getInfoOnPendingDatasets().forEach {
+                    changeQaStatus(it.dataId, QaServiceQaStatus.Rejected)
+                }
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 getNumberOfPendingDatasets() == 0 && getInfoOnPendingDatasets().isEmpty()
