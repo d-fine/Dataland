@@ -20,6 +20,7 @@ describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
   const dummyUserId = 'dummyUserId';
   const dummyEmail = 'dummy@mail.de';
+  const emailOnUpdate = true;
   const dummyCompanyId = 'dummyCompanyId';
   const dummyCompanyName = 'dummyCompanyName';
   const dummyFramework = 'dummyFramework';
@@ -45,6 +46,7 @@ describe('Component tests for the view data request page', function (): void {
       dataRequestId: requestId,
       userId: dummyUserId,
       userEmailAddress: dummyEmail,
+      emailOnUpdate: emailOnUpdate,
       creationTimestamp: dummyCreationTime,
       dataType: dummyFramework,
       reportingPeriod: dummyReportingYear,
