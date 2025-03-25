@@ -20598,23 +20598,23 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "sector": {
+          "companyId": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }
@@ -20639,10 +20639,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -20697,16 +20697,16 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "sfdr",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "nuclear-and-gas",
-          "lksg",
           "p2p",
-          "sfdr",
+          "lksg",
+          "additional-company-information",
           "vsme",
           "esg-datenkatalog",
-          "heimathafen",
-          "additional-company-information"
+          "heimathafen"
         ]
       },
       "ErrorDetails": {
