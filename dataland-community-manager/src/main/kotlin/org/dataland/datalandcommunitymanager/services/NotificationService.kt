@@ -39,7 +39,8 @@ class NotificationService
          * If yes, sends Investor Relationship and/or Data Request Summary notification emails.
          * Scheduled to run every Sunday at midnight.
          */
-        @Scheduled(cron = "0 0 0 ? * SUN")
+//        @Scheduled(cron = "0 0 0 ? * SUN")
+        @Scheduled(cron = "0 */10 * * * *")
         fun scheduledWeeklyEmailSending() {
             // Investor Relationship Emails
             val unprocessedInvestorRelationshipEvents =
