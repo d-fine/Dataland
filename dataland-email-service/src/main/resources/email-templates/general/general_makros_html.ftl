@@ -1,20 +1,26 @@
 <#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
 
-<#macro spacerRow>
+<#macro spacerRow colspan="3">
     <tr>
-        <td colspan="1" style="height: 20px; padding: 0">&nbsp;</td>
+        <td colspan="${colspan}" style="height: 20px; line-height: 20px; padding: 0">&nbsp;</td>
     </tr>
 </#macro>
 
-<#macro spacerRowTiny>
+<#macro spacerRowSmall colspan="3">
     <tr>
-        <td colspan="1" style="font-size: 5px; height: 5px; padding: 0">&nbsp;</td>
+        <td colspan="${colspan}" style="font-size: 10px; height: 10px; line-height: 10px; padding: 0">&nbsp;</td>
     </tr>
 </#macro>
 
-<#macro spacerRowHorizontalLine position>
+<#macro spacerRowTiny colspan="3">
     <tr>
-        <td colspan="3" style="border-${position}:1px solid #e3e3e3; height: 20px; padding: 0">&nbsp;</td>
+        <td colspan="${colspan}" style="font-size: 5px; height: 5px; line-height: 5px; padding: 0">&nbsp;</td>
+    </tr>
+</#macro>
+
+<#macro spacerRowHorizontalLine position padding="0">
+    <tr>
+        <td colspan="3" style="border-${position}:1px solid #e3e3e3; height: 20px; padding: ${padding}">&nbsp;</td>
     </tr>
 </#macro>
 
@@ -25,16 +31,25 @@
 </#macro>
 
 <#macro dataLabel(label)>
-    <tr style="height: 30px; padding-bottom: 12px;">
+    <tr>
         <td colspan="3" style="height: 7px; padding: 0 20px">${label}</td>
     </tr>
 </#macro>
 
 <#macro dataValue(value)>
-    <tr style="height: 30px; padding-bottom: 12px;">
-        <td colspan="3" style="font-weight: bold; font-size:19px; padding: 0 20px">${value}</td>
+    <tr>
+        <td colspan="3" style="font-weight: bold; font-size:20px; padding: 0 20px">${value}</td>
     </tr>
 </#macro>
+
+<#macro dataLabelCell(label padding="0 10px 0 0")>
+    <td style="padding: ${padding}">${label}</td>
+</#macro>
+
+<#macro dataValueCell(value padding="0 10px 0 0")>
+    <td style="vertical-align: top; font-weight: bold; font-size:20px; padding: ${padding}">${value}</td>
+</#macro>
+
 
 <#macro buttonLink(url, linkText)>
     <tr>
@@ -49,9 +64,21 @@
 </#macro>
 
 <#macro textLink(url, linkText)>
-    <a href="${url}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">
+    <a href="${url}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 18px; color: #FF6813; text-decoration: none;">
         ${linkText} &#10132;
     </a>
+</#macro>
+
+<#macro linkWithIcon(url, linkText)>
+    <td>
+        <span style="color: #ffffff;">
+            <a href="${url}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none;">
+                ${linkText}
+            </a>
+            &nbsp;&nbsp;
+            <span style="font-family: Calibri, sans-serif; font-weight: bold;">&#8599;</span>
+        </span>
+    </td>
 </#macro>
 
 <#macro notificationSetting(url)>
@@ -70,7 +97,7 @@
     <@spacerRowTiny/>
     <tr>
         <td colspan="3">
-            <ol style="line-height: 25px;">
+            <ol style="line-height: 24px; font-size: 16px; margin:0">
                 <#list items as item>
                     <li>${item}</li>
                 </#list>
@@ -82,4 +109,16 @@
 <#macro howToProceedDataRequest>
     <@howToProceed items=["Review the provided data on Dataland.",
                           "Resolve or reopen your data request."]/>
+</#macro>
+
+<#macro bulletItemWithOptionalLink(text, url="", linkText="")>
+    <tr>
+        <td style="vertical-align: top; padding: 0 10px; line-height:24px"><b>&bull;</b></td>
+        <td>
+            ${text}<br />
+            <#if url?has_content && linkText?has_content>
+                <@textLink url="${url}" linkText="${linkText}"/>
+            </#if>
+        </td>
+    </tr>
 </#macro>

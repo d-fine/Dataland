@@ -12,21 +12,16 @@
                 <#if (item_index != 0) && (item.dataTypeLabel != previousFramework)>
                     <@spacerRowHorizontalLine position="top"/>
                 </#if>
-                <tr style="height: 30px; padding-bottom: 12px;">
-                    <td>
-                        <#if item.dataTypeLabel != previousFramework>Framework</#if>
-                    </td>
-                    <td>Reporting period</td>
-                    <td>
-                        <#if (item.companies?size > 1)>Companies<#else>Company</#if>
-                    </td>
+                <tr style="height: 20px;">
+                    <@dataLabelCell label="${(item.dataTypeLabel != previousFramework)?string('Framework', '')}"/>
+                    <@dataLabelCell label="Reporting Period"/>
+                    <@dataLabelCell label="${(item.companies?size > 1)?string('Companies', 'Company')}" padding="0"/>
                 </tr>
-                <tr style="padding-bottom: 12px;">
-                    <td style="vertical-align: top; font-weight: bold; font-size:19px">
-                        <#if item.dataTypeLabel != previousFramework>${item.dataTypeLabel}</#if>
-                    </td>
-                    <td style="vertical-align: top; font-weight: bold; font-size:19px">${item.reportingPeriod}</td>
-                    <td style="vertical-align: top; font-weight: bold; font-size:19px">
+                <@spacerRowTiny/>
+                <tr>
+                    <@dataValueCell value="${(item.dataTypeLabel != previousFramework)?string('${item.dataTypeLabel}', '')}"/>
+                    <@dataValueCell value="${item.reportingPeriod}"/>
+                    <td style="vertical-align: top; font-weight: bold; font-size:19px; padding: 0">
                         <#list item.companies as company>
                             <#if company_index < 5><div>${company}</div></#if>
                         </#list>
@@ -56,7 +51,7 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
     <#include "../general/header.ftl">
-    <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0 2px; margin: 0">
+    <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; text-align: left; border-collapse: collapse; padding: 0 10px; margin: 0">
         <tbody>
         <tr>
             <td rowspan="20" style="width: 40px">&nbsp;</td>

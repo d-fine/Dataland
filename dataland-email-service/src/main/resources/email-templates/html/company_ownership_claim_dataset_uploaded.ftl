@@ -10,7 +10,7 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
 <#include "../general/header.ftl">
-<table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
+<table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 24px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
     <tr>
         <td rowspan="15" style="width: 40px">&nbsp;</td>
@@ -32,14 +32,17 @@
             <div style="background-color: #f6f6f6; padding: 20px; border-radius: 15px">
                 <table style="background-color: #f6f6f6; padding: 20px; border-collapse: collapse; margin: 0; width: 100%">
                     <tbody>
+                    <@spacerRow/>
                     <#list frameworkData as framework>
                         <@dataLabel label="Framework"/>
+                        <@spacerRowTiny/>
                         <@dataValue value=framework.dataTypeLabel/>
                         <@spacerRow/>
                         <@dataLabel label="Reporting year${(framework.reportingPeriods?size > 1)?string('s', '')}"/>
+                        <@spacerRowTiny/>
                         <@dataValue value=framework.reportingPeriods?join(", ")/>
                         <#if !framework?is_last>
-                            <@spacerRowHorizontalLine position="bottom"/>
+                            <@spacerRowHorizontalLine position="bottom" padding="0 20px"/>
                             <@spacerRow/>
                         </#if>
                     </#list>
