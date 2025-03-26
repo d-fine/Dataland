@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
@@ -13,6 +14,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPat
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -20,6 +22,9 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -50,6 +55,7 @@ internal class MetaDataControllerTest(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val dataPointMetaInformationManager: DataPointMetaInformationManager,
     @Autowired private val metaDataController: MetaDataController,
     @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
@@ -60,6 +66,7 @@ internal class MetaDataControllerTest(
     private val uploaderUserId = "uploader-user-id"
     private val defaultReportingPeriod = "2023"
     private val defaultDataType = DataType.of(SfdrData::class.java)
+    private val defaultDataPointType = "default-data-point-type"
 
     val testDataProvider = TestDataProvider(objectMapper)
     private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
@@ -80,7 +87,6 @@ internal class MetaDataControllerTest(
     fun setup() {
         testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
         storedCompany = companyManager.addCompany(testCompanyInformation)
-        doReturn(emptyList<String>()).whenever(specificationClient).listFrameworkSpecifications()
     }
 
     @Test
@@ -200,6 +206,7 @@ internal class MetaDataControllerTest(
 
     @Test
     fun `check that the active data endpoint works as expected for basic dataset related searches`() {
+        doReturn(emptyList<String>()).whenever(specificationClient).listFrameworkSpecifications()
         mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         val nonDefaultReportingPeriod = "2022"
         val nonDefaultDataType = "lksg"
@@ -287,6 +294,46 @@ internal class MetaDataControllerTest(
         assertTrue(combinedMultipleFilters == expectedDimensions)
     }
 
+    @Test
+    fun `check that data dimensions with datasets and datapoints is retrieved correctly`() {
+        val testFramework = "test-framework"
+        val testSpecification = SimpleFrameworkSpecification(framework = IdWithRef(id = testFramework, ref = "dummy"), name = "Test")
+        doReturn(listOf(testSpecification)).whenever(specificationClient).listFrameworkSpecifications()
+        doReturn(
+            mock<FrameworkSpecification> {
+                on { schema } doReturn
+                    "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$defaultDataPointType\",\"ref\":\"dummy\"}}}}"
+            },
+        ).whenever(specificationClient).getFrameworkSpecification(testFramework)
+
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
+        addMetainformation()
+        addDataPointMetainformation()
+        val allDimensions =
+            listOf(
+                BasicDataDimensions(
+                    companyId = storedCompany.companyId,
+                    dataType = defaultDataType.toString(),
+                    reportingPeriod = defaultReportingPeriod,
+                ),
+                BasicDataDimensions(
+                    companyId = storedCompany.companyId,
+                    dataType = defaultDataPointType,
+                    reportingPeriod = defaultReportingPeriod,
+                ),
+                BasicDataDimensions(
+                    companyId = storedCompany.companyId,
+                    dataType = testFramework,
+                    reportingPeriod = defaultReportingPeriod,
+                ),
+            )
+        val allMatchesExpected = metaDataController.getAvailableData(listOf(storedCompany.companyId), null, null).body
+        assertTrue(allMatchesExpected == allDimensions.subList(0, 2))
+
+        val testFrameworkExpected = metaDataController.getAvailableData(null, listOf(testFramework), null).body
+        assertTrue(testFrameworkExpected == listOf(allDimensions.last()))
+    }
+
     private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {
         val storedCompanies = mutableListOf<StoredCompanyEntity>()
         testDataProvider.getCompanyInformationWithoutIdentifiers(numberOfCompanies).forEach {
@@ -296,28 +343,41 @@ internal class MetaDataControllerTest(
         return storedCompanies
     }
 
-    // Helper function that will crash if one of the optional parameters is explicitly set to null (except for currentlyActive)
     @Suppress("LongParameterList")
     private fun addMetainformation(
-        dataId: String? = UUID.randomUUID().toString(),
-        company: StoredCompanyEntity? = storedCompany,
-        userId: String? = uploaderUserId,
-        uploadTime: Long? = Random.nextLong(),
-        dataType: String? = defaultDataType.toString(),
-        reportingPeriod: String? = defaultReportingPeriod,
+        dataId: String? = null,
+        company: StoredCompanyEntity? = null,
+        userId: String? = null,
+        uploadTime: Long? = null,
+        dataType: String? = null,
+        reportingPeriod: String? = null,
         currentlyActive: Boolean? = true,
-        qaStatus: QaStatus? = QaStatus.Accepted,
+        qaStatus: QaStatus? = null,
     ): DataMetaInformationEntity =
         dataMetaInformationManager.storeDataMetaInformation(
             DataMetaInformationEntity(
-                dataId = dataId!!,
-                company = company!!,
-                dataType = dataType!!,
-                uploaderUserId = userId!!,
-                uploadTime = uploadTime!!,
-                reportingPeriod = reportingPeriod!!,
+                dataId = dataId ?: UUID.randomUUID().toString(),
+                company = company ?: storedCompany,
+                dataType = dataType ?: defaultDataType.toString(),
+                uploaderUserId = userId ?: uploaderUserId,
+                uploadTime = uploadTime ?: Random.nextLong(),
+                reportingPeriod = reportingPeriod ?: defaultReportingPeriod,
                 currentlyActive = currentlyActive,
-                qaStatus = qaStatus!!,
+                qaStatus = qaStatus ?: QaStatus.Accepted,
+            ),
+        )
+
+    private fun addDataPointMetainformation(): DataPointMetaInformationEntity =
+        dataPointMetaInformationManager.storeDataPointMetaInformation(
+            DataPointMetaInformationEntity(
+                dataPointId = UUID.randomUUID().toString(),
+                companyId = storedCompany.companyId,
+                dataPointType = defaultDataPointType,
+                reportingPeriod = defaultReportingPeriod,
+                uploaderUserId = uploaderUserId,
+                uploadTime = Random.nextLong(),
+                currentlyActive = true,
+                qaStatus = QaStatus.Accepted,
             ),
         )
 
