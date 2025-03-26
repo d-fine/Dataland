@@ -421,12 +421,7 @@ internal class MetaDataControllerTest(
         userId: String,
         roles: Set<DatalandRealmRole>,
     ) {
-        val mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "mocked_uploader",
-                userId,
-                roles,
-            )
+        val mockAuthentication = AuthenticationMock.mockJwtAuthentication("mocked_uploader", userId, roles)
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)
