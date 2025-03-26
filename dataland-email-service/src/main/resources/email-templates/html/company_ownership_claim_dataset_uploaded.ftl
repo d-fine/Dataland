@@ -26,9 +26,7 @@
             for your company, which is now accessible on Dataland:
         </td>
     </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
+    <@spacerRow/>
     <tr>
         <td colspan="3">
             <div style="background-color: #f6f6f6; padding: 20px; border-radius: 15px">

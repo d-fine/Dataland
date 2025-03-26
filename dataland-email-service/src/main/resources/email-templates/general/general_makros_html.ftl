@@ -2,19 +2,19 @@
 
 <#macro spacerRow>
     <tr>
-        <td colspan="1" style="height: 20px">&nbsp;</td>
+        <td colspan="1" style="height: 20px; padding: 0">&nbsp;</td>
     </tr>
 </#macro>
 
 <#macro spacerRowTiny>
     <tr>
-        <td colspan="1" style="font-size: 5px; height: 5px">&nbsp;</td>
+        <td colspan="1" style="font-size: 5px; height: 5px; padding: 0">&nbsp;</td>
     </tr>
 </#macro>
 
 <#macro spacerRowHorizontalLine position>
     <tr>
-        <td colspan="3" style="border-${position}:1px solid #e3e3e3; height: 20px">&nbsp;</td>
+        <td colspan="3" style="border-${position}:1px solid #e3e3e3; height: 20px; padding: 0">&nbsp;</td>
     </tr>
 </#macro>
 
@@ -26,13 +26,13 @@
 
 <#macro dataLabel(label)>
     <tr style="height: 30px; padding-bottom: 12px;">
-        <td colspan="3" style="height: 7px;">${label}</td>
+        <td colspan="3" style="height: 7px; padding: 0 20px">${label}</td>
     </tr>
 </#macro>
 
 <#macro dataValue(value)>
     <tr style="height: 30px; padding-bottom: 12px;">
-        <td colspan="3" style="font-weight: bold; font-size:19px;">${value}</td>
+        <td colspan="3" style="font-weight: bold; font-size:19px; padding: 0 20px">${value}</td>
     </tr>
 </#macro>
 
