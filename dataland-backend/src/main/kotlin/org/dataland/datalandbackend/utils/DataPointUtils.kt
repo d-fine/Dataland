@@ -108,7 +108,7 @@ class DataPointUtils
             val dataMetaInformationEntities =
                 metaDataManager.getAllActiveDataPoints(
                     companyIds = dataDimensionFilter.companyIds,
-                    dataPointTypes = dataDimensionFilter.companyIds,
+                    dataPointTypes = dataDimensionFilter.dataTypes,
                     reportingPeriods = dataDimensionFilter.reportingPeriods,
                 )
             val dataPointBasedDimensions = dataMetaInformationEntities.map { it.toBasicDataDimensions() }

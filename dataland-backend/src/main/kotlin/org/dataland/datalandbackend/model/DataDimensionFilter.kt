@@ -11,5 +11,9 @@ data class DataDimensionFilter(
     val dataTypes: List<String>? = null,
     val reportingPeriods: List<String>? = null,
 ) {
+    /**
+     * Checks if the filter is empty (i.e. not a single filter parameter is set)
+     * @return true if the filter is empty, false otherwise
+     */
     fun isEmpty(): Boolean = companyIds.isNullOrEmpty() && dataTypes.isNullOrEmpty() && reportingPeriods.isNullOrEmpty()
 }
