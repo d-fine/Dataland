@@ -140,6 +140,19 @@ describeIf(
       });
     });
 
+    /**
+     * Asserts that the company name is unique in the search results. If it is not unique, the test will fail.
+     * @param testCompany the company that was searched for
+     */
+    function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
+      cy.get(`.p-autocomplete-item:contains('${testCompany.companyName}')`).then((items) => {
+        if (items.length !== 1)
+          throw new Error(
+            `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
+          );
+      });
+    }
+
     it("Search with autocompletion for companies with 'abs' in it, click and use arrow keys, find searched company in recommendation", () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
@@ -171,14 +184,8 @@ describeIf(
             cy.get('.p-autocomplete-item').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search_bar_top]').click({ force: true });
             cy.get('input[id=search_bar_top]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
+            assertSearchedCompanyNameIsUnique(testCompany);
 
-            cy.get(`.p-autocomplete-item:contains('${testCompany.companyName}')`).then((items) => {
-              if (items.length !== 1) {
-                throw new Error(
-                  `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
-                );
-              }
-            });
             cy.get('.p-autocomplete-item').eq(0).should('contain.text', testCompany.companyName).click({ force: true });
 
             validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
