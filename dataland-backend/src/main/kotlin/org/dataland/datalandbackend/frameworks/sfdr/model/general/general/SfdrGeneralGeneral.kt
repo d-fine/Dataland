@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.general.general
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.sfdr.model.general.general.SfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.time.LocalDate

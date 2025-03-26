@@ -28,6 +28,8 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.QaBypass
+import org.dataland.datalandmessagequeueutils.messages.data.InitialQaStatus
+import org.dataland.datalandmessagequeueutils.messages.data.PresetQaStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -200,8 +202,7 @@ class AssembledDataManager
             fileReferenceToFileNameMapping: Map<String, String>,
             uploadedDataset: StorableDataset,
             correlationId: String,
-            initialQaStatus: QaStatus,
-            initialQaComment: String?,
+            initialQa: InitialQaStatus,
         ) {
             logger.info("Processing dataset with id $datasetId (correlation ID: $correlationId).")
             val companyInformation = companyManager.getCompanyById(uploadedDataset.companyId).toApiModel()
@@ -219,8 +220,7 @@ class AssembledDataManager
                     messageQueuePublications.publishDataPointUploadedMessage(
                         dataPointMetaInformation = it,
                         companyInformation = companyInformation,
-                        initialQaStatus = initialQaStatus,
-                        initialQaComment = initialQaComment,
+                        initialQa = initialQa,
                         correlationId = correlationId,
                     )
                     createdDataIds[dataPointType] = it.dataPointId
@@ -262,8 +262,11 @@ class AssembledDataManager
                 fileReferenceToFileNameMapping = fileReferenceToFileNameMapping,
                 uploadedDataset = uploadedDataset,
                 correlationId = correlationId,
-                initialQaStatus = qaStatus,
-                initialQaComment = comment,
+                initialQa =
+                    PresetQaStatus(
+                        qaStatus = qaStatus,
+                        qaComment = comment,
+                    ),
             )
 
             return datasetId

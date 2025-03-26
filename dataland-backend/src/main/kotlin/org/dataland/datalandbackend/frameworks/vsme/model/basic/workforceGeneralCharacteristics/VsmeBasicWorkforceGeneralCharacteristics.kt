@@ -2,6 +2,8 @@
 package org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceGeneralCharacteristics
 
 import org.dataland.datalandbackend.frameworks.vsme.custom.VsmeEmployeesPerCountry
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceGeneralCharacteristics
+    .VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions
 import java.math.BigDecimal
 
 /**
