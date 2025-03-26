@@ -196,4 +196,22 @@ class DataPointMetaInformationManager
                     reportingPeriod = reportingPeriod,
                 ).map { it.uploadTime }
                 .maxOf { it }
+
+        /**
+         * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods provided
+         * @param companyIds the IDs of the companies to filter by
+         * @param dataPointTypes the data point types to filter by
+         * @param reportingPeriods the reporting periods to filter by
+         * @return a list of all active data point meta information entities
+         */
+        fun getAllActiveDataPoints(
+            companyIds: List<String>?,
+            dataPointTypes: List<String>?,
+            reportingPeriods: List<String>?,
+        ): List<DataPointMetaInformationEntity> =
+            dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
+                companyIds = companyIds,
+                dataPointTypes = dataPointTypes,
+                reportingPeriods = reportingPeriods,
+            )
     }
