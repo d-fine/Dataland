@@ -17,6 +17,10 @@ class CategoryBuilder(
     private val builder: FrameworkSpecificationBuilder,
     val childElements: MutableList<SpecificationElement> = mutableListOf(),
 ) : SpecificationElement {
+    companion object {
+        const val MAXIMUM_DATA_POINT_TYPE_ID_LENGTH = 255
+    }
+
     /**
      * Add a new category to the hierarchy
      */
@@ -85,7 +89,7 @@ class CategoryBuilder(
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
             "Data point base type id $dataPointBaseTypeId does not exist in the database."
         }
-        require(id.length < 255) {
+        require(id.length < MAXIMUM_DATA_POINT_TYPE_ID_LENGTH) {
             "The length of the data-point-id field in the databases (e.g., the QA database) is limited to 255 chars. " +
                 "Therefore, the id of the data point type must be shorter than 255 chars."
         }

@@ -9,8 +9,8 @@ import org.flywaydb.core.api.migration.Context
  */
 @Suppress("ClassName")
 class V8__CreateQaDataPointIndices : BaseJavaMigration() {
-    override fun migrate(context: Context?) {
-        context!!.connection.createStatement().execute(
+    override fun migrate(context: Context) {
+        context.connection.createStatement().execute(
             """
             CREATE TABLE IF NOT EXISTS data_point_qa_review
             (
@@ -29,10 +29,9 @@ class V8__CreateQaDataPointIndices : BaseJavaMigration() {
             """.trimIndent(),
         )
 
-        context!!.connection.createStatement().execute(
+        context.connection.createStatement().execute(
             "CREATE INDEX data_point_id_idx ON data_point_qa_review (data_point_id);" +
-                "CREATE INDEX company_id_idx ON data_point_qa_review (company_id);" +
-                "CREATE INDEX qa_status_idx ON data_point_qa_review (qa_status);",
+                "CREATE INDEX company_id_idx ON data_point_qa_review (company_id);",
         )
     }
 }
