@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
@@ -200,14 +201,15 @@ class MetaDataController(
         dataTypes: List<String>?,
         reportingPeriods: List<String>?,
     ): ResponseEntity<List<BasicDataDimensions>> {
-        if (companyIds.isNullOrEmpty() && dataTypes.isNullOrEmpty() && reportingPeriods.isNullOrEmpty()) {
+        val dataDimensionFilter = DataDimensionFilter(companyIds, dataTypes, reportingPeriods)
+        if (dataDimensionFilter.isEmpty()) {
             throw InvalidInputApiException(
                 summary = "All filters are empty.",
                 message = "At least one filter must be provided.",
             )
         }
-        val activeDataSets = dataMetaInformationManager.getAllActiveDatasets(companyIds, dataTypes, reportingPeriods)
-        val activeDataPoints = dataPointUtils.getAllActiveDataDimensions(companyIds, dataTypes, reportingPeriods)
+        val activeDataSets = dataMetaInformationManager.getAllActiveDatasets(dataDimensionFilter)
+        val activeDataPoints = dataPointUtils.getAllActiveDataDimensions(dataDimensionFilter)
         return ResponseEntity.ok((activeDataSets + activeDataPoints).distinct())
     }
 }

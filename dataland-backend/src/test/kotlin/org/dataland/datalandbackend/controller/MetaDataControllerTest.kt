@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
@@ -70,15 +71,9 @@ internal class MetaDataControllerTest(
 
     val testDataProvider = TestDataProvider(objectMapper)
     private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
-    private final val expectedSetOfRolesForUploader =
-        expectedSetOfRolesForReader +
-            setOf(DatalandRealmRole.ROLE_UPLOADER)
-    private final val expectedSetOfRolesForReviewer =
-        expectedSetOfRolesForReader +
-            setOf(DatalandRealmRole.ROLE_REVIEWER)
-    private final val expectedSetOfRolesForAdmin =
-        expectedSetOfRolesForReader + expectedSetOfRolesForUploader +
-            expectedSetOfRolesForReviewer + setOf(DatalandRealmRole.ROLE_ADMIN)
+    private final val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
+    private final val expectedSetOfRolesForReviewer = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_REVIEWER)
+    private final val expectedSetOfRolesForAdmin = DatalandRealmRole.entries.toSet()
 
     @MockitoBean
     private var specificationClient = mock<SpecificationControllerApi>()
@@ -87,6 +82,7 @@ internal class MetaDataControllerTest(
     fun setup() {
         testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
         storedCompany = companyManager.addCompany(testCompanyInformation)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
     }
 
     @Test
@@ -151,7 +147,6 @@ internal class MetaDataControllerTest(
             )
             addMetainformation(dataId = dataId[i], company = storedCompanies[i], userId = uploaderUserId.toString())
         }
-        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         val listDataMetaInfos = metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationSearchFilters).body
 
         assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
@@ -189,8 +184,6 @@ internal class MetaDataControllerTest(
                 uploaderUserId = "",
             )
         val nullDataMetaInformationPatch = DataMetaInformationPatch(uploaderUserId = "")
-
-        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, emptyDataMetaInformationPatch)
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, nullDataMetaInformationPatch)
     }
@@ -198,16 +191,13 @@ internal class MetaDataControllerTest(
     @Test
     fun `ensure that meta info patch endpoint rejects vsme data`() {
         val metaInfo = addMetainformation(dataType = DataType.of(VsmeData::class.java).toString())
-        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
-        val mockDataMetaInformationPatch =
-            mock<DataMetaInformationPatch> { on { uploaderUserId } doReturn uploaderUserId }
+        val mockDataMetaInformationPatch = mock<DataMetaInformationPatch> { on { uploaderUserId } doReturn uploaderUserId }
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, mockDataMetaInformationPatch)
     }
 
     @Test
     fun `check that the active data endpoint works as expected for basic dataset related searches`() {
         doReturn(emptyList<String>()).whenever(specificationClient).listFrameworkSpecifications()
-        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         val nonDefaultReportingPeriod = "2022"
         val nonDefaultDataType = "lksg"
         addMetainformation(reportingPeriod = nonDefaultReportingPeriod)
@@ -234,13 +224,17 @@ internal class MetaDataControllerTest(
         val allMatchesExpected = metaDataController.getAvailableData(listOf(storedCompany.companyId), null, null).body
         assertTrue(allMatchesExpected == allDimensions)
 
-        val filterForYear = dataMetaInformationManager.getAllActiveDatasets(null, null, listOf(nonDefaultReportingPeriod))
+        val filterForYear =
+            dataMetaInformationManager
+                .getAllActiveDatasets(DataDimensionFilter(reportingPeriods = listOf(nonDefaultReportingPeriod)))
         assertTrue(filterForYear.first() == allDimensions.first())
 
-        val filterForCompanyId = dataMetaInformationManager.getAllActiveDatasets(listOf(storedCompany.companyId), null, null)
+        val filterForCompanyId =
+            dataMetaInformationManager
+                .getAllActiveDatasets(DataDimensionFilter(companyIds = listOf(storedCompany.companyId)))
         assertTrue(filterForCompanyId == allDimensions)
 
-        val filterForType = dataMetaInformationManager.getAllActiveDatasets(null, listOf(nonDefaultDataType), null)
+        val filterForType = dataMetaInformationManager.getAllActiveDatasets(DataDimensionFilter(dataTypes = listOf(nonDefaultDataType)))
         assertTrue(filterForType.first() == allDimensions.last())
     }
 
@@ -275,21 +269,22 @@ internal class MetaDataControllerTest(
         val combinedSingleFilters =
             dataMetaInformationManager
                 .getAllActiveDatasets(
-                    listOf(storedCompanies[0].companyId),
-                    listOf(defaultDataType.toString()),
-                    listOf(singleReportingPeriod),
+                    DataDimensionFilter(
+                        companyIds = listOf(storedCompanies[0].companyId),
+                        dataTypes = listOf(defaultDataType.toString()),
+                        reportingPeriods = listOf(singleReportingPeriod),
+                    ),
                 )
         assertTrue(combinedSingleFilters.first() == expectedDimensions.first())
 
         val combinedMultipleFilters =
             dataMetaInformationManager
                 .getAllActiveDatasets(
-                    listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
-                    listOf(
-                        defaultDataType.toString(),
-                        singleDataType,
+                    DataDimensionFilter(
+                        companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
+                        dataTypes = listOf(defaultDataType.toString(), singleDataType),
+                        reportingPeriods = listOf(singleReportingPeriod, defaultReportingPeriod),
                     ),
-                    listOf(singleReportingPeriod, defaultReportingPeriod),
                 )
         assertTrue(combinedMultipleFilters == expectedDimensions)
     }
@@ -305,8 +300,6 @@ internal class MetaDataControllerTest(
                     "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$defaultDataPointType\",\"ref\":\"dummy\"}}}}"
             },
         ).whenever(specificationClient).getFrameworkSpecification(testFramework)
-
-        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         addMetainformation()
         addDataPointMetainformation()
         val allDimensions =
@@ -327,6 +320,7 @@ internal class MetaDataControllerTest(
                     reportingPeriod = defaultReportingPeriod,
                 ),
             )
+
         val allMatchesExpected = metaDataController.getAvailableData(listOf(storedCompany.companyId), null, null).body
         assertTrue(allMatchesExpected == allDimensions.subList(0, 2))
 

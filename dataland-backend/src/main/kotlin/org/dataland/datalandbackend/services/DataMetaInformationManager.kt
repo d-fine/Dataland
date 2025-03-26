@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -116,17 +117,16 @@ class DataMetaInformationManager(
 
     /**
      * Method to get all data dimensions for which a dataset is active given a set of filters
-     * @param companyIds the company IDs to filter for
-     * @param dataTypes the data types to filter for
-     * @param reportingPeriods the reporting periods to filter for
+     * @param dataDimensionFilter the filters to apply to the search
      * @return a list of data dimensions for which a dataset is active
      */
-    fun getAllActiveDatasets(
-        companyIds: List<String>?,
-        dataTypes: List<String>?,
-        reportingPeriods: List<String>?,
-    ): List<BasicDataDimensions> {
-        val dataMetaInformationEntities = dataMetaInformationRepository.getBulkActiveDatasets(companyIds, dataTypes, reportingPeriods)
-        return dataMetaInformationEntities.map { BasicDataDimensions(it.company.companyId, it.dataType, it.reportingPeriod) }
+    fun getAllActiveDatasets(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+        val dataMetaInformationEntities =
+            dataMetaInformationRepository.getBulkActiveDatasets(
+                companyIds = dataDimensionFilter.companyIds,
+                dataTypes = dataDimensionFilter.dataTypes,
+                reportingPeriods = dataDimensionFilter.reportingPeriods,
+            )
+        return dataMetaInformationEntities.map { it.toBasicDataDimensions() }
     }
 }
