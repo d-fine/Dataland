@@ -28,7 +28,7 @@ class IgnoreLocalDateAdapter : JsonAdapter<LocalDate>() {
 }
 
 /**
- * Asserts that the data of two objects are equal, ignoring dates and the referenced reports field
+ * Asserts that the data of two objects are equal, ignoring date fields
  * @param expected The expected object
  * @param actual The actual object
  */
