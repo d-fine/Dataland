@@ -76,10 +76,10 @@ data class DataPointMetaInformationEntity(
      * Converts the entity into the basic data dimension object
      * return a BasicDataDimensions object
      */
-    fun toBasicDataDimensions(): BasicDataDimensions =
+    fun toBasicDataDimensions(framework: String? = null): BasicDataDimensions =
         BasicDataDimensions(
             companyId = companyId,
-            dataType = dataPointType,
+            dataType = framework ?: dataPointType,
             reportingPeriod = reportingPeriod,
         )
 }

@@ -131,7 +131,7 @@ class DataPointUtils
                         dataPointTypes = getRelevantDataPointTypes(framework).toList(),
                         reportingPeriods = reportingPeriods,
                     )
-                allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions() })
+                allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
             }
             return allRelevantDimensions.distinct()
         }
