@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -34,12 +35,14 @@ import java.util.UUID
  */
 
 @RestController
+@Suppress("LongParameterList")
 class MetaDataController(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
     @Autowired val assembledDataManager: AssembledDataManager,
+    @Autowired val dataPointUtils: DataPointUtils,
     @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : MetaDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -203,6 +206,8 @@ class MetaDataController(
                 message = "At least one filter must be provided.",
             )
         }
-        return ResponseEntity.ok(dataMetaInformationManager.getAllActiveDatasets(companyIds, dataTypes, reportingPeriods))
+        val activeDataSets = dataMetaInformationManager.getAllActiveDatasets(companyIds, dataTypes, reportingPeriods)
+        val activeDataPoints = dataPointUtils.getAllActiveDataDimensions(companyIds, dataTypes, reportingPeriods)
+        return ResponseEntity.ok((activeDataSets + activeDataPoints).distinct())
     }
 }

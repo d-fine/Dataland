@@ -19,6 +19,7 @@ import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -36,6 +38,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.random.Random
@@ -70,10 +73,14 @@ internal class MetaDataControllerTest(
         expectedSetOfRolesForReader + expectedSetOfRolesForUploader +
             expectedSetOfRolesForReviewer + setOf(DatalandRealmRole.ROLE_ADMIN)
 
+    @MockitoBean
+    private var specificationClient = mock<SpecificationControllerApi>()
+
     @BeforeEach
     fun setup() {
         testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
         storedCompany = companyManager.addCompany(testCompanyInformation)
+        doReturn(emptyList<String>()).whenever(specificationClient).listFrameworkSpecifications()
     }
 
     @Test

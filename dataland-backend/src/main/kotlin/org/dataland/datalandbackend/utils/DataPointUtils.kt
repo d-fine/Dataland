@@ -97,4 +97,42 @@ class DataPointUtils
                     companyId = companyId,
                 )
             }
+
+        /**
+         * Retrieves all active data dimensions in regard to data points given the filter parameters
+         * @param companyIds the IDs of the companies to filter by
+         * @param dataTypes the data types to filter by
+         * @param reportingPeriods the reporting periods to filter by
+         * @return a list of all active data dimensions
+         */
+        fun getAllActiveDataDimensions(
+            companyIds: List<String>?,
+            dataTypes: List<String>?,
+            reportingPeriods: List<String>?,
+        ): List<BasicDataDimensions> {
+            val dataMetaInformationEntities = metaDataManager.getAllActiveDataPoints(companyIds, dataTypes, reportingPeriods)
+            val dataPointBasedDimensions = dataMetaInformationEntities.map { it.toBasicDataDimensions() }
+            val frameworkBasedDimensions = getAllActiveDataDimensionsForFrameworks(companyIds, dataTypes, reportingPeriods)
+            return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
+        }
+
+        private fun getAllActiveDataDimensionsForFrameworks(
+            companyIds: List<String>?,
+            dataTypes: List<String>?,
+            reportingPeriods: List<String>?,
+        ): List<BasicDataDimensions> {
+            val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
+            val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
+            val frameworks = dataTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+            for (framework in frameworks) {
+                val activeDataPointMetaInformation =
+                    metaDataManager.getAllActiveDataPoints(
+                        companyIds = companyIds,
+                        dataPointTypes = getRelevantDataPointTypes(framework).toList(),
+                        reportingPeriods = reportingPeriods,
+                    )
+                allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions() })
+            }
+            return allRelevantDimensions.distinct()
+        }
     }
