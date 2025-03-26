@@ -111,6 +111,34 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the QA service."
+    group = "clients"
+    val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
+    input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/qa-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(qaServiceClientDestinationPackage)
+    modelPackage.set("$qaServiceClientDestinationPackage.model")
+    apiPackage.set("$qaServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateBackendClient")
 }

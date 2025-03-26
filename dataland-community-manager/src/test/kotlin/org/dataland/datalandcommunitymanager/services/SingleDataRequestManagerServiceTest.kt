@@ -13,9 +13,8 @@ import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -33,7 +32,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
@@ -63,7 +61,6 @@ class SingleDataRequestManagerServiceTest(
 
     private lateinit var singleDataRequestManager: SingleDataRequestManager
     private lateinit var spyDataRequestProcessingUtils: DataRequestProcessingUtils
-    private lateinit var mockAuthentication: DatalandAuthentication
 
     private val mockSecurityContext = mock<SecurityContext>()
     private val dummyCompanyId = "00000000-0000-0000-0000-000000000000"
@@ -127,14 +124,11 @@ class SingleDataRequestManagerServiceTest(
                 maxRequestsForUser = 10,
             )
 
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                username = adminUserName,
-                userId = adminUserId,
-                roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
-            )
-        doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
-        SecurityContextHolder.setContext(mockSecurityContext)
+        TestUtils.mockSecurityContext(
+            username = adminUserName,
+            userId = adminUserId,
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
     }
 
     @Test

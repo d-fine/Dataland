@@ -13,8 +13,8 @@ import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentR
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -48,13 +48,6 @@ class CompanyRolesManagerTest {
             headquarters = "dummyHeadquarters",
             identifiers = emptyMap(),
             countryCode = "dummyCountryCode",
-        )
-
-    private val mockAuthentication =
-        AuthenticationMock.mockJwtAuthentication(
-            "username",
-            testUserId,
-            setOf(DatalandRealmRole.ROLE_USER),
         )
 
     @BeforeEach
@@ -119,6 +112,7 @@ class CompanyRolesManagerTest {
             )
         `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(true)
 
+        val mockAuthentication = TestUtils.mockSecurityContext("username", testUserId, DatalandRealmRole.ROLE_USER)
         val exception =
             assertThrows<InvalidInputApiException> {
                 companyRolesManager.triggerCompanyOwnershipRequest(

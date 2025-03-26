@@ -32,11 +32,16 @@ class RequestEmailManager(
     fun sendEmailsWhenRequestStatusChanged(
         dataRequestEntity: DataRequestEntity,
         requestStatus: RequestStatus?,
+        earlierQaApprovedVersionExists: Boolean,
         correlationId: String?,
     ) {
         val correlationId = correlationId ?: UUID.randomUUID().toString()
         if (requestStatus == RequestStatus.Answered) {
-            dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
+            if (!earlierQaApprovedVersionExists) {
+                dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
+            } else {
+                dataRequestResponseEmailMessageSender.sendDataUpdatedEmail(dataRequestEntity, correlationId)
+            }
         }
         if (requestStatus == RequestStatus.NonSourceable) {
             dataRequestResponseEmailMessageSender.sendDataRequestNonSourceableEmail(dataRequestEntity, correlationId)

@@ -10,9 +10,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,8 +27,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.UUID
 
@@ -39,8 +36,6 @@ class DataAccessManagerTest {
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestLogger: DataRequestLogger
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
-
-    private lateinit var authenticationMock: DatalandJwtAuthentication
 
     private val companyId = "companyId"
     private val userId = "userId"
@@ -164,16 +159,7 @@ class DataAccessManagerTest {
 
     @BeforeEach
     fun setupSecurityMock() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock =
-            AuthenticationMock.mockJwtAuthentication(
-                username = "user@example.com",
-                userId = "1234-221-1111elf",
-                roles = setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        `when`(authenticationMock.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
+        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     @Test

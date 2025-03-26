@@ -36,6 +36,7 @@ class DataRequestUpdateManager
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
+        // private val qaControllerApi: QaControllerApi,
         private val utils: DataRequestProcessingUtils,
         private val companyRolesManager: CompanyRolesManager,
         private val companyDataControllerApi: CompanyDataControllerApi,
@@ -166,18 +167,6 @@ class DataRequestUpdateManager
                 dataRequestRepository.findById(dataRequestId).getOrElse {
                     throw DataRequestNotFoundApiException(dataRequestId)
                 }
-            val modificationTime = Instant.now().toEpochMilli()
-            val anyChanges =
-                listOf(
-                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
-                    updateRequestStatusHistoryIfRequired(
-                        dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
-                    ),
-                    updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
-                    checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
-                ).any { it }
-
-            if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
             if (dataRequestEntity.requestStatus != RequestStatus.Withdrawn) {
                 if (
@@ -189,30 +178,31 @@ class DataRequestUpdateManager
                     )
                 }
 
+                val earlierQaApprovedVersionExists =
+                    metaDataControllerApi
+                        .getListOfDataMetaInfo(
+                            companyId = dataRequestEntity.datalandCompanyId,
+                            dataType = DataTypeEnum.decode(dataRequestEntity.dataType),
+                            reportingPeriod = dataRequestEntity.reportingPeriod,
+                            showOnlyActive = true,
+                            qaStatus = QaStatus.Accepted,
+                        ).isNotEmpty()
+
                 if (dataRequestPatch.requestStatus == RequestStatus.Answered ||
                     dataRequestPatch.requestStatus == RequestStatus.NonSourceable
                 ) {
                     if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
                         requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                            dataRequestEntity, dataRequestPatch.requestStatus, correlationId,
+                            dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionExists, correlationId,
                         )
                     } else {
                         val immediateNotificationWasSent =
                             sendImmediateNotificationOnRequestStatusChangeIfApplicable(
-                                dataRequestEntity, dataRequestPatch, correlationId,
+                                dataRequestEntity, dataRequestPatch, earlierQaApprovedVersionExists, correlationId,
                             )
                         resetImmediateNotificationFlagIfApplicable(
                             dataRequestEntity, dataRequestPatch, immediateNotificationWasSent,
                         )
-                        val earlierQaApprovedVersionExists =
-                            metaDataControllerApi
-                                .getListOfDataMetaInfo(
-                                    companyId = dataRequestEntity.datalandCompanyId,
-                                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType),
-                                    reportingPeriod = dataRequestEntity.reportingPeriod,
-                                    showOnlyActive = true,
-                                    qaStatus = QaStatus.Accepted,
-                                ).isNotEmpty()
                         notificationService.createUserSpecificNotificationEvent(
                             dataRequestEntity, dataRequestPatch.requestStatus,
                             immediateNotificationWasSent, earlierQaApprovedVersionExists,
@@ -220,6 +210,18 @@ class DataRequestUpdateManager
                     }
                 }
             }
+
+            val modificationTime = Instant.now().toEpochMilli()
+            val anyChanges =
+                listOf(
+                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
+                    updateRequestStatusHistoryIfRequired(
+                        dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
+                    ),
+                    updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
+                    checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
+                ).any { it }
+            if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
             return dataRequestEntity.toStoredDataRequest()
         }
@@ -231,11 +233,12 @@ class DataRequestUpdateManager
         private fun sendImmediateNotificationOnRequestStatusChangeIfApplicable(
             dataRequestEntity: DataRequestEntity,
             dataRequestPatch: DataRequestPatch,
+            earlierQaApprovedVersionExists: Boolean,
             correlationId: String,
         ): Boolean {
             if (dataRequestEntity.emailOnUpdate) {
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                    dataRequestEntity, dataRequestPatch.requestStatus, correlationId,
+                    dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionExists, correlationId,
                 )
             }
             return dataRequestEntity.emailOnUpdate

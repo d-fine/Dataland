@@ -3,22 +3,34 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.ArgumentMatcher
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import java.util.UUID
+import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationServiceTest {
@@ -98,6 +110,72 @@ class NotificationServiceTest {
             userId = eq(userUUID),
         )
         verify(notificationEventRepository, times(2)).saveAll<NotificationEventEntity>(any())
+    }
+
+    @ParameterizedTest()
+    @MethodSource("provideInputForCreateUserSpecificNotificationEvent")
+    fun `Test createUserSpecificNotificationEvent`(
+        requestStatusBefore: RequestStatus,
+        requestStatusAfter: RequestStatus,
+        immediateNotificationWasSent: Boolean,
+        earlierQaApprovedVersionExists: Boolean,
+    ) {
+        TestUtils.mockSecurityContext()
+        val dataRequestEntity =
+            DataRequestEntity(
+                userId = userUUID.toString(),
+                creationTimestamp = 123,
+                dataType = DataTypeEnum.lksg.toString(),
+                reportingPeriod = "2024",
+                datalandCompanyId = companyUUID.toString(),
+                emailOnUpdate = false,
+            )
+        val storedDataRequestStatusObject = StoredDataRequestStatusObject(requestStatusBefore, 123, AccessStatus.Public, null, null)
+        val requestStatusEntity = RequestStatusEntity(storedDataRequestStatusObject, dataRequestEntity)
+        dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
+        val notificationEventEntity =
+            NotificationEventEntity(
+                notificationEventType = NotificationEventType.UpdatedEvent,
+                userId = userUUID,
+                isProcessed = immediateNotificationWasSent,
+                companyId = companyUUID,
+                framework = DataTypeEnum.lksg,
+                reportingPeriod = "2024",
+            )
+
+        notificationService.createUserSpecificNotificationEvent(
+            dataRequestEntity,
+            requestStatusAfter,
+            immediateNotificationWasSent,
+            earlierQaApprovedVersionExists,
+        )
+
+        verify(notificationEventRepository, times(1)).save(argThat(NotificationEventEntityMatcher(notificationEventEntity)))
+    }
+
+    companion object {
+        @JvmStatic
+        fun provideInputForCreateUserSpecificNotificationEvent(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(
+                    RequestStatus.Open,
+                    RequestStatus.Answered,
+                    true,
+                    true,
+                ),
+            )
+    }
+
+    class NotificationEventEntityMatcher(
+        private val expected: NotificationEventEntity,
+    ) : ArgumentMatcher<NotificationEventEntity> {
+        override fun matches(given: NotificationEventEntity): Boolean =
+            expected.notificationEventType == given.notificationEventType &&
+                expected.userId == given.userId &&
+                expected.isProcessed == given.isProcessed &&
+                expected.companyId == given.companyId &&
+                expected.framework == given.framework &&
+                expected.reportingPeriod == given.reportingPeriod
     }
 
     /* This entire test needs to be reviewed to see which test functions (if any) we still need.

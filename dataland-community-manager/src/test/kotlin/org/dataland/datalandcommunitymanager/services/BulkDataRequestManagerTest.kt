@@ -12,9 +12,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,8 +26,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class BulkDataRequestManagerTest {
@@ -36,7 +33,6 @@ class BulkDataRequestManagerTest {
     private lateinit var mockBulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockMetaDataController: MetaDataControllerApi
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
 
     @Value("\${dataland.community-manager.proxy-primary-url}")
     private val proxyPrimaryUrl: String = "dataland.com"
@@ -62,21 +58,7 @@ class BulkDataRequestManagerTest {
                 mockMetaDataController,
                 proxyPrimaryUrl,
             )
-        val mockSecurityContext = createSecurityContextMock()
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun createSecurityContextMock(): SecurityContext {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@bigplayer.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        return mockSecurityContext
+        TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {

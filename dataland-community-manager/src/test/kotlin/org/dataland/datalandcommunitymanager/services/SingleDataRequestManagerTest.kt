@@ -18,9 +18,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -38,15 +36,12 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.verifyNoInteractions
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class SingleDataRequestManagerTest {
     private lateinit var singleDataRequestManager: SingleDataRequestManager
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockSingleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockSecurityUtilsService: SecurityUtilsService
     private lateinit var mockCompanyInfoService: CompanyInfoService
@@ -68,7 +63,6 @@ class SingleDataRequestManagerTest {
             contacts = setOf("testContact@example.com"),
             message = "Test message for non-premium user quota test",
         )
-    private val testUtils = TestUtils()
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
@@ -96,22 +90,7 @@ class SingleDataRequestManagerTest {
                 keycloakUserService = mockKeycloakUserService,
                 maxRequestsForUser = maxRequestsForUser,
             )
-
-        val mockSecurityContext = createSecurityContextMock()
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun createSecurityContextMock(): SecurityContext {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@bigplayer.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        return mockSecurityContext
+        TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     private fun createDataRequestRepositoryMock(): DataRequestRepository {
@@ -203,13 +182,7 @@ class SingleDataRequestManagerTest {
 
     @Test
     fun `send single data requests as premium user and verify that the quota is not applied`() {
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@example.com",
-                "1234-221-1111zwoelf",
-                setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
-            )
-        testUtils.mockSecurityContext()
+        TestUtils.mockSecurityContext("requester@example.com", "1234-221-1111zwoelf", DatalandRealmRole.ROLE_PREMIUM_USER)
         for (i in 1..maxRequestsForUser + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }

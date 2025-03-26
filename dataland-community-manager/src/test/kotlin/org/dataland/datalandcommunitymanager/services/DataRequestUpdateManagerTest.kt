@@ -17,9 +17,8 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
@@ -37,15 +36,12 @@ import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.Optional
 import java.util.UUID
 
 class DataRequestUpdateManagerTest {
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockNotificationService: NotificationService
     private lateinit var mockMetaControllerApi: MetaDataControllerApi
@@ -200,19 +196,6 @@ class DataRequestUpdateManagerTest {
             )
     }
 
-    private fun setupSecurityMock() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "user@example.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
     private fun setupDummyDataRequestEntities() {
         dummyDataRequestEntities =
             listOf(
@@ -265,7 +248,7 @@ class DataRequestUpdateManagerTest {
 
     @BeforeEach
     fun setupMocksAndDummyRequests() {
-        setupSecurityMock()
+        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         setupDummyDataRequestEntities()
         mockRepos()
         setupDataRequestAlterationManager()
@@ -280,7 +263,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(correlationId),
+                any(), eq(RequestStatus.Answered), eq(true), eq(correlationId),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -303,7 +286,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(correlationId),
+                any(), eq(RequestStatus.Answered), eq(true), eq(correlationId),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -326,7 +309,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Closed), eq(correlationId),
+                any(), eq(RequestStatus.Closed), eq(true), eq(correlationId),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -369,21 +352,23 @@ class DataRequestUpdateManagerTest {
             correlationId,
         )
         verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[0]), eq(RequestStatus.Answered), eq(correlationId))
+            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[0]), eq(RequestStatus.Answered), eq(true), eq(correlationId))
         verify(mockRequestEmailManager, times(0))
-            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[1]), eq(RequestStatus.Answered), eq(correlationId))
+            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[1]), eq(RequestStatus.Answered), eq(true), eq(correlationId))
         verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[2]), eq(RequestStatus.Answered), eq(correlationId))
+            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[2]), eq(RequestStatus.Answered), eq(true), eq(correlationId))
         verify(mockRequestEmailManager)
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity1),
                 eq(RequestStatus.Answered),
+                eq(true),
                 anyString(),
             )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity2),
                 eq(RequestStatus.Answered),
+                eq(true),
                 anyString(),
             )
         verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
