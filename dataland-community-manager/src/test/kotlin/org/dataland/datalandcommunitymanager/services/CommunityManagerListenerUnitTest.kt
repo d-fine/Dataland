@@ -135,7 +135,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.qaStatusChangeMessageWithAcceptance),
             typeQAStatusChange, correlationId,
         )
-        verify(mockDataRequestUpdateManager).patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
+        verify(mockDataRequestUpdateManager).patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
             validDataId, correlationId,
         )
         verify(mockDataRequestUpdateManager).processAnsweredOrClosedOrResolvedRequests(
@@ -150,7 +150,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.qaStatusChangeMessageWithRejection),
             typeQAStatusChange, correlationId,
         )
-        verify(mockDataRequestUpdateManager, times(0)).patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
+        verify(mockDataRequestUpdateManager, times(0)).patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
             anyString(), anyString(),
         )
         verify(mockDataRequestUpdateManager, times(0)).processAnsweredOrClosedOrResolvedRequests(
@@ -185,7 +185,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.validPrivateDataUploadMessage),
             typePrivateUpload, correlationId,
         )
-        verify(mockDataRequestUpdateManager).patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
+        verify(mockDataRequestUpdateManager).patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
             validDataId, correlationId,
         )
     }

@@ -104,6 +104,7 @@ class RequestEmailManagerTest {
         requestEmailManager.sendEmailsWhenRequestStatusChanged(
             dataRequestEntity,
             RequestStatus.Answered,
+            false,
             UUID.randomUUID().toString(),
         )
 
