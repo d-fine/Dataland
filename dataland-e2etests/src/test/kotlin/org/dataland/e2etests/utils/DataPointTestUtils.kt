@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.BigIntegerAdapt
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
@@ -31,7 +32,7 @@ class IgnoreLocalDateAdapter : JsonAdapter<LocalDate>() {
  * @param expected The expected object
  * @param actual The actual object
  */
-inline fun <reified T> assertDataEqualsIgnoringDatesAndReferencedReports(
+inline fun <reified T> assertDataEqualsIgnoringDates(
     expected: T,
     actual: T,
     referencedReportsGetter: (T) -> Map<String, CompanyReport>?,
@@ -65,10 +66,32 @@ inline fun <reified T> assertDataEqualsIgnoringDatesAndReferencedReports(
         expectedJson = expectedJson.replace(referencedReportsFromExpected, "null")
     }
 
+    DataPointTestUtils.assertReferencedReportsEquals(referencedReportsGetter(expected), referencedReportsGetter(actual))
     assertEquals(expectedJson, actualJson)
 }
 
-class DataPointTestUtils {
+object DataPointTestUtils {
+    fun assertReferencedReportsEquals(
+        expected: Map<String, CompanyReport>?,
+        actual: Map<String, CompanyReport>?,
+    ) {
+        if (expected == null || actual == null) {
+            return assertEquals(actual, expected)
+        }
+
+        assertTrue(expected.keys == actual.keys)
+        expected.keys.forEach {
+            assertCompanyReportEquals(expected[it]!!, actual[it]!!)
+        }
+    }
+
+    private fun assertCompanyReportEquals(
+        expected: CompanyReport,
+        actual: CompanyReport,
+    ) {
+        assertEquals(expected.copy(publicationDate = null), actual.copy(publicationDate = null))
+    }
+
     /**
      * Asserts that the data of two SfdrData objects are equal, comparing the referenced reports directly
      * but ignoring the publication dates in all other fields
@@ -79,10 +102,9 @@ class DataPointTestUtils {
         expected: SfdrData,
         actual: SfdrData,
     ) {
-        assertEquals(expected.general?.general?.referencedReports, actual.general?.general?.referencedReports)
-        assertDataEqualsIgnoringDatesAndReferencedReports(
-            getCopyWithoutReferencedReports(expected),
-            getCopyWithoutReferencedReports(actual),
+        assertDataEqualsIgnoringDates(
+            expected,
+            actual,
             { it.general?.general?.referencedReports },
         )
     }
@@ -106,17 +128,6 @@ class DataPointTestUtils {
         val updatedInput = replaceAllByNull(objectMapper.writeValueAsString(qaReport), replacement)
         return objectMapper.readValue(updatedInput, org.dataland.datalandqaservice.openApiClient.model.SfdrData::class.java)
     }
-
-    private fun getCopyWithoutReferencedReports(data: SfdrData): SfdrData =
-        data.copy(
-            general =
-                data.general?.copy(
-                    general =
-                        data.general?.general?.copy(
-                            referencedReports = null,
-                        ),
-                ),
-        )
 
     private fun replaceAllByNull(
         input: String,

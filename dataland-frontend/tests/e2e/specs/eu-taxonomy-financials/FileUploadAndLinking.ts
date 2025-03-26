@@ -97,7 +97,7 @@ describeIf(
         checkIfLinkedReportsAreDownloadable(storedCompanyId);
         gotoEditForm(storedCompanyId, true);
         uploadReports.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
-        cy.get('.p-dialog.p-component').should('exist').get('[data-pc-section="closebutton"]').click();
+        cy.get('.p-dialog.p-component [data-pc-section="closebutton"]').click();
         cy.get('.p-dialog.p-component').should('not.exist');
 
         uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {

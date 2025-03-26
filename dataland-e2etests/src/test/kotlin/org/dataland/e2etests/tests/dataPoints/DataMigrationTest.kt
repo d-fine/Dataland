@@ -18,7 +18,7 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDatesAndReferencedReports
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -191,7 +191,7 @@ class DataMigrationTest {
         val dataMetaInfo = uploadGenericDummyDataset(data = originalData, dataType = DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
-        assertDataEqualsIgnoringDatesAndReferencedReports(
+        assertDataEqualsIgnoringDates(
             originalData, migratedData.data,
             { it.general?.general?.referencedReports },
         )
@@ -220,7 +220,7 @@ class DataMigrationTest {
                 QaService.sfdrDataQaReportControllerApi
                     .getSfdrDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
             }.let {
-                assertEquals(DataPointTestUtils().removeEmptyEntries(linkedQaReportData.qaReport), it.report)
+                assertEquals(DataPointTestUtils.removeEmptyEntries(linkedQaReportData.qaReport), it.report)
             }
     }
 
@@ -247,7 +247,7 @@ class DataMigrationTest {
 
         val downloadedData =
             Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
-        DataPointTestUtils().assertSfdrDataEquals(downloadedData.data, secondDataset)
+        DataPointTestUtils.assertSfdrDataEquals(downloadedData.data, secondDataset)
     }
 
     private val minimalDatasetDebt =

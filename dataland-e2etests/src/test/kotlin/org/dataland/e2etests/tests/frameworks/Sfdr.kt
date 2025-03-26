@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDatesAndReferencedReports
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -51,7 +51,7 @@ class Sfdr {
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        assertDataEqualsIgnoringDatesAndReferencedReports(
+        assertDataEqualsIgnoringDates(
             listOfOneSfdrDataset[0], downloadedAssociatedData.data,
             { it.general?.general?.referencedReports },
         )
@@ -77,7 +77,7 @@ class Sfdr {
                     )
             }
 
-        assertDataEqualsIgnoringDatesAndReferencedReports(
+        assertDataEqualsIgnoringDates(
             listOfOneSfdrDataset[0], downloadedAssociatedData.data,
             { it.general?.general?.referencedReports },
         )
@@ -108,7 +108,7 @@ class Sfdr {
         val companyInformation =
             FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java).getByCompanyName(companyName)
 
-        val dataset = companyInformation!!.t
+        val dataset = companyInformation.t
 
         val uploadPair = Pair(dataset, "2022")
 
