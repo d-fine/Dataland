@@ -32,13 +32,13 @@
 
 <#macro dataLabel(label)>
     <tr>
-        <td colspan="3" style="height: 7px; padding: 0 20px">${label}</td>
+        <td colspan="3" style="height: 7px; padding: 0">${label}</td>
     </tr>
 </#macro>
 
 <#macro dataValue(value)>
     <tr>
-        <td colspan="3" style="font-weight: bold; font-size:20px; padding: 0 20px">${value}</td>
+        <td colspan="3" style="font-weight: bold; font-size:20px; padding: 0">${value}</td>
     </tr>
 </#macro>
 
@@ -96,10 +96,10 @@
     </tr>
     <@spacerRowTiny/>
     <tr>
-        <td colspan="3">
-            <ol style="line-height: 24px; font-size: 16px; margin:0">
+        <td colspan="3" style="margin:0; padding: 0;">
+            <ol style="line-height: 24px; font-size: 16px; margin:0; padding: 0 40px;">
                 <#list items as item>
-                    <li>${item}</li>
+                    <li style="margin:0; padding: 0;">${item}</li>
                 </#list>
             </ol>
         </td>

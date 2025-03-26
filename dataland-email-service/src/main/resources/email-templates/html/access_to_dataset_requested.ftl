@@ -11,8 +11,7 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
 <#include "../general/header.ftl">
-
-<table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
+<table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 24px; text-align: left; border-collapse: collapse; padding: 0 10px; margin: 0">
     <tbody>
     <tr>
         <td rowspan="15" style="width: 40px">&nbsp;</td>
@@ -21,7 +20,7 @@
     </tr>
     <tr>
         <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland!
-            <@formatFirstAndLastName requesterFirstName requesterLastName/> is requesting access to your data from ${companyName} on dataland.</td>
+            <@formatFirstAndLastName requesterFirstName requesterLastName/> is requesting access to your data from ${companyName} on Dataland.</td>
     </tr>
     <@spacerRow/>
     <tr>
@@ -31,9 +30,9 @@
     </tr>
     <@spacerRow/>
     <@spacerRowTiny/>
-    <@howToProceed items=["Verify the access request on dataland.",
+    <@howToProceed items=["Verify the access request on Dataland.",
                           "If you want to share the dataset, grant access."]/>
-    <@spacerRowTiny/>
+    <@spacerRow/>
     <@buttonLink url="${baseUrl}/companyrequests" linkText="VERIFY AND GRANT ACCESS ON DATALAND" />
     <@spacerRow/>
     </tbody>
