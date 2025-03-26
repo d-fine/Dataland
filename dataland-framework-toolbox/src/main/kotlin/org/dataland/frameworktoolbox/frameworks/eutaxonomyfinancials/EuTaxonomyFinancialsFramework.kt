@@ -25,7 +25,7 @@ class EuTaxonomyFinancialsFramework :
         label = "EU Taxonomy Financials",
         explanation = "Additional Taxonomy for Financials",
         File("./dataland-framework-toolbox/inputs/eu-taxonomy-financials/eu-taxonomy-financials.xlsx"),
-        order = 1,
+        order = 2,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
