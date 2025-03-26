@@ -75,11 +75,7 @@ class CommunityManagerListener(
             return
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
-                dataId = dataId,
-                correlationId = id,
-            )
-            dataRequestUpdateManager.processAnsweredOrClosedOrResolvedRequests(
+            dataRequestUpdateManager.processUserRequests(
                 dataId = dataId,
                 correlationId = id,
             )
@@ -92,7 +88,7 @@ class CommunityManagerListener(
     /**
      * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered and handles the update of the access status
-     * @param payload the message body containing the dataId of the uploaded data
+     * @param jsonString the message body containing the dataId of the uploaded data
      * @param type the type of the message
      */
     @RabbitListener(
@@ -125,7 +121,10 @@ class CommunityManagerListener(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
+            dataRequestUpdateManager.processUserRequests(
+                dataId,
+                correlationId = id,
+            )
         }
     }
 

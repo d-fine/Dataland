@@ -1759,9 +1759,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get relevant meta info on unreviewed datasets.",
-        "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
-        "operationId": "getInfoOnPendingDatasets",
+        "summary": "Get relevant meta info on datasets.",
+        "description": "Gets a filtered and chronologically ordered list of relevant meta info on datasets.",
+        "operationId": "getInfoOnDatasets",
         "parameters": [
           {
             "name": "dataTypes",
@@ -1805,6 +1805,14 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "qaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/QaStatus"
             }
           },
           {

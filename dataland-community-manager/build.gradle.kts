@@ -150,6 +150,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/qa-service/src/main/kotlin"))
 }
 
 ktlint {
