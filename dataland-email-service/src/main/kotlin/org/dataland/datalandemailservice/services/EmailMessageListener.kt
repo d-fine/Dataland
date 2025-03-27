@@ -94,7 +94,12 @@ class EmailMessageListener(
      *  This function removes all receiver of the email that have unsubscribed.
      */
     fun buildAndSendEmail(emailMessage: EmailMessage) {
-        val additionalBccList = additionalBcc.split(";").map { EmailRecipient.EmailAddress(it.trim()) }
+        val additionalBccList =
+            additionalBcc
+                .split(";")
+                .map { it.trim() }
+                .filter { it != "" }
+                .map { EmailRecipient.EmailAddress(it) }
         val receivers = resolveRecipients(emailMessage.receiver)
         val cc = resolveRecipients(emailMessage.cc)
         val bcc = resolveRecipients(emailMessage.bcc + additionalBccList)

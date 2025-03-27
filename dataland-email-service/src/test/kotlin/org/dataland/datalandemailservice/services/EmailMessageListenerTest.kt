@@ -117,7 +117,7 @@ class EmailMessageListenerTest {
                 emailSubscriptionTracker,
                 proxyPrimaryUrl,
                 true,
-                EMAIL_ADDRESS_ADDITIONAL_BCC,
+                "  $EMAIL_ADDRESS_ADDITIONAL_BCC;;",
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
