@@ -34,7 +34,7 @@ export const additionalCompanyInformationDataModel = [
           {
             name: 'fiscalYearEnd',
             label: 'Fiscal Year End',
-            description: 'The date the fiscal year ends',
+            description: 'The date the fiscal year ends.',
 
             component: 'DateExtendedDataPointFormField',
             required: false,

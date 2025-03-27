@@ -3,6 +3,6 @@
   "name" : "Carbon footprint",
   "businessDefinition" : "Tonnes of GHG emissions per million units of the enterprise value (in the same currency as total revenue).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }
