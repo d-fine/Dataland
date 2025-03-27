@@ -172,11 +172,11 @@ class DataRequestUpdateManager
                 dataRequestRepository.findById(dataRequestId).getOrElse { throw DataRequestNotFoundApiException(dataRequestId) }
 
             if (dataRequestEntity.requestStatus != RequestStatus.Withdrawn) {
+                val requestAnsweredAccessPending =
+                    dataRequestPatch.requestStatus == RequestStatus.Answered &&
+                        dataRequestPatch.accessStatus == AccessStatus.Pending
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name &&
-                    (
-                        dataRequestPatch.requestStatus == RequestStatus.Open ||
-                            dataRequestPatch.accessStatus == AccessStatus.Granted
-                    )
+                    (requestAnsweredAccessPending || dataRequestPatch.accessStatus == AccessStatus.Granted)
                 ) {
                     requestEmailManager.sendNotificationsSpecificToAccessRequests(
                         dataRequestEntity, dataRequestPatch, correlationId,
