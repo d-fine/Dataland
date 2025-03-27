@@ -139,12 +139,19 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     )
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateBackendClient")
+    dependsOn("generateQaServiceClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
-    dependsOn("generateBackendClient")
+    dependsOn("generateClients")
 }
 
 sourceSets {
