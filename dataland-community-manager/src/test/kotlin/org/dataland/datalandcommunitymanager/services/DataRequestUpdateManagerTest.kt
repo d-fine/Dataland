@@ -20,6 +20,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.datalandqaservice.openApiClient.model.QaReviewResponse
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -56,6 +57,7 @@ class DataRequestUpdateManagerTest {
 
     private val correlationId = UUID.randomUUID().toString()
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
+    private lateinit var mockQaReviewResponses: List<QaReviewResponse>
 
     private val dummyRequestChangeReason = "dummy reason"
     private val dummyCompanyId = "dummyCompanyId"
@@ -86,10 +88,10 @@ class DataRequestUpdateManagerTest {
     private val metaData =
         DataMetaInformation(
             dataId = UUID.randomUUID().toString(),
-            companyId = "companyId",
+            companyId = "dummyCompanyId",
             dataType = DataTypeEnum.p2p,
             uploadTime = 0,
-            reportingPeriod = "",
+            reportingPeriod = "dummyPeriod",
             currentlyActive = false,
             qaStatus = QaStatus.Accepted,
             ref = "test",
@@ -171,8 +173,6 @@ class DataRequestUpdateManagerTest {
         doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName("dummyChildCompanyId1")
         doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName("dummyChildCompanyId2")
 
-        doReturn(metaData).whenever(mockMetaControllerApi).getDataMetaInfo(metaData.dataId)
-
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(any())
@@ -193,6 +193,19 @@ class DataRequestUpdateManagerTest {
             ),
         ).whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
+
+        doReturn(metaData).whenever(mockMetaControllerApi).getDataMetaInfo(metaData.dataId)
+
+        mockQaReviewResponses =
+            listOf(
+                mock(QaReviewResponse::class.java),
+                mock(QaReviewResponse::class.java),
+            )
+        // The following ensures that all data request entities are treated as having an earlier
+        // QA approval.
+        doReturn(mockQaReviewResponses)
+            .whenever(mockQaControllerApi)
+            .getInfoOnDatasets(any(), any(), any(), any(), any(), any())
 
         dataRequestUpdateManager =
             DataRequestUpdateManager(
@@ -230,7 +243,7 @@ class DataRequestUpdateManagerTest {
                 ),
                 DataRequestEntity(
                     userId = "dummyId",
-                    dataType = "sfdr",
+                    dataType = "p2p",
                     emailOnUpdate = true,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 123456,
@@ -299,7 +312,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(true), eq(correlationId),
+                any(), eq(RequestStatus.Answered), any(), eq(correlationId),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -322,7 +335,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Closed), eq(true), eq(correlationId),
+                any(), eq(RequestStatus.Closed), any(), eq(correlationId),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(

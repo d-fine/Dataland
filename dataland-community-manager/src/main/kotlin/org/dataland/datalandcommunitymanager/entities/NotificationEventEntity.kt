@@ -4,6 +4,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
@@ -14,7 +15,10 @@ import java.util.UUID
  * The database entity for storing a single notification event in the database
  */
 @Entity
-@Table(name = "notification_events")
+@Table(
+    name = "notification_events",
+    indexes = [Index(name = "idx_notification_events", columnList = "isProcessed, notificationEventType")],
+)
 data class NotificationEventEntity(
     @Id
     val notificationEventId: UUID = UUID.randomUUID(),
