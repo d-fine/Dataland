@@ -32,9 +32,6 @@ class EmailMessageListenerTest {
     private lateinit var emailContactService: EmailContactService
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
     private val proxyPrimaryUrl = "abc.example.com"
-    private val dryRunIsActive = false
-
-    private lateinit var emailMessageListener: EmailMessageListener
     private lateinit var testData: TypedEmailContentTestData
 
     private val recipientToContactMap =
@@ -114,14 +111,14 @@ class EmailMessageListenerTest {
         val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
         doNothing().whenever(emailSender).sendEmail(any())
 
-        emailMessageListener =
+        val emailMessageListener =
             EmailMessageListener(
                 emailSender,
                 objectMapper,
                 emailContactService,
                 emailSubscriptionTracker,
                 proxyPrimaryUrl,
-                dryRunIsActive,
+                true,
                 EMAIL_ADDRESS_ADDITIONAL_BCC,
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
@@ -136,29 +133,32 @@ class EmailMessageListenerTest {
         )
     }
 
-    /*
     @Test
     fun `test that correct email is send to correct contacts with correct subscription uuid`() {
         val recipient = recipientToContactMap.keys.first()
         val receiver = listOf(recipient)
         val receiverContact = EmailContact.create(EMAIL_ADDRESS_A)
-
-        val typedEmailContent = testData.singleDatasetUploadedEngagement
-
-        val keywords = testData.singleDatasetUploadedEngagementKeywords.toMutableList()
+        val typedEmailContent = testData.dataRequestNonSourceableMail
+        val keywords = testData.dataRequestNonSourceableKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add("https://$proxyPrimaryUrl")
         keywords.remove(testData.subscriptionUuid)
-        contactToSubscriptionStatusMap[receiverContact]
-        keywords.add(contactToSubscriptionStatusMap[receiverContact]?.second.toString())
-
         val jsonString =
             objectMapper.writeValueAsString(
                 EmailMessage(typedEmailContent, receiver, emptyList(), emptyList()),
             )
-
         doNothing().whenever(emailSender).sendEmail(any())
 
+        val emailMessageListener =
+            EmailMessageListener(
+                emailSender,
+                objectMapper,
+                emailContactService,
+                emailSubscriptionTracker,
+                proxyPrimaryUrl,
+                true,
+                "",
+            )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
         verify(emailSender).sendEmail(
@@ -170,5 +170,4 @@ class EmailMessageListenerTest {
             },
         )
     }
-     */
 }
