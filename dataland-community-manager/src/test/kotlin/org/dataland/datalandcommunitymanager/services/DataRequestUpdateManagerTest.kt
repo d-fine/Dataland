@@ -14,10 +14,12 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -42,13 +44,15 @@ import java.util.UUID
 
 class DataRequestUpdateManagerTest {
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
+    private lateinit var mockCompanyInfoService: CompanyInfoService
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockNotificationService: NotificationService
     private lateinit var mockMetaControllerApi: MetaDataControllerApi
+    private lateinit var mockQaControllerApi: QaControllerApi
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockRequestEmailManager: RequestEmailManager
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
-    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
+    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
     private val correlationId = UUID.randomUUID().toString()
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
@@ -157,10 +161,17 @@ class DataRequestUpdateManagerTest {
     private fun setupDataRequestAlterationManager() {
         mockRequestEmailManager = mock(RequestEmailManager::class.java)
         mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
+        mockCompanyInfoService = mock(CompanyInfoService::class.java)
 
+        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockMetaControllerApi = mock(MetaDataControllerApi::class.java)
-        `when`(mockMetaControllerApi.getDataMetaInfo(metaData.dataId))
-            .thenReturn(metaData)
+        mockQaControllerApi = mock(QaControllerApi::class.java)
+
+        doReturn("dummyCompany").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName(dummyCompanyId)
+        doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName("dummyChildCompanyId1")
+        doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName("dummyChildCompanyId2")
+
+        doReturn(metaData).whenever(mockMetaControllerApi).getDataMetaInfo(metaData.dataId)
 
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)
@@ -168,13 +179,13 @@ class DataRequestUpdateManagerTest {
         doReturn(
             listOf(
                 BasicCompanyInformation(
-                    companyName = "",
+                    companyName = "dummyChildCompany1",
                     companyId = "dummyChildCompanyId1",
                     headquarters = "",
                     countryCode = "",
                 ),
                 BasicCompanyInformation(
-                    companyName = "",
+                    companyName = "dummyChildCompany2",
                     companyId = "dummyChildCompanyId2",
                     headquarters = "",
                     countryCode = "",
@@ -185,9 +196,11 @@ class DataRequestUpdateManagerTest {
 
         dataRequestUpdateManager =
             DataRequestUpdateManager(
+                companyInfoService = mockCompanyInfoService,
                 dataRequestRepository = mockDataRequestRepository,
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 metaDataControllerApi = mockMetaControllerApi,
+                qaControllerApi = mockQaControllerApi,
                 requestEmailManager = mockRequestEmailManager,
                 companyRolesManager = mockCompanyRolesManager,
                 utils = mockDataRequestProcessingUtils,
@@ -200,12 +213,12 @@ class DataRequestUpdateManagerTest {
         dummyDataRequestEntities =
             listOf(
                 DataRequestEntity(
-                    userId = "",
+                    userId = "4321",
                     dataType = "p2p",
                     emailOnUpdate = true,
-                    reportingPeriod = "",
+                    reportingPeriod = "dummyPeriod",
                     creationTimestamp = 0,
-                    datalandCompanyId = "",
+                    datalandCompanyId = dummyCompanyId,
                 ),
                 DataRequestEntity(
                     userId = "1234",
@@ -348,6 +361,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that answer emails for subsidiaries are sent according to flag on request status patch from open to answered`() {
         dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
+            dummyDataRequestEntities,
             metaData.dataId,
             correlationId,
         )

@@ -135,10 +135,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.qaStatusChangeMessageWithAcceptance),
             typeQAStatusChange, correlationId,
         )
-        verify(mockDataRequestUpdateManager).patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
-            validDataId, correlationId,
-        )
-        verify(mockDataRequestUpdateManager).processAnsweredOrClosedOrResolvedRequests(
+        verify(mockDataRequestUpdateManager).processUserRequests(
             validDataId, correlationId,
         )
         verify(mockInvestorRelationshipsManager).saveNotificationEventForIREmails(validDataId)
@@ -150,10 +147,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.qaStatusChangeMessageWithRejection),
             typeQAStatusChange, correlationId,
         )
-        verify(mockDataRequestUpdateManager, times(0)).patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
-            anyString(), anyString(),
-        )
-        verify(mockDataRequestUpdateManager, times(0)).processAnsweredOrClosedOrResolvedRequests(
+        verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
             anyString(), anyString(),
         )
         verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForIREmails(anyString())
@@ -185,7 +179,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.validPrivateDataUploadMessage),
             typePrivateUpload, correlationId,
         )
-        verify(mockDataRequestUpdateManager).patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
+        verify(mockDataRequestUpdateManager).processUserRequests(
             validDataId, correlationId,
         )
     }
