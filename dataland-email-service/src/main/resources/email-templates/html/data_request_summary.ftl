@@ -48,7 +48,7 @@
 <!-- TEMPLATE CONTENT -->
 <#---------------------->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="color-scheme" content="light">
@@ -75,7 +75,7 @@
         <@buttonLink url="${baseUrl}/requests" linkText="VIEW MY DATA REQUESTS" />
         <@spacerRow/>
         <!-- NEW DATA -->
-        <#if newData?exists && (newData?size > 0)>
+        <#if newData?? && (newData?size > 0)>
             <@boldTitle title="New Data" />
             <@spacerRow/>
             <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=newData /> </td> </tr>
@@ -83,7 +83,7 @@
             <@spacerRow/>
         </#if>
         <!-- UPDATED DATA -->
-        <#if updatedData?exists && (updatedData?size > 0)>
+        <#if updatedData?? && (updatedData?size > 0)>
             <@boldTitle title="Updated Data" />
             <@spacerRow/>
             <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=updatedData /> </td> </tr>
@@ -91,7 +91,7 @@
             <@spacerRow/>
         </#if>
         <!-- NON SOURCEABLE DATA -->
-        <#if nonSourceableData?exists && (nonSourceableData?size > 0)>
+        <#if nonSourceableData?? && (nonSourceableData?size > 0)>
             <@boldTitle title="Non sourceable Data" />
             <@spacerRow/>
             <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=nonSourceableData /> </td> </tr>
