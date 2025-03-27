@@ -172,9 +172,11 @@ class DataRequestUpdateManager
                 dataRequestRepository.findById(dataRequestId).getOrElse { throw DataRequestNotFoundApiException(dataRequestId) }
 
             if (dataRequestEntity.requestStatus != RequestStatus.Withdrawn) {
-                if (
-                    (dataRequestPatch.requestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
-                    dataRequestPatch.accessStatus == AccessStatus.Granted
+                if (dataRequestEntity.dataType == DataTypeEnum.vsme.name &&
+                    (
+                        dataRequestPatch.requestStatus == RequestStatus.Open ||
+                            dataRequestPatch.accessStatus == AccessStatus.Granted
+                    )
                 ) {
                     requestEmailManager.sendNotificationsSpecificToAccessRequests(
                         dataRequestEntity, dataRequestPatch, correlationId,
