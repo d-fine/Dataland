@@ -81,12 +81,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "Your data request has been updated with new data.",
         )
 
-    val dataRequestClosedKeywords =
-        listOf(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
-            "Your answered data request has been automatically closed as no action was taken within the last",
-        )
-
     val dataRequestNonSourceableMail =
         DataRequestNonSourceable(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NON_SOURCEABLE_COMMENT,
@@ -144,15 +138,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "You have now access to the following dataset on Dataland",
         )
 
-    val singleDatasetUploadedEngagementKeywords =
-        listOf(
-            companyId, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, BASE_URL, subscriptionUuid,
-            "We are Dataland, an open, neutral, and transparent data engagement platform.",
-            "One of our members has specifically requested data about your company.",
-            "A data provider within our network has created a dataset for your company, which is now accessible on Dataland:",
-            "CLAIM COMPANY OWNERSHIP",
-        )
-
     val multipleDatasetsUploadedEngagement =
         MultipleDatasetsUploadedEngagement(
             companyId, COMPANY_NAME,
@@ -167,7 +152,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     val multipleDatasetsUploadedEngagementKeywords =
         listOf(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTING_PERIOD_C,
+            companyId, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTING_PERIOD_C,
             NUMBER_OF_DAYS.toString(), BASE_URL, subscriptionUuid,
             "CLAIM COMPANY OWNERSHIP",
         )

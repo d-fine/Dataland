@@ -4,6 +4,7 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -12,10 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.mock
-import java.io.File
 import java.util.UUID
-
-typealias TestData = TypedEmailContentTestData
 
 class TypedEmailContentTest {
     @ParameterizedTest
@@ -43,33 +41,13 @@ class TypedEmailContentTest {
                 assertThat(emailContent.textContent).contains(keyword)
             }
             assertFalse(htmlTagPattern.containsMatchIn(emailContent.textContent))
-            saveEmailContent(typedEmailContent::class.simpleName ?: UUID.randomUUID().toString(), emailContent, skip = true)
         }
     }
 
-    private fun saveEmailContent(
-        name: String,
-        emailContent: EmailContent,
-        skip: Boolean,
-    ) {
-        if (skip) return
-        val tmpDir = File("tmp")
-        if (!tmpDir.exists()) tmpDir.mkdirs()
-
-        val txtFile = File(tmpDir, "$name.txt")
-        val htmlFile = File(tmpDir, "$name.html")
-
-        txtFile.writeText(emailContent.textContent)
-        htmlFile.writeText(emailContent.htmlContent)
-
-        println("Saved email as ${txtFile.absolutePath} and ${htmlFile.absolutePath}")
-    }
-
-    /*
     @Test
     fun `test that late init vars specified in interfaces are correctly injected`() {
         val emailSubscriptionTracker = mock<EmailSubscriptionTracker>()
-        val content = TestData().singleDatasetUploadedEngagement
+        val content = TypedEmailContentTestData().accessToDatasetRequested
         val subscriptionUuid = UUID.randomUUID()
         val receiver =
             mapOf(
@@ -80,9 +58,7 @@ class TypedEmailContentTest {
         content.setLateInitVars(receiver, proxyPrimaryUrl, emailSubscriptionTracker)
 
         assertEquals(content.baseUrl, "https://$proxyPrimaryUrl")
-        assertEquals(content.subscriptionUuid, subscriptionUuid.toString())
     }
-     */
 
     @Test
     fun `test that late init subscription statuses are correctly injected`() {

@@ -32,7 +32,7 @@ class EmailMessageListenerTest {
     private lateinit var emailContactService: EmailContactService
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
     private val proxyPrimaryUrl = "abc.example.com"
-    private lateinit var testData: TypedEmailContentTestData
+    private val testData = TypedEmailContentTestData()
 
     private val recipientToContactMap =
         mapOf(
@@ -88,8 +88,6 @@ class EmailMessageListenerTest {
                 blocked,
             )
         }
-
-        testData = TypedEmailContentTestData()
     }
 
     private fun assertSenderReceiverCcAndBcc(
