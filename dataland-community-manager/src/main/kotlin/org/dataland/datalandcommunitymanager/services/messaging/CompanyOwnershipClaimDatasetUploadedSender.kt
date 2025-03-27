@@ -12,7 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,14 +73,14 @@ class CompanyOwnershipClaimDatasetUploadedSender(
                 .groupBy { it.framework }
                 .mapValues { entry -> entry.value.map { it.reportingPeriod } }
 
-        // Create external email content detailing multiple dataset uploads
+        // Create external email content detailing dataset uploads and ask for claiming company ownership
         val externalEmailContent =
-            MultipleDatasetsUploadedEngagement(
+            DatasetUploadedClaimOwnership(
                 companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(companyId.toString()),
                 companyId = companyId.toString(),
                 frameworkData =
                     frameworkData.map {
-                        MultipleDatasetsUploadedEngagement.FrameworkData(
+                        DatasetUploadedClaimOwnership.FrameworkData(
                             readableFrameworkNameMapping[it.key] ?: "",
                             it.value,
                         )

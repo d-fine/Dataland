@@ -8,7 +8,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourc
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
@@ -139,11 +139,11 @@ class TypedEmailContentTestData : ArgumentsProvider {
         )
 
     val multipleDatasetsUploadedEngagement =
-        MultipleDatasetsUploadedEngagement(
+        DatasetUploadedClaimOwnership(
             companyId, COMPANY_NAME,
             listOf(
-                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
-                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
+                DatasetUploadedClaimOwnership.FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
+                DatasetUploadedClaimOwnership.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
             ),
         ).also {
             it.baseUrl = BASE_URL
