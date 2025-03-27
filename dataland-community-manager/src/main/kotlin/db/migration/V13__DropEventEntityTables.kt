@@ -10,7 +10,7 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V13__DropEventEntityTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        context!!.connection.createStatement().execute("DROP TABLE elementary_events;")
-        context.connection.createStatement().execute("DROP TABLE notification_events;")
+        context!!.connection.createStatement().execute("DROP TABLE IF EXISTS elementary_events;")
+        context.connection.createStatement().execute("DROP TABLE IF EXISTS notification_events;")
     }
 }
