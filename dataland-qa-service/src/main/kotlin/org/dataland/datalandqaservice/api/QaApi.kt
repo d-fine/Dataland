@@ -44,7 +44,7 @@ interface QaApi {
         @RequestParam dataTypes: Set<DataTypeEnum>?,
         @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,
-        @RequestParam qaStatus: QaStatus = QaStatus.Pending,
+        @RequestParam(defaultValue = "Pending") qaStatus: QaStatus,
         @RequestParam(defaultValue = "10") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>>
