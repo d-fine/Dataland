@@ -8,6 +8,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -38,6 +40,12 @@ class RequestEmailManagerTest {
                 singleDataRequestEmailMessageSender,
                 accessRequestEmailSender,
             )
+
+        TestUtils.mockSecurityContext(
+            username = "admin",
+            userId = "adminId",
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
     }
 
     @Test

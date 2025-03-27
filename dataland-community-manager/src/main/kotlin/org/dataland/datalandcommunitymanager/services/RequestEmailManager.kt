@@ -102,7 +102,9 @@ class RequestEmailManager(
                 correlationId,
             )
         }
-        if (dataRequestPatch.requestStatus == RequestStatus.Open) {
+        if (dataRequestPatch.requestStatus == RequestStatus.Answered &&
+            dataRequestPatch.accessStatus == AccessStatus.Pending
+        ) {
             accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
                 AccessRequestEmailSender.RequestEmailInformation(dataRequestEntity),
                 correlationId,
