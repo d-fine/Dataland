@@ -15,7 +15,7 @@
                         <@spacerRow/>
                         <#list data as item>
                             <#if (item_index != 0) && (item.dataTypeLabel != previousFramework)>
-                                <@spacerRowHorizontalLine position="top"/>
+                                <@spacerRowHorizontalLine position="top" width="480px"/>
                             </#if>
                             <tr style="height: 20px;">
                                 <@dataLabelCell label="${(item.dataTypeLabel != previousFramework)?string('Framework', '')}" padding="0"/>

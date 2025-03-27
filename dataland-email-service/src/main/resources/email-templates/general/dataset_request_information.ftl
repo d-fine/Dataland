@@ -15,7 +15,7 @@
                         <@dataLabel label="Reporting year${(reportingPeriods?size > 1)?string('s', '')}"/>
                         <@spacerRowTiny/>
                         <@dataValue value=reportingPeriods?join(", ")/>
-                        <@spacerRowHorizontalLine position="bottom"/>
+                        <@spacerRowHorizontalLine width="480px"/>
                         <@spacerRow/>
                         <tr>
                             <td style="color:#8c8c8c">From:</td>

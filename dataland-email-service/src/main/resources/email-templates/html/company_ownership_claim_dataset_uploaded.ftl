@@ -46,7 +46,7 @@
                                         <@spacerRowTiny/>
                                         <@dataValue value=framework.reportingPeriods?join(", ")/>
                                         <#if !framework?is_last>
-                                            <@spacerRowHorizontalLine position="bottom" padding="0 20px"/>
+                                            <@spacerRowHorizontalLine padding="0 20px" width="480px"/>
                                         </#if>
                                         <@spacerRow/>
                                     </#list>

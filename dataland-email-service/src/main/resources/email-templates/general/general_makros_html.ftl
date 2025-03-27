@@ -18,9 +18,9 @@
     </tr>
 </#macro>
 
-<#macro spacerRowHorizontalLine position padding="0">
+<#macro spacerRowHorizontalLine position="bottom" color="#e3e3e3" padding="0" width="520px">
     <tr>
-        <td colspan="3" style="border-${position}:1px solid #e3e3e3; height: 20px; padding: ${padding}">&nbsp;</td>
+        <td colspan="3" style="border-${position}:2px solid ${color}; height: 20px; width: ${width} ;padding: ${padding};">&nbsp;</td>
     </tr>
 </#macro>
 

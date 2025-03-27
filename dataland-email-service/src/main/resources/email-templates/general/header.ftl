@@ -18,6 +18,6 @@
         </td>
         <td></td>
     </tr>
-    <@spacerRowHorizontalLine position="bottom" padding="0 20px"/>
+    <@spacerRowHorizontalLine padding="0 40px"/>
     </tbody>
 </table>
