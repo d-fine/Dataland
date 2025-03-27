@@ -3,6 +3,6 @@
   "name" : "Water Consumption",
   "businessDefinition" : "Amount of water consumed by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ]
 }
