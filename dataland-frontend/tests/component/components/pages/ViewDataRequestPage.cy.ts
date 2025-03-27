@@ -379,8 +379,8 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').scrollIntoView();
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').should('be.visible');
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
-    cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', true);
-    cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
     cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', false);
+    cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
+    cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', true);
   });
 });
