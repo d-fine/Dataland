@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
+import org.dataland.datalanduserservice.model.EnrichedPortfolio
+import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 
 /**
  * RestController for the Portfolio API
@@ -20,6 +22,7 @@ class PortfolioController
     constructor(
         private val portfolioService: PortfolioService,
         private val validator: Validator,
+        private val portfolioEnrichmentService: PortfolioEnrichmentService,
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
@@ -44,4 +47,8 @@ class PortfolioController
 
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
             ResponseEntity(portfolioService.deletePortfolio(portfolioId), HttpStatus.NO_CONTENT)
+
+    override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> {
+        portfolioEnrichmentService.getEnrichedPortfolio(portfolioId)
+    }
     }
