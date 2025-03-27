@@ -20,6 +20,7 @@ const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pa
 const DocumentOverview = (): Promise<RouteComponent> => import('@/components/pages/DocumentOverview.vue');
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
+const PortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/PortfolioOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
@@ -142,6 +143,16 @@ const routes = [
     name: 'Single Data Request',
     props: true,
     component: SingleDataRequest,
+  },
+  {
+    path: '/portfolios',
+    name: 'Portfolios Overview',
+    component: PortfolioOverview,
+  },
+  {
+    path: '/portfolios/:portfolioId',
+    name: 'Portfolio Overview',
+    component: PortfolioOverview,
   },
   {
     path: '/api-key',

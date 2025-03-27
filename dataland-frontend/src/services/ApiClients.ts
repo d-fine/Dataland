@@ -16,6 +16,7 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
+import { PortfolioControllerApi } from '@clients/userservice';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -31,6 +32,7 @@ interface ApiClients {
   companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
+  portfolioController: PortfolioControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -89,6 +91,7 @@ export class ApiClientProvider {
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
+      portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
     };
   }
 
