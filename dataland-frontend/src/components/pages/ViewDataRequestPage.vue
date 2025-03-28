@@ -186,8 +186,9 @@
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
               <div class="card" data-test="emailOnUpdate" v-if="isUsersOwnRequest">
-                <span class="card__title" style="margin-right: auto">Receive Email on Update</span>
+                <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
                 <div class="card__separator" />
+                Receive emails directly or via summary
                 <InputSwitch
                   style="margin: 1rem 0"
                   data-test="emailOnUpdateInput"
@@ -197,10 +198,8 @@
                 />
                 <label for="emailOnUpdateInput">
                   <strong v-if="storedDataRequest.emailOnUpdate">immediate update</strong>
-                  <strong v-else>weekly summary</strong>
+                  <span v-else>weekly summary</span>
                 </label>
-                You either receive an email immediately after when data becomes available, is updated, or when data
-                cannot be provided. Or you get a notice in your weekly summary letter.
               </div>
               <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">

@@ -57,7 +57,8 @@
                         data-test="datapoint-framework"
                       />
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'emailOnUpdate'" header="Receive emails on update">
+                    <BasicFormSection :data-test="'emailOnUpdate'" header="Notify Me Immediately">
+                      Receive emails directly or via summary
                       <InputSwitch
                         class="p-inputswitch p-inputswitch-slider"
                         style="display: block; margin: 1rem 0"
@@ -65,12 +66,9 @@
                         inputId="emailOnUpdateInput"
                         v-model="emailOnUpdate"
                       />
-                      <label for="emailOnUpdateInput" v-if="emailOnUpdate" data-test="emailOnUpdateText">
-                        You receive an email immediately after the next status change, i.e. if the data is available or
-                        the data provider says there is no data.
-                      </label>
-                      <label for="emailOnUpdateInput" v-else data-test="emailOnUpdateText">
-                        You receive updates in your weekly summary letter.
+                      <label for="emailOnUpdateInput" data-test="emailOnUpdateText">
+                        <strong v-if="emailOnUpdate">immediate update</strong>
+                        <span v-else>weekly summary</span>
                       </label>
                     </BasicFormSection>
                     <BasicFormSection
