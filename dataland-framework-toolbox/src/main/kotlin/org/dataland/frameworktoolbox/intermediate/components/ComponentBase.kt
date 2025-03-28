@@ -36,6 +36,11 @@ open class ComponentBase(
     var label: String? = null
 
     /**
+     * Desired identifier for the data point type for assembled datasets
+     */
+    var dataPointTypeName: String? = null
+
+    /**
      * The explanation of a component is a longer description of the component. This variant will be displayed on the
      * upload page.
      */

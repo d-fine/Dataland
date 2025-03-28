@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned",
+  "name" : "Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

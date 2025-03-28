@@ -34,7 +34,7 @@ export const eutaxonomyFinancialsDataModel = [
           {
             name: 'fiscalYearEnd',
             label: 'Fiscal Year End',
-            description: 'The date at which the fiscal year ends.',
+            description: 'The date the fiscal year ends.',
 
             component: 'DateExtendedDataPointFormField',
             required: false,

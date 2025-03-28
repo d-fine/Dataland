@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned",
+  "name" : "Substantial Contribution to Transition to a Circular Economy in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Circular Economy",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}
