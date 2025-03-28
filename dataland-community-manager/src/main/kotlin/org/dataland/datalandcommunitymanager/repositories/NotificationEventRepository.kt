@@ -11,7 +11,6 @@ import java.util.UUID
  * A JPA repository for storing and retrieving notification events for notification event types
  */
 interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
-
     /**
      * A function for searching for unprocessed notification events by a list of notification event types.
      * @param notificationEventTypes a list of notification event types to filter.
@@ -19,6 +18,6 @@ interface NotificationEventRepository : JpaRepository<NotificationEventEntity, U
      */
     @Query("SELECT n FROM NotificationEventEntity n WHERE n.notificationEventType IN :notificationEventTypes AND n.isProcessed = false")
     fun findAllByNotificationEventTypesAndIsProcessedFalse(
-        @Param("notificationEventTypes") notificationEventTypes: List<NotificationEventType>
+        @Param("notificationEventTypes") notificationEventTypes: List<NotificationEventType>,
     ): List<NotificationEventEntity>
 }

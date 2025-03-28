@@ -67,7 +67,10 @@ class CompanyInfoService(
      */
     fun checkIfCompanyIdIsValidAndReturnNameOrId(companyId: String): String {
         try {
-            return companyApi.getCompanyById(companyId).companyInformation.companyName.ifEmpty { companyId }
+            return companyApi
+                .getCompanyById(companyId)
+                .companyInformation.companyName
+                .ifEmpty { companyId }
         } catch (e: ClientException) {
             if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                 throw ResourceNotFoundApiException(

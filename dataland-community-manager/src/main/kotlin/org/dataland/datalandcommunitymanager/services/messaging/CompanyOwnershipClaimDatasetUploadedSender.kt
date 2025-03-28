@@ -9,10 +9,10 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,7 +51,12 @@ class CompanyOwnershipClaimDatasetUploadedSender(
             sendEmailMessage(externalEmailContent, listOf(EmailRecipient.EmailAddress(it)), emptyList(), correlationId)
         }
 
-        sendEmailMessage(internalEmailContent, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), correlationId)
+        sendEmailMessage(
+            internalEmailContent,
+            listOf(EmailRecipient.Internal),
+            listOf(EmailRecipient.InternalCc),
+            correlationId,
+        )
     }
 
     /**
