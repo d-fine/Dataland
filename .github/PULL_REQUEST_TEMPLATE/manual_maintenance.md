@@ -112,7 +112,7 @@ Discuss findings with the team.
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
-- [ ] It is assured that deploying this feature branch over the current main does not break anything
+- [ ] It is assured that deploying this feature branch over the current main does not break anything (depending on the actual changes this step may be skipped)
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
   - [ ] Deploy the feature branch to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
   - [ ] Verify that the CD run is green
