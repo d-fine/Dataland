@@ -186,32 +186,21 @@
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
               <div class="card" data-test="emailOnUpdate" v-if="isUsersOwnRequest">
-                <span class="card__title" style="margin-right: auto">Receive Emails on Update</span>
+                <span class="card__title" style="margin-right: auto">Receive Email on Update</span>
                 <div class="card__separator" />
-                <div style="display: block; margin: 1rem 0">
-                  <label style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                    <input
-                        type="radio"
-                        name="emailSetting"
-                        value="immediately"
-                        v-model="storedDataRequest.emailOnUpdate"
-                        @change="changeRecieveEmails"
-                    />
-                    <strong style="margin-left: 8px;">Immediately:</strong>
-                    <span style="margin-left: 8px;">You receive an email immediately after any status change. When data becomes available, is updated, or when data cannot be provided.</span>
-                  </label>
-                  <label style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                    <input
-                        type="radio"
-                        name="emailSetting"
-                        value="weekly"
-                        v-model="storedDataRequest.emailOnUpdate"
-                        @change="changeRecieveEmails"
-                    />
-                    <strong style="margin-left: 8px;">Weekly:</strong>
-                    <span style="margin-left: 8px;">You receive updates in your weekly summary letter.</span>
-                  </label>
-                </div>
+                <InputSwitch
+                  style="margin: 1rem 0"
+                  data-test="emailOnUpdateInput"
+                  inputId="emailOnUpdateInput"
+                  v-model="storedDataRequest.emailOnUpdate"
+                  @update:modelValue="changeReceiveEmails()"
+                />
+                <label for="emailOnUpdateInput">
+                  <strong v-if="storedDataRequest.emailOnUpdate">immediate update</strong>
+                  <strong v-else>weekly summary</strong>
+                </label>
+                You either receive an email immediately after when data becomes available, is updated, or when data
+                cannot be provided. Or you get a notice in your weekly summary letter.
               </div>
               <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
@@ -295,6 +284,7 @@ import { accessStatusBadgeClass, badgeClass, patchDataRequest, getRequestStatusL
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
+import InputSwitch from 'primevue/inputswitch';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
@@ -313,6 +303,7 @@ export default defineComponent({
     EmailDetails,
     PrimeDialog,
     PrimeButton,
+    InputSwitch,
     BackButton,
     AuthenticationWrapper,
     TheHeader,
@@ -405,6 +396,7 @@ export default defineComponent({
     /**
      * Method to check if there exist an approved dataset for a dataRequest
      * @param storedDataRequest dataRequest
+     * @param apiClientProvider the ApiClientProvider to use for the connection
      */
     async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
       try {
@@ -446,7 +438,7 @@ export default defineComponent({
     /**
      * Method to change if the user wants to receive emails on updates
      */
-    async changeRecieveEmails() {
+    async changeReceiveEmails() {
       try {
         await patchDataRequest(
           this.requestId,
