@@ -5379,9 +5379,6 @@
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
           },
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
-          },
           "areAllGroupEntitiesCovered": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },

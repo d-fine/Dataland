@@ -3,6 +3,6 @@
   "name" : "Controversial Weapons Exposure",
   "businessDefinition" : "Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

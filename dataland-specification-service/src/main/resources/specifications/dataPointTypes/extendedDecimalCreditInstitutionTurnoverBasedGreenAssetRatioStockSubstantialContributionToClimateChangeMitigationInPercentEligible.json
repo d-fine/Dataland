@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentEligible",
+  "name" : "Substantial Contribution to Climate Change Mitigation in Percent - Eligible",
+  "businessDefinition" : "Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

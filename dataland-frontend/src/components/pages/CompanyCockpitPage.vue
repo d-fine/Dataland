@@ -156,6 +156,7 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
+          await this.getMetaInfoForLatestDocuments();
           await this.setUserRights();
         } catch (error) {
           console.error('Error fetching data for new company:', error);
@@ -173,7 +174,7 @@ export default defineComponent({
 
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    this.getMetaInfoForLatestDocuments();
+    void this.getMetaInfoForLatestDocuments();
   },
   methods: {
     truncatedDocumentName,
@@ -192,16 +193,19 @@ export default defineComponent({
     /**
      * Retrieves the latest documents metadata
      */
-    getMetaInfoForLatestDocuments(): void {
+    async getMetaInfoForLatestDocuments() {
       try {
         const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .documentController;
         for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
           const categorySet = new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>([value]);
-          documentControllerApi
-            .searchForDocumentMetaInformation(this.companyId, categorySet, undefined, this.chunkSize)
-            .then((metaInformation) => (this.latestDocuments[`latest${value}`] = metaInformation.data))
-            .catch((error) => console.error(error));
+          const metaInformation = await documentControllerApi.searchForDocumentMetaInformation(
+            this.companyId,
+            categorySet,
+            undefined,
+            this.chunkSize
+          );
+          this.latestDocuments[`latest${value}`] = metaInformation.data;
         }
       } catch (error) {
         console.error(error);

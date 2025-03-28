@@ -3,6 +3,6 @@
   "name" : "Workplace Accident Prevention Policy",
   "businessDefinition" : "Existence of a workplace accident prevention policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

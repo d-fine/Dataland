@@ -158,7 +158,7 @@ describeIf(
           cy.get('h1').should('contain', companyName);
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
-            Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType)
+            Object.keys(testSfdrCompany.t.general?.general?.referencedReports as ObjectType)
           );
           testYesNoExtendedDataPointFormField(
             testSfdrCompany.t.environmental?.biodiversity?.protectedAreasExposure as ExtendedDataPoint<string>
