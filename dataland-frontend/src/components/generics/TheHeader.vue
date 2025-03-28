@@ -21,6 +21,13 @@
   <div class="h-4rem" />
 </template>
 
+<style lang="scss" scoped>
+@use '@/assets/scss/theme.scss';
+.surface-900 {
+  background-color: var(--surface-900) !important;
+}
+</style>
+
 <script lang="ts">
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
 import { inject, defineComponent } from 'vue';

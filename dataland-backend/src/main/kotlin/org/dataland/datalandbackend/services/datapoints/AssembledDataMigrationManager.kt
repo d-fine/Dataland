@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandmessagequeueutils.messages.data.CopyQaStatusFromDataset
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -60,8 +61,10 @@ class AssembledDataMigrationManager
                 dataContent = splitDataset.dataContent,
                 fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
                 fileReferenceToFileNameMapping = splitDataset.fileReferenceToFileNameMapping,
-                initialQaStatus = dataMetaInfo.qaStatus,
-                initialQaComment = "Status copied from stored dataset during migration.",
+                initialQa =
+                    CopyQaStatusFromDataset(
+                        datasetId = dataMetaInfo.dataId,
+                    ),
             )
         }
 

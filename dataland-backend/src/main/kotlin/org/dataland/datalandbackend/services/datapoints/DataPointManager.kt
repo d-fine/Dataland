@@ -191,33 +191,6 @@ class DataPointManager
         ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
 
         /**
-         * Update the currently active data point for specific data point dimensions
-         * @param dataPointDimensions the data point dimension to update the currently active data point for
-         * @param newActiveDataId the id of the new active data point
-         * @param correlationId the correlation id for the operation
-         */
-        @Transactional
-        fun updateCurrentlyActiveDataPoint(
-            dataPointDimensions: BasicDataPointDimensions,
-            newActiveDataId: String?,
-            correlationId: String,
-        ) {
-            logger.info("Updating currently active data point for $dataPointDimensions (correlation ID: $correlationId).")
-            val currentlyActiveDataId = metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)
-            logger.info("Currently and newly active IDs are $currentlyActiveDataId and $newActiveDataId (correlation ID: $correlationId).")
-            if (newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
-                logger.info("Setting data point with dataId $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, null)
-            } else if (newActiveDataId != currentlyActiveDataId) {
-                logger.info("Setting $newActiveDataId to active and $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, null)
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
-            } else {
-                logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
-            }
-        }
-
-        /**
          * Retrieves the currently active data points for a list of specific data point dimensions
          * @param dataPointDimensions the data dimensions to retrieve the data points for
          * @return the id of the currently active data point
