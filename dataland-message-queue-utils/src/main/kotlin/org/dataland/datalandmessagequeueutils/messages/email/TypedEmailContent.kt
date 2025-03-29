@@ -23,12 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = DatasetRequestedClaimOwnership::class, name = "DatasetRequestedClaimOwnership"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetRequested"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetGranted"),
-    JsonSubTypes.Type(value = SingleDatasetUploadedEngagement::class, name = "SingleDatasetUploadedEngagement"),
-    JsonSubTypes.Type(value = MultipleDatasetsUploadedEngagement::class, name = "MultipleDatasetsUploadedEngagement"),
+    JsonSubTypes.Type(value = DatasetUploadedClaimOwnership::class, name = "MultipleDatasetsUploadedEngagement"),
     JsonSubTypes.Type(value = CompanyOwnershipClaimApproved::class, name = "CompanyOwnershipClaimApproved"),
     JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
     JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
-    JsonSubTypes.Type(value = DataRequestClosed::class, name = "DataRequestClosed"),
     JsonSubTypes.Type(value = InternalEmailContentTable::class, name = "KeyValueTable"),
 )
 sealed class TypedEmailContent {
@@ -69,8 +67,8 @@ data class DatasetRequestedClaimOwnership(
     InitializeSubscriptionUuidLater,
     InitializeBaseUrlLater {
     override val subject = "A message from Dataland: Your data are high on demand!"
-    override val textTemplate = "/text/dataset_requested_claim_ownership.ftl"
-    override val htmlTemplate = "/html/dataset_requested_claim_ownership.ftl"
+    override val textTemplate = "/text/company_ownership_claim_dataset_requested.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_dataset_requested.ftl"
 
     @JsonIgnore
     override lateinit var subscriptionUuid: String
@@ -122,75 +120,6 @@ data class AccessToDatasetGranted(
 }
 
 /**
- * A class for the SingleDatasetUploadedEngagement email.
- */
-data class SingleDatasetUploadedEngagement(
-    val companyId: String,
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-) : TypedEmailContent(),
-    InitializeSubscriptionUuidLater,
-    InitializeBaseUrlLater {
-    override val subject = "New data for ${this.companyName} on Dataland"
-    override val textTemplate = "/text/single_dataset_uploaded_engagement.ftl"
-    override val htmlTemplate = "/html/single_dataset_uploaded_engagement.ftl"
-
-    @JsonIgnore
-    override lateinit var subscriptionUuid: String
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * A class for the MultipleDatasetsUploadedEngagement email.
- */
-data class MultipleDatasetsUploadedEngagement(
-    val companyId: String,
-    val companyName: String,
-    val frameworkData: List<FrameworkData>,
-    val numberOfDays: Long?,
-) : TypedEmailContent(),
-    InitializeSubscriptionUuidLater,
-    InitializeBaseUrlLater {
-    override val subject = "New data for ${this.companyName} on Dataland"
-    override val textTemplate = "/text/multiple_datasets_uploaded_engagement.ftl"
-    override val htmlTemplate = "/html/multiple_datasets_uploaded_engagement.ftl"
-
-    /**
-     * A class that stores the information about the multiple frameworks that have been uploaded for the company.
-     */
-    data class FrameworkData(
-        val dataTypeLabel: String,
-        val reportingPeriods: List<String>,
-    )
-
-    @JsonIgnore
-    override lateinit var subscriptionUuid: String
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * A class for the CompanyOwnershipClaimApproved email.
- */
-data class CompanyOwnershipClaimApproved(
-    val companyId: String,
-    val companyName: String,
-    val numberOfOpenDataRequestsForCompany: Int,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Your company ownership claim for ${this.companyName} is confirmed!"
-    override val textTemplate = "/text/company_ownership_claim_approved.ftl"
-    override val htmlTemplate = "/html/company_ownership_claim_approved.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
  * A class for the DataRequestAnswered email.
  */
 data class DataRequestAnswered(
@@ -203,8 +132,8 @@ data class DataRequestAnswered(
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val subject = "Your data request has been answered!"
-    override val textTemplate = "/text/data_request_answered.ftl"
-    override val htmlTemplate = "/html/data_request_answered.ftl"
+    override val textTemplate = "/text/data_request_available.ftl"
+    override val htmlTemplate = "/html/data_request_available.ftl"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -224,26 +153,6 @@ data class DataRequestUpdated(
     override val subject = "Your data request has been updated!"
     override val textTemplate = "/text/data_request_updated.ftl"
     override val htmlTemplate = "/html/data_request_updated.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * A class for the DataRequestClosed email.
- */
-data class DataRequestClosed(
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-    val creationDate: String,
-    val dataRequestId: String,
-    val closedInDays: Int,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Your data request has been closed!"
-    override val textTemplate = "/text/data_request_closed.ftl"
-    override val htmlTemplate = "/html/data_request_closed.ftl"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -270,7 +179,80 @@ data class DataRequestNonSourceable(
 }
 
 /**
- * A class for the KeyValueTable email. User for internal purposes.
+ * A class for the Data Request Summary email.
+ */
+data class DataRequestSummary(
+    val newData: List<FrameworkData>,
+    val updatedData: List<FrameworkData>,
+    val nonsourceableData: List<FrameworkData>,
+) : TypedEmailContent(),
+    InitializeBaseUrlLater {
+    override val subject = "Summary for your data requests changes!"
+    override val textTemplate = "/text/data_request_summary.ftl"
+    override val htmlTemplate = "/html/data_request_summary.ftl"
+
+    /**
+     * A class that stores the information about the multiple frameworks that have been uploaded.
+     */
+    data class FrameworkData(
+        val dataTypeLabel: String,
+        val reportingPeriod: String,
+        val companies: List<String>,
+    )
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
+ * A class for the CompanyOwnershipClaimApproved email.
+ */
+data class CompanyOwnershipClaimApproved(
+    val companyId: String,
+    val companyName: String,
+    val numberOfOpenDataRequestsForCompany: Int,
+) : TypedEmailContent(),
+    InitializeBaseUrlLater {
+    override val subject = "Your company ownership claim for ${this.companyName} is confirmed!"
+    override val textTemplate = "/text/company_ownership_claim_approved.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_approved.ftl"
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
+ * A class for the Dataset Uploaded - Claim Company Ownership email.
+ */
+data class DatasetUploadedClaimOwnership(
+    val companyId: String,
+    val companyName: String,
+    val frameworkData: List<FrameworkData>,
+) : TypedEmailContent(),
+    InitializeSubscriptionUuidLater,
+    InitializeBaseUrlLater {
+    override val subject = "New data for ${this.companyName} on Dataland"
+    override val textTemplate = "/text/company_ownership_claim_dataset_uploaded.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_dataset_uploaded.ftl"
+
+    /**
+     * A class that stores the information about the multiple frameworks that have been uploaded for the company.
+     */
+    data class FrameworkData(
+        val dataTypeLabel: String,
+        val reportingPeriods: List<String>,
+    )
+
+    @JsonIgnore
+    override lateinit var subscriptionUuid: String
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
+ * A class for the KeyValueTable email.
+ * User for internal purposes, sending simultaneously with Dataset Uploaded - Claim Company Ownership email.
  */
 data class InternalEmailContentTable(
     override val subject: String,
@@ -279,8 +261,8 @@ data class InternalEmailContentTable(
     val table: List<Pair<String, Value>>,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
-    override val textTemplate = "/text/internal_email_content_table.ftl"
-    override val htmlTemplate = "/html/internal_email_content_table.ftl"
+    override val textTemplate = "/text/company_ownership_claim_dataset_uploaded_internal.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_dataset_uploaded_internal.ftl"
 
     @JsonIgnore
     override lateinit var baseUrl: String

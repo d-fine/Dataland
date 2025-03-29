@@ -41,7 +41,7 @@ class AggregatedDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val responseForReader =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiers, frameworks, reportingPeriods),
+                BulkDataRequest(identifiers, frameworks, reportingPeriods, emailOnUpdate = false),
             )
         checkThatNumberOfRejectedIdentifiersIsAsExpected(responseForReader, 0)
     }
@@ -97,7 +97,7 @@ class AggregatedDataRequestsTest {
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
+                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods, emailOnUpdate = false),
             )
         checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap.values.toSet())
@@ -119,7 +119,7 @@ class AggregatedDataRequestsTest {
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
+                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods, emailOnUpdate = false),
             )
         checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         val randomReportingPeriod = reportingPeriods.random()
@@ -156,7 +156,7 @@ class AggregatedDataRequestsTest {
         val reportingPeriods = setOf("2020", "2021")
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
+                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods, emailOnUpdate = false),
             )
         checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         val aggregatedDataRequests = requestControllerApi.getAggregatedOpenDataRequests()

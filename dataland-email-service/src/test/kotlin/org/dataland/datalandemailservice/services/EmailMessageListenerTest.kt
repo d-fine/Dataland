@@ -24,6 +24,7 @@ private const val EMAIL_ADDRESS_A = "1@example.com"
 private const val EMAIL_ADDRESS_B = "2@example.com"
 private const val EMAIL_ADDRESS_C = "3@example.com"
 private const val EMAIL_ADDRESS_D = "a@example.com"
+private const val EMAIL_ADDRESS_ADDITIONAL_BCC = "aditional_bcc@example.com"
 
 class EmailMessageListenerTest {
     private lateinit var emailSender: EmailSender
@@ -31,10 +32,7 @@ class EmailMessageListenerTest {
     private lateinit var emailContactService: EmailContactService
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
     private val proxyPrimaryUrl = "abc.example.com"
-    private val dryRunIsActive = false
-
-    private lateinit var emailMessageListener: EmailMessageListener
-    private lateinit var testData: TypedEmailContentTestData
+    private val testData = TypedEmailContentTestData()
 
     private val recipientToContactMap =
         mapOf(
@@ -42,6 +40,7 @@ class EmailMessageListenerTest {
             EmailRecipient.Internal to EmailContact(EMAIL_ADDRESS_B),
             EmailRecipient.EmailAddress(EMAIL_ADDRESS_C) to EmailContact(EMAIL_ADDRESS_C),
             EmailRecipient.UserId(USER_A) to EmailContact(EMAIL_ADDRESS_D),
+            EmailRecipient.EmailAddress(EMAIL_ADDRESS_ADDITIONAL_BCC) to EmailContact(EMAIL_ADDRESS_ADDITIONAL_BCC),
         )
 
     private val senderContact = EmailContact("sender@example.com")
@@ -52,9 +51,23 @@ class EmailMessageListenerTest {
             EmailContact(EMAIL_ADDRESS_B) to Pair(false, UUID.randomUUID()),
             EmailContact(EMAIL_ADDRESS_C) to Pair(true, UUID.randomUUID()),
             EmailContact(EMAIL_ADDRESS_D) to Pair(false, UUID.randomUUID()),
+            EmailContact(EMAIL_ADDRESS_ADDITIONAL_BCC) to Pair(true, UUID.randomUUID()),
         )
 
     private val correlationId = "correlationId"
+    private val receiver =
+        listOf(
+            EmailRecipient.EmailAddress(EMAIL_ADDRESS_A),
+            EmailRecipient.Internal,
+            EmailRecipient.EmailAddress(EMAIL_ADDRESS_C),
+            EmailRecipient.UserId(USER_A),
+        )
+    private val cc = listOf(EmailRecipient.EmailAddress(EMAIL_ADDRESS_C), EmailRecipient.UserId(USER_A))
+    private val bcc = listOf(EmailRecipient.Internal, EmailRecipient.UserId(USER_A))
+
+    private val allowedReceiver = listOf(EmailContact(EMAIL_ADDRESS_A), EmailContact(EMAIL_ADDRESS_C))
+    private val allowedCc = listOf(EmailContact(EMAIL_ADDRESS_C))
+    private val allowedBcc = listOf(EmailContact(EMAIL_ADDRESS_ADDITIONAL_BCC))
 
     @BeforeEach
     fun setup() {
@@ -75,13 +88,6 @@ class EmailMessageListenerTest {
                 blocked,
             )
         }
-
-        emailMessageListener =
-            EmailMessageListener(
-                emailSender, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl, dryRunIsActive,
-            )
-
-        testData = TypedEmailContentTestData()
     }
 
     private fun assertSenderReceiverCcAndBcc(
@@ -96,27 +102,28 @@ class EmailMessageListenerTest {
 
     @Test
     fun `test that correct email is send to correct contacts`() {
-        val receiver = recipientToContactMap.keys.toList()
-        val cc = listOf(EmailRecipient.EmailAddress(EMAIL_ADDRESS_C), EmailRecipient.UserId(USER_A))
-        val bcc = listOf(EmailRecipient.Internal, EmailRecipient.UserId(USER_A))
-
-        val allowedReceiver = listOf(EmailContact(EMAIL_ADDRESS_A), EmailContact(EMAIL_ADDRESS_C))
-        val allowedCc = listOf(EmailContact(EMAIL_ADDRESS_C))
-
         val typedEmailContent = testData.accessToDatasetRequested
         val keywords = testData.accessToDatasetRequestedKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add("https://$proxyPrimaryUrl")
-
         val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
-
         doNothing().whenever(emailSender).sendEmail(any())
 
+        val emailMessageListener =
+            EmailMessageListener(
+                emailSender,
+                objectMapper,
+                emailContactService,
+                emailSubscriptionTracker,
+                proxyPrimaryUrl,
+                true,
+                "  $EMAIL_ADDRESS_ADDITIONAL_BCC;;",
+            )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
         verify(emailSender).sendEmail(
             argThat { email ->
-                assertSenderReceiverCcAndBcc(email, allowedReceiver, allowedCc, emptyList()) &&
+                assertSenderReceiverCcAndBcc(email, allowedReceiver, allowedCc, allowedBcc) &&
                     keywords.all { keyword ->
                         email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
                     }
@@ -129,23 +136,27 @@ class EmailMessageListenerTest {
         val recipient = recipientToContactMap.keys.first()
         val receiver = listOf(recipient)
         val receiverContact = EmailContact.create(EMAIL_ADDRESS_A)
-
-        val typedEmailContent = testData.singleDatasetUploadedEngagement
-
-        val keywords = testData.singleDatasetUploadedEngagementKeywords.toMutableList()
+        val typedEmailContent = testData.dataRequestNonSourceableMail
+        val keywords = testData.dataRequestNonSourceableKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add("https://$proxyPrimaryUrl")
         keywords.remove(testData.subscriptionUuid)
-        contactToSubscriptionStatusMap[receiverContact]
-        keywords.add(contactToSubscriptionStatusMap[receiverContact]?.second.toString())
-
         val jsonString =
             objectMapper.writeValueAsString(
                 EmailMessage(typedEmailContent, receiver, emptyList(), emptyList()),
             )
-
         doNothing().whenever(emailSender).sendEmail(any())
 
+        val emailMessageListener =
+            EmailMessageListener(
+                emailSender,
+                objectMapper,
+                emailContactService,
+                emailSubscriptionTracker,
+                proxyPrimaryUrl,
+                true,
+                "",
+            )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
         verify(emailSender).sendEmail(

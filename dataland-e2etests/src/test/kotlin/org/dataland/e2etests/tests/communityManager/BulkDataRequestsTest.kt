@@ -53,7 +53,7 @@ class BulkDataRequestsTest {
         generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiers, dataTypes, reportingPeriods),
+                BulkDataRequest(identifiers, dataTypes, reportingPeriods, emailOnUpdate = false),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
             response,
@@ -91,6 +91,7 @@ class BulkDataRequestsTest {
                     validIdentifiers + invalidIdentifiers,
                     setOf(BulkDataRequest.DataTypes.lksg),
                     setOf("2023"),
+                    false,
                 ),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, validIdentifiers.size)
@@ -119,7 +120,12 @@ class BulkDataRequestsTest {
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
+                BulkDataRequest(
+                    identifiersForBulkRequest,
+                    frameworksForBulkRequest.toSet(),
+                    setOf(reportingPeriod),
+                    emailOnUpdate = false,
+                ),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
         checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
@@ -146,6 +152,7 @@ class BulkDataRequestsTest {
                 setOf(leiForCompany, isinForCompany),
                 setOf(BulkDataRequest.DataTypes.lksg),
                 reportingPeriods,
+                emailOnUpdate = false,
             )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(bulkDataRequest)
@@ -213,7 +220,12 @@ class BulkDataRequestsTest {
         apiAccessor.companyDataControllerApi.postCompany(companyWithUniqueId)
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
+                BulkDataRequest(
+                    setOf(permId1, permId2),
+                    setOf(BulkDataRequest.DataTypes.sfdr),
+                    setOf("2023"),
+                    false,
+                ),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
         checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)

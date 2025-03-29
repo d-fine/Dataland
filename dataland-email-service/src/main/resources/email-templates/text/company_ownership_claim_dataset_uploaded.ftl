@@ -1,7 +1,5 @@
-<#include "../general/format_number_of_days.ftl">
-
 Exciting news! 📣
-Multiple datasets for ${companyName} have been uploaded to Dataland <@formatNumberOfDays numberOfDays/>.
+<#if (frameworkData?size > 1)>Multiple datasets<#else>A dataset</#if> for ${companyName} have been uploaded to Dataland.
 
 <#list frameworkData as framework>
 ${framework.dataTypeLabel}: ${framework.reportingPeriods?join(", ")}

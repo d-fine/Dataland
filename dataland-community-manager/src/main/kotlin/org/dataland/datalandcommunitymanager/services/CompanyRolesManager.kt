@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssig
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -23,7 +23,7 @@ import java.util.UUID
  */
 @Service("CompanyRolesManager")
 class CompanyRolesManager(
-    @Autowired private val companyIdValidator: CompanyIdValidator,
+    @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyOwnershipRequestedEmailMessageSender: CompanyOwnershipRequestedEmailMessageSender,
     @Autowired private val companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender,
@@ -45,7 +45,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ): CompanyRoleAssignmentEntity {
-        val companyName = companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        val companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(companyId)
         val correlationId = UUID.randomUUID().toString()
 
         val companyRoleAssignmentEntityOptional =
@@ -133,7 +133,7 @@ class CompanyRolesManager(
         userId: String?,
     ): List<CompanyRoleAssignmentEntity> {
         if (companyId != null) {
-            companyIdValidator.checkIfCompanyIdIsValid(companyId)
+            companyInfoService.checkIfCompanyIdIsValid(companyId)
         }
         return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
             companyId = companyId, userId = userId, companyRole = companyRole,
@@ -162,7 +162,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ) {
-        companyIdValidator.checkIfCompanyIdIsValid(companyId)
+        companyInfoService.checkIfCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         val companyRoleAssignmentEntityOptional = companyRoleAssignmentRepository.findById(id)
         if (companyRoleAssignmentEntityOptional.isPresent) {
@@ -184,7 +184,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ) {
-        companyIdValidator.checkIfCompanyIdIsValid(companyId)
+        companyInfoService.checkIfCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         if (!companyRoleAssignmentRepository.existsById(id)) {
             throwExceptionDueToRoleNotAssignedToUser(companyRole, companyId, userId)
@@ -197,7 +197,7 @@ class CompanyRolesManager(
      */
     @Transactional(readOnly = true)
     fun validateIfCompanyHasAtLeastOneCompanyOwner(companyId: String) {
-        companyIdValidator.checkIfCompanyIdIsValid(companyId)
+        companyInfoService.checkIfCompanyIdIsValid(companyId)
         val companyRoleAssignments = getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, companyId, null)
         if (companyRoleAssignments.isEmpty()) {
             throw ResourceNotFoundApiException(
@@ -222,7 +222,7 @@ class CompanyRolesManager(
         correlationId: String,
     ) {
         val datalandJwtAuthentication = assertAuthenticationViaJwtToken(userAuthentication)
-        val companyName = companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        val companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(companyId)
         val userId = datalandJwtAuthentication.userId
         try {
             validateIfCompanyRoleForCompanyIsAssignedToUser(CompanyRole.CompanyOwner, companyId, userId)

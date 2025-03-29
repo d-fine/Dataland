@@ -6,8 +6,10 @@ import java.util.UUID
 /**
  Represents the meta info in an elementary events message payload.
  */
-data class ElementaryEventBasicInfo(
+data class NotificationEventBasicInfo(
     val companyId: UUID,
     val framework: DataTypeEnum,
     val reportingPeriod: String,
+    val userId: UUID? = null,
+    val isProcessed: Boolean,
 )

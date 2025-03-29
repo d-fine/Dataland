@@ -1,9 +1,9 @@
+<#import "../general/general_makros_text.ftl" as text>
 Your data request has been updated with new data.
 
-Company: ${companyName}
-Framework: ${dataTypeLabel}
-Reporting period: ${reportingPeriod}
-Request created: ${creationDate}
+<@text.immediateNotification url="${baseUrl}/requests/${dataRequestId}"/>
 
-View the updated data:
+<#include "../general/data_request_information_text.ftl">
+
+View your data request:
 ${baseUrl}/requests/${dataRequestId}

@@ -36,7 +36,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DataRequestUploadListenerTest {
+class CommunityManagerListenerTest {
     val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentControllerApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
@@ -74,6 +74,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = mapOfIds["companyId"].toString(),
                 dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
                 reportingPeriods = setOf("2022", "2023"),
+                emailOnUpdate = false,
                 contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             )
@@ -114,6 +115,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = testCompanyWithParent.companyId,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = setOf("2023"),
+                emailOnUpdate = false,
                 contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),
@@ -123,6 +125,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = testParentCompany.companyId,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = setOf("2023"),
+                emailOnUpdate = false,
                 contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),
@@ -208,7 +211,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `as a premium user assert that patching the status of a non answered request to closed is forbidden`() {
+    fun `as a premium user assert that patching the status of a non answered request to resolved is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
@@ -225,7 +228,7 @@ class DataRequestUploadListenerTest {
         assertEquals(
             RequestStatus.Resolved,
             closedDataRequest.requestStatus,
-            "The status of the patched data request is not 'Closed' although this was expected.",
+            "The status of the patched data request is not 'Resolved' although this was expected.",
         )
     }
 
@@ -241,7 +244,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `patch an answered but not owned data request to closed as a premium user and check that it is forbidden`() {
+    fun `patch an answered but not owned data request to resolved as a premium user and check that it is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.Admin)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -254,7 +257,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `assert that patching an open or withdrawn request status is forbidden`() {
+    fun `assert that patching a resolved or withdrawn request status is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)

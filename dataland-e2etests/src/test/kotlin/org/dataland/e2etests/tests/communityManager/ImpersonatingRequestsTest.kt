@@ -52,6 +52,7 @@ class ImpersonatingRequestsTest {
                 reportingPeriods = sampleReportingPeriods,
                 contacts = null,
                 message = null,
+                emailOnUpdate = false,
             )
         requestControllerApi.postSingleDataRequest(
             singleDataRequest,
@@ -79,6 +80,7 @@ class ImpersonatingRequestsTest {
                 reportingPeriods = sampleReportingPeriods,
                 contacts = null,
                 message = null,
+                emailOnUpdate = false,
             )
         val exception =
             assertThrows<ClientException> {

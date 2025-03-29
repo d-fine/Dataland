@@ -1,25 +1,27 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.NotificationEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.time.Duration
-import java.time.Instant
 import java.util.UUID
 
 /**
  * Service that handles creation of notification events and sending notifications to interested parties
- * in case of elementary events
+ * in case of unprocessed notification events.
  */
 @Service("NotificationService")
 class NotificationService
@@ -27,162 +29,151 @@ class NotificationService
     @Autowired
     constructor(
         val notificationEventRepository: NotificationEventRepository,
-        val elementaryEventRepository: ElementaryEventRepository,
-        val companyDataControllerApi: CompanyDataControllerApi,
-        val notificationEmailSender: NotificationEmailSender,
         val companyRolesManager: CompanyRolesManager,
-        @Value("\${dataland.community-manager.notification-threshold-days:30}")
-        private val notificationThresholdDays: Int,
-        @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
-        private val elementaryEventsThreshold: Int,
+        val companyDataControllerApi: CompanyDataControllerApi,
+        val notificationEmailSender: CompanyOwnershipClaimDatasetUploadedSender,
+        val dataRequestSummaryEmailSender: DataRequestSummaryEmailSender,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
         /**
-         * An abstract base class for the different notification emails.
+         * Checks if there are unprocessed notification events.
+         * If yes, sends Investor Relationship and/or Data Request Summary notification emails.
+         * Scheduled to run every Sunday at midnight.
          */
-        sealed class NotificationEmailType {
-            /**
-             * Type for the Notification Email that contains information about a single data upload.
-             */
-            data object Single : NotificationEmailType()
-
-            /**
-             * Type for the Notification Email that contains information about multiple data uploads.
-             * This class holds the information when the last notification email has been sent.
-             */
-            data class Summary(
-                val daysSinceLastNotificationEmail: Long?,
-            ) : NotificationEmailType()
-        }
-
-        /**
-         * Checks if notification event shall be created or not.
-         * If yes, it creates it and sends a message to the queue to trigger notification emails.
-         */
-        @Transactional
-        fun notifyOfElementaryEvents(
-            latestElementaryEvent: ElementaryEventEntity,
-            correlationId: String,
-        ) {
-            val companyId = latestElementaryEvent.companyId
-            val unprocessedElementaryEvents =
-                elementaryEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
-                    companyId,
-                    latestElementaryEvent.elementaryEventType,
-                )
-            val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
-            val emailReceivers = companyInfo.companyContactDetails
-            val notificationEmailType =
-                determineNotificationEmailType(latestElementaryEvent, unprocessedElementaryEvents)
-                    ?: return
-
-            logger.info(
-                "Requirements for notification event are met. " +
-                    "Creating notification event and sending notification emails. CorrelationId: $correlationId",
-            )
-
-            createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
-
-            if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
-                notificationEmailSender.sendExternalAndInternalNotificationEmail(
-                    notificationEmailType, latestElementaryEvent, unprocessedElementaryEvents,
-                    companyInfo.companyName, emailReceivers, correlationId,
-                )
-            }
-        }
-
-        /**
-         * Checks if the requirements for creating a notification event are met.
-         * If yes, it returns the type of notification mail that shall be sent.
-         * Else it simply returns null.
-         */
-        fun determineNotificationEmailType(
-            latestElementaryEvent: ElementaryEventEntity,
-            unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        ): NotificationEmailType? {
-            val lastNotificationEvent =
-                getLastNotificationEventOrNull(
-                    latestElementaryEvent.companyId,
-                    latestElementaryEvent.elementaryEventType,
-                )
-            val isLastNotificationEventOlderThanThreshold =
-                isNotificationEventOlderThanThreshold(
-                    lastNotificationEvent,
-                )
-            return when {
-                isLastNotificationEventOlderThanThreshold && unprocessedElementaryEvents.size == 1 ->
-                    NotificationEmailType.Single
-                isLastNotificationEventOlderThanThreshold ||
-                    unprocessedElementaryEvents.size >= elementaryEventsThreshold ->
-                    NotificationEmailType.Summary(
-                        lastNotificationEvent?.let(::getDaysPassedSinceNotificationEvent),
+        @Scheduled(cron = "0 */5 * * * *") //        @Scheduled(cron = "0 0 0 ? * SUN")
+        fun scheduledWeeklyEmailSending() {
+            // Investor Relationship Emails
+            val unprocessedInvestorRelationshipEvents =
+                notificationEventRepository
+                    .findAllByNotificationEventTypesAndIsProcessedFalse(
+                        listOf(NotificationEventType.InvestorRelationshipsEvent),
                     )
-                else -> null
+            if (unprocessedInvestorRelationshipEvents.isNotEmpty()) {
+                try {
+                    processInvestorRelationshipEvents(unprocessedInvestorRelationshipEvents)
+                    markEventsAsProcessed(unprocessedInvestorRelationshipEvents)
+                } catch (uoe: UnsupportedOperationException) {
+                    logger.error(
+                        "Failed to process IR notification events due to UnsupportedOperationException: ${uoe.message}",
+                        uoe,
+                    )
+                } catch (ce: ClientException) {
+                    logger.error(
+                        "Failed to process IR notification events due to ClientException: ${ce.message}",
+                        ce,
+                    )
+                } catch (ae: AmqpException) {
+                    logger.error(
+                        "Failed to process IR notification events due to AmqpException: ${ae.message}",
+                        ae,
+                    )
+                }
             }
-        }
-
-        /**
-         * Creates and persists a new notification event and also puts the reference to this newly created notification
-         * event into the associated elementary events.
-         */
-        fun createNotificationEventAndReferenceIt(
-            latestElementaryEvent: ElementaryEventEntity,
-            unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        ) {
-            val notificationEvent =
-                NotificationEventEntity(
-                    companyId = latestElementaryEvent.companyId,
-                    elementaryEventType = latestElementaryEvent.elementaryEventType,
-                    creationTimestamp = Instant.now().toEpochMilli(),
+            // Data Request Summary Emails
+            val dataRequestSummaryEventTypes =
+                listOf(
+                    NotificationEventType.AvailableEvent,
+                    NotificationEventType.UpdatedEvent,
+                    NotificationEventType.NonSourceableEvent,
                 )
-            val savedNotificationEvent = notificationEventRepository.saveAndFlush(notificationEvent)
-            unprocessedElementaryEvents.forEach {
-                it.notificationEvent = savedNotificationEvent
-                elementaryEventRepository.saveAndFlush(it)
+            val unprocessedDataRequestSummaryEvents =
+                notificationEventRepository
+                    .findAllByNotificationEventTypesAndIsProcessedFalse(dataRequestSummaryEventTypes)
+            if (unprocessedDataRequestSummaryEvents.isNotEmpty()) {
+                try {
+                    processDataRequestSummaryEvents(unprocessedDataRequestSummaryEvents)
+                    markEventsAsProcessed(unprocessedDataRequestSummaryEvents)
+                } catch (uoe: UnsupportedOperationException) {
+                    logger.error(
+                        "Failed to process Data Request Summary notification events due to UnsupportedOperationException: ${uoe.message}",
+                        uoe,
+                    )
+                } catch (ce: ClientException) {
+                    logger.error(
+                        "Failed to process Data Request Summary notification events due to ClientException: ${ce.message}",
+                        ce,
+                    )
+                } catch (ae: AmqpException) {
+                    logger.error(
+                        "Failed to process Data Request Summary notification events due to AmqpException: ${ae.message}",
+                        ae,
+                    )
+                }
             }
         }
 
         /**
-         * Gets last notification event for a specific company and elementary event type
-         * @param companyId for which a notification event might have happened
-         * @param elementaryEventType of the elementary events for which the notification event was created
-         * @return last notificationEvent (null if no previous notification event for this company exists)
+         * Processes investor relationship events and sends emails to appropriate recipients.
+         *
+         * @param events List of unprocessed investor relationship notification events.
          */
-        fun getLastNotificationEventOrNull(
-            companyId: UUID,
-            elementaryEventType: ElementaryEventType,
-        ): NotificationEventEntity? =
-            notificationEventRepository
-                .findNotificationEventByCompanyIdAndElementaryEventType(
-                    companyId,
-                    elementaryEventType,
-                ).maxByOrNull { it.creationTimestamp }
+        private fun processInvestorRelationshipEvents(events: List<NotificationEventEntity>) {
+            // Group events by company ID and process each group
+            val eventsGroupedByCompany = events.groupBy { it.companyId }
+            eventsGroupedByCompany.forEach { (companyId, companyEvents) ->
+                val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
+                val emailReceivers = companyInfo.companyContactDetails
+                val correlationId = UUID.randomUUID().toString()
+
+                // Send emails if company has no owner and has contact details
+                if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
+                    logger.info(
+                        "Requirements for Investor Relationship notification are met. " +
+                            "Sending notification emails. CorrelationId: $correlationId",
+                    )
+                    notificationEmailSender.sendExternalAndInternalInvestorRelationshipSummaryEmail(
+                        unprocessedEvents = companyEvents,
+                        companyId = companyId,
+                        receiver = emailReceivers,
+                        correlationId = correlationId,
+                    )
+                }
+            }
+        }
 
         /**
-         * Gets days passed since a notification event for a specific company.
-         * @param notificationEvent The notification event
-         * @return time passed in days
+         * Processes data request summary events and sends emails to appropriate recipients.
+         *
+         * @param events List of unprocessed data request summary notification events.
          */
-        fun getDaysPassedSinceNotificationEvent(notificationEvent: NotificationEventEntity): Long? =
-            Duration.between(Instant.ofEpochMilli(notificationEvent.creationTimestamp), Instant.now()).toDays()
+        private fun processDataRequestSummaryEvents(events: List<NotificationEventEntity>) {
+            // Group events by user ID and process each group
+            val eventsGroupedByUser = events.groupBy { it.userId }
+            eventsGroupedByUser.forEach { (userId, userEvents) ->
+                if (userId != null) {
+                    logger.info(
+                        "Requirements for Data Request Summary notification are met. Sending notification email.",
+                    )
+                    dataRequestSummaryEmailSender.sendDataRequestSummaryEmail(
+                        unprocessedEvents = userEvents,
+                        userId = userId,
+                    )
+                }
+            }
+        }
 
         /**
-         * Checks if a notification event is older than threshold in days. If no notification event is specified this
-         * function returns always null.
-         * @param notificationEvent The notification event or null
-         * @return if last notification event for company is older than threshold in days
+         * Marks all given events as processed by setting isProcessed to true and saving changes to the repository.
+         *
+         * @param events List of notification events to mark as processed.
          */
-        fun isNotificationEventOlderThanThreshold(notificationEvent: NotificationEventEntity?): Boolean =
-            notificationEvent == null ||
-                Duration
-                    .between(Instant.ofEpochMilli(notificationEvent.creationTimestamp), Instant.now())
-                    .toDays() > notificationThresholdDays
+        private fun markEventsAsProcessed(events: List<NotificationEventEntity>) {
+            // Set each event's processed status to true and save them
+            events.forEach { event ->
+                event.isProcessed = true
+            }
+            notificationEventRepository.saveAll(events) // Batch save to update processed status
+            logger.info("Marked ${events.size} events as processed.")
+        }
 
         /**
-         * checks if company has owner (if company has owner, notifications are created but not sent)
+         * Checks if a company has an owner assigned.
+         *
+         * @param companyId UUID representing the company's ID.
+         * @return Boolean indicating whether the company has an owner.
          */
-        fun hasCompanyOwner(companyId: UUID): Boolean {
+        private fun hasCompanyOwner(companyId: UUID): Boolean {
             val companyOwner =
                 companyRolesManager.getCompanyRoleAssignmentsByParameters(
                     companyRole = CompanyRole.CompanyOwner,
@@ -191,5 +182,102 @@ class NotificationService
                 )
 
             return companyOwner.isNotEmpty()
+        }
+
+        /**
+         * Creates a user-specific notification event in the "QA Status Accepted" and "Data Non-Sourceable" pipelines.
+         * This function is also invoked by the "patch data request" endpoint of MetaDataController, but actions are
+         * only performed in cases naturally covered by the pipelines.
+         *
+         * @param dataRequestEntity Represents the data request in question.
+         * @param requestStatusAfter The request status after an update, if applicable.
+         * @param immediateNotificationWasSent Boolean indicating if an immediate notification was sent.
+         * @param earlierQaApprovedVersionExists Boolean indicating if a prior QA approved version exists.
+         */
+        fun createUserSpecificNotificationEvent(
+            dataRequestEntity: DataRequestEntity,
+            requestStatusAfter: RequestStatus? = null,
+            immediateNotificationWasSent: Boolean,
+            earlierQaApprovedVersionExists: Boolean = false,
+        ) {
+            val requestStatusBefore = dataRequestEntity.requestStatus
+
+            val requestStatusBeforeIsOpenOrNonSourceable =
+                requestStatusBefore == RequestStatus.Open || requestStatusBefore == RequestStatus.NonSourceable
+
+            if (requestStatusBeforeIsOpenOrNonSourceable && requestStatusAfter == RequestStatus.Answered) {
+                notificationEventRepository.save(
+                    NotificationEventEntity(
+                        notificationEventType =
+                            if (earlierQaApprovedVersionExists) {
+                                NotificationEventType.UpdatedEvent
+                            } else {
+                                NotificationEventType.AvailableEvent
+                            },
+                        userId = UUID.fromString(dataRequestEntity.userId),
+                        isProcessed = immediateNotificationWasSent,
+                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                        reportingPeriod = dataRequestEntity.reportingPeriod,
+                    ),
+                )
+            }
+
+            val requestStatusBeforeIsAnsweredOrClosedOrResolved =
+                requestStatusBefore == RequestStatus.Answered ||
+                    requestStatusBefore == RequestStatus.Closed ||
+                    requestStatusBefore == RequestStatus.Resolved
+
+            if (
+                requestStatusBeforeIsAnsweredOrClosedOrResolved &&
+                (requestStatusAfter == requestStatusBefore || requestStatusAfter == null)
+            ) {
+                notificationEventRepository.save(
+                    NotificationEventEntity(
+                        notificationEventType =
+                            if (earlierQaApprovedVersionExists) {
+                                NotificationEventType.UpdatedEvent
+                            } else {
+                                NotificationEventType.AvailableEvent
+                            },
+                        userId = UUID.fromString(dataRequestEntity.userId),
+                        isProcessed = immediateNotificationWasSent,
+                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                        reportingPeriod = dataRequestEntity.reportingPeriod,
+                    ),
+                )
+            }
+
+            if (requestStatusBefore == RequestStatus.Open && requestStatusAfter == RequestStatus.NonSourceable) {
+                notificationEventRepository.save(
+                    NotificationEventEntity(
+                        notificationEventType = NotificationEventType.NonSourceableEvent,
+                        userId = UUID.fromString(dataRequestEntity.userId),
+                        isProcessed = immediateNotificationWasSent,
+                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                        reportingPeriod = dataRequestEntity.reportingPeriod,
+                    ),
+                )
+            }
+        }
+
+        /**
+         * Creates a company-specific notification event in the "IR Emails" pipeline.
+         *
+         * @param dataMetaInformation Represents the metadata information for the company.
+         */
+        fun createCompanySpecificNotificationEvent(dataMetaInformation: DataMetaInformation) {
+            notificationEventRepository.save(
+                NotificationEventEntity(
+                    notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
+                    userId = null,
+                    isProcessed = false,
+                    companyId = UUID.fromString(dataMetaInformation.companyId),
+                    framework = dataMetaInformation.dataType,
+                    reportingPeriod = dataMetaInformation.reportingPeriod,
+                ),
+            )
         }
     }

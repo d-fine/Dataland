@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
@@ -35,7 +35,7 @@ class SingleDataRequestManager
     constructor(
         @Autowired private val dataRequestLogger: DataRequestLogger,
         @Autowired private val dataRequestRepository: DataRequestRepository,
-        @Autowired private val companyIdValidator: CompanyIdValidator,
+        @Autowired private val companyInfoService: CompanyInfoService,
         @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
         @Autowired private val utils: DataRequestProcessingUtils,
         @Autowired private val dataAccessManager: DataAccessManager,
@@ -54,6 +54,7 @@ class SingleDataRequestManager
             val companyId: String,
             val userId: String,
             val dataType: DataTypeEnum,
+            val emailOnUpdate: Boolean,
             val contacts: Set<String>?,
             val message: String?,
             val correlationId: String,
@@ -128,6 +129,7 @@ class SingleDataRequestManager
                 companyId = companyId,
                 userId = userIdToUse,
                 dataType = singleDataRequest.dataType,
+                emailOnUpdate = singleDataRequest.emailOnUpdate,
                 contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 correlationId = UUID.randomUUID().toString(),
@@ -161,9 +163,13 @@ class SingleDataRequestManager
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    userId = preprocessedRequest.userId, datalandCompanyId = preprocessedRequest.companyId,
-                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
-                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
+                    userId = preprocessedRequest.userId,
+                    datalandCompanyId = preprocessedRequest.companyId,
+                    dataType = preprocessedRequest.dataType,
+                    emailOnUpdate = preprocessedRequest.emailOnUpdate,
+                    reportingPeriod = reportingPeriod,
+                    contacts = preprocessedRequest.contacts,
+                    message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }
@@ -263,7 +269,7 @@ class SingleDataRequestManager
         private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
             val datalandCompanyId: String? =
                 if (companyIdRegex.matches(companyIdentifier)) {
-                    companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
+                    companyInfoService.checkIfCompanyIdIsValid(companyIdentifier)
                     companyIdentifier
                 } else {
                     utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId

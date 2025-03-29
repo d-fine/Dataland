@@ -67,7 +67,7 @@ fun causeClientExceptionByBulkDataRequest(
         assertThrows<ClientException> {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    identifiers, dataTypes, reportingPeriods,
+                    identifiers, dataTypes, reportingPeriods, emailOnUpdate = false,
                 ),
             )
         }

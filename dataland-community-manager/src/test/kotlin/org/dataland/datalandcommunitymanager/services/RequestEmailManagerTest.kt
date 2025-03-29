@@ -3,10 +3,13 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -16,6 +19,7 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
+import java.util.UUID
 
 class RequestEmailManagerTest {
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
@@ -36,25 +40,31 @@ class RequestEmailManagerTest {
                 singleDataRequestEmailMessageSender,
                 accessRequestEmailSender,
             )
+
+        TestUtils.mockSecurityContext(
+            username = "admin",
+            userId = "adminId",
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
     }
 
     @Test
-    fun `validate that a response email is only sent when a request status is patched to any but answered or closed`() {
+    fun `validate that a response email is only sent when a request status is patched to answered or nonsourceable`() {
         val dataRequestEntity = mock(DataRequestEntity::class.java)
         for (requestStatus in RequestStatus.entries) {
-            requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, null, null)
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, requestStatus, false, null)
 
             if (requestStatus == RequestStatus.Answered) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
                     .sendDataRequestAnsweredEmail(any(), any())
-            } else if (requestStatus == RequestStatus.Closed) {
+            } else if (requestStatus == RequestStatus.NonSourceable) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
-                    .sendDataRequestClosedEmail(any(), any())
+                    .sendDataRequestNonSourceableEmail(any(), any())
             } else {
                 verify(dataRequestResponseEmailMessageSender, times(0))
                     .sendDataRequestAnsweredEmail(any(), any())
                 verify(dataRequestResponseEmailMessageSender, times(0))
-                    .sendDataRequestClosedEmail(any(), any())
+                    .sendDataRequestNonSourceableEmail(any(), any())
             }
             reset(dataRequestResponseEmailMessageSender)
         }
@@ -62,10 +72,11 @@ class RequestEmailManagerTest {
     }
 
     @Test
-    fun `validate that a access granted email is only sent on granted`() {
-        val dataRequestEntity = DataRequestEntity("", "", "", "", 0L)
+    fun `validate that an access granted email is only sent on granted`() {
+        val dataRequestEntity = DataRequestEntity("", "", false, "", "", 0L)
         for (accessStatus in AccessStatus.entries) {
-            requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, null, accessStatus, null)
+            val dataRequestPatch = DataRequestPatch(accessStatus = accessStatus)
+            requestEmailManager.sendNotificationsSpecificToAccessRequests(dataRequestEntity, dataRequestPatch, UUID.randomUUID().toString())
 
             if (accessStatus == AccessStatus.Granted) {
                 verify(accessRequestEmailSender, times(1))
@@ -81,8 +92,8 @@ class RequestEmailManagerTest {
     }
 
     @Test
-    fun `validate that a access requested email is send`() {
-        val dataRequestEntity = DataRequestEntity("", "", "", "", 0L)
+    fun `validate that an access requested email is sent`() {
+        val dataRequestEntity = DataRequestEntity("", "", true, "", "", 0L)
         dataRequestEntity.messageHistory =
             listOf(
                 MessageEntity(
@@ -90,8 +101,19 @@ class RequestEmailManagerTest {
                     "Message", 0L, dataRequestEntity,
                 ),
             )
-        requestEmailManager.sendEmailsWhenStatusChanged(
-            dataRequestEntity, RequestStatus.Answered, AccessStatus.Pending, null,
+        requestEmailManager.sendNotificationsSpecificToAccessRequests(
+            dataRequestEntity,
+            DataRequestPatch(
+                requestStatus = RequestStatus.Answered,
+                accessStatus = AccessStatus.Pending,
+            ),
+            UUID.randomUUID().toString(),
+        )
+        requestEmailManager.sendEmailsWhenRequestStatusChanged(
+            dataRequestEntity,
+            RequestStatus.Answered,
+            false,
+            UUID.randomUUID().toString(),
         )
 
         verify(accessRequestEmailSender, times(1))
