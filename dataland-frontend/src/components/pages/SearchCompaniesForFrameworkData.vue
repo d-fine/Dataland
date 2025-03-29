@@ -1,84 +1,83 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="0">
-      <TheContent class="min-h-screen paper-section relative">
+    <TheContent class="min-h-screen paper-section relative">
+      <DatasetsTabMenu :initial-tab-index="0"></DatasetsTabMenu>
+      <div
+        id="searchBarAndFiltersContainer"
+        class="w-full bg-white pt-4"
+        :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
+        ref="searchBarAndFiltersContainer"
+      >
+        <FrameworkDataSearchBar
+          id="frameworkDataSearchBar"
+          ref="frameworkDataSearchBar"
+          class="pl-4 m-0"
+          v-model="currentSearchBarInput"
+          :filter="currentCombinedFilter"
+          :chunk-size="rowsPerPage"
+          :current-page="currentPage"
+          :searchBarId="searchBarId"
+          :emit-search-results-array="true"
+          @search-confirmed="handleSearchConfirmed"
+          @companies-received="handleCompanyQuery"
+        />
+
         <div
-          id="searchBarAndFiltersContainer"
-          class="w-full bg-white pt-4"
-          :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
-          ref="searchBarAndFiltersContainer"
+          id="searchFiltersPanel"
+          class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
+          :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
         >
-          <FrameworkDataSearchBar
-            id="frameworkDataSearchBar"
-            ref="frameworkDataSearchBar"
-            class="pl-4 m-0"
-            v-model="currentSearchBarInput"
-            :filter="currentCombinedFilter"
-            :chunk-size="rowsPerPage"
-            :current-page="currentPage"
-            :searchBarId="searchBarId"
-            :emit-search-results-array="true"
-            @search-confirmed="handleSearchConfirmed"
-            @companies-received="handleCompanyQuery"
-          />
-
-          <div
-            id="searchFiltersPanel"
-            class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
-            :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
-          >
-            <div class="flex" id="searchFiltersContainer">
-              <div
-                id="scrolledSearchToggler"
-                :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+          <div class="flex" id="searchFiltersContainer">
+            <div
+              id="scrolledSearchToggler"
+              :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+            >
+              <span class="mr-3 font-semibold">Search Data for Companies</span>
+              <PrimeButton
+                name="search_bar_collapse"
+                icon="pi pi-search"
+                class="p-button-rounded surface-ground border-none m-2"
+                @click="toggleSearchBar"
               >
-                <span class="mr-3 font-semibold">Search Data for Companies</span>
-                <PrimeButton
-                  name="search_bar_collapse"
-                  icon="pi pi-search"
-                  class="p-button-rounded surface-ground border-none m-2"
-                  @click="toggleSearchBar"
-                >
-                  <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-                </PrimeButton>
-              </div>
-
-              <FrameworkDataSearchFilters
-                id="frameworkDataSearchFilters"
-                class="ml-3"
-                ref="frameworkDataSearchFilters"
-                :show-heading="!pageScrolled || searchBarToggled"
-                v-model:selected-country-codes="currentFilteredCountryCodes"
-                v-model:selected-frameworks="currentFilteredFrameworks"
-                v-model:selected-sectors="currentFilteredSectors"
-              />
+                <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+              </PrimeButton>
             </div>
 
-            <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-              <BulkDataRequestButton />
-              <NewDatasetButton v-if="hasUserUploaderRights" />
-              <span>{{ currentlyVisiblePageText }}</span>
-            </div>
+            <FrameworkDataSearchFilters
+              id="frameworkDataSearchFilters"
+              class="ml-3"
+              ref="frameworkDataSearchFilters"
+              :show-heading="!pageScrolled || searchBarToggled"
+              v-model:selected-country-codes="currentFilteredCountryCodes"
+              v-model:selected-frameworks="currentFilteredFrameworks"
+              v-model:selected-sectors="currentFilteredSectors"
+            />
+          </div>
+
+          <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
+            <BulkDataRequestButton />
+            <NewDatasetButton v-if="hasUserUploaderRights" />
+            <span>{{ currentlyVisiblePageText }}</span>
           </div>
         </div>
+      </div>
 
-        <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
-          <p class="font-medium text-xl">Loading...</p>
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-        </div>
+      <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
+        <p class="font-medium text-xl">Loading...</p>
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      </div>
 
-        <FrameworkDataSearchResults
-          v-if="!waitingForDataToDisplay"
-          ref="searchResults"
-          :total-records="totalRecords"
-          :previous-records="previousRecords"
-          :rows-per-page="rowsPerPage"
-          :data="resultsArray"
-          @page-update="handlePageUpdate"
-        />
-      </TheContent>
-    </DatasetsTabMenu>
+      <FrameworkDataSearchResults
+        v-if="!waitingForDataToDisplay"
+        ref="searchResults"
+        :total-records="totalRecords"
+        :previous-records="previousRecords"
+        :rows-per-page="rowsPerPage"
+        :data="resultsArray"
+        @page-update="handlePageUpdate"
+      />
+    </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>

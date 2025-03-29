@@ -24,7 +24,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -88,12 +88,12 @@
               </PrimeButton>
             </router-link>
           </div>
-          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+          <Popover ref="reportingPeriodsPopover">
             <SimpleReportingPeriodSelectorDialog
               :reporting-periods="availableReportingPeriods"
               @selected-reporting-period="goToUpdateFormByReportingPeriod"
             />
-          </OverlayPanel>
+          </Popover>
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
@@ -120,11 +120,11 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, ExportFileType } from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
-import OverlayPanel from 'primevue/overlaypanel';
+import Popover from 'primevue/popover';
 import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import { CompanyRole } from '@clients/communitymanager';
@@ -152,10 +152,10 @@ export default defineComponent({
     MarginWrapper,
     TheFooter,
     PrimeButton,
-    OverlayPanel,
+    Popover,
     SimpleReportingPeriodSelectorDialog,
     QualityAssuranceButtons,
-    InputSwitch,
+    ToggleSwitch,
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
@@ -291,9 +291,9 @@ export default defineComponent({
       if (this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByDataId(this.singleDataMetaInfoToDisplay.dataId);
       } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
-        const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
+        const panel = this.$refs.reportingPeriodsPopover as typeof Popover;
         if (panel) {
-          panel.toggle(event);
+          panel.toggle(event); //seems to be a common issue? (https://github.com/primefaces/primevue/issues/6791)
         }
       } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByReportingPeriod(this.availableReportingPeriods[0]);

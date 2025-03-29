@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section relative">
-      <DatasetsTabMenu :initial-tab-index="1">
+      <DatasetsTabMenu :initial-tab-index="1"></DatasetsTabMenu>
         <div class="col-12 flex flex-row justify-content-between align-items-end">
           <NewDatasetButton v-if="hasUserUploaderRights" />
         </div>
@@ -18,7 +18,6 @@
         <div v-else-if="datasetTableInfos.length === 0">
           <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
         </div>
-      </DatasetsTabMenu>
     </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>

@@ -1,25 +1,31 @@
 <template>
-  <TabView
-    v-if="initialTabIndex != undefined"
-    :activeIndex="initialTabIndex"
-    @tab-change="handleTabChange"
-    class="col-12"
-  >
-    <TabPanel
-      v-for="tab in tabs"
-      :key="tab.label"
-      :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
-      :header="tab.label"
-    >
-      <slot v-if="tabs.indexOf(tab) == initialTabIndex"></slot>
-    </TabPanel>
-  </TabView>
+  <Tabs value="/companies" v-if="initialTabIndex != undefined" @tab-change="handleTabChange" class="col-12">
+    <TabList>
+      <Tab
+        v-for="tab in tabs"
+        :key="tab.label"
+        :value="tab.value"
+        :tabindex="initialTabIndex"
+        :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
+        :active="initialTabIndex == tabs.indexOf(tab)"
+        :data-p-active="initialTabIndex == tabs.indexOf(tab)"
+        v-bind:class="initialTabIndex == tabs.indexOf(tab) ? 'p-tab-active' : ''"
+      >
+        <router-link v-if="tab.route" v-slot="{ href, navigate }" :to="tab.route">
+          <a :href="href" @click="navigate">
+            <span>{{ tab.label }}</span>
+          </a>
+        </router-link>
+      </Tab>
+    </TabList>
+  </Tabs>
 </template>
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import Tabs from 'primevue/tabs';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
@@ -29,8 +35,9 @@ import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRol
 export default defineComponent({
   name: 'DatasetsTabMenu',
   components: {
-    TabView,
-    TabPanel,
+    Tab,
+    Tabs,
+    TabList,
   },
   props: {
     initialTabIndex: {
@@ -41,12 +48,17 @@ export default defineComponent({
   data(): { tabs: Tab[] } {
     return {
       tabs: [
-        { label: 'COMPANIES', route: '/companies', isVisible: true },
-        { label: 'MY DATASETS', route: '/datasets', isVisible: true },
-        { label: 'QA', route: '/qualityassurance', isVisible: false },
-        { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
-        { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
-        { label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
+        { label: 'COMPANIES', value: 'companies', route: '/companies', isVisible: true },
+        { label: 'MY DATASETS', value: 'dataset', route: '/datasets', isVisible: true },
+        { label: 'QA', value: 'qualityassurance', route: '/qualityassurance', isVisible: false },
+        { label: 'MY DATA REQUESTS', value: 'datarequest', route: '/requests', isVisible: true },
+        {
+          label: 'DATA REQUESTS FOR MY COMPANIES',
+          value: 'companyrequest',
+          route: '/companyrequests',
+          isVisible: false,
+        },
+        { label: 'ALL DATA REQUESTS', value: 'allrequests', route: '/requestoverview', isVisible: false },
       ],
     };
   },
@@ -113,13 +125,8 @@ export default defineComponent({
 
 export interface Tab {
   label: string;
+  value: string;
   route: string;
   isVisible: boolean;
 }
 </script>
-
-<style>
-.p-tabview .p-tabview-nav li.p-disabled .p-tabview-nav-link {
-  display: none;
-}
-</style>

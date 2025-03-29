@@ -1,136 +1,134 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="2">
-      <TheContent class="min-h-screen paper-section relative">
-        <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="companyNameSearchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <Calendar
-                  data-test="reportingPeriod"
-                  v-model="availableReportingPeriods"
-                  placeholder="Search by reporting period"
-                  :showIcon="true"
-                  :manualInput="false"
-                  view="year"
-                  dateFormat="yy"
-                  selectionMode="multiple"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="framework-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Frameworks"
-                class="ml-3"
-                style="margin: 15px"
+    <TheContent class="min-h-screen paper-section relative">
+      <DatasetsTabMenu :initial-tab-index="2"></DatasetsTabMenu>
+      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+        <div
+          id="searchBarAndFiltersContainer"
+          class="w-full bg-white pt-4 justify-between"
+          ref="searchBarAndFiltersContainer"
+        >
+          <span class="align-content-start flex items-center justify-start">
+            <span class="w-3 p-input-icon-left" style="margin: 15px">
+              <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+              <InputText
+                data-test="companyNameSearchbar"
+                v-model="searchBarInput"
+                placeholder="Search by company name"
+                class="w-12 pl-6 pr-6"
               />
-
-              <div class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </div>
-
-              <div class="flex align-items-center ml-auto" style="margin: 15px">
-                <span>{{ numberOfUnreviewedDatasets }}</span>
-              </div>
             </span>
-            <div class="pb-2 ml-3 flex justify-content-start">
-              <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+            <span class="w-3 p-input-icon-left" style="margin: 15px">
+              <Calendar
+                data-test="reportingPeriod"
+                v-model="availableReportingPeriods"
+                placeholder="Search by reporting period"
+                :showIcon="true"
+                :manualInput="false"
+                view="year"
+                dateFormat="yy"
+                selectionMode="multiple"
+                class="w-12 pl-6 pr-6"
+              />
+            </span>
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              ref="frameworkFilter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="framework-picker"
+              filter-id="framework-filter"
+              filter-placeholder="Search by Frameworks"
+              class="ml-3"
+              style="margin: 15px"
+            />
+
+            <div class="flex align-items-center">
+              <span
+                data-test="reset-filter"
+                style="margin: 15px"
+                class="ml-3 cursor-pointer text-primary font-semibold d-letters"
+                @click="resetFilterAndSearchBar"
+                >RESET</span
+              >
             </div>
+
+            <div class="flex align-items-center ml-auto" style="margin: 15px">
+              <span>{{ numberOfUnreviewedDatasets }}</span>
+            </div>
+          </span>
+          <div class="pb-2 ml-3 flex justify-content-start">
+            <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+          </div>
+        </div>
+
+        <div class="col-12 text-left p-3">
+          <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">Loading data to be reviewed...</p>
+            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           </div>
 
-          <div class="col-12 text-left p-3">
-            <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-              <p class="font-medium text-xl">Loading data to be reviewed...</p>
-              <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-            </div>
-
-            <div class="card">
-              <DataTable
-                v-show="!waitingForData && displayDataOfPage.length > 0"
-                :value="displayDataOfPage"
-                class="table-cursor"
-                id="qa-data-result"
-                :rowHover="true"
-                :first="firstRowIndex"
-                data-test="qa-review-section"
-                @row-click="goToQaViewPage($event)"
-                paginator
-                paginator-position="top"
-                :rows="datasetsPerPage"
-                lazy
-                :total-records="totalRecords"
-                @page="onPage($event)"
-              >
-                <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
-                  <template #body="slotProps">
-                    {{ slotProps.data.dataId }}
-                  </template>
-                </Column>
-                <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
-                  <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
-                  </template>
-                </Column>
-                <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
-                  <template #body="slotProps">
-                    {{ humanizeString(slotProps.data.framework) }}
-                  </template>
-                </Column>
-                <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
-                  <template #body="slotProps">
-                    {{ slotProps.data.reportingPeriod }}
-                  </template>
-                </Column>
-                <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
-                  <template #body="slotProps">
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
-                  </template>
-                </Column>
-                <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
-                  <template #body>
-                    <div class="text-right text-primary no-underline font-bold">
-                      <span>REVIEW</span>
-                      <span class="ml-3">></span>
-                    </div>
-                  </template>
-                </Column>
-              </DataTable>
-              <div v-if="!waitingForData && displayDataOfPage.length == 0">
-                <div class="d-center-div text-center px-7 py-4">
-                  <p class="font-medium text-xl">There are no unreviewed datasets on Dataland matching your filters.</p>
-                </div>
+          <div class="card">
+            <DataTable
+              v-show="!waitingForData && displayDataOfPage.length > 0"
+              :value="displayDataOfPage"
+              class="table-cursor"
+              id="qa-data-result"
+              :rowHover="true"
+              :first="firstRowIndex"
+              data-test="qa-review-section"
+              @row-click="goToQaViewPage($event)"
+              paginator
+              paginator-position="top"
+              :rows="datasetsPerPage"
+              lazy
+              :total-records="totalRecords"
+              @page="onPage($event)"
+            >
+              <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
+                <template #body="slotProps">
+                  {{ slotProps.data.dataId }}
+                </template>
+              </Column>
+              <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
+                <template #body="slotProps">
+                  {{ slotProps.data.companyName }}
+                </template>
+              </Column>
+              <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
+                <template #body="slotProps">
+                  {{ humanizeString(slotProps.data.framework) }}
+                </template>
+              </Column>
+              <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
+                <template #body="slotProps">
+                  {{ slotProps.data.reportingPeriod }}
+                </template>
+              </Column>
+              <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
+                <template #body="slotProps">
+                  {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
+                </template>
+              </Column>
+              <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
+                <template #body>
+                  <div class="text-right text-primary no-underline font-bold">
+                    <span>REVIEW</span>
+                    <span class="ml-3">></span>
+                  </div>
+                </template>
+              </Column>
+            </DataTable>
+            <div v-if="!waitingForData && displayDataOfPage.length == 0">
+              <div class="d-center-div text-center px-7 py-4">
+                <p class="font-medium text-xl">There are no unreviewed datasets on Dataland matching your filters.</p>
               </div>
             </div>
           </div>
-        </AuthorizationWrapper>
-      </TheContent>
-    </DatasetsTabMenu>
-
+        </div>
+      </AuthorizationWrapper>
+    </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>

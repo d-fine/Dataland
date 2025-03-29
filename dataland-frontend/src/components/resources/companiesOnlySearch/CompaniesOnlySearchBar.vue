@@ -4,7 +4,7 @@
     <AutoComplete
       class="w-full"
       input-id="company_search_bar_standard"
-      ref="autocomplete"
+      id="autocomplete"
       v-model="searchBarInput"
       :suggestions="autocompleteArray"
       :min-length="3"
@@ -41,25 +41,20 @@
 import AutoComplete, { type AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import { type CompanyIdAndName } from '@clients/backend';
 import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
-import { defineComponent, inject, ref } from 'vue';
+import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
 
 export default defineComponent({
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      autocomplete: ref<HTMLFormElement>(),
-    };
+    return { getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise') };
   },
   name: 'CompaniesOnlySearchBar',
   components: { AutoComplete, SearchResultHighlighter },
   mounted() {
-    const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
-    const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
     if (window.innerWidth > 768) {
-      inputOfAutocompleteComponent.focus();
+      (document.querySelector('#autocomplete input') as HTMLInputElement).focus();
     }
   },
   beforeUnmount() {
@@ -147,9 +142,5 @@ export default defineComponent({
 <style scoped>
 .p-input-icon-align {
   text-align: left;
-}
-.search-icon {
-  z-index: 20;
-  color: #958d7c;
 }
 </style>
