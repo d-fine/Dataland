@@ -10,11 +10,12 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
@@ -27,11 +28,11 @@ private const val EMAIL_ADDRESS_D = "a@example.com"
 private const val EMAIL_ADDRESS_ADDITIONAL_BCC = "aditional_bcc@example.com"
 
 class EmailMessageListenerTest {
-    private lateinit var emailSender: EmailSender
-    private var objectMapper = jacksonObjectMapper()
-    private lateinit var emailContactService: EmailContactService
-    private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
-    private val proxyPrimaryUrl = "abc.example.com"
+    private val mockEmailSender = mock<EmailSender>()
+    private val objectMapper = jacksonObjectMapper()
+    private val mockEmailContactService = mock<EmailContactService>()
+    private val mockEmailSubscriptionTracker = mock<EmailSubscriptionTracker>()
+    private val dummyProxyPrimaryUrl = "abc.example.com"
     private val testData = TypedEmailContentTestData()
 
     private val recipientToContactMap =
@@ -71,16 +72,18 @@ class EmailMessageListenerTest {
 
     @BeforeEach
     fun setup() {
-        emailSender = mock(EmailSender::class.java)
-        emailContactService = mock(EmailContactService::class.java)
-        `when`(emailContactService.getContacts(any())).thenAnswer { invocation ->
+        reset(
+            mockEmailSender,
+            mockEmailContactService,
+            mockEmailSubscriptionTracker,
+        )
+        whenever(mockEmailContactService.getContacts(any())).thenAnswer { invocation ->
             val recipient: EmailRecipient = invocation.getArgument(0)
             listOf(recipientToContactMap[recipient])
         }
-        `when`(emailContactService.getSenderContact()).thenReturn(senderContact)
+        doReturn(senderContact).whenever(mockEmailContactService).getSenderContact()
 
-        emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
-        `when`(emailSubscriptionTracker.subscribeContactsIfNeededAndPartition(any())).thenAnswer { invocation ->
+        whenever(mockEmailSubscriptionTracker.subscribeContactsIfNeededAndPartition(any())).thenAnswer { invocation ->
             val contacts: List<EmailContact> = invocation.getArgument(0)
             val (allowed, blocked) = contacts.partition { contactToSubscriptionStatusMap[it]?.first ?: false }
             EmailSubscriptionTracker.PartitionedContacts(
@@ -105,23 +108,23 @@ class EmailMessageListenerTest {
         val typedEmailContent = testData.accessToDatasetRequested
         val keywords = testData.accessToDatasetRequestedKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
-        keywords.add("https://$proxyPrimaryUrl")
+        keywords.add("https://$dummyProxyPrimaryUrl")
         val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
-        doNothing().whenever(emailSender).sendEmail(any())
+        doNothing().whenever(mockEmailSender).sendEmail(any())
 
         val emailMessageListener =
             EmailMessageListener(
-                emailSender,
+                mockEmailSender,
                 objectMapper,
-                emailContactService,
-                emailSubscriptionTracker,
-                proxyPrimaryUrl,
+                mockEmailContactService,
+                mockEmailSubscriptionTracker,
+                dummyProxyPrimaryUrl,
                 true,
                 "  $EMAIL_ADDRESS_ADDITIONAL_BCC;;",
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(emailSender).sendEmail(
+        verify(mockEmailSender).sendEmail(
             argThat { email ->
                 assertSenderReceiverCcAndBcc(email, allowedReceiver, allowedCc, allowedBcc) &&
                     keywords.all { keyword ->
@@ -139,27 +142,27 @@ class EmailMessageListenerTest {
         val typedEmailContent = testData.dataRequestNonSourceableMail
         val keywords = testData.dataRequestNonSourceableKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
-        keywords.add("https://$proxyPrimaryUrl")
+        keywords.add("https://$dummyProxyPrimaryUrl")
         keywords.remove(testData.subscriptionUuid)
         val jsonString =
             objectMapper.writeValueAsString(
                 EmailMessage(typedEmailContent, receiver, emptyList(), emptyList()),
             )
-        doNothing().whenever(emailSender).sendEmail(any())
+        doNothing().whenever(mockEmailSender).sendEmail(any())
 
         val emailMessageListener =
             EmailMessageListener(
-                emailSender,
+                mockEmailSender,
                 objectMapper,
-                emailContactService,
-                emailSubscriptionTracker,
-                proxyPrimaryUrl,
+                mockEmailContactService,
+                mockEmailSubscriptionTracker,
+                dummyProxyPrimaryUrl,
                 true,
                 "",
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(emailSender).sendEmail(
+        verify(mockEmailSender).sendEmail(
             argThat { email ->
                 assertSenderReceiverCcAndBcc(email, listOf(receiverContact), emptyList(), emptyList()) &&
                     keywords.all { keyword ->
