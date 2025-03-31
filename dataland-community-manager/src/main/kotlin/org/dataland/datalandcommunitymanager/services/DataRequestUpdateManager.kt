@@ -407,7 +407,6 @@ class DataRequestUpdateManager
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
          */
-        @Transactional
         fun patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
             dataRequestEntities: List<DataRequestEntity>,
             answeringDataId: String,
@@ -470,6 +469,7 @@ class DataRequestUpdateManager
          * @param nonSourceableInfo the info on the non-sourceable dataset
          * @param correlationId correlationId
          */
+        @Transactional
         fun patchAllRequestsForThisDatasetToStatusNonSourceable(
             nonSourceableInfo: NonSourceableInfo,
             correlationId: String,

@@ -152,7 +152,7 @@ class CommunityManagerListener(
             ),
         ],
     )
-    fun processDataReportedNotSourceableMessage(
+    fun processDataReportedNonSourceableMessage(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
