@@ -57,17 +57,17 @@
                         data-test="datapoint-framework"
                       />
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'emailOnUpdate'" header="Notify Me Immediately">
+                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
                       Receive emails directly or via summary
                       <InputSwitch
                         class="p-inputswitch p-inputswitch-slider"
                         style="display: block; margin: 1rem 0"
-                        data-test="emailOnUpdateInput"
-                        inputId="emailOnUpdateInput"
-                        v-model="emailOnUpdate"
+                        data-test="notifyMeImmediatelyInput"
+                        inputId="notifyMeImmediatelyInput"
+                        v-model="notifyMeImmediately"
                       />
-                      <label for="emailOnUpdateInput" data-test="emailOnUpdateText">
-                        <strong v-if="emailOnUpdate">immediate update</strong>
+                      <label for="notifyMeImmediatelyInput" data-test="notifyMeImmediatelyText">
+                        <strong v-if="notifyMeImmediately">immediate update</strong>
                         <span v-else>weekly summary</span>
                       </label>
                     </BasicFormSection>
@@ -317,7 +317,7 @@ export default defineComponent({
       becomePremiumUserEmailTemplate,
       MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
       hasCompanyAtLeastOneOwner: false,
-      emailOnUpdate: false,
+      notifyMeImmediately: false,
     };
   },
   computed: {
@@ -461,7 +461,7 @@ export default defineComponent({
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         contacts: this.selectedContacts as unknown as Set<string>,
         message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : '',
-        emailOnUpdate: this.emailOnUpdate,
+        notifyMeImmediately: this.notifyMeImmediately,
       };
     },
     /**

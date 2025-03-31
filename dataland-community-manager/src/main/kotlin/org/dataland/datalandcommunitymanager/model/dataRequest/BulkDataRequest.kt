@@ -40,5 +40,5 @@ data class BulkDataRequest(
     )
     val reportingPeriods: Set<String>,
     @field:JsonProperty(required = false)
-    val emailOnUpdate: Boolean = false,
+    val notifyMeImmediately: Boolean = false,
 )

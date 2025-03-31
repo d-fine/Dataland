@@ -228,7 +228,7 @@ class DataRequestUpdateManagerTest {
                 DataRequestEntity(
                     userId = "4321",
                     dataType = "p2p",
-                    emailOnUpdate = true,
+                    notifyMeImmediately = true,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 0,
                     datalandCompanyId = dummyCompanyId,
@@ -236,7 +236,7 @@ class DataRequestUpdateManagerTest {
                 DataRequestEntity(
                     userId = "1234",
                     dataType = "p2p",
-                    emailOnUpdate = false,
+                    notifyMeImmediately = false,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 0,
                     datalandCompanyId = dummyCompanyId,
@@ -244,7 +244,7 @@ class DataRequestUpdateManagerTest {
                 DataRequestEntity(
                     userId = "dummyId",
                     dataType = "p2p",
-                    emailOnUpdate = true,
+                    notifyMeImmediately = true,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 123456,
                     datalandCompanyId = dummyCompanyId,

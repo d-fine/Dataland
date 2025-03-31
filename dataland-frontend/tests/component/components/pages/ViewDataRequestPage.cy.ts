@@ -20,7 +20,7 @@ describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
   const dummyUserId = 'dummyUserId';
   const dummyEmail = 'dummy@mail.de';
-  const emailOnUpdate = true;
+  const notifyMeImmediately = true;
   const dummyCompanyId = 'dummyCompanyId';
   const dummyCompanyName = 'dummyCompanyName';
   const dummyFramework = 'dummyFramework';
@@ -46,7 +46,7 @@ describe('Component tests for the view data request page', function (): void {
       dataRequestId: requestId,
       userId: dummyUserId,
       userEmailAddress: dummyEmail,
-      emailOnUpdate: emailOnUpdate,
+      notifyMeImmediately: notifyMeImmediately,
       creationTimestamp: dummyCreationTime,
       dataType: dummyFramework,
       reportingPeriod: dummyReportingYear,
@@ -376,11 +376,11 @@ describe('Component tests for the view data request page', function (): void {
     cy.intercept('PATCH', `**/community/requests/${requestId}`, {
       status: 200,
     }).as('patchRequest');
-    cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').scrollIntoView();
-    cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').should('be.visible');
-    cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
-    cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', false);
-    cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
-    cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', true);
+    cy.get('[data-test="notifyMeImmediately"] [data-test="notifyMeImmediatelyInput"]').scrollIntoView();
+    cy.get('[data-test="notifyMeImmediately"] [data-test="notifyMeImmediatelyInput"]').should('be.visible');
+    cy.get('[data-test="notifyMeImmediately"] [data-test="notifyMeImmediatelyInput"]').click();
+    cy.wait('@patchRequest').its('request.body.notifyMeImmediately').should('be.equal', false);
+    cy.get('[data-test="notifyMeImmediately"] [data-test="notifyMeImmediatelyInput"]').click();
+    cy.wait('@patchRequest').its('request.body.notifyMeImmediately').should('be.equal', true);
   });
 });

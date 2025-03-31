@@ -45,7 +45,7 @@ class ResourceResponseEmailSenderTest {
         DataRequestEntity(
             userId = userId,
             dataType = dataType,
-            emailOnUpdate = false,
+            notifyMeImmediately = false,
             reportingPeriod = reportingPeriod,
             datalandCompanyId = companyId,
             creationTimestamp = creationTimestamp,

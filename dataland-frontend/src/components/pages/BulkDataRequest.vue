@@ -119,17 +119,17 @@
                       </div>
                     </BasicFormSection>
 
-                    <BasicFormSection :data-test="'emailOnUpdate'" header="Notify Me Immediately">
+                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
                       Receive emails directly or via summary
                       <InputSwitch
                         class="p-inputswitch p-inputswitch-slider"
                         style="display: block; margin: 1rem 0"
-                        data-test="emailOnUpdateInput"
-                        inputId="emailOnUpdateInput"
-                        v-model="emailOnUpdate"
+                        data-test="notifyMeImmediatelyInput"
+                        inputId="notifyMeImmediatelyInput"
+                        v-model="notifyMeImmediately"
                       />
-                      <label for="emailOnUpdateInput">
-                        <strong v-if="emailOnUpdate">immediate update</strong>
+                      <label for="notifyMeImmediatelyInput">
+                        <strong v-if="notifyMeImmediately">immediate update</strong>
                         <span v-else>weekly summary</span>
                       </label>
                     </BasicFormSection>
@@ -230,7 +230,7 @@ export default defineComponent({
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: '',
-      emailOnUpdate: false,
+      notifyMeImmediately: false,
       identifiers: [] as Array<string>,
       bulkDataRequestResponse: undefined as BulkDataRequestResponse | undefined,
       requestSuccessStatus: {},
@@ -299,7 +299,7 @@ export default defineComponent({
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         companyIdentifiers: this.identifiers as unknown as Set<string>,
         dataTypes: this.selectedFrameworks as unknown as Set<BulkDataRequestDataTypesEnum>,
-        emailOnUpdate: this.emailOnUpdate,
+        notifyMeImmediately: this.notifyMeImmediately,
       };
     },
     /**

@@ -38,10 +38,10 @@ describeIf(
       chooseFrameworkByIndex(1);
 
       // Create a request
-      cy.get('[data-test="emailOnUpdateInput"]').scrollIntoView();
-      cy.get('[data-test="emailOnUpdateInput"]').should('not.have.class', 'p-inputswitch-checked');
-      cy.get('[data-test="emailOnUpdateInput"]').click();
-      cy.get('[data-test="emailOnUpdateInput"]').should('have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
       cy.get('textarea[name="listOfCompanyIdentifiers"]').type(`${permIdOfExistingCompany}, 12345incorrectNumber`);
       cy.get('button[type="submit"]').click();
 
@@ -198,7 +198,7 @@ describeIf(
       cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests/');
       cy.get(`div.card__data:contains("${testCompanyName}")`).should('be.visible');
       cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Openand Access is:Public since');
-      cy.get('[data-test="emailOnUpdateInput"]').should(
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should(
         (emailChecked ? '' : 'not.') + 'have.class',
         'p-inputswitch-checked'
       );

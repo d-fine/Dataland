@@ -30,7 +30,7 @@ describe('Component tests for the single data request page', function (): void {
         const singleDataRequest = assertDefined(request.body as SingleDataRequest);
         expect(singleDataRequest.contacts).to.deep.equal(['example@example.com', 'someone@example.com']);
         expect(singleDataRequest.message).to.deep.equal('test text');
-        expect(singleDataRequest.emailOnUpdate).to.equal(false);
+        expect(singleDataRequest.notifyMeImmediately).to.equal(false);
 
         request.reply({
           statusCode: 200,
@@ -47,14 +47,14 @@ describe('Component tests for the single data request page', function (): void {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="emailOnUpdate"]').within(() => {
-        cy.get('[data-test="emailOnUpdateInput"]').scrollIntoView();
-        cy.get('[data-test="emailOnUpdateInput"]').should('be.visible');
-        cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'summary');
-        cy.get('[data-test="emailOnUpdateInput"]').click();
-        cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'immediate');
-        cy.get('[data-test="emailOnUpdateInput"]').click();
-        cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'summary');
+      cy.get('[data-test="notifyMeImmediately"]').within(() => {
+        cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
+        cy.get('[data-test="notifyMeImmediatelyInput"]').should('be.visible');
+        cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
+        cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+        cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'immediate');
+        cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+        cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
       });
     });
   });

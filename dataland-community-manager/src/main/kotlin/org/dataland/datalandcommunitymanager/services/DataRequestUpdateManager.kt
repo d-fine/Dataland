@@ -51,14 +51,16 @@ class DataRequestUpdateManager
          * Patches the email-on-update-field if necessary anr returns if it was updated.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
-         * @return true if the emailOnUpdate was updated, false otherwise
+         * @return true if the notifyMeImmediately was updated, false otherwise
          */
-        private fun updateEmailOnUpdateIfRequired(
+        private fun updateNotifyMeImmediatelyIfRequired(
             dataRequestPatch: DataRequestPatch,
             dataRequestEntity: DataRequestEntity,
         ): Boolean {
-            if (dataRequestPatch.emailOnUpdate != null && dataRequestEntity.emailOnUpdate != dataRequestPatch.emailOnUpdate) {
-                dataRequestEntity.emailOnUpdate = dataRequestPatch.emailOnUpdate
+            if (dataRequestPatch.notifyMeImmediately != null &&
+                dataRequestEntity.notifyMeImmediately != dataRequestPatch.notifyMeImmediately
+            ) {
+                dataRequestEntity.notifyMeImmediately = dataRequestPatch.notifyMeImmediately
                 return true
             }
             return false
@@ -226,7 +228,7 @@ class DataRequestUpdateManager
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
-                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
+                    updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dataRequestEntity),
                     updateRequestStatusHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId),
                     updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
                     checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
@@ -247,12 +249,12 @@ class DataRequestUpdateManager
             earlierQaApprovedVersionExists: Boolean,
             correlationId: String,
         ): Boolean {
-            if (dataRequestEntity.emailOnUpdate) {
+            if (dataRequestEntity.notifyMeImmediately) {
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionExists, correlationId,
                 )
             }
-            return dataRequestEntity.emailOnUpdate
+            return dataRequestEntity.notifyMeImmediately
         }
 
         /**
@@ -269,7 +271,7 @@ class DataRequestUpdateManager
                 dataRequestEntity.requestStatus == RequestStatus.Open &&
                 dataRequestPatch.requestStatus == RequestStatus.Answered
             ) {
-                dataRequestEntity.emailOnUpdate = false
+                dataRequestEntity.notifyMeImmediately = false
             }
         }
 
@@ -446,7 +448,7 @@ class DataRequestUpdateManager
         ) {
             dataRequestEntities.forEach {
                 val accessStatusIsOkay = it.accessStatus != AccessStatus.Declined && it.accessStatus != AccessStatus.Revoked
-                if (it.emailOnUpdate ||
+                if (it.notifyMeImmediately ||
                     (it.dataType == DataTypeEnum.vsme.name && accessStatusIsOkay)
                 ) {
                     requestEmailManager.sendDataUpdatedEmail(
@@ -457,7 +459,7 @@ class DataRequestUpdateManager
                 if (it.dataType != DataTypeEnum.vsme.name) {
                     dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                         dataRequestEntity = it,
-                        immediateNotificationWasSent = it.emailOnUpdate,
+                        immediateNotificationWasSent = it.notifyMeImmediately,
                         earlierQaApprovedVersionExists = true,
                     )
                 }

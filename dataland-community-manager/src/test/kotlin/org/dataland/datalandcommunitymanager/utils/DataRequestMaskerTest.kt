@@ -71,7 +71,7 @@ class DataRequestMaskerTest {
             DataRequestEntity(
                 userId = "",
                 dataType = "p2p",
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
                 reportingPeriod = "",
                 creationTimestamp = 0,
                 datalandCompanyId = "",

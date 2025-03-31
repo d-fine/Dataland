@@ -43,5 +43,5 @@ data class SingleDataRequest(
     val contacts: Set<String>?,
     val message: String?,
     @field:JsonProperty(required = false)
-    val emailOnUpdate: Boolean = false,
+    val notifyMeImmediately: Boolean = false,
 )

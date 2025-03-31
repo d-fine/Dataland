@@ -9,14 +9,14 @@ describe('Component tests for the BulkDataRequest page', () => {
   });
 
   it('Check email notification toggle', () => {
-    cy.get('[data-test="emailOnUpdate"]').within(() => {
-      cy.get('[data-test="emailOnUpdateInput"]').scrollIntoView();
-      cy.get('[data-test="emailOnUpdateInput"]').should('be.visible');
-      cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'summary');
-      cy.get('[data-test="emailOnUpdateInput"]').click();
-      cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'immediate');
-      cy.get('[data-test="emailOnUpdateInput"]').click();
-      cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'summary');
+    cy.get('[data-test="notifyMeImmediately"]').within(() => {
+      cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('be.visible');
+      cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+      cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'immediate');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+      cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
     });
   });
 });

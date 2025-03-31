@@ -49,7 +49,7 @@ class DataRequestTimeSchedulerTest {
                 dataType = "dummyDataType",
                 reportingPeriod = "dummyReportingPeriod",
                 datalandCompanyId = "dummyCompanyId",
-                emailOnUpdate = true,
+                notifyMeImmediately = true,
                 messageHistory = emptyList(),
                 dataRequestStatusHistory = emptyList(),
                 lastModifiedDate = lastModifiedDate,

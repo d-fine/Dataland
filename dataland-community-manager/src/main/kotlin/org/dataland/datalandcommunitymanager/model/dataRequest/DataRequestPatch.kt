@@ -25,7 +25,7 @@ data class DataRequestPatch(
     val contacts: Set<String>? = null,
     val message: String? = null,
     val requestPriority: RequestPriority? = null,
-    val emailOnUpdate: Boolean? = null,
+    val notifyMeImmediately: Boolean? = null,
     val adminComment: String? = null,
     val requestStatusChangeReason: String? = null,
 )

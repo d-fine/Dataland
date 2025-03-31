@@ -9,7 +9,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
  * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
- * @param emailOnUpdate
+ * @param notifyMeImmediately
  * @param requestStatusChangeReason provided reason why data should be available
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
@@ -19,7 +19,7 @@ export async function patchDataRequest(
   accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
-  emailOnUpdate: boolean | undefined,
+  notifyMeImmediately: boolean | undefined,
   requestStatusChangeReason: string | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<void> {
@@ -32,7 +32,7 @@ export async function patchDataRequest(
           accessStatus: accessStatus,
           contacts: contacts,
           message: message,
-          emailOnUpdate: emailOnUpdate,
+          notifyMeImmediately: notifyMeImmediately,
           requestStatusChangeReason: requestStatusChangeReason,
         }
       );

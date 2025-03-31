@@ -73,7 +73,7 @@ class BulkDataRequestManager(
             acceptedIdentifiersToCompanyIdAndName = acceptedIdentifiersToCompanyIdAndName,
             existingDatasets = existingDatasets,
             rejectedIdentifiers = rejectedIdentifiers,
-            emailOnUpdate = bulkDataRequest.emailOnUpdate,
+            notifyMeImmediately = bulkDataRequest.notifyMeImmediately,
             correlationId = correlationId,
         )
     }
@@ -220,7 +220,7 @@ class BulkDataRequestManager(
     private fun storeDataRequests(
         dimensionsToProcess: List<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-        emailOnUpdate: Boolean,
+        notifyMeImmediately: Boolean,
     ): List<ResourceResponse> {
         val userId = DatalandAuthentication.fromContext().userId
         val acceptedDataRequests = mutableListOf<ResourceResponse>()
@@ -237,7 +237,7 @@ class BulkDataRequestManager(
                     userId = userId,
                     datalandCompanyId = it.companyId,
                     dataType = it.dataType,
-                    emailOnUpdate = emailOnUpdate,
+                    notifyMeImmediately = notifyMeImmediately,
                     reportingPeriod = it.reportingPeriod,
                 )
 
@@ -303,13 +303,13 @@ class BulkDataRequestManager(
         acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
         existingDatasets: List<DataMetaInformation>,
         rejectedIdentifiers: List<String>,
-        emailOnUpdate: Boolean,
+        notifyMeImmediately: Boolean,
         correlationId: String,
     ): BulkDataRequestResponse {
         val requestsToProcess = acceptedRequestCombinations.toMutableList()
         val existingNonFinalRequests =
             processExistingDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
-        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName, emailOnUpdate)
+        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName, notifyMeImmediately)
         val existingDatasetsResponse =
             getAlreadyExistingDatasetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
 

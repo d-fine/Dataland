@@ -142,7 +142,7 @@ fun postSingleDataRequestForReportingPeriodAndUpdateStatus(
                 companyIdentifier = companyIdentifier,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf(reportingPeriod),
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             ),
         )
     checkThatAllReportingPeriodsAreTreatedAsExpected(
@@ -172,7 +172,7 @@ fun postStandardSingleDataRequest(
             reportingPeriods = setOf("2022"),
             contacts = contacts,
             message = message,
-            emailOnUpdate = false,
+            notifyMeImmediately = false,
         ),
     )
 
@@ -185,7 +185,7 @@ fun causeClientExceptionBySingleDataRequest(
         assertThrows<ClientException> {
             requestControllerApi.postSingleDataRequest(
                 SingleDataRequest(
-                    identifier, dataType, reportingPeriods, emailOnUpdate = false,
+                    identifier, dataType, reportingPeriods, notifyMeImmediately = false,
                 ),
             )
         }

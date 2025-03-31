@@ -29,7 +29,7 @@ class DataRequestEntityTest {
             DataRequestEntity(
                 userId = testUserId,
                 dataType = testDataType.value,
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
                 reportingPeriod = testReportingPeriod,
                 datalandCompanyId = testCompanyId,
                 creationTimestamp = Instant.now().toEpochMilli(),

@@ -40,7 +40,7 @@ class QueryDataRequestsCountingTests {
                 companyIdentifier = companyId,
                 dataType = dataType,
                 reportingPeriods = reportingPeriods,
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             ),
         )
     }

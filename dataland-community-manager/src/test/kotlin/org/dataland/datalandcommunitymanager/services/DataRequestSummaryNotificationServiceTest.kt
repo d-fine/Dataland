@@ -1,10 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -13,7 +9,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
@@ -24,8 +19,6 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.ArgumentMatcher
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
@@ -36,13 +29,10 @@ import java.util.UUID
 import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class InvestorRelationshipNotificationServiceTest {
+class DataRequestSummaryNotificationServiceTest {
     private lateinit var notificationEventRepository: NotificationEventRepository
-    private lateinit var companyRolesManager: CompanyRolesManager
-    private lateinit var companyDataControllerApi: CompanyDataControllerApi
-    private lateinit var notificationEmailSender: CompanyOwnershipClaimDatasetUploadedSender
     private lateinit var dataRequestSummaryEmailSender: DataRequestSummaryEmailSender
-    private lateinit var investorRelationshipNotificationService: InvestorRelationshipNotificationService
+    private lateinit var dataRequestSummaryNotificationService: DataRequestSummaryNotificationService
 
     private val userUUID = UUID.randomUUID()
     private val companyUUID = UUID.randomUUID()
@@ -50,22 +40,18 @@ class InvestorRelationshipNotificationServiceTest {
     @BeforeEach
     fun setupNotificationService() {
         notificationEventRepository = mock(NotificationEventRepository::class.java)
-        companyRolesManager = mock(CompanyRolesManager::class.java)
-        companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        notificationEmailSender = mock(CompanyOwnershipClaimDatasetUploadedSender::class.java)
         dataRequestSummaryEmailSender = mock(DataRequestSummaryEmailSender::class.java)
 
-        investorRelationshipNotificationService =
-            InvestorRelationshipNotificationService(
-                notificationEventRepository, companyRolesManager, companyDataControllerApi, notificationEmailSender,
+        dataRequestSummaryNotificationService =
+            DataRequestSummaryNotificationService(
+                notificationEventRepository, dataRequestSummaryEmailSender,
             )
     }
 
     @Test
     fun `Test scheduledWeeklyEmailSending with no message`() {
-        investorRelationshipNotificationService.scheduledWeeklyEmailSending()
+        dataRequestSummaryNotificationService.processNotificationEvents(listOf())
 
-        verifyNoMoreInteractions(notificationEmailSender)
         verifyNoMoreInteractions(dataRequestSummaryEmailSender)
     }
 
@@ -81,65 +67,18 @@ class InvestorRelationshipNotificationServiceTest {
                 DataTypeEnum.lksg,
                 "2024",
             )
-        val entityList = listOf(notificationEventEntity, notificationEventEntity)
-        val companyInformation =
-            CompanyInformation(
-                companyName = "Sample Company",
-                headquarters = "headquarters",
-                identifiers = mapOf(),
-                countryCode = "DE",
-                companyContactDetails = listOf("sampleCompany@example.com"),
-            )
-        `when`(notificationEventRepository.findAllByNotificationEventTypesAndIsProcessedFalse(any()))
-            .thenReturn(entityList)
-        `when`(companyDataControllerApi.getCompanyInfo(companyUUID.toString())).thenReturn(companyInformation)
+        val noNotificationEventEntity = notificationEventEntity.copy(userId = null)
+        val entityList = listOf(notificationEventEntity, notificationEventEntity, noNotificationEventEntity)
+        val targetList = listOf(notificationEventEntity, notificationEventEntity)
 
-        investorRelationshipNotificationService.scheduledWeeklyEmailSending()
+        dataRequestSummaryNotificationService.processNotificationEvents(entityList)
 
-        // One E-mail should be sent with both events for the same company
-        verify(
-            notificationEmailSender, times(1),
-        ).sendExternalAndInternalInvestorRelationshipSummaryEmail(
-            unprocessedEvents = eq(entityList),
-            companyId = eq(companyUUID),
-            receiver = eq(listOf("sampleCompany@example.com")),
-            correlationId = any(),
-        )
         verify(
             dataRequestSummaryEmailSender, times(1),
         ).sendDataRequestSummaryEmail(
-            unprocessedEvents = eq(entityList),
+            unprocessedEvents = eq(targetList),
             userId = eq(userUUID),
         )
-        verify(notificationEventRepository, times(2)).saveAll<NotificationEventEntity>(any())
-    }
-
-    @Test
-    fun `Test createCompanySpecificNotificationEvent`() {
-        val testDataMetaInformation =
-            DataMetaInformation(
-                UUID.randomUUID().toString(),
-                companyUUID.toString(),
-                DataTypeEnum.p2p,
-                123,
-                "2024",
-                false,
-                QaStatus.Pending,
-                "test",
-            )
-        val notificationEventEntity =
-            NotificationEventEntity(
-                notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
-                userId = null,
-                isProcessed = false,
-                companyId = companyUUID,
-                framework = DataTypeEnum.p2p,
-                reportingPeriod = "2024",
-            )
-
-        investorRelationshipNotificationService.createCompanySpecificNotificationEvent(testDataMetaInformation)
-
-        verifyNotificationEventRepositoryInteraction(notificationEventEntity)
     }
 
     @ParameterizedTest
@@ -159,13 +98,13 @@ class InvestorRelationshipNotificationServiceTest {
                 dataType = DataTypeEnum.lksg.toString(),
                 reportingPeriod = "2024",
                 datalandCompanyId = companyUUID.toString(),
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
         val storedDataRequestStatusObject = StoredDataRequestStatusObject(requestStatusBefore, 123, AccessStatus.Public, null, null)
         val requestStatusEntity = RequestStatusEntity(storedDataRequestStatusObject, dataRequestEntity)
         dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
 
-        investorRelationshipNotificationService.createUserSpecificNotificationEvent(
+        dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
             dataRequestEntity,
             requestStatusAfter,
             immediateNotificationWasSent,
@@ -302,7 +241,7 @@ class InvestorRelationshipNotificationServiceTest {
                     null,
                     false,
                     false,
-                    NotificationEventType.AvailableEvent,
+                    NotificationEventType.UpdatedEvent,
                 ),
             )
     }

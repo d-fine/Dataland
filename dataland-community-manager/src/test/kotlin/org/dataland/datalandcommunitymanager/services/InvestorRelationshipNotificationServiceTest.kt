@@ -1,25 +1,28 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.params.provider.Arguments
 import org.mockito.ArgumentMatcher
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import java.util.UUID
-import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InvestorRelationshipNotificationServiceTest {
@@ -78,117 +81,37 @@ class InvestorRelationshipNotificationServiceTest {
         )
     }
 
-    companion object {
-        @JvmStatic
-        @Suppress("LongMethod")
-        fun provideInputForCreateUserSpecificNotificationEvent(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    false,
-                    true,
-                    NotificationEventType.UpdatedEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    true,
-                    false,
-                    NotificationEventType.AvailableEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    false,
-                    false,
-                    NotificationEventType.AvailableEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.NonSourceable,
-                    true,
-                    true,
-                    NotificationEventType.NonSourceableEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Withdrawn,
-                    true,
-                    true,
-                    null,
-                ),
-                Arguments.of(
-                    RequestStatus.NonSourceable,
-                    RequestStatus.Answered,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Resolved,
-                    true,
-                    true,
-                    null,
-                ),
-                Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Closed,
-                    true,
-                    true,
-                    null,
-                ),
-                Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Open,
-                    true,
-                    true,
-                    null,
-                ),
-                Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Answered,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Resolved,
-                    RequestStatus.Open,
-                    true,
-                    true,
-                    null,
-                ),
-                Arguments.of(
-                    RequestStatus.Resolved,
-                    RequestStatus.Resolved,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Closed,
-                    RequestStatus.Closed,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
-                ),
-                Arguments.of(
-                    RequestStatus.Closed,
-                    null,
-                    false,
-                    false,
-                    NotificationEventType.AvailableEvent,
-                ),
+    @Test
+    fun `Test processNotificationEvents`() {
+        val companyMailList = listOf("mail@example.com")
+        val notificationEventEntity =
+            NotificationEventEntity(
+                notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
+                userId = null,
+                isProcessed = false,
+                companyId = companyUUID,
+                framework = DataTypeEnum.p2p,
+                reportingPeriod = "2024",
             )
+        `when`(companyRolesManager.getCompanyRoleAssignmentsByParameters(any(), any(), any()))
+            .thenReturn(listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyUUID.toString(), "123")))
+        `when`(companyDataControllerApi.getCompanyInfo(companyUUID.toString()))
+            .thenReturn(CompanyInformation("Company", "", mapOf(), "DE", companyContactDetails = companyMailList))
+        `when`(companyDataControllerApi.getCompanyInfo(any()))
+            .thenReturn(CompanyInformation("", "", mapOf(), ""))
+
+        val noNotificationEventEntity = notificationEventEntity.copy(companyId = UUID.randomUUID())
+        val entityList = listOf(notificationEventEntity, notificationEventEntity, noNotificationEventEntity)
+        val targetList = listOf(notificationEventEntity, notificationEventEntity)
+
+        investorRelationshipNotificationService.processNotificationEvents(entityList)
+
+        verify(notificationEmailSender).sendExternalAndInternalInvestorRelationshipSummaryEmail(
+            eq(targetList),
+            eq(companyUUID),
+            eq(companyMailList),
+            any(),
+        )
     }
 
     /**

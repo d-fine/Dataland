@@ -114,11 +114,11 @@ describeIf(
       cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests/');
       cy.get(`div.card__data:contains("${testStoredCompany.companyInformation.companyName}")`).should('be.visible');
       cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Openand Access is:Public since');
-      cy.get('[data-test="emailOnUpdateInput"]').scrollIntoView();
-      cy.get('[data-test="emailOnUpdateInput"]').should('not.have.class', 'p-inputswitch-checked');
-      cy.get('[data-test="emailOnUpdateInput"]').click();
+      cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
       cy.reload(); // Check if the data was persisted in the backend
-      cy.get('[data-test="emailOnUpdateInput"]').should('have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
 
       // Withdraw request and verify that it's withdrawn
       cy.get('a:contains("Withdraw request")').scrollIntoView();
@@ -147,7 +147,7 @@ describeIf(
           reportingPeriods: [testYear],
           contacts: [testEmail],
           message: testMessage,
-          emailOnUpdate: false,
+          notifyMeImmediately: false,
         };
         expect(requestBody).to.deep.equal(expectedRequest);
       }

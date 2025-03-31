@@ -185,19 +185,19 @@
                 <div class="card__separator" />
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
-              <div class="card" data-test="emailOnUpdate" v-if="isUsersOwnRequest">
+              <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
                 <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
                 <div class="card__separator" />
                 Receive emails directly or via summary
                 <InputSwitch
                   style="margin: 1rem 0"
-                  data-test="emailOnUpdateInput"
-                  inputId="emailOnUpdateInput"
-                  v-model="storedDataRequest.emailOnUpdate"
+                  data-test="notifyMeImmediatelyInput"
+                  inputId="notifyMeImmediatelyInput"
+                  v-model="storedDataRequest.notifyMeImmediately"
                   @update:modelValue="changeReceiveEmails()"
                 />
-                <label for="emailOnUpdateInput">
-                  <strong v-if="storedDataRequest.emailOnUpdate">immediate update</strong>
+                <label for="notifyMeImmediatelyInput">
+                  <strong v-if="storedDataRequest.notifyMeImmediately">immediate update</strong>
                   <span v-else>weekly summary</span>
                 </label>
               </div>
@@ -445,7 +445,7 @@ export default defineComponent({
           undefined,
           undefined,
           undefined,
-          this.storedDataRequest.emailOnUpdate,
+          this.storedDataRequest.notifyMeImmediately,
           undefined,
           this.getKeycloakPromise
         );

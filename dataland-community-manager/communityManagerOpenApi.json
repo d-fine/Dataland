@@ -1456,7 +1456,7 @@
         "required": [
           "companyIdentifier",
           "dataType",
-          "emailOnUpdate",
+          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1505,7 +1505,7 @@
           "message": {
             "type": "string"
           },
-          "emailOnUpdate": {
+          "notifyMeImmediately": {
             "type": "boolean"
           }
         }
@@ -1546,7 +1546,7 @@
         "required": [
           "companyIdentifiers",
           "dataTypes",
-          "emailOnUpdate",
+          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1595,7 +1595,7 @@
               "type": "string"
             }
           },
-          "emailOnUpdate": {
+          "notifyMeImmediately": {
             "type": "boolean"
           }
         }
@@ -1728,7 +1728,7 @@
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
           },
-          "emailOnUpdate": {
+          "notifyMeImmediately": {
             "type": "boolean"
           },
           "adminComment": {
@@ -1767,9 +1767,9 @@
           "dataRequestStatusHistory",
           "dataType",
           "datalandCompanyId",
-          "emailOnUpdate",
           "lastModifiedDate",
           "messageHistory",
+          "notifyMeImmediately",
           "reportingPeriod",
           "requestPriority",
           "requestStatus",
@@ -1786,7 +1786,7 @@
           "userEmailAddress": {
             "type": "string"
           },
-          "emailOnUpdate": {
+          "notifyMeImmediately": {
             "type": "boolean"
           },
           "creationTimestamp": {

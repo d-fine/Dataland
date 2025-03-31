@@ -86,7 +86,7 @@ export function generateStoredDataRequest(): StoredDataRequest {
     dataRequestId: faker.string.uuid(),
     userId: faker.string.uuid(),
     creationTimestamp: creationTime,
-    emailOnUpdate: faker.datatype.boolean(),
+    notifyMeImmediately: faker.datatype.boolean(),
     dataType: pickOneElement(Object.values(DataTypeEnum)),
     reportingPeriod: generateReportingPeriod(),
     datalandCompanyId: faker.string.uuid(),

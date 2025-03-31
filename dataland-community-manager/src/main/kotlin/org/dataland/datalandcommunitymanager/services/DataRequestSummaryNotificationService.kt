@@ -78,9 +78,13 @@ class DataRequestSummaryNotificationService
                         reportingPeriod = dataRequestEntity.reportingPeriod,
                     ),
                 )
+                emptyFunction()
             } else {
                 logger.info("No valid event type found for notification creation.")
             }
+        }
+
+        private fun emptyFunction() {
         }
 
         /**

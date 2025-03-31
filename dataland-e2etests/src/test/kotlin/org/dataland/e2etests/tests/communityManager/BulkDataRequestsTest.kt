@@ -53,7 +53,7 @@ class BulkDataRequestsTest {
         generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
         val response =
             requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiers, dataTypes, reportingPeriods, emailOnUpdate = false),
+                BulkDataRequest(identifiers, dataTypes, reportingPeriods, notifyMeImmediately = false),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
             response,
@@ -124,7 +124,7 @@ class BulkDataRequestsTest {
                     identifiersForBulkRequest,
                     frameworksForBulkRequest.toSet(),
                     setOf(reportingPeriod),
-                    emailOnUpdate = false,
+                    notifyMeImmediately = false,
                 ),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
@@ -152,7 +152,7 @@ class BulkDataRequestsTest {
                 setOf(leiForCompany, isinForCompany),
                 setOf(BulkDataRequest.DataTypes.lksg),
                 reportingPeriods,
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(bulkDataRequest)

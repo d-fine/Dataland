@@ -66,7 +66,7 @@ class SingleDataRequestsTest {
                 reportingPeriods = reportingPeriods,
                 contacts = setOf("someContact@example.com", "simpleString@example.com"),
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -95,7 +95,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = invalidCompanyIdentifier,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2022"),
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
         val clientException =
             assertThrows<ClientException> {
@@ -155,7 +155,7 @@ class SingleDataRequestsTest {
                         companyIdentifier = companyId,
                         dataType = SingleDataRequest.DataType.lksg,
                         reportingPeriods = setOf(),
-                        emailOnUpdate = false,
+                        notifyMeImmediately = false,
                     ),
                 )
             }
@@ -177,7 +177,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = unknownCompanyId,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2022"),
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
         val clientException =
             assertThrows<ClientException> {
@@ -198,7 +198,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = companyIdOfNewCompany,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2022"),
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -324,7 +324,7 @@ class SingleDataRequestsTest {
                     companyIdentifier = companyId,
                     dataType = SingleDataRequest.DataType.lksg,
                     reportingPeriods = setOf("2021", "2022", "2023"),
-                    emailOnUpdate = false,
+                    notifyMeImmediately = false,
                 ),
             )
         checkThatAllReportingPeriodsAreTreatedAsExpected(
@@ -353,7 +353,7 @@ class SingleDataRequestsTest {
                 reportingPeriods = reportingPeriods,
                 contacts = setOf("someContact@example.com", "simpleString@example.com"),
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -380,7 +380,7 @@ class SingleDataRequestsTest {
                 reportingPeriods = setOf("2025"),
                 contacts = setOf("someMail@example.com"),
                 message = "Does not matter for this test.",
-                emailOnUpdate = false,
+                notifyMeImmediately = false,
             )
 
         val expectedExceptionSummary = "Failed to retrieve companies by search string."

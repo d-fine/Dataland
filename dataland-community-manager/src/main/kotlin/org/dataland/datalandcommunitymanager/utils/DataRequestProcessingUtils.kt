@@ -106,7 +106,7 @@ class DataRequestProcessingUtils
             userId: String,
             datalandCompanyId: String,
             dataType: DataTypeEnum,
-            emailOnUpdate: Boolean,
+            notifyMeImmediately: Boolean,
             reportingPeriod: String,
             contacts: Set<String>? = null,
             message: String? = null,
@@ -117,7 +117,7 @@ class DataRequestProcessingUtils
                 DataRequestEntity(
                     userId,
                     dataType.value,
-                    emailOnUpdate,
+                    notifyMeImmediately,
                     reportingPeriod,
                     datalandCompanyId,
                     creationTime,
