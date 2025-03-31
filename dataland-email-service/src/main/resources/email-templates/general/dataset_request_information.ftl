@@ -1,4 +1,4 @@
-<#include "../general/general_makros_html.ftl">
+<#include "general_macros_html.ftl">
 
 <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
     <tbody>

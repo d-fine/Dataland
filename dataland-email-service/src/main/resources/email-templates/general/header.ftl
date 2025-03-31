@@ -1,4 +1,4 @@
-<#include "../general/general_makros_html.ftl">
+<#include "general_macros_html.ftl">
 <#include "../general/base64_images.ftl">
 
 <table id="header" style="background-color: #ffffff; width: 600px; border: 0 none; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0"><tbody>

@@ -1,4 +1,4 @@
-<#import "../general/general_makros_text.ftl" as text>
+<#import "../general/general_macros_text.ftl" as text>
 Your data request has been updated with new data.
 
 <@text.immediateNotification url="${baseUrl}/requests/${dataRequestId}"/>

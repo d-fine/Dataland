@@ -1,4 +1,4 @@
-<#include "../general/general_makros_html.ftl">
+<#include "../general/general_macros_html.ftl">
 
 <!DOCTYPE html>
 <html lang="en">

@@ -4,6 +4,7 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
+import org.dataland.datalandemailservice.utils.EmailStringConverter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -45,14 +46,14 @@ class EmailSender(
         buildString {
             append("email with subject \"${email.content.subject}\"\n")
             append("(sender: ${email.sender.emailAddress})\n")
-            append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
+            append("(receivers: ${EmailStringConverter.convertListOfEmailContactsToJoinedStringForLogMessage(email.receivers)})")
 
             if (email.cc.isNotEmpty()) {
-                append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
+                append("\n(cc receivers: ${EmailStringConverter.convertListOfEmailContactsToJoinedStringForLogMessage(email.cc)})")
             }
 
             if (email.bcc.isNotEmpty()) {
-                append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
+                append("\n(bcc receivers: ${EmailStringConverter.convertListOfEmailContactsToJoinedStringForLogMessage(email.bcc)})")
             }
         }
 
@@ -76,9 +77,4 @@ class EmailSender(
 
         logger.info(emailLog)
     }
-
-    private fun convertListOfEmailContactsToJoinedString(emailContacts: List<EmailContact>): String =
-        emailContacts.joinToString(", ") { emailContact ->
-            emailContact.emailAddress
-        }
 }
