@@ -184,7 +184,7 @@ class DataRequestUpdateManager
                 }
 
                 var dataTypeAsDataTypesGetInfoOnDatasets = DataTypesGetInfoOnDatasets.p2p
-                for (value in DataTypesGetInfoOnDatasets.values()) {
+                for (value in DataTypesGetInfoOnDatasets.entries) {
                     if (value.toString() == dataRequestEntity.dataType) {
                         dataTypeAsDataTypesGetInfoOnDatasets = value
                     }
@@ -232,6 +232,7 @@ class DataRequestUpdateManager
                     checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
                 ).any { it }
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
+            dataRequestRepository.save(dataRequestEntity)
 
             return dataRequestEntity.toStoredDataRequest()
         }
@@ -420,10 +421,9 @@ class DataRequestUpdateManager
             }
             // All dataRequestEntities share their companyId, so we only need to take the first.
             val firstDataRequestEntityForParent = dataRequestEntities.first()
-            val dataTypeAsEnum = DataTypeEnum.decode(firstDataRequestEntityForParent.dataType)
-            if (dataTypeAsEnum == null) {
-                throw IllegalArgumentException("Unable to parse data type.")
-            }
+            val dataTypeAsEnum =
+                DataTypeEnum.decode(firstDataRequestEntityForParent.dataType)
+                    ?: throw IllegalArgumentException("Unable to parse data type.")
             patchRequestStatusOfSubsidiariesFromOpenOrNonSourceableToAnswered(
                 firstDataRequestEntityForParent.datalandCompanyId,
                 firstDataRequestEntityForParent.reportingPeriod,
