@@ -1,10 +1,12 @@
 package org.dataland.e2etests.tests.communityManager
 
+import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfoResponse
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestNonSourceableTest {
@@ -105,6 +108,11 @@ class DataRequestNonSourceableTest {
         )
     }
 
+    private fun awaitUntilAsserted(operation: () -> Any) =
+        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+            operation()
+        }
+
     @Test
     fun `validate that only the requests corresponding to the nonSourceable dataset are patched`() {
         // Post requests for 2023 and 2024 as premium user.
@@ -119,31 +127,38 @@ class DataRequestNonSourceableTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val updatedFirstUserRequest2023 =
-            requestControllerApi.getDataRequestById(requestIdFirstUserRequest2023)
-
-        val updatedFirstUserRequest2024 =
-            requestControllerApi.getDataRequestById(requestIdFirstUserRequest2024)
-
-        val updatedSecondUserRequest2023 =
-            requestControllerApi.getDataRequestById(requestIdSecondUserRequest2023)
-
-        assertEquals(RequestStatus.NonSourceable, updatedFirstUserRequest2023.requestStatus)
-        assertEquals(RequestStatus.Open, updatedFirstUserRequest2024.requestStatus)
-        assertEquals(RequestStatus.NonSourceable, updatedSecondUserRequest2023.requestStatus)
+        awaitUntilAsserted {
+            val updatedFirstUserRequest2023 =
+                requestControllerApi.getDataRequestById(requestIdFirstUserRequest2023)
+            assertEquals(RequestStatus.NonSourceable, updatedFirstUserRequest2023.requestStatus)
+        }
+        awaitUntilAsserted {
+            val updatedFirstUserRequest2024 =
+                requestControllerApi.getDataRequestById(requestIdFirstUserRequest2024)
+            assertEquals(RequestStatus.Open, updatedFirstUserRequest2024.requestStatus)
+        }
+        awaitUntilAsserted {
+            val updatedSecondUserRequest2023 =
+                requestControllerApi.getDataRequestById(requestIdSecondUserRequest2023)
+            assertEquals(RequestStatus.NonSourceable, updatedSecondUserRequest2023.requestStatus)
+        }
     }
 
     @Test
     fun `validate that the get info on sourceability of a dataset endpoint is working`() {
         postNonSourceableInfo(nonSourceableInfoRequest2023)
-        val receivedNonSourceableInfoList =
-            apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
-                companyId = nonSourceableInfoRequest2023.companyId,
-                dataType = nonSourceableInfoRequest2023.dataType,
-                reportingPeriod = nonSourceableInfoRequest2023.reportingPeriod,
-            )
+        var receivedNonSourceableInfoList = listOf<NonSourceableInfoResponse>()
 
-        assertEquals(1, receivedNonSourceableInfoList.size)
+        awaitUntilAsserted {
+            receivedNonSourceableInfoList =
+                apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
+                    companyId = nonSourceableInfoRequest2023.companyId,
+                    dataType = nonSourceableInfoRequest2023.dataType,
+                    reportingPeriod = nonSourceableInfoRequest2023.reportingPeriod,
+                )
+            assertEquals(1, receivedNonSourceableInfoList.size)
+        }
+
         val receivedNonSourceableInfo = receivedNonSourceableInfoList[0]
 
         assertEquals(nonSourceableInfoRequest2023.companyId, receivedNonSourceableInfo.companyId)
