@@ -1,4 +1,4 @@
-<#import "../general/general_makros_text.ftl" as text>
+<#import "../general/general_macros_text.ftl" as text>
 Unfortunately, no public sources could be found for your requested dataset by a data provider.
 We will continue to check the status of your request regularly and inform you in case the dataset will be uploaded in the future.
 
