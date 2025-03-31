@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -93,7 +94,7 @@ class RequestEmailManagerTest {
 
     @Test
     fun `validate that an access requested email is sent`() {
-        val dataRequestEntity = DataRequestEntity("", "", true, "", "", 0L)
+        val dataRequestEntity = DataRequestEntity("", DataTypeEnum.vsme.name, true, "", "", 0L)
         dataRequestEntity.messageHistory =
             listOf(
                 MessageEntity(

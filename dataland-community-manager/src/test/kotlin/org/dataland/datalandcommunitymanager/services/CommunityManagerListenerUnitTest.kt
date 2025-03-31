@@ -186,7 +186,7 @@ class CommunityManagerListenerUnitTest {
 
     @Test
     fun `valid nonsourceable message should be processed successfully`() {
-        communityManagerListener.processDataReportedNotSourceableMessage(
+        communityManagerListener.processDataReportedNonSourceableMessage(
             jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllRequestsForThisDatasetToStatusNonSourceable(
@@ -198,14 +198,14 @@ class CommunityManagerListenerUnitTest {
     @Test
     fun `should throw exception for incomplete data in nonsourceable message`() {
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.processDataReportedNotSourceableMessage(
+            communityManagerListener.processDataReportedNonSourceableMessage(
                 jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoCompanyId),
                 typeNonSourceable,
                 correlationId,
             )
         }
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.processDataReportedNotSourceableMessage(
+            communityManagerListener.processDataReportedNonSourceableMessage(
                 jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoReportingPeriod),
                 typeNonSourceable,
                 correlationId,
@@ -217,7 +217,7 @@ class CommunityManagerListenerUnitTest {
     fun `should throw exception when isNonSourceable is false in nonsourceable message`() {
         assertThrows<MessageQueueRejectException> {
             communityManagerListener
-                .processDataReportedNotSourceableMessage(
+                .processDataReportedNonSourceableMessage(
                     jacksonObjectMapper.writeValueAsString(nonSourceableInfoValidButSourceable),
                     typeNonSourceable,
                     correlationId,
