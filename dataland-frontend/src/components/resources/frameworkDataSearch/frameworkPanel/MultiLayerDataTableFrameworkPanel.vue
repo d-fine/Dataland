@@ -196,11 +196,10 @@ async function loadDataForDisplay(
     | undefined;
   if (dataControllerApi) {
     if (singleDataMetaInfoToDisplay) {
-      const probeResponse = await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId);
       let singleDataset;
-      if (probeResponse.status == 200) {
-        singleDataset = probeResponse.data.data;
-      } else {
+      try {
+        singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
+      } catch (error) {
         singleDataset = (
           await dataControllerApi.getCompanyAssociatedDataByDimensions(
             singleDataMetaInfoToDisplay.reportingPeriod,
