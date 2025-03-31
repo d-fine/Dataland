@@ -4,7 +4,14 @@ import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 
+/**
+ * Utility object for converting to and from joined strings of email addresses.
+ */
 object EmailStringConverter {
+    /**
+     * Converts the given (semicolon-separated) joined string of email addresses to the corresponding
+     * list of EmailContact objects.
+     */
     fun convertEmailsJoinedStringToListOfEmailContacts(emailsJoinedString: String): List<EmailContact> =
         emailsJoinedString.split(";").map { emailAddress ->
             if (emailAddress.isEmailAddress()) {
@@ -18,6 +25,10 @@ object EmailStringConverter {
             }
         }
 
+    /**
+     * Converts the given (semicolon-separated) joined string of email addresses to the corresponding
+     * list of EmailAddress objects.
+     */
     fun convertEmailsJoinedStringToListOfEmailAddresses(emailsJoinedString: String) =
         emailsJoinedString
             .split(";")
@@ -25,8 +36,11 @@ object EmailStringConverter {
             .filter { it != "" }
             .map { EmailRecipient.EmailAddress(it) }
 
-    // Attention: The following method introduces spaces between emails in the joined string for improved
-    // readability. It is therefore NOT the inverse method of convertEmailsJoinedStringToListOfEmailContacts.
+    /**
+     * Converts a list of EmailContact objects to a joined string of email addresses separated by the two-character
+     * sequence "; ". Used for building log messages.
+     * Attention: This is NOT the inverse method of convertEmailsJoinedStringToListOfEmailContacts.
+     */
     fun convertListOfEmailContactsToJoinedStringForLogMessage(emailContacts: List<EmailContact>): String =
         emailContacts.joinToString("; ") { emailContact ->
             emailContact.emailAddress
