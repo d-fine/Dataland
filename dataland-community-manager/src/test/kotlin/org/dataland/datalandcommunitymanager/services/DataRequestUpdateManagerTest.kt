@@ -47,7 +47,7 @@ class DataRequestUpdateManagerTest {
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var mockCompanyInfoService: CompanyInfoService
     private lateinit var mockDataRequestRepository: DataRequestRepository
-    private lateinit var mockNotificationService: NotificationService
+    private lateinit var mockDataRequestSummaryNotificationService: DataRequestSummaryNotificationService
     private lateinit var mockMetaControllerApi: MetaDataControllerApi
     private lateinit var mockQaControllerApi: QaControllerApi
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
@@ -110,7 +110,7 @@ class DataRequestUpdateManagerTest {
         `when`<Any>(
             mockDataRequestRepository.findById(dummyDataRequestEntity1.dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity1))
-        mockNotificationService = mock(NotificationService::class.java)
+        mockDataRequestSummaryNotificationService = mock(DataRequestSummaryNotificationService::class.java)
         dummyDataRequestEntities.forEach {
             `when`<Any>(
                 mockDataRequestRepository.findById(it.dataRequestId),
@@ -218,7 +218,7 @@ class DataRequestUpdateManagerTest {
                 companyRolesManager = mockCompanyRolesManager,
                 utils = mockDataRequestProcessingUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
-                notificationService = mockNotificationService,
+                dataRequestSummaryNotificationService = mockDataRequestSummaryNotificationService,
             )
     }
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class InvestorRelationshipsManager(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired private val notificationService: NotificationService,
+    @Autowired private val investorRelationshipNotificationService: InvestorRelationshipNotificationService,
 ) {
     private fun getIRContactEmailsForCompany(companyId: String): List<String>? {
         val companyInfo = companyDataControllerApi.getCompanyInfo(companyId)
@@ -29,7 +29,7 @@ class InvestorRelationshipsManager(
         val companyId = metaInfo.companyId
         val irContactEmails = getIRContactEmailsForCompany(companyId)
         if (!irContactEmails.isNullOrEmpty()) {
-            notificationService.createCompanySpecificNotificationEvent(metaInfo)
+            investorRelationshipNotificationService.createCompanySpecificNotificationEvent(metaInfo)
         }
     }
 }

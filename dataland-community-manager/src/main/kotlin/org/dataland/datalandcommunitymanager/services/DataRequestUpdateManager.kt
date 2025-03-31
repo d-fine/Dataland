@@ -36,7 +36,7 @@ class DataRequestUpdateManager
     constructor(
         private val companyInfoService: CompanyInfoService,
         private val dataRequestRepository: DataRequestRepository,
-        private val notificationService: NotificationService,
+        private val dataRequestSummaryNotificationService: DataRequestSummaryNotificationService,
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
@@ -215,7 +215,7 @@ class DataRequestUpdateManager
                         resetImmediateNotificationFlagIfApplicable(
                             dataRequestEntity, dataRequestPatch, immediateNotificationWasSent,
                         )
-                        notificationService.createUserSpecificNotificationEvent(
+                        dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                             dataRequestEntity, dataRequestPatch.requestStatus,
                             immediateNotificationWasSent, earlierQaApprovedVersionExists,
                         )
@@ -456,7 +456,7 @@ class DataRequestUpdateManager
                     )
                 }
                 if (it.dataType != DataTypeEnum.vsme.name) {
-                    notificationService.createUserSpecificNotificationEvent(
+                    dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                         dataRequestEntity = it,
                         immediateNotificationWasSent = it.emailOnUpdate,
                         earlierQaApprovedVersionExists = true,
