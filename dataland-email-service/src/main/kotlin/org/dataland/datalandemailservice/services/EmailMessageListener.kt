@@ -5,6 +5,7 @@ import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.email.build
 import org.dataland.datalandemailservice.email.setLateInitVars
+import org.dataland.datalandemailservice.utils.EmailStringConverter
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -88,20 +89,13 @@ class EmailMessageListener(
         }
     }
 
-    private fun convertJoinedStringToListOfEmailAddresses(joinedString: String) =
-        joinedString
-            .split(";")
-            .map { it.trim() }
-            .filter { it != "" }
-            .map { EmailRecipient.EmailAddress(it) }
-
     /**
      * This function builds an email and then sends the email.
      * @param emailMessage The email message specifies the receiver and the content of the email that should be sent.
      *  This function removes all receiver of the email that have unsubscribed.
      */
     fun buildAndSendEmail(emailMessage: EmailMessage) {
-        val additionalBccList = convertJoinedStringToListOfEmailAddresses(additionalBcc)
+        val additionalBccList = EmailStringConverter.convertEmailsJoinedStringToListOfEmailAddresses(additionalBcc)
         val receivers = resolveRecipients(emailMessage.receiver)
         val cc = resolveRecipients(emailMessage.cc)
         val bcc = resolveRecipients(emailMessage.bcc + additionalBccList)
