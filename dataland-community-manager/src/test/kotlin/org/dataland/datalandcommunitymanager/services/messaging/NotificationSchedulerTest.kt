@@ -1,27 +1,17 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import NotificationScheduler
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
-import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.datalandcommunitymanager.utils.NotificationUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.ArgumentMatcher
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -30,41 +20,37 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
 import java.util.UUID
 import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class NotificationServiceTest {
+class NotificationSchedulerTest {
     private lateinit var notificationEventRepository: NotificationEventRepository
-    private lateinit var companyRolesManager: CompanyRolesManager
-    private lateinit var companyDataControllerApi: CompanyDataControllerApi
-    private lateinit var notificationEmailSender: CompanyOwnershipClaimDatasetUploadedSender
-    private lateinit var dataRequestSummaryEmailSender: DataRequestSummaryEmailSender
-    private lateinit var notificationService: NotificationService
+    private lateinit var notificationUtils: NotificationUtils
+    private lateinit var investorRelationshipNotificationService: InvestorRelationshipNotificationService
+    private lateinit var dataRequestSummaryNotificationService: DataRequestSummaryNotificationService
+    private lateinit var notificationScheduler: NotificationScheduler
 
     private val userUUID = UUID.randomUUID()
     private val companyUUID = UUID.randomUUID()
 
     @BeforeEach
-    fun setupNotificationService() {
+    fun setupNotificationScheduler() {
         notificationEventRepository = mock(NotificationEventRepository::class.java)
-        companyRolesManager = mock(CompanyRolesManager::class.java)
-        companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        notificationEmailSender = mock(CompanyOwnershipClaimDatasetUploadedSender::class.java)
-        dataRequestSummaryEmailSender = mock(DataRequestSummaryEmailSender::class.java)
+        notificationUtils = mock(NotificationUtils::class.java)
+        investorRelationshipNotificationService = mock(InvestorRelationshipNotificationService::class.java)
+        dataRequestSummaryNotificationService = mock(DataRequestSummaryNotificationService::class.java)
 
-        notificationService =
-            NotificationService(
-                notificationEventRepository, companyRolesManager, companyDataControllerApi, notificationEmailSender,
-                dataRequestSummaryEmailSender,
+        notificationScheduler =
+            NotificationScheduler(
+                notificationEventRepository, notificationUtils, investorRelationshipNotificationService, dataRequestSummaryNotificationService,
             )
     }
 
     @Test
     fun `Test scheduledWeeklyEmailSending with no message`() {
-        notificationService.scheduledWeeklyEmailSending()
+        notificationScheduler.scheduledWeeklyEmailSending()
 
         verifyNoMoreInteractions(notificationEmailSender)
         verifyNoMoreInteractions(dataRequestSummaryEmailSender)
@@ -95,7 +81,7 @@ class NotificationServiceTest {
             .thenReturn(entityList)
         `when`(companyDataControllerApi.getCompanyInfo(companyUUID.toString())).thenReturn(companyInformation)
 
-        notificationService.scheduledWeeklyEmailSending()
+        notificationScheduler.scheduledWeeklyEmailSending()
 
         // One E-mail should be sent with both events for the same company
         verify(
@@ -113,80 +99,6 @@ class NotificationServiceTest {
             userId = eq(userUUID),
         )
         verify(notificationEventRepository, times(2)).saveAll<NotificationEventEntity>(any())
-    }
-
-    @Test
-    fun `Test createCompanySpecificNotificationEvent`() {
-        val testDataMetaInformation =
-            DataMetaInformation(
-                UUID.randomUUID().toString(),
-                companyUUID.toString(),
-                DataTypeEnum.p2p,
-                123,
-                "2024",
-                false,
-                QaStatus.Pending,
-                "test",
-            )
-        val notificationEventEntity =
-            NotificationEventEntity(
-                notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
-                userId = null,
-                isProcessed = false,
-                companyId = companyUUID,
-                framework = DataTypeEnum.p2p,
-                reportingPeriod = "2024",
-            )
-
-        notificationService.createCompanySpecificNotificationEvent(testDataMetaInformation)
-
-        verifyNotificationEventRepositoryInteraction(notificationEventEntity)
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideInputForCreateUserSpecificNotificationEvent")
-    fun `Test createUserSpecificNotificationEvent`(
-        requestStatusBefore: RequestStatus,
-        requestStatusAfter: RequestStatus?,
-        immediateNotificationWasSent: Boolean,
-        earlierQaApprovedVersionExists: Boolean,
-        notificationEventType: NotificationEventType?,
-    ) {
-        TestUtils.mockSecurityContext()
-        val dataRequestEntity =
-            DataRequestEntity(
-                userId = userUUID.toString(),
-                creationTimestamp = 123,
-                dataType = DataTypeEnum.lksg.toString(),
-                reportingPeriod = "2024",
-                datalandCompanyId = companyUUID.toString(),
-                emailOnUpdate = false,
-            )
-        val storedDataRequestStatusObject = StoredDataRequestStatusObject(requestStatusBefore, 123, AccessStatus.Public, null, null)
-        val requestStatusEntity = RequestStatusEntity(storedDataRequestStatusObject, dataRequestEntity)
-        dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
-
-        notificationService.createUserSpecificNotificationEvent(
-            dataRequestEntity,
-            requestStatusAfter,
-            immediateNotificationWasSent,
-            earlierQaApprovedVersionExists,
-        )
-
-        if (notificationEventType == null) {
-            verifyNoInteractions(notificationEventRepository)
-        } else {
-            val notificationEventEntity =
-                NotificationEventEntity(
-                    notificationEventType = notificationEventType,
-                    userId = userUUID,
-                    isProcessed = immediateNotificationWasSent,
-                    companyId = companyUUID,
-                    framework = DataTypeEnum.lksg,
-                    reportingPeriod = "2024",
-                )
-            verifyNotificationEventRepositoryInteraction(notificationEventEntity)
-        }
     }
 
     private fun verifyNotificationEventRepositoryInteraction(notificationEventEntity: NotificationEventEntity) {
