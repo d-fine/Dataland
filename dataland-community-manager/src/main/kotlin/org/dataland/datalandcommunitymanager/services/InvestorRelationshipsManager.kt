@@ -27,8 +27,8 @@ class InvestorRelationshipsManager(
     fun saveNotificationEventForIREmails(dataId: String) {
         val metaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
         val companyId = metaInfo.companyId
-        val irContactEmails = getIRContactEmailsForCompany(companyId)
-        if (!irContactEmails.isNullOrEmpty()) {
+        val iRContactEmails = getIRContactEmailsForCompany(companyId)
+        if (!iRContactEmails.isNullOrEmpty()) {
             investorRelationshipNotificationService.createCompanySpecificNotificationEvent(metaInfo)
         }
     }

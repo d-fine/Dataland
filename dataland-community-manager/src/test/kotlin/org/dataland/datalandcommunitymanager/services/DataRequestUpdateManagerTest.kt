@@ -373,7 +373,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that answer emails for subsidiaries are sent according to flag on request status patch from open to answered`() {
-        dataRequestUpdateManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredForParentAndSubsidiaries(
+        dataRequestUpdateManager.patchRequestStatusToAnsweredForParentAndSubsidiaries(
             dummyDataRequestEntities,
             metaData.dataId,
             correlationId,
@@ -500,7 +500,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that patching corresponding requests for a dataset only changed the corresponding requests`() {
-        dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
+        dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(
             dummyNonSourceableInfo,
             correlationId,
         )
@@ -516,7 +516,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
         assertThrows<IllegalArgumentException> {
-            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
+            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(
                 dummySourceableInfo,
                 correlationId,
             )

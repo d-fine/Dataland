@@ -175,7 +175,7 @@ class CommunityManagerListener(
         )
 
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableMessage, correlationId)
+            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(nonSourceableMessage, correlationId)
         }
     }
 }
