@@ -567,7 +567,7 @@ class DataRequestUpdateManager
 
         /**
          * Method to patch all data requests corresponding to a dataset to status non-sourceable.
-         * @param nonSourceableMessage the info on the non-sourceable dataset
+         * @param nonSourceableInfo the info on the non-sourceable dataset
          * @param correlationId correlationId
          */
         @Transactional
