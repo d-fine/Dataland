@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -88,7 +90,16 @@ class CommunityManagerListenerUnitTest {
             "test",
         )
 
-    private val nonSourceableMessageNoCompanyId =
+    private val nonSourceableInfoValid =
+        NonSourceableInfo(
+            "exampleCompany",
+            DataTypeEnum.sfdr,
+            "2023",
+            true,
+            "test",
+        )
+
+    private val nonSourceableInfoNoCompanyId =
         NonSourceableMessage(
             "",
             "sfdr",
@@ -190,7 +201,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(this.nonSourceableMessageValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllRequestsToStatusNonSourceable(
-            nonSourceableMessageValid,
+            nonSourceableInfoValid,
             correlationId,
         )
     }
@@ -199,7 +210,7 @@ class CommunityManagerListenerUnitTest {
     fun `should throw exception for incomplete data in nonsourceable message`() {
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.processDataReportedNonSourceableMessage(
-                jacksonObjectMapper.writeValueAsString(this.nonSourceableMessageNoCompanyId),
+                jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoCompanyId),
                 typeNonSourceable,
                 correlationId,
             )
