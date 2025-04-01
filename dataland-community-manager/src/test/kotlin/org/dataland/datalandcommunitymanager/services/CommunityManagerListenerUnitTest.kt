@@ -131,7 +131,7 @@ class CommunityManagerListenerUnitTest {
 
     @Test
     fun `valid QA status change message with acceptance should be processed successfully`() {
-        communityManagerListener.changeRequestStatusAfterQADecision(
+        communityManagerListener.changeRequestStatusAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(this.qaStatusChangeMessageWithAcceptance),
             typeQAStatusChange, correlationId,
         )
@@ -143,7 +143,7 @@ class CommunityManagerListenerUnitTest {
 
     @Test
     fun `valid QA status change message with rejection should lead to no further processing`() {
-        communityManagerListener.changeRequestStatusAfterQADecision(
+        communityManagerListener.changeRequestStatusAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(this.qaStatusChangeMessageWithRejection),
             typeQAStatusChange, correlationId,
         )
@@ -156,7 +156,7 @@ class CommunityManagerListenerUnitTest {
     @Test
     fun `invalid QA status change message should throw exception`() {
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.changeRequestStatusAfterQADecision(
+            communityManagerListener.changeRequestStatusAfterQaDecision(
                 jacksonObjectMapper.writeValueAsString(this.invalidQaStatusChangeMessage),
                 typeQAStatusChange, correlationId,
             )

@@ -5,7 +5,7 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  * Contains info about a stored data request on Dataland.
  * @param dataRequestId  unique identifier of the stored data request
  * @param userId the user who created this data request
- * @param notifyMeImmediately Flag if the user wants immediate updates or a notification in the summary is sufficient
+ * @param notifyMeImmediately Flag if the user wants immediate updates or if a notification within the summary is sufficient
  * @param userEmailAddress contains the email address of the user who created this data request
  * @param creationTimestamp when the user created the data request
  * @param dataType is the enum type of the framework for which the user requested data

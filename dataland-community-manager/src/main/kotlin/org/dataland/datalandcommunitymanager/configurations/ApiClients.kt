@@ -34,7 +34,7 @@ class ApiClients(
     ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     * Creates an auto-authenticated version of the QaControllerApi of the QA service
      */
     @Bean
     fun getQaControllerApi(

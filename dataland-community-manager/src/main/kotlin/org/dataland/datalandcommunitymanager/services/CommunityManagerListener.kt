@@ -58,7 +58,7 @@ class CommunityManagerListener(
         ],
     )
     @Transactional
-    fun changeRequestStatusAfterQADecision(
+    fun changeRequestStatusAfterQaDecision(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,

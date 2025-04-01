@@ -1,14 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
@@ -34,24 +31,26 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class SingleDataRequestManagerTest {
+    private val mockDataRequestRepository = mock<DataRequestRepository>()
+    private val mockSingleDataRequestEmailMessageSender = mock<SingleDataRequestEmailMessageSender>()
+    private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
+    private val mockSecurityUtilsService = mock<SecurityUtilsService>()
+    private val mockCompanyInfoService = mock<CompanyInfoService>()
+    private val mockAccessRequestEmailSender = mock<AccessRequestEmailSender>()
+    private val mockCompanyRolesManager = mock<CompanyRolesManager>()
+    private val mockDataAccessManager = mock<DataAccessManager>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
+
     private lateinit var singleDataRequestManager: SingleDataRequestManager
-    private lateinit var mockDataRequestRepository: DataRequestRepository
-    private lateinit var mockSingleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
-    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
-    private lateinit var mockSecurityUtilsService: SecurityUtilsService
-    private lateinit var mockCompanyInfoService: CompanyInfoService
-    private lateinit var mockAccessRequestEmailSender: AccessRequestEmailSender
-    private lateinit var mockCompanyRolesManager: CompanyRolesManager
-    private lateinit var mockDataAccessManager: DataAccessManager
-    private lateinit var mockKeycloakUserService: KeycloakUserService
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
-    private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
     private val maxRequestsForUser = 10
 
     private val sampleRequest =
@@ -66,16 +65,19 @@ class SingleDataRequestManagerTest {
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
-        mockSingleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
-        mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
-        mockSecurityUtilsService = mock(SecurityUtilsService::class.java)
-        mockCompanyInfoService = mock(CompanyInfoService::class.java)
-        doNothing().`when`(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
-        mockDataRequestRepository = createDataRequestRepositoryMock()
-        mockAccessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
-        mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
-        mockDataAccessManager = mock(DataAccessManager::class.java)
-        mockKeycloakUserService = mock(KeycloakUserService::class.java)
+        reset(
+            mockDataRequestRepository,
+            mockSingleDataRequestEmailMessageSender,
+            mockDataRequestProcessingUtils,
+            mockSecurityUtilsService,
+            mockCompanyInfoService,
+            mockAccessRequestEmailSender,
+            mockCompanyRolesManager,
+            mockDataAccessManager,
+            mockKeycloakUserService,
+        )
+        doNothing().whenever(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
+        setUpDataRequestRepositoryMock()
         singleDataRequestManager =
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
@@ -93,50 +95,14 @@ class SingleDataRequestManagerTest {
         TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
-    private fun createDataRequestRepositoryMock(): DataRequestRepository {
+    private fun setUpDataRequestRepositoryMock() {
         var requestsCount = 0
-        val dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
-        `when`(
-            dataRequestRepositoryMock.getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
+        whenever(
+            mockDataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
         ).then {
             requestsCount += 1
             return@then requestsCount - 1
         }
-        return dataRequestRepositoryMock
-    }
-
-    private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
-        val utilsMock = mock(DataRequestProcessingUtils::class.java)
-        `when`(
-            utilsMock.storeDataRequestEntityAsOpen(
-                userId = anyString(),
-                datalandCompanyId = anyString(),
-                dataType = any(),
-                notifyMeImmediately = anyBoolean(),
-                reportingPeriod = anyString(),
-                contacts = any(),
-                message = any(),
-            ),
-        ).thenAnswer {
-            DataRequestEntity(
-                dataRequestId = "request-id",
-                datalandCompanyId = it.arguments[1] as String,
-                notifyMeImmediately = it.arguments[3] as Boolean,
-                reportingPeriod = it.arguments[4] as String,
-                creationTimestamp = 0,
-                lastModifiedDate = 0,
-                dataType = (it.arguments[2] as DataTypeEnum).value,
-                messageHistory = mutableListOf(),
-                dataRequestStatusHistory = emptyList(),
-                userId = it.arguments[0] as String,
-                requestPriority = RequestPriority.Low,
-                adminComment = "dummyAdminComment",
-            )
-        }
-        `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean())).thenReturn(
-            dummyCompanyIdAndName,
-        )
-        return utilsMock
     }
 
     @Test

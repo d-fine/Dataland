@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = DatasetRequestedClaimOwnership::class, name = "DatasetRequestedClaimOwnership"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetRequested"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetGranted"),
-    JsonSubTypes.Type(value = DatasetUploadedClaimOwnership::class, name = "MultipleDatasetsUploadedEngagement"),
+    JsonSubTypes.Type(value = DatasetUploadedClaimOwnership::class, name = "DatasetUploadedClaimOwnership"),
     JsonSubTypes.Type(value = CompanyOwnershipClaimApproved::class, name = "CompanyOwnershipClaimApproved"),
     JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
     JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),

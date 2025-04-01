@@ -12,7 +12,7 @@ import java.util.UUID
  */
 interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
     /**
-     * A function for searching for unprocessed notification events by a list of notification event types.
+     * A function to search for unprocessed notification events by a list of notification event types.
      * @param notificationEventTypes a list of notification event types to filter.
      * @return a list of unprocessed notification events matching the criteria.
      */
