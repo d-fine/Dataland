@@ -21,17 +21,17 @@ import org.mockito.ArgumentMatcher
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
-import org.mockito.kotlin.verifyNoMoreInteractions
 import java.util.UUID
 import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestSummaryNotificationServiceTest {
-    private lateinit var notificationEventRepository: NotificationEventRepository
-    private lateinit var dataRequestSummaryEmailSender: DataRequestSummaryEmailSender
+    private val mockNotificationEventRepository = mock<NotificationEventRepository>()
+    private val mockDataRequestSummaryEmailSender = mock<DataRequestSummaryEmailSender>()
     private lateinit var dataRequestSummaryNotificationService: DataRequestSummaryNotificationService
 
     private val userUUID = UUID.randomUUID()
@@ -39,12 +39,14 @@ class DataRequestSummaryNotificationServiceTest {
 
     @BeforeEach
     fun setupNotificationService() {
-        notificationEventRepository = mock(NotificationEventRepository::class.java)
-        dataRequestSummaryEmailSender = mock(DataRequestSummaryEmailSender::class.java)
+        reset(
+            mockNotificationEventRepository,
+            mockDataRequestSummaryEmailSender,
+        )
 
         dataRequestSummaryNotificationService =
             DataRequestSummaryNotificationService(
-                notificationEventRepository, dataRequestSummaryEmailSender,
+                mockNotificationEventRepository, mockDataRequestSummaryEmailSender,
             )
     }
 
@@ -52,7 +54,7 @@ class DataRequestSummaryNotificationServiceTest {
     fun `Test scheduledWeeklyEmailSending with no message`() {
         dataRequestSummaryNotificationService.processNotificationEvents(listOf())
 
-        verifyNoMoreInteractions(dataRequestSummaryEmailSender)
+        verifyNoInteractions(mockDataRequestSummaryEmailSender)
     }
 
     @Test
@@ -74,7 +76,7 @@ class DataRequestSummaryNotificationServiceTest {
         dataRequestSummaryNotificationService.processNotificationEvents(entityList)
 
         verify(
-            dataRequestSummaryEmailSender, times(1),
+            mockDataRequestSummaryEmailSender, times(1),
         ).sendDataRequestSummaryEmail(
             unprocessedEvents = eq(targetList),
             userId = eq(userUUID),
@@ -112,7 +114,7 @@ class DataRequestSummaryNotificationServiceTest {
         )
 
         if (notificationEventType == null) {
-            verifyNoInteractions(notificationEventRepository)
+            verifyNoInteractions(mockNotificationEventRepository)
         } else {
             val notificationEventEntity =
                 NotificationEventEntity(
@@ -128,7 +130,7 @@ class DataRequestSummaryNotificationServiceTest {
     }
 
     private fun verifyNotificationEventRepositoryInteraction(notificationEventEntity: NotificationEventEntity) {
-        verify(notificationEventRepository, times(1)).save(
+        verify(mockNotificationEventRepository, times(1)).save(
             argThat(NotificationEventEntityMatcher(notificationEventEntity)),
         )
     }
