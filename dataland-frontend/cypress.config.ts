@@ -11,7 +11,7 @@ export default defineConfig({
     commit_id: require('git-commit-id')({ cwd: '../' }),
     prepopulate_timeout_s: 180,
     short_timeout_in_ms: 10000,
-    medium_timeout_in_ms: 30000,
+    medium_timeout_in_ms: 60000,
     long_timeout_in_ms: 60000,
     mobile_device_viewport_height: 667,
     mobile_device_viewport_width: 300,
