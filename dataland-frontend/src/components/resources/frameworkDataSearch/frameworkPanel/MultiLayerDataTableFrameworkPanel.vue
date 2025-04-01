@@ -200,6 +200,8 @@ async function loadDataForDisplay(
       try {
         singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
       } catch (error) {
+        console.error(error);
+        console.log(`Unable to fetch data via ID. Falling back to reporting Period.`);
         singleDataset = (
           await dataControllerApi.getCompanyAssociatedDataByDimensions(
             singleDataMetaInfoToDisplay.reportingPeriod,
