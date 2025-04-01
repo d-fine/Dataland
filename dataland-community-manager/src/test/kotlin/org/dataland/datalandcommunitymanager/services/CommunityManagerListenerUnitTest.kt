@@ -1,17 +1,16 @@
+package org.dataland.datalandcommunitymanager.services
+
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandcommunitymanager.services.CommunityManagerListener
-import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
-import org.dataland.datalandcommunitymanager.services.InvestorRelationshipsManager
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.NonSourceableMessage
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
@@ -22,6 +21,7 @@ import org.mockito.Mockito.verify
 /**
  * Tests if the listener processes the incoming non-sourceable data information correctly.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommunityManagerListenerUnitTest {
     private lateinit var communityManagerListener: CommunityManagerListener
     private val jacksonObjectMapper = jacksonObjectMapper()
@@ -79,37 +79,37 @@ class CommunityManagerListenerUnitTest {
     // Variables for testing the pipeline for nonsourceability messages.
     private val typeNonSourceable = MessageType.DATA_NONSOURCEABLE
 
-    private val nonSourceableInfoValid =
-        NonSourceableInfo(
+    private val nonSourceableMessageValid =
+        NonSourceableMessage(
             "exampleCompany",
-            DataTypeEnum.sfdr,
+            "sfdr",
             "2023",
             true,
             "test",
         )
 
-    private val nonSourceableInfoNoCompanyId =
-        NonSourceableInfo(
+    private val nonSourceableMessageNoCompanyId =
+        NonSourceableMessage(
             "",
-            DataTypeEnum.sfdr,
+            "sfdr",
             "2023",
             true,
             "test",
         )
 
-    private val nonSourceableInfoNoReportingPeriod =
-        NonSourceableInfo(
+    private val nonSourceableMessageNoReportingPeriod =
+        NonSourceableMessage(
             "exampleCompany",
-            DataTypeEnum.sfdr,
+            "sfdr",
             "",
             true,
             "test",
         )
 
-    private val nonSourceableInfoValidButSourceable =
-        NonSourceableInfo(
+    private val nonSourceableMessageValidButSourceable =
+        NonSourceableMessage(
             "exampleCompany",
-            DataTypeEnum.sfdr,
+            "sfdr",
             "2023",
             false,
             "test",
@@ -187,10 +187,10 @@ class CommunityManagerListenerUnitTest {
     @Test
     fun `valid nonsourceable message should be processed successfully`() {
         communityManagerListener.processDataReportedNonSourceableMessage(
-            jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoValid), typeNonSourceable, correlationId,
+            jacksonObjectMapper.writeValueAsString(this.nonSourceableMessageValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllRequestsToStatusNonSourceable(
-            nonSourceableInfoValid,
+            nonSourceableMessageValid,
             correlationId,
         )
     }
@@ -199,14 +199,14 @@ class CommunityManagerListenerUnitTest {
     fun `should throw exception for incomplete data in nonsourceable message`() {
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.processDataReportedNonSourceableMessage(
-                jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoCompanyId),
+                jacksonObjectMapper.writeValueAsString(this.nonSourceableMessageNoCompanyId),
                 typeNonSourceable,
                 correlationId,
             )
         }
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.processDataReportedNonSourceableMessage(
-                jacksonObjectMapper.writeValueAsString(this.nonSourceableInfoNoReportingPeriod),
+                jacksonObjectMapper.writeValueAsString(this.nonSourceableMessageNoReportingPeriod),
                 typeNonSourceable,
                 correlationId,
             )
@@ -218,7 +218,7 @@ class CommunityManagerListenerUnitTest {
         assertThrows<MessageQueueRejectException> {
             communityManagerListener
                 .processDataReportedNonSourceableMessage(
-                    jacksonObjectMapper.writeValueAsString(nonSourceableInfoValidButSourceable),
+                    jacksonObjectMapper.writeValueAsString(nonSourceableMessageValidButSourceable),
                     typeNonSourceable,
                     correlationId,
                 )
