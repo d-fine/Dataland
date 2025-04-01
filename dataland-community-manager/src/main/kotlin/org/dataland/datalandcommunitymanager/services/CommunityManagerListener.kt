@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -174,8 +176,23 @@ class CommunityManagerListener(
                 "Correlation ID: $correlationId",
         )
 
+        val dataTypeDecoded = DataTypeEnum.decode(nonSourceableMessage.dataType)
+
+        if (dataTypeDecoded == null) {
+            throw MessageQueueRejectException("Data type could not be decoded.")
+        }
+
+        val nonSourceableInfo =
+            NonSourceableInfo(
+                companyId = nonSourceableMessage.companyId,
+                dataType = dataTypeDecoded,
+                reportingPeriod = nonSourceableMessage.reportingPeriod,
+                isNonSourceable = nonSourceableMessage.isNonSourceable,
+                reason = nonSourceableMessage.reason,
+            )
+
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(nonSourceableMessage, correlationId)
+            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(nonSourceableInfo, correlationId)
         }
     }
 }

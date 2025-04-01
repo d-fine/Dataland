@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
@@ -15,7 +16,6 @@ import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandmessagequeueutils.messages.NonSourceableMessage
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi.DataTypesGetInfoOnDatasets
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
@@ -572,10 +572,10 @@ class DataRequestUpdateManager
          */
         @Transactional
         fun patchAllRequestsToStatusNonSourceable(
-            nonSourceableMessage: NonSourceableMessage,
+            nonSourceableInfo: NonSourceableInfo,
             correlationId: String,
         ) {
-            if (!nonSourceableMessage.isNonSourceable) {
+            if (!nonSourceableInfo.isNonSourceable) {
                 throw IllegalArgumentException(
                     "Expected information about a non-sourceable dataset but received information " +
                         "about a sourceable dataset. No requests are patched if a dataset is reported as " +
@@ -584,9 +584,9 @@ class DataRequestUpdateManager
             } else {
                 val dataRequestEntities =
                     dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        datalandCompanyId = nonSourceableMessage.companyId,
-                        dataType = nonSourceableMessage.dataType,
-                        reportingPeriod = nonSourceableMessage.reportingPeriod,
+                        datalandCompanyId = nonSourceableInfo.companyId,
+                        dataType = nonSourceableInfo.dataType.toString(),
+                        reportingPeriod = nonSourceableInfo.reportingPeriod,
                     )
 
                 dataRequestEntities?.forEach {
@@ -595,7 +595,7 @@ class DataRequestUpdateManager
                         dataRequestPatch =
                             DataRequestPatch(
                                 requestStatus = RequestStatus.NonSourceable,
-                                requestStatusChangeReason = nonSourceableMessage.reason,
+                                requestStatusChangeReason = nonSourceableInfo.reason,
                             ),
                         correlationId = correlationId,
                     )
