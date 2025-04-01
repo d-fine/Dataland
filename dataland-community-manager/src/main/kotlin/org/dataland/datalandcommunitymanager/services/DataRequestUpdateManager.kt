@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
@@ -16,6 +15,7 @@ import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandmessagequeueutils.messages.NonSourceableMessage
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi.DataTypesGetInfoOnDatasets
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
@@ -48,7 +48,7 @@ class DataRequestUpdateManager
         private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
         /**
-         * Patches the email-on-update-field if necessary anr returns if it was updated.
+         * Patches the email-on-update-field if necessary and returns if it was updated.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
          * @return true if the notifyMeImmediately was updated, false otherwise
@@ -56,17 +56,16 @@ class DataRequestUpdateManager
         private fun updateNotifyMeImmediatelyIfRequired(
             dataRequestPatch: DataRequestPatch,
             dataRequestEntity: DataRequestEntity,
-        ): Boolean {
-            if (dataRequestPatch.notifyMeImmediately != null &&
-                dataRequestEntity.notifyMeImmediately != dataRequestPatch.notifyMeImmediately
-            ) {
-                dataRequestEntity.notifyMeImmediately = dataRequestPatch.notifyMeImmediately
-                return true
-            }
-            return false
+        ) = if (dataRequestPatch.notifyMeImmediately != null &&
+            dataRequestEntity.notifyMeImmediately != dataRequestPatch.notifyMeImmediately
+        ) {
+            dataRequestEntity.notifyMeImmediately = dataRequestPatch.notifyMeImmediately
+            true
+        } else {
+            false
         }
 
-        /**
+/**
          * Updates the request status history if the request status changed
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
@@ -102,7 +101,7 @@ class DataRequestUpdateManager
             return false
         }
 
-        /**
+/**
          * Updates the message history if valid contacts are passed in the patch object.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
@@ -128,7 +127,7 @@ class DataRequestUpdateManager
             return false
         }
 
-        /**
+/**
          * Creates log messages if required and returns whether the request priority changed
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
@@ -155,7 +154,7 @@ class DataRequestUpdateManager
             return false
         }
 
-        /**
+/**
          * Method to patch a data request
          * @param dataRequestId the id of the data request to patch
          * @param dataRequestPatch the patch object containing information about the required changes
@@ -229,7 +228,12 @@ class DataRequestUpdateManager
             val anyChanges =
                 listOf(
                     updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dataRequestEntity),
-                    updateRequestStatusHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId),
+                    updateRequestStatusHistoryIfRequired(
+                        dataRequestPatch,
+                        dataRequestEntity,
+                        modificationTime,
+                        answeringDataId,
+                    ),
                     updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
                     checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
                 ).any { it }
@@ -239,7 +243,7 @@ class DataRequestUpdateManager
             return dataRequestEntity.toStoredDataRequest()
         }
 
-        /**
+/**
          * If applicable, send an immediate notification email corresponding to the status change to the user.
          * @returns whether an immediate notification was sent
          */
@@ -257,7 +261,7 @@ class DataRequestUpdateManager
             return dataRequestEntity.notifyMeImmediately
         }
 
-        /**
+/**
          * Reset the immediate notification flag of the data request entity from true to false if the request status is
          * about to change from Open to Answered.
          */
@@ -275,7 +279,7 @@ class DataRequestUpdateManager
             }
         }
 
-        /**
+/**
          * Change the request status of a given data request to 'Answered'
          * @param dataRequestEntity the entity specifying the data request
          * @param correlationId the correlation ID of the QA event
@@ -312,7 +316,7 @@ class DataRequestUpdateManager
             }
         }
 
-        /**
+/**
          * Change the request status of all data requests of all subsidiaries of a given company, reporting period and framework
          * @param parentCompanyId the ID of the company whose subsidiaries shall be processed
          * @param reportingPeriod the reporting period for which data requests shall be patched
@@ -358,7 +362,7 @@ class DataRequestUpdateManager
             }
         }
 
-        /**
+/**
          * Method for processing data requests by users after an incoming QA approval or private
          * data received event.
          */
@@ -404,7 +408,7 @@ class DataRequestUpdateManager
             )
         }
 
-        /**
+/**
          * Method to patch open or non-sourceable data request to answered after a dataset is uploaded
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
@@ -434,7 +438,7 @@ class DataRequestUpdateManager
             )
         }
 
-        /**
+/**
          * Method to notify users with answered, closed or resolved data requests that a new dataset for the same company,
          * reporting period and framework has been QA-approved.
          *
@@ -466,22 +470,22 @@ class DataRequestUpdateManager
             }
         }
 
-        /**
+/**
          * Method to patch all data request corresponding to a dataset
-         * @param nonSourceableInfo the info on the non-sourceable dataset
+         * @param nonSourceableMessage the info on the non-sourceable dataset
          * @param correlationId correlationId
          */
         @Transactional
         fun patchAllRequestsForThisDatasetToStatusNonSourceable(
-            nonSourceableInfo: NonSourceableInfo,
+            nonSourceableMessage: NonSourceableMessage,
             correlationId: String,
         ) {
-            if (nonSourceableInfo.isNonSourceable) {
+            if (nonSourceableMessage.isNonSourceable) {
                 val dataRequestEntities =
                     dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        datalandCompanyId = nonSourceableInfo.companyId,
-                        dataType = nonSourceableInfo.dataType.toString(),
-                        reportingPeriod = nonSourceableInfo.reportingPeriod,
+                        datalandCompanyId = nonSourceableMessage.companyId,
+                        dataType = nonSourceableMessage.dataType,
+                        reportingPeriod = nonSourceableMessage.reportingPeriod,
                     )
 
                 dataRequestEntities?.forEach {
@@ -490,7 +494,7 @@ class DataRequestUpdateManager
                         dataRequestPatch =
                             DataRequestPatch(
                                 requestStatus = RequestStatus.NonSourceable,
-                                requestStatusChangeReason = nonSourceableInfo.reason,
+                                requestStatusChangeReason = nonSourceableMessage.reason,
                             ),
                         correlationId = correlationId,
                     )
@@ -499,7 +503,7 @@ class DataRequestUpdateManager
                 throw IllegalArgumentException(
                     "Expected information about a non-sourceable dataset but received information " +
                         "about a sourceable dataset. No requests are patched if a dataset is reported as " +
-                        "sourceable until the dataset is uplaoded.",
+                        "sourceable until the dataset is uploaded.",
                 )
             }
         }

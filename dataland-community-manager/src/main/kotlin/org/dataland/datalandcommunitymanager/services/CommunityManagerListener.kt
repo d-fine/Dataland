@@ -1,13 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.NonSourceableMessage
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -37,7 +37,7 @@ class CommunityManagerListener(
     /**
      * Checks if, for a given dataset, there are open or nonsourceable requests with matching company identifier,
      * reporting period and data type and sets their status to answered.
-     * @param jsonString the message describing the result of the completed QA process
+     * @param payload the message describing the result of the completed QA process
      * @param type the type of the message
      */
     @RabbitListener(
@@ -59,12 +59,12 @@ class CommunityManagerListener(
     )
     @Transactional
     fun changeRequestStatusAfterQaDecision(
-        @Payload jsonString: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
-        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
         val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -88,7 +88,7 @@ class CommunityManagerListener(
     /**
      * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered and handles the update of the access status
-     * @param jsonString the message body containing the dataId of the uploaded data
+     * @param payload the message body containing the dataId of the uploaded data
      * @param type the type of the message
      */
     @RabbitListener(
@@ -110,12 +110,12 @@ class CommunityManagerListener(
     )
     @Transactional
     fun changeRequestStatusAfterPrivateDataUpload(
-        @Payload jsonString: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
-        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(jsonString, objectMapper)
+        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(payload, objectMapper)
         val dataId = privateDataUploadMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -129,9 +129,9 @@ class CommunityManagerListener(
     }
 
     /**
-     * Listens for information that specifies a dataset as non-sourceable
+     * Listens for message that specifies a dataset as non-sourceable
      * and patches all requests corresponding to this dataset to the request status non-sourceable.
-     * @param jsonString the message describing the result of the data non-sourceable event
+     * @param payload the message describing the result of the data non-sourceable event
      * @param type the type of the message
      * @param correlationId the correlation id of the message
      */
@@ -153,30 +153,29 @@ class CommunityManagerListener(
         ],
     )
     fun processDataReportedNonSourceableMessage(
-        @Payload jsonString: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableInfo>(jsonString, objectMapper)
-        if (
-            nonSourceableInfo.companyId.isEmpty() ||
-            nonSourceableInfo.reportingPeriod.isEmpty()
-        ) {
+        val nonSourceableMessage = MessageQueueUtils.readMessagePayload<NonSourceableMessage>(payload, objectMapper)
+
+        if (nonSourceableMessage.receivedDataIsIncomplete()) {
             throw MessageQueueRejectException("Received data is incomplete")
         }
 
-        if (!nonSourceableInfo.isNonSourceable) {
+        if (!nonSourceableMessage.datasetWasSetToNonSourceable()) {
             throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable")
         }
+
         logger.info(
-            "Received data-non-sourceable-message for data type: ${nonSourceableInfo.dataType} " +
-                "company ID: ${nonSourceableInfo.companyId} and reporting period: ${nonSourceableInfo.reportingPeriod}. " +
+            "Received data-non-sourceable-message for data type: ${nonSourceableMessage.dataType}, " +
+                "company ID: ${nonSourceableMessage.companyId} and reporting period: ${nonSourceableMessage.reportingPeriod}. " +
                 "Correlation ID: $correlationId",
         )
 
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId)
+            dataRequestUpdateManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableMessage, correlationId)
         }
     }
 }
