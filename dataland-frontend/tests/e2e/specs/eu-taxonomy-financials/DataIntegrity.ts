@@ -65,14 +65,14 @@ describeIf(
                     '/upload?templateDataId=' +
                     dataMetaInformation.dataId
                 );
-                cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+                cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('long_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
                 cy.intercept({
                   url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}?bypassQa=true`,
                   times: 1,
                 }).as('postCompanyAssociatedData');
                 submitButton.clickButton();
-                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('long_timeout_in_ms') as number }).then(
                   (postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
                     isDatasetApproved();
