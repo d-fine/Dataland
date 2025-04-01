@@ -26,7 +26,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Show Log messages of Internal Server Errors 500,\nShow log messages of internal server errors 500 that exactly contain \"500 Internal Server Error.\" Ignore duplicate logs that process these error messages by excluding logs that contain \"query_hash=\". \n\nNote: Log message timestamps may use server time instead of browser time.",
+      "description": "Show Log messages of Internal Server Errors 500, containing \"internal server error\" (case-insensitive). Ignore duplicate logs that process these error messages by excluding logs with label \"level=info\" (field \"detected_level=info\" cannot be filtered out automatically but manually). \n\nNote: Log message timestamps may use server time instead of browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -58,7 +58,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{service_name=~\".+\"} |~ \"500 Internal Server Error\" != \"query_hash=\"",
+          "expr": "{service_name=~\".+\", level!=\"info\"} |~ \"(?i)internal server error\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -71,7 +71,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Note: Time is based on browser time.",
+      "description": "Note: Time is based on browser time. \n\nAlerts are resolved automatically after 6h.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -154,7 +154,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count_over_time({service_name=~\".+\"} |~ \"500 Internal Server Error\" != \"query_hash=\" [1m])",
+          "expr": "count_over_time({service_name=~\".+\", level!=\"info\"} |~ \"(?i)internal server error\" [1m])",
           "queryType": "range",
           "refId": "A"
         }
@@ -208,7 +208,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Note: Time is based on browser time.",
+      "description": "Note: Time is based on browser time. \n\nAlerts are resolved 'directly' when a container is healthy again.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -303,7 +303,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Show detected Stack Traces, identified by log message containing \"Exception\" (case-insensitive match).  Ignore duplicate logs that process these error messages by excluding logs that contain \"query_hash=\".\n\nNote: Log message timestamps may use server time, not browser time.",
+      "description": "Show detected Stack Traces, identified by log message containing \"Exception\" (case-insensitive match).  Ignore duplicate logs that process these error messages by excluding logs with label \"level=info\" (field \"detected_level=info\" cannot be filtered out automatically but manually).\n\nNote: Log message timestamps may use server time, not browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -335,7 +335,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{service_name=~\".+\"} |~ \"(?i)Exception\" != \"query_hash=\"",
+          "expr": "{service_name=~\".+\", level!=\"info\"} |~ \"(?i)Exception\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -348,7 +348,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Note: Time is based on browser time.",
+      "description": "Note: Time is based on browser time. \n\nAlerts are resolved automatically after 24h.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -429,7 +429,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count_over_time({service_name=~\".+\"} |~ \"(?i)Exception(\\\\(|:)?\" != \"query_hash=\" [1m])",
+          "expr": "count_over_time({service_name=~\".+\", level!=\"info\"} |~ \"(?i)Exception(\\\\(|:)?\" [1m])",
           "queryType": "range",
           "refId": "A"
         }
@@ -442,7 +442,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Show all Log Messages containing \"error\" (case-insensitive match). Ignore duplicate logs that process these error messages by excluding logs that contain \"query_hash=\".\n\nNote: Log message timestamps may use server time, not browser time.",
+      "description": "Show all Log Messages containing \"error\" (case-insensitive match). Ignore duplicate logs that process these error messages by excluding logs with label \"level=info\" (field \"detected_level=info\" cannot be filtered out automatically but manually).\n\nNote: Log message timestamps may use server time, not browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -474,7 +474,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{service_name=~\".+\", job!=\"health_check\"} |~ \"(?i)error\" != \"query_hash=\"",
+          "expr": "{service_name=~\".+\", job!=\"health_check\", level!=\"info\"} |~ \"(?i)error\" ",
           "queryType": "range",
           "refId": "A"
         }
@@ -487,7 +487,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Note: Time is based on browser time.",
+      "description": "Note: Time is based on browser time. \n\nAlerts are resolved automatically after 24h.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -568,7 +568,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count_over_time({service_name=~\".+\", job!=\"health_check\"} |~ \"(?i)error\" != \"query_hash=\" [1m])",
+          "expr": "count_over_time({service_name=~\".+\", job!=\"health_check\", level!=\"info\"} |~ \"(?i)error\" [1m])",
           "queryType": "range",
           "refId": "A"
         }

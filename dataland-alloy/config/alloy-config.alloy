@@ -1,6 +1,6 @@
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // var logs
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 local.file_match "system" {
 	path_targets = [{
@@ -12,12 +12,12 @@ local.file_match "system" {
 
 loki.source.file "system" {
 	targets               = local.file_match.system.targets
-	forward_to            = [loki.write.local_loki.receiver]
+	forward_to            = [loki.process.add_labels.receiver]
 }
 
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // health check logs
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 local.file_match "health_check" {
     path_targets = [{
@@ -38,7 +38,6 @@ loki.process "extract_container_label" {
         // Mapping the "container" field from your logs
         mapping = {
             "extracted_container" = "container",
-            "extracted_level" = "level",
         }
     }
 
@@ -46,16 +45,15 @@ loki.process "extract_container_label" {
         // Use the extracted value as the label
         values = {
             "container" = "extracted_container",
-            "level" = "extracted_level",
         }
     }
 
-    forward_to = [loki.write.local_loki.receiver]
+    forward_to = [loki.process.add_labels.receiver]
 }
 
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // docker container logs
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 discovery.docker "containers" {
     host = "unix:///var/run/docker.sock"
@@ -90,12 +88,40 @@ discovery.relabel "default" {
 loki.source.docker "default" {
     host       = "unix:///var/run/docker.sock"
     targets    = discovery.relabel.default.output
+    forward_to = [loki.process.add_labels.receiver]
+}
+
+// ----------------------------------------------------------------------------
+// add more labels from container logs
+// (container label needs to be handled before, due to different methods)
+// ----------------------------------------------------------------------------
+
+loki.process "add_labels" {
+    // Extract the value of the desired labels from the log line
+    stage.logfmt {
+        // Mapping fields from your logs
+        mapping = {
+           "extracted_level" = "level",
+           "extracted_status" = "status",
+           "extracted_httpStatus" ="httpStatus",
+        }
+    }
+
+    stage.labels {
+        // Use the extracted values as the labels
+        values = {
+           "level" = "extracted_level",
+           "status" = "extracted_status",
+           "httpStatus" = "extracted_httpStatus",
+        }
+    }
+
     forward_to = [loki.write.local_loki.receiver]
 }
 
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // send logs to loki
-// -------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 loki.write "local_loki" {
 	endpoint {
