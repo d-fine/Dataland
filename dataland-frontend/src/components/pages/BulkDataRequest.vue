@@ -98,7 +98,7 @@
                         innerClass="long"
                       />
                       <FormKit
-                        :modelValue="selectedFrameworks"
+                        :modelValue="selectedFrameworks.toString()"
                         type="text"
                         name="listOfFrameworkNames"
                         validation="required"
@@ -174,7 +174,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import PrimeButton from 'primevue/button';
 import InputSwitch from 'primevue/inputswitch';
@@ -252,7 +251,7 @@ export default defineComponent({
 
   computed: {
     humanizedSelectedFrameworks(): string[] {
-      return this.selectedFrameworks.map((it) => `${humanizeStringOrNumber(it)}`);
+      return this.selectedFrameworks.map((it) => humanizeStringOrNumber(it));
     },
     selectedReportingPeriods(): string[] {
       return this.reportingPeriods
@@ -325,7 +324,7 @@ export default defineComponent({
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
         this.bulkDataRequestResponse = response.data;
-        this.calculateRequestSuccessStatus();
+        this.calculateRequestSuccessStatus(this.bulkDataRequestResponse);
         this.composeSummaryMessage();
         this.isSuccessful = true;
       } catch (error) {
@@ -347,7 +346,7 @@ export default defineComponent({
      * Composes the summary message in case the bulkDataRequestResponse contains meaningful data.
      */
     composeSummaryMessage() {
-      if (!this.bulkDataRequestResponse || this.bulkDataRequestResponse == {}) {
+      if (!this.bulkDataRequestResponse) {
         return;
       }
       const numberOfAccepted = this.bulkDataRequestResponse.acceptedDataRequests.length;
@@ -368,16 +367,16 @@ export default defineComponent({
      * If some but not all rejected -> Partial Success
      * Else -> No Success
      */
-    calculateRequestSuccessStatus() {
+    calculateRequestSuccessStatus(bulkDataRequestResponse: BulkDataRequestResponse) {
       const sumOfAllRequestedData =
-        this.bulkDataRequestResponse.acceptedDataRequests.length +
-        this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length +
-        this.bulkDataRequestResponse.alreadyExistingDatasets.length +
-        this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
+        bulkDataRequestResponse.acceptedDataRequests.length +
+        bulkDataRequestResponse.alreadyExistingNonFinalRequests.length +
+        bulkDataRequestResponse.alreadyExistingDatasets.length +
+        bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
 
-      if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length === 0) {
+      if (bulkDataRequestResponse.rejectedCompanyIdentifiers.length === 0) {
         this.requestSuccessStatus = SuccessStatus.Success;
-      } else if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length < sumOfAllRequestedData) {
+      } else if (bulkDataRequestResponse.rejectedCompanyIdentifiers.length < sumOfAllRequestedData) {
         this.requestSuccessStatus = SuccessStatus.PartialSuccess;
       } else {
         this.requestSuccessStatus = SuccessStatus.NoSuccess;

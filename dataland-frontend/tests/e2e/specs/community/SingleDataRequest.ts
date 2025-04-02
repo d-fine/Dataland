@@ -11,6 +11,7 @@ import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
 
 describeIf(
   'As a premium user, I want to be able to navigate to the single data request page and submit a request',
@@ -31,7 +32,7 @@ describeIf(
      * @param reportingPeriod the year for which the data is uploaded
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           testStoredCompany = storedCompany;
           return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
@@ -93,7 +94,7 @@ describeIf(
       cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
       cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible');
       cy.get('[data-test="acceptConditionsCheckbox"]').click();
-      clickSubmitButton();
+      cy.get("button[type='submit']").click();
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
@@ -104,23 +105,29 @@ describeIf(
       cy.url().should('contain', '/companies/');
       checkCompanyInfoSheet();
 
-      // Check if the request is listed on the request page
+      checkThatRequestIsOnRequestPage();
+      withDrawRequestAndCheckThatItsWithdrawn();
+    });
+
+    /**
+     * Verifies that the request appears on the overview and single request page
+     */
+    function checkThatRequestIsOnRequestPage(): void {
       cy.visit('/requests');
       cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests');
       cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().scrollIntoView();
       cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().click();
 
-      // Inspect the page for a single request
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests/');
-      cy.get(`div.card__data:contains("${testStoredCompany.companyInformation.companyName}")`).should('be.visible');
-      cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Openand Access is:Public since');
-      cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
-      cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-inputswitch-checked');
+      verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
       cy.get('[data-test="notifyMeImmediatelyInput"]').click();
       cy.reload(); // Check if the data was persisted in the backend
       cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
+    }
 
-      // Withdraw request and verify that it's withdrawn
+    /**
+     * Withdraw the request and check that it succeeded.
+     */
+    function withDrawRequestAndCheckThatItsWithdrawn(): void {
       cy.get('a:contains("Withdraw request")').scrollIntoView();
       cy.get('a:contains("Withdraw request")').click();
       cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
@@ -128,7 +135,7 @@ describeIf(
       cy.get('[data-test="back-button"]').scrollIntoView();
       cy.get('[data-test="back-button"]').click();
       cy.get(`tr:contains("${testStoredCompany.companyInformation.companyName}")`).should('contain.text', 'Withdrawn');
-    });
+    }
 
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
@@ -152,12 +159,6 @@ describeIf(
         expect(requestBody).to.deep.equal(expectedRequest);
       }
     }
-    /**
-     * Clicks submit button
-     */
-    function clickSubmitButton(): void {
-      cy.get("button[type='submit']").click();
-    }
 
     /**
      * Checks if all expected human-readable labels are visible in the dropdown options
@@ -174,7 +175,7 @@ describeIf(
      * Checks basic validation
      */
     function checkValidation(): void {
-      clickSubmitButton();
+      cy.get("button[type='submit']").click();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage']")
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
