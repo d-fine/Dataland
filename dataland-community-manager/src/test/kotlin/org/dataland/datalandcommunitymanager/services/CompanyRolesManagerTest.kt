@@ -11,7 +11,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -67,7 +67,7 @@ class CompanyRolesManagerTest {
             CompanyRolesManager(
                 mockCompanyInfoService,
                 mockCompanyRoleAssignmentRepository,
-                mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
+                mock(CompanyOwnershipRequestedEmailMessageBuilder::class.java),
                 companyOwnershipAcceptedEmailMessageBuilder,
             )
 

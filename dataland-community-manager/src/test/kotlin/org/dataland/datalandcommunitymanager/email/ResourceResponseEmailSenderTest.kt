@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
@@ -102,13 +102,13 @@ class ResourceResponseEmailSenderTest {
                 )
 
             val dataRequestClosedEmailMessageSender =
-                DataRequestResponseEmailSender(
+                DataRequestResponseEmailBuilder(
                     cloudEventMessageHandlerMock,
                     getCompanyInfoServiceMock(),
                     objectMapper,
                     staleDaysThreshold.toString(),
                 )
-            dataRequestClosedEmailMessageSender.sendDataRequestAnsweredEmail(
+            dataRequestClosedEmailMessageSender.buildDataRequestAnsweredEmailAndSendCEMessage(
                 dataRequestEntity, correlationId,
             )
         }

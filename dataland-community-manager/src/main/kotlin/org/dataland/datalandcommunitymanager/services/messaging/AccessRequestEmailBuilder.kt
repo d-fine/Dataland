@@ -22,7 +22,7 @@ import java.util.TimeZone
 /**
  * This class manages the notification of requesters and company owners about access requests
  */
-@Service("AccessRequestEmailSender")
+@Service("AccessRequestEmailBuilder")
 class AccessRequestEmailBuilder(
     @Autowired private val companyRolesManager: CompanyRolesManager,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserService,

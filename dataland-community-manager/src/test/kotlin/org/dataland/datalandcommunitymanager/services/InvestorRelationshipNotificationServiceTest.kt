@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedEmailBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -29,7 +29,7 @@ class InvestorRelationshipNotificationServiceTest {
     private lateinit var notificationEventRepository: NotificationEventRepository
     private lateinit var companyRolesManager: CompanyRolesManager
     private lateinit var companyDataControllerApi: CompanyDataControllerApi
-    private lateinit var notificationEmailSender: CompanyOwnershipClaimDatasetUploadedSender
+    private lateinit var notificationEmailSender: CompanyOwnershipClaimDatasetUploadedEmailBuilder
     private lateinit var investorRelationshipNotificationService: InvestorRelationshipNotificationService
 
     private val companyUUID = UUID.randomUUID()
@@ -39,7 +39,7 @@ class InvestorRelationshipNotificationServiceTest {
         notificationEventRepository = mock(NotificationEventRepository::class.java)
         companyRolesManager = mock(CompanyRolesManager::class.java)
         companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        notificationEmailSender = mock(CompanyOwnershipClaimDatasetUploadedSender::class.java)
+        notificationEmailSender = mock(CompanyOwnershipClaimDatasetUploadedEmailBuilder::class.java)
 
         investorRelationshipNotificationService =
             InvestorRelationshipNotificationService(
@@ -106,7 +106,7 @@ class InvestorRelationshipNotificationServiceTest {
 
         investorRelationshipNotificationService.processNotificationEvents(entityList)
 
-        verify(notificationEmailSender).sendExternalAndInternalInvestorRelationshipSummaryEmail(
+        verify(notificationEmailSender).buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
             eq(targetList),
             eq(companyUUID),
             eq(companyMailList),

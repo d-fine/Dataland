@@ -6,7 +6,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -19,7 +19,7 @@ import java.util.UUID
  */
 @Service
 class RequestEmailManager(
-    @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
+    @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailBuilder,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
 ) {
@@ -38,13 +38,13 @@ class RequestEmailManager(
         val correlationId = correlationId ?: UUID.randomUUID().toString()
         if (requestStatus == RequestStatus.Answered) {
             if (!earlierQaApprovedVersionOfDatasetExists) {
-                dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
+                dataRequestResponseEmailMessageSender.buildDataRequestAnsweredEmailAndSendCEMessage(dataRequestEntity, correlationId)
             } else {
-                dataRequestResponseEmailMessageSender.sendDataUpdatedEmail(dataRequestEntity, correlationId)
+                dataRequestResponseEmailMessageSender.buildDataUpdatedEmailAndSendCEMessage(dataRequestEntity, correlationId)
             }
         }
         if (requestStatus == RequestStatus.NonSourceable) {
-            dataRequestResponseEmailMessageSender.sendDataRequestNonSourceableEmail(dataRequestEntity, correlationId)
+            dataRequestResponseEmailMessageSender.buildDataRequestNonSourceableEmailAndSendCEMessage(dataRequestEntity, correlationId)
         }
     }
 
@@ -82,7 +82,7 @@ class RequestEmailManager(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        dataRequestResponseEmailMessageSender.sendDataUpdatedEmail(
+        dataRequestResponseEmailMessageSender.buildDataUpdatedEmailAndSendCEMessage(
             dataRequestEntity,
             correlationId,
         )

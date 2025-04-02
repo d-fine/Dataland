@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
-class CompanyOwnershipRequestedEmailMessageSender(
+class CompanyOwnershipRequestedEmailMessageBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
@@ -30,7 +30,7 @@ class CompanyOwnershipRequestedEmailMessageSender(
      * @param comment from the user in association with the request
      * @param correlationId of the current user process
      */
-    fun sendCompanyOwnershipInternalEmailMessage(
+    fun buildCompanyOwnershipInternalEmailMessageAndSendCEMessage(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
         companyName: String,

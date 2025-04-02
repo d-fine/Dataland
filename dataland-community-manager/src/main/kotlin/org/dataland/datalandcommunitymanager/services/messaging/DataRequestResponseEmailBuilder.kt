@@ -21,8 +21,8 @@ import java.util.TimeZone
 /**
  * A class that provided utility for generating emails messages for immediate data request responses
  */
-@Service("DataRequestResponseEmailSender")
-class DataRequestResponseEmailSender(
+@Service("DataRequestResponseEmailBuilder")
+class DataRequestResponseEmailBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired private val objectMapper: ObjectMapper,
@@ -45,7 +45,7 @@ class DataRequestResponseEmailSender(
      * @param dataRequestEntity the dataRequestEntity
      * @param correlationId the correlation id
      */
-    fun sendDataRequestAnsweredEmail(
+    fun buildDataRequestAnsweredEmailAndSendCEMessage(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
@@ -76,7 +76,7 @@ class DataRequestResponseEmailSender(
      * @param dataRequestEntity the dataRequestEntity
      * @param correlationId the correlation id
      */
-    fun sendDataRequestNonSourceableEmail(
+    fun buildDataRequestNonSourceableEmailAndSendCEMessage(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
@@ -107,7 +107,7 @@ class DataRequestResponseEmailSender(
      * has been a QA approval for a dataset with regard to the same company, reporting period and
      * framework.
      */
-    fun sendDataUpdatedEmail(
+    fun buildDataUpdatedEmailAndSendCEMessage(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {

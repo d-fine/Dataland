@@ -21,8 +21,8 @@ class DataRequestResponseEmailSenderTest {
     private var mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private var objectMapper = ObjectMapper()
     private var mockCompanyInfoService = mock<CompanyInfoService>()
-    private val dataRequestResponseEmailSender =
-        DataRequestResponseEmailSender(
+    private val dataRequestResponseEmailBuilder =
+        DataRequestResponseEmailBuilder(
             mockCloudEventMessageHandler,
             mockCompanyInfoService,
             objectMapper,
@@ -64,7 +64,7 @@ class DataRequestResponseEmailSenderTest {
             .getValidCompanyNameOrId(anyOrNull())
 
         val actualMessage =
-            dataRequestResponseEmailSender.buildDataUpdatedEmailMessage(
+            dataRequestResponseEmailBuilder.buildDataUpdatedEmailMessage(
                 mockDataRequestEntity,
             )
 

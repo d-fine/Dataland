@@ -8,7 +8,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -25,7 +25,7 @@ import java.util.UUID
 class CompanyRolesManager(
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
-    @Autowired private val companyOwnershipRequestedEmailMessageSender: CompanyOwnershipRequestedEmailMessageSender,
+    @Autowired private val companyOwnershipRequestedEmailMessageBuilder: CompanyOwnershipRequestedEmailMessageBuilder,
     @Autowired private val companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -228,7 +228,7 @@ class CompanyRolesManager(
             validateIfCompanyRoleForCompanyIsAssignedToUser(CompanyRole.CompanyOwner, companyId, userId)
         } catch (e: ResourceNotFoundApiException) {
             if (e.summary == exceptionSummaryTextWhenRoleNotAssigned) {
-                companyOwnershipRequestedEmailMessageSender.sendCompanyOwnershipInternalEmailMessage(
+                companyOwnershipRequestedEmailMessageBuilder.buildCompanyOwnershipInternalEmailMessageAndSendCEMessage(
                     userAuthentication = datalandJwtAuthentication,
                     datalandCompanyId = companyId,
                     companyName = companyName,

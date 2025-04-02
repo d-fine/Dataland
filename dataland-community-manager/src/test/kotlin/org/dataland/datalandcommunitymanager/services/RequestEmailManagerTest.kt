@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -23,7 +23,7 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 import java.util.UUID
 
 class RequestEmailManagerTest {
-    private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
+    private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailBuilder
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var accessRequestEmailBuilder: AccessRequestEmailBuilder
 
@@ -31,7 +31,7 @@ class RequestEmailManagerTest {
 
     @BeforeEach
     fun setupRequestEmailManager() {
-        dataRequestResponseEmailMessageSender = mock(DataRequestResponseEmailSender::class.java)
+        dataRequestResponseEmailMessageSender = mock(DataRequestResponseEmailBuilder::class.java)
         singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         accessRequestEmailBuilder = mock(AccessRequestEmailBuilder::class.java)
 
@@ -57,15 +57,15 @@ class RequestEmailManagerTest {
 
             if (requestStatus == RequestStatus.Answered) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
-                    .sendDataRequestAnsweredEmail(any(), any())
+                    .buildDataRequestAnsweredEmailAndSendCEMessage(any(), any())
             } else if (requestStatus == RequestStatus.NonSourceable) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
-                    .sendDataRequestNonSourceableEmail(any(), any())
+                    .buildDataRequestNonSourceableEmailAndSendCEMessage(any(), any())
             } else {
                 verify(dataRequestResponseEmailMessageSender, times(0))
-                    .sendDataRequestAnsweredEmail(any(), any())
+                    .buildDataRequestAnsweredEmailAndSendCEMessage(any(), any())
                 verify(dataRequestResponseEmailMessageSender, times(0))
-                    .sendDataRequestNonSourceableEmail(any(), any())
+                    .buildDataRequestNonSourceableEmailAndSendCEMessage(any(), any())
             }
             reset(dataRequestResponseEmailMessageSender)
         }
@@ -120,7 +120,7 @@ class RequestEmailManagerTest {
         verify(accessRequestEmailBuilder, times(1))
             .notifyCompanyOwnerAboutNewRequest(any(), any())
         verify(dataRequestResponseEmailMessageSender, times(1))
-            .sendDataRequestAnsweredEmail(any(), any())
+            .buildDataRequestAnsweredEmailAndSendCEMessage(any(), any())
 
         verifyNoMoreInteractions(accessRequestEmailBuilder)
         verifyNoMoreInteractions(dataRequestResponseEmailMessageSender)

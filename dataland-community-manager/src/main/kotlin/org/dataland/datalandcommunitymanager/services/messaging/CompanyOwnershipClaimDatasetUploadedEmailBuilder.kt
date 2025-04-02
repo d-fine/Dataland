@@ -23,8 +23,8 @@ import java.util.UUID
  * A service used to send external claim company ownership, when dataset is uploaded emails
  * and related internal emails in the NotificationService.
  */
-@Service("CompanyOwnershipClaimDatasetUploadedSender")
-class CompanyOwnershipClaimDatasetUploadedSender(
+@Service("CompanyOwnershipClaimDatasetUploadedEmailBuilder")
+class CompanyOwnershipClaimDatasetUploadedEmailBuilder(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
@@ -38,7 +38,7 @@ class CompanyOwnershipClaimDatasetUploadedSender(
      * @param receiver A list of recipient email addresses for the company.
      * @param correlationId The correlation identifier for tracking the email notification.
      */
-    fun sendExternalAndInternalInvestorRelationshipSummaryEmail(
+    fun buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
         unprocessedEvents: List<NotificationEventEntity>,
         companyId: UUID,
         receiver: List<String>,
@@ -48,10 +48,10 @@ class CompanyOwnershipClaimDatasetUploadedSender(
             buildExternalAndInternalInvestorRelationshipSummaryEmail(unprocessedEvents, companyId, receiver)
 
         receiver.forEach {
-            sendEmailMessage(externalEmailContent, listOf(EmailRecipient.EmailAddress(it)), emptyList(), correlationId)
+            sendCEMessage(externalEmailContent, listOf(EmailRecipient.EmailAddress(it)), emptyList(), correlationId)
         }
 
-        sendEmailMessage(
+        sendCEMessage(
             internalEmailContent,
             listOf(EmailRecipient.Internal),
             listOf(EmailRecipient.InternalCc),
@@ -189,7 +189,7 @@ class CompanyOwnershipClaimDatasetUploadedSender(
      * @param cc The list of CC recipients.
      * @param correlationId Unique identifier for tracking the message sending in the queue.
      */
-    private fun sendEmailMessage(
+    private fun sendCEMessage(
         typedEmailContent: TypedEmailContent,
         receiver: List<EmailRecipient>,
         cc: List<EmailRecipient>,
