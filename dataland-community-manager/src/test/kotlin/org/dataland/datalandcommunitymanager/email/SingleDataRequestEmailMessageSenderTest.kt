@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -44,7 +44,7 @@ class SingleDataRequestEmailMessageSenderTest {
     private val datalandCompanyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val correlationId = UUID.randomUUID().toString()
 
-    private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
+    private lateinit var singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder
 
     @BeforeAll
     fun setup() {
@@ -55,8 +55,8 @@ class SingleDataRequestEmailMessageSenderTest {
         `when`(companyInfoMock.companyName).thenReturn(companyName)
         `when`(companyApiMock.getCompanyInfo(anyString())).thenReturn(companyInfoMock)
         companyRolesManager = mock(CompanyRolesManager::class.java)
-        singleDataRequestEmailMessageSender =
-            SingleDataRequestEmailMessageSender(
+        singleDataRequestEmailMessageBuilder =
+            SingleDataRequestEmailMessageBuilder(
                 cloudEventMessageHandler = cloudEventMessageHandlerMock,
                 objectMapper = objectMapper,
                 companyApi = companyApiMock,
@@ -97,8 +97,8 @@ class SingleDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the internal email message sender is correctly built`() {
         mockBuildingMessageAndSendingItToQueueForInternalMails()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-            SingleDataRequestEmailMessageSender.MessageInformation(
+        singleDataRequestEmailMessageBuilder.buildSingleDataRequestInternalMessageAndSendCEMessage(
+            SingleDataRequestEmailMessageBuilder.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.lksg, reportingPeriods,
             ),
             correlationId,
@@ -134,8 +134,8 @@ class SingleDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the external email message sender is correctly built`() {
         mockBuildingMessageAndSendingItToQueueForExternalMails()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-            SingleDataRequestEmailMessageSender.MessageInformation(
+        singleDataRequestEmailMessageBuilder.buildSingleDataRequestExternalMessageAndSendCEMessage(
+            SingleDataRequestEmailMessageBuilder.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
             ),
             setOf("alphabet@example.com"),

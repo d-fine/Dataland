@@ -19,8 +19,8 @@ import java.util.UUID
 /**
  * A service used to send data request summary emails.
  */
-@Service("DataRequestSummaryEmailSender")
-class DataRequestSummaryEmailSender(
+@Service("DataRequestSummaryEmailBuilder")
+class DataRequestSummaryEmailBuilder(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
@@ -31,7 +31,7 @@ class DataRequestSummaryEmailSender(
      * and contained in the summary email.
      * @param userId The ID of the user to whom the email should be sent.
      */
-    fun sendDataRequestSummaryEmail(
+    fun buildDataRequestSummaryEmailAndSendCEMessage(
         unprocessedEvents: List<NotificationEventEntity>,
         userId: UUID,
     ) {

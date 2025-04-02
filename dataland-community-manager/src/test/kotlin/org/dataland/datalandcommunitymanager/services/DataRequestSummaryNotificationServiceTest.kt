@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailBuilder
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ import java.util.stream.Stream
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestSummaryNotificationServiceTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
-    private val mockDataRequestSummaryEmailSender = mock<DataRequestSummaryEmailSender>()
+    private val mockDataRequestSummaryEmailBuilder = mock<DataRequestSummaryEmailBuilder>()
     private lateinit var dataRequestSummaryNotificationService: DataRequestSummaryNotificationService
 
     private val userUUID = UUID.randomUUID()
@@ -41,12 +41,12 @@ class DataRequestSummaryNotificationServiceTest {
     fun setupNotificationService() {
         reset(
             mockNotificationEventRepository,
-            mockDataRequestSummaryEmailSender,
+            mockDataRequestSummaryEmailBuilder,
         )
 
         dataRequestSummaryNotificationService =
             DataRequestSummaryNotificationService(
-                mockNotificationEventRepository, mockDataRequestSummaryEmailSender,
+                mockNotificationEventRepository, mockDataRequestSummaryEmailBuilder,
             )
     }
 
@@ -54,7 +54,7 @@ class DataRequestSummaryNotificationServiceTest {
     fun `Test scheduledWeeklyEmailSending with no message`() {
         dataRequestSummaryNotificationService.processNotificationEvents(listOf())
 
-        verifyNoInteractions(mockDataRequestSummaryEmailSender)
+        verifyNoInteractions(mockDataRequestSummaryEmailBuilder)
     }
 
     @Test
@@ -76,8 +76,8 @@ class DataRequestSummaryNotificationServiceTest {
         dataRequestSummaryNotificationService.processNotificationEvents(entityList)
 
         verify(
-            mockDataRequestSummaryEmailSender, times(1),
-        ).sendDataRequestSummaryEmail(
+            mockDataRequestSummaryEmailBuilder, times(1),
+        ).buildDataRequestSummaryEmailAndSendCEMessage(
             unprocessedEvents = eq(targetList),
             userId = eq(userUUID),
         )

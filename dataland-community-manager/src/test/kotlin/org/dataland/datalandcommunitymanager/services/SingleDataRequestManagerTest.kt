@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
@@ -39,7 +39,7 @@ import java.util.UUID
 
 class SingleDataRequestManagerTest {
     private val mockDataRequestRepository = mock<DataRequestRepository>()
-    private val mockSingleDataRequestEmailMessageSender = mock<SingleDataRequestEmailMessageSender>()
+    private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
     private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
     private val mockSecurityUtilsService = mock<SecurityUtilsService>()
     private val mockCompanyInfoService = mock<CompanyInfoService>()
@@ -67,7 +67,7 @@ class SingleDataRequestManagerTest {
     fun setupSingleDataRequestManager() {
         reset(
             mockDataRequestRepository,
-            mockSingleDataRequestEmailMessageSender,
+            mockSingleDataRequestEmailMessageBuilder,
             mockDataRequestProcessingUtils,
             mockSecurityUtilsService,
             mockCompanyInfoService,
@@ -83,7 +83,7 @@ class SingleDataRequestManagerTest {
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
                 companyInfoService = mockCompanyInfoService,
-                singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
+                singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
                 utils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
@@ -175,18 +175,18 @@ class SingleDataRequestManagerTest {
 
         val numberOfTimesExternalMessageIsSend = if (expectedExternalMessagesSent >= 1) 1 else 0
         verify(
-            mockSingleDataRequestEmailMessageSender,
+            mockSingleDataRequestEmailMessageBuilder,
             times(numberOfTimesExternalMessageIsSend),
-        ).sendSingleDataRequestExternalMessage(
+        ).buildSingleDataRequestExternalMessageAndSendCEMessage(
             any(),
             argThat { size == expectedExternalMessagesSent },
             any(),
             anyString(),
         )
         verify(
-            mockSingleDataRequestEmailMessageSender,
+            mockSingleDataRequestEmailMessageBuilder,
             times(expectedInternalMessagesSent),
-        ).sendSingleDataRequestInternalMessage(
+        ).buildSingleDataRequestInternalMessageAndSendCEMessage(
             any(),
             anyString(),
         )
@@ -243,7 +243,7 @@ class SingleDataRequestManagerTest {
 
         verify(mockAccessRequestEmailBuilder, times(1)).notifyCompanyOwnerAboutNewRequest(any(), any())
 
-        verifyNoInteractions(mockSingleDataRequestEmailMessageSender)
+        verifyNoInteractions(mockSingleDataRequestEmailMessageBuilder)
 
         verify(mockDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(
             userId = any(),

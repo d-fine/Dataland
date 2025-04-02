@@ -6,7 +6,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,7 +20,7 @@ class DataRequestSummaryNotificationService
     @Autowired
     constructor(
         private val notificationEventRepository: NotificationEventRepository,
-        private val dataRequestSummaryEmailSender: DataRequestSummaryEmailSender,
+        private val dataRequestSummaryEmailBuilder: DataRequestSummaryEmailBuilder,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -36,7 +36,7 @@ class DataRequestSummaryNotificationService
                     logger.info(
                         "Requirements for Data Request Summary notification are met. Sending notification email.",
                     )
-                    dataRequestSummaryEmailSender.sendDataRequestSummaryEmail(
+                    dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
                         unprocessedEvents = userEvents,
                         userId = userId,
                     )

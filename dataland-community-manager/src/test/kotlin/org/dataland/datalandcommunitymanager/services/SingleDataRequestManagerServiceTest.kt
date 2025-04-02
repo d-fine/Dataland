@@ -8,7 +8,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
@@ -54,7 +54,7 @@ class SingleDataRequestManagerServiceTest(
     private val mockDataAccessManager = mock<DataAccessManager>()
 
     @MockitoBean
-    private val mockSingleDataRequestEmailMessageSender = mock<SingleDataRequestEmailMessageSender>()
+    private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
 
     @MockitoBean
     private val mockKeycloakUserService = mock<KeycloakUserService>()
@@ -86,7 +86,7 @@ class SingleDataRequestManagerServiceTest(
         reset(
             mockCompanyInfoService,
             mockDataAccessManager,
-            mockSingleDataRequestEmailMessageSender,
+            mockSingleDataRequestEmailMessageBuilder,
             mockSecurityContext,
             mockKeycloakUserService,
         )
@@ -114,7 +114,7 @@ class SingleDataRequestManagerServiceTest(
                 dataRequestLogger = dataRequestLogger,
                 dataRequestRepository = dataRequestRepository,
                 companyInfoService = mockCompanyInfoService,
-                singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
+                singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
                 utils = spyDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = accessRequestEmailBuilder,

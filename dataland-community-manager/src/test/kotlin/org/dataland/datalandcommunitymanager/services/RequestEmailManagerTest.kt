@@ -8,7 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.BeforeEach
@@ -24,7 +24,7 @@ import java.util.UUID
 
 class RequestEmailManagerTest {
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailBuilder
-    private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
+    private lateinit var singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder
     private lateinit var accessRequestEmailBuilder: AccessRequestEmailBuilder
 
     private lateinit var requestEmailManager: RequestEmailManager
@@ -32,13 +32,13 @@ class RequestEmailManagerTest {
     @BeforeEach
     fun setupRequestEmailManager() {
         dataRequestResponseEmailMessageSender = mock(DataRequestResponseEmailBuilder::class.java)
-        singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
+        singleDataRequestEmailMessageBuilder = mock(SingleDataRequestEmailMessageBuilder::class.java)
         accessRequestEmailBuilder = mock(AccessRequestEmailBuilder::class.java)
 
         requestEmailManager =
             RequestEmailManager(
                 dataRequestResponseEmailMessageSender,
-                singleDataRequestEmailMessageSender,
+                singleDataRequestEmailMessageBuilder,
                 accessRequestEmailBuilder,
             )
 

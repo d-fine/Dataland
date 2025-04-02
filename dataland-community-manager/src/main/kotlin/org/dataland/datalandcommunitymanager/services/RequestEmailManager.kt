@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ import java.util.UUID
 @Service
 class RequestEmailManager(
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailBuilder,
-    @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+    @Autowired private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
     @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
 ) {
     /**
@@ -60,9 +60,9 @@ class RequestEmailManager(
         message: String?,
     ) {
         val correlationId = UUID.randomUUID().toString()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+        singleDataRequestEmailMessageBuilder.buildSingleDataRequestExternalMessageAndSendCEMessage(
             messageInformation =
-                SingleDataRequestEmailMessageSender.MessageInformation(
+                SingleDataRequestEmailMessageBuilder.MessageInformation(
                     dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
                     reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
                     datalandCompanyId = dataRequestEntity.datalandCompanyId,

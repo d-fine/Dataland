@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component
  * A class that manages generating emails messages for bulk and single data requests
  */
 @Component
-class SingleDataRequestEmailMessageSender(
+class SingleDataRequestEmailMessageBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired val companyApi: CompanyDataControllerApi,
@@ -42,7 +42,7 @@ class SingleDataRequestEmailMessageSender(
     /**
      * Function that generates the message object for single data request internal mails
      */
-    fun sendSingleDataRequestInternalMessage(
+    fun buildSingleDataRequestInternalMessageAndSendCEMessage(
         messageInformation: MessageInformation,
         correlationId: String,
     ) {
@@ -80,7 +80,7 @@ class SingleDataRequestEmailMessageSender(
     /**
      * Function that generates the message object for single data request external mails
      */
-    fun sendSingleDataRequestExternalMessage(
+    fun buildSingleDataRequestExternalMessageAndSendCEMessage(
         messageInformation: MessageInformation,
         receiverSet: Set<String>,
         contactMessage: String?,

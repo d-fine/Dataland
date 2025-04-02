@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
@@ -36,7 +36,7 @@ class SingleDataRequestManager
         @Autowired private val dataRequestLogger: DataRequestLogger,
         @Autowired private val dataRequestRepository: DataRequestRepository,
         @Autowired private val companyInfoService: CompanyInfoService,
-        @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+        @Autowired private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
         @Autowired private val utils: DataRequestProcessingUtils,
         @Autowired private val dataAccessManager: DataAccessManager,
         @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
@@ -289,7 +289,7 @@ class SingleDataRequestManager
                 return
             } else {
                 val messageInformation =
-                    SingleDataRequestEmailMessageSender.MessageInformation(
+                    SingleDataRequestEmailMessageBuilder.MessageInformation(
                         userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
                         datalandCompanyId = preprocessedRequest.companyId,
                         dataType = preprocessedRequest.dataType,
@@ -297,11 +297,11 @@ class SingleDataRequestManager
                     )
 
                 if (preprocessedRequest.contacts.isNullOrEmpty()) {
-                    singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                    singleDataRequestEmailMessageBuilder.buildSingleDataRequestInternalMessageAndSendCEMessage(
                         messageInformation, preprocessedRequest.correlationId,
                     )
                 } else {
-                    singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                    singleDataRequestEmailMessageBuilder.buildSingleDataRequestExternalMessageAndSendCEMessage(
                         messageInformation = messageInformation,
                         receiverSet = preprocessedRequest.contacts,
                         contactMessage = preprocessedRequest.message,
