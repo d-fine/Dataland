@@ -310,6 +310,65 @@
         ]
       }
     },
+    "/portfolios/{portfolioId}/enriched-portfolio": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get enriched portfolio by portfolioId.",
+        "operationId": "getEnrichedPortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved portfolios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrichedPortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [
@@ -577,6 +636,67 @@
                 "heimathafen"
               ]
             }
+          }
+        }
+      },
+      "EnrichedPortfolio": {
+        "required": [
+          "entries",
+          "portfolioId",
+          "portfolioName",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string"
+          },
+          "portfolioName": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnrichedPortfolioEntry"
+            }
+          }
+        }
+      },
+      "EnrichedPortfolioEntry": {
+        "required": [
+          "companyCockpitRef",
+          "companyId",
+          "companyName",
+          "countryCode"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "companyCockpitRef": {
+            "type": "string"
+          },
+          "frameworkDataRef": {
+            "type": "string"
+          },
+          "latestReportingPeriod": {
+            "type": "string"
           }
         }
       },

@@ -54,12 +54,12 @@ class DataRequestProcessingUtils
         fun performIdentifierValidation(identifiers: List<String>): Pair<Map<String, CompanyIdAndName>, List<String>> {
             val validationResults = companyApi.postCompanyValidation(identifiers)
             val validIdentifiers = mutableMapOf<String, CompanyIdAndName>()
-            val invalidIdentifiers = validationResults.filter { it.companyId.isNullOrEmpty() }.map { it.identifier }
-            validationResults.filter { it.companyId != null }.forEach {
+            val invalidIdentifiers = validationResults.filter { it.companyInformation == null }.map { it.identifier }
+            validationResults.filter { it.companyInformation != null }.forEach {
                 validIdentifiers[it.identifier] =
                     CompanyIdAndName(
-                        companyName = it.companyName ?: "",
-                        companyId = it.companyId ?: "",
+                        companyName = it.companyInformation?.companyName ?: "",
+                        companyId = it.companyInformation?.companyId ?: "",
                     )
             }
 

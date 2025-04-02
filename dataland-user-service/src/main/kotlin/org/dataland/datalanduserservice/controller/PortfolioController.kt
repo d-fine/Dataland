@@ -2,7 +2,9 @@ package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.datalanduserservice.utils.Validator
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,8 +12,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
-import org.dataland.datalanduserservice.model.EnrichedPortfolio
-import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 
 /**
  * RestController for the Portfolio API
@@ -48,7 +48,6 @@ class PortfolioController
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
             ResponseEntity(portfolioService.deletePortfolio(portfolioId), HttpStatus.NO_CONTENT)
 
-    override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> {
-        portfolioEnrichmentService.getEnrichedPortfolio(portfolioId)
-    }
+        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
+            ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioId))
     }

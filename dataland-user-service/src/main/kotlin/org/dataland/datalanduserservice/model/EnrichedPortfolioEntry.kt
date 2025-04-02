@@ -11,8 +11,8 @@ data class EnrichedPortfolioEntry(
     val companyId: String,
     @field:JsonProperty(required = true)
     val companyName: String,
-    @field:JsonProperty(required = true)
-    val sector: String,
+    @field:JsonProperty(required = false)
+    val sector: String?,
     @field:JsonProperty(required = true)
     val countryCode: String,
     @field:JsonProperty(required = false)

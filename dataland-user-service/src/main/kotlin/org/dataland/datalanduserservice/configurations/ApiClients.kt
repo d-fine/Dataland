@@ -22,6 +22,7 @@ class ApiClients(
     fun getCompanyDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+
     /**
      * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
      */
