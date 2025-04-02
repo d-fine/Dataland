@@ -20184,6 +20184,37 @@
           }
         }
       },
+      "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CompanyIdentifierValidationResult": {
         "required": [
           "identifier"
@@ -20193,21 +20224,13 @@
           "identifier": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
-            "type": "string",
-            "nullable": true
+          "companyInformation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicCompanyInformation"
+              }
+            ]
           }
         }
       },
@@ -20589,37 +20612,6 @@
           }
         }
       },
-      "BasicCompanyInformation": {
-        "required": [
-          "companyId",
-          "companyName",
-          "countryCode",
-          "headquarters"
-        ],
-        "type": "object",
-        "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "lei": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
@@ -20639,10 +20631,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

@@ -200,52 +200,47 @@ class CompanyQueryManager
         }
 
         /**
+         * Build a validation result using an identifier and company information
+         * @param identifier the identifier used to obtain the company information
+         * @param storedCompanyEntity the entity containing the company information
+         */
+        private fun buildCompanyIdentifierValidationResult(
+            identifier: String,
+            storedCompanyEntity: StoredCompanyEntity,
+        ): CompanyIdentifierValidationResult =
+            CompanyIdentifierValidationResult(
+                identifier = identifier,
+                companyId = storedCompanyEntity.companyId,
+                companyName = storedCompanyEntity.companyName,
+                headquarters = storedCompanyEntity.headquarters,
+                countryCode = storedCompanyEntity.countryCode,
+                sector = storedCompanyEntity.sector,
+                lei = null,
+            )
+
+        /**
+         * Retrieve a validation result for a single company identifier
+         * @param identifier a company identifier to validate
+         */
+        private fun getCompanyIdentifierValidationResult(identifier: String): CompanyIdentifierValidationResult =
+            if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
+                CompanyIdentifierValidationResult(identifier)
+            } else if (doesCompanyIdExist(identifier)) {
+                buildCompanyIdentifierValidationResult(identifier, getCompanyById(identifier))
+            } else {
+                companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
+                    buildCompanyIdentifierValidationResult(identifier, it)
+                } ?: CompanyIdentifierValidationResult(identifier)
+            }
+
+        /**
          * A method to validate if a given list of identifiers corresponds to a company in Dataland.
          * @param identifiers list of identifiers to validate
          * @return list of validation results
          */
-        fun validateCompanyIdentifiers(identifiers: List<String>): List<CompanyIdentifierValidationResult> {
-            val result = mutableListOf<CompanyIdentifierValidationResult>()
-            val unprocessedIdentifiers = mutableListOf<String>()
-            unprocessedIdentifiers.addAll(identifiers)
-
-            identifiers.forEach { identifier ->
-                if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
-                    result.add(CompanyIdentifierValidationResult(identifier))
-                    unprocessedIdentifiers.remove(identifier)
-                    return@forEach
-                }
-                if (doesCompanyIdExist(identifier)) {
-                    val storedCompanyEntity = getCompanyById(identifier)
-                    result.add(
-                        CompanyIdentifierValidationResult(
-                            identifier = identifier,
-                            companyId = identifier,
-                            companyName = storedCompanyEntity.companyName,
-                            sector = storedCompanyEntity.sector,
-                            countryCode = storedCompanyEntity.countryCode,
-                        ),
-                    )
-                    unprocessedIdentifiers.remove(identifier)
-                }
+        @Transactional(readOnly = true)
+        fun validateCompanyIdentifiers(identifiers: List<String>): List<CompanyIdentifierValidationResult> =
+            identifiers.map { getCompanyIdentifierValidationResult(it) }.distinctBy {
+                it.companyInformation?.companyId ?: it.identifier
             }
-
-            unprocessedIdentifiers.forEach { identifier ->
-                val identifierEntry = companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)
-                if (identifierEntry != null) {
-                    result.add(
-                        CompanyIdentifierValidationResult(
-                            identifier = identifier,
-                            companyId = identifierEntry.company?.companyId,
-                            companyName = identifierEntry.company?.companyName,
-                            sector = identifierEntry.company?.sector,
-                            countryCode = identifierEntry.company?.countryCode,
-                        ),
-                    )
-                } else {
-                    result.add(CompanyIdentifierValidationResult(identifier))
-                }
-            }
-            return result.toSet().toList()
-        }
     }

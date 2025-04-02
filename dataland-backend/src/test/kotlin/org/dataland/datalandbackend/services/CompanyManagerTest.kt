@@ -245,7 +245,7 @@ class CompanyManagerTest
             val testData = listOf("1", "just a string", "1234567890", "ab")
             val validationResults = testCompanyQueryManager.validateCompanyIdentifiers(testData)
             assertEquals(testData.size, validationResults.size)
-            assertTrue(validationResults.all { it.companyId.isNullOrEmpty() and it.companyId.isNullOrEmpty() })
+            assertTrue(validationResults.all { it.companyInformation == null })
         }
 
         @Test
@@ -267,8 +267,9 @@ class CompanyManagerTest
                                 .first()
                                 .companyId,
                         companyName = it.companyName,
-                        sector = it.sector,
+                        headquarters = it.headquarters,
                         countryCode = it.countryCode,
+                        sector = it.sector,
                     ),
                 )
             }
@@ -276,7 +277,7 @@ class CompanyManagerTest
         }
 
         @Test
-        fun `verify that duplicate identifiers lead to only entry in the validation results`() {
+        fun `verify that duplicate identifiers lead to only one entry in the validation results`() {
             val expectedResults = mutableListOf<CompanyIdentifierValidationResult>()
             val testData = mutableListOf<String>()
             val testCompany = testCompanyList.first()
@@ -294,8 +295,9 @@ class CompanyManagerTest
                             .first()
                             .companyId,
                     companyName = testCompany.companyName,
-                    sector = testCompany.sector,
+                    headquarters = testCompany.headquarters,
                     countryCode = testCompany.countryCode,
+                    sector = testCompany.sector,
                 ),
             )
             assertEquals(expectedResults, testCompanyQueryManager.validateCompanyIdentifiers(testData))
