@@ -31,20 +31,15 @@ class DataRequestUpdateUtils
         fun updateNotifyMeImmediatelyIfRequired(
             dataRequestPatch: DataRequestPatch,
             dataRequestEntity: DataRequestEntity,
-        ): Boolean {
-            // Storing flag value in a val so it can be cast to non-nullable Boolean type by compiler.
-            val patchFlag = dataRequestPatch.notifyMeImmediately
-            if (patchFlag != null) {
-                val flagsAreDifferent =
-                    dataRequestEntity.notifyMeImmediately != patchFlag
-                if (flagsAreDifferent) {
-                    dataRequestEntity.notifyMeImmediately = patchFlag
+        ): Boolean =
+            dataRequestPatch.notifyMeImmediately?.let {
+                if (dataRequestEntity.notifyMeImmediately != it) {
+                    dataRequestEntity.notifyMeImmediately = it
+                    true
+                } else {
+                    false
                 }
-                return flagsAreDifferent
-            } else {
-                return false
-            }
-        }
+            } == true
 
         /**
          * Updates the request status history if the request status changed

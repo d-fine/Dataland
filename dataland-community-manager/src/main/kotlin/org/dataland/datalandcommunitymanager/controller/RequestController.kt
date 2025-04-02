@@ -168,8 +168,9 @@ class RequestController(
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
             dataRequestUpdateManager.handlePatchDataApiRequest(
-                dataRequestId,
-                dataRequestPatch,
+                dataRequestId = dataRequestId.toString(),
+                dataRequestPatch = dataRequestPatch,
+                correlationId = UUID.randomUUID().toString(),
             ),
         )
 }

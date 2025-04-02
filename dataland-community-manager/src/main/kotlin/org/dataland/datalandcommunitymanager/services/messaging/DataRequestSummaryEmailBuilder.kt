@@ -39,7 +39,6 @@ class DataRequestSummaryEmailBuilder(
         val receiver = listOf(EmailRecipient.UserId(userId.toString()))
         val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
         val correlationId = UUID.randomUUID().toString()
-        // Send the email message to the queue
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,
@@ -55,11 +54,9 @@ class DataRequestSummaryEmailBuilder(
      * @return The email content that encapsulates the summary of data requests.
      */
     private fun dataRequestSummaryEmailContent(events: List<NotificationEventEntity>): TypedEmailContent {
-        // Aggregate data for each type of event
         val newData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.AvailableEvent)
         val updatedData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.UpdatedEvent)
         val nonsourceableData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.NonSourceableEvent)
-        // Create and return an email content object
         return DataRequestSummary(newData, updatedData, nonsourceableData)
     }
 
@@ -76,12 +73,9 @@ class DataRequestSummaryEmailBuilder(
         val filteredEventTypeEvents = events.filter { it.notificationEventType == eventType }
         val groupedEvents = filteredEventTypeEvents.groupBy { Pair(it.framework.toString(), it.reportingPeriod) }
 
-        // Map the grouped events to FrameworkData objects
         return groupedEvents.map { (key, group) ->
             val (dataTypeLabel, reportingPeriod) = key
-            // Get unique company names/IDs for the grouped events
             val companies = group.map { companyInfoService.getValidCompanyNameOrId(it.companyId.toString()) }.distinct()
-            // Create a FrameworkData object for each group
             DataRequestSummary.FrameworkData(
                 dataTypeLabel = dataTypeLabel,
                 reportingPeriod = reportingPeriod,

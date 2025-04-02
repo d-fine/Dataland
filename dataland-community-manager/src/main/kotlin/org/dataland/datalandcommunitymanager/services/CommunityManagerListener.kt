@@ -176,11 +176,10 @@ class CommunityManagerListener(
                 "Correlation ID: $correlationId",
         )
 
-        val dataTypeDecoded = DataTypeEnum.decode(nonSourceableMessage.dataType)
-
-        if (dataTypeDecoded == null) {
-            throw MessageQueueRejectException("Data type could not be decoded.")
-        }
+        val dataTypeDecoded =
+            DataTypeEnum.decode(nonSourceableMessage.dataType) ?: throw MessageQueueRejectException(
+                "Data type could not be decoded.",
+            )
 
         val nonSourceableInfo =
             NonSourceableInfo(
