@@ -1,10 +1,9 @@
-package org.datalandapikeymanager.services
+package org.dataland.datalandapikeymanager.services
 
 import jakarta.transaction.Transactional
 import org.dataland.datalandapikeymanager.DatalandApiKeyManager
 import org.dataland.datalandapikeymanager.entities.ApiKeyEntity
 import org.dataland.datalandapikeymanager.repositories.ApiKeyRepository
-import org.dataland.datalandapikeymanager.services.ApiKeyManager
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.apikey.ParsedApiKey
 import org.junit.jupiter.api.Assertions
@@ -23,7 +22,7 @@ class ApiKeyManagerTest(
     @Autowired val testApiKeyUtility: ApiKeyUtility,
 ) {
     private fun createApiKeyWithExpiry(expiryTime: Long?): String {
-        val keycloakUserId = "18b67ecc-1176-4506-8414-1e81661017ca"
+        val keycloakUserId = "dummyUserId"
         val secret = testApiKeyUtility.generateApiKeySecret()
         val parsedApiKey = ParsedApiKey(keycloakUserId, secret)
         val encodedSecret = testApiKeyUtility.encodeSecret(secret)
