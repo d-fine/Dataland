@@ -14,11 +14,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 /**
  * Tests if the listener processes the incoming non-sourceable data information correctly.
@@ -26,14 +26,13 @@ import org.mockito.Mockito.verify
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommunityManagerListenerUnitTest {
     private lateinit var communityManagerListener: CommunityManagerListener
-    private val jacksonObjectMapper = jacksonObjectMapper()
-    private val mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
-    private val mockInvestorRelationshipsManager = mock(InvestorRelationshipsManager::class.java)
+    private val jacksonObjectMapper = jacksonObjectMapper().findAndRegisterModules()
+    private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
+    private val mockInvestorRelationshipsManager = mock<InvestorRelationshipsManager>()
     private val validDataId = "valid-data-id"
     private val invalidDataId = ""
     private val correlationId = "test correlation id"
 
-    // Variables for testing the pipeline for QA acceptance messages.
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
 
     private val qaStatusChangeMessageWithAcceptance =
@@ -57,7 +56,6 @@ class CommunityManagerListenerUnitTest {
             currentlyActiveDataId = invalidDataId,
         )
 
-    // Variables for testing the pipeline for private data upload messages.
     private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
 
     private val invalidPrivateDataUploadMessage =
@@ -78,7 +76,6 @@ class CommunityManagerListenerUnitTest {
             documentHashes = mapOf<String, String>(),
         )
 
-    // Variables for testing the pipeline for nonsourceability messages.
     private val typeNonSourceable = MessageType.DATA_NONSOURCEABLE
 
     private val nonSourceableMessageValid =
@@ -159,9 +156,9 @@ class CommunityManagerListenerUnitTest {
             typeQAStatusChange, correlationId,
         )
         verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
-            anyString(), anyString(),
+            any<String>(), any<String>(),
         )
-        verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForIREmails(anyString())
+        verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForIREmails(any<String>())
     }
 
     @Test
