@@ -52,19 +52,19 @@ class DataRequestSummaryNotificationService
          * @param dataRequestEntity Represents the data request in question.
          * @param requestStatusAfter The request status after an update, if applicable.
          * @param immediateNotificationWasSent Boolean indicating if an immediate notification was already sent.
-         * @param earlierQaApprovedVersionExists Boolean indicating if a prior QA approved version exists.
+         * @param earlierQaApprovedVersionOfDatasetExists Boolean indicating if a prior QA approved version exists.
          */
         fun createUserSpecificNotificationEvent(
             dataRequestEntity: DataRequestEntity,
             requestStatusAfter: RequestStatus? = null,
             immediateNotificationWasSent: Boolean,
-            earlierQaApprovedVersionExists: Boolean = false,
+            earlierQaApprovedVersionOfDatasetExists: Boolean = false,
         ) {
             val notificationEventType =
                 determineNotificationEventType(
                     requestStatusBefore = dataRequestEntity.requestStatus,
                     requestStatusAfter = requestStatusAfter,
-                    earlierQaApprovedVersionExists = earlierQaApprovedVersionExists,
+                    earlierQaApprovedVersionOfDatasetExists = earlierQaApprovedVersionOfDatasetExists,
                 )
 
             if (notificationEventType != null) {
@@ -93,19 +93,19 @@ class DataRequestSummaryNotificationService
          *
          * @param requestStatusBefore The request status before an update.
          * @param requestStatusAfter The request status after an update, if applicable.
-         * @param earlierQaApprovedVersionExists Boolean indicating if a prior QA approved version exists.
+         * @param earlierQaApprovedVersionOfDatasetExists Boolean indicating if a prior QA approved version exists.
          * @return The NotificationEventType corresponding to the request update status or null for unknown transitions
          */
         private fun determineNotificationEventType(
             requestStatusBefore: RequestStatus,
             requestStatusAfter: RequestStatus?,
-            earlierQaApprovedVersionExists: Boolean,
+            earlierQaApprovedVersionOfDatasetExists: Boolean,
         ): NotificationEventType? =
             when {
                 // Case 1: Transition from Open or NonSourceable to Answered
                 requestStatusBefore in listOf(RequestStatus.Open, RequestStatus.NonSourceable) &&
                     requestStatusAfter == RequestStatus.Answered -> {
-                    NotificationEventType.UpdatedEvent.takeUnless { !earlierQaApprovedVersionExists }
+                    NotificationEventType.UpdatedEvent.takeUnless { !earlierQaApprovedVersionOfDatasetExists }
                         ?: NotificationEventType.AvailableEvent
                 }
                 // Case 2: Status remains Answered, Closed,or Resolved

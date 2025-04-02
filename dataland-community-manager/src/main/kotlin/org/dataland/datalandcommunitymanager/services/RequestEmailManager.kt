@@ -5,7 +5,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -21,7 +21,7 @@ import java.util.UUID
 class RequestEmailManager(
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
-    @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
+    @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
 ) {
     /**
      * Method to send email when the request status changes
@@ -32,12 +32,12 @@ class RequestEmailManager(
     fun sendEmailsWhenRequestStatusChanged(
         dataRequestEntity: DataRequestEntity,
         requestStatus: RequestStatus?,
-        earlierQaApprovedVersionExists: Boolean,
+        earlierQaApprovedVersionOfDatasetExists: Boolean,
         correlationId: String?,
     ) {
         val correlationId = correlationId ?: UUID.randomUUID().toString()
         if (requestStatus == RequestStatus.Answered) {
-            if (!earlierQaApprovedVersionExists) {
+            if (!earlierQaApprovedVersionOfDatasetExists) {
                 dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
             } else {
                 dataRequestResponseEmailMessageSender.sendDataUpdatedEmail(dataRequestEntity, correlationId)
@@ -97,16 +97,16 @@ class RequestEmailManager(
         correlationId: String,
     ) {
         if (dataRequestPatch.accessStatus == AccessStatus.Granted) {
-            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
-                AccessRequestEmailSender.GrantedEmailInformation(dataRequestEntity),
+            accessRequestEmailBuilder.notifyRequesterAboutGrantedRequest(
+                AccessRequestEmailBuilder.GrantedEmailInformation(dataRequestEntity),
                 correlationId,
             )
         }
         if (dataRequestPatch.requestStatus == RequestStatus.Answered &&
             dataRequestPatch.accessStatus == AccessStatus.Pending
         ) {
-            accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                AccessRequestEmailSender.RequestEmailInformation(dataRequestEntity),
+            accessRequestEmailBuilder.notifyCompanyOwnerAboutNewRequest(
+                AccessRequestEmailBuilder.RequestEmailInformation(dataRequestEntity),
                 correlationId,
             )
         }

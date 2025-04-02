@@ -61,7 +61,7 @@ class DataRequestResponseEmailSenderTest {
 
         doReturn(dummyCompanyName)
             .whenever(mockCompanyInfoService)
-            .checkIfCompanyIdIsValidAndReturnNameOrId(anyOrNull())
+            .getValidCompanyNameOrId(anyOrNull())
 
         val actualMessage =
             dataRequestResponseEmailSender.buildDataUpdatedEmailMessage(

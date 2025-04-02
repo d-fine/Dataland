@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -59,7 +59,7 @@ class BulkDataRequestEmailMessageSenderTest {
             separator = ", ",
         )
 
-    private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
+    private lateinit var bulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
 
     @BeforeEach
     fun setup() {
@@ -68,8 +68,8 @@ class BulkDataRequestEmailMessageSenderTest {
         val companyInfoMock = Mockito.mock(CompanyInformation::class.java)
         Mockito.`when`(companyInfoMock.companyName).thenReturn(companyName)
         Mockito.`when`(companyApiMock.getCompanyInfo(ArgumentMatchers.anyString())).thenReturn(companyInfoMock)
-        bulkDataRequestEmailMessageSender =
-            BulkDataRequestEmailMessageSender(
+        bulkDataRequestEmailMessageBuilder =
+            BulkDataRequestEmailMessageBuilder(
                 cloudEventMessageHandler = cloudEventMessageHandlerMock,
                 objectMapper = objectMapper,
             )
@@ -105,7 +105,7 @@ class BulkDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the bulk internal email message sender is correctly build`() {
         buildInternalBulkEmailMessageMock()
-        bulkDataRequestEmailMessageSender.sendBulkDataRequestInternalMessage(
+        bulkDataRequestEmailMessageBuilder.buildBulkDataRequestInternalMessageAndSendCEMessage(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
             correlationId,

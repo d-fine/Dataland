@@ -48,7 +48,7 @@ class DataRequestUpdateManager
         ) {
             dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                 dataRequestEntity, dataRequestPatch.requestStatus, dataRequestEntity.notifyMeImmediately,
-                processingUtils.earlierQaApprovedVersionExists(dataRequestEntity),
+                processingUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
             )
         }
 
@@ -64,7 +64,7 @@ class DataRequestUpdateManager
             sendImmediateNotificationOnRequestStatusChange(
                 dataRequestEntity,
                 dataRequestPatch,
-                processingUtils.earlierQaApprovedVersionExists(dataRequestEntity),
+                processingUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
                 correlationId,
             )
             createNotificationEvent(dataRequestEntity, dataRequestPatch)
@@ -135,7 +135,7 @@ class DataRequestUpdateManager
                 )
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus,
-                    processingUtils.earlierQaApprovedVersionExists(dataRequestEntity), correlationId,
+                    processingUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity), correlationId,
                 )
             } else if (dataRequestPatch.requestStatus == RequestStatus.Answered) {
                 val notifyImmediately = dataRequestEntity.notifyMeImmediately
@@ -168,11 +168,11 @@ class DataRequestUpdateManager
         private fun sendImmediateNotificationOnRequestStatusChange(
             dataRequestEntity: DataRequestEntity,
             dataRequestPatch: DataRequestPatch,
-            earlierQaApprovedVersionExists: Boolean,
+            earlierQaApprovedVersionOfDatasetExists: Boolean,
             correlationId: String,
         ) {
             requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionExists, correlationId,
+                dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionOfDatasetExists, correlationId,
             )
         }
 
@@ -369,7 +369,7 @@ class DataRequestUpdateManager
                     dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                         dataRequestEntity = dataRequestEntity,
                         immediateNotificationWasSent = dataRequestEntity.notifyMeImmediately,
-                        earlierQaApprovedVersionExists = true,
+                        earlierQaApprovedVersionOfDatasetExists = true,
                     )
                 }
             }

@@ -51,7 +51,7 @@ class DataRequestResponseEmailSender(
     ) {
         val dataRequestAnswered =
             DataRequestAnswered(
-                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(dataRequestEntity.datalandCompanyId),
+                companyName = companyInfoService.getValidCompanyNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
@@ -82,7 +82,7 @@ class DataRequestResponseEmailSender(
     ) {
         val dataRequestNonSourceableMail =
             DataRequestNonSourceable(
-                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(dataRequestEntity.datalandCompanyId),
+                companyName = companyInfoService.getValidCompanyNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
@@ -128,7 +128,7 @@ class DataRequestResponseEmailSender(
     fun buildDataUpdatedEmailMessage(dataRequestEntity: DataRequestEntity): EmailMessage {
         val dataRequestUpdatedMail =
             DataRequestUpdated(
-                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(dataRequestEntity.datalandCompanyId),
+                companyName = companyInfoService.getValidCompanyNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),

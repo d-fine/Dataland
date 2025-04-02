@@ -169,9 +169,9 @@ class DataRequestUpdateManagerTest {
         mockMetaControllerApi = mock(MetaDataControllerApi::class.java)
         mockQaControllerApi = mock(QaControllerApi::class.java)
 
-        doReturn("dummyCompany").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName(dummyCompanyId)
-        doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName("dummyChildCompanyId1")
-        doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).checkIfCompanyIdIsValidAndReturnName("dummyChildCompanyId2")
+        doReturn("dummyCompany").whenever(mockCompanyInfoService).getValidCompanyName(dummyCompanyId)
+        doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId1")
+        doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId2")
 
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)

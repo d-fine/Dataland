@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntit
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.TestUtils
@@ -34,7 +34,7 @@ class CompanyRolesManagerTest {
     private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
     private lateinit var mockCompanyRoleAssignmentEntity: CompanyRoleAssignmentEntity
 
-    private lateinit var companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender
+    private lateinit var companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder
 
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var mockCompanyInfoService: CompanyInfoService
@@ -54,9 +54,9 @@ class CompanyRolesManagerTest {
     fun initializeCompanyRolesManager() {
         mockCompanyRoleAssignmentRepository = mock(CompanyRoleAssignmentRepository::class.java)
 
-        companyOwnershipAcceptedEmailMessageSender = mock(CompanyOwnershipAcceptedEmailMessageSender::class.java)
+        companyOwnershipAcceptedEmailMessageBuilder = mock(CompanyOwnershipAcceptedEmailMessageBuilder::class.java)
         `when`(
-            companyOwnershipAcceptedEmailMessageSender
+            companyOwnershipAcceptedEmailMessageBuilder
                 .getNumberOfOpenDataRequestsForCompany(any(String::class.java)),
         ).thenReturn(5)
 
@@ -68,7 +68,7 @@ class CompanyRolesManagerTest {
                 mockCompanyInfoService,
                 mockCompanyRoleAssignmentRepository,
                 mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
-                companyOwnershipAcceptedEmailMessageSender,
+                companyOwnershipAcceptedEmailMessageBuilder,
             )
 
         mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
@@ -76,8 +76,8 @@ class CompanyRolesManagerTest {
             .thenReturn(mockCompanyRoleAssignmentEntity)
 
         doNothing()
-            .`when`(companyOwnershipAcceptedEmailMessageSender)
-            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+            .`when`(companyOwnershipAcceptedEmailMessageBuilder)
+            .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 anyString(),
                 anyString(), anyString(), anyString(),
             )
@@ -138,7 +138,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        verifyNoInteractions(companyOwnershipAcceptedEmailMessageSender)
+        verifyNoInteractions(companyOwnershipAcceptedEmailMessageBuilder)
         assertTrue(exception.summary.contains("Company not found"))
     }
 
@@ -168,8 +168,8 @@ class CompanyRolesManagerTest {
         )
 
         Mockito
-            .verify(companyOwnershipAcceptedEmailMessageSender, Mockito.times(1))
-            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+            .verify(companyOwnershipAcceptedEmailMessageBuilder, Mockito.times(1))
+            .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 anyString(),
                 anyString(),
                 anyString(),

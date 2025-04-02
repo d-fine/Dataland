@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -38,15 +38,15 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
         mockCloudEventMessageHandlerAndSetChecks()
 
         val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
-        val companyOwnershipAcceptedEmailMessageSender =
-            CompanyOwnershipAcceptedEmailMessageSender(
+        val companyOwnershipAcceptedEmailMessageBuilder =
+            CompanyOwnershipAcceptedEmailMessageBuilder(
                 cloudEventMessageHandlerMock,
                 objectMapper,
                 dataRequestQueryManager,
             )
 
-        companyOwnershipAcceptedEmailMessageSender
-            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+        companyOwnershipAcceptedEmailMessageBuilder
+            .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 newCompanyOwnerId = userId,
                 datalandCompanyId = companyId,
                 companyName = companyName,

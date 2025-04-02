@@ -80,7 +80,7 @@ class DataRequestSummaryEmailSender(
         return groupedEvents.map { (key, group) ->
             val (dataTypeLabel, reportingPeriod) = key
             // Get unique company names/IDs for the grouped events
-            val companies = group.map { companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(it.companyId.toString()) }.distinct()
+            val companies = group.map { companyInfoService.getValidCompanyNameOrId(it.companyId.toString()) }.distinct()
             // Create a FrameworkData object for each group
             DataRequestSummary.FrameworkData(
                 dataTypeLabel = dataTypeLabel,

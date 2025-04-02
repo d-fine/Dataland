@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class CompanyOwnershipAcceptedEmailMessageSender(
+class CompanyOwnershipAcceptedEmailMessageBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
@@ -30,7 +30,7 @@ class CompanyOwnershipAcceptedEmailMessageSender(
      * @param companyName of the company that the user has received company ownership for
      * @param correlationId of the current user process
      */
-    fun sendCompanyOwnershipAcceptanceExternalEmailMessage(
+    fun buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
         newCompanyOwnerId: String,
         datalandCompanyId: String,
         companyName: String,

@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -42,7 +42,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 class SingleDataRequestManagerServiceTest(
     @Autowired val dataRequestLogger: DataRequestLogger,
     @Autowired val dataRequestProcessingUtils: DataRequestProcessingUtils,
-    @Autowired val accessRequestEmailSender: AccessRequestEmailSender,
+    @Autowired val accessRequestEmailBuilder: AccessRequestEmailBuilder,
     @Autowired val dataRequestRepository: DataRequestRepository,
     @Autowired val securityUtilsService: SecurityUtilsService,
     @Autowired val companyRolesManager: CompanyRolesManager,
@@ -117,7 +117,7 @@ class SingleDataRequestManagerServiceTest(
                 singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
                 utils = spyDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
-                accessRequestEmailSender = accessRequestEmailSender,
+                accessRequestEmailBuilder = accessRequestEmailBuilder,
                 securityUtilsService = securityUtilsService,
                 companyRolesManager = companyRolesManager,
                 keycloakUserService = mockKeycloakUserService,

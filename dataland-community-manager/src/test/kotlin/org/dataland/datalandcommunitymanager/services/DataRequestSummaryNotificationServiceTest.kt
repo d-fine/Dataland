@@ -89,7 +89,7 @@ class DataRequestSummaryNotificationServiceTest {
         requestStatusBefore: RequestStatus,
         requestStatusAfter: RequestStatus?,
         immediateNotificationWasSent: Boolean,
-        earlierQaApprovedVersionExists: Boolean,
+        earlierQaApprovedVersionOfDatasetExists: Boolean,
         notificationEventType: NotificationEventType?,
     ) {
         TestUtils.mockSecurityContext()
@@ -110,7 +110,7 @@ class DataRequestSummaryNotificationServiceTest {
             dataRequestEntity,
             requestStatusAfter,
             immediateNotificationWasSent,
-            earlierQaApprovedVersionExists,
+            earlierQaApprovedVersionOfDatasetExists,
         )
 
         if (notificationEventType == null) {

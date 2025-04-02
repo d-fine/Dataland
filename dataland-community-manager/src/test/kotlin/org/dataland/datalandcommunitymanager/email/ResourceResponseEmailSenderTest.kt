@@ -53,7 +53,7 @@ class ResourceResponseEmailSenderTest {
 
     private fun getCompanyInfoServiceMock(): CompanyInfoService {
         val companyInfoServiceMock = mock(CompanyInfoService::class.java)
-        `when`(companyInfoServiceMock.checkIfCompanyIdIsValidAndReturnNameOrId(companyId))
+        `when`(companyInfoServiceMock.getValidCompanyNameOrId(companyId))
             .thenReturn(companyName)
         return companyInfoServiceMock
     }

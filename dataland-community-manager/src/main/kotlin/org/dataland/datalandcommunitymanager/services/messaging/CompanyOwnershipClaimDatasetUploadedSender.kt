@@ -81,7 +81,7 @@ class CompanyOwnershipClaimDatasetUploadedSender(
         // Create external email content detailing dataset uploads and ask for claiming company ownership
         val externalEmailContent =
             DatasetUploadedClaimOwnership(
-                companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnNameOrId(companyId.toString()),
+                companyName = companyInfoService.getValidCompanyNameOrId(companyId.toString()),
                 companyId = companyId.toString(),
                 frameworkData =
                     frameworkData.map {

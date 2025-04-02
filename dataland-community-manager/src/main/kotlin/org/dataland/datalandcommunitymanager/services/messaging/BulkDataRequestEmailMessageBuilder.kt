@@ -20,14 +20,14 @@ import org.springframework.stereotype.Component
  * A class that manages generating emails messages for bulk and single data requests
  */
 @Component
-class BulkDataRequestEmailMessageSender(
+class BulkDataRequestEmailMessageBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     /**
      * Function that generates the message object for bulk data request mails
      */
-    fun sendBulkDataRequestInternalMessage(
+    fun buildBulkDataRequestInternalMessageAndSendCEMessage(
         bulkDataRequest: BulkDataRequest,
         acceptedCompanyIdsAndNames: List<CompanyIdAndName>,
         correlationId: String,

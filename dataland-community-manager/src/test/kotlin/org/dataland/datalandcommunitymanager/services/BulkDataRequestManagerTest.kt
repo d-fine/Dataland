@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
-import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
@@ -30,7 +30,7 @@ import java.util.UUID
 
 class BulkDataRequestManagerTest {
     private lateinit var bulkDataRequestManager: BulkDataRequestManager
-    private lateinit var mockBulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
+    private lateinit var mockBulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockMetaDataController: MetaDataControllerApi
 
@@ -46,14 +46,14 @@ class BulkDataRequestManagerTest {
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
-        mockBulkDataRequestEmailMessageSender = mock(BulkDataRequestEmailMessageSender::class.java)
+        mockBulkDataRequestEmailMessageBuilder = mock(BulkDataRequestEmailMessageBuilder::class.java)
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
         mockMetaDataController = mock(MetaDataControllerApi::class.java)
 
         bulkDataRequestManager =
             BulkDataRequestManager(
                 mock(DataRequestLogger::class.java),
-                mockBulkDataRequestEmailMessageSender,
+                mockBulkDataRequestEmailMessageBuilder,
                 mockDataRequestProcessingUtils,
                 mockMetaDataController,
                 proxyPrimaryUrl,

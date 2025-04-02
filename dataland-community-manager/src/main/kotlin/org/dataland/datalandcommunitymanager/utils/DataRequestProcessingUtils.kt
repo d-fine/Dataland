@@ -306,7 +306,7 @@ class DataRequestProcessingUtils
          * dataRequestEntity, checks whether there was at least one other QA approval event for the corresponding
          * triple of company, framework and reporting period.
          */
-        fun earlierQaApprovedVersionExists(dataRequestEntity: DataRequestEntity): Boolean {
+        fun earlierQaApprovedVersionOfDatasetExists(dataRequestEntity: DataRequestEntity): Boolean {
             val dataTypeAsDataTypesGetInfoOnDatasets =
                 DataTypesGetInfoOnDatasets.entries.first {
                     it.toString() == dataRequestEntity.dataType
@@ -316,7 +316,7 @@ class DataRequestProcessingUtils
                 .getInfoOnDatasets(
                     dataTypes = listOf(dataTypeAsDataTypesGetInfoOnDatasets),
                     reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                    companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(dataRequestEntity.datalandCompanyId),
+                    companyName = companyInfoService.getValidCompanyName(dataRequestEntity.datalandCompanyId),
                     qaStatus = QaStatus.Accepted,
                 ).size > 1
         }

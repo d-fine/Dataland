@@ -6,7 +6,7 @@ import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.TestUtils
@@ -25,7 +25,7 @@ import java.util.UUID
 class RequestEmailManagerTest {
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
-    private lateinit var accessRequestEmailSender: AccessRequestEmailSender
+    private lateinit var accessRequestEmailBuilder: AccessRequestEmailBuilder
 
     private lateinit var requestEmailManager: RequestEmailManager
 
@@ -33,13 +33,13 @@ class RequestEmailManagerTest {
     fun setupRequestEmailManager() {
         dataRequestResponseEmailMessageSender = mock(DataRequestResponseEmailSender::class.java)
         singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
-        accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
+        accessRequestEmailBuilder = mock(AccessRequestEmailBuilder::class.java)
 
         requestEmailManager =
             RequestEmailManager(
                 dataRequestResponseEmailMessageSender,
                 singleDataRequestEmailMessageSender,
-                accessRequestEmailSender,
+                accessRequestEmailBuilder,
             )
 
         TestUtils.mockSecurityContext(
@@ -69,7 +69,7 @@ class RequestEmailManagerTest {
             }
             reset(dataRequestResponseEmailMessageSender)
         }
-        verifyNoInteractions(accessRequestEmailSender)
+        verifyNoInteractions(accessRequestEmailBuilder)
     }
 
     @Test
@@ -80,14 +80,14 @@ class RequestEmailManagerTest {
             requestEmailManager.sendNotificationsSpecificToAccessRequests(dataRequestEntity, dataRequestPatch, UUID.randomUUID().toString())
 
             if (accessStatus == AccessStatus.Granted) {
-                verify(accessRequestEmailSender, times(1))
+                verify(accessRequestEmailBuilder, times(1))
                     .notifyRequesterAboutGrantedRequest(any(), any())
             } else {
-                verify(accessRequestEmailSender, times(0))
+                verify(accessRequestEmailBuilder, times(0))
                     .notifyRequesterAboutGrantedRequest(any(), any())
             }
-            verifyNoMoreInteractions(accessRequestEmailSender)
-            reset(accessRequestEmailSender)
+            verifyNoMoreInteractions(accessRequestEmailBuilder)
+            reset(accessRequestEmailBuilder)
         }
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
     }
@@ -117,12 +117,12 @@ class RequestEmailManagerTest {
             UUID.randomUUID().toString(),
         )
 
-        verify(accessRequestEmailSender, times(1))
+        verify(accessRequestEmailBuilder, times(1))
             .notifyCompanyOwnerAboutNewRequest(any(), any())
         verify(dataRequestResponseEmailMessageSender, times(1))
             .sendDataRequestAnsweredEmail(any(), any())
 
-        verifyNoMoreInteractions(accessRequestEmailSender)
+        verifyNoMoreInteractions(accessRequestEmailBuilder)
         verifyNoMoreInteractions(dataRequestResponseEmailMessageSender)
     }
 }

@@ -8,7 +8,7 @@ import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -39,7 +39,7 @@ class SingleDataRequestManager
         @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
         @Autowired private val utils: DataRequestProcessingUtils,
         @Autowired private val dataAccessManager: DataAccessManager,
-        @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
+        @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         @Autowired private val securityUtilsService: SecurityUtilsService,
         @Autowired private val companyRolesManager: CompanyRolesManager,
         @Autowired private val keycloakUserService: KeycloakUserService,
@@ -320,8 +320,8 @@ class SingleDataRequestManager
             } else {
                 val dataTypeDescription =
                     readableFrameworkNameMapping[preprocessedRequest.dataType] ?: preprocessedRequest.dataType.toString()
-                accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                    AccessRequestEmailSender.RequestEmailInformation(
+                accessRequestEmailBuilder.notifyCompanyOwnerAboutNewRequest(
+                    AccessRequestEmailBuilder.RequestEmailInformation(
                         preprocessedRequest.userId, preprocessedRequest.message,
                         preprocessedRequest.companyId, dataTypeDescription,
                         reportingPeriodsOfStoredAccessRequests.toSet(),

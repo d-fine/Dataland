@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntit
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -26,7 +26,7 @@ class CompanyRolesManager(
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyOwnershipRequestedEmailMessageSender: CompanyOwnershipRequestedEmailMessageSender,
-    @Autowired private val companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender,
+    @Autowired private val companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -45,7 +45,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ): CompanyRoleAssignmentEntity {
-        val companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(companyId)
+        val companyName = companyInfoService.getValidCompanyName(companyId)
         val correlationId = UUID.randomUUID().toString()
 
         val companyRoleAssignmentEntityOptional =
@@ -61,7 +61,7 @@ class CompanyRolesManager(
                 saveCompanyRoleAssignment(companyRole = companyRole, companyId = companyId, userId = userId)
             logCompanyRoleHasBeenAssigned(companyRole, companyId, userId)
             if (companyRole == CompanyRole.CompanyOwner) {
-                companyOwnershipAcceptedEmailMessageSender.sendCompanyOwnershipAcceptanceExternalEmailMessage(
+                companyOwnershipAcceptedEmailMessageBuilder.buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                     userId, companyId, companyName, correlationId,
                 )
             }
@@ -222,7 +222,7 @@ class CompanyRolesManager(
         correlationId: String,
     ) {
         val datalandJwtAuthentication = assertAuthenticationViaJwtToken(userAuthentication)
-        val companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(companyId)
+        val companyName = companyInfoService.getValidCompanyName(companyId)
         val userId = datalandJwtAuthentication.userId
         try {
             validateIfCompanyRoleForCompanyIsAssignedToUser(CompanyRole.CompanyOwner, companyId, userId)

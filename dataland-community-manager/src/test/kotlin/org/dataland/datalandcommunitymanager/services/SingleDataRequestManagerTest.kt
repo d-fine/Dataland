@@ -8,7 +8,7 @@ import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -43,7 +43,7 @@ class SingleDataRequestManagerTest {
     private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
     private val mockSecurityUtilsService = mock<SecurityUtilsService>()
     private val mockCompanyInfoService = mock<CompanyInfoService>()
-    private val mockAccessRequestEmailSender = mock<AccessRequestEmailSender>()
+    private val mockAccessRequestEmailBuilder = mock<AccessRequestEmailBuilder>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val mockDataAccessManager = mock<DataAccessManager>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
@@ -71,7 +71,7 @@ class SingleDataRequestManagerTest {
             mockDataRequestProcessingUtils,
             mockSecurityUtilsService,
             mockCompanyInfoService,
-            mockAccessRequestEmailSender,
+            mockAccessRequestEmailBuilder,
             mockCompanyRolesManager,
             mockDataAccessManager,
             mockKeycloakUserService,
@@ -86,7 +86,7 @@ class SingleDataRequestManagerTest {
                 singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
                 utils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
-                accessRequestEmailSender = mockAccessRequestEmailSender,
+                accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
                 securityUtilsService = mockSecurityUtilsService,
                 companyRolesManager = mockCompanyRolesManager,
                 keycloakUserService = mockKeycloakUserService,
@@ -241,7 +241,7 @@ class SingleDataRequestManagerTest {
             userId, companyIdRegexSafeCompanyId, DataTypeEnum.vsme, reportingPeriod, contacts, message,
         )
 
-        verify(mockAccessRequestEmailSender, times(1)).notifyCompanyOwnerAboutNewRequest(any(), any())
+        verify(mockAccessRequestEmailBuilder, times(1)).notifyCompanyOwnerAboutNewRequest(any(), any())
 
         verifyNoInteractions(mockSingleDataRequestEmailMessageSender)
 
