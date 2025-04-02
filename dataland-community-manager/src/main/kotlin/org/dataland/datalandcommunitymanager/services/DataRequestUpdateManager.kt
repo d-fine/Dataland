@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.util.UUID
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -101,12 +100,13 @@ class DataRequestUpdateManager
          */
         @Transactional
         fun handlePatchDataApiRequest(
-            dataRequestId: UUID,
+            dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
+            correlationId: String,
         ) = patchDataRequest(
-            dataRequestId.toString(),
+            dataRequestId,
             dataRequestPatch,
-            UUID.randomUUID().toString(),
+            correlationId,
         )
 
         /**
@@ -316,7 +316,7 @@ class DataRequestUpdateManager
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
          */
-        fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
+        private fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
             dataRequestEntities: List<DataRequestEntity>,
             answeringDataId: String,
             correlationId: String,

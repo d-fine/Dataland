@@ -15,35 +15,43 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.ArgumentMatcher
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InvestorRelationshipNotificationServiceTest {
-    private lateinit var notificationEventRepository: NotificationEventRepository
-    private lateinit var companyRolesManager: CompanyRolesManager
-    private lateinit var companyDataControllerApi: CompanyDataControllerApi
-    private lateinit var notificationEmailSender: CompanyOwnershipClaimDatasetUploadedEmailBuilder
+    private val mockNotificationEventRepository = mock<NotificationEventRepository>()
+    private val mockCompanyRolesManager = mock<CompanyRolesManager>()
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
+    private val mockCompanyOwnershipClaimDatasetUploadedEmailBuilder =
+        mock<CompanyOwnershipClaimDatasetUploadedEmailBuilder>()
     private lateinit var investorRelationshipNotificationService: InvestorRelationshipNotificationService
 
     private val companyUUID = UUID.randomUUID()
 
     @BeforeEach
     fun setupNotificationService() {
-        notificationEventRepository = mock(NotificationEventRepository::class.java)
-        companyRolesManager = mock(CompanyRolesManager::class.java)
-        companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        notificationEmailSender = mock(CompanyOwnershipClaimDatasetUploadedEmailBuilder::class.java)
+        reset(
+            mockNotificationEventRepository,
+            mockCompanyRolesManager,
+            mockCompanyDataControllerApi,
+            mockCompanyOwnershipClaimDatasetUploadedEmailBuilder,
+        )
 
         investorRelationshipNotificationService =
             InvestorRelationshipNotificationService(
-                notificationEventRepository, companyRolesManager, companyDataControllerApi, notificationEmailSender,
+                mockNotificationEventRepository,
+                mockCompanyRolesManager,
+                mockCompanyDataControllerApi,
+                mockCompanyOwnershipClaimDatasetUploadedEmailBuilder,
             )
     }
 
@@ -76,7 +84,7 @@ class InvestorRelationshipNotificationServiceTest {
     }
 
     private fun verifyNotificationEventRepositoryInteraction(notificationEventEntity: NotificationEventEntity) {
-        verify(notificationEventRepository, times(1)).save(
+        verify(mockNotificationEventRepository, times(1)).save(
             argThat(NotificationEventEntityMatcher(notificationEventEntity)),
         )
     }
@@ -93,12 +101,13 @@ class InvestorRelationshipNotificationServiceTest {
                 framework = DataTypeEnum.p2p,
                 reportingPeriod = "2024",
             )
-        `when`(companyRolesManager.getCompanyRoleAssignmentsByParameters(any(), any(), any()))
-            .thenReturn(listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyUUID.toString(), "123")))
-        `when`(companyDataControllerApi.getCompanyInfo(companyUUID.toString()))
-            .thenReturn(CompanyInformation("Company", "", mapOf(), "DE", companyContactDetails = companyMailList))
-        `when`(companyDataControllerApi.getCompanyInfo(any()))
-            .thenReturn(CompanyInformation("", "", mapOf(), ""))
+        doReturn(listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyUUID.toString(), "123")))
+            .whenever(mockCompanyRolesManager)
+            .getCompanyRoleAssignmentsByParameters(any(), any(), any())
+        doReturn(CompanyInformation("Company", "", mapOf(), "DE", companyContactDetails = companyMailList))
+            .whenever(mockCompanyDataControllerApi)
+            .getCompanyInfo(companyUUID.toString())
+        doReturn(CompanyInformation("", "", mapOf(), "")).whenever(mockCompanyDataControllerApi).getCompanyInfo(any())
 
         val noNotificationEventEntity = notificationEventEntity.copy(companyId = UUID.randomUUID())
         val entityList = listOf(notificationEventEntity, notificationEventEntity, noNotificationEventEntity)
@@ -106,12 +115,13 @@ class InvestorRelationshipNotificationServiceTest {
 
         investorRelationshipNotificationService.processNotificationEvents(entityList)
 
-        verify(notificationEmailSender).buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
-            eq(targetList),
-            eq(companyUUID),
-            eq(companyMailList),
-            any(),
-        )
+        verify(mockCompanyOwnershipClaimDatasetUploadedEmailBuilder)
+            .buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
+                eq(targetList),
+                eq(companyUUID),
+                eq(companyMailList),
+                any(),
+            )
     }
 
     /**
