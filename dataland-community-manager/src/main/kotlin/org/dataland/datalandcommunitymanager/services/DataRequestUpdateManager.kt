@@ -316,7 +316,7 @@ class DataRequestUpdateManager
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
          */
-        private fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
+        fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
             dataRequestEntities: List<DataRequestEntity>,
             answeringDataId: String,
             correlationId: String,
