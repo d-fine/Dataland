@@ -3,17 +3,21 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="2">
       <TheContent class="min-h-screen paper-section relative">
-        <TabView :activeIndex="currentIndex" @tab-change="onTabChange" class="col-10" :scrollable="true">
+        <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" class="col-12" :scrollable="true">
           <TabPanel v-for="portfolio in portfolios" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
             <!-- Insert component to display a specific portfolio here -->
+            <div v-if="isLoading" class="d-center-div">
+              <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+            </div>
           </TabPanel>
           <TabPanel>
             <template #header>
-              <div class="p-tabview-nav"><span class="pi pi-plus"></span>New Portfolio</div>
+              <div class="p-tabview-nav"><i class="pi pi-plus pr-2 align-self-center"></i> New Portfolio</div>
             </template>
           </TabPanel>
         </TabView>
         <h1>Dummy Content</h1>
+        <p>{{ currentPortfolio }}</p>
       </TheContent>
       <TheFooter :is-light-version="true" :sections="footerSections" />
     </DatasetsTabMenu>
@@ -52,16 +56,21 @@ onMounted(() => {
 });
 
 /**
- * If currentIndex changes, retrieve portfolio for new index
+ * If currentIndex changes, retrieve portfolio for new index.
+ * For the watcher not to get batched with tabChange event, we need to set option flush: 'post'.
  */
-watch(currentIndex, async () => {
-  if (currentIndex.value == portfolios.value?.length) {
-    addNewPortfolio();
-    return;
-  }
-  console.log(`Retrieve portfolio for index ${currentIndex.value}.`);
-  await getPortfolio(currentIndex.value);
-});
+watch(
+  currentIndex,
+  async (newIndex, oldIndex) => {
+    if (newIndex == portfolios.value?.length) {
+      addNewPortfolio();
+      currentIndex.value = oldIndex;
+      return;
+    }
+    await getPortfolio(newIndex);
+  },
+  { flush: 'post' }
+);
 
 /**
  * Retrieve all portfolios for the currently logged-in user.
@@ -72,6 +81,7 @@ function getPortfolios(): void | undefined {
     .then((response) => {
       portfolios.value = response.data;
     })
+    .then(() => getPortfolio(currentIndex.value))
     .catch((error) => console.log(error));
 }
 
@@ -106,7 +116,7 @@ function onTabChange(event: TabViewChangeEvent): void {
  *
  */
 function addNewPortfolio(): void {
-  console.log('Add new Portfolio duh');
+  console.log('Add new Portfolio');
 }
 </script>
 
