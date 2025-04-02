@@ -19,7 +19,6 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi.DataTypesGetInfoOnDatasets
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -46,8 +45,6 @@ class DataRequestUpdateManager
         private val companyRolesManager: CompanyRolesManager,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
-        private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
-
         /**
          * Patches the email-on-update-field if necessary and returns if it was updated.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
@@ -182,30 +179,6 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method for sending an immediate notification email on request status change, setting
-         * the notifyMeImmediately flag in the data request entity to be reset later and creating
-         * the corresponding user-specific notification event.
-         */
-        private fun sendImmediateNotificationAndSetUpFlagResetAndCreateNotificationEvent(
-            dataRequestEntity: DataRequestEntity,
-            dataRequestPatch: DataRequestPatch,
-            correlationId: String,
-        ) {
-            val notifyImmediately = dataRequestEntity.notifyMeImmediately
-            sendImmediateNotificationOnRequestStatusChange(
-                dataRequestEntity,
-                dataRequestPatch,
-                earlierQaApprovedVersionExists(dataRequestEntity),
-                correlationId,
-            )
-            setUpResetOfImmediateNotificationFlag(dataRequestEntity, dataRequestPatch)
-            dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
-                dataRequestEntity, dataRequestPatch.requestStatus,
-                notifyImmediately, earlierQaApprovedVersionExists(dataRequestEntity),
-            )
-        }
-
-        /**
          * Method for creating the user-specific notification event for the given data request entity and patch.
          */
         private fun createNotificationEvent(
@@ -233,10 +206,7 @@ class DataRequestUpdateManager
                 earlierQaApprovedVersionExists(dataRequestEntity),
                 correlationId,
             )
-            dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
-                dataRequestEntity, dataRequestPatch.requestStatus,
-                dataRequestEntity.notifyMeImmediately, earlierQaApprovedVersionExists(dataRequestEntity),
-            )
+            createNotificationEvent(dataRequestEntity, dataRequestPatch)
         }
 
         /**
@@ -285,7 +255,7 @@ class DataRequestUpdateManager
          *
          * @return the updated data request object
          */
-        fun patchDataRequest(
+        private fun patchDataRequest(
             dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
             correlationId: String,
@@ -311,23 +281,13 @@ class DataRequestUpdateManager
                 when (
                     Pair(dataRequestEntity.requestStatus, notifyImmediately)
                 ) {
-                    Pair(RequestStatus.Open, true) -> {
-                        sendImmediateNotificationAndSetUpFlagResetAndCreateNotificationEvent(
-                            dataRequestEntity, dataRequestPatch, correlationId,
-                        )
-                    }
-
-                    Pair(RequestStatus.Open, false) -> {
-                        createNotificationEvent(dataRequestEntity, dataRequestPatch)
-                    }
-
-                    Pair(RequestStatus.NonSourceable, true) -> {
+                    Pair(RequestStatus.Open, true), Pair(RequestStatus.NonSourceable, true) -> {
                         sendImmediateNotificationAndCreateNotificationEvent(
                             dataRequestEntity, dataRequestPatch, correlationId,
                         )
                     }
 
-                    Pair(RequestStatus.NonSourceable, false) -> {
+                    Pair(RequestStatus.Open, false), Pair(RequestStatus.NonSourceable, false) -> {
                         createNotificationEvent(dataRequestEntity, dataRequestPatch)
                     }
 
@@ -353,17 +313,6 @@ class DataRequestUpdateManager
             requestEmailManager.sendEmailsWhenRequestStatusChanged(
                 dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionExists, correlationId,
             )
-        }
-
-        /**
-         * Reset the immediate notification flag of the data request entity. At the moment, only used in the
-         * context of patching the request from open to answered.
-         */
-        private fun setUpResetOfImmediateNotificationFlag(
-            dataRequestEntity: DataRequestEntity,
-            dataRequestPatch: DataRequestPatch,
-        ) {
-            dataRequestPatch.notifyMeImmediately = !dataRequestEntity.notifyMeImmediately
         }
 
         /**
@@ -397,6 +346,8 @@ class DataRequestUpdateManager
                         DataRequestPatch(
                             requestStatus = RequestStatus.Answered,
                             requestStatusChangeReason = requestStatusChangeReason,
+                            notifyMeImmediately =
+                                if (dataRequestEntity.requestStatus == RequestStatus.Open) false else null,
                         ),
                     correlationId = correlationId,
                     answeringDataId = answeringDataId,
@@ -420,10 +371,8 @@ class DataRequestUpdateManager
             answeringDataId: String,
             correlationId: String,
         ) {
-            logger.info(
-                "Changing request status for all subsidiaries of company with Id $parentCompanyId, " +
-                    "reporting period $reportingPeriod and framework ${dataType.name} to answered. " +
-                    "Correlation ID: $correlationId",
+            dataRequestLogger.logMessageForPatchingSubsidiariesToAnswered(
+                parentCompanyId, reportingPeriod, dataType.name, correlationId,
             )
             val subsidiariesIds = companyDataControllerApi.getCompanySubsidiariesByParentId(parentCompanyId)
             if (subsidiariesIds.isEmpty()) return
@@ -581,25 +530,25 @@ class DataRequestUpdateManager
                         "about a sourceable dataset. No requests are patched if a dataset is reported as " +
                         "sourceable until the dataset is uploaded.",
                 )
-            } else {
-                val dataRequestEntities =
-                    dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        datalandCompanyId = nonSourceableInfo.companyId,
-                        dataType = nonSourceableInfo.dataType.toString(),
-                        reportingPeriod = nonSourceableInfo.reportingPeriod,
-                    )
+            }
 
-                dataRequestEntities?.forEach {
-                    patchDataRequest(
-                        dataRequestId = it.dataRequestId,
-                        dataRequestPatch =
-                            DataRequestPatch(
-                                requestStatus = RequestStatus.NonSourceable,
-                                requestStatusChangeReason = nonSourceableInfo.reason,
-                            ),
-                        correlationId = correlationId,
-                    )
-                }
+            val dataRequestEntities =
+                dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                    datalandCompanyId = nonSourceableInfo.companyId,
+                    dataType = nonSourceableInfo.dataType.toString(),
+                    reportingPeriod = nonSourceableInfo.reportingPeriod,
+                )
+
+            dataRequestEntities?.forEach {
+                patchDataRequest(
+                    dataRequestId = it.dataRequestId,
+                    dataRequestPatch =
+                        DataRequestPatch(
+                            requestStatus = RequestStatus.NonSourceable,
+                            requestStatusChangeReason = nonSourceableInfo.reason,
+                        ),
+                    correlationId = correlationId,
+                )
             }
         }
     }
