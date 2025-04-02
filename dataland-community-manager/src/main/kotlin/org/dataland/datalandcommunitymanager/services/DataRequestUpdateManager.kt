@@ -5,20 +5,16 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
-import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi.DataTypesGetInfoOnDatasets
-import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -34,150 +30,15 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestUpdateManager
     @Autowired
     constructor(
-        private val companyInfoService: CompanyInfoService,
         private val dataRequestRepository: DataRequestRepository,
         private val dataRequestSummaryNotificationService: DataRequestSummaryNotificationService,
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
-        private val qaControllerApi: QaControllerApi,
-        private val utils: DataRequestProcessingUtils,
-        private val companyRolesManager: CompanyRolesManager,
+        private val processingUtils: DataRequestProcessingUtils,
+        private val updateUtils: DataRequestUpdateUtils,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
-        /**
-         * Patches the email-on-update-field if necessary and returns if it was updated.
-         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
-         * @param dataRequestEntity the old DataRequestEntity that is to be changed
-         * @return true if the notifyMeImmediately was updated, false otherwise
-         */
-        private fun updateNotifyMeImmediatelyIfRequired(
-            dataRequestPatch: DataRequestPatch,
-            dataRequestEntity: DataRequestEntity,
-        ): Boolean {
-            // Storing flag value in a variable so it can be cast to non-nullable Boolean type by compiler.
-            val patchFlag = dataRequestPatch.notifyMeImmediately
-            if (patchFlag != null) {
-                val flagsAreDifferent =
-                    dataRequestEntity.notifyMeImmediately != patchFlag
-                if (flagsAreDifferent) {
-                    dataRequestEntity.notifyMeImmediately = patchFlag
-                }
-                return flagsAreDifferent
-            } else {
-                return false
-            }
-        }
-
-        /**
-         * Updates the request status history if the request status changed
-         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
-         * @param dataRequestEntity the old DataRequestEntity that is to be changed
-         * @param modificationTime the modification time in unix epoch milliseconds
-         * @return true if the request status history was updated, false otherwise
-         */
-        private fun updateRequestStatusHistoryIfRequired(
-            dataRequestPatch: DataRequestPatch,
-            dataRequestEntity: DataRequestEntity,
-            modificationTime: Long,
-            answeringDataId: String?,
-        ): Boolean {
-            val newRequestStatus = dataRequestPatch.requestStatus ?: dataRequestEntity.requestStatus
-            val newAccessStatus = dataRequestPatch.accessStatus ?: dataRequestEntity.accessStatus
-
-            if (newRequestStatus != dataRequestEntity.requestStatus ||
-                newAccessStatus != dataRequestEntity.accessStatus ||
-                newRequestStatus == RequestStatus.NonSourceable
-            ) {
-                utils.addNewRequestStatusToHistory(
-                    dataRequestEntity,
-                    newRequestStatus,
-                    newAccessStatus,
-                    dataRequestPatch.requestStatusChangeReason,
-                    modificationTime,
-                    answeringDataId,
-                )
-                dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
-                    dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
-                )
-                return true
-            }
-            return false
-        }
-
-        /**
-         * Updates the message history if valid contacts are passed in the patch object.
-         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
-         * @param dataRequestEntity the old DataRequestEntity that is to be changed
-         * @param modificationTime the modification time in unix epoch milliseconds
-         * @return true if message history was updated, false otherwise
-         */
-        private fun updateMessageHistoryIfRequired(
-            dataRequestPatch: DataRequestPatch,
-            dataRequestEntity: DataRequestEntity,
-            modificationTime: Long,
-        ): Boolean {
-            val filteredContacts = dataRequestPatch.contacts.takeIf { !it.isNullOrEmpty() }
-            val filteredMessage = dataRequestPatch.message.takeIf { !it.isNullOrEmpty() }
-            filteredContacts?.forEach {
-                MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
-            }
-            if (filteredContacts != null) {
-                utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
-                this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
-                dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
-                return true
-            }
-            return false
-        }
-
-        /**
-         * Creates log messages if required and returns whether the request priority changed
-         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
-         * @param dataRequestEntity the old DataRequestEntity that is to be changed
-         * @return whether the request priority changed
-         */
-        private fun checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(
-            dataRequestPatch: DataRequestPatch,
-            dataRequestEntity: DataRequestEntity,
-        ): Boolean {
-            if (dataRequestPatch.adminComment != null && dataRequestPatch.adminComment != dataRequestEntity.adminComment) {
-                dataRequestEntity.adminComment = dataRequestPatch.adminComment
-                dataRequestLogger.logMessageForPatchingAdminComment(
-                    dataRequestEntity.dataRequestId,
-                    dataRequestPatch.adminComment,
-                )
-            }
-
-            val newRequestPriority = dataRequestPatch.requestPriority ?: dataRequestEntity.requestPriority
-            if (newRequestPriority != dataRequestEntity.requestPriority) {
-                dataRequestEntity.requestPriority = newRequestPriority
-                dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
-                return true
-            }
-            return false
-        }
-
-        /**
-         * Assuming that a QA approval event was just triggered for the data corresponding to the given
-         * dataRequestEntity, checks whether there was at least one other QA approval event for the corresponding
-         * triple of company, framework and reporting period.
-         */
-        private fun earlierQaApprovedVersionExists(dataRequestEntity: DataRequestEntity): Boolean {
-            val dataTypeAsDataTypesGetInfoOnDatasets =
-                DataTypesGetInfoOnDatasets.entries.first {
-                    it.toString() == dataRequestEntity.dataType
-                }
-
-            return qaControllerApi
-                .getInfoOnDatasets(
-                    dataTypes = listOf(dataTypeAsDataTypesGetInfoOnDatasets),
-                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                    companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(dataRequestEntity.datalandCompanyId),
-                    qaStatus = QaStatus.Accepted,
-                ).size > 1
-        }
-
         /**
          * Method for creating the user-specific notification event for the given data request entity and patch.
          */
@@ -186,8 +47,8 @@ class DataRequestUpdateManager
             dataRequestPatch: DataRequestPatch,
         ) {
             dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
-                dataRequestEntity, dataRequestPatch.requestStatus,
-                dataRequestEntity.notifyMeImmediately, earlierQaApprovedVersionExists(dataRequestEntity),
+                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestEntity.notifyMeImmediately,
+                processingUtils.earlierQaApprovedVersionExists(dataRequestEntity),
             )
         }
 
@@ -203,7 +64,7 @@ class DataRequestUpdateManager
             sendImmediateNotificationOnRequestStatusChange(
                 dataRequestEntity,
                 dataRequestPatch,
-                earlierQaApprovedVersionExists(dataRequestEntity),
+                processingUtils.earlierQaApprovedVersionExists(dataRequestEntity),
                 correlationId,
             )
             createNotificationEvent(dataRequestEntity, dataRequestPatch)
@@ -221,15 +82,15 @@ class DataRequestUpdateManager
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
-                    updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dataRequestEntity),
-                    updateRequestStatusHistoryIfRequired(
+                    updateUtils.updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dataRequestEntity),
+                    updateUtils.updateRequestStatusHistoryIfRequired(
                         dataRequestPatch,
                         dataRequestEntity,
                         modificationTime,
                         answeringDataId,
                     ),
-                    updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
-                    checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
+                    updateUtils.updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
+                    updateUtils.checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
                 ).any { it }
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
@@ -274,7 +135,7 @@ class DataRequestUpdateManager
                 )
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus,
-                    earlierQaApprovedVersionExists(dataRequestEntity), correlationId,
+                    processingUtils.earlierQaApprovedVersionExists(dataRequestEntity), correlationId,
                 )
             } else if (dataRequestPatch.requestStatus == RequestStatus.Answered) {
                 val notifyImmediately = dataRequestEntity.notifyMeImmediately

@@ -1,0 +1,137 @@
+package org.dataland.datalandcommunitymanager.utils
+
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
+import org.dataland.datalandcommunitymanager.services.RequestEmailManager
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+
+/**
+ * A helper class for the various checks associated with storing an
+ * altered data request entity.
+ */
+@Service
+class DataRequestUpdateUtils
+    @Autowired
+    constructor(
+        private val processingUtils: DataRequestProcessingUtils,
+        private val dataRequestLogger: DataRequestLogger,
+        private val companyRolesManager: CompanyRolesManager,
+        private val requestEmailManager: RequestEmailManager,
+    ) {
+        /**
+         * Patches the email-on-update-field if necessary and returns if it was updated.
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @return true if the notifyMeImmediately was updated, false otherwise
+         */
+        fun updateNotifyMeImmediatelyIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+        ): Boolean {
+            // Storing flag value in a val so it can be cast to non-nullable Boolean type by compiler.
+            val patchFlag = dataRequestPatch.notifyMeImmediately
+            if (patchFlag != null) {
+                val flagsAreDifferent =
+                    dataRequestEntity.notifyMeImmediately != patchFlag
+                if (flagsAreDifferent) {
+                    dataRequestEntity.notifyMeImmediately = patchFlag
+                }
+                return flagsAreDifferent
+            } else {
+                return false
+            }
+        }
+
+        /**
+         * Updates the request status history if the request status changed
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @param modificationTime the modification time in unix epoch milliseconds
+         * @return true if the request status history was updated, false otherwise
+         */
+        fun updateRequestStatusHistoryIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+            modificationTime: Long,
+            answeringDataId: String?,
+        ): Boolean {
+            val newRequestStatus = dataRequestPatch.requestStatus ?: dataRequestEntity.requestStatus
+            val newAccessStatus = dataRequestPatch.accessStatus ?: dataRequestEntity.accessStatus
+
+            if (newRequestStatus != dataRequestEntity.requestStatus ||
+                newAccessStatus != dataRequestEntity.accessStatus ||
+                newRequestStatus == RequestStatus.NonSourceable
+            ) {
+                processingUtils.addNewRequestStatusToHistory(
+                    dataRequestEntity,
+                    newRequestStatus,
+                    newAccessStatus,
+                    dataRequestPatch.requestStatusChangeReason,
+                    modificationTime,
+                    answeringDataId,
+                )
+                dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
+                    dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
+                )
+                return true
+            }
+            return false
+        }
+
+        /**
+         * Updates the message history if valid contacts are passed in the patch object.
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @param modificationTime the modification time in unix epoch milliseconds
+         * @return true if message history was updated, false otherwise
+         */
+        fun updateMessageHistoryIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+            modificationTime: Long,
+        ): Boolean {
+            val filteredContacts = dataRequestPatch.contacts.takeIf { !it.isNullOrEmpty() }
+            val filteredMessage = dataRequestPatch.message.takeIf { !it.isNullOrEmpty() }
+            filteredContacts?.forEach {
+                MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
+            }
+            if (filteredContacts != null) {
+                processingUtils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
+                this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
+                dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
+                return true
+            }
+            return false
+        }
+
+        /**
+         * Creates log messages if required and returns whether the request priority changed
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @return whether the request priority changed
+         */
+        fun checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+        ): Boolean {
+            if (dataRequestPatch.adminComment != null && dataRequestPatch.adminComment != dataRequestEntity.adminComment) {
+                dataRequestEntity.adminComment = dataRequestPatch.adminComment
+                dataRequestLogger.logMessageForPatchingAdminComment(
+                    dataRequestEntity.dataRequestId,
+                    dataRequestPatch.adminComment,
+                )
+            }
+
+            val newRequestPriority = dataRequestPatch.requestPriority ?: dataRequestEntity.requestPriority
+            if (newRequestPriority != dataRequestEntity.requestPriority) {
+                dataRequestEntity.requestPriority = newRequestPriority
+                dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
+                return true
+            }
+            return false
+        }
+    }

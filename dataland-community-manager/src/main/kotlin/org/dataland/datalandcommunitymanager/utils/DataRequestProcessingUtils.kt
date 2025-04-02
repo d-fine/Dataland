@@ -19,6 +19,9 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi.DataTypesGetInfoOnDatasets
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,12 +36,14 @@ class DataRequestProcessingUtils
     @Suppress("LongParameterList")
     @Autowired
     constructor(
+        private val companyInfoService: CompanyInfoService,
         private val dataRequestRepository: DataRequestRepository,
         private var requestStatusRepository: RequestStatusRepository,
         private var messageRepository: MessageRepository,
         private val dataRequestLogger: DataRequestLogger,
         private val companyApi: CompanyDataControllerApi,
         private val metaDataApi: MetaDataControllerApi,
+        private val qaControllerApi: QaControllerApi,
         private val exceptionForwarder: ExceptionForwarder,
     ) {
         /**
@@ -295,4 +300,24 @@ class DataRequestProcessingUtils
          * @return the corresponding enum entry
          */
         fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? = DataTypeEnum.entries.find { it.value == frameworkName }
+
+        /**
+         * Assuming that a QA approval event was just triggered for the data corresponding to the given
+         * dataRequestEntity, checks whether there was at least one other QA approval event for the corresponding
+         * triple of company, framework and reporting period.
+         */
+        fun earlierQaApprovedVersionExists(dataRequestEntity: DataRequestEntity): Boolean {
+            val dataTypeAsDataTypesGetInfoOnDatasets =
+                DataTypesGetInfoOnDatasets.entries.first {
+                    it.toString() == dataRequestEntity.dataType
+                }
+
+            return qaControllerApi
+                .getInfoOnDatasets(
+                    dataTypes = listOf(dataTypeAsDataTypesGetInfoOnDatasets),
+                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
+                    companyName = companyInfoService.checkIfCompanyIdIsValidAndReturnName(dataRequestEntity.datalandCompanyId),
+                    qaStatus = QaStatus.Accepted,
+                ).size > 1
+        }
     }
