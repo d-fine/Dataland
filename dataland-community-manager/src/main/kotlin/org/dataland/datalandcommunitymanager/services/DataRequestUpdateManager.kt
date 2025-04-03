@@ -12,7 +12,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +33,6 @@ class DataRequestUpdateManager
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
-        private val processingUtils: DataRequestProcessingUtils,
         private val updateUtils: DataRequestUpdateUtils,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
@@ -47,7 +45,7 @@ class DataRequestUpdateManager
         ) {
             dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                 dataRequestEntity, dataRequestPatch.requestStatus, dataRequestEntity.notifyMeImmediately,
-                processingUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
+                updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
             )
         }
 
@@ -63,7 +61,7 @@ class DataRequestUpdateManager
             sendImmediateNotificationOnRequestStatusChange(
                 dataRequestEntity,
                 dataRequestPatch,
-                processingUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
+                updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
                 correlationId,
             )
             createNotificationEvent(dataRequestEntity, dataRequestPatch)
@@ -135,7 +133,7 @@ class DataRequestUpdateManager
                 )
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus,
-                    processingUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity), correlationId,
+                    updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity), correlationId,
                 )
             } else if (dataRequestPatch.requestStatus == RequestStatus.Answered) {
                 val notifyImmediately = dataRequestEntity.notifyMeImmediately

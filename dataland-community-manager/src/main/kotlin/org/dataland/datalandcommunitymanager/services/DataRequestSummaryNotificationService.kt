@@ -67,24 +67,30 @@ class DataRequestSummaryNotificationService
                 )
 
             if (notificationEventType != null) {
-                notificationEventRepository.save(
-                    NotificationEventEntity(
-                        notificationEventType = notificationEventType,
-                        userId = UUID.fromString(dataRequestEntity.userId),
-                        isProcessed = immediateNotificationWasSent,
-                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
-                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                        reportingPeriod = dataRequestEntity.reportingPeriod,
-                    ),
+                saveNotificationEventRepository(
+                    dataRequestEntity,
+                    immediateNotificationWasSent,
+                    notificationEventType,
                 )
-                emptyFunction()
             } else {
                 logger.info("No valid event type found for notification creation.")
             }
         }
 
-        private fun emptyFunction() {
-        }
+        private fun saveNotificationEventRepository(
+            dataRequestEntity: DataRequestEntity,
+            immediateNotificationWasSent: Boolean,
+            notificationEventType: NotificationEventType,
+        ) = notificationEventRepository.save(
+            NotificationEventEntity(
+                notificationEventType = notificationEventType,
+                userId = UUID.fromString(dataRequestEntity.userId),
+                isProcessed = immediateNotificationWasSent,
+                companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                reportingPeriod = dataRequestEntity.reportingPeriod,
+            ),
+        )
 
         /**
          * Determines the type of notification event based on the transition of request statuses

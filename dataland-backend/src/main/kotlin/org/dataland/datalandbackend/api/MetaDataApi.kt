@@ -8,8 +8,8 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
@@ -197,7 +197,7 @@ interface MetaDataApi {
 
     /**
      * Adds a dataset with information on sourceability.
-     * @param nonSourceableInfo includes the information on the sourceability of a specific dataset.
+     * @param sourceabilityInfo includes the information on the sourceability of a specific dataset.
      */
     @Operation(
         summary = "Adds a dataset with information on sourceability.",
@@ -221,7 +221,7 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postNonSourceabilityOfADataset(
         @Valid @RequestBody
-        nonSourceableInfo: NonSourceableInfo,
+        sourceabilityInfo: SourceabilityInfo,
     )
 
     /**

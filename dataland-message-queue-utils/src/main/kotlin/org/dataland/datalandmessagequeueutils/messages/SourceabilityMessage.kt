@@ -1,6 +1,6 @@
 package org.dataland.datalandmessagequeueutils.messages
 
-data class NonSourceableMessage(
+data class SourceabilityMessage(
     val companyId: String,
     val dataType: String,
     val reportingPeriod: String,

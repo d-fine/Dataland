@@ -6,12 +6,14 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.RequestEmailManager
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi.DataTypesGetInfoOnDatasets
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * A helper class for the various checks associated with storing an
- * altered data request entity.
+ * A helper class for DataRequestUpdateManager.
  */
 @Service
 class DataRequestUpdateUtils
@@ -19,8 +21,10 @@ class DataRequestUpdateUtils
     constructor(
         private val processingUtils: DataRequestProcessingUtils,
         private val dataRequestLogger: DataRequestLogger,
+        private val companyInfoService: CompanyInfoService,
         private val companyRolesManager: CompanyRolesManager,
         private val requestEmailManager: RequestEmailManager,
+        private val qaControllerApi: QaControllerApi,
     ) {
         /**
          * Patches the email-on-update-field if necessary and returns if it was updated.
@@ -128,5 +132,25 @@ class DataRequestUpdateUtils
                 return true
             }
             return false
+        }
+
+        /**
+         * Assuming that a QA approval event was just triggered for the data corresponding to the given
+         * dataRequestEntity, checks whether there was at least one other QA approval event for the corresponding
+         * triple of company, framework and reporting period.
+         */
+        fun earlierQaApprovedVersionOfDatasetExists(dataRequestEntity: DataRequestEntity): Boolean {
+            val dataTypeAsDataTypesGetInfoOnDatasets =
+                DataTypesGetInfoOnDatasets.entries.first {
+                    it.toString() == dataRequestEntity.dataType
+                }
+
+            return qaControllerApi
+                .getInfoOnDatasets(
+                    dataTypes = listOf(dataTypeAsDataTypesGetInfoOnDatasets),
+                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
+                    companyName = companyInfoService.getValidCompanyName(dataRequestEntity.datalandCompanyId),
+                    qaStatus = QaStatus.Accepted,
+                ).size > 1
         }
     }
