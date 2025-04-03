@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipEmailBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -31,8 +31,8 @@ class InvestorRelationshipNotificationServiceTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
-    private val mockCompanyOwnershipClaimDatasetUploadedEmailBuilder =
-        mock<CompanyOwnershipClaimDatasetUploadedEmailBuilder>()
+    private val mockInvestorRelationshipEmailBuilder =
+        mock<InvestorRelationshipEmailBuilder>()
     private lateinit var investorRelationshipNotificationService: InvestorRelationshipNotificationService
 
     private val companyUUID = UUID.randomUUID()
@@ -43,7 +43,7 @@ class InvestorRelationshipNotificationServiceTest {
             mockNotificationEventRepository,
             mockCompanyRolesManager,
             mockCompanyDataControllerApi,
-            mockCompanyOwnershipClaimDatasetUploadedEmailBuilder,
+            mockInvestorRelationshipEmailBuilder,
         )
 
         investorRelationshipNotificationService =
@@ -51,7 +51,7 @@ class InvestorRelationshipNotificationServiceTest {
                 mockNotificationEventRepository,
                 mockCompanyRolesManager,
                 mockCompanyDataControllerApi,
-                mockCompanyOwnershipClaimDatasetUploadedEmailBuilder,
+                mockInvestorRelationshipEmailBuilder,
             )
     }
 
@@ -115,7 +115,7 @@ class InvestorRelationshipNotificationServiceTest {
 
         investorRelationshipNotificationService.processNotificationEvents(entityList)
 
-        verify(mockCompanyOwnershipClaimDatasetUploadedEmailBuilder)
+        verify(mockInvestorRelationshipEmailBuilder)
             .buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
                 eq(targetList),
                 eq(companyUUID),

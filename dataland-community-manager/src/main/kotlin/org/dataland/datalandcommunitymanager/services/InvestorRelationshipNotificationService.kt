@@ -6,7 +6,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipClaimDatasetUploadedEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipEmailBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,7 +22,7 @@ class InvestorRelationshipNotificationService
         private val notificationEventRepository: NotificationEventRepository,
         private val companyRolesManager: CompanyRolesManager,
         private val companyDataControllerApi: CompanyDataControllerApi,
-        private val companyOwnershipClaimDatasetUploadedEmailBuilder: CompanyOwnershipClaimDatasetUploadedEmailBuilder,
+        private val investorRelationshipEmailBuilder: InvestorRelationshipEmailBuilder,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -43,7 +43,7 @@ class InvestorRelationshipNotificationService
                         "Requirements for Investor Relationship notification are met. " +
                             "Sending notification emails. CorrelationId: $correlationId",
                     )
-                    companyOwnershipClaimDatasetUploadedEmailBuilder
+                    investorRelationshipEmailBuilder
                         .buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
                             unprocessedEvents = companyEvents,
                             companyId = companyId,

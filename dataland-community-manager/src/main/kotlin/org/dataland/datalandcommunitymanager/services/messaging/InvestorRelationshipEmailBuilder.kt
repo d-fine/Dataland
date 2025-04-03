@@ -23,8 +23,8 @@ import java.util.UUID
  * A service used to build and send CE external claim company ownership emails and related internal emails,
  * when dataset is uploaded.
  */
-@Service("CompanyOwnershipClaimDatasetUploadedEmailBuilder")
-class CompanyOwnershipClaimDatasetUploadedEmailBuilder(
+@Service("InvestorRelationshipEmailBuilder")
+class InvestorRelationshipEmailBuilder(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
