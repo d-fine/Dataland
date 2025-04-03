@@ -10,7 +10,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
+import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
@@ -81,14 +81,14 @@ class ResourceResponseEmailSenderTest {
         dataTypeLabel: String,
     ): (TypedEmailContent) -> Unit =
         { emailData ->
-            assertTrue(emailData is DataRequestAnswered)
-            val dataRequestAnswered = emailData as DataRequestAnswered
-            assertEquals(companyName, dataRequestAnswered.companyName)
-            assertEquals(dataTypeLabel, dataRequestAnswered.dataTypeLabel)
-            assertEquals(reportingPeriod, dataRequestAnswered.reportingPeriod)
-            assertEquals(creationTimestampAsDate, dataRequestAnswered.creationDate)
-            assertEquals(dataRequestId, dataRequestAnswered.dataRequestId)
-            assertEquals(staleDaysThreshold, dataRequestAnswered.closedInDays)
+            assertTrue(emailData is DataAvailableEmailContent)
+            val dataAvailableEmailContent = emailData as DataAvailableEmailContent
+            assertEquals(companyName, dataAvailableEmailContent.companyName)
+            assertEquals(dataTypeLabel, dataAvailableEmailContent.dataTypeLabel)
+            assertEquals(reportingPeriod, dataAvailableEmailContent.reportingPeriod)
+            assertEquals(creationTimestampAsDate, dataAvailableEmailContent.creationDate)
+            assertEquals(dataRequestId, dataAvailableEmailContent.dataRequestId)
+            assertEquals(staleDaysThreshold, dataAvailableEmailContent.closedInDays)
         }
 
     @Test

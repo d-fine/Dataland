@@ -105,7 +105,7 @@ class EmailMessageListenerTest {
 
     @Test
     fun `test that correct email is send to correct contacts`() {
-        val typedEmailContent = testData.accessToDatasetRequested
+        val typedEmailContent = testData.accessToDatasetRequestedEmailContent
         val keywords = testData.accessToDatasetRequestedKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add("https://$dummyProxyPrimaryUrl")
@@ -139,8 +139,8 @@ class EmailMessageListenerTest {
         val recipient = recipientToContactMap.keys.first()
         val receiver = listOf(recipient)
         val receiverContact = EmailContact.create(EMAIL_ADDRESS_A)
-        val typedEmailContent = testData.dataRequestNonSourceableMail
-        val keywords = testData.dataRequestNonSourceableKeywords.toMutableList()
+        val typedEmailContent = testData.dataNonSourceableEmailContent
+        val keywords = testData.dataNonSourceableKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add("https://$dummyProxyPrimaryUrl")
         keywords.remove(testData.subscriptionUuid)

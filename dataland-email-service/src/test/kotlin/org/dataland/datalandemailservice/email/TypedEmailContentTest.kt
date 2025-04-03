@@ -47,7 +47,7 @@ class TypedEmailContentTest {
     @Test
     fun `test that late init vars specified in interfaces are correctly injected`() {
         val emailSubscriptionTracker = mock<EmailSubscriptionTracker>()
-        val content = TypedEmailContentTestData().accessToDatasetRequested
+        val content = TypedEmailContentTestData().accessToDatasetRequestedEmailContent
         val subscriptionUuid = UUID.randomUUID()
         val receiver =
             mapOf(

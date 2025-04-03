@@ -62,5 +62,5 @@ fun Value.setLateInitVars(emailSubscriptionTracker: EmailSubscriptionTracker) {
  */
 fun TypedEmailContent.build(): EmailContent =
     EmailContent.fromTemplates(
-        this.subject, this, this.textTemplate, this.htmlTemplate,
+        this.subject, this, textTemplate, htmlTemplate,
     )

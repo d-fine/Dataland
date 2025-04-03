@@ -7,9 +7,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
+import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,8 +49,8 @@ class DataRequestResponseEmailBuilder(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val dataRequestAnswered =
-            DataRequestAnswered(
+        val dataAvailableEmailContent =
+            DataAvailableEmailContent(
                 companyName = companyInfoService.getValidCompanyNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
@@ -60,7 +60,7 @@ class DataRequestResponseEmailBuilder(
             )
         val message =
             EmailMessage(
-                dataRequestAnswered, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+                dataAvailableEmailContent, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
@@ -80,8 +80,8 @@ class DataRequestResponseEmailBuilder(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val dataRequestNonSourceableMail =
-            DataRequestNonSourceable(
+        val dataNonSourceableEmailContentMail =
+            DataNonSourceableEmailContent(
                 companyName = companyInfoService.getValidCompanyNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
@@ -91,7 +91,7 @@ class DataRequestResponseEmailBuilder(
             )
         val message =
             EmailMessage(
-                dataRequestNonSourceableMail, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+                dataNonSourceableEmailContentMail, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
@@ -126,8 +126,8 @@ class DataRequestResponseEmailBuilder(
      * a user with a closed request after a relevant QA status update event happened.
      */
     fun buildDataUpdatedEmailMessage(dataRequestEntity: DataRequestEntity): EmailMessage {
-        val dataRequestUpdatedMail =
-            DataRequestUpdated(
+        val dataUpdatedEmailContentMail =
+            DataUpdatedEmailContent(
                 companyName = companyInfoService.getValidCompanyNameOrId(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
@@ -135,7 +135,7 @@ class DataRequestResponseEmailBuilder(
                 dataRequestId = dataRequestEntity.dataRequestId,
             )
         return EmailMessage(
-            typedEmailContent = dataRequestUpdatedMail,
+            typedEmailContent = dataUpdatedEmailContentMail,
             receiver = listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
             cc = emptyList(),
             bcc = emptyList(),

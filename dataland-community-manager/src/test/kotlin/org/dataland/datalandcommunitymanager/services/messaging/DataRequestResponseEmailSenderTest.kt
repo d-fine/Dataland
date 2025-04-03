@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
+import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -71,7 +71,7 @@ class DataRequestResponseEmailSenderTest {
         val expectedMessage =
             EmailMessage(
                 typedEmailContent =
-                    DataRequestUpdated(
+                    DataUpdatedEmailContent(
                         companyName = dummyCompanyName,
                         dataTypeLabel = sampleDataTypeLabel,
                         reportingPeriod = sampleReportingPeriod,

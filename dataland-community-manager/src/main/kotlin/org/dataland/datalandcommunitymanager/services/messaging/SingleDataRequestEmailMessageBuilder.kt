@@ -10,7 +10,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
@@ -89,7 +89,7 @@ class SingleDataRequestEmailMessageBuilder(
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
 
         val emailData =
-            DatasetRequestedClaimOwnership(
+            DatasetRequestedClaimCompanyOwnershipEmailContent(
                 companyId = messageInformation.datalandCompanyId,
                 companyName = companyName,
                 requesterEmail = messageInformation.userAuthentication.username,

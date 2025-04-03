@@ -5,7 +5,7 @@ import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepos
 import org.springframework.stereotype.Service
 
 /**
- * Class holding utility functions used by the both the DataRequestSummary and the InvestorRelationShip NotificationService
+ * Class holding utility functions used by the DataRequestSummary and the InvestorRelationShip NotificationService
  */
 @Service
 class NotificationUtils(

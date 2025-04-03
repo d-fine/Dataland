@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -70,12 +70,12 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
                 val arg3 = it.getArgument<String>(2)
                 val arg4 = it.getArgument<String>(3)
                 val arg5 = it.getArgument<String>(4)
-                Assertions.assertTrue(emailMessage.typedEmailContent is CompanyOwnershipClaimApproved)
-                val companyOwnershipClaimApproved = emailMessage.typedEmailContent as CompanyOwnershipClaimApproved
-                Assertions.assertEquals(companyId, companyOwnershipClaimApproved.companyId)
-                Assertions.assertEquals(companyName, companyOwnershipClaimApproved.companyName)
+                Assertions.assertTrue(emailMessage.typedEmailContent is CompanyOwnershipClaimApprovedEmailContent)
+                val companyOwnershipClaimApprovedEmailContent = emailMessage.typedEmailContent as CompanyOwnershipClaimApprovedEmailContent
+                Assertions.assertEquals(companyId, companyOwnershipClaimApprovedEmailContent.companyId)
+                Assertions.assertEquals(companyName, companyOwnershipClaimApprovedEmailContent.companyName)
                 Assertions.assertEquals(
-                    numberOfOpenDataRequestsForCompany, companyOwnershipClaimApproved.numberOfOpenDataRequestsForCompany,
+                    numberOfOpenDataRequestsForCompany, companyOwnershipClaimApprovedEmailContent.numberOfOpenDataRequestsForCompany,
                 )
                 Assertions.assertEquals(listOf(EmailRecipient.UserId(userId)), emailMessage.receiver)
                 Assertions.assertEquals(MessageType.SEND_EMAIL, arg2)

@@ -9,7 +9,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * A service used to send external claim company ownership, when dataset is uploaded emails
- * and related internal emails in the NotificationService.
+ * A service used to build and send CE external claim company ownership emails and related internal emails,
+ * when dataset is uploaded.
  */
 @Service("CompanyOwnershipClaimDatasetUploadedEmailBuilder")
 class CompanyOwnershipClaimDatasetUploadedEmailBuilder(
@@ -80,12 +80,12 @@ class CompanyOwnershipClaimDatasetUploadedEmailBuilder(
 
         // Create external email content detailing dataset uploads and ask for claiming company ownership
         val externalEmailContent =
-            DatasetUploadedClaimOwnership(
+            DatasetUploadedClaimCompanyOwnershipEmailContent(
                 companyName = companyInfoService.getValidCompanyNameOrId(companyId.toString()),
                 companyId = companyId.toString(),
                 frameworkData =
                     frameworkData.map {
-                        DatasetUploadedClaimOwnership.FrameworkData(
+                        DatasetUploadedClaimCompanyOwnershipEmailContent.FrameworkData(
                             readableFrameworkNameMapping[it.key] ?: "",
                             it.value,
                         )

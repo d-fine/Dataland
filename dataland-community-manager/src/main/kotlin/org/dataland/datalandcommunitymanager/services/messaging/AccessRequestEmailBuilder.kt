@@ -10,8 +10,8 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGrantedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequestedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,7 +69,7 @@ class AccessRequestEmailBuilder(
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
 
         val emailData =
-            AccessToDatasetGranted(
+            AccessToDatasetGrantedEmailContent(
                 companyId = emailInformation.datalandCompanyId,
                 companyName = companyName,
                 dataType = emailInformation.dataType,
@@ -130,7 +130,7 @@ class AccessRequestEmailBuilder(
             }
 
         val emailData =
-            AccessToDatasetRequested(
+            AccessToDatasetRequestedEmailContent(
                 companyId = emailInformation.datalandCompanyId,
                 companyName = companyName,
                 dataTypeLabel = emailInformation.dataTypeDescription,

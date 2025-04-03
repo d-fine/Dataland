@@ -12,7 +12,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
@@ -115,8 +115,8 @@ class SingleDataRequestEmailMessageSenderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertTrue(arg1.typedEmailContent is DatasetRequestedClaimOwnership)
-            val emailData = arg1.typedEmailContent as DatasetRequestedClaimOwnership
+            assertTrue(arg1.typedEmailContent is DatasetRequestedClaimCompanyOwnershipEmailContent)
+            val emailData = arg1.typedEmailContent as DatasetRequestedClaimCompanyOwnershipEmailContent
             assertEquals(listOf(EmailRecipient.EmailAddress(email = "alphabet@example.com")), arg1.receiver)
             assertEquals(datalandCompanyId, emailData.companyId)
             assertEquals(companyName, emailData.companyName)
