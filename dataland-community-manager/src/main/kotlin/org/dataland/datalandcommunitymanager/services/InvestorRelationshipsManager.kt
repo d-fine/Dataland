@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service
  * Notification events are generated, when a dataset is available and the related company ownership is claimable
  */
 @Service
-class InvestorRelationshipManager(
+class InvestorRelationshipsManager(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired private val investorRelationshipNotificationService: InvestorRelationshipNotificationService,
+    @Autowired private val investorRelationshipsNotificationService: InvestorRelationshipsNotificationService,
 ) {
     private fun getContactEmailsForCompany(companyId: String): List<String>? {
         val companyInfo = companyDataControllerApi.getCompanyInfo(companyId)
@@ -30,7 +30,7 @@ class InvestorRelationshipManager(
         val companyId = metaInfo.companyId
         val contactEmails = getContactEmailsForCompany(companyId)
         if (!contactEmails.isNullOrEmpty()) {
-            investorRelationshipNotificationService.createCompanySpecificNotificationEvent(metaInfo)
+            investorRelationshipsNotificationService.createCompanySpecificNotificationEvent(metaInfo)
         }
     }
 }

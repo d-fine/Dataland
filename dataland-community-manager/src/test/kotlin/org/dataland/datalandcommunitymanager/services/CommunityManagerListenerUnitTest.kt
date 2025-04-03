@@ -31,7 +31,7 @@ class CommunityManagerListenerUnitTest {
     private lateinit var communityManagerListener: CommunityManagerListener
     private val jacksonObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
-    private val mockInvestorRelationshipManager = mock<InvestorRelationshipManager>()
+    private val mockInvestorRelationshipsManager = mock<InvestorRelationshipsManager>()
     private val validDataId = "valid-data-id"
     private val invalidDataId = ""
     private val correlationId = "test correlation id"
@@ -44,13 +44,13 @@ class CommunityManagerListenerUnitTest {
     fun setUp() {
         reset(
             mockDataRequestUpdateManager,
-            mockInvestorRelationshipManager,
+            mockInvestorRelationshipsManager,
         )
         communityManagerListener =
             CommunityManagerListener(
                 jacksonObjectMapper,
                 mockDataRequestUpdateManager,
-                mockInvestorRelationshipManager,
+                mockInvestorRelationshipsManager,
             )
     }
 
@@ -78,13 +78,13 @@ class CommunityManagerListenerUnitTest {
                 verify(mockDataRequestUpdateManager).processUserRequests(
                     validDataId, correlationId,
                 )
-                verify(mockInvestorRelationshipManager).saveNotificationEventForIREmails(validDataId)
+                verify(mockInvestorRelationshipsManager).saveNotificationEventForIREmails(validDataId)
             }
             QaStatus.Rejected -> {
                 verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
                     any<String>(), any<String>(),
                 )
-                verify(mockInvestorRelationshipManager, times(0)).saveNotificationEventForIREmails(any<String>())
+                verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForIREmails(any<String>())
             }
             else -> {}
         }

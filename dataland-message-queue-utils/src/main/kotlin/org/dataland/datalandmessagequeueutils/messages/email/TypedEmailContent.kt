@@ -225,6 +225,7 @@ data class DatasetRequestedClaimCompanyOwnershipEmailContent(
 }
 
 /**
+ * "Investor Relationships" Email Content:
  * Content of an email sent to the company's contact prompting them to claim ownership,
  * triggered when a dataset is available (uploaded + approved) for this company that has no designated owner.
  */

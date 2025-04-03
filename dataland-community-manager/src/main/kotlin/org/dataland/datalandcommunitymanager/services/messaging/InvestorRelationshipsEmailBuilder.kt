@@ -20,31 +20,31 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * A service used to build and send CE external Investor Relationship emails and related internal emails
+ * A service used to build and send CE external Investor Relationships emails and related internal emails
  * When datasets are available, and the company ownership is claimable.
  */
-@Service("InvestorRelationshipEmailBuilder")
-class InvestorRelationshipEmailBuilder(
+@Service("InvestorRelationshipsEmailBuilder")
+class InvestorRelationshipsEmailBuilder(
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
 ) {
     /**
-     * Sends both external and internal Investor Relationship notification emails based on the specified parameters.
+     * Sends both external and internal Investor Relationships notification emails based on the specified parameters.
      * @param unprocessedEvents A list of notification event entities that are unprocessed
      * and contained in the summary email.
      * @param companyId The identifier of the company in Dataland.
      * @param receiver A list of recipient email addresses for the company.
      * @param correlationId The correlation identifier for tracking the email notification.
      */
-    fun buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
+    fun buildExternalAndInternalInvestorRelationshipsSummaryEmailAndSendCEMessage(
         unprocessedEvents: List<NotificationEventEntity>,
         companyId: UUID,
         receiver: List<String>,
         correlationId: String,
     ) {
         val (externalEmailContent, internalEmailContent) =
-            buildExternalAndInternalInvestorRelationshipSummaryEmail(unprocessedEvents, companyId, receiver)
+            buildExternalAndInternalInvestorRelationshipsSummaryEmail(unprocessedEvents, companyId, receiver)
 
         receiver.forEach {
             sendCEMessage(externalEmailContent, listOf(EmailRecipient.EmailAddress(it)), emptyList(), correlationId)
@@ -59,13 +59,13 @@ class InvestorRelationshipEmailBuilder(
     }
 
     /**
-     * Builds the content for external and internal Investor Relationship summary emails.
+     * Builds the content for external and internal Investor Relationships summary emails.
      * @param events List of NotificationEventEntity objects to process.
      * @param companyId UUID of the company for the email.
      * @param receiver List of recipient email addresses.
      * @return A pair of TypedEmailContent representing external and internal emails.
      */
-    private fun buildExternalAndInternalInvestorRelationshipSummaryEmail(
+    private fun buildExternalAndInternalInvestorRelationshipsSummaryEmail(
         events: List<NotificationEventEntity>,
         companyId: UUID,
         receiver: List<String>,

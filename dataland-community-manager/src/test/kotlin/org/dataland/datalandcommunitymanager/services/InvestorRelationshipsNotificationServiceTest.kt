@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipsEmailBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -27,13 +27,13 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class InvestorRelationshipNotificationServiceTest {
+class InvestorRelationshipsNotificationServiceTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockInvestorRelationshipEmailBuilder =
-        mock<InvestorRelationshipEmailBuilder>()
-    private lateinit var investorRelationshipNotificationService: InvestorRelationshipNotificationService
+        mock<InvestorRelationshipsEmailBuilder>()
+    private lateinit var investorRelationshipsNotificationService: InvestorRelationshipsNotificationService
 
     private val companyUUID = UUID.randomUUID()
 
@@ -46,8 +46,8 @@ class InvestorRelationshipNotificationServiceTest {
             mockInvestorRelationshipEmailBuilder,
         )
 
-        investorRelationshipNotificationService =
-            InvestorRelationshipNotificationService(
+        investorRelationshipsNotificationService =
+            InvestorRelationshipsNotificationService(
                 mockNotificationEventRepository,
                 mockCompanyRolesManager,
                 mockCompanyDataControllerApi,
@@ -78,7 +78,7 @@ class InvestorRelationshipNotificationServiceTest {
                 reportingPeriod = "2024",
             )
 
-        investorRelationshipNotificationService.createCompanySpecificNotificationEvent(testDataMetaInformation)
+        investorRelationshipsNotificationService.createCompanySpecificNotificationEvent(testDataMetaInformation)
 
         verifyNotificationEventRepositoryInteraction(notificationEventEntity)
     }
@@ -113,10 +113,10 @@ class InvestorRelationshipNotificationServiceTest {
         val entityList = listOf(notificationEventEntity, notificationEventEntity, noNotificationEventEntity)
         val targetList = listOf(notificationEventEntity, notificationEventEntity)
 
-        investorRelationshipNotificationService.processNotificationEvents(entityList)
+        investorRelationshipsNotificationService.processNotificationEvents(entityList)
 
         verify(mockInvestorRelationshipEmailBuilder)
-            .buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
+            .buildExternalAndInternalInvestorRelationshipsSummaryEmailAndSendCEMessage(
                 eq(targetList),
                 eq(companyUUID),
                 eq(companyMailList),

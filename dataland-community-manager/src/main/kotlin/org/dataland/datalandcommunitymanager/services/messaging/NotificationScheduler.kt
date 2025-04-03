@@ -3,7 +3,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.DataRequestSummaryNotificationService
-import org.dataland.datalandcommunitymanager.services.InvestorRelationshipNotificationService
+import org.dataland.datalandcommunitymanager.services.InvestorRelationshipsNotificationService
 import org.dataland.datalandcommunitymanager.utils.NotificationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpException
@@ -17,7 +17,7 @@ class NotificationScheduler
     constructor(
         private val notificationEventRepository: NotificationEventRepository,
         private val notificationUtils: NotificationUtils,
-        private val investorRelationshipNotificationService: InvestorRelationshipNotificationService,
+        private val investorRelationshipsNotificationService: InvestorRelationshipsNotificationService,
         private val dataRequestSummaryNotificationService: DataRequestSummaryNotificationService,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -29,9 +29,9 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 0 ? * SUN")
         fun scheduledWeeklyEmailSending() {
             processNotificationEvents(
-                "Investor Relationship",
+                "Investor Relationships",
                 listOf(NotificationEventType.InvestorRelationshipsEvent),
-                investorRelationshipNotificationService::processNotificationEvents,
+                investorRelationshipsNotificationService::processNotificationEvents,
             )
 
             processNotificationEvents(

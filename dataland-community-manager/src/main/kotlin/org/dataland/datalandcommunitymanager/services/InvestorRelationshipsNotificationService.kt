@@ -6,7 +6,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipsEmailBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,13 +17,13 @@ import java.util.UUID
  * when datasets are available and their company ownership is claimable.
  */
 @Service("InvestorRelationshipNotificationService")
-class InvestorRelationshipNotificationService
+class InvestorRelationshipsNotificationService
     @Autowired
     constructor(
         private val notificationEventRepository: NotificationEventRepository,
         private val companyRolesManager: CompanyRolesManager,
         private val companyDataControllerApi: CompanyDataControllerApi,
-        private val investorRelationshipEmailBuilder: InvestorRelationshipEmailBuilder,
+        private val investorRelationshipEmailBuilder: InvestorRelationshipsEmailBuilder,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -44,7 +44,7 @@ class InvestorRelationshipNotificationService
                             "Sending notification emails. CorrelationId: $correlationId",
                     )
                     investorRelationshipEmailBuilder
-                        .buildExternalAndInternalInvestorRelationshipSummaryEmailAndSendCEMessage(
+                        .buildExternalAndInternalInvestorRelationshipsSummaryEmailAndSendCEMessage(
                             unprocessedEvents = companyEvents,
                             companyId = companyId,
                             receiver = emailReceivers,
