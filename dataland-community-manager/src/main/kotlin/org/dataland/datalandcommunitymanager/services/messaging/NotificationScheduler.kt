@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 
+/**
+ * Scheduler class for notifications sent out by the Community Manager.
+ */
 @Service
 class NotificationScheduler
     @Autowired
