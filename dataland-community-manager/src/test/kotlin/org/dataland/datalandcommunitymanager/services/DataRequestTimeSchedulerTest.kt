@@ -74,7 +74,7 @@ class DataRequestTimeSchedulerTest {
         TestUtils.mockSecurityContext()
         mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
         `when`(
-            mockDataRequestUpdateManager.patchDataRequest(
+            mockDataRequestUpdateManager.processExternalPatchRequestForDataRequest(
                 dataRequestIdStaleAndAnswered,
                 DataRequestPatch(requestStatus = RequestStatus.Closed),
                 UUID.randomUUID().toString(),
@@ -110,11 +110,10 @@ class DataRequestTimeSchedulerTest {
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
         verify(mockDataRequestUpdateManager, times(2))
-            .patchDataRequest(
+            .processExternalPatchRequestForDataRequest(
                 eq(dataRequestIdStaleAndAnswered),
                 eq(DataRequestPatch(requestStatus = RequestStatus.Closed)),
                 anyString(),
-                eq(null),
             )
     }
 
