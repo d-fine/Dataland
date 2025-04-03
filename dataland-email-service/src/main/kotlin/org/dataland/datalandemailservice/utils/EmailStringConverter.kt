@@ -18,9 +18,7 @@ object EmailStringConverter {
                 EmailContact.create(emailAddress)
             } else {
                 throw IllegalArgumentException(
-                    "One email address provided by the Spring properties has a wrong format. " +
-                        "The following email address was parsed from that prop and caused this error: $emailAddress. " +
-                        "This email address is ignored. The service shuts down.",
+                    "Email address $emailAddress has an invalid format.",
                 )
             }
         }

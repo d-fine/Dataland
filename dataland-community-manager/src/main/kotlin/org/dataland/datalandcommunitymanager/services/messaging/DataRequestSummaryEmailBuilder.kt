@@ -54,12 +54,10 @@ class DataRequestSummaryEmailBuilder(
      * @param events A list of notification event entities to process.
      * @return The email content that encapsulates the summary of data requests.
      */
-    fun dataRequestSummaryEmailContent(events: List<NotificationEventEntity>): TypedEmailContent {
-        // Aggregate data for each type of event
+    private fun dataRequestSummaryEmailContent(events: List<NotificationEventEntity>): TypedEmailContent {
         val newData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.AvailableEvent)
         val updatedData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.UpdatedEvent)
         val nonsourceableData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.NonSourceableEvent)
-        // Create and return an email content object
         return DataRequestSummaryEmailContent(newData, updatedData, nonsourceableData)
     }
 
@@ -76,12 +74,9 @@ class DataRequestSummaryEmailBuilder(
         val filteredEventTypeEvents = events.filter { it.notificationEventType == eventType }
         val groupedEvents = filteredEventTypeEvents.groupBy { Pair(it.framework.toString(), it.reportingPeriod) }
 
-        // Map the grouped events to FrameworkData objects
         return groupedEvents.map { (key, group) ->
             val (dataTypeLabel, reportingPeriod) = key
-            // Get unique company names/IDs for the grouped events
             val companies = group.map { companyInfoService.getValidCompanyNameOrId(it.companyId.toString()) }.distinct()
-            // Create a FrameworkData object for each group
             DataRequestSummaryEmailContent.FrameworkData(
                 dataTypeLabel = dataTypeLabel,
                 reportingPeriod = reportingPeriod,

@@ -17,6 +17,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
@@ -24,40 +25,42 @@ import org.dataland.datalandqaservice.openApiClient.model.QaReviewResponse
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anySet
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.doNothing
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
 import java.util.Optional
 import java.util.UUID
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestUpdateManagerTest {
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
-    private lateinit var mockCompanyInfoService: CompanyInfoService
-    private lateinit var mockDataRequestRepository: DataRequestRepository
-    private lateinit var mockDataRequestSummaryNotificationService: DataRequestSummaryNotificationService
-    private lateinit var mockMetaControllerApi: MetaDataControllerApi
-    private lateinit var mockQaControllerApi: QaControllerApi
-    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
-    private lateinit var mockRequestEmailManager: RequestEmailManager
-    private lateinit var mockCompanyRolesManager: CompanyRolesManager
-    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    private val mockCompanyInfoService = mock<CompanyInfoService>()
+    private val mockDataRequestLogger = mock<DataRequestLogger>()
+    private val mockDataRequestRepository = mock<DataRequestRepository>()
+    private val mockDataRequestSummaryNotificationService = mock<DataRequestSummaryNotificationService>()
+    private val mockMetaDataControllerApi = mock<MetaDataControllerApi>()
+    private val mockQaControllerApi = mock<QaControllerApi>()
+    private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
+    private val mockDataRequestUpdateUtils = mock<DataRequestUpdateUtils>()
+    private val mockRequestEmailManager = mock<RequestEmailManager>()
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
-    private val correlationId = UUID.randomUUID().toString()
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
     private lateinit var mockQaReviewResponses: List<QaReviewResponse>
+
+    private val correlationId = UUID.randomUUID().toString()
 
     private val dummyRequestChangeReason = "dummy reason"
     private val dummyCompanyId = "dummyCompanyId"
@@ -106,15 +109,13 @@ class DataRequestUpdateManagerTest {
     private val dummyAdminComment = "test comment"
 
     private fun mockRepos() {
-        mockDataRequestRepository = mock(DataRequestRepository::class.java)
-        `when`<Any>(
-            mockDataRequestRepository.findById(dummyDataRequestEntity1.dataRequestId),
-        ).thenReturn(Optional.of(dummyDataRequestEntity1))
-        mockDataRequestSummaryNotificationService = mock(DataRequestSummaryNotificationService::class.java)
+        doReturn(Optional.of(dummyDataRequestEntity1))
+            .whenever(mockDataRequestRepository)
+            .findById(dummyDataRequestEntity1.dataRequestId)
         dummyDataRequestEntities.forEach {
-            `when`<Any>(
-                mockDataRequestRepository.findById(it.dataRequestId),
-            ).thenReturn(Optional.of(it))
+            doReturn(Optional.of(it))
+                .whenever(mockDataRequestRepository)
+                .findById(it.dataRequestId)
         }
         doReturn(Optional.of(dummyChildCompanyDataRequestEntity1))
             .whenever(mockDataRequestRepository)
@@ -122,8 +123,9 @@ class DataRequestUpdateManagerTest {
         doReturn(Optional.of(dummyChildCompanyDataRequestEntity2))
             .whenever(mockDataRequestRepository)
             .findById(dummyChildCompanyDataRequestEntity2.dataRequestId)
-        `when`(
-            mockDataRequestRepository.searchDataRequestEntity(
+        doReturn(dummyDataRequestEntities)
+            .whenever(mockDataRequestRepository)
+            .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
@@ -131,8 +133,7 @@ class DataRequestUpdateManagerTest {
                         reportingPeriod = metaData.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     ),
-            ),
-        ).thenReturn(dummyDataRequestEntities)
+            )
         doReturn(listOf(dummyChildCompanyDataRequestEntity1, dummyChildCompanyDataRequestEntity2))
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
@@ -143,32 +144,23 @@ class DataRequestUpdateManagerTest {
                     ),
             )
 
-        `when`(
-            mockDataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+        doReturn(listOf(dummyDataRequestEntity1))
+            .whenever(mockDataRequestRepository)
+            .findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 datalandCompanyId = dummyNonSourceableInfo.companyId,
                 dataType = dummyNonSourceableInfo.dataType.toString(),
                 reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
-            ),
-        ).thenReturn(listOf(dummyDataRequestEntity1))
+            )
 
-        mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
-        doNothing().`when`(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
-            any(), any(), any(), anyString(), any(), any(),
+        doNothing().whenever(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
+            any(), any(), any(), any<String>(), any(), any(),
         )
-        doNothing().`when`(mockDataRequestProcessingUtils).addMessageToMessageHistory(
-            any(), anySet(), anyString(), any(),
+        doNothing().whenever(mockDataRequestProcessingUtils).addMessageToMessageHistory(
+            any(), any<Set<String>>(), any<String>(), any(),
         )
     }
 
     private fun setupDataRequestAlterationManager() {
-        mockRequestEmailManager = mock(RequestEmailManager::class.java)
-        mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
-        mockCompanyInfoService = mock(CompanyInfoService::class.java)
-
-        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        mockMetaControllerApi = mock(MetaDataControllerApi::class.java)
-        mockQaControllerApi = mock(QaControllerApi::class.java)
-
         doReturn("dummyCompany").whenever(mockCompanyInfoService).getValidCompanyName(dummyCompanyId)
         doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId1")
         doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId2")
@@ -194,35 +186,33 @@ class DataRequestUpdateManagerTest {
         ).whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
 
-        doReturn(metaData).whenever(mockMetaControllerApi).getDataMetaInfo(metaData.dataId)
+        doReturn(metaData).whenever(mockMetaDataControllerApi).getDataMetaInfo(metaData.dataId)
 
         mockQaReviewResponses =
             listOf(
-                mock(QaReviewResponse::class.java),
-                mock(QaReviewResponse::class.java),
+                mock<QaReviewResponse>(),
+                mock<QaReviewResponse>(),
             )
-        // The following ensures that all data request entities are treated as having an earlier
-        // QA approval.
+
         doReturn(mockQaReviewResponses)
             .whenever(mockQaControllerApi)
             .getInfoOnDatasets(any(), any(), any(), any(), any(), any())
 
         dataRequestUpdateManager =
             DataRequestUpdateManager(
-                companyInfoService = mockCompanyInfoService,
                 dataRequestRepository = mockDataRequestRepository,
-                dataRequestLogger = mock(DataRequestLogger::class.java),
-                metaDataControllerApi = mockMetaControllerApi,
-                qaControllerApi = mockQaControllerApi,
-                requestEmailManager = mockRequestEmailManager,
-                companyRolesManager = mockCompanyRolesManager,
-                utils = mockDataRequestProcessingUtils,
-                companyDataControllerApi = mockCompanyDataControllerApi,
                 dataRequestSummaryNotificationService = mockDataRequestSummaryNotificationService,
+                dataRequestLogger = mockDataRequestLogger,
+                requestEmailManager = mockRequestEmailManager,
+                metaDataControllerApi = mockMetaDataControllerApi,
+                processingUtils = mockDataRequestProcessingUtils,
+                updateUtils = mockDataRequestUpdateUtils,
+                companyDataControllerApi = mockCompanyDataControllerApi,
             )
     }
 
-    private fun setupDummyDataRequestEntities() {
+    @BeforeAll
+    fun setupDummyDataRequestEntities() {
         dummyDataRequestEntities =
             listOf(
                 DataRequestEntity(
@@ -275,17 +265,16 @@ class DataRequestUpdateManagerTest {
     @BeforeEach
     fun setupMocksAndDummyRequests() {
         TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
-        setupDummyDataRequestEntities()
         mockRepos()
         setupDataRequestAlterationManager()
     }
 
     @Test
     fun `validate that a request response email is sent when a request status is patched to answered and flag is active`() {
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
-            correlationId,
+            correlationId = correlationId,
         )
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
@@ -299,13 +288,13 @@ class DataRequestUpdateManagerTest {
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
+                any(), any<Set<String>>(), any<String>(), any(),
             )
     }
 
     @Test
     fun `validate that no request response email is sent when a request status is patched to answered and flag is inactive`() {
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity2.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             correlationId,
@@ -322,13 +311,13 @@ class DataRequestUpdateManagerTest {
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
+                any(), any<Set<String>>(), any<String>(), any(),
             )
     }
 
     @Test
     fun `validate that no request response email is sent when a request status is patched to closed and flag is active`() {
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Closed),
             correlationId,
@@ -345,14 +334,14 @@ class DataRequestUpdateManagerTest {
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
+                any(), any<Set<String>>(), any<String>(), any(),
             )
     }
 
     @Test
     fun `validate that no email is sent and the history is updated when an access status is patched`() {
         val randomUUID = UUID.randomUUID().toString()
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
             randomUUID,
@@ -367,7 +356,7 @@ class DataRequestUpdateManagerTest {
 
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
+                any(), any<Set<String>>(), any<String>(), any(),
             )
     }
 
@@ -389,14 +378,14 @@ class DataRequestUpdateManagerTest {
                 eq(dummyChildCompanyDataRequestEntity1),
                 eq(RequestStatus.Answered),
                 eq(true),
-                anyString(),
+                any<String>(),
             )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity2),
                 eq(RequestStatus.Answered),
                 eq(true),
-                anyString(),
+                any<String>(),
             )
         verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
@@ -407,24 +396,24 @@ class DataRequestUpdateManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 eq(dummyChildCompanyDataRequestEntity1), any(),
-                any(), anyString(),
+                any(), any<String>(),
                 any(), any(),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 eq(dummyChildCompanyDataRequestEntity2), any(),
-                any(), anyString(),
+                any(), any<String>(),
                 any(), any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
+                any(), any<Set<String>>(), any<String>(), any(),
             )
     }
 
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
@@ -436,25 +425,25 @@ class DataRequestUpdateManagerTest {
 
         verify(mockRequestEmailManager, times(1))
             .sendSingleDataRequestEmail(
-                any(), anySet(), anyString(),
+                any(), any<Set<String>>(), any<String>(),
             )
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
+                any(), any<Set<String>>(), any<String>(), any(),
             )
 
         verify(mockDataRequestProcessingUtils, times(0))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), anyString(),
+                any(), any<String>(),
                 any(), any(),
             )
     }
 
     @Test
     fun `validate that no email is sent when both request priority and admin comment are patched`() {
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
@@ -466,7 +455,7 @@ class DataRequestUpdateManagerTest {
 
         verify(mockRequestEmailManager, times(0))
             .sendSingleDataRequestEmail(
-                any(), anySet(), anyString(),
+                any(), any<Set<String>>(), any<String>(),
             )
     }
 
@@ -474,7 +463,7 @@ class DataRequestUpdateManagerTest {
     fun `validate that the modification time remains unchanged when only the admin comment is patched`() {
         val originalModificationTime = dummyDataRequestEntity1.lastModifiedDate
 
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(adminComment = dummyAdminComment),
             correlationId = correlationId,
@@ -488,7 +477,7 @@ class DataRequestUpdateManagerTest {
     fun `validate that the modification time changes if the request priority is patched`() {
         val originalModificationTime = dummyDataRequestEntity1.lastModifiedDate
 
-        dataRequestUpdateManager.patchDataRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestPriority = RequestPriority.High),
             correlationId = correlationId,
@@ -508,7 +497,7 @@ class DataRequestUpdateManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), anyString(),
+                any(), any<String>(),
                 any(), anyOrNull(),
             )
     }

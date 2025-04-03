@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.util.UUID
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -100,13 +99,14 @@ class DataRequestUpdateManager
          * Entry point for patch data requests coming from RequestController.
          */
         @Transactional
-        fun handlePatchDataApiRequest(
-            dataRequestId: UUID,
+        fun processExternalPatchRequestForDataRequest(
+            dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
+            correlationId: String,
         ) = patchDataRequest(
-            dataRequestId.toString(),
+            dataRequestId,
             dataRequestPatch,
-            UUID.randomUUID().toString(),
+            correlationId,
         )
 
         /**
