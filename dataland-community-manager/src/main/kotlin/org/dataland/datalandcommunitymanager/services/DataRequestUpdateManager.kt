@@ -99,7 +99,7 @@ class DataRequestUpdateManager
          * Entry point for patch data requests coming from RequestController.
          */
         @Transactional
-        fun handlePatchDataApiRequest(
+        fun processExternalPatchRequestForDataRequest(
             dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
             correlationId: String,

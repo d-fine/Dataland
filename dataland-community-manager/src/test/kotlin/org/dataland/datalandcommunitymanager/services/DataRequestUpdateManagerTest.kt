@@ -271,7 +271,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that a request response email is sent when a request status is patched to answered and flag is active`() {
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             correlationId = correlationId,
@@ -294,7 +294,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that no request response email is sent when a request status is patched to answered and flag is inactive`() {
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity2.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             correlationId,
@@ -317,7 +317,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that no request response email is sent when a request status is patched to closed and flag is active`() {
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Closed),
             correlationId,
@@ -341,7 +341,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that no email is sent and the history is updated when an access status is patched`() {
         val randomUUID = UUID.randomUUID().toString()
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
             randomUUID,
@@ -413,7 +413,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
@@ -443,7 +443,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that no email is sent when both request priority and admin comment are patched`() {
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch =
                 DataRequestPatch(
@@ -463,7 +463,7 @@ class DataRequestUpdateManagerTest {
     fun `validate that the modification time remains unchanged when only the admin comment is patched`() {
         val originalModificationTime = dummyDataRequestEntity1.lastModifiedDate
 
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(adminComment = dummyAdminComment),
             correlationId = correlationId,
@@ -477,7 +477,7 @@ class DataRequestUpdateManagerTest {
     fun `validate that the modification time changes if the request priority is patched`() {
         val originalModificationTime = dummyDataRequestEntity1.lastModifiedDate
 
-        dataRequestUpdateManager.handlePatchDataApiRequest(
+        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
             dataRequestId = dummyDataRequestEntity1.dataRequestId,
             dataRequestPatch = DataRequestPatch(requestPriority = RequestPriority.High),
             correlationId = correlationId,
