@@ -70,7 +70,7 @@ class InvestorRelationshipsNotificationService
         }
 
         /**
-         * Creates a company-specific notification event in the "IR Emails" pipeline.
+         * Creates a company-specific notification event in the "Investor Relationship Emails" pipeline.
          * @param dataMetaInformation Represents the metadata information for the company.
          */
         fun createCompanySpecificNotificationEvent(dataMetaInformation: DataMetaInformation) {

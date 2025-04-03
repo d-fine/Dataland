@@ -25,7 +25,7 @@ class InvestorRelationshipsManager(
      * contact emails specified and, if so, creates the relevant company-specific
      * notification event for the weekly scheduler.
      */
-    fun saveNotificationEventForIREmails(dataId: String) {
+    fun saveNotificationEventForInvestorRelationshipsEmails(dataId: String) {
         val metaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
         val companyId = metaInfo.companyId
         val contactEmails = getContactEmailsForCompany(companyId)

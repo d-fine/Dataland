@@ -78,13 +78,13 @@ class CommunityManagerListenerUnitTest {
                 verify(mockDataRequestUpdateManager).processUserRequests(
                     validDataId, correlationId,
                 )
-                verify(mockInvestorRelationshipsManager).saveNotificationEventForIREmails(validDataId)
+                verify(mockInvestorRelationshipsManager).saveNotificationEventForInvestorRelationshipsEmails(validDataId)
             }
             QaStatus.Rejected -> {
                 verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
                     any<String>(), any<String>(),
                 )
-                verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForIREmails(any<String>())
+                verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForInvestorRelationshipsEmails(any<String>())
             }
             else -> {}
         }

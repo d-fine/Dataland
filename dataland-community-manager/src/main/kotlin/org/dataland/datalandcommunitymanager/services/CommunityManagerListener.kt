@@ -81,7 +81,7 @@ class CommunityManagerListener(
                 dataId = dataId,
                 correlationId = id,
             )
-            investorRelationshipsManager.saveNotificationEventForIREmails(
+            investorRelationshipsManager.saveNotificationEventForInvestorRelationshipsEmails(
                 dataId = dataId,
             )
         }
