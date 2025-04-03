@@ -44,7 +44,10 @@ class NotificationSchedulerTest {
 
         notificationScheduler =
             NotificationScheduler(
-                notificationEventRepository, notificationUtils, investorRelationshipNotificationService, dataRequestSummaryNotificationService,
+                notificationEventRepository,
+                notificationUtils,
+                investorRelationshipNotificationService,
+                dataRequestSummaryNotificationService,
             )
     }
 

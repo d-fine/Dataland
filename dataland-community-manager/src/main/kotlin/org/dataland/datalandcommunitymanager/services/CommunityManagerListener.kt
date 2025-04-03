@@ -9,9 +9,9 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.NonSourceableMessage
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -131,6 +131,34 @@ class CommunityManagerListener(
     }
 
     /**
+     * Checks whether at least one of the fields companyId or reportingPeriod in the message
+     * is empty and, if so, throws an appropriate exception.
+     */
+    private fun checkWhetherReceivedDataIsIncomplete(sourceabilityMessage: SourceabilityMessage) {
+        if (sourceabilityMessage.receivedDataIsIncomplete()) {
+            throw MessageQueueRejectException("Neither companyId nor reportingPeriod may be empty.")
+        }
+    }
+
+    /**
+     * Checks whether the message actually corresponds to a dataset being set to non-sourceable
+     * (as opposed to it being set to sourceable). If not, it throws an appropriate exception.
+     */
+    private fun checkWhetherDatasetWasSetToSourceable(sourceabilityMessage: SourceabilityMessage) {
+        if (!sourceabilityMessage.datasetWasSetToNonSourceable()) {
+            throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable.")
+        }
+    }
+
+    /**
+     * Tries to decode the dataType string field in the message to a DataTypeEnum object to return.
+     * If the decoding fails, an appropriate exception is thrown.
+     */
+    private fun decodeDataTypeIfPossible(sourceabilityMessage: SourceabilityMessage): DataTypeEnum =
+        DataTypeEnum.decode(sourceabilityMessage.dataType)
+            ?: throw MessageQueueRejectException("Framework name could not be understood.")
+
+    /**
      * Listens for message that specifies a dataset as non-sourceable
      * and patches all requests corresponding to this dataset to the request status non-sourceable.
      * @param payload the message describing the result of the data non-sourceable event
@@ -160,34 +188,25 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val nonSourceableMessage = MessageQueueUtils.readMessagePayload<NonSourceableMessage>(payload, objectMapper)
+        val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload, objectMapper)
 
-        if (nonSourceableMessage.receivedDataIsIncomplete()) {
-            throw MessageQueueRejectException("Received data is incomplete")
-        }
-
-        if (!nonSourceableMessage.datasetWasSetToNonSourceable()) {
-            throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable")
-        }
+        checkWhetherReceivedDataIsIncomplete(sourceabilityMessage)
+        checkWhetherDatasetWasSetToSourceable(sourceabilityMessage)
+        val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(
-            "Received data-non-sourceable-message for data type: ${nonSourceableMessage.dataType}, " +
-                "company ID: ${nonSourceableMessage.companyId} and reporting period: ${nonSourceableMessage.reportingPeriod}. " +
+            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.dataType}, " +
+                "company ID: ${sourceabilityMessage.companyId} and reporting period: ${sourceabilityMessage.reportingPeriod}. " +
                 "Correlation ID: $correlationId",
         )
 
-        val dataTypeDecoded =
-            DataTypeEnum.decode(nonSourceableMessage.dataType) ?: throw MessageQueueRejectException(
-                "Data type could not be decoded.",
-            )
-
         val nonSourceableInfo =
             NonSourceableInfo(
-                companyId = nonSourceableMessage.companyId,
+                companyId = sourceabilityMessage.companyId,
                 dataType = dataTypeDecoded,
-                reportingPeriod = nonSourceableMessage.reportingPeriod,
-                isNonSourceable = nonSourceableMessage.isNonSourceable,
-                reason = nonSourceableMessage.reason,
+                reportingPeriod = sourceabilityMessage.reportingPeriod,
+                isNonSourceable = sourceabilityMessage.isNonSourceable,
+                reason = sourceabilityMessage.reason,
             )
 
         MessageQueueUtils.rejectMessageOnException {

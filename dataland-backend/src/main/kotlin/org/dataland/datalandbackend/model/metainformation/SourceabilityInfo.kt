@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.model.DataType
  * @param isNonSourceable true if there is no source available
  * @param reason reason why there is no source available
  */
-data class NonSourceableInfo(
+data class SourceabilityInfo(
     @field:JsonProperty(required = true)
     val companyId: String,
     @field:JsonProperty(required = true)
