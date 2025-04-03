@@ -30,17 +30,15 @@ class DataRequestSummaryNotificationService
          * @param events List of unprocessed data request summary notification events.
          */
         fun processNotificationEvents(events: List<NotificationEventEntity>) {
-            val eventsGroupedByUser = events.groupBy { it.userId }
+            val eventsGroupedByUser = events.groupBy { it.userId }.filter { it.key != null }
             eventsGroupedByUser.forEach { (userId, userEvents) ->
-                if (userId != null) {
-                    logger.info(
-                        "Requirements for Data Request Summary notification are met. Sending notification email.",
-                    )
-                    dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
-                        unprocessedEvents = userEvents,
-                        userId = userId,
-                    )
-                }
+                logger.info(
+                    "Requirements for Data Request Summary notification are met. Sending notification email.",
+                )
+                dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
+                    unprocessedEvents = userEvents,
+                    userId = userId!!,
+                )
             }
         }
 
