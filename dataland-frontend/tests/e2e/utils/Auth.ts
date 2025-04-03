@@ -41,7 +41,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .click();
   }
-  cy.url().should('eq', getBaseUrl() + '/companies');
+  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', getBaseUrl() + '/companies');
   cy.wait('@getCompanies').then((interception) => {
     globalJwt = interception.request.headers['authorization'] as string;
   });

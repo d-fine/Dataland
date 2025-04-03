@@ -367,7 +367,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NonSourceableInfo"
+                "$ref": "#/components/schemas/SourceabilityInfo"
               }
             }
           },
@@ -6163,7 +6163,7 @@
           }
         }
       },
-      "NonSourceableInfo": {
+      "SourceabilityInfo": {
         "required": [
           "companyId",
           "dataType",
@@ -20404,25 +20404,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           }
         }
       },
@@ -20445,10 +20445,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

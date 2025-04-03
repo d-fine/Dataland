@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
@@ -37,20 +37,20 @@ class NonSourceableDataManager(
 
     /**
      * The method stores meta information to a non-sourceable dataset in the nonSourceableDataRepository
-     * @param nonSourceableInfo the of the dataset
+     * @param sourceabilityInfo the of the dataset
      */
     @Transactional
-    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfoResponse? {
+    fun storeNonSourceableData(sourceabilityInfo: SourceabilityInfo): NonSourceableInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
         val nonSourceableEntity =
             NonSourceableEntity(
                 eventId = null,
-                companyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType,
-                reportingPeriod = nonSourceableInfo.reportingPeriod,
-                isNonSourceable = nonSourceableInfo.isNonSourceable,
-                reason = nonSourceableInfo.reason,
+                companyId = sourceabilityInfo.companyId,
+                dataType = sourceabilityInfo.dataType,
+                reportingPeriod = sourceabilityInfo.reportingPeriod,
+                isNonSourceable = sourceabilityInfo.isNonSourceable,
+                reason = sourceabilityInfo.reason,
                 creationTime = creationTime,
                 userId = userId,
             )
@@ -61,17 +61,17 @@ class NonSourceableDataManager(
      * Processes a request to store information about a dataset being labeled as non-sourceable.
      * This includes verifying the existence of the company, checking if the dataset already exists,
      * storing the non-sourceable data, and sending a corresponding message to a message queue.
-     * @param nonSourceableInfo the NonSourceableInfo of the dataset
+     * @param sourceabilityInfo the NonSourceableInfo of the dataset
      */
-    fun processSourceabilityDataStorageRequest(nonSourceableInfo: NonSourceableInfo) {
-        val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
-        companyQueryManager.verifyCompanyIdExists(nonSourceableInfo.companyId)
+    fun processSourceabilityDataStorageRequest(sourceabilityInfo: SourceabilityInfo) {
+        val correlationId = generateCorrelationId(sourceabilityInfo.companyId, null)
+        companyQueryManager.verifyCompanyIdExists(sourceabilityInfo.companyId)
         val dataMetaInfo =
             dataMetaInformationManager.searchDataMetaInfo(
                 DataMetaInformationSearchFilter(
-                    companyId = nonSourceableInfo.companyId,
-                    dataType = nonSourceableInfo.dataType,
-                    reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    companyId = sourceabilityInfo.companyId,
+                    dataType = sourceabilityInfo.dataType,
+                    reportingPeriod = sourceabilityInfo.reportingPeriod,
                     qaStatus = QaStatus.Accepted,
                     onlyActive = false,
                 ),
@@ -80,14 +80,14 @@ class NonSourceableDataManager(
             logger.info("Creating a NonSourceableEntity failed because the dataset exists (correlationId: $correlationId)")
             throw InvalidInputApiException(
                 "DataMetaInfo exists for the triple companyId, reportingPeriod and datyType. ",
-                "DataMetaInfo exists for companyId ${nonSourceableInfo.companyId}, " + "reporting period " +
-                    "${nonSourceableInfo.reportingPeriod} and dataType ${nonSourceableInfo.dataType}. ",
+                "DataMetaInfo exists for companyId ${sourceabilityInfo.companyId}, " + "reporting period " +
+                    "${sourceabilityInfo.reportingPeriod} and dataType ${sourceabilityInfo.dataType}. ",
             )
         }
-        storeNonSourceableData(nonSourceableInfo)
+        storeNonSourceableData(sourceabilityInfo)
         logger.info("NonSourceableEntity has been saved to data base during process with correlationId $correlationId")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(nonSourceableInfo),
+            body = objectMapper.writeValueAsString(sourceabilityInfo),
             type = MessageType.DATA_NONSOURCEABLE,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,

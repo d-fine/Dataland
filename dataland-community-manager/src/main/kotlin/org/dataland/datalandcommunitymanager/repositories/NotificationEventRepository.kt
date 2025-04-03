@@ -1,22 +1,23 @@
 package org.dataland.datalandcommunitymanager.repositories
 
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import java.util.UUID
 
 /**
- * A JPA repository for storing and retrieving notification events for elementary event types
+ * A JPA repository for storing and retrieving notification events for notification event types
  */
 interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
     /**
-     * A function for searching for notification events by companyId and the type of the associated elementary events
-     * @param companyId to filter for
-     * @param elementaryEventType to filter for
-     * @returns the notification events
+     * A function to search for unprocessed notification events by a list of notification event types.
+     * @param notificationEventTypes a list of notification event types to filter.
+     * @return a list of unprocessed notification events matching the criteria.
      */
-    fun findNotificationEventByCompanyIdAndElementaryEventType(
-        companyId: UUID,
-        elementaryEventType: ElementaryEventType,
+    @Query("SELECT n FROM NotificationEventEntity n WHERE n.notificationEventType IN :notificationEventTypes AND n.isProcessed = false")
+    fun findAllByNotificationEventTypesAndIsProcessedFalse(
+        @Param("notificationEventTypes") notificationEventTypes: List<NotificationEventType>,
     ): List<NotificationEventEntity>
 }

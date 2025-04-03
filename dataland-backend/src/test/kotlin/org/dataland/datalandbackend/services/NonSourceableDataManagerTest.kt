@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -77,12 +77,12 @@ class NonSourceableDataManagerTest(
     @Test
     fun `check that an exception is thrown when non existing companyId is provided processing sourceability storage`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
-        val nonSourceableInfo =
-            NonSourceableInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
+        val sourceabilityInfo =
+            SourceabilityInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
                 nonSourceableDataManager.processSourceabilityDataStorageRequest(
-                    nonSourceableInfo,
+                    sourceabilityInfo,
                 )
             }
         assertEquals(
@@ -106,8 +106,8 @@ class NonSourceableDataManagerTest(
                 nonSourceableDataRepository = nonSourceableDataRepository,
                 companyQueryManager = mockCompanyQueryManager,
             )
-        val nonSourceableInfo =
-            NonSourceableInfo(
+        val sourceabilityInfo =
+            SourceabilityInfo(
                 companyId = "existingCompanyId",
                 dataType = dataType,
                 reportingPeriod = "2023",
@@ -116,26 +116,26 @@ class NonSourceableDataManagerTest(
             )
         doNothing()
             .whenever(mockCompanyQueryManager)
-            .verifyCompanyIdExists(nonSourceableInfo.companyId)
+            .verifyCompanyIdExists(sourceabilityInfo.companyId)
         whenever(
             mockDataMetaInformationManager.searchDataMetaInfo(
                 DataMetaInformationSearchFilter(
-                    companyId = nonSourceableInfo.companyId,
-                    dataType = nonSourceableInfo.dataType,
+                    companyId = sourceabilityInfo.companyId,
+                    dataType = sourceabilityInfo.dataType,
                     onlyActive = false,
-                    reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    reportingPeriod = sourceabilityInfo.reportingPeriod,
                     qaStatus = QaStatus.Accepted,
                 ),
             ),
         ).thenReturn(emptyList())
-        nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
+        nonSourceableDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
 
         verify(mockDataMetaInformationManager).searchDataMetaInfo(
             DataMetaInformationSearchFilter(
-                companyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType,
+                companyId = sourceabilityInfo.companyId,
+                dataType = sourceabilityInfo.dataType,
                 onlyActive = false,
-                reportingPeriod = nonSourceableInfo.reportingPeriod,
+                reportingPeriod = sourceabilityInfo.reportingPeriod,
                 qaStatus = QaStatus.Accepted,
             ),
         )
