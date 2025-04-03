@@ -205,7 +205,6 @@ class DataRequestUpdateManagerTest {
                 dataRequestLogger = mockDataRequestLogger,
                 requestEmailManager = mockRequestEmailManager,
                 metaDataControllerApi = mockMetaDataControllerApi,
-                processingUtils = mockDataRequestProcessingUtils,
                 updateUtils = mockDataRequestUpdateUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
             )
