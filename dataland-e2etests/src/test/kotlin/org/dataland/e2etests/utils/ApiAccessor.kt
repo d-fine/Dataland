@@ -193,6 +193,57 @@ class ApiAccessor {
         return qaApiAccessor.ensureQaIsPassed(listOf(dataMetaInformation), metaDataControllerApi)[0]
     }
 
+    fun uploadDummyFrameworkDataset(
+        companyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+    ): DataMetaInformation {
+        fun <T> uploadDataset(
+            frameWorkData: T,
+            frameworkDataUploaderFunction: (
+                companyId: String,
+                frameworkData: T,
+                reportingPeriod: String,
+            ) -> DataMetaInformation,
+        ) = uploadSingleFrameworkDataset(companyId, frameWorkData, reportingPeriod, frameworkDataUploaderFunction)
+
+        return when (dataType) {
+            DataTypeEnum.lksg ->
+                uploadDataset(
+                    frameWorkData = testDataProviderForLksgData.getTData(1)[0],
+                    frameworkDataUploaderFunction = this::lksgUploaderFunction,
+                )
+
+            DataTypeEnum.sfdr ->
+                uploadDataset(
+                    frameWorkData = testDataProviderForSfdrData.getTData(1)[0],
+                    frameworkDataUploaderFunction = this::sfdrUploaderFunction,
+                )
+
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
+                uploadDataset(
+                    frameWorkData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0],
+                    frameworkDataUploaderFunction = this::euTaxonomyNonFinancialsUploaderFunction,
+                )
+
+            DataTypeEnum.eutaxonomyMinusFinancials ->
+                uploadDataset(
+                    frameWorkData = testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+                    frameworkDataUploaderFunction = this::euTaxonomyFinancialsUploaderFunction,
+                )
+
+            DataTypeEnum.p2p ->
+                uploadDataset(
+                    frameWorkData = testDataProviderForP2pData.getTData(1)[0],
+                    frameworkDataUploaderFunction = this::p2pUploaderFunction,
+                )
+
+            else -> {
+                throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            }
+        }
+    }
+
     @Suppress("kotlin:S138")
     private fun uploadForDataType(
         dataType: DataTypeEnum,
