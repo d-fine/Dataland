@@ -39,7 +39,8 @@ class NotificationSchedulerTest {
     fun setupNotificationScheduler() {
         notificationEventRepository = mock(NotificationEventRepository::class.java)
         notificationUtils = mock(NotificationUtils::class.java)
-        investorRelationshipNotificationService = mock(InvestorRelationshipNotificationService::class.java)
+        investorRelationshipNotificationService =
+            mock(InvestorRelationshipNotificationService::class.java)
         dataRequestSummaryNotificationService = mock(DataRequestSummaryNotificationService::class.java)
 
         notificationScheduler =

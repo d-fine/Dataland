@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional
 class CommunityManagerListener(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
-    @Autowired private val investorRelationshipsManager: InvestorRelationshipsManager,
+    @Autowired private val investorRelationshipManager: InvestorRelationshipManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -81,7 +81,7 @@ class CommunityManagerListener(
                 dataId = dataId,
                 correlationId = id,
             )
-            investorRelationshipsManager.saveNotificationEventForIREmails(
+            investorRelationshipManager.saveNotificationEventForIREmails(
                 dataId = dataId,
             )
         }

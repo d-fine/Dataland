@@ -9,7 +9,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimCompanyOwnershipEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetAvailableClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * A service used to build and send CE external claim company ownership emails and related internal emails,
- * when dataset is uploaded.
+ * A service used to build and send CE external Investor Relationship emails and related internal emails
+ * When datasets are available, and the company ownership is claimable.
  */
 @Service("InvestorRelationshipEmailBuilder")
 class InvestorRelationshipEmailBuilder(
@@ -31,7 +31,6 @@ class InvestorRelationshipEmailBuilder(
 ) {
     /**
      * Sends both external and internal Investor Relationship notification emails based on the specified parameters.
-     *
      * @param unprocessedEvents A list of notification event entities that are unprocessed
      * and contained in the summary email.
      * @param companyId The identifier of the company in Dataland.
@@ -61,7 +60,6 @@ class InvestorRelationshipEmailBuilder(
 
     /**
      * Builds the content for external and internal Investor Relationship summary emails.
-     *
      * @param events List of NotificationEventEntity objects to process.
      * @param companyId UUID of the company for the email.
      * @param receiver List of recipient email addresses.
@@ -72,7 +70,6 @@ class InvestorRelationshipEmailBuilder(
         companyId: UUID,
         receiver: List<String>,
     ): Pair<TypedEmailContent, TypedEmailContent> {
-        // Group unprocessed events by framework and map them to reporting periods
         val frameworkData =
             events
                 .groupBy { it.framework }
@@ -80,12 +77,12 @@ class InvestorRelationshipEmailBuilder(
 
         // Create external email content detailing dataset uploads and ask for claiming company ownership
         val externalEmailContent =
-            DatasetUploadedClaimCompanyOwnershipEmailContent(
+            DatasetAvailableClaimCompanyOwnershipEmailContent(
                 companyName = companyInfoService.getValidCompanyNameOrId(companyId.toString()),
                 companyId = companyId.toString(),
                 frameworkData =
                     frameworkData.map {
-                        DatasetUploadedClaimCompanyOwnershipEmailContent.FrameworkData(
+                        DatasetAvailableClaimCompanyOwnershipEmailContent.FrameworkData(
                             readableFrameworkNameMapping[it.key] ?: "",
                             it.value,
                         )
@@ -111,13 +108,11 @@ class InvestorRelationshipEmailBuilder(
                 ),
             )
 
-        // Return both external and internal email content
         return Pair(externalEmailContent, internalEmailContent)
     }
 
     /**
      * Constructs a Value representing the company ID and name link.
-     *
      * @param companyId ID of the company.
      * @param companyName Name of the company.
      * @return A Value object representing the company link and ID.
@@ -135,7 +130,6 @@ class InvestorRelationshipEmailBuilder(
 
     /**
      * Constructs a Value representing the link to the dataset for the given data type.
-     *
      * @param dataType Enum representing the data type of the framework.
      * @param companyId ID of the company.
      * @return A Value object representing the data type link.
@@ -152,7 +146,6 @@ class InvestorRelationshipEmailBuilder(
 
     /**
      * Constructs a Value representing framework data as a list including reporting periods.
-     *
      * @param frameworkData A map of DataTypeEnum to a list of reporting periods.
      * @param companyId ID of the company.
      * @return A Value object representing the framework data.
@@ -173,7 +166,6 @@ class InvestorRelationshipEmailBuilder(
 
     /**
      * Constructs a Value representing reporting periods as a formatted list.
-     *
      * @param reportingPeriods List of reporting period strings.
      * @return A Value object encapsulating reporting periods.
      */
@@ -183,7 +175,6 @@ class InvestorRelationshipEmailBuilder(
 
     /**
      * Sends an email message to the queue with the specified content and recipients.
-     *
      * @param typedEmailContent The content of the email message.
      * @param receiver The list of email recipients.
      * @param cc The list of CC recipients.

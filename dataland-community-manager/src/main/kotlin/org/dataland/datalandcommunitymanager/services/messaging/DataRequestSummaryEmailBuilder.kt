@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * A service used to send data request summary emails.
+ * A service used to build scheduled data request summary emails, containing all data requests updates for one user
  */
 @Service("DataRequestSummaryEmailBuilder")
 class DataRequestSummaryEmailBuilder(
@@ -26,7 +26,7 @@ class DataRequestSummaryEmailBuilder(
     @Autowired val objectMapper: ObjectMapper,
 ) {
     /**
-     * Sends the Data Request summary email.
+     * Builds the Data Requests Summary email and sends CE message.
      * @param unprocessedEvents A list of notification event entities that are unprocessed
      * and contained in the summary email.
      * @param userId The ID of the user to whom the email should be sent.
@@ -39,7 +39,6 @@ class DataRequestSummaryEmailBuilder(
         val receiver = listOf(EmailRecipient.UserId(userId.toString()))
         val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
         val correlationId = UUID.randomUUID().toString()
-        // Send the email message to the queue
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,
@@ -57,8 +56,8 @@ class DataRequestSummaryEmailBuilder(
     private fun dataRequestSummaryEmailContent(events: List<NotificationEventEntity>): TypedEmailContent {
         val newData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.AvailableEvent)
         val updatedData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.UpdatedEvent)
-        val nonsourceableData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.NonSourceableEvent)
-        return DataRequestSummaryEmailContent(newData, updatedData, nonsourceableData)
+        val nonSourceableData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.NonSourceableEvent)
+        return DataRequestSummaryEmailContent(newData, updatedData, nonSourceableData)
     }
 
     /**

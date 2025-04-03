@@ -7,28 +7,29 @@ import org.springframework.stereotype.Service
 
 /**
  * A class for handling the investor-relationships part of the "QA Status Accepted" pipeline.
+ * Notification events are generated, when a dataset is available and the related company ownership is claimable
  */
 @Service
-class InvestorRelationshipsManager(
+class InvestorRelationshipManager(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val investorRelationshipNotificationService: InvestorRelationshipNotificationService,
 ) {
-    private fun getIRContactEmailsForCompany(companyId: String): List<String>? {
+    private fun getContactEmailsForCompany(companyId: String): List<String>? {
         val companyInfo = companyDataControllerApi.getCompanyInfo(companyId)
         return companyInfo.companyContactDetails
     }
 
     /**
-     * Checks whether the company of the dataset associated with the given id has IR
+     * Checks whether the company of the dataset associated with the given id has
      * contact emails specified and, if so, creates the relevant company-specific
      * notification event for the weekly scheduler.
      */
     fun saveNotificationEventForIREmails(dataId: String) {
         val metaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
         val companyId = metaInfo.companyId
-        val iRContactEmails = getIRContactEmailsForCompany(companyId)
-        if (!iRContactEmails.isNullOrEmpty()) {
+        val contactEmails = getContactEmailsForCompany(companyId)
+        if (!contactEmails.isNullOrEmpty()) {
             investorRelationshipNotificationService.createCompanySpecificNotificationEvent(metaInfo)
         }
     }

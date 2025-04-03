@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * Service that handles creation, processing and sending of investor relationship notification events.
+ * Service that handles creation, processing and sending of notification events,
+ * when datasets are available and their company ownership is claimable.
  */
 @Service("InvestorRelationshipNotificationService")
 class InvestorRelationshipNotificationService
@@ -28,7 +29,6 @@ class InvestorRelationshipNotificationService
 
         /**
          * Processes investor relationship events and sends emails to appropriate recipients.
-         *
          * @param notificationEvents List of unprocessed investor relationship notification events.
          */
         fun processNotificationEvents(notificationEvents: List<NotificationEventEntity>) {
@@ -56,7 +56,6 @@ class InvestorRelationshipNotificationService
 
         /**
          * Checks if a company has an owner assigned.
-         *
          * @param companyId UUID representing the company's ID.
          * @return Boolean indicating whether the company has an owner.
          */
@@ -72,7 +71,6 @@ class InvestorRelationshipNotificationService
 
         /**
          * Creates a company-specific notification event in the "IR Emails" pipeline.
-         *
          * @param dataMetaInformation Represents the metadata information for the company.
          */
         fun createCompanySpecificNotificationEvent(dataMetaInformation: DataMetaInformation) {

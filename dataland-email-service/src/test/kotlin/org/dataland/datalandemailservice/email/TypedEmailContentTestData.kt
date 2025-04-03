@@ -6,8 +6,8 @@ import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipCla
 import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetAvailableClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetUploadedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -139,12 +139,12 @@ class TypedEmailContentTestData : ArgumentsProvider {
         )
 
     private val datasetUploadedClaimCompanyOwnershipEmailContent =
-        DatasetUploadedClaimCompanyOwnershipEmailContent(
+        DatasetAvailableClaimCompanyOwnershipEmailContent(
             companyId, COMPANY_NAME,
             listOf(
-                DatasetUploadedClaimCompanyOwnershipEmailContent
+                DatasetAvailableClaimCompanyOwnershipEmailContent
                     .FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
-                DatasetUploadedClaimCompanyOwnershipEmailContent.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
+                DatasetAvailableClaimCompanyOwnershipEmailContent.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
             ),
         ).also {
             it.baseUrl = BASE_URL

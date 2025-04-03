@@ -13,7 +13,6 @@ class NotificationUtils(
 ) {
     /**
      * Processes notification events and sends emails to appropriate recipients.
-     *
      * @param events List of unprocessed notification events.
      */
     fun markEventsAsProcessed(events: List<NotificationEventEntity>) {

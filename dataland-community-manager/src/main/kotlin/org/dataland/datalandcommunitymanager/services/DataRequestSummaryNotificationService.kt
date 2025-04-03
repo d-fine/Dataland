@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * Service that handles processing and sending (to email service) of investor relationship notification events.
+ * Service that handles processing and sending of scheduled data request summary notification events,
+ * containing all data requests updates for one user
  */
 @Service("DataRequestSummaryNotificationService")
 class DataRequestSummaryNotificationService
@@ -26,7 +27,6 @@ class DataRequestSummaryNotificationService
 
         /**
          * Processes data request summary events and sends emails to appropriate recipients.
-         *
          * @param events List of unprocessed data request summary notification events.
          */
         fun processNotificationEvents(events: List<NotificationEventEntity>) {
@@ -48,7 +48,6 @@ class DataRequestSummaryNotificationService
          * Creates a user-specific notification event in the "QA Status Accepted" and "Data Non-Sourceable" pipelines.
          * This function is also invoked by the "patch data request" endpoint of MetaDataController, but actions are
          * only performed in cases naturally covered by the pipelines.
-         *
          * @param dataRequestEntity Represents the data request in question.
          * @param requestStatusAfter The request status after an update, if applicable.
          * @param immediateNotificationWasSent Boolean indicating if an immediate notification was already sent.
@@ -62,8 +61,8 @@ class DataRequestSummaryNotificationService
         ) {
             val notificationEventType =
                 determineNotificationEventType(
-                    requestStatusBefore = dataRequestEntity.requestStatus,
-                    requestStatusAfter = requestStatusAfter,
+                    requestStatusOld = dataRequestEntity.requestStatus,
+                    requestStatusNew = requestStatusAfter,
                     earlierQaApprovedVersionOfDatasetExists = earlierQaApprovedVersionOfDatasetExists,
                 )
 
@@ -90,31 +89,30 @@ class DataRequestSummaryNotificationService
         /**
          * Determines the type of notification event based on the transition of request statuses
          * and whether an earlier QA-approved version exists.
-         *
-         * @param requestStatusBefore The request status before an update.
-         * @param requestStatusAfter The request status after an update, if applicable.
+         * @param requestStatusOld The request status before an update.
+         * @param requestStatusNew The request status after an update, if applicable.
          * @param earlierQaApprovedVersionOfDatasetExists Boolean indicating if a prior QA approved version exists.
          * @return The NotificationEventType corresponding to the request update status or null for unknown transitions
          */
         private fun determineNotificationEventType(
-            requestStatusBefore: RequestStatus,
-            requestStatusAfter: RequestStatus?,
+            requestStatusOld: RequestStatus,
+            requestStatusNew: RequestStatus?,
             earlierQaApprovedVersionOfDatasetExists: Boolean,
         ): NotificationEventType? =
             when {
                 // Case 1: Transition from Open or NonSourceable to Answered
-                requestStatusBefore in listOf(RequestStatus.Open, RequestStatus.NonSourceable) &&
-                    requestStatusAfter == RequestStatus.Answered -> {
+                requestStatusOld in listOf(RequestStatus.Open, RequestStatus.NonSourceable) &&
+                    requestStatusNew == RequestStatus.Answered -> {
                     NotificationEventType.UpdatedEvent.takeUnless { !earlierQaApprovedVersionOfDatasetExists }
                         ?: NotificationEventType.AvailableEvent
                 }
                 // Case 2: Status remains Answered, Closed,or Resolved
-                requestStatusBefore in listOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved) &&
-                    requestStatusAfter in listOf(requestStatusBefore, null) -> {
+                requestStatusOld in listOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved) &&
+                    requestStatusNew in listOf(requestStatusOld, null) -> {
                     NotificationEventType.UpdatedEvent
                 }
                 // Case 3: Transition from Open to NonSourceable
-                requestStatusBefore == RequestStatus.Open && requestStatusAfter == RequestStatus.NonSourceable -> {
+                requestStatusOld == RequestStatus.Open && requestStatusNew == RequestStatus.NonSourceable -> {
                     NotificationEventType.NonSourceableEvent
                 }
                 // Else: If none of the conditions match, this will be null
