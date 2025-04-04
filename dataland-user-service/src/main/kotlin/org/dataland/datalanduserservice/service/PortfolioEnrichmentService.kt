@@ -101,8 +101,8 @@ class PortfolioEnrichmentService
             val portfolio = portfolioService.getPortfolioForUser(portfolioId)
             return EnrichedPortfolio(
                 portfolioId = portfolioId,
-                portfolioName = "",
-                userId = "",
+                portfolioName = portfolio.portfolioName,
+                userId = portfolio.userId,
                 entries =
                     getEnrichedEntries(
                         portfolio.companyIds.toList(),

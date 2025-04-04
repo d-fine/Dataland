@@ -7,6 +7,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.UserService
+import org.dataland.userService.openApiClient.model.EnrichedPortfolio
 import org.dataland.userService.openApiClient.model.PortfolioUpload
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,20 +28,9 @@ class UserServiceTest {
                 setOf(
                     PortfolioUpload.Frameworks.sfdr,
                     PortfolioUpload.Frameworks.additionalMinusCompanyMinusInformation,
-                    PortfolioUpload.Frameworks.nuclearMinusAndMinusGas,
+                    PortfolioUpload.Frameworks.lksg,
                 ),
         )
-
-    @Test
-    fun `test that creating and retrieving a portfolio for an existing company works as expected`() {
-        val portfolio = createDummyPortfolioUpload(setOf(companyId))
-
-        GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
-            ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolio) }
-            val portfolioResponse = assertDoesNotThrow { UserService.portfolioControllerApi.getAllPortfoliosForCurrentUser() }
-            assertEquals(1, portfolioResponse.size)
-        }
-    }
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
@@ -49,10 +39,42 @@ class UserServiceTest {
 
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2023")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2023")
-            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.eutaxonomyMinusFinancials, "2023")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.lksg, "2022")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2024")
 
             return storedCompanyInformation
+        }
+    }
+
+    private fun getLatestReportingPeriod(
+        companyId: String,
+        framework: DataTypeEnum,
+        enrichedPortfolio: EnrichedPortfolio,
+    ): String? {
+        val matchingEntries =
+            enrichedPortfolio.propertyEntries.filter {
+                it.companyId == companyId && it.framework == framework.toString()
+            }
+        assertEquals(1, matchingEntries.size)
+        return matchingEntries.first().latestReportingPeriod
+    }
+
+    @Test
+    fun `test that creating and retrieving a portfolio for an existing company works as expected`() {
+        val portfolio = createDummyPortfolioUpload(setOf(companyId))
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+            val timestampBeforeUpload = System.currentTimeMillis()
+            Thread.sleep(10)
+            ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolio) }
+            val portfolioResponse =
+                assertDoesNotThrow {
+                    UserService.portfolioControllerApi.getAllPortfoliosForCurrentUser().filter {
+                        it.creationTimestamp > timestampBeforeUpload
+                    }
+                }
+            assertEquals(1, portfolioResponse.size)
+            assertEquals(portfolio.portfolioName, portfolioResponse.first().portfolioName)
         }
     }
 
@@ -62,13 +84,45 @@ class UserServiceTest {
         val portfolioUpload = createDummyPortfolioUpload(storedCompanies.map { it.companyId }.toSet())
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
-            // ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolioUpload) }
-            UserService.portfolioControllerApi.createPortfolio(portfolioUpload)
+            ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolioUpload) }
             val portfolioResponse = assertDoesNotThrow { UserService.portfolioControllerApi.getAllPortfoliosForCurrentUser() }
-            val enrichedPortfolio = UserService.portfolioControllerApi.getEnrichedPortfolio(portfolioResponse.first().portfolioId)
+            val enrichedPortfolio =
+                UserService.portfolioControllerApi.getEnrichedPortfolio(
+                    portfolioResponse.maxBy { it.creationTimestamp }.portfolioId,
+                )
 
-            assertEquals(enrichedPortfolio.portfolioName, portfolioUpload.portfolioName)
-            assertEquals(6, enrichedPortfolio.propertyEntries.size)
+            assertEquals(portfolioUpload.portfolioName, enrichedPortfolio.portfolioName)
+            assertEquals(9, enrichedPortfolio.propertyEntries.size) // 3 companies times 3 frameworks
+
+            val relevantPortfolioFrameworks = listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg)
+            storedCompanies.map { it.companyId }.forEach {
+                assertEquals(
+                    null,
+                    getLatestReportingPeriod(it, DataTypeEnum.additionalMinusCompanyMinusInformation, enrichedPortfolio),
+                )
+            }
+            relevantPortfolioFrameworks.forEach {
+                assertEquals(
+                    null,
+                    getLatestReportingPeriod(storedCompanies[2].companyId, it, enrichedPortfolio),
+                )
+            }
+            assertEquals(
+                "2024",
+                getLatestReportingPeriod(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
+            )
+            assertEquals(
+                "2023",
+                getLatestReportingPeriod(storedCompanies[1].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
+            )
+            assertEquals(
+                null,
+                getLatestReportingPeriod(storedCompanies[0].companyId, DataTypeEnum.lksg, enrichedPortfolio),
+            )
+            assertEquals(
+                "2022",
+                getLatestReportingPeriod(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
+            )
         }
     }
 }
