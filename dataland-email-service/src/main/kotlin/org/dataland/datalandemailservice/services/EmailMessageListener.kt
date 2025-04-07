@@ -99,6 +99,7 @@ class EmailMessageListener(
         val receivers = resolveRecipients(emailMessage.receiver)
         val cc = resolveRecipients(emailMessage.cc)
         val bcc = resolveRecipients(emailMessage.bcc + additionalBccList)
+        logger.info("###############TEST LOG##############")
 
         val blockedContacts = receivers.blockedContacts + cc.blockedContacts + bcc.blockedContacts
         if (blockedContacts.isNotEmpty()) {
@@ -112,10 +113,10 @@ class EmailMessageListener(
 
         val sender = emailContactService.getSenderContact()
         emailMessage.typedEmailContent.setLateInitVars(receivers.allowedContacts, proxyPrimaryUrl, emailSubscriptionTracker)
-        logger.debug("Building email content for message with subject: ${emailMessage.typedEmailContent.subject}") // toto: remove
+        logger.info("Building email content for message with subject: ${emailMessage.typedEmailContent.subject}") // toto: remove
         val content = emailMessage.typedEmailContent.build()
         logger
-            .debug(
+            .info(
                 "Email content built: Subject = ${content.subject}, Text Content = ${content.textContent}," +
                     "HTML Content = ${content.htmlContent}",
             ) // toto:remove

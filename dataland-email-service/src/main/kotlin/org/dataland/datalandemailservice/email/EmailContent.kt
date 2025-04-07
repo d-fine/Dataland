@@ -29,9 +29,9 @@ data class EmailContent(
             htmlTemplate: String,
         ): EmailContent {
             logger.info("Building EmailContent")
-            logger.debug("Subject: $subject")
-            logger.debug("Text Template: $textTemplate")
-            logger.debug("HTML Template: $htmlTemplate")
+            logger.info("Subject: $subject")
+            logger.info("Text Template: $textTemplate")
+            logger.info("HTML Template: $htmlTemplate")
 
             return EmailContent(
                 subject,
