@@ -73,7 +73,7 @@ fun TypedEmailContent.build(): EmailContent { // toto: remove
     logger.info("HTML Template: $htmlTemplate")
 
     return EmailContent.fromTemplates(
-        this.subject, this, this.textTemplate, this.htmlTemplate, // toto: add this
+        this.subject, this, textTemplate, htmlTemplate,
     )
 }
 // fun TypedEmailContent.build(): EmailContent =
