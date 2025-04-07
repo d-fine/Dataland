@@ -107,7 +107,15 @@ class InvestorRelationshipsNotificationServiceTest {
         doReturn(CompanyInformation("Company", "", mapOf(), "DE", companyContactDetails = companyMailList))
             .whenever(mockCompanyDataControllerApi)
             .getCompanyInfo(companyUUID.toString())
-        doReturn(CompanyInformation("", "", mapOf(), "")).whenever(mockCompanyDataControllerApi).getCompanyInfo(any())
+        doReturn(
+            CompanyInformation(
+                companyName = "",
+                headquarters = "",
+                identifiers = mapOf(),
+                countryCode = "",
+                companyContactDetails = companyMailList,
+            ),
+        ).whenever(mockCompanyDataControllerApi).getCompanyInfo(any())
 
         val noNotificationEventEntity = notificationEventEntity.copy(companyId = UUID.randomUUID())
         val entityList = listOf(notificationEventEntity, notificationEventEntity, noNotificationEventEntity)

@@ -408,8 +408,9 @@ class DataRequestUpdateManagerTest {
             metaData.dataId,
             correlationId,
         )
+        val expectedNumberOfEmailsPerRequest = listOf(1, 0, 1)
         for (i in 0..2) {
-            verify(mockRequestEmailManager, times(1 - i % 2))
+            verify(mockRequestEmailManager, times(expectedNumberOfEmailsPerRequest[i]))
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyDataRequestEntities[i]),
                     eq(RequestStatus.Answered),
@@ -417,8 +418,9 @@ class DataRequestUpdateManagerTest {
                     eq(correlationId),
                 )
         }
+        val expectedNumberOfEmailsPerChildRequest = listOf(1, 0)
         for (i in 0..1) {
-            verify(mockRequestEmailManager, times(1 - i))
+            verify(mockRequestEmailManager, times(expectedNumberOfEmailsPerChildRequest[i]))
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyChildCompanyDataRequestEntities[i]),
                     eq(RequestStatus.Answered),
