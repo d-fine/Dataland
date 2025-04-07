@@ -125,7 +125,10 @@ class DataRequestUpdateManager
                     .findById(dataRequestId)
                     .getOrElse { throw DataRequestNotFoundApiException(dataRequestId) }
 
-            if (dataRequestEntity.requestStatus == RequestStatus.Withdrawn) return dataRequestEntity.toStoredDataRequest()
+            if (dataRequestEntity.requestStatus == RequestStatus.Withdrawn) {
+                checkForChangesAndSaveDataRequestEntityIfSo(dataRequestEntity, dataRequestPatch, answeringDataId)
+                return dataRequestEntity.toStoredDataRequest()
+            }
 
             if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
                 requestEmailManager.sendNotificationsSpecificToAccessRequests(
