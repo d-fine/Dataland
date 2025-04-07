@@ -19,19 +19,19 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 kotlin = "2.0.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
-mockito = "5.16.0"
+mockito = "5.16.1"
 junit-jupiter = "5.12.1"
 log4j = "2.24.3"
 jackson = "2.18.3"
-logback = "1.5.17"
-flyway = "11.4.0"
+logback = "1.5.18"
+flyway = "11.5.0"
 cloudevents = "4.0.1"
 itext = "9.1.0"
 tika = "3.1.0"
 poi = "5.4.0"
 jodconverter = "4.4.8"
-spring-boot = "3.4.3"
-spring-framework = "6.2.4"
+spring-boot = "3.4.4"
+spring-framework = "6.2.5"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
 
@@ -141,7 +141,7 @@ awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" 
 json = { group = "org.json", name = "json", version = "20250107" }
 
 # Mailjet
-mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.5" }
+mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.6" }
 
 # Flyway
 flyway = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }

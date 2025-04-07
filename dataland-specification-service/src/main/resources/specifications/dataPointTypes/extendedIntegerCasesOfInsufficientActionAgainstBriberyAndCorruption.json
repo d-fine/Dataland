@@ -3,6 +3,6 @@
   "name" : "Cases of Insufficient Action against Bribery and Corruption",
   "businessDefinition" : "Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 16. ",
   "dataPointBaseTypeId" : "extendedInteger",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ]
 }
