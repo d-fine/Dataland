@@ -6,7 +6,10 @@ import org.dataland.datalandmessagequeueutils.messages.email.InitializeSubscript
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
+import org.slf4j.LoggerFactory // toto: remove
 import java.util.UUID
+
+private val logger = LoggerFactory.getLogger(TypedEmailContent::class.java) // toto: remove
 
 /**
  * This function initializes the remaining variables required to create the content of the emails.
@@ -60,7 +63,16 @@ fun Value.setLateInitVars(emailSubscriptionTracker: EmailSubscriptionTracker) {
  * template for the html content. Then it processes the templates with the instance of TypedEmailContent and
  * creates the EmailContent.
  */
-fun TypedEmailContent.build(): EmailContent =
-    EmailContent.fromTemplates(
+fun TypedEmailContent.build(): EmailContent { // toto: remove
+    logger.info("Building email content")
+    logger.debug("Text Template: $textTemplate")
+    logger.debug("HTML Template: $htmlTemplate")
+
+    return EmailContent.fromTemplates(
         this.subject, this, textTemplate, htmlTemplate,
     )
+}
+// fun TypedEmailContent.build(): EmailContent =
+//    EmailContent.fromTemplates(
+//        this.subject, this, textTemplate, htmlTemplate,
+//    )

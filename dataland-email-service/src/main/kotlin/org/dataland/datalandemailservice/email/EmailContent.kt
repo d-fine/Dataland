@@ -1,6 +1,7 @@
 package org.dataland.datalandemailservice.email
 
 import com.mailjet.client.transactional.TransactionalEmail
+import org.slf4j.LoggerFactory // toto: remove
 import java.io.StringWriter
 
 /**
@@ -19,26 +20,47 @@ data class EmailContent(
          * @param textTemplate The name of the text template used to create the text content.
          * @param htmlTemplate The name of the html template used to create the html content.
          */
-        fun fromTemplates(
+        private val logger = LoggerFactory.getLogger(EmailContent::class.java) // toto: remove
+
+        fun fromTemplates( // toto: remove
             subject: String,
             templateContext: Any,
             textTemplate: String,
             htmlTemplate: String,
-        ): EmailContent =
-            EmailContent(
+        ): EmailContent {
+            logger.info("Building EmailContent")
+            logger.debug("Subject: $subject")
+            logger.debug("Text Template: $textTemplate")
+            logger.debug("HTML Template: $htmlTemplate")
+
+            return EmailContent(
                 subject,
                 buildTemplate(templateContext, textTemplate),
                 buildTemplate(templateContext, htmlTemplate),
             )
+        }
+//        fun fromTemplates(
+//            subject: String,
+//            templateContext: Any,
+//            textTemplate: String,
+//            htmlTemplate: String,
+//        ): EmailContent =
+//            EmailContent(
+//                subject,
+//                buildTemplate(templateContext, textTemplate),
+//                buildTemplate(templateContext, htmlTemplate),
+//            )
 
         private fun buildTemplate(
             templateContext: Any,
             templateName: String,
         ): String {
+            logger.info("Building template with name: $templateName") // toto: remove
             val freemarkerTemplate = FreeMarker.configuration.getTemplate(templateName)
 
             val writer = StringWriter()
             freemarkerTemplate.process(templateContext, writer)
+            logger.info("Finished processing template: $templateName") // toto: remove
             writer.close()
             return writer.toString()
         }
