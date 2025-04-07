@@ -76,7 +76,3 @@ fun TypedEmailContent.build(): EmailContent { // toto: remove
         this.subject, this, textTemplate, htmlTemplate,
     )
 }
-// fun TypedEmailContent.build(): EmailContent =
-//    EmailContent.fromTemplates(
-//        this.subject, this, textTemplate, htmlTemplate, // toto: add this
-//    )

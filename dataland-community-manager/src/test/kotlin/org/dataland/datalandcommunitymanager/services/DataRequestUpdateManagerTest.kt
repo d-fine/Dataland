@@ -144,15 +144,11 @@ class DataRequestUpdateManagerTest {
             .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        setOf(metaData.dataType),
-                        null,
-                        null,
+                        setOf(metaData.dataType), null, null,
                         setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
                         metaData.reportingPeriod,
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                        null,
-                        null,
-                        null,
+                        null, null, null,
                     ),
             )
 
@@ -176,7 +172,6 @@ class DataRequestUpdateManagerTest {
         doReturn("dummyCompany").whenever(mockCompanyInfoService).getValidCompanyName(dummyCompanyId)
         doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId1")
         doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId2")
-
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(any())
@@ -197,19 +192,12 @@ class DataRequestUpdateManagerTest {
             ),
         ).whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
-
         doReturn(metaData).whenever(mockMetaDataControllerApi).getDataMetaInfo(metaData.dataId)
-
         mockQaReviewResponses =
-            listOf(
-                mock<QaReviewResponse>(),
-                mock<QaReviewResponse>(),
-            )
-
+            listOf(mock<QaReviewResponse>(), mock<QaReviewResponse>())
         doReturn(mockQaReviewResponses)
             .whenever(mockQaControllerApi)
             .getInfoOnDatasets(any(), any(), any(), any(), any(), any())
-
         dataRequestUpdateUtils =
             DataRequestUpdateUtils(
                 processingUtils = mockDataRequestProcessingUtils,
@@ -219,7 +207,6 @@ class DataRequestUpdateManagerTest {
                 requestEmailManager = mockRequestEmailManager,
                 qaControllerApi = mockQaControllerApi,
             )
-
         dataRequestUpdateManager =
             DataRequestUpdateManager(
                 dataRequestRepository = mockDataRequestRepository,
@@ -243,27 +230,18 @@ class DataRequestUpdateManagerTest {
         dummyDataRequestEntities =
             listOf(
                 DataRequestEntity(
-                    userId = "4321",
-                    dataType = "p2p",
-                    notifyMeImmediately = true,
-                    reportingPeriod = "dummyPeriod",
-                    creationTimestamp = 0,
+                    userId = "4321", dataType = "p2p", notifyMeImmediately = true,
+                    reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                     datalandCompanyId = dummyCompanyId,
                 ),
                 DataRequestEntity(
-                    userId = "1234",
-                    dataType = "p2p",
-                    notifyMeImmediately = false,
-                    reportingPeriod = "dummyPeriod",
-                    creationTimestamp = 0,
+                    userId = "1234", dataType = "p2p", notifyMeImmediately = false,
+                    reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                     datalandCompanyId = dummyCompanyId,
                 ),
                 DataRequestEntity(
-                    userId = "dummyId",
-                    dataType = "p2p",
-                    notifyMeImmediately = true,
-                    reportingPeriod = "dummyPeriod",
-                    creationTimestamp = 123456,
+                    userId = "dummyId", dataType = "p2p", notifyMeImmediately = true,
+                    reportingPeriod = "dummyPeriod", creationTimestamp = 123456,
                     datalandCompanyId = dummyCompanyId,
                 ),
             )
@@ -272,19 +250,13 @@ class DataRequestUpdateManagerTest {
         dummyChildCompanyDataRequestEntities =
             listOf(
                 DataRequestEntity(
-                    userId = "1234",
-                    dataType = "p2p",
-                    true,
-                    reportingPeriod = "dummyPeriod",
-                    creationTimestamp = 0,
+                    userId = "1234", dataType = "p2p", notifyMeImmediately = true,
+                    reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                     datalandCompanyId = "dummyChildCompanyId1",
                 ),
                 DataRequestEntity(
-                    userId = "1234",
-                    dataType = "p2p",
-                    false,
-                    reportingPeriod = "dummyPeriod",
-                    creationTimestamp = 0,
+                    userId = "1234", dataType = "p2p", notifyMeImmediately = false,
+                    reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                     datalandCompanyId = "dummyChildCompanyId2",
                 ),
             )

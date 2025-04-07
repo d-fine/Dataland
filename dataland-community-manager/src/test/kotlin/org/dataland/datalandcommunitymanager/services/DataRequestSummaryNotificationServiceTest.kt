@@ -54,14 +54,14 @@ class DataRequestSummaryNotificationServiceTest {
     }
 
     @Test
-    fun `Test scheduledWeeklyEmailSending with no message`() {
+    fun `test scheduledWeeklyEmailSending with no message`() {
         dataRequestSummaryNotificationService.processNotificationEvents(listOf())
 
         verifyNoInteractions(mockDataRequestSummaryEmailBuilder)
     }
 
     @Test
-    fun `Test scheduledWeeklyEmailSending with messages`() {
+    fun `test scheduledWeeklyEmailSending with messages`() {
         val notificationEventEntity =
             NotificationEventEntity(
                 UUID.randomUUID(),
@@ -88,7 +88,7 @@ class DataRequestSummaryNotificationServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideInputForCreateUserSpecificNotificationEvent")
-    fun `Test createUserSpecificNotificationEvent`(
+    fun `test createUserSpecificNotificationEvent`(
         requestStatusBefore: RequestStatus,
         requestStatusAfter: RequestStatus?,
         immediateNotificationWasSent: Boolean,
@@ -105,7 +105,8 @@ class DataRequestSummaryNotificationServiceTest {
                 datalandCompanyId = companyUUID.toString(),
                 notifyMeImmediately = false,
             )
-        val storedDataRequestStatusObject = StoredDataRequestStatusObject(requestStatusBefore, 123, AccessStatus.Public, null, null)
+        val storedDataRequestStatusObject =
+            StoredDataRequestStatusObject(requestStatusBefore, 123, AccessStatus.Public, null, null)
         val requestStatusEntity = RequestStatusEntity(storedDataRequestStatusObject, dataRequestEntity)
         dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
 
@@ -151,32 +152,16 @@ class DataRequestSummaryNotificationServiceTest {
         fun provideInputForCreateUserSpecificNotificationEvent(): Stream<Arguments> =
             Stream.of(
                 Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.Open, RequestStatus.Answered, true, true, NotificationEventType.UpdatedEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    false,
-                    true,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.Open, RequestStatus.Answered, false, true, NotificationEventType.UpdatedEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    true,
-                    false,
-                    NotificationEventType.AvailableEvent,
+                    RequestStatus.Open, RequestStatus.Answered, true, false, NotificationEventType.AvailableEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Answered,
-                    false,
-                    false,
-                    NotificationEventType.AvailableEvent,
+                    RequestStatus.Open, RequestStatus.Answered, false, false, NotificationEventType.AvailableEvent,
                 ),
                 Arguments.of(
                     RequestStatus.Open,
@@ -186,74 +171,34 @@ class DataRequestSummaryNotificationServiceTest {
                     NotificationEventType.NonSourceableEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.Withdrawn,
-                    true,
-                    true,
-                    null,
+                    RequestStatus.Open, RequestStatus.Withdrawn, true, true, null,
                 ),
                 Arguments.of(
-                    RequestStatus.NonSourceable,
-                    RequestStatus.Answered,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.NonSourceable, RequestStatus.Answered, true, true, NotificationEventType.UpdatedEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Resolved,
-                    true,
-                    true,
-                    null,
+                    RequestStatus.Answered, RequestStatus.Resolved, true, true, null,
                 ),
                 Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Closed,
-                    true,
-                    true,
-                    null,
+                    RequestStatus.Answered, RequestStatus.Closed, true, true, null,
                 ),
                 Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Open,
-                    true,
-                    true,
-                    null,
+                    RequestStatus.Answered, RequestStatus.Open, true, true, null,
                 ),
                 Arguments.of(
-                    RequestStatus.Answered,
-                    RequestStatus.Answered,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.Answered, RequestStatus.Answered, true, true, NotificationEventType.UpdatedEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Resolved,
-                    RequestStatus.Open,
-                    true,
-                    true,
-                    null,
+                    RequestStatus.Resolved, RequestStatus.Open, true, true, null,
                 ),
                 Arguments.of(
-                    RequestStatus.Resolved,
-                    RequestStatus.Resolved,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.Resolved, RequestStatus.Resolved, true, true, NotificationEventType.UpdatedEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Closed,
-                    RequestStatus.Closed,
-                    true,
-                    true,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.Closed, RequestStatus.Closed, true, true, NotificationEventType.UpdatedEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Closed,
-                    null,
-                    false,
-                    false,
-                    NotificationEventType.UpdatedEvent,
+                    RequestStatus.Closed, null, false, false, NotificationEventType.UpdatedEvent,
                 ),
             )
     }
@@ -266,11 +211,13 @@ class DataRequestSummaryNotificationServiceTest {
         private val expected: NotificationEventEntity,
     ) : ArgumentMatcher<NotificationEventEntity> {
         override fun matches(given: NotificationEventEntity): Boolean =
-            expected.notificationEventType == given.notificationEventType &&
-                expected.userId == given.userId &&
-                expected.isProcessed == given.isProcessed &&
-                expected.companyId == given.companyId &&
-                expected.framework == given.framework &&
-                expected.reportingPeriod == given.reportingPeriod
+            listOf(
+                expected.notificationEventType == given.notificationEventType,
+                expected.userId == given.userId,
+                expected.isProcessed == given.isProcessed,
+                expected.companyId == given.companyId,
+                expected.framework == given.framework,
+                expected.reportingPeriod == given.reportingPeriod,
+            ).all { it }
     }
 }

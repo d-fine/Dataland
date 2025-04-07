@@ -153,7 +153,7 @@ class DataRequestUpdateManager
                         createNotificationEvent(dataRequestEntity, dataRequestPatch)
                     }
 
-                    else -> {}
+                    else -> Unit
                 }
             }
 
@@ -386,12 +386,10 @@ class DataRequestUpdateManager
             sourceabilityInfo: SourceabilityInfo,
             correlationId: String,
         ) {
-            if (!sourceabilityInfo.isNonSourceable) {
-                throw IllegalArgumentException(
-                    "Expected information about a non-sourceable dataset but received information " +
-                        "about a sourceable dataset. No requests are patched if a dataset is reported as " +
-                        "sourceable until the dataset is uploaded.",
-                )
+            require(sourceabilityInfo.isNonSourceable) {
+                "Expected information about a non-sourceable dataset but received information " +
+                    "about a sourceable dataset. No requests are patched if a dataset is reported as " +
+                    "sourceable until the dataset is uploaded."
             }
 
             val dataRequestEntities =

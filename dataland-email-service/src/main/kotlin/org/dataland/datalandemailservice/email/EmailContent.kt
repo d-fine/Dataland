@@ -39,17 +39,6 @@ data class EmailContent(
                 buildTemplate(templateContext, htmlTemplate),
             )
         }
-//        fun fromTemplates(
-//            subject: String,
-//            templateContext: Any,
-//            textTemplate: String,
-//            htmlTemplate: String,
-//        ): EmailContent =
-//            EmailContent(
-//                subject,
-//                buildTemplate(templateContext, textTemplate),
-//                buildTemplate(templateContext, htmlTemplate),
-//            )
 
         private fun buildTemplate(
             templateContext: Any,

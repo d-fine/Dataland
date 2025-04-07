@@ -55,7 +55,7 @@ class NotificationSchedulerTest {
     }
 
     @Test
-    fun `Test scheduledWeeklyEmailSending with no message`() {
+    fun `test scheduledWeeklyEmailSending with no message`() {
         notificationScheduler.scheduledWeeklyEmailSending()
 
         verifyNoMoreInteractions(mockInvestorRelationshipsNotificationService)
@@ -63,7 +63,7 @@ class NotificationSchedulerTest {
     }
 
     @Test
-    fun `Test scheduledWeeklyEmailSending with messages`() {
+    fun `test scheduledWeeklyEmailSending with messages`() {
         val notificationEventEntity =
             NotificationEventEntity(
                 UUID.randomUUID(),
@@ -75,16 +75,6 @@ class NotificationSchedulerTest {
                 "2024",
             )
         val entityList = listOf(notificationEventEntity, notificationEventEntity)
-        /*
-        val companyInformation =
-            CompanyInformation(
-                companyName = "Sample Company",
-                headquarters = "headquarters",
-                identifiers = mapOf(),
-                countryCode = "DE",
-                companyContactDetails = listOf("sampleCompany@example.com"),
-            )
-         */
         doReturn(entityList)
             .whenever(mockNotificationEventRepository)
             .findAllByNotificationEventTypesAndIsProcessedFalse(any())

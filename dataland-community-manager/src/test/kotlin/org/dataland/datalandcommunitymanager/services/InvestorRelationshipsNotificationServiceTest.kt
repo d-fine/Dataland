@@ -56,7 +56,7 @@ class InvestorRelationshipsNotificationServiceTest {
     }
 
     @Test
-    fun `Test createCompanySpecificNotificationEvent`() {
+    fun `test createCompanySpecificNotificationEvent`() {
         val testDataMetaInformation =
             DataMetaInformation(
                 UUID.randomUUID().toString(),
@@ -90,7 +90,7 @@ class InvestorRelationshipsNotificationServiceTest {
     }
 
     @Test
-    fun `Test processNotificationEvents`() {
+    fun `test processNotificationEvents`() {
         val companyMailList = listOf("mail@example.com")
         val notificationEventEntity =
             NotificationEventEntity(
@@ -140,11 +140,13 @@ class InvestorRelationshipsNotificationServiceTest {
         private val expected: NotificationEventEntity,
     ) : ArgumentMatcher<NotificationEventEntity> {
         override fun matches(given: NotificationEventEntity): Boolean =
-            expected.notificationEventType == given.notificationEventType &&
-                expected.userId == given.userId &&
-                expected.isProcessed == given.isProcessed &&
-                expected.companyId == given.companyId &&
-                expected.framework == given.framework &&
-                expected.reportingPeriod == given.reportingPeriod
+            listOf(
+                expected.notificationEventType == given.notificationEventType,
+                expected.userId == given.userId,
+                expected.isProcessed == given.isProcessed,
+                expected.companyId == given.companyId,
+                expected.framework == given.framework,
+                expected.reportingPeriod == given.reportingPeriod,
+            ).all { it }
     }
 }

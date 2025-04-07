@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service
 class CompanyInfoService(
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
+    private val exceptionSummaryDueToCompanyNotFound = "Company not found"
+
+    private fun buildExceptionMessageDueToCompanyNotFound(companyId: String) = "Dataland does not know the company ID $companyId"
+
     /**
      * Checks if a companyId exists on Dataland by trying to retrieve it in the backend.
      * If it does not exist the method catches the not-found-exception from the backend and throws a
@@ -27,8 +31,8 @@ class CompanyInfoService(
         } catch (clientException: ClientException) {
             if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
                 throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "Dataland does not know the company ID $companyId",
+                    exceptionSummaryDueToCompanyNotFound,
+                    buildExceptionMessageDueToCompanyNotFound(companyId),
                 )
             } else {
                 throw clientException
@@ -49,8 +53,8 @@ class CompanyInfoService(
         } catch (e: ClientException) {
             if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                 throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "Dataland does not know the company ID $companyId",
+                    exceptionSummaryDueToCompanyNotFound,
+                    buildExceptionMessageDueToCompanyNotFound(companyId),
                 )
             } else {
                 throw e
@@ -74,8 +78,8 @@ class CompanyInfoService(
         } catch (e: ClientException) {
             if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                 throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "Dataland does not know the company ID $companyId",
+                    exceptionSummaryDueToCompanyNotFound,
+                    buildExceptionMessageDueToCompanyNotFound(companyId),
                 )
             } else {
                 throw e

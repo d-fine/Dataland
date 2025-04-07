@@ -99,8 +99,7 @@ class CommunityManagerListenerTest {
         val sfdrPreparedFixtureProvider = FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java)
         val (testCompanyWithParent, testParentCompany) =
             listOf(
-                "test company with parent lei and existing parent",
-                "test company with lei and existing child",
+                "test company with parent lei and existing parent", "test company with lei and existing child",
             ).map {
                 GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                     apiAccessor.companyDataControllerApi.postCompany(
@@ -109,7 +108,6 @@ class CommunityManagerListenerTest {
                 }
             }
         val testSfdrData = apiAccessor.testDataProviderForSfdrData.getTData(1)[0]
-
         requestControllerApi.postSingleDataRequest(
             SingleDataRequest(
                 companyIdentifier = testCompanyWithParent.companyId,
@@ -130,7 +128,6 @@ class CommunityManagerListenerTest {
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),
         )
-
         val dataMetaInformation =
             GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
                 apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(

@@ -86,7 +86,7 @@ class CommunityManagerListenerUnitTest {
                 )
                 verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForInvestorRelationshipsEmails(any<String>())
             }
-            else -> {}
+            else -> Unit
         }
     }
 
