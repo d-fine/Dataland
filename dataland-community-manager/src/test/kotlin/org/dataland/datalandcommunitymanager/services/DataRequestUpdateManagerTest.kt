@@ -62,6 +62,7 @@ class DataRequestUpdateManagerTest {
     private lateinit var dataRequestUpdateUtils: DataRequestUpdateUtils
 
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
+    private lateinit var dummyChildCompanyDataRequestEntities: List<DataRequestEntity>
     private lateinit var mockQaReviewResponses: List<QaReviewResponse>
 
     private val correlationId = UUID.randomUUID().toString()
@@ -138,7 +139,7 @@ class DataRequestUpdateManagerTest {
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     ),
             )
-        doReturn(listOf(dummyChildCompanyDataRequestEntity1, dummyChildCompanyDataRequestEntity2))
+        doReturn(dummyChildCompanyDataRequestEntities)
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
                 searchFilter =
@@ -268,24 +269,27 @@ class DataRequestUpdateManagerTest {
             )
         dummyDataRequestEntity1 = dummyDataRequestEntities[0]
         dummyDataRequestEntity2 = dummyDataRequestEntities[1]
-        dummyChildCompanyDataRequestEntity1 =
-            DataRequestEntity(
-                userId = "1234",
-                dataType = "p2p",
-                true,
-                reportingPeriod = "dummyPeriod",
-                creationTimestamp = 0,
-                datalandCompanyId = "dummyChildCompanyId1",
+        dummyChildCompanyDataRequestEntities =
+            listOf(
+                DataRequestEntity(
+                    userId = "1234",
+                    dataType = "p2p",
+                    true,
+                    reportingPeriod = "dummyPeriod",
+                    creationTimestamp = 0,
+                    datalandCompanyId = "dummyChildCompanyId1",
+                ),
+                DataRequestEntity(
+                    userId = "1234",
+                    dataType = "p2p",
+                    false,
+                    reportingPeriod = "dummyPeriod",
+                    creationTimestamp = 0,
+                    datalandCompanyId = "dummyChildCompanyId2",
+                ),
             )
-        dummyChildCompanyDataRequestEntity2 =
-            DataRequestEntity(
-                userId = "1234",
-                dataType = "p2p",
-                false,
-                reportingPeriod = "dummyPeriod",
-                creationTimestamp = 0,
-                datalandCompanyId = "dummyChildCompanyId2",
-            )
+        dummyChildCompanyDataRequestEntity1 = dummyChildCompanyDataRequestEntities[0]
+        dummyChildCompanyDataRequestEntity2 = dummyChildCompanyDataRequestEntities[1]
     }
 
     @BeforeEach
@@ -404,59 +408,38 @@ class DataRequestUpdateManagerTest {
             metaData.dataId,
             correlationId,
         )
-        verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(
-                eq(dummyDataRequestEntities[0]),
-                eq(RequestStatus.Answered),
-                eq(true),
-                eq(correlationId),
-            )
-        verify(mockRequestEmailManager, times(0))
-            .sendEmailsWhenRequestStatusChanged(
-                eq(dummyDataRequestEntities[1]),
-                eq(RequestStatus.Answered),
-                eq(true),
-                eq(correlationId),
-            )
-        verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(
-                eq(dummyDataRequestEntities[2]),
-                eq(RequestStatus.Answered),
-                eq(true),
-                eq(correlationId),
-            )
-        verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(
-                eq(dummyChildCompanyDataRequestEntity1),
-                eq(RequestStatus.Answered),
-                eq(true),
-                any<String>(),
-            )
-        verify(mockRequestEmailManager, times(0))
-            .sendEmailsWhenRequestStatusChanged(
-                eq(dummyChildCompanyDataRequestEntity2),
-                eq(RequestStatus.Answered),
-                eq(true),
-                any<String>(),
-            )
+        for (i in 0..2) {
+            verify(mockRequestEmailManager, times(1 - i % 2))
+                .sendEmailsWhenRequestStatusChanged(
+                    eq(dummyDataRequestEntities[i]),
+                    eq(RequestStatus.Answered),
+                    eq(true),
+                    eq(correlationId),
+                )
+        }
+        for (i in 0..1) {
+            verify(mockRequestEmailManager, times(1 - i))
+                .sendEmailsWhenRequestStatusChanged(
+                    eq(dummyChildCompanyDataRequestEntities[i]),
+                    eq(RequestStatus.Answered),
+                    eq(true),
+                    any<String>(),
+                )
+        }
         verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), eq(null),
                 any(), any(),
             )
-        verify(mockDataRequestProcessingUtils, times(1))
-            .addNewRequestStatusToHistory(
-                eq(dummyChildCompanyDataRequestEntity1), any(),
-                any(), any<String>(),
-                any(), any(),
-            )
-        verify(mockDataRequestProcessingUtils, times(1))
-            .addNewRequestStatusToHistory(
-                eq(dummyChildCompanyDataRequestEntity2), any(),
-                any(), any<String>(),
-                any(), any(),
-            )
+        dummyChildCompanyDataRequestEntities.forEach {
+            verify(mockDataRequestProcessingUtils, times(1))
+                .addNewRequestStatusToHistory(
+                    eq(it), any(),
+                    any(), any<String>(),
+                    any(), any(),
+                )
+        }
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
                 any(), any<Set<String>>(), any<String>(), any(),

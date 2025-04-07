@@ -13,6 +13,8 @@ data class EmailContent(
     val htmlContent: String,
 ) {
     companion object {
+        private val logger = LoggerFactory.getLogger(EmailContent::class.java) // toto: remove
+
         /**
          * Builds the EmailContent from a subject and freemarker templates.
          * @param subject The subject of the email.
@@ -20,8 +22,6 @@ data class EmailContent(
          * @param textTemplate The name of the text template used to create the text content.
          * @param htmlTemplate The name of the html template used to create the html content.
          */
-        private val logger = LoggerFactory.getLogger(EmailContent::class.java) // toto: remove
-
         fun fromTemplates( // toto: remove
             subject: String,
             templateContext: Any,
