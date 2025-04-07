@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
@@ -36,12 +37,14 @@ import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
 import java.util.Optional
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestUpdateManagerTest {
@@ -53,9 +56,10 @@ class DataRequestUpdateManagerTest {
     private val mockMetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockQaControllerApi = mock<QaControllerApi>()
     private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
-    private val mockDataRequestUpdateUtils = mock<DataRequestUpdateUtils>()
+    private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val mockRequestEmailManager = mock<RequestEmailManager>()
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
+    private lateinit var dataRequestUpdateUtils: DataRequestUpdateUtils
 
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
     private lateinit var mockQaReviewResponses: List<QaReviewResponse>
@@ -139,8 +143,15 @@ class DataRequestUpdateManagerTest {
             .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
-                        metaData.reportingPeriod, setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
+                        setOf(metaData.dataType),
+                        null,
+                        null,
+                        setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
+                        metaData.reportingPeriod,
+                        setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+                        null,
+                        null,
+                        null,
                     ),
             )
 
@@ -160,7 +171,7 @@ class DataRequestUpdateManagerTest {
         )
     }
 
-    private fun setupDataRequestAlterationManager() {
+    private fun setupDataRequestUpdateManager() {
         doReturn("dummyCompany").whenever(mockCompanyInfoService).getValidCompanyName(dummyCompanyId)
         doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId1")
         doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId2")
@@ -198,6 +209,16 @@ class DataRequestUpdateManagerTest {
             .whenever(mockQaControllerApi)
             .getInfoOnDatasets(any(), any(), any(), any(), any(), any())
 
+        dataRequestUpdateUtils =
+            DataRequestUpdateUtils(
+                processingUtils = mockDataRequestProcessingUtils,
+                dataRequestLogger = mockDataRequestLogger,
+                companyInfoService = mockCompanyInfoService,
+                companyRolesManager = mockCompanyRolesManager,
+                requestEmailManager = mockRequestEmailManager,
+                qaControllerApi = mockQaControllerApi,
+            )
+
         dataRequestUpdateManager =
             DataRequestUpdateManager(
                 dataRequestRepository = mockDataRequestRepository,
@@ -205,13 +226,19 @@ class DataRequestUpdateManagerTest {
                 dataRequestLogger = mockDataRequestLogger,
                 requestEmailManager = mockRequestEmailManager,
                 metaDataControllerApi = mockMetaDataControllerApi,
-                updateUtils = mockDataRequestUpdateUtils,
+                updateUtils = dataRequestUpdateUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
             )
     }
 
+    private fun awaitUntilAsserted(operation: () -> Any) =
+        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+            operation()
+        }
+
     @BeforeAll
     fun setupDummyDataRequestEntities() {
+        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         dummyDataRequestEntities =
             listOf(
                 DataRequestEntity(
@@ -263,9 +290,20 @@ class DataRequestUpdateManagerTest {
 
     @BeforeEach
     fun setupMocksAndDummyRequests() {
-        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        reset(
+            mockCompanyInfoService,
+            mockDataRequestLogger,
+            mockDataRequestRepository,
+            mockDataRequestSummaryNotificationService,
+            mockMetaDataControllerApi,
+            mockQaControllerApi,
+            mockDataRequestProcessingUtils,
+            mockCompanyRolesManager,
+            mockRequestEmailManager,
+            mockCompanyDataControllerApi,
+        )
         mockRepos()
-        setupDataRequestAlterationManager()
+        setupDataRequestUpdateManager()
     }
 
     @Test
@@ -367,11 +405,26 @@ class DataRequestUpdateManagerTest {
             correlationId,
         )
         verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[0]), eq(RequestStatus.Answered), eq(true), eq(correlationId))
+            .sendEmailsWhenRequestStatusChanged(
+                eq(dummyDataRequestEntities[0]),
+                eq(RequestStatus.Answered),
+                eq(true),
+                eq(correlationId),
+            )
         verify(mockRequestEmailManager, times(0))
-            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[1]), eq(RequestStatus.Answered), eq(true), eq(correlationId))
+            .sendEmailsWhenRequestStatusChanged(
+                eq(dummyDataRequestEntities[1]),
+                eq(RequestStatus.Answered),
+                eq(true),
+                eq(correlationId),
+            )
         verify(mockRequestEmailManager)
-            .sendEmailsWhenRequestStatusChanged(eq(dummyDataRequestEntities[2]), eq(RequestStatus.Answered), eq(true), eq(correlationId))
+            .sendEmailsWhenRequestStatusChanged(
+                eq(dummyDataRequestEntities[2]),
+                eq(RequestStatus.Answered),
+                eq(true),
+                eq(correlationId),
+            )
         verify(mockRequestEmailManager)
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity1),
@@ -482,8 +535,10 @@ class DataRequestUpdateManagerTest {
             correlationId = correlationId,
         )
 
-        assertFalse(originalModificationTime == dummyDataRequestEntity1.lastModifiedDate)
-        assertEquals(RequestPriority.High, dummyDataRequestEntity1.requestPriority)
+        awaitUntilAsserted {
+            assertFalse(originalModificationTime == dummyDataRequestEntity1.lastModifiedDate)
+            assertEquals(RequestPriority.High, dummyDataRequestEntity1.requestPriority)
+        }
     }
 
     @Test
