@@ -85,8 +85,6 @@ class BulkDataRequestEmailMessageSenderTest {
                 val internalEmailContentTable = emailMessage.typedEmailContent as InternalEmailContentTable
 
                 Assertions.assertEquals("Dataland Bulk Data Request", internalEmailContentTable.subject)
-                Assertions.assertEquals("A bulk data request has been submitted", internalEmailContentTable.textTitle)
-                Assertions.assertEquals("Bulk Data Request", internalEmailContentTable.htmlTitle)
 
                 val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 

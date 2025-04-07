@@ -77,8 +77,6 @@ class SingleDataRequestEmailMessageSenderTest {
             assertTrue(emailMessage.typedEmailContent is InternalEmailContentTable)
             val internalEmailContentTable = emailMessage.typedEmailContent as InternalEmailContentTable
             assertEquals("Dataland Single Data Request", internalEmailContentTable.subject)
-            assertEquals("A single data request has been submitted", internalEmailContentTable.textTitle)
-            assertEquals("Single Data Request", internalEmailContentTable.htmlTitle)
 
             val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 

@@ -45,8 +45,6 @@ class BulkDataRequestEmailMessageBuilder(
         val internalEmailContentTable =
             InternalEmailContentTable(
                 "Dataland Bulk Data Request",
-                "A bulk data request has been submitted",
-                "Bulk Data Request",
                 listOf(
                     "User" to Value.Text(datalandAuthentication.userDescription),
                     "E-Mail" to Value.Text(datalandAuthentication.username),

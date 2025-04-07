@@ -91,11 +91,9 @@ class InvestorRelationshipsEmailBuilder(
 
         // Prepare details for the internal email content
         val internalEmailSubject = "Dataland Notification Email has been sent"
-        val internalEmailTextTitle = "An IR Notification Email has been sent"
-        val internalEmailHtmlTitle = "IR Notification Email has been sent"
         val internalEmailContent =
             InternalEmailContentTable(
-                internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
+                internalEmailSubject,
                 listOf(
                     "Company" to
                         companyIdAndNameValue(

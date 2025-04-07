@@ -20,7 +20,6 @@ object TestUtils {
     ): DatalandJwtAuthentication {
         val mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(username, userId, roles)
-        doReturn("").whenever(mockAuthentication).credentials
         val mockSecurityContext = mock<SecurityContext>()
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)

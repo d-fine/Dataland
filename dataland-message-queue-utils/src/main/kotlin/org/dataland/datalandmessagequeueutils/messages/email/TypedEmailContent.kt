@@ -37,8 +37,8 @@ sealed class TypedEmailContent {
     abstract val subject: String
     abstract val templateName: String
 
-    val textTemplate: String get() = "/text/$templateName.ftl"
-    val htmlTemplate: String get() = "/html/$templateName.ftl"
+    val textTemplate: String = "/text/$templateName.ftl"
+    val htmlTemplate: String = "/html/$templateName.ftl"
 }
 
 /**
@@ -260,8 +260,6 @@ data class DatasetAvailableClaimCompanyOwnershipEmailContent(
  */
 data class InternalEmailContentTable(
     override val subject: String,
-    val textTitle: String,
-    val htmlTitle: String,
     val table: List<Pair<String, Value>>,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
