@@ -158,7 +158,7 @@ class NonSourceableDataManagerTest(
         )
 
         val nonSourceableData =
-            nonSourceableDataManager.getNonSourceableDataByFilters(
+            nonSourceableDataManager.getSourceabilityDataByFilters(
                 existingCompanyId,
                 dataType, reportingPeriod, nonSourceable,
             )

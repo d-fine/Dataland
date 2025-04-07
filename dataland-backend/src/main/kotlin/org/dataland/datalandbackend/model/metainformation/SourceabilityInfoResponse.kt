@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.DataType
 
 /**
  * --- API model ---
- * NonSourceableInfoResponse is used for api response (get requests). Returns information regarding whether data for a
+ * SourceabilityInfoResponse is used for api response (get requests). Returns information regarding whether data for a
  * triple (companyId, dataType, reportingPeriod) is available.
  * @param companyId unique identifier to identify the company the data is associated with
  * @param dataType type of the data

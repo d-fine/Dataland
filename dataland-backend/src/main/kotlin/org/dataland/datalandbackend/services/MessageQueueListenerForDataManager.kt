@@ -165,7 +165,7 @@ class MessageQueueListenerForDataManager(
      */
     private fun storeUpdatedDataToNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
         if (nonSourceableDataManager
-                .getLatestNonSourceableInfoForDataset(
+                .getLatestSourceabilityInfoForDataset(
                     updatedDataMetaInformation.company.companyId,
                     DataType.valueOf(updatedDataMetaInformation.dataType),
                     updatedDataMetaInformation.reportingPeriod,

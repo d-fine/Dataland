@@ -25,7 +25,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
             "ORDER BY nonSourceableData.creationTime DESC " +
             "LIMIT 1",
     )
-    fun getLatestNonSourceableInfoForDataset(
+    fun getLatestSourceabilityInfoForDataset(
         @Param("searchFilter") searchFilter: NonSourceableDataSearchFilter,
     ): NonSourceableEntity?
 

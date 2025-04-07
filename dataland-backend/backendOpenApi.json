@@ -20404,13 +20404,7 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           },
@@ -20420,9 +20414,15 @@
           "companyId": {
             "type": "string"
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
           }
         }
       },

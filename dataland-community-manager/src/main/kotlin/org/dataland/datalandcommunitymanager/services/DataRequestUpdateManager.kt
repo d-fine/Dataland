@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
+import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -375,15 +375,15 @@ class DataRequestUpdateManager
 
         /**
          * Method to patch all data requests corresponding to a dataset to status non-sourceable.
-         * @param nonSourceableInfo the info on the non-sourceable dataset
+         * @param sourceabilityInfo the info on the non-sourceable dataset
          * @param correlationId correlationId
          */
         @Transactional
         fun patchAllRequestsToStatusNonSourceable(
-            nonSourceableInfo: NonSourceableInfo,
+            sourceabilityInfo: SourceabilityInfo,
             correlationId: String,
         ) {
-            if (!nonSourceableInfo.isNonSourceable) {
+            if (!sourceabilityInfo.isNonSourceable) {
                 throw IllegalArgumentException(
                     "Expected information about a non-sourceable dataset but received information " +
                         "about a sourceable dataset. No requests are patched if a dataset is reported as " +
@@ -393,9 +393,9 @@ class DataRequestUpdateManager
 
             val dataRequestEntities =
                 dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                    datalandCompanyId = nonSourceableInfo.companyId,
-                    dataType = nonSourceableInfo.dataType.toString(),
-                    reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    datalandCompanyId = sourceabilityInfo.companyId,
+                    dataType = sourceabilityInfo.dataType.toString(),
+                    reportingPeriod = sourceabilityInfo.reportingPeriod,
                 )
 
             dataRequestEntities?.forEach {
@@ -404,7 +404,7 @@ class DataRequestUpdateManager
                     dataRequestPatch =
                         DataRequestPatch(
                             requestStatus = RequestStatus.NonSourceable,
-                            requestStatusChangeReason = nonSourceableInfo.reason,
+                            requestStatusChangeReason = sourceabilityInfo.reason,
                         ),
                     correlationId = correlationId,
                 )

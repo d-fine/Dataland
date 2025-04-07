@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
+import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -153,8 +153,8 @@ class CommunityManagerListenerUnitTest {
                 true,
                 "test",
             )
-        val nonSourceableInfoValid =
-            NonSourceableInfo(
+        val sourceabilityInfoValid =
+            SourceabilityInfo(
                 "exampleCompany",
                 DataTypeEnum.sfdr,
                 "2023",
@@ -165,7 +165,7 @@ class CommunityManagerListenerUnitTest {
             jacksonObjectMapper.writeValueAsString(sourceabilityMessageValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllRequestsToStatusNonSourceable(
-            nonSourceableInfoValid,
+            sourceabilityInfoValid,
             correlationId,
         )
     }

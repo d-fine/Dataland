@@ -101,7 +101,7 @@ class DataRequestNonSourceableTest {
         return requestIdSecondUserRequest2023
     }
 
-    private fun postNonSourceableInfo(sourceabilityInfo: SourceabilityInfo) {
+    private fun postSourceabilityInfo(sourceabilityInfo: SourceabilityInfo) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
             sourceabilityInfo = sourceabilityInfo,
@@ -123,7 +123,7 @@ class DataRequestNonSourceableTest {
         // Post request for 2023 as admin.
         val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()
 
-        postNonSourceableInfo(sourceabilityInfoRequest2023)
+        postSourceabilityInfo(sourceabilityInfoRequest2023)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
@@ -146,25 +146,25 @@ class DataRequestNonSourceableTest {
 
     @Test
     fun `validate that the get info on sourceability of a dataset endpoint is working`() {
-        postNonSourceableInfo(sourceabilityInfoRequest2023)
-        var receivedNonSourceableInfoList = listOf<SourceabilityInfoResponse>()
+        postSourceabilityInfo(sourceabilityInfoRequest2023)
+        var receivedSourceabilityInfoList = listOf<SourceabilityInfoResponse>()
 
         awaitUntilAsserted {
-            receivedNonSourceableInfoList =
+            receivedSourceabilityInfoList =
                 apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
                     companyId = sourceabilityInfoRequest2023.companyId,
                     dataType = sourceabilityInfoRequest2023.dataType,
                     reportingPeriod = sourceabilityInfoRequest2023.reportingPeriod,
                 )
-            assertEquals(1, receivedNonSourceableInfoList.size)
+            assertEquals(1, receivedSourceabilityInfoList.size)
         }
 
-        val receivedNonSourceableInfo = receivedNonSourceableInfoList[0]
+        val receivedSourceabilityInfo = receivedSourceabilityInfoList[0]
 
-        assertEquals(sourceabilityInfoRequest2023.companyId, receivedNonSourceableInfo.companyId)
-        assertEquals(sourceabilityInfoRequest2023.dataType, receivedNonSourceableInfo.dataType)
-        assertEquals(sourceabilityInfoRequest2023.reportingPeriod, receivedNonSourceableInfo.reportingPeriod)
-        assertEquals(sourceabilityInfoRequest2023.isNonSourceable, receivedNonSourceableInfo.isNonSourceable)
-        assertEquals(sourceabilityInfoRequest2023.reason, receivedNonSourceableInfo.reason)
+        assertEquals(sourceabilityInfoRequest2023.companyId, receivedSourceabilityInfo.companyId)
+        assertEquals(sourceabilityInfoRequest2023.dataType, receivedSourceabilityInfo.dataType)
+        assertEquals(sourceabilityInfoRequest2023.reportingPeriod, receivedSourceabilityInfo.reportingPeriod)
+        assertEquals(sourceabilityInfoRequest2023.isNonSourceable, receivedSourceabilityInfo.isNonSourceable)
+        assertEquals(sourceabilityInfoRequest2023.reason, receivedSourceabilityInfo.reason)
     }
 }

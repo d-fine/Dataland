@@ -61,7 +61,7 @@ class NonSourceableDataManager(
      * Processes a request to store information about a dataset being labeled as non-sourceable.
      * This includes verifying the existence of the company, checking if the dataset already exists,
      * storing the non-sourceable data, and sending a corresponding message to a message queue.
-     * @param sourceabilityInfo the NonSourceableInfo of the dataset
+     * @param sourceabilityInfo the SourceabilityInfo of the dataset
      */
     fun processSourceabilityDataStorageRequest(sourceabilityInfo: SourceabilityInfo) {
         val correlationId = generateCorrelationId(sourceabilityInfo.companyId, null)
@@ -102,15 +102,15 @@ class NonSourceableDataManager(
      * @param reportingPeriod if not empty, filters the requested information by reporting period.
      * @param nonSourceable if not null, filters the requested information to include only datasets
      *                      with a non-sourceable flag matching the provided value (true or false).
-     * @return a list of NonSourceableInfo objects that match the specified filters.
+     * @return a list of SourceabilityInfoResponse objects that match the specified filters.
      */
-    fun getNonSourceableDataByFilters(
+    fun getSourceabilityDataByFilters(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
     ): List<SourceabilityInfoResponse> {
-        val nonSourceableEntities =
+        val sourceabilityEntities =
             nonSourceableDataRepository
                 .searchNonSourceableData(
                     NonSourceableDataSearchFilter(
@@ -120,7 +120,7 @@ class NonSourceableDataManager(
                         nonSourceable,
                     ),
                 )
-        return nonSourceableEntities.map { it.toApiModel() }
+        return sourceabilityEntities.map { it.toApiModel() }
     }
 
     /**
@@ -128,15 +128,15 @@ class NonSourceableDataManager(
      * @param companyId companyId
      * @param dataType dataType
      * @param reportingPeriod reportingPeriod
-     * @return most recent NonSourceableInfoResponse for triple (companyId, dataType, reportingPeriod)
+     * @return most recent SourceabilityInfoResponse for triple (companyId, dataType, reportingPeriod)
      */
-    fun getLatestNonSourceableInfoForDataset(
+    fun getLatestSourceabilityInfoForDataset(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
     ): SourceabilityInfoResponse? =
         nonSourceableDataRepository
-            .getLatestNonSourceableInfoForDataset(
+            .getLatestSourceabilityInfoForDataset(
                 NonSourceableDataSearchFilter(
                     companyId,
                     dataType,

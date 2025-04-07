@@ -171,7 +171,7 @@ interface MetaDataApi {
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
      * @param nonSourceable if set true, the method only returns meta info for datasets which are
      * non-sourceable and if set false, it returns sourceable data.
-     * @return A list of NonSourceableInfo matching the filters, or an empty list if none found.
+     * @return A list of SourceabilityInfoResponse matching the filters, or an empty list if none found.
      */
     @Operation(
         summary = "Retrieve information about the sourceability of datasets",

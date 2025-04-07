@@ -150,7 +150,7 @@ class MetaDataController(
     ): ResponseEntity<List<SourceabilityInfoResponse>> =
         ResponseEntity.ok(
             nonSourceableDataManager
-                .getNonSourceableDataByFilters(
+                .getSourceabilityDataByFilters(
                     companyId,
                     dataType,
                     reportingPeriod,
@@ -167,10 +167,10 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        val latestNonSourceableInfo =
-            nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
+        val latestSourceabilityInfo =
+            nonSourceableDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
 
-        if (latestNonSourceableInfo?.isNonSourceable != true) {
+        if (latestSourceabilityInfo?.isNonSourceable != true) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset is sourceable or not found.",
                 message =

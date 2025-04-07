@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
@@ -66,7 +66,7 @@ class DataRequestUpdateManagerTest {
     private val dummyCompanyId = "dummyCompanyId"
 
     private val dummyNonSourceableInfo =
-        NonSourceableInfo(
+        SourceabilityInfo(
             companyId = "",
             dataType = DataTypeEnum.p2p,
             reportingPeriod = "",
@@ -75,7 +75,7 @@ class DataRequestUpdateManagerTest {
         )
 
     private val dummySourceableInfo =
-        NonSourceableInfo(
+        SourceabilityInfo(
             companyId = "",
             dataType = DataTypeEnum.p2p,
             reportingPeriod = "",

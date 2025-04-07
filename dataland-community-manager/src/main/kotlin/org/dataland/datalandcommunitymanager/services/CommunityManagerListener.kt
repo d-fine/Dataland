@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
+import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -200,8 +200,8 @@ class CommunityManagerListener(
                 "Correlation ID: $correlationId",
         )
 
-        val nonSourceableInfo =
-            NonSourceableInfo(
+        val sourceabilityInfo =
+            SourceabilityInfo(
                 companyId = sourceabilityMessage.companyId,
                 dataType = dataTypeDecoded,
                 reportingPeriod = sourceabilityMessage.reportingPeriod,
@@ -210,7 +210,7 @@ class CommunityManagerListener(
             )
 
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(nonSourceableInfo, correlationId)
+            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)
         }
     }
 }
