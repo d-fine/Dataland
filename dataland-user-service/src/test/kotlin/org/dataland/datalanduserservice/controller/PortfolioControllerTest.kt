@@ -1,6 +1,8 @@
 package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioService
@@ -13,16 +15,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doNothing
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioControllerTest {
@@ -45,6 +43,7 @@ class PortfolioControllerTest {
 
     @BeforeEach
     fun setup() {
+        reset(mockPortfolioService,mockValidator,mockPortfolioEnrichmentService)
         this.resetSecurityContext()
         doNothing().whenever(mockValidator).validatePortfolioCreation(eq(validPortfolioUpload), any())
         portfolioController = PortfolioController(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
@@ -73,5 +72,15 @@ class PortfolioControllerTest {
 
         val response = assertDoesNotThrow { portfolioController.replacePortfolio(dummyPortfolioId.toString(), validPortfolioUpload) }
         assertEquals(HttpStatus.OK, response.statusCode)
+    }
+
+    @Test
+    fun `test that retrieving portfolio names for all portfolios of a user works as expected` () {
+        val portfolios = listOf(BasePortfolioName("12345","pension"),BasePortfolioName("0815","smallcap") )
+        doReturn(portfolios).whenever(mockPortfolioService).getAllPortfolioNamesForCurrentUser()
+        val response = assertDoesNotThrow { portfolioController.getAllPortfolioNamesForCurrentUser() }.body
+
+        assertEquals(portfolios, response)
+
     }
 }

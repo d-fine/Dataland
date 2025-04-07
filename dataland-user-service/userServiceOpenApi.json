@@ -369,6 +369,59 @@
         ]
       }
     },
+    "/portfolios/names": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get all portfolio names for the currently logged-in user.",
+        "description": "All portfolio names for the currently logged-in user are retrieved.",
+        "operationId": "getAllPortfolioNamesForCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all portfolio names.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolioName"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [
@@ -696,6 +749,21 @@
             "type": "string"
           },
           "latestReportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "BasePortfolioName": {
+        "required": [
+          "portfolioId",
+          "portfolioName"
+        ],
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string"
+          },
+          "portfolioName": {
             "type": "string"
           }
         }

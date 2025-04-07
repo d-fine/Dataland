@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
@@ -48,6 +49,9 @@ class PortfolioController
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
             ResponseEntity(portfolioService.deletePortfolio(portfolioId), HttpStatus.NO_CONTENT)
 
-        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
+    override fun getAllPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
+        ResponseEntity.ok(portfolioService.getAllPortfolioNamesForCurrentUser())
+
+    override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
             ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioId))
     }
