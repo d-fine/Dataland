@@ -109,10 +109,8 @@ class DataRequestSummaryNotificationServiceTest {
         val requestStatusEntity = RequestStatusEntity(storedDataRequestStatusObject, dataRequestEntity)
         dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
 
-        val notificationEventEntity: NotificationEventEntity
-
-        if (notificationEventType != null) {
-            notificationEventEntity =
+        val notificationEventEntity =
+            if (notificationEventType != null) {
                 NotificationEventEntity(
                     notificationEventType = notificationEventType,
                     userId = userUUID,
@@ -121,9 +119,9 @@ class DataRequestSummaryNotificationServiceTest {
                     framework = DataTypeEnum.lksg,
                     reportingPeriod = "2024",
                 )
-        } else {
-            notificationEventEntity = mock<NotificationEventEntity>()
-        }
+            } else {
+                mock<NotificationEventEntity>()
+            }
 
         doReturn(notificationEventEntity).whenever(mockNotificationEventRepository).save(any())
 
@@ -159,7 +157,6 @@ class DataRequestSummaryNotificationServiceTest {
                     true,
                     NotificationEventType.UpdatedEvent,
                 ),
-                /*
                 Arguments.of(
                     RequestStatus.Open,
                     RequestStatus.Answered,
@@ -258,7 +255,6 @@ class DataRequestSummaryNotificationServiceTest {
                     false,
                     NotificationEventType.UpdatedEvent,
                 ),
-                 */
             )
     }
 

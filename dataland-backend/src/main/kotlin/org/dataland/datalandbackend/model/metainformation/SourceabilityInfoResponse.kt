@@ -15,7 +15,7 @@ import org.dataland.datalandbackend.model.DataType
  * @param userId user who uploaded information on the sourceability of the date set
  * @param creationTime time when the info has been posted
  */
-data class NonSourceableInfoResponse(
+data class SourceabilityInfoResponse(
     @field:JsonProperty(required = true)
     val companyId: String,
     @field:JsonProperty(required = true)

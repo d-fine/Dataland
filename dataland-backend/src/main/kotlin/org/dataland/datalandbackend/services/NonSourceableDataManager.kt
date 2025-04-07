@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
@@ -40,7 +40,7 @@ class NonSourceableDataManager(
      * @param sourceabilityInfo the of the dataset
      */
     @Transactional
-    fun storeNonSourceableData(sourceabilityInfo: SourceabilityInfo): NonSourceableInfoResponse? {
+    fun storeNonSourceableData(sourceabilityInfo: SourceabilityInfo): SourceabilityInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
         val nonSourceableEntity =
@@ -109,7 +109,7 @@ class NonSourceableDataManager(
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): List<NonSourceableInfoResponse> {
+    ): List<SourceabilityInfoResponse> {
         val nonSourceableEntities =
             nonSourceableDataRepository
                 .searchNonSourceableData(
@@ -134,7 +134,7 @@ class NonSourceableDataManager(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
-    ): NonSourceableInfoResponse? =
+    ): SourceabilityInfoResponse? =
         nonSourceableDataRepository
             .getLatestNonSourceableInfoForDataset(
                 NonSourceableDataSearchFilter(
@@ -158,7 +158,7 @@ class NonSourceableDataManager(
         dataType: DataType,
         reportingPeriod: String,
         uploaderId: String,
-    ): NonSourceableInfoResponse? {
+    ): SourceabilityInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
 
         val nonSourceableEntity =

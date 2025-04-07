@@ -5,8 +5,8 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfoResponse
+import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfoResponse
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -59,8 +59,8 @@ class DataRequestNonSourceableTest {
             notifyMeImmediately = false,
         )
 
-    private val nonSourceableInfoRequest2023 =
-        NonSourceableInfo(
+    private val sourceabilityInfoRequest2023 =
+        SourceabilityInfo(
             companyId = dummyCompanyId,
             dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
             reportingPeriod = "2023",
@@ -101,10 +101,10 @@ class DataRequestNonSourceableTest {
         return requestIdSecondUserRequest2023
     }
 
-    private fun postNonSourceableInfo(nonSourceableInfo: NonSourceableInfo) {
+    private fun postNonSourceableInfo(sourceabilityInfo: SourceabilityInfo) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
-            nonSourceableInfo = nonSourceableInfo,
+            sourceabilityInfo = sourceabilityInfo,
         )
     }
 
@@ -123,7 +123,7 @@ class DataRequestNonSourceableTest {
         // Post request for 2023 as admin.
         val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()
 
-        postNonSourceableInfo(nonSourceableInfoRequest2023)
+        postNonSourceableInfo(sourceabilityInfoRequest2023)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
@@ -146,25 +146,25 @@ class DataRequestNonSourceableTest {
 
     @Test
     fun `validate that the get info on sourceability of a dataset endpoint is working`() {
-        postNonSourceableInfo(nonSourceableInfoRequest2023)
-        var receivedNonSourceableInfoList = listOf<NonSourceableInfoResponse>()
+        postNonSourceableInfo(sourceabilityInfoRequest2023)
+        var receivedNonSourceableInfoList = listOf<SourceabilityInfoResponse>()
 
         awaitUntilAsserted {
             receivedNonSourceableInfoList =
                 apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
-                    companyId = nonSourceableInfoRequest2023.companyId,
-                    dataType = nonSourceableInfoRequest2023.dataType,
-                    reportingPeriod = nonSourceableInfoRequest2023.reportingPeriod,
+                    companyId = sourceabilityInfoRequest2023.companyId,
+                    dataType = sourceabilityInfoRequest2023.dataType,
+                    reportingPeriod = sourceabilityInfoRequest2023.reportingPeriod,
                 )
             assertEquals(1, receivedNonSourceableInfoList.size)
         }
 
         val receivedNonSourceableInfo = receivedNonSourceableInfoList[0]
 
-        assertEquals(nonSourceableInfoRequest2023.companyId, receivedNonSourceableInfo.companyId)
-        assertEquals(nonSourceableInfoRequest2023.dataType, receivedNonSourceableInfo.dataType)
-        assertEquals(nonSourceableInfoRequest2023.reportingPeriod, receivedNonSourceableInfo.reportingPeriod)
-        assertEquals(nonSourceableInfoRequest2023.isNonSourceable, receivedNonSourceableInfo.isNonSourceable)
-        assertEquals(nonSourceableInfoRequest2023.reason, receivedNonSourceableInfo.reason)
+        assertEquals(sourceabilityInfoRequest2023.companyId, receivedNonSourceableInfo.companyId)
+        assertEquals(sourceabilityInfoRequest2023.dataType, receivedNonSourceableInfo.dataType)
+        assertEquals(sourceabilityInfoRequest2023.reportingPeriod, receivedNonSourceableInfo.reportingPeriod)
+        assertEquals(sourceabilityInfoRequest2023.isNonSourceable, receivedNonSourceableInfo.isNonSourceable)
+        assertEquals(sourceabilityInfoRequest2023.reason, receivedNonSourceableInfo.reason)
     }
 }

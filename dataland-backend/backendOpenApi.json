@@ -320,7 +320,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
+                    "$ref": "#/components/schemas/SourceabilityInfoResponse"
                   }
                 }
               }
@@ -20201,7 +20201,7 @@
           }
         }
       },
-      "NonSourceableInfoResponse": {
+      "SourceabilityInfoResponse": {
         "required": [
           "companyId",
           "creationTime",
@@ -20404,9 +20404,11 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
           },
           "sector": {
             "type": "string",
@@ -20418,11 +20420,9 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
