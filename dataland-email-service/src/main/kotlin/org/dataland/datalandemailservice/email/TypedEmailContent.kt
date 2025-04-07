@@ -64,7 +64,11 @@ fun Value.setLateInitVars(emailSubscriptionTracker: EmailSubscriptionTracker) {
  * creates the EmailContent.
  */
 fun TypedEmailContent.build(): EmailContent { // toto: remove
-    logger.info("Building email content")
+    logger.info("2 Building email content")
+    logger.info("this Template Name: ${this.templateName}")
+    logger.info("this Text Template: ${this.textTemplate}")
+    logger.info("this HTML Template: ${this.htmlTemplate}")
+    logger.info("Template Name: $templateName")
     logger.info("Text Template: $textTemplate")
     logger.info("HTML Template: $htmlTemplate")
 
@@ -74,5 +78,5 @@ fun TypedEmailContent.build(): EmailContent { // toto: remove
 }
 // fun TypedEmailContent.build(): EmailContent =
 //    EmailContent.fromTemplates(
-//        this.subject, this, textTemplate, htmlTemplate,
+//        this.subject, this, textTemplate, htmlTemplate, // toto: add this
 //    )

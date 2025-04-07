@@ -28,7 +28,7 @@ data class EmailContent(
             textTemplate: String,
             htmlTemplate: String,
         ): EmailContent {
-            logger.info("Building EmailContent")
+            logger.info("3 Building email content in fromTemplates")
             logger.info("Subject: $subject")
             logger.info("Text Template: $textTemplate")
             logger.info("HTML Template: $htmlTemplate")

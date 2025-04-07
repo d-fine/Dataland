@@ -37,8 +37,8 @@ sealed class TypedEmailContent {
     abstract val subject: String
     abstract val templateName: String
 
-    val textTemplate: String = "/text/$templateName.ftl"
-    val htmlTemplate: String = "/html/$templateName.ftl"
+    val textTemplate get() = "/text/$templateName"
+    val htmlTemplate get() = "/html/$templateName"
 }
 
 /**
