@@ -7499,13 +7499,15 @@
         }
       },
       "SfdrData": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneral"
+              }
+            ]
           },
           "environmental": {
             "nullable": true,
@@ -8330,34 +8332,38 @@
         }
       },
       "SfdrGeneral": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneral"
+              }
+            ]
           }
         }
       },
       "SfdrGeneralGeneral": {
-        "required": [
-          "dataDate",
-          "fiscalYearDeviation",
-          "fiscalYearEnd"
-        ],
         "type": "object",
         "properties": {
           "dataDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
@@ -20193,23 +20199,23 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           },
-          "lei": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           }

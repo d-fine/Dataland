@@ -3,6 +3,6 @@
   "name" : "Rare Or Endangered Ecosystems Exposure",
   "businessDefinition" : "Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }
