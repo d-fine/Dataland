@@ -24,7 +24,7 @@ junit-jupiter = "5.12.1"
 log4j = "2.24.3"
 jackson = "2.18.3"
 logback = "1.5.18"
-flyway = "11.4.1"
+flyway = "11.5.0"
 cloudevents = "4.0.1"
 itext = "9.1.0"
 tika = "3.1.0"
@@ -141,7 +141,7 @@ awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" 
 json = { group = "org.json", name = "json", version = "20250107" }
 
 # Mailjet
-mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.5" }
+mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.6" }
 
 # Flyway
 flyway = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
