@@ -36,9 +36,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 sealed class TypedEmailContent {
     abstract val subject: String
     abstract val templateName: String
-
-    val textTemplate get() = "/text/$templateName"
-    val htmlTemplate get() = "/html/$templateName"
+    abstract val textTemplate: String
+    abstract val htmlTemplate: String
 }
 
 /**
@@ -73,6 +72,8 @@ data class AccessToDatasetRequestedEmailContent(
     InitializeBaseUrlLater {
     override val subject = "Access to your data has been requested on Dataland!"
     override val templateName = "access_to_dataset_requested.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -92,6 +93,8 @@ data class AccessToDatasetGrantedEmailContent(
     InitializeBaseUrlLater {
     override val subject = "Your Dataland Access Request has been granted!"
     override val templateName = "access_to_dataset_granted.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -112,6 +115,8 @@ data class DataAvailableEmailContent(
     InitializeBaseUrlLater {
     override val subject = "Your data request has been answered!"
     override val templateName = "data_request_immediate_notification_on_data_available.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -131,6 +136,8 @@ data class DataUpdatedEmailContent(
     InitializeBaseUrlLater {
     override val subject = "Your data request has been updated!"
     override val templateName = "data_request_immediate_notification_on_data_updated.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -151,6 +158,8 @@ data class DataNonSourceableEmailContent(
     InitializeBaseUrlLater {
     override val subject = "There are no sources for your requested data available!"
     override val templateName = "data_request_immediate_notification_on_data_non_sourceable.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -168,6 +177,8 @@ data class DataRequestSummaryEmailContent(
     InitializeBaseUrlLater {
     override val subject = "Summary for your data requests changes!"
     override val templateName = "data_request_summary.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     /**
      * A class that stores the information about the multiple frameworks that have been changed.
@@ -193,6 +204,8 @@ data class CompanyOwnershipClaimApprovedEmailContent(
     InitializeBaseUrlLater {
     override val subject = "Your company ownership claim for ${this.companyName} is confirmed!"
     override val templateName = "company_ownership_claim_approved.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -216,6 +229,8 @@ data class DatasetRequestedClaimCompanyOwnershipEmailContent(
     InitializeBaseUrlLater {
     override val subject = "A message from Dataland: Your data are high on demand!"
     override val templateName = "company_ownership_claim_request_prompt_on_dataset_requested.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var subscriptionUuid: String
@@ -238,6 +253,8 @@ data class DatasetAvailableClaimCompanyOwnershipEmailContent(
     InitializeBaseUrlLater {
     override val subject = "New data for ${this.companyName} on Dataland"
     override val templateName = "company_ownership_claim_request_prompt_on_dataset_available.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     /**
      * A class that stores the information about the frameworks that have been uploaded for the company.
@@ -264,6 +281,8 @@ data class InternalEmailContentTable(
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val templateName = "internal_key_value_table.ftl"
+    override val textTemplate = "/text/$templateName"
+    override val htmlTemplate = "/text/$templateName"
 
     @JsonIgnore
     override lateinit var baseUrl: String

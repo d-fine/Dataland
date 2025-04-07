@@ -24,7 +24,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationSchedulerTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
-    private val mockNotificationUtils = mock<NotificationUtils>()
+    private lateinit var notificationUtils: NotificationUtils
     private val mockInvestorRelationshipsNotificationService = mock<InvestorRelationshipsNotificationService>()
     private val mockDataRequestSummaryNotificationService = mock<DataRequestSummaryNotificationService>()
     private lateinit var notificationScheduler: NotificationScheduler
@@ -36,15 +36,19 @@ class NotificationSchedulerTest {
     fun setupNotificationScheduler() {
         reset(
             mockNotificationEventRepository,
-            mockNotificationUtils,
             mockInvestorRelationshipsNotificationService,
             mockDataRequestSummaryNotificationService,
         )
 
+        notificationUtils =
+            NotificationUtils(
+                mockNotificationEventRepository,
+            )
+
         notificationScheduler =
             NotificationScheduler(
                 mockNotificationEventRepository,
-                mockNotificationUtils,
+                notificationUtils,
                 mockInvestorRelationshipsNotificationService,
                 mockDataRequestSummaryNotificationService,
             )
