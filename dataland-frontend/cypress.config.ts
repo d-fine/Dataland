@@ -148,6 +148,7 @@ export default defineConfig({
     },
     supportFile: 'tests/e2e/support/index.ts',
     downloadsFolder: 'cypress/downloads',
+    responseTimeout: 60000,
   },
   component: {
     devServer: {
