@@ -5,7 +5,7 @@ package org.dataland.datalandcommunitymanager.events
  */
 enum class NotificationEventType {
     AvailableEvent,
-    InvestorRelationshipsEvent,
+    InvestorRelationsEvent,
     UpdatedEvent,
     NonSourceableEvent,
 }

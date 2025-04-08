@@ -31,7 +31,7 @@ class CommunityManagerListenerUnitTest {
     private lateinit var communityManagerListener: CommunityManagerListener
     private val jacksonObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
-    private val mockInvestorRelationshipsManager = mock<InvestorRelationshipsManager>()
+    private val mockInvestorRelationsManager = mock<InvestorRelationsManager>()
     private val validDataId = "valid-data-id"
     private val invalidDataId = ""
     private val correlationId = "test correlation id"
@@ -44,13 +44,13 @@ class CommunityManagerListenerUnitTest {
     fun setUp() {
         reset(
             mockDataRequestUpdateManager,
-            mockInvestorRelationshipsManager,
+            mockInvestorRelationsManager,
         )
         communityManagerListener =
             CommunityManagerListener(
                 jacksonObjectMapper,
                 mockDataRequestUpdateManager,
-                mockInvestorRelationshipsManager,
+                mockInvestorRelationsManager,
             )
     }
 
@@ -78,13 +78,13 @@ class CommunityManagerListenerUnitTest {
                 verify(mockDataRequestUpdateManager).processUserRequests(
                     validDataId, correlationId,
                 )
-                verify(mockInvestorRelationshipsManager).saveNotificationEventForInvestorRelationshipsEmails(validDataId)
+                verify(mockInvestorRelationsManager).saveNotificationEventForInvestorRelationsEmails(validDataId)
             }
             QaStatus.Rejected -> {
                 verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
                     any<String>(), any<String>(),
                 )
-                verify(mockInvestorRelationshipsManager, times(0)).saveNotificationEventForInvestorRelationshipsEmails(any<String>())
+                verify(mockInvestorRelationsManager, times(0)).saveNotificationEventForInvestorRelationsEmails(any<String>())
             }
             else -> Unit
         }
