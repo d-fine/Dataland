@@ -1,3 +1,5 @@
+package org.dataland.datalandcommunitymanager.services.messaging
+
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
