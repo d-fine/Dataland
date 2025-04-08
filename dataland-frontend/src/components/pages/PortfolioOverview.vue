@@ -9,15 +9,15 @@
             <div v-if="isLoading" class="d-center-div">
               <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
             </div>
+            <PortfolioDetails v-else :portfolio="portfolio"></PortfolioDetails>
           </TabPanel>
           <TabPanel>
             <template #header>
               <div class="p-tabview-nav"><i class="pi pi-plus pr-2 align-self-center"></i> New Portfolio</div>
             </template>
+            <h1>New Portfolio dialog here</h1>
           </TabPanel>
         </TabView>
-        <h1>Dummy Content</h1>
-        <p>{{ currentPortfolio }}</p>
       </TheContent>
       <TheFooter :is-light-version="true" :sections="footerSections" />
     </DatasetsTabMenu>
@@ -39,6 +39,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -78,8 +79,18 @@ watch(
 function getPortfolios(): void | undefined {
   apiClientProvider.apiClients.portfolioController
     .getAllPortfoliosForCurrentUser()
-    .then((response) => {
-      portfolios.value = response.data;
+    .then(() => {
+      portfolios.value = [
+        {
+          portfolioId: '123',
+          portfolioName: 'My Portfolio',
+          userId: '1234',
+          creationTimestamp: 12345,
+          lastUpdateTimestamp: 54321,
+          companyIds: new Set<string>(['c0a4476d-2d87-4a58-875c-b3bd5c1b89bc']),
+          frameworks: new Set<string>(['sfdr', 'eutaxonomy-financials']),
+        } as BasePortfolio,
+      ]; //response.data;
     })
     .then(() => getPortfolio(currentIndex.value))
     .catch((error) => console.log(error));
