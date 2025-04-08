@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * API model for the responses of HTTP requests
  */
 
-
 data class BasePortfolioName(
     @field:JsonProperty(required = true)
     val portfolioId: String,
@@ -19,4 +18,3 @@ data class BasePortfolioName(
         portfolioName = portfolio.portfolioName,
     )
 }
-

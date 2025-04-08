@@ -168,8 +168,7 @@ class PortfolioServiceTest {
         assertEquals(expectedPortfolioNames, portfolioNames)
     }
 
-
-        /**
+    /**
      * Used to create dummy portfolios efficiently
      */
     private fun buildPortfolio(
@@ -187,5 +186,4 @@ class PortfolioServiceTest {
         companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
         frameworks = dataTypes ?: setOf(DataTypeEnum.sfdr),
     )
-
 }

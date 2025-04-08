@@ -1,10 +1,8 @@
 package org.dataland.datalanduserservice.service
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
-import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -133,12 +131,12 @@ class PortfolioService
             return portfolioRepository.deleteByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
         }
 
-    /**
-     * Retrieve portfolio names for user
-     */
-    @Transactional(readOnly = true)
-    fun getAllPortfolioNamesForCurrentUser(): List<BasePortfolioName> =
-        getAllPortfoliosForUser().map{ BasePortfolioName(it.portfolioId, it.portfolioName)
-        }
-}
-
+        /**
+         * Retrieve portfolio names for user
+         */
+        @Transactional(readOnly = true)
+        fun getAllPortfolioNamesForCurrentUser(): List<BasePortfolioName> =
+            getAllPortfoliosForUser().map {
+                BasePortfolioName(it.portfolioId, it.portfolioName)
+            }
+    }

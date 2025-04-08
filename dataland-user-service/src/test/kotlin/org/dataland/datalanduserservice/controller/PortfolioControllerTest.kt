@@ -1,7 +1,8 @@
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
@@ -15,12 +16,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.kotlin.*
+import org.mockito.Mockito.reset
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
-
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioControllerTest {
@@ -43,14 +49,14 @@ class PortfolioControllerTest {
 
     @BeforeEach
     fun setup() {
-        reset(mockPortfolioService,mockValidator,mockPortfolioEnrichmentService)
+        reset(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
         this.resetSecurityContext()
         doNothing().whenever(mockValidator).validatePortfolioCreation(eq(validPortfolioUpload), any())
         portfolioController = PortfolioController(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
     }
 
     /**
-     * Setting the security context to use dataland dummy user with role ROLE_USER
+     * Setting the security context to use Data-land dummy user with role ROLE_USER
      */
     private fun resetSecurityContext() {
         mockAuthentication =
@@ -75,12 +81,10 @@ class PortfolioControllerTest {
     }
 
     @Test
-    fun `test that retrieving portfolio names for all portfolios of a user works as expected` () {
-        val portfolios = listOf(BasePortfolioName("12345","pension"),BasePortfolioName("0815","smallcap") )
+    fun `test that retrieving portfolio names for all portfolios of a user works as expected`() {
+        val portfolios = listOf(BasePortfolioName("12345", "pension"), BasePortfolioName("0815", "small-cap"))
         doReturn(portfolios).whenever(mockPortfolioService).getAllPortfolioNamesForCurrentUser()
         val response = assertDoesNotThrow { portfolioController.getAllPortfolioNamesForCurrentUser() }.body
-
         assertEquals(portfolios, response)
-
     }
 }

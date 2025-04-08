@@ -180,6 +180,4 @@ interface PortfolioApi {
     fun getEnrichedPortfolio(
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<EnrichedPortfolio>
-
-
 }

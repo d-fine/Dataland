@@ -49,9 +49,9 @@ class PortfolioController
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
             ResponseEntity(portfolioService.deletePortfolio(portfolioId), HttpStatus.NO_CONTENT)
 
-    override fun getAllPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
-        ResponseEntity.ok(portfolioService.getAllPortfolioNamesForCurrentUser())
+        override fun getAllPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
+            ResponseEntity.ok(portfolioService.getAllPortfolioNamesForCurrentUser())
 
-    override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
+        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
             ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioId))
     }
