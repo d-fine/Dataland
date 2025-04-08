@@ -58,6 +58,8 @@ class EmailSubscriptionManager(
             EmailMessage(
                 InternalEmailContentTable(
                     subject = "A user has unsubscribed from data uploads notifications",
+                    textTitle = "A user has unsubscribed from data uploads notifications.",
+                    htmlTitle = "A user has unsubscribed from data uploads notifications.",
                     table =
                         listOf(
                             "Unsubscribed Email Address" to Value.Text(unsubscribedEmailAddress),

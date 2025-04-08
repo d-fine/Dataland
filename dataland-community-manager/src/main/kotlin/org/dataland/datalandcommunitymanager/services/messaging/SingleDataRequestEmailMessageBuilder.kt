@@ -50,6 +50,8 @@ class SingleDataRequestEmailMessageBuilder(
         val internalEmailContentTable =
             InternalEmailContentTable(
                 "Dataland Single Data Request",
+                "A single data request has been submitted",
+                "Single Data Request",
                 listOf(
                     "User" to Value.Text(messageInformation.userAuthentication.userDescription),
                     "E-Mail" to Value.Text(messageInformation.userAuthentication.username),

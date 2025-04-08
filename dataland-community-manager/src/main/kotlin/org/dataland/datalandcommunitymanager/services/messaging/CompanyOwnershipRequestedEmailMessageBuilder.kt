@@ -40,6 +40,8 @@ class CompanyOwnershipRequestedEmailMessageBuilder(
         val internalEmailContentTable =
             InternalEmailContentTable(
                 "Dataland Company Ownership Request",
+                "A company ownership request has been submitted",
+                "Company Ownership Request",
                 listOf(
                     "User" to Value.Text(userAuthentication.userDescription),
                     "E-Mail" to Value.Text(userAuthentication.username),

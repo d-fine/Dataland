@@ -160,7 +160,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     private val internalEmailContentTable =
         InternalEmailContentTable(
-            "subject",
+            "subject", EMAIL_TITLE, EMAIL_TITLE,
             listOf(
                 "Key0" to Value.Text("ValueA"),
                 "Key1" to Value.RelativeLink("/example", "Link-TitleA"),

@@ -29,6 +29,8 @@ class InvestorRelationshipsEmailBuilder(
     @Autowired private val companyInfoService: CompanyInfoService,
     @Autowired val objectMapper: ObjectMapper,
 ) {
+    private val internalEmailTitle = "An Investor Relationships Notification Email has been sent"
+
     /**
      * Sends both external and internal Investor Relationships notification emails based on the specified parameters.
      * @param unprocessedEvents A list of notification event entities that are unprocessed
@@ -93,7 +95,7 @@ class InvestorRelationshipsEmailBuilder(
         val internalEmailSubject = "Dataland Notification Email has been sent"
         val internalEmailContent =
             InternalEmailContentTable(
-                internalEmailSubject,
+                internalEmailSubject, internalEmailTitle, internalEmailTitle,
                 listOf(
                     "Company" to
                         companyIdAndNameValue(
