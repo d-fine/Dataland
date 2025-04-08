@@ -163,6 +163,16 @@ class DataRequestUpdateManager
                 }
             }
 
+            if (dataRequestPatch.requestStatus == RequestStatus.NonSourceable) {
+                if (dataRequestEntity.notifyMeImmediately) {
+                    sendImmediateNotificationAndCreateNotificationEvent(
+                        dataRequestEntity, dataRequestPatch, correlationId,
+                    )
+                } else {
+                    createNotificationEvent(dataRequestEntity, dataRequestPatch)
+                }
+            }
+
             return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
         }
 
