@@ -6,12 +6,11 @@ package org.dataland.datalandmessagequeueutils.messages
  * @param companyId ID of the company with which the new dataset is associated
  * @param reportingPeriod associated reporting period
  * @param actionType action to pursue in reaction to the sent message
- * @param documentHashes map of document hashes
  */
 data class PrivateDataUploadMessage(
     val dataId: String,
     val companyId: String,
     val reportingPeriod: String,
+    val framework: String,
     val actionType: String,
-    val documentHashes: Map<String, String>,
 )

@@ -113,8 +113,8 @@ class CommunityManagerListenerUnitTest {
                 dataId = invalidDataId,
                 companyId = "",
                 reportingPeriod = "",
+                framework = "vsme",
                 actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
-                documentHashes = mapOf<String, String>(),
             )
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.changeRequestStatusAfterPrivateDataUpload(
@@ -131,8 +131,8 @@ class CommunityManagerListenerUnitTest {
                 dataId = validDataId,
                 companyId = "",
                 reportingPeriod = "",
+                framework = "vsme",
                 actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
-                documentHashes = mapOf<String, String>(),
             )
         communityManagerListener.changeRequestStatusAfterPrivateDataUpload(
             jacksonObjectMapper.writeValueAsString(validPrivateDataUploadMessage),
