@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationshipsEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.InvestorRelationsEmailBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -27,13 +27,13 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class InvestorRelationshipsNotificationServiceTest {
+class InvestorRelationsNotificationServiceTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockInvestorRelationshipEmailBuilder =
-        mock<InvestorRelationshipsEmailBuilder>()
-    private lateinit var investorRelationshipsNotificationService: InvestorRelationshipsNotificationService
+        mock<InvestorRelationsEmailBuilder>()
+    private lateinit var investorRelationsNotificationService: InvestorRelationsNotificationService
 
     private val companyUUID = UUID.randomUUID()
 
@@ -46,8 +46,8 @@ class InvestorRelationshipsNotificationServiceTest {
             mockInvestorRelationshipEmailBuilder,
         )
 
-        investorRelationshipsNotificationService =
-            InvestorRelationshipsNotificationService(
+        investorRelationsNotificationService =
+            InvestorRelationsNotificationService(
                 mockNotificationEventRepository,
                 mockCompanyRolesManager,
                 mockCompanyDataControllerApi,
@@ -70,7 +70,7 @@ class InvestorRelationshipsNotificationServiceTest {
             )
         val notificationEventEntity =
             NotificationEventEntity(
-                notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
+                notificationEventType = NotificationEventType.InvestorRelationsEvent,
                 userId = null,
                 isProcessed = false,
                 companyId = companyUUID,
@@ -78,7 +78,7 @@ class InvestorRelationshipsNotificationServiceTest {
                 reportingPeriod = "2024",
             )
 
-        investorRelationshipsNotificationService.createCompanySpecificNotificationEvent(testDataMetaInformation)
+        investorRelationsNotificationService.createCompanySpecificNotificationEvent(testDataMetaInformation)
 
         verifyNotificationEventRepositoryInteraction(notificationEventEntity)
     }
@@ -94,7 +94,7 @@ class InvestorRelationshipsNotificationServiceTest {
         val companyMailList = listOf("mail@example.com")
         val notificationEventEntity =
             NotificationEventEntity(
-                notificationEventType = NotificationEventType.InvestorRelationshipsEvent,
+                notificationEventType = NotificationEventType.InvestorRelationsEvent,
                 userId = null,
                 isProcessed = false,
                 companyId = companyUUID,
@@ -121,10 +121,10 @@ class InvestorRelationshipsNotificationServiceTest {
         val entityList = listOf(notificationEventEntity, notificationEventEntity, noNotificationEventEntity)
         val targetList = listOf(notificationEventEntity, notificationEventEntity)
 
-        investorRelationshipsNotificationService.processNotificationEvents(entityList)
+        investorRelationsNotificationService.processNotificationEvents(entityList)
 
         verify(mockInvestorRelationshipEmailBuilder)
-            .buildExternalAndInternalInvestorRelationshipsSummaryEmailAndSendCEMessage(
+            .buildExternalAndInternalInvestorRelationsSummaryEmailAndSendCEMessage(
                 eq(targetList),
                 eq(companyUUID),
                 eq(companyMailList),

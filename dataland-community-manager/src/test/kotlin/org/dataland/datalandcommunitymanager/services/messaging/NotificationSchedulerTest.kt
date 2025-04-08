@@ -1,12 +1,11 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
-import NotificationScheduler
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.DataRequestSummaryNotificationService
-import org.dataland.datalandcommunitymanager.services.InvestorRelationshipsNotificationService
+import org.dataland.datalandcommunitymanager.services.InvestorRelationsNotificationService
 import org.dataland.datalandcommunitymanager.utils.NotificationUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,7 +24,7 @@ import java.util.UUID
 class NotificationSchedulerTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private lateinit var notificationUtils: NotificationUtils
-    private val mockInvestorRelationshipsNotificationService = mock<InvestorRelationshipsNotificationService>()
+    private val mockInvestorRelationsNotificationService = mock<InvestorRelationsNotificationService>()
     private val mockDataRequestSummaryNotificationService = mock<DataRequestSummaryNotificationService>()
     private lateinit var notificationScheduler: NotificationScheduler
 
@@ -36,7 +35,7 @@ class NotificationSchedulerTest {
     fun setupNotificationScheduler() {
         reset(
             mockNotificationEventRepository,
-            mockInvestorRelationshipsNotificationService,
+            mockInvestorRelationsNotificationService,
             mockDataRequestSummaryNotificationService,
         )
 
@@ -49,7 +48,7 @@ class NotificationSchedulerTest {
             NotificationScheduler(
                 mockNotificationEventRepository,
                 notificationUtils,
-                mockInvestorRelationshipsNotificationService,
+                mockInvestorRelationsNotificationService,
                 mockDataRequestSummaryNotificationService,
             )
     }
@@ -58,7 +57,7 @@ class NotificationSchedulerTest {
     fun `test scheduledWeeklyEmailSending with no message`() {
         notificationScheduler.scheduledWeeklyEmailSending()
 
-        verifyNoMoreInteractions(mockInvestorRelationshipsNotificationService)
+        verifyNoMoreInteractions(mockInvestorRelationsNotificationService)
         verifyNoMoreInteractions(mockDataRequestSummaryNotificationService)
     }
 
@@ -83,7 +82,7 @@ class NotificationSchedulerTest {
 
         // One E-mail should be sent with both events for the same company
         verify(
-            mockInvestorRelationshipsNotificationService, times(1),
+            mockInvestorRelationsNotificationService, times(1),
         ).processNotificationEvents(entityList)
         verify(
             mockDataRequestSummaryNotificationService, times(1),
