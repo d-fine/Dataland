@@ -113,6 +113,7 @@ class CommunityManagerListenerUnitTest {
                 dataId = invalidDataId,
                 companyId = "",
                 reportingPeriod = "",
+                framework = "vsme",
                 actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
             )
         assertThrows<MessageQueueRejectException> {
@@ -130,6 +131,7 @@ class CommunityManagerListenerUnitTest {
                 dataId = validDataId,
                 companyId = "",
                 reportingPeriod = "",
+                framework = "vsme",
                 actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
             )
         communityManagerListener.changeRequestStatusAfterPrivateDataUpload(

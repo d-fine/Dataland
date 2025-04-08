@@ -11,5 +11,6 @@ data class PrivateDataUploadMessage(
     val dataId: String,
     val companyId: String,
     val reportingPeriod: String,
+    val framework: String,
     val actionType: String,
 )
