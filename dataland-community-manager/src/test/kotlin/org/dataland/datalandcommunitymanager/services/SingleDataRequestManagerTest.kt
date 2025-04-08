@@ -53,7 +53,7 @@ class SingleDataRequestManagerTest {
     private lateinit var mockKeycloakUserService: KeycloakUserService
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
-    private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
+    private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
     private val maxRequestsForUser = 10
 
     private val sampleRequest =
