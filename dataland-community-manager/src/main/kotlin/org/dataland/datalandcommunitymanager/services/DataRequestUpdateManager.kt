@@ -87,7 +87,10 @@ class DataRequestUpdateManager
                         answeringDataId,
                     ),
                     updateUtils.updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
-                    updateUtils.checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
+                    updateUtils.checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(
+                        dataRequestPatch,
+                        dataRequestEntity,
+                    ),
                 ).any { it }
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
@@ -358,25 +361,33 @@ class DataRequestUpdateManager
             correlationId: String,
         ) {
             for (dataRequestEntity in dataRequestEntities) {
-                val accessStatusIsOkay =
-                    dataRequestEntity.accessStatus !=
-                        AccessStatus.Declined &&
-                        dataRequestEntity.accessStatus != AccessStatus.Revoked
-                if (dataRequestEntity.notifyMeImmediately ||
-                    (dataRequestEntity.dataType == DataTypeEnum.vsme.name && accessStatusIsOkay)
-                ) {
+                if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
+                    val accessStatusIsOkay =
+                        listOf(
+                            dataRequestEntity.accessStatus != AccessStatus.Declined,
+                            dataRequestEntity.accessStatus != AccessStatus.Revoked,
+                        ).all { it }
+                    if (accessStatusIsOkay) {
+                        requestEmailManager.sendDataUpdatedEmail(
+                            dataRequestEntity,
+                            correlationId,
+                        )
+                    }
+                    return
+                }
+
+                if (dataRequestEntity.notifyMeImmediately) {
                     requestEmailManager.sendDataUpdatedEmail(
                         dataRequestEntity,
                         correlationId,
                     )
                 }
-                if (dataRequestEntity.dataType != DataTypeEnum.vsme.name) {
-                    dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
-                        dataRequestEntity = dataRequestEntity,
-                        immediateNotificationWasSent = dataRequestEntity.notifyMeImmediately,
-                        earlierQaApprovedVersionOfDatasetExists = true,
-                    )
-                }
+
+                dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
+                    dataRequestEntity = dataRequestEntity,
+                    immediateNotificationWasSent = dataRequestEntity.notifyMeImmediately,
+                    earlierQaApprovedVersionOfDatasetExists = true,
+                )
             }
         }
 
