@@ -16,7 +16,7 @@ import java.util.UUID
  * Service that handles creation, processing and sending of notification events,
  * when datasets are available and their company ownership is claimable.
  */
-@Service("InvestorRelationshipNotificationService")
+@Service("InvestorRelationshipsNotificationService")
 class InvestorRelationshipsNotificationService
     @Autowired
     constructor(
@@ -28,7 +28,7 @@ class InvestorRelationshipsNotificationService
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
         /**
-         * Processes investor relationship events and sends emails to appropriate recipients.
+         * Processes investor relationships events and sends emails to appropriate recipients.
          * @param notificationEvents List of unprocessed investor relationship notification events.
          */
         fun processNotificationEvents(notificationEvents: List<NotificationEventEntity>) {
@@ -37,10 +37,11 @@ class InvestorRelationshipsNotificationService
                 val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
                 val emailReceivers = companyInfo.companyContactDetails
                 val correlationId = UUID.randomUUID().toString()
+                logger.info("IR processNotificationEvents") // toto: remove
 
                 if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
                     logger.info(
-                        "Requirements for Investor Relationship notification are met. " +
+                        "Requirements for Investor Relationships notification are met. " +
                             "Sending notification emails. CorrelationId: $correlationId",
                     )
                     investorRelationshipEmailBuilder

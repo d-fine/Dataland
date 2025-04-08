@@ -31,6 +31,7 @@ class NotificationScheduler
          */
         @Scheduled(cron = "*/3 * * * * ?")
         fun scheduledWeeklyEmailSending() {
+            logger.info("scheduledWeeklyEmailSending") // toto: remove
             processNotificationEvents(
                 "Investor Relationships",
                 listOf(NotificationEventType.InvestorRelationshipsEvent),
@@ -59,13 +60,17 @@ class NotificationScheduler
             eventTypes: List<NotificationEventType>,
             processFunction: (List<NotificationEventEntity>) -> Unit,
         ) {
+            logger.info("Starting processNotificationEvents for: $emailPurpose") // toto: remove
             val unprocessedEvents =
                 notificationEventRepository.findAllByNotificationEventTypesAndIsProcessedFalse(eventTypes)
-
+            logger.info("Found ${unprocessedEvents.size} unprocessed events for types: $eventTypes") // toto: remove
             if (unprocessedEvents.isNotEmpty()) {
                 try {
+                    logger.info("Processing events: ${unprocessedEvents.map { it }}") // toto: remove
                     processFunction(unprocessedEvents)
+                    logger.info("Processed events successfully for: $emailPurpose") // toto: remove
                     notificationUtils.markEventsAsProcessed(unprocessedEvents)
+                    logger.info("Marked events as processed for: $emailPurpose") // toto: remove
                 } catch (unsupportedOperationException: UnsupportedOperationException) {
                     logError(emailPurpose, unsupportedOperationException)
                 } catch (clientException: ClientException) {
