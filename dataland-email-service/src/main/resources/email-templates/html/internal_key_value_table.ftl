@@ -44,7 +44,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="header">${htmlTitle}</div>
+    <div class="header">${title}</div>
     <#list table as table_row>
         <div class="section"> <span class="bold">${table_row.first}: </span><@renderValue table_row.second/></div>
     </#list>

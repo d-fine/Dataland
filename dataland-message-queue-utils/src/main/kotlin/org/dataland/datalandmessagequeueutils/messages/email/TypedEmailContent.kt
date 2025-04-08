@@ -259,8 +259,7 @@ data class DatasetAvailableClaimCompanyOwnershipEmailContent(
  */
 data class InternalEmailContentTable(
     override val subject: String,
-    val textTitle: String,
-    val htmlTitle: String,
+    val title: String,
     val table: List<Pair<String, Value>>,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {

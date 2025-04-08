@@ -113,13 +113,7 @@ class EmailMessageListener(
 
         val sender = emailContactService.getSenderContact()
         emailMessage.typedEmailContent.setLateInitVars(receivers.allowedContacts, proxyPrimaryUrl, emailSubscriptionTracker)
-        logger.info("2 Building email content for message with subject: ${emailMessage.typedEmailContent.subject}") // toto: remove
         val content = emailMessage.typedEmailContent.build()
-        logger
-            .info(
-                "Email content built: Subject = ${content.subject}, Text Content = ${content.textContent}," +
-                    "HTML Content = ${content.htmlContent}",
-            ) // toto:remove
         val email =
             Email(
                 sender,

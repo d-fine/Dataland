@@ -15,7 +15,7 @@
         Error: Macro not found<#t>
     </#if>
 </#macro>
-${textTitle}
+${title}
 
 <#list table as table_row>
 ${table_row.first} <@renderValue table_row.second/>
