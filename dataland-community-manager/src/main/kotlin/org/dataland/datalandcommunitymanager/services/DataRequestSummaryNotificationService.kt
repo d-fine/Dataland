@@ -30,7 +30,6 @@ class DataRequestSummaryNotificationService
          * @param events List of unprocessed data request summary notification events.
          */
         fun processNotificationEvents(events: List<NotificationEventEntity>) {
-            logger.info("Summary processNotificationEvents") // toto: remove
             val eventsGroupedByUser = events.groupBy { it.userId }.filter { it.key != null }
             eventsGroupedByUser.forEach { (userId, userEvents) ->
                 logger.info(

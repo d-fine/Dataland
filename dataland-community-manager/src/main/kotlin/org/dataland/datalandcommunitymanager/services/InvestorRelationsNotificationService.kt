@@ -37,7 +37,6 @@ class InvestorRelationsNotificationService
                 val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
                 val emailReceivers = companyInfo.companyContactDetails
                 val correlationId = UUID.randomUUID().toString()
-                logger.info("IR processNotificationEvents") // toto: remove
 
                 if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
                     logger.info(
