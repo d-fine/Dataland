@@ -151,7 +151,6 @@ class DataRequestUpdateManagerTest {
                         null, null, null,
                     ),
             )
-
         doReturn(listOf(dummyDataRequestEntity1))
             .whenever(mockDataRequestRepository)
             .findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
@@ -159,7 +158,6 @@ class DataRequestUpdateManagerTest {
                 dataType = dummyNonSourceableInfo.dataType.toString(),
                 reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
             )
-
         doNothing().whenever(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
             any(), any(), any(), any<String>(), any(), any(),
         )

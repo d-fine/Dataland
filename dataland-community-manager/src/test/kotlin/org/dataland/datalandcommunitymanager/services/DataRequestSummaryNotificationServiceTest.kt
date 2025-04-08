@@ -164,10 +164,7 @@ class DataRequestSummaryNotificationServiceTest {
                     RequestStatus.Open, RequestStatus.Answered, false, false, NotificationEventType.AvailableEvent,
                 ),
                 Arguments.of(
-                    RequestStatus.Open,
-                    RequestStatus.NonSourceable,
-                    true,
-                    true,
+                    RequestStatus.Open, RequestStatus.NonSourceable, true, true,
                     NotificationEventType.NonSourceableEvent,
                 ),
                 Arguments.of(

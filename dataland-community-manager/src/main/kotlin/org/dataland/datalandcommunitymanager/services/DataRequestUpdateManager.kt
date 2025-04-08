@@ -71,11 +71,11 @@ class DataRequestUpdateManager
          * Checks whether processing the given data request entity and patch resulted
          * in any changes on the entity; if so, it stores the new version of the entity.
          */
-        private fun checkForChangesAndSaveDataRequestEntityIfSo(
+        private fun updateDataRequestEntity(
             dataRequestEntity: DataRequestEntity,
             dataRequestPatch: DataRequestPatch,
             answeringDataId: String?,
-        ) {
+        ): StoredDataRequest {
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
@@ -91,6 +91,7 @@ class DataRequestUpdateManager
                 ).any { it }
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
+            return dataRequestEntity.toStoredDataRequest()
         }
 
         /**
@@ -126,8 +127,7 @@ class DataRequestUpdateManager
                     .getOrElse { throw DataRequestNotFoundApiException(dataRequestId) }
 
             if (dataRequestEntity.requestStatus == RequestStatus.Withdrawn) {
-                checkForChangesAndSaveDataRequestEntityIfSo(dataRequestEntity, dataRequestPatch, answeringDataId)
-                return dataRequestEntity.toStoredDataRequest()
+                return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
             }
 
             if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
@@ -138,10 +138,12 @@ class DataRequestUpdateManager
                     dataRequestEntity, dataRequestPatch.requestStatus,
                     updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity), correlationId,
                 )
-            } else if (dataRequestPatch.requestStatus == RequestStatus.Answered) {
-                val notifyImmediately = dataRequestEntity.notifyMeImmediately
+                return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
+            }
+
+            if (dataRequestPatch.requestStatus == RequestStatus.Answered) {
                 when (
-                    Pair(dataRequestEntity.requestStatus, notifyImmediately)
+                    Pair(dataRequestEntity.requestStatus, dataRequestEntity.notifyMeImmediately)
                 ) {
                     Pair(RequestStatus.Open, true), Pair(RequestStatus.NonSourceable, true) -> {
                         sendImmediateNotificationAndCreateNotificationEvent(
@@ -157,9 +159,7 @@ class DataRequestUpdateManager
                 }
             }
 
-            checkForChangesAndSaveDataRequestEntityIfSo(dataRequestEntity, dataRequestPatch, answeringDataId)
-
-            return dataRequestEntity.toStoredDataRequest()
+            return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
         }
 
         /**
@@ -209,7 +209,10 @@ class DataRequestUpdateManager
                             requestStatus = RequestStatus.Answered,
                             requestStatusChangeReason = requestStatusChangeReason,
                             notifyMeImmediately =
-                                if (dataRequestEntity.requestStatus == RequestStatus.Open) false else null,
+                                when (dataRequestEntity.requestStatus) {
+                                    RequestStatus.Open -> false
+                                    else -> null
+                                },
                         ),
                     correlationId = correlationId,
                     answeringDataId = answeringDataId,
