@@ -115,6 +115,7 @@ class DataRequestUpdateManager
          *
          * @return the updated data request object
          */
+        @Suppress("ReturnCount")
         private fun patchDataRequest(
             dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
