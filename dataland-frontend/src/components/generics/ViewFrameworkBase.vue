@@ -10,9 +10,9 @@
     />
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
-        class="text-left surface-0 dataland-toolbar"
+        class="text-left"
+        bg-class="dataland-toolbar sticky"
         style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
-        :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
@@ -113,7 +113,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import { computed, defineComponent, inject, type PropType, ref } from 'vue';
+import { computed, defineComponent, inject, type PropType } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
@@ -123,7 +123,6 @@ import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleRepo
 import OverlayPanel from 'primevue/overlaypanel';
 import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import InputSwitch from 'primevue/inputswitch';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
@@ -182,7 +181,6 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
     };
   },
   data() {
@@ -190,12 +188,6 @@ export default defineComponent({
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
       dataMetaInformation: [] as Array<DataMetaInformation>,
-      windowScrollHandler: (): void => {
-        this.handleScroll();
-      },
-      pageScrolled: false,
-      scrollEmittedByToolbar: false,
-      latestScrollPosition: 0,
       activeDataForCurrentCompanyAndFramework: [] as Array<DataAndMetaInformation<FrameworkData>>,
       isDataProcessedSuccessfully: false,
       hasUserUploaderRights: false,
@@ -263,8 +255,6 @@ export default defineComponent({
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     }
     void this.setViewPageAttributesForUser();
-
-    window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
     getAllPrivateFrameworkIdentifiers,
@@ -316,24 +306,6 @@ export default defineComponent({
       void router.push(
         `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
-    },
-    /**
-     * Hides the dropdown of the Autocomplete-component
-     */
-    handleScroll() {
-      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
-      const windowScrollY = window.scrollY;
-      if (this.scrollEmittedByToolbar) {
-        this.scrollEmittedByToolbar = false;
-      } else if (this.latestScrollPosition > windowScrollY) {
-        //ScrollUP event
-        this.latestScrollPosition = windowScrollY;
-        this.pageScrolled = document.documentElement.scrollTop >= 195;
-      } else {
-        //ScrollDOWN event
-        this.latestScrollPosition = windowScrollY;
-        this.pageScrolled = document.documentElement.scrollTop > 195;
-      }
     },
 
     /**
