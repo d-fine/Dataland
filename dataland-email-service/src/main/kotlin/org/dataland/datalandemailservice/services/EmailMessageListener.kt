@@ -99,7 +99,6 @@ class EmailMessageListener(
         val receivers = resolveRecipients(emailMessage.receiver)
         val cc = resolveRecipients(emailMessage.cc)
         val bcc = resolveRecipients(emailMessage.bcc + additionalBccList)
-        logger.info("###############TEST LOG##############")
 
         val blockedContacts = receivers.blockedContacts + cc.blockedContacts + bcc.blockedContacts
         if (blockedContacts.isNotEmpty()) {
