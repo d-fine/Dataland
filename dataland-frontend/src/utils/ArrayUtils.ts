@@ -19,3 +19,23 @@ export function arraySetEquals<T>(a: Array<T>, b: Array<T>): boolean {
 export function range(numElements: number): number[] {
   return Array.from(Array(numElements).keys());
 }
+
+/**
+ * Takes an iterable of items and groups them by a key specified in a callback.
+ * It's an implementation of the Object.groupBy() method available in ES2024 and should be replaced by it, when we have it.
+ * @param items the iterable containing the original items
+ * @param callbackFn the callback function that generates the key from an item
+ * @returns a map of arrays of items grouped by the key
+ */
+export function groupBy<T, K>(items: Iterable<T>, callbackFn: (item: T) => K): Map<K, T[]> {
+  const returnValue = new Map<K, T[]>();
+  Array.from(items).forEach((item) => {
+    const key = callbackFn(item);
+    if (returnValue.has(key)) {
+      returnValue.get(key)!.push(item);
+    } else {
+      returnValue.set(key, [item]);
+    }
+  });
+  return returnValue;
+}

@@ -79,21 +79,10 @@ watch(
 function getPortfolios(): void | undefined {
   apiClientProvider.apiClients.portfolioController
     .getAllPortfoliosForCurrentUser()
-    .then(() => {
-      portfolios.value = [
-        {
-          portfolioId: '123',
-          portfolioName: 'My Portfolio',
-          userId: '1234',
-          creationTimestamp: 12345,
-          lastUpdateTimestamp: 54321,
-          companyIds: new Set<string>(['c0a4476d-2d87-4a58-875c-b3bd5c1b89bc']),
-          frameworks: new Set<string>(['sfdr', 'eutaxonomy-financials']),
-        } as BasePortfolio,
-      ]; //response.data;
+    .then((response) => {
+      portfolios.value = response.data;
     })
-    .then(() => getPortfolio(currentIndex.value))
-    .catch((error) => console.log(error));
+    .catch((reason) => console.error(reason));
 }
 
 /**
