@@ -17,6 +17,7 @@
         optionLabel="label"
         class="selection-button flex flex-row align-items-center"
         style="width: 16em; display: inline-flex !important"
+        :data-test="'framework-dropdown'"
       >
         <template #dropdownicon>
           <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
@@ -51,6 +52,7 @@
             type="text"
             @input="filterCallback()"
             placeholder="Filter by company name"
+            :data-test="'companyNameFilterValue'"
           />
         </template>
       </Column>
@@ -61,12 +63,19 @@
             type="text"
             @input="filterCallback()"
             placeholder="Filter by country"
+            :data-test="'countryCodeFilterValue'"
           />
         </template>
       </Column>
       <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false">
         <template #filter="{ filterModel, filterCallback }">
-          <InputText v-model="filterModel.value" type="text" @input="filterCallback()" placeholder="Filter by sector" />
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by sector"
+            :data-test="'sectorFilterValue'"
+          />
         </template>
       </Column>
       <Column
@@ -84,6 +93,7 @@
             type="text"
             @input="filterCallback()"
             placeholder="Filter by last reporting period"
+            :data-test="'latestReportingPeriodeFilterValue'"
           />
         </template>
       </Column>
