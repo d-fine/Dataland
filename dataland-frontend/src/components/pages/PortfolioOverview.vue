@@ -7,16 +7,18 @@
           v-model:activeIndex="currentIndex"
           @tab-change="onTabChange"
           :scrollable="true"
-          :data-test="'portfolios'"
+          data-test="portfolios"
         >
-          <TabPanel v-for="portfolio in portfolios" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
+          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
             <PortfolioDetails :portfolioId="portfolio.portfolioId" />
           </TabPanel>
           <TabPanel>
             <template #header>
-              <div class="p-tabview-nav"><i class="pi pi-plus pr-2 align-self-center"></i> New Portfolio</div>
+              <div class="p-tabview-nav" @click="addNewPortfolio">
+                <span class="align-self-start"><i class="pi pi-plus pr-2" /> New Portfolio</span>
+              </div>
             </template>
-            <h1>New Portfolio dialog here</h1>
+            <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
           </TabPanel>
         </TabView>
       </TheContent>
@@ -26,26 +28,29 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import type { Content, Section } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import PortfolioDialog from '@/components/general/PortfolioDialog.vue';
 import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import type { Content, Section } from '@/types/ContentTypes.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { BasePortfolioName } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
+import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
+import { useDialog } from 'primevue/usedialog';
+import { inject, onMounted, ref, watch } from 'vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const dialog = useDialog();
 
 const currentIndex = ref(0);
-const portfolios = ref<BasePortfolioName[]>();
+const portfolioNames = ref<BasePortfolioName[]>([]);
 
 const content: Content = contentData;
 const footerSections: Section[] | undefined = content.pages.find((page) => page.url === '/')?.sections;
@@ -62,23 +67,22 @@ onMounted(() => {
 watch(
   currentIndex,
   (newIndex, oldIndex) => {
-    if (newIndex == portfolios.value?.length) {
-      addNewPortfolio();
+    if (portfolioNames.value.length == 0 || newIndex == portfolioNames.value.length) {
       currentIndex.value = oldIndex;
       return;
     }
   },
-  { flush: 'post' }
+  { flush: 'post' },
 );
 
 /**
  * Retrieve all portfolios for the currently logged-in user.
  */
-function getPortfolios(): void | undefined {
+function getPortfolios(): void {
   apiClientProvider.apiClients.portfolioController
     .getAllPortfolioNamesForCurrentUser()
     .then((response) => {
-      portfolios.value = response.data;
+      portfolioNames.value = response.data;
     })
     .catch((reason) => console.error(reason));
 }
@@ -95,6 +99,12 @@ function onTabChange(event: TabViewChangeEvent): void {
  */
 function addNewPortfolio(): void {
   console.log('Add new Portfolio');
+  dialog.open(PortfolioDialog, {
+    props: {
+      header: 'Add Portfolio',
+      modal: true,
+    },
+  });
 }
 </script>
 
