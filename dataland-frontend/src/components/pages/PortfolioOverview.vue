@@ -5,11 +5,7 @@
       <TheContent class="min-h-screen paper-section relative">
         <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" class="col-12" :scrollable="true">
           <TabPanel v-for="portfolio in portfolios" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
-            <!-- Insert component to display a specific portfolio here -->
-            <div v-if="isLoading" class="d-center-div">
-              <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-            </div>
-            <PortfolioDetails v-else :portfolio="portfolio"></PortfolioDetails>
+            <PortfolioDetails :portfolioId="portfolio.portfolioId" />
           </TabPanel>
           <TabPanel>
             <template #header>
@@ -45,7 +41,6 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const currentIndex = ref(0);
 const currentPortfolio = ref<BasePortfolio>();
-const isLoading = ref(false);
 const portfolios = ref<BasePortfolio[]>();
 
 const content: Content = contentData;
@@ -92,7 +87,6 @@ function getPortfolios(): void | undefined {
 async function getPortfolio(index: number): Promise<void | undefined> {
   if (!portfolios.value) return;
   try {
-    isLoading.value = true;
     const response = await apiClientProvider.apiClients.portfolioController.getPortfolio(
       portfolios.value[currentIndex.value].portfolioId
     );
@@ -100,8 +94,6 @@ async function getPortfolio(index: number): Promise<void | undefined> {
   } catch (error) {
     console.log(`Error while loading portfolio for tabIndex ${index}:`);
     throw error;
-  } finally {
-    isLoading.value = false;
   }
 }
 

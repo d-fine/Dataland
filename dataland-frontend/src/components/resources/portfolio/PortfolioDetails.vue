@@ -1,78 +1,99 @@
 <template>
-  <h1>Portfolio Details of {{ props.portfolio.portfolioName }}</h1>
-  <span class="button_bar">
-    <Dropdown
-      v-model="selectedFramework"
-      :options="frameworks"
-      optionLabel="label"
-      class="selection-button flex flex-row align-items-center"
-      style="width: 16em; display: inline-flex !important"
-    >
-      <template #dropdownicon>
-        <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
-          <polygon points="0,0 5,5 10,0" fill="currentColor" />
-        </svg>
-      </template>
-    </Dropdown>
-    <PrimeButton class="primary-button">Request missing data</PrimeButton>
-    <PrimeButton class="primary-button"> <i class="material-icons pr-2">edit</i> Edit Portfolio </PrimeButton>
-    <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
-  </span>
+  <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
+    <h1>Loading portfolio data...</h1>
+    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+  </div>
+  <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
+    <h1>Error loading portfolio data</h1>
+    An unexpected error occurred. Please try again later or with [Ctrl] + [F5] or contact the support team if the issue
+    persists.
+  </div>
+  <div v-else>
+    <h1>Portfolio Details of {{ enrichedPortfolio?.portfolioName }}</h1>
+    <span class="button_bar">
+      <Dropdown
+        v-model="selectedFramework"
+        :options="frameworks"
+        optionLabel="label"
+        class="selection-button flex flex-row align-items-center"
+        style="width: 16em; display: inline-flex !important"
+      >
+        <template #dropdownicon>
+          <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
+            <polygon points="0,0 5,5 10,0" fill="currentColor" />
+          </svg>
+        </template>
+      </Dropdown>
+      <PrimeButton class="primary-button">Request missing data</PrimeButton>
+      <PrimeButton class="primary-button"> <i class="material-icons pr-2">edit</i> Edit Portfolio </PrimeButton>
+      <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+    </span>
 
-  <DataTable
-    stripedRows
-    removableSort
-    v-model:filters="filters"
-    filterDisplay="menu"
-    :value="selectedDetails"
-    tableStyle="min-width: 50rem"
-  >
-    <template #empty>
-      Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
-      companies or remove filter criteria.
-    </template>
-    <Column :sortable="true" field="companyName" header="Company Name" :showFilterMatchModes="false">
-      <template #body="company">
-        <a :href="`/companies/${company.data.companyId}`">{{ company.data.companyName }}</a>
+    <DataTable
+      stripedRows
+      removableSort
+      v-model:filters="filters"
+      filterDisplay="menu"
+      :value="selectedDetails"
+      tableStyle="min-width: 50rem"
+    >
+      <template #empty>
+        Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
+        companies or remove filter criteria.
       </template>
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText
-          v-model="filterModel.value"
-          type="text"
-          @input="filterCallback()"
-          placeholder="Filter by company name"
-        />
-      </template>
-    </Column>
-    <Column :sortable="true" field="countryCode" header="Country" :showFilterMatchModes="false">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" @input="filterCallback()" placeholder="Filter by country" />
-      </template>
-    </Column>
-    <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText v-model="filterModel.value" type="text" @input="filterCallback()" placeholder="Filter by sector" />
-      </template>
-    </Column>
-    <Column :sortable="true" field="latestReportingPeriod" header="Last Reporting Period" :showFilterMatchModes="false">
-      <template #body="company">
-        <a :href="linkTarget(company.data)">{{ company.data.latestReportingPeriod || 'No data available' }}</a>
-      </template>
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText
-          v-model="filterModel.value"
-          type="text"
-          @input="filterCallback()"
-          placeholder="Filter by last reporting period"
-        />
-      </template>
-    </Column>
-  </DataTable>
+      <Column :sortable="true" field="companyName" header="Company Name" :showFilterMatchModes="false">
+        <template #body="company">
+          <a :href="`/companies/${company.data.companyId}`">{{ company.data.companyName }}</a>
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by company name"
+          />
+        </template>
+      </Column>
+      <Column :sortable="true" field="countryCode" header="Country" :showFilterMatchModes="false">
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by country"
+          />
+        </template>
+      </Column>
+      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false">
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText v-model="filterModel.value" type="text" @input="filterCallback()" placeholder="Filter by sector" />
+        </template>
+      </Column>
+      <Column
+        :sortable="true"
+        field="latestReportingPeriod"
+        header="Last Reporting Period"
+        :showFilterMatchModes="false"
+      >
+        <template #body="company">
+          <a :href="linkTarget(company.data)">{{ company.data.latestReportingPeriod || 'No data available' }}</a>
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by last reporting period"
+          />
+        </template>
+      </Column>
+    </DataTable>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, inject, watch } from 'vue';
-import type { BasePortfolio, EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import Dropdown from 'primevue/dropdown';
 import PrimeButton from 'primevue/button';
@@ -96,7 +117,7 @@ const filters = ref({
 });
 
 const props = defineProps<{
-  portfolio: BasePortfolio;
+  portfolioId: string;
 }>();
 
 const enrichedPortfolio = ref<EnrichedPortfolio>();
@@ -104,17 +125,24 @@ let groupedEntries = {} as Map<string, EnrichedPortfolioEntry[]>;
 const frameworks = ref<{ label: string; value: string }[]>([]);
 const selectedFramework = ref<{ label: string; value: string }>();
 const selectedDetails = ref([] as EnrichedPortfolioEntry[]);
+const isLoading = ref(true);
+const isError = ref(false);
 
 onMounted(() => {
+  isLoading.value = true;
   apiClientProvider.apiClients.portfolioController
-    .getEnrichedPortfolio(props.portfolio.portfolioId)
+    .getEnrichedPortfolio(props.portfolioId)
     .then((response) => {
       enrichedPortfolio.value = response.data;
       groupedEntries = groupBy(enrichedPortfolio.value.entries, (item) => item.framework || '');
       frameworks.value = getFrameworkListSorted();
       selectedFramework.value = frameworks.value[0];
     })
-    .catch((reason) => console.error(reason));
+    .catch((reason) => {
+      console.error(reason);
+      isError.value = true;
+    })
+    .finally(() => (isLoading.value = false));
 });
 
 watch([selectedFramework, enrichedPortfolio], () => {
@@ -133,7 +161,7 @@ function resetFilters(): void {
 
 /**
  * Generates a link target to the reporting framework or to request new data
- * @param entry The portfolio entry for which the ling is generated
+ * @param entry The portfolio entry for which the link is generated
  */
 function linkTarget(entry: EnrichedPortfolioEntry): string {
   return (
