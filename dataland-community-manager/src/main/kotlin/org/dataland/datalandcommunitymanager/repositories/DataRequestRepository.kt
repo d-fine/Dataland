@@ -22,10 +22,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun findByUserId(userId: String): List<DataRequestEntity>
 
     /** This method gets the unique data request corresponding to a requestId.
-     * @param requestId the id of the request to be retrieved
+     * @param dataRequestId the id of the request to be retrieved
      * @returns a list with all data request for that user
      */
-    fun findByRequestId(requestId: String): DataRequestEntity?
+    fun findByDataRequestId(dataRequestId: String): DataRequestEntity?
 
     /** This method looks for data requests with the provided params.
      * @param datalandCompanyId to check for
@@ -56,9 +56,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.
      * It also filters these results based on the provided identifier value and frameworks.
-     * @param reportingPeriod to check for
-     * @param dataTypes to check for
-     * @param status to check for
+     * @param searchFilter the search filter to apply
      * @returns the aggregated data requests
      */
     @Query(

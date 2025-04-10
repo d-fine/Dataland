@@ -134,7 +134,7 @@ class DataRequestUpdateManager
         ): StoredDataRequest {
             val dataRequestEntity =
                 dataRequestRepository
-                    .findByRequestId(dataRequestId) ?: throw DataRequestNotFoundApiException(dataRequestId)
+                    .findByDataRequestId(dataRequestId) ?: throw DataRequestNotFoundApiException(dataRequestId)
 
             if (dataRequestEntity.requestStatus == RequestStatus.Withdrawn) {
                 return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)

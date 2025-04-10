@@ -128,17 +128,17 @@ class DataRequestUpdateManagerTest {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
             doReturn(it)
                 .whenever(mockDataRequestRepository)
-                .findByRequestId(it.dataRequestId)
+                .findByDataRequestId(it.dataRequestId)
         }
         doReturn(dummyDataRequestEntityWithdrawn)
             .whenever(mockDataRequestRepository)
-            .findByRequestId(dummyDataRequestEntityWithdrawn.dataRequestId)
+            .findByDataRequestId(dummyDataRequestEntityWithdrawn.dataRequestId)
         doReturn(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
-            .findByRequestId(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval.dataRequestId)
+            .findByDataRequestId(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval.dataRequestId)
         doReturn(dummyChildCompanyDataRequestEntityWithEarlierQaApproval)
             .whenever(mockDataRequestRepository)
-            .findByRequestId(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
+            .findByDataRequestId(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
         doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
