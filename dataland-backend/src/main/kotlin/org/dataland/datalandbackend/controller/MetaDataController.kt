@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackend.services.SourceabilityDataManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -29,7 +29,7 @@ import java.util.UUID
  * Controller for the company metadata endpoints
  * @param dataMetaInformationManager service for handling data meta information
  * @param logMessageBuilder a helper for building log messages
- * @param nonSourceableDataManager service for handling information on datasets and their sourceability
+ * @param sourceabilityDataManager service for handling information on datasets and their sourceability
  */
 
 @RestController
@@ -37,7 +37,7 @@ class MetaDataController(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
-    @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val sourceabilityDataManager: SourceabilityDataManager,
     @Autowired val assembledDataManager: AssembledDataManager,
     @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : MetaDataApi {
@@ -149,7 +149,7 @@ class MetaDataController(
         nonSourceable: Boolean?,
     ): ResponseEntity<List<SourceabilityInfoResponse>> =
         ResponseEntity.ok(
-            nonSourceableDataManager
+            sourceabilityDataManager
                 .getSourceabilityDataByFilters(
                     companyId,
                     dataType,
@@ -159,7 +159,7 @@ class MetaDataController(
         )
 
     override fun postNonSourceabilityOfADataset(sourceabilityInfo: SourceabilityInfo) {
-        nonSourceableDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
+        sourceabilityDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
     }
 
     override fun isDataNonSourceable(
@@ -168,7 +168,7 @@ class MetaDataController(
         reportingPeriod: String,
     ) {
         val latestSourceabilityInfo =
-            nonSourceableDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
+            sourceabilityDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
 
         if (latestSourceabilityInfo?.isNonSourceable != true) {
             throw ResourceNotFoundApiException(

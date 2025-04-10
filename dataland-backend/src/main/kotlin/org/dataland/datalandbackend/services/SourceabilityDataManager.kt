@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.entities.NonSourceableEntity
+import org.dataland.datalandbackend.entities.SourceabilityEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
-import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
+import org.dataland.datalandbackend.repositories.SourceabilityDataRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
@@ -25,11 +25,11 @@ import java.time.Instant
 /**
  * A service class for managing information about the sourceabilty of datasets.
  */
-@Service("NonSourceableDataManager")
-class NonSourceableDataManager(
+@Service("SourceabilityDataManager")
+class SourceabilityDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
+    @Autowired private val sourceabilityDataRepository: SourceabilityDataRepository,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
@@ -43,8 +43,8 @@ class NonSourceableDataManager(
     fun storeNonSourceableData(sourceabilityInfo: SourceabilityInfo): SourceabilityInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
-        val nonSourceableEntity =
-            NonSourceableEntity(
+        val sourceabilityEntity =
+            SourceabilityEntity(
                 eventId = null,
                 companyId = sourceabilityInfo.companyId,
                 dataType = sourceabilityInfo.dataType,
@@ -54,7 +54,7 @@ class NonSourceableDataManager(
                 creationTime = creationTime,
                 userId = userId,
             )
-        return nonSourceableDataRepository.save(nonSourceableEntity).toApiModel()
+        return sourceabilityDataRepository.save(sourceabilityEntity).toApiModel()
     }
 
     /**
@@ -111,7 +111,7 @@ class NonSourceableDataManager(
         nonSourceable: Boolean?,
     ): List<SourceabilityInfoResponse> {
         val sourceabilityEntities =
-            nonSourceableDataRepository
+            sourceabilityDataRepository
                 .searchNonSourceableData(
                     NonSourceableDataSearchFilter(
                         companyId,
@@ -135,7 +135,7 @@ class NonSourceableDataManager(
         dataType: DataType,
         reportingPeriod: String,
     ): SourceabilityInfoResponse? =
-        nonSourceableDataRepository
+        sourceabilityDataRepository
             .getLatestSourceabilityInfoForDataset(
                 NonSourceableDataSearchFilter(
                     companyId,
@@ -161,8 +161,8 @@ class NonSourceableDataManager(
     ): SourceabilityInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
 
-        val nonSourceableEntity =
-            NonSourceableEntity(
+        val sourceabilityEntity =
+            SourceabilityEntity(
                 eventId = null,
                 companyId = companyId,
                 dataType = dataType,
@@ -172,6 +172,6 @@ class NonSourceableDataManager(
                 creationTime = creationTime,
                 userId = uploaderId,
             )
-        return nonSourceableDataRepository.save(nonSourceableEntity).toApiModel()
+        return sourceabilityDataRepository.save(sourceabilityEntity).toApiModel()
     }
 }

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.repositories
 
-import org.dataland.datalandbackend.entities.NonSourceableEntity
+import org.dataland.datalandbackend.entities.SourceabilityEntity
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for accessing NonSourceableEntities
  */
-interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, String> {
+interface SourceabilityDataRepository : JpaRepository<SourceabilityEntity, String> {
     /**
      * Retrieves the most recent non-sourceable dataset entry matching the specified reporting period, company ID,
      * and data type. The results are filtered and sorted by the given criteria, and only the latest entry is returned.
@@ -18,7 +18,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
      */
 
     @Query(
-        "SELECT nonSourceableData FROM NonSourceableEntity nonSourceableData " +
+        "SELECT nonSourceableData FROM SourceabilityEntity nonSourceableData " +
             "WHERE nonSourceableData.reportingPeriod = :#{#searchFilter.preparedReportingPeriod} " +
             "AND nonSourceableData.companyId = :#{#searchFilter.preparedCompanyId} " +
             "AND nonSourceableData.dataType = :#{#searchFilter.preparedDataType} " +
@@ -27,7 +27,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
     )
     fun getLatestSourceabilityInfoForDataset(
         @Param("searchFilter") searchFilter: NonSourceableDataSearchFilter,
-    ): NonSourceableEntity?
+    ): SourceabilityEntity?
 
     /**
      * Searches for non-sourceable data entries based on a filter defined in NonSourceableDataSearchFilter.
@@ -42,7 +42,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
      * Returns an empty list if no matches are found.
      */
     @Query(
-        "SELECT nonSourceableData FROM NonSourceableEntity nonSourceableData " +
+        "SELECT nonSourceableData FROM SourceabilityEntity nonSourceableData " +
             "WHERE " +
             "(:#{#searchFilter.shouldFilterByCompanyId} = false " +
             "OR nonSourceableData.companyId = :#{#searchFilter.preparedCompanyId}) AND " +
@@ -56,5 +56,5 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
     )
     fun searchNonSourceableData(
         @Param("searchFilter") searchFilter: NonSourceableDataSearchFilter,
-    ): List<NonSourceableEntity>
+    ): List<SourceabilityEntity>
 }

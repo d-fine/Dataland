@@ -39,7 +39,7 @@ class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
-    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired private val sourceabilityDataManager: SourceabilityDataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -164,14 +164,14 @@ class MessageQueueListenerForDataManager(
      * @param updatedDataMetaInformation DataMetaInformationEntity that holds information of the updated dataset.
      */
     private fun storeUpdatedDataToNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
-        if (nonSourceableDataManager
+        if (sourceabilityDataManager
                 .getLatestSourceabilityInfoForDataset(
                     updatedDataMetaInformation.company.companyId,
                     DataType.valueOf(updatedDataMetaInformation.dataType),
                     updatedDataMetaInformation.reportingPeriod,
                 )?.isNonSourceable == true
         ) {
-            nonSourceableDataManager.storeSourceableData(
+            sourceabilityDataManager.storeSourceableData(
                 updatedDataMetaInformation.company.companyId,
                 DataType.valueOf(updatedDataMetaInformation.dataType),
                 updatedDataMetaInformation.reportingPeriod,

@@ -20,7 +20,7 @@ import java.util.UUID
 @Table(
     name = "data_sourceability",
 )
-data class NonSourceableEntity(
+data class SourceabilityEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "event_Id", nullable = true, updatable = false)

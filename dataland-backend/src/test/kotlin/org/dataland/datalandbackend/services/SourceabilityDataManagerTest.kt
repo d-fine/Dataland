@@ -2,10 +2,10 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.entities.NonSourceableEntity
+import org.dataland.datalandbackend.entities.SourceabilityEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
-import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
+import org.dataland.datalandbackend.repositories.SourceabilityDataRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -34,12 +34,12 @@ import java.time.Instant
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-class NonSourceableDataManagerTest(
-    @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
+class SourceabilityDataManagerTest(
+    @Autowired private val sourceabilityDataRepository: SourceabilityDataRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    lateinit var nonSourceableDataManager: NonSourceableDataManager
+    lateinit var sourceabilityDataManager: SourceabilityDataManager
     val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
     private val existingCompanyId = "existingCompanyId"
     private val dataType = DataType("eutaxonomy-financials")
@@ -50,18 +50,18 @@ class NonSourceableDataManagerTest(
     @BeforeEach
     fun setup() {
         Mockito.reset(mockDataMetaInformationManager)
-        nonSourceableDataManager =
-            NonSourceableDataManager(
+        sourceabilityDataManager =
+            SourceabilityDataManager(
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
                 objectMapper = objectMapper,
                 dataMetaInformationManager = mockDataMetaInformationManager,
-                nonSourceableDataRepository = nonSourceableDataRepository,
+                sourceabilityDataRepository = sourceabilityDataRepository,
                 companyQueryManager = companyQueryManager,
             )
-        nonSourceableDataRepository.deleteAll()
+        sourceabilityDataRepository.deleteAll()
 
-        val nonSourceableEntity =
-            NonSourceableEntity(
+        val sourceabilityEntity =
+            SourceabilityEntity(
                 eventId = null,
                 companyId = existingCompanyId,
                 dataType = dataType,
@@ -71,7 +71,7 @@ class NonSourceableDataManagerTest(
                 creationTime = Instant.now().toEpochMilli(),
                 userId = "testUser",
             )
-        nonSourceableDataRepository.save(nonSourceableEntity)
+        sourceabilityDataRepository.save(sourceabilityEntity)
     }
 
     @Test
@@ -81,7 +81,7 @@ class NonSourceableDataManagerTest(
             SourceabilityInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
-                nonSourceableDataManager.processSourceabilityDataStorageRequest(
+                sourceabilityDataManager.processSourceabilityDataStorageRequest(
                     sourceabilityInfo,
                 )
             }
@@ -98,12 +98,12 @@ class NonSourceableDataManagerTest(
             setOf(DatalandRealmRole.ROLE_UPLOADER)
         mockSecurityContext("testUserId", expectedSetOfRolesForUploader)
 
-        nonSourceableDataManager =
-            NonSourceableDataManager(
+        sourceabilityDataManager =
+            SourceabilityDataManager(
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
                 objectMapper = objectMapper,
                 dataMetaInformationManager = mockDataMetaInformationManager,
-                nonSourceableDataRepository = nonSourceableDataRepository,
+                sourceabilityDataRepository = sourceabilityDataRepository,
                 companyQueryManager = mockCompanyQueryManager,
             )
         val sourceabilityInfo =
@@ -128,7 +128,7 @@ class NonSourceableDataManagerTest(
                 ),
             ),
         ).thenReturn(emptyList())
-        nonSourceableDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
+        sourceabilityDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
 
         verify(mockDataMetaInformationManager).searchDataMetaInfo(
             DataMetaInformationSearchFilter(
@@ -150,7 +150,7 @@ class NonSourceableDataManagerTest(
         val uploaderId = "testUploaderId"
         val nonSourceable = false
 
-        nonSourceableDataManager.storeSourceableData(
+        sourceabilityDataManager.storeSourceableData(
             companyId = existingCompanyId,
             dataType = dataType,
             reportingPeriod = reportingPeriod,
@@ -158,7 +158,7 @@ class NonSourceableDataManagerTest(
         )
 
         val nonSourceableData =
-            nonSourceableDataManager.getSourceabilityDataByFilters(
+            sourceabilityDataManager.getSourceabilityDataByFilters(
                 existingCompanyId,
                 dataType, reportingPeriod, nonSourceable,
             )
