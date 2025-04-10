@@ -43,10 +43,11 @@ class DataRequestUpdateUtils
                 } else {
                     false
                 }
-            } == true
+            } ?: false
 
         /**
-         * Updates the request status history if the request status changed
+         * Updates the request status history if the request status changed and returns
+         * whether it was updated.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
          * @param modificationTime the modification time in unix epoch milliseconds
@@ -82,7 +83,8 @@ class DataRequestUpdateUtils
         }
 
         /**
-         * Updates the message history if valid contacts are passed in the patch object.
+         * Updates the message history if valid contacts are passed in the patch object and returns
+         * whether it was updated.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
          * @param modificationTime the modification time in unix epoch milliseconds
@@ -98,13 +100,12 @@ class DataRequestUpdateUtils
             filteredContacts?.forEach {
                 MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
             }
-            if (filteredContacts != null) {
-                processingUtils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
-                this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
+            return filteredContacts?.let {
+                processingUtils.addMessageToMessageHistory(dataRequestEntity, it, filteredMessage, modificationTime)
+                requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, it, filteredMessage)
                 dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
-                return true
-            }
-            return false
+                true
+            } ?: false
         }
 
         /**
@@ -139,7 +140,7 @@ class DataRequestUpdateUtils
          * dataRequestEntity, checks whether there was at least one other QA approval event for the corresponding
          * triple of company, framework and reporting period.
          */
-        fun earlierQaApprovedVersionOfDatasetExists(dataRequestEntity: DataRequestEntity): Boolean {
+        fun existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(dataRequestEntity: DataRequestEntity): Boolean {
             val dataTypeAsDataTypesGetInfoOnDatasets =
                 DataTypesGetInfoOnDatasets.entries.first {
                     it.toString() == dataRequestEntity.dataType

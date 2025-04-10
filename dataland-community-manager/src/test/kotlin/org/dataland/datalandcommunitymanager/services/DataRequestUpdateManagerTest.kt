@@ -12,11 +12,13 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
@@ -46,7 +48,6 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
-import java.util.Optional
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -101,6 +102,7 @@ class DataRequestUpdateManagerTest {
     private lateinit var dummyDataRequestEntityWithoutEarlierQaApproval2: DataRequestEntity
     private lateinit var dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval: DataRequestEntity
     private lateinit var dummyChildCompanyDataRequestEntityWithEarlierQaApproval: DataRequestEntity
+    private lateinit var dummyDataRequestEntityWithdrawn: DataRequestEntity
 
     private val metaData =
         DataMetaInformation(
@@ -124,16 +126,19 @@ class DataRequestUpdateManagerTest {
 
     private fun mockRepos() {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
-            doReturn(Optional.of(it))
+            doReturn(it)
                 .whenever(mockDataRequestRepository)
-                .findById(it.dataRequestId)
+                .findByRequestId(it.dataRequestId)
         }
-        doReturn(Optional.of(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval))
+        doReturn(dummyDataRequestEntityWithdrawn)
             .whenever(mockDataRequestRepository)
-            .findById(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval.dataRequestId)
-        doReturn(Optional.of(dummyChildCompanyDataRequestEntityWithEarlierQaApproval))
+            .findByRequestId(dummyDataRequestEntityWithdrawn.dataRequestId)
+        doReturn(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
-            .findById(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
+            .findByRequestId(dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval.dataRequestId)
+        doReturn(dummyChildCompanyDataRequestEntityWithEarlierQaApproval)
+            .whenever(mockDataRequestRepository)
+            .findByRequestId(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
         doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
@@ -166,7 +171,7 @@ class DataRequestUpdateManagerTest {
             )
     }
 
-    private fun setupDataRequestUpdateManager() {
+    private fun mockCompanyRelatedInformation() {
         doReturn("dummyCompany").whenever(mockCompanyInfoService).getValidCompanyName(dummyCompanyId)
         doReturn("dummyChildCompany1").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId1")
         doReturn("dummyChildCompany2").whenever(mockCompanyInfoService).getValidCompanyName("dummyChildCompanyId2")
@@ -190,6 +195,9 @@ class DataRequestUpdateManagerTest {
             ),
         ).whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
+    }
+
+    private fun mockMetaDataAndQaReviewResponses() {
         doReturn(metaData).whenever(mockMetaDataControllerApi).getDataMetaInfo(metaData.dataId)
         mockQaReviewResponsesWithoutEarlierApproval =
             listOf(mock<QaReviewResponse>())
@@ -204,6 +212,9 @@ class DataRequestUpdateManagerTest {
         doReturn(mockQaReviewResponsesWithEarlierApproval)
             .whenever(mockQaControllerApi)
             .getInfoOnDatasets(any(), eq(setOf("dummyPeriod")), eq("dummyChildCompany2"), any(), any(), any())
+    }
+
+    private fun setupDataRequestUpdateManager() {
         dataRequestProcessingUtils =
             DataRequestProcessingUtils(
                 mockDataRequestRepository,
@@ -231,7 +242,7 @@ class DataRequestUpdateManagerTest {
                 dataRequestLogger = mockDataRequestLogger,
                 requestEmailManager = mockRequestEmailManager,
                 metaDataControllerApi = mockMetaDataControllerApi,
-                updateUtils = dataRequestUpdateUtils,
+                dataRequestUpdateUtils = dataRequestUpdateUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
             )
     }
@@ -259,6 +270,23 @@ class DataRequestUpdateManagerTest {
             )
         dummyDataRequestEntityWithoutEarlierQaApproval1 = dummyDataRequestEntitiesWithoutEarlierQaApproval[0]
         dummyDataRequestEntityWithoutEarlierQaApproval2 = dummyDataRequestEntitiesWithoutEarlierQaApproval[1]
+        dummyDataRequestEntityWithdrawn =
+            dummyDataRequestEntityWithoutEarlierQaApproval1.copy(
+                dataRequestId = UUID.randomUUID().toString(),
+                creationTimestamp = 0L,
+            )
+        dummyDataRequestEntityWithdrawn.addToDataRequestStatusHistory(
+            RequestStatusEntity(
+                StoredDataRequestStatusObject(
+                    status = RequestStatus.Withdrawn,
+                    creationTimestamp = 1L,
+                    accessStatus = AccessStatus.Public,
+                    requestStatusChangeReason = null,
+                    answeringDataId = null,
+                ),
+                dummyDataRequestEntityWithdrawn,
+            ),
+        )
         dummyChildCompanyDataRequestEntities =
             listOf(
                 DataRequestEntity(
@@ -293,6 +321,8 @@ class DataRequestUpdateManagerTest {
             mockRequestStatusRepository,
         )
         mockRepos()
+        mockCompanyRelatedInformation()
+        mockMetaDataAndQaReviewResponses()
         setupDataRequestUpdateManager()
     }
 
@@ -572,15 +602,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that requests can be patched from status Withdrawn to Open`() {
         dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
-            dummyDataRequestEntityWithoutEarlierQaApproval1.dataRequestId,
-            DataRequestPatch(requestStatus = RequestStatus.Withdrawn),
-            correlationId,
-        )
-
-        assertEquals(RequestStatus.Withdrawn, dummyDataRequestEntityWithoutEarlierQaApproval1.requestStatus)
-
-        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
-            dummyDataRequestEntityWithoutEarlierQaApproval1.dataRequestId,
+            dummyDataRequestEntityWithdrawn.dataRequestId,
             DataRequestPatch(requestStatus = RequestStatus.Open),
             correlationId,
         )

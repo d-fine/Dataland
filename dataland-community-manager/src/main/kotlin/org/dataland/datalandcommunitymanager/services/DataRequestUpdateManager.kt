@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import kotlin.jvm.optionals.getOrElse
 
 /**
  * Manages all alterations of data requests
@@ -33,7 +32,7 @@ class DataRequestUpdateManager
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
-        private val updateUtils: DataRequestUpdateUtils,
+        private val dataRequestUpdateUtils: DataRequestUpdateUtils,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         /**
@@ -45,7 +44,9 @@ class DataRequestUpdateManager
         ) {
             dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                 dataRequestEntity, dataRequestPatch.requestStatus, dataRequestEntity.notifyMeImmediately,
-                updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
+                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+                    dataRequestEntity,
+                ),
             )
         }
 
@@ -61,7 +62,9 @@ class DataRequestUpdateManager
             sendImmediateNotificationOnRequestStatusChange(
                 dataRequestEntity,
                 dataRequestPatch,
-                updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity),
+                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+                    dataRequestEntity,
+                ),
                 correlationId,
             )
             createNotificationEvent(dataRequestEntity, dataRequestPatch)
@@ -79,15 +82,19 @@ class DataRequestUpdateManager
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
-                    updateUtils.updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dataRequestEntity),
-                    updateUtils.updateRequestStatusHistoryIfRequired(
+                    dataRequestUpdateUtils.updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dataRequestEntity),
+                    dataRequestUpdateUtils.updateRequestStatusHistoryIfRequired(
                         dataRequestPatch,
                         dataRequestEntity,
                         modificationTime,
                         answeringDataId,
                     ),
-                    updateUtils.updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
-                    updateUtils.checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(
+                    dataRequestUpdateUtils.updateMessageHistoryIfRequired(
+                        dataRequestPatch,
+                        dataRequestEntity,
+                        modificationTime,
+                    ),
+                    dataRequestUpdateUtils.checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(
                         dataRequestPatch,
                         dataRequestEntity,
                     ),
@@ -127,8 +134,7 @@ class DataRequestUpdateManager
         ): StoredDataRequest {
             val dataRequestEntity =
                 dataRequestRepository
-                    .findById(dataRequestId)
-                    .getOrElse { throw DataRequestNotFoundApiException(dataRequestId) }
+                    .findByRequestId(dataRequestId) ?: throw DataRequestNotFoundApiException(dataRequestId)
 
             if (dataRequestEntity.requestStatus == RequestStatus.Withdrawn) {
                 return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
@@ -140,7 +146,10 @@ class DataRequestUpdateManager
                 )
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus,
-                    updateUtils.earlierQaApprovedVersionOfDatasetExists(dataRequestEntity), correlationId,
+                    dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+                        dataRequestEntity,
+                    ),
+                    correlationId,
                 )
                 return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
             }
@@ -223,10 +232,7 @@ class DataRequestUpdateManager
                             requestStatus = RequestStatus.Answered,
                             requestStatusChangeReason = requestStatusChangeReason,
                             notifyMeImmediately =
-                                when (dataRequestEntity.requestStatus) {
-                                    RequestStatus.Open -> false
-                                    else -> null
-                                },
+                                if (dataRequestEntity.requestStatus == RequestStatus.Open) false else null,
                         ),
                     correlationId = correlationId,
                     answeringDataId = answeringDataId,
@@ -304,13 +310,11 @@ class DataRequestUpdateManager
                 )
             val openOrNonSourceableDataRequestEntities =
                 nonWithdrawnDataRequestEntities.filter {
-                    it.requestStatus == RequestStatus.Open || it.requestStatus == RequestStatus.NonSourceable
+                    it.requestStatus in listOf(RequestStatus.Open, RequestStatus.NonSourceable)
                 }
             val answeredOrClosedOrResolvedDataRequestEntities =
                 nonWithdrawnDataRequestEntities.filter {
-                    it.requestStatus == RequestStatus.Answered ||
-                        it.requestStatus == RequestStatus.Closed ||
-                        it.requestStatus == RequestStatus.Resolved
+                    it.requestStatus in listOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved)
                 }
 
             patchRequestStatusToAnsweredForParentAndSubsidiaries(
@@ -383,7 +387,7 @@ class DataRequestUpdateManager
                             correlationId,
                         )
                     }
-                    return
+                    continue
                 }
 
                 if (dataRequestEntity.notifyMeImmediately) {

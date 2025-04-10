@@ -110,7 +110,7 @@ class DataRequestSummaryNotificationService
                     NotificationEventType.UpdatedEvent.takeUnless { !earlierQaApprovedVersionOfDatasetExists }
                         ?: NotificationEventType.AvailableEvent
                 }
-                // Case 2: Status remains Answered, Closed,or Resolved
+                // Case 2: Status remains Answered, Closed, or Resolved
                 requestStatusOld in listOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved) &&
                     requestStatusNew in listOf(requestStatusOld, null) -> {
                     NotificationEventType.UpdatedEvent

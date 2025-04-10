@@ -33,14 +33,13 @@ class RequestEmailManager(
         dataRequestEntity: DataRequestEntity,
         requestStatus: RequestStatus?,
         earlierQaApprovedVersionOfDatasetExists: Boolean,
-        correlationId: String?,
+        correlationId: String = UUID.randomUUID().toString(),
     ) {
-        val correlationId = correlationId ?: UUID.randomUUID().toString()
         if (requestStatus == RequestStatus.Answered) {
-            if (!earlierQaApprovedVersionOfDatasetExists) {
-                dataRequestResponseEmailMessageSender.buildDataRequestAnsweredEmailAndSendCEMessage(dataRequestEntity, correlationId)
-            } else {
+            if (earlierQaApprovedVersionOfDatasetExists) {
                 dataRequestResponseEmailMessageSender.buildDataUpdatedEmailAndSendCEMessage(dataRequestEntity, correlationId)
+            } else {
+                dataRequestResponseEmailMessageSender.buildDataRequestAnsweredEmailAndSendCEMessage(dataRequestEntity, correlationId)
             }
         }
         if (requestStatus == RequestStatus.NonSourceable) {

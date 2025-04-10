@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class NotificationUtils(
-    private val notificationEventRepository: NotificationEventRepository,
+    @Autowired private val notificationEventRepository: NotificationEventRepository,
 ) {
     /**
      * Processes notification events and sends emails to appropriate recipients.

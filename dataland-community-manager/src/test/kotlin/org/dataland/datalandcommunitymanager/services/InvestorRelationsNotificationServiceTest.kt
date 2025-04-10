@@ -31,8 +31,7 @@ class InvestorRelationsNotificationServiceTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
-    private val mockInvestorRelationshipEmailBuilder =
-        mock<InvestorRelationsEmailBuilder>()
+    private val mockInvestorRelationshipEmailBuilder = mock<InvestorRelationsEmailBuilder>()
     private lateinit var investorRelationsNotificationService: InvestorRelationsNotificationService
 
     private val companyUUID = UUID.randomUUID()

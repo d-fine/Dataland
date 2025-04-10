@@ -57,17 +57,13 @@ class CommunityManagerListenerUnitTest {
     @ParameterizedTest
     @EnumSource(QaStatus::class)
     fun `valid QA status change message should be dealt with appropriately`(qaStatus: QaStatus) {
-        val qaStatusChangeMessage: QaStatusChangeMessage
-        when (qaStatus) {
-            QaStatus.Pending -> return
-            else ->
-                qaStatusChangeMessage =
-                    QaStatusChangeMessage(
-                        dataId = validDataId,
-                        updatedQaStatus = qaStatus,
-                        currentlyActiveDataId = validDataId,
-                    )
-        }
+        if (qaStatus == QaStatus.Pending) return
+        val qaStatusChangeMessage =
+            QaStatusChangeMessage(
+                dataId = validDataId,
+                updatedQaStatus = qaStatus,
+                currentlyActiveDataId = validDataId,
+            )
         communityManagerListener.changeRequestStatusAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(qaStatusChangeMessage),
             typeQAStatusChange, correlationId,
@@ -80,12 +76,17 @@ class CommunityManagerListenerUnitTest {
                 )
                 verify(mockInvestorRelationsManager).saveNotificationEventForInvestorRelationsEmails(validDataId)
             }
+
             QaStatus.Rejected -> {
                 verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
                     any<String>(), any<String>(),
                 )
-                verify(mockInvestorRelationsManager, times(0)).saveNotificationEventForInvestorRelationsEmails(any<String>())
+                verify(
+                    mockInvestorRelationsManager,
+                    times(0),
+                ).saveNotificationEventForInvestorRelationsEmails(any<String>())
             }
+
             else -> Unit
         }
     }
@@ -161,7 +162,7 @@ class CommunityManagerListenerUnitTest {
                 true,
                 "test",
             )
-        communityManagerListener.processDataReportedNonSourceableMessage(
+        communityManagerListener.processMessageForDataReportedAsNonSourceable(
             jacksonObjectMapper.writeValueAsString(sourceabilityMessageValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllRequestsToStatusNonSourceable(
@@ -190,7 +191,7 @@ class CommunityManagerListenerUnitTest {
                 "test",
             )
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.processDataReportedNonSourceableMessage(
+            communityManagerListener.processMessageForDataReportedAsNonSourceable(
                 jacksonObjectMapper.writeValueAsString(sourceabilityMessageIncomplete),
                 typeNonSourceable,
                 correlationId,
@@ -210,7 +211,7 @@ class CommunityManagerListenerUnitTest {
                     "test",
                 )
             communityManagerListener
-                .processDataReportedNonSourceableMessage(
+                .processMessageForDataReportedAsNonSourceable(
                     jacksonObjectMapper.writeValueAsString(sourceability),
                     typeNonSourceable,
                     correlationId,

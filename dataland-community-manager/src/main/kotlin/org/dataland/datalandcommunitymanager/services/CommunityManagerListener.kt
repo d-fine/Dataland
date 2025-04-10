@@ -134,9 +134,9 @@ class CommunityManagerListener(
      * Checks whether at least one of the fields companyId or reportingPeriod in the message
      * is empty and, if so, throws an appropriate exception.
      */
-    private fun checkWhetherReceivedDataIsIncomplete(sourceabilityMessage: SourceabilityMessage) {
-        if (sourceabilityMessage.receivedDataIsIncomplete()) {
-            throw MessageQueueRejectException("Neither companyId nor reportingPeriod may be empty.")
+    private fun checkThatReceivedDataIsComplete(sourceabilityMessage: SourceabilityMessage) {
+        if (sourceabilityMessage.companyId.isEmpty() || sourceabilityMessage.reportingPeriod.isEmpty()) {
+            throw MessageQueueRejectException("Both companyId and reportingPeriod must be provided.")
         }
     }
 
@@ -144,8 +144,8 @@ class CommunityManagerListener(
      * Checks whether the message actually corresponds to a dataset being set to non-sourceable
      * (as opposed to it being set to sourceable). If not, it throws an appropriate exception.
      */
-    private fun checkWhetherDatasetWasSetToSourceable(sourceabilityMessage: SourceabilityMessage) {
-        if (!sourceabilityMessage.datasetWasSetToNonSourceable()) {
+    private fun checkThatDatasetWasSetToNonSourceable(sourceabilityMessage: SourceabilityMessage) {
+        if (!sourceabilityMessage.isNonSourceable) {
             throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable.")
         }
     }
@@ -182,7 +182,7 @@ class CommunityManagerListener(
             ),
         ],
     )
-    fun processDataReportedNonSourceableMessage(
+    fun processMessageForDataReportedAsNonSourceable(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
@@ -190,8 +190,8 @@ class CommunityManagerListener(
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
         val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload, objectMapper)
 
-        checkWhetherReceivedDataIsIncomplete(sourceabilityMessage)
-        checkWhetherDatasetWasSetToSourceable(sourceabilityMessage)
+        checkThatReceivedDataIsComplete(sourceabilityMessage)
+        checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
         val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(

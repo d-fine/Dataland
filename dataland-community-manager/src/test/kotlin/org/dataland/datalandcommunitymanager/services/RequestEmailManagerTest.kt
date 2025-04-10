@@ -53,7 +53,7 @@ class RequestEmailManagerTest {
     fun `validate that a response email is only sent when a request status is patched to answered or nonsourceable`() {
         val dataRequestEntity = mock(DataRequestEntity::class.java)
         for (requestStatus in RequestStatus.entries) {
-            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, requestStatus, false, null)
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, requestStatus, false)
 
             if (requestStatus == RequestStatus.Answered) {
                 verify(dataRequestResponseEmailMessageSender, times(1))

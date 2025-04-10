@@ -15,11 +15,17 @@ import org.springframework.data.repository.query.Param
  */
 
 interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
-    /** This method gets all data request that are stored for a specific userId.
+    /** This method gets all data requests that are stored for a specific userId.
      * @param userId defines for which user the data request shall be retrieved
      * @returns a list with all data request for that user
      */
     fun findByUserId(userId: String): List<DataRequestEntity>
+
+    /** This method gets the unique data request corresponding to a requestId.
+     * @param requestId the id of the request to be retrieved
+     * @returns a list with all data request for that user
+     */
+    fun findByRequestId(requestId: String): DataRequestEntity?
 
     /** This method looks for data requests with the provided params.
      * @param datalandCompanyId to check for
