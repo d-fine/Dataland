@@ -251,7 +251,6 @@ async function savePortfolio(): Promise<void> {
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
     });
 
-    console.log(response.data);
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,

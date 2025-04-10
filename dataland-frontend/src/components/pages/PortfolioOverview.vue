@@ -52,7 +52,7 @@ const footerSections: Section[] | undefined = content.pages.find((page) => page.
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 onMounted(() => {
-  getPortfolios();
+  void getPortfolios();
 });
 
 /**
@@ -73,8 +73,8 @@ watch(
 /**
  * Retrieve all portfolios for the currently logged-in user.
  */
-function getPortfolios(): void {
-  apiClientProvider.apiClients.portfolioController
+async function getPortfolios(): Promise<void> {
+  return apiClientProvider.apiClients.portfolioController
     .getAllPortfolioNamesForCurrentUser()
     .then((response) => {
       portfolioNames.value = response.data;
@@ -90,14 +90,23 @@ function onTabChange(event: TabViewChangeEvent): void {
 }
 
 /**
- *
+ * Opens the PortfolioDialog. OnClose, it reloads all portfolios and
  */
 function addNewPortfolio(): void {
-  console.log('Add new Portfolio');
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Add Portfolio',
       modal: true,
+    },
+    onClose(options) {
+      const portfolioName = options?.data as BasePortfolioName;
+      if (portfolioName) {
+        void getPortfolios().then(() => {
+          currentIndex.value = portfolioNames.value.findIndex(
+            (portfolio) => portfolio.portfolioId == portfolioName.portfolioId
+          );
+        });
+      }
     },
   });
 }
