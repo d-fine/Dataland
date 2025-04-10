@@ -40,7 +40,6 @@ class DataRequestSummaryEmailBuilder
             val emailContent = dataRequestSummaryEmailContent(unprocessedEvents)
             val receiver = listOf(EmailRecipient.UserId(userId.toString()))
             val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
-            val correlationId = UUID.randomUUID().toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 objectMapper.writeValueAsString(message),
                 MessageType.SEND_EMAIL,
