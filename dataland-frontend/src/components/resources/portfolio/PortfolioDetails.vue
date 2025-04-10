@@ -26,7 +26,9 @@
         </template>
       </Dropdown>
       <PrimeButton class="primary-button">Request missing data</PrimeButton>
-      <PrimeButton class="primary-button"> <i class="material-icons pr-2">edit</i> Edit Portfolio </PrimeButton>
+      <PrimeButton class="primary-button" @click="editPortfolio()">
+        <i class="material-icons pr-2">edit</i> Edit Portfolio
+      </PrimeButton>
       <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
     </span>
 
@@ -115,8 +117,11 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { groupBy } from '@/utils/ArrayUtils.ts';
+import PortfolioDialog from '@/components/general/PortfolioDialog.vue';
+import { useDialog } from 'primevue/usedialog';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const filters = ref({
@@ -139,6 +144,17 @@ const isLoading = ref(true);
 const isError = ref(false);
 
 onMounted(() => {
+  loadPortfolio();
+});
+
+watch([selectedFramework, enrichedPortfolio], () => {
+  selectedDetails.value = groupedEntries.get(selectedFramework?.value?.value || '') || [];
+});
+
+/**
+ * (Re-)loads a portfolio
+ */
+function loadPortfolio(): void {
   isLoading.value = true;
   apiClientProvider.apiClients.portfolioController
     .getEnrichedPortfolio(props.portfolioId)
@@ -153,11 +169,7 @@ onMounted(() => {
       isError.value = true;
     })
     .finally(() => (isLoading.value = false));
-});
-
-watch([selectedFramework, enrichedPortfolio], () => {
-  selectedDetails.value = groupedEntries.get(selectedFramework?.value?.value || '') || [];
-});
+}
 
 /**
  * Resets all filters
@@ -197,9 +209,41 @@ function getFrameworkListSorted(): { label: string; value: string }[] {
       };
     });
 }
+
+/**
+ * Opens the PortfolioDialog. OnClose, it reloads all portfolios and
+ */
+function editPortfolio(): void {
+  dialog.open(PortfolioDialog, {
+    props: {
+      header: 'Add Portfolio',
+      modal: true,
+    },
+    data: {
+      portfolio: enrichedPortfolio.value,
+    },
+    onClose() {
+      loadPortfolio();
+    },
+  });
+}
 </script>
 
 <style lang="scss">
+a {
+  color: black;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+a:after {
+  content: '>';
+  margin: 0 0.5em;
+  font-weight: bold;
+}
+
 .p-inputtext {
   background: none;
 }

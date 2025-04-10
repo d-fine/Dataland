@@ -124,6 +124,7 @@ import type {
   BasePortfolioName,
   EnrichedPortfolio,
   EnrichedPortfolioEntry,
+  PortfolioUpload,
   PortfolioUploadFrameworksEnum,
 } from '@clients/userservice';
 import { AxiosError } from 'axios';
@@ -244,12 +245,14 @@ async function savePortfolio(): Promise<void> {
 
   isPortfolioSaving.value = true;
   try {
-    // as unknown as Set<string> cast required to ensure proper json is created
-    const response = await apiClientProvider.apiClients.portfolioController.createPortfolio({
+    const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
       frameworks: portfolioFrameworks.value as unknown as Set<PortfolioUploadFrameworksEnum>,
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
-    });
+    };
+    const response = await (portfolioId.value
+      ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
+      : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
 
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
@@ -257,7 +260,10 @@ async function savePortfolio(): Promise<void> {
     } as BasePortfolioName);
   } catch (error) {
     if (error instanceof AxiosError) {
-      portfolioErrors.value = error.status == 409 ? 'Portfolio with same name exists already.' : error.message;
+      portfolioErrors.value =
+        error.status == 409
+          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+          : error.message;
     } else {
       portfolioErrors.value = 'An unknown error occurred.';
       console.log(error);
