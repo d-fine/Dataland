@@ -429,7 +429,7 @@ class DataRequestUpdateManagerTest {
             metaData.dataId,
             correlationId,
         )
-        val expectedNumberOfEmailsPerRequest = listOf(1, 0, 1)
+        val expectedNumberOfEmailsPerRequest = listOf(1, 0)
         for (i in 0..1) {
             verify(mockRequestEmailManager, times(expectedNumberOfEmailsPerRequest[i]))
                 .sendEmailsWhenRequestStatusChanged(
@@ -447,17 +447,19 @@ class DataRequestUpdateManagerTest {
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyChildCompanyDataRequestEntities[i]),
                     eq(RequestStatus.Answered),
-                    eq(null),
+                    anyOrNull(),
                     eq(earlierQaApprovalExistenceInformation[i]),
                     any<String>(),
                 )
         }
-        verify(spyDataRequestProcessingUtils, times(dummyDataRequestEntitiesWithoutEarlierQaApproval.size))
-            .addNewRequestStatusToHistory(
-                any(), any(),
-                any(), eq(null),
-                any(), any(),
-            )
+        dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
+            verify(spyDataRequestProcessingUtils, times(1))
+                .addNewRequestStatusToHistory(
+                    eq(it), any(),
+                    any(), anyOrNull(),
+                    any(), any(),
+                )
+        }
         dummyChildCompanyDataRequestEntities.forEach {
             verify(spyDataRequestProcessingUtils, times(1))
                 .addNewRequestStatusToHistory(
@@ -582,7 +584,7 @@ class DataRequestUpdateManagerTest {
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyDataRequestEntityWithoutEarlierQaApproval1),
                 eq(RequestStatus.NonSourceable),
-                eq(null),
+                anyOrNull(),
                 eq(false),
                 eq(correlationId),
             )
