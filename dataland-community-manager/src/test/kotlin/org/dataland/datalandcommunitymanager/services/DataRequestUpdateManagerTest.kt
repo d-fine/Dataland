@@ -335,7 +335,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(false), eq(correlationId),
+                any(), eq(RequestStatus.Answered), eq(null), eq(false), eq(correlationId),
             )
         verify(spyDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -363,7 +363,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), any(), eq(correlationId),
+                any(), eq(RequestStatus.Answered), eq(null), any(), eq(correlationId),
             )
         verify(spyDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -386,7 +386,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Closed), any(), eq(correlationId),
+                any(), eq(RequestStatus.Closed), eq(null), any(), eq(correlationId),
             )
         verify(spyDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -435,6 +435,7 @@ class DataRequestUpdateManagerTest {
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyDataRequestEntitiesWithoutEarlierQaApproval[i]),
                     eq(RequestStatus.Answered),
+                    eq(null),
                     eq(false),
                     eq(correlationId),
                 )
@@ -446,6 +447,7 @@ class DataRequestUpdateManagerTest {
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyChildCompanyDataRequestEntities[i]),
                     eq(RequestStatus.Answered),
+                    eq(null),
                     eq(earlierQaApprovalExistenceInformation[i]),
                     any<String>(),
                 )
@@ -580,6 +582,7 @@ class DataRequestUpdateManagerTest {
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyDataRequestEntityWithoutEarlierQaApproval1),
                 eq(RequestStatus.NonSourceable),
+                eq(null),
                 eq(false),
                 eq(correlationId),
             )

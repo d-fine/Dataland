@@ -146,6 +146,7 @@ class DataRequestUpdateManager
                 )
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus,
+                    dataRequestPatch.requestStatusChangeReason,
                     dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
                         dataRequestEntity,
                     ),
@@ -196,7 +197,8 @@ class DataRequestUpdateManager
             correlationId: String,
         ) {
             requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                dataRequestEntity, dataRequestPatch.requestStatus, earlierQaApprovedVersionOfDatasetExists, correlationId,
+                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.requestStatusChangeReason,
+                earlierQaApprovedVersionOfDatasetExists, correlationId,
             )
         }
 

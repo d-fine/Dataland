@@ -26,24 +26,29 @@ class RequestEmailManager(
     /**
      * Method to send email when the request status changes
      * @param dataRequestEntity the request entity
-     * @param requestStatus the new request status of the request
+     * @param newRequestStatus the new request status of the request
      * @param correlationId the correlationId of the operation
      */
     fun sendEmailsWhenRequestStatusChanged(
         dataRequestEntity: DataRequestEntity,
-        requestStatus: RequestStatus?,
+        newRequestStatus: RequestStatus?,
+        requestStatusChangeReason: String?,
         earlierQaApprovedVersionOfDatasetExists: Boolean,
         correlationId: String = UUID.randomUUID().toString(),
     ) {
-        if (requestStatus == RequestStatus.Answered) {
+        if (newRequestStatus == RequestStatus.Answered) {
             if (earlierQaApprovedVersionOfDatasetExists) {
                 dataRequestResponseEmailMessageSender.buildDataUpdatedEmailAndSendCEMessage(dataRequestEntity, correlationId)
             } else {
                 dataRequestResponseEmailMessageSender.buildDataRequestAnsweredEmailAndSendCEMessage(dataRequestEntity, correlationId)
             }
         }
-        if (requestStatus == RequestStatus.NonSourceable) {
-            dataRequestResponseEmailMessageSender.buildDataRequestNonSourceableEmailAndSendCEMessage(dataRequestEntity, correlationId)
+        if (newRequestStatus == RequestStatus.NonSourceable) {
+            dataRequestResponseEmailMessageSender.buildDataRequestNonSourceableEmailAndSendCEMessage(
+                dataRequestEntity,
+                requestStatusChangeReason,
+                correlationId,
+            )
         }
     }
 

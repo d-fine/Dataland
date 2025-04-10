@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -53,19 +54,19 @@ class RequestEmailManagerTest {
     fun `validate that a response email is only sent when a request status is patched to answered or nonsourceable`() {
         val dataRequestEntity = mock(DataRequestEntity::class.java)
         for (requestStatus in RequestStatus.entries) {
-            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, requestStatus, false)
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, requestStatus, null, false)
 
             if (requestStatus == RequestStatus.Answered) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
                     .buildDataRequestAnsweredEmailAndSendCEMessage(any(), any())
             } else if (requestStatus == RequestStatus.NonSourceable) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
-                    .buildDataRequestNonSourceableEmailAndSendCEMessage(any(), any())
+                    .buildDataRequestNonSourceableEmailAndSendCEMessage(any(), anyOrNull(), any())
             } else {
                 verify(dataRequestResponseEmailMessageSender, times(0))
                     .buildDataRequestAnsweredEmailAndSendCEMessage(any(), any())
                 verify(dataRequestResponseEmailMessageSender, times(0))
-                    .buildDataRequestNonSourceableEmailAndSendCEMessage(any(), any())
+                    .buildDataRequestNonSourceableEmailAndSendCEMessage(any(), anyOrNull(), any())
             }
             reset(dataRequestResponseEmailMessageSender)
         }
@@ -113,6 +114,7 @@ class RequestEmailManagerTest {
         requestEmailManager.sendEmailsWhenRequestStatusChanged(
             dataRequestEntity,
             RequestStatus.Answered,
+            null,
             false,
             UUID.randomUUID().toString(),
         )

@@ -78,6 +78,7 @@ class DataRequestResponseEmailBuilder(
      */
     fun buildDataRequestNonSourceableEmailAndSendCEMessage(
         dataRequestEntity: DataRequestEntity,
+        requestStatusChangeReason: String?,
         correlationId: String,
     ) {
         val dataNonSourceableEmailContentMail =
@@ -87,7 +88,7 @@ class DataRequestResponseEmailBuilder(
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
                 dataRequestId = dataRequestEntity.dataRequestId,
-                nonSourceableComment = dataRequestEntity.requestStatusChangeReason,
+                nonSourceableComment = requestStatusChangeReason,
             )
         val message =
             EmailMessage(
