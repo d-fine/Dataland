@@ -8,7 +8,9 @@ If you are certain the requested data should exist, you may reopen your request 
 ${baseUrl}/requests/${dataRequestId}
 
 <#include "../general/data_request_information_text.ftl">
-Reason unavailable: ${nonSourceableComment}
+<#if nonSourceableComment??>
+    Reason unavailable: ${nonSourceableComment}
+</#if>
 
 View your data request:
 ${baseUrl}/requests/${dataRequestId}
