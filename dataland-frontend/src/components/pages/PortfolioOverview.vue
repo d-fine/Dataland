@@ -3,7 +3,12 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="2">
       <TheContent class="min-h-screen paper-section relative">
-        <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" class="col-12" :scrollable="true">
+        <TabView
+          v-model:activeIndex="currentIndex"
+          @tab-change="onTabChange"
+          :scrollable="true"
+          :data-test="'portfolios'"
+        >
           <TabPanel v-for="portfolio in portfolios" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
             <PortfolioDetails :portfolioId="portfolio.portfolioId" />
           </TabPanel>
@@ -27,7 +32,7 @@ import TheFooter from '@/components/generics/TheFooter.vue';
 import type { Content, Section } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
 import TheContent from '@/components/generics/TheContent.vue';
-import type { BasePortfolio } from '@clients/userservice';
+import type { BasePortfolioName } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -40,8 +45,7 @@ import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const currentIndex = ref(0);
-const currentPortfolio = ref<BasePortfolio>();
-const portfolios = ref<BasePortfolio[]>();
+const portfolios = ref<BasePortfolioName[]>();
 
 const content: Content = contentData;
 const footerSections: Section[] | undefined = content.pages.find((page) => page.url === '/')?.sections;
@@ -57,13 +61,12 @@ onMounted(() => {
  */
 watch(
   currentIndex,
-  async (newIndex, oldIndex) => {
+  (newIndex, oldIndex) => {
     if (newIndex == portfolios.value?.length) {
       addNewPortfolio();
       currentIndex.value = oldIndex;
       return;
     }
-    await getPortfolio(newIndex);
   },
   { flush: 'post' }
 );
@@ -73,28 +76,11 @@ watch(
  */
 function getPortfolios(): void | undefined {
   apiClientProvider.apiClients.portfolioController
-    .getAllPortfoliosForCurrentUser()
+    .getAllPortfolioNamesForCurrentUser()
     .then((response) => {
       portfolios.value = response.data;
     })
     .catch((reason) => console.error(reason));
-}
-
-/**
- * Get portfolio for index
- * @param index index in 'portfolios' corresponding to portfolio to retrieve
- */
-async function getPortfolio(index: number): Promise<void | undefined> {
-  if (!portfolios.value) return;
-  try {
-    const response = await apiClientProvider.apiClients.portfolioController.getPortfolio(
-      portfolios.value[currentIndex.value].portfolioId
-    );
-    currentPortfolio.value = response.data;
-  } catch (error) {
-    console.log(`Error while loading portfolio for tabIndex ${index}:`);
-    throw error;
-  }
 }
 
 /**

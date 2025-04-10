@@ -142,7 +142,9 @@ function assertTable(tableSelector: string, expected: (string | number | null | 
             case 'undefined':
               break;
             default:
-              throw new Error('Could not compare ' + typeof comparator);
+              throw new Error(
+                `Row ${rowIndex + 1}, Column ${cellIndex + 1}: Unsupported comparator type '${typeof comparator}'`
+              );
           }
         });
       });
