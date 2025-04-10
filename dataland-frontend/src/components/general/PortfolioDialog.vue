@@ -31,7 +31,8 @@
               icon="pi pi-plus"
               :loading="isCompaniesLoading"
               @click="addCompanies"
-              class="primary-button" />
+              class="primary-button"
+            />
           </div>
         </div>
       </div>
@@ -58,10 +59,7 @@
     <div class="grid">
       <div class="col-6">
         <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
-        <ul
-          class="list-none overflow-y-auto h-6rem"
-          id="existing-company-identifiers"
-        >
+        <ul class="list-none overflow-y-auto h-6rem" id="existing-company-identifiers">
           <li
             v-for="(company, index) in portfolioCompanies"
             :key="company.companyId"
@@ -83,13 +81,15 @@
           </li>
         </ul>
       </div>
-      <div class="col-12 pb-0">
+      <div class="col-12 pb-0 h-3rem">
         <div class="grid">
           <div class="col-7 vertical-middle">
-            <p v-show="!isValidPortfolioUpload" class="formkit-message">
+            <p v-if="!isValidPortfolioUpload" class="formkit-message">
               Please provide a portfolio name, at least one company, and at least one framework.
             </p>
-            <p v-if="portfolioErrors" class="formkit-message"> {{ portfolioErrors }} </p>
+            <Message v-if="portfolioErrors" :closable="false" severity="error" class="m-0" :life="3000">
+              {{ portfolioErrors }}
+            </Message>
           </div>
           <div class="col-5" style="text-align: end">
             <PrimeButton
@@ -126,9 +126,11 @@ import type {
   EnrichedPortfolioEntry,
   PortfolioUploadFrameworksEnum,
 } from '@clients/userservice';
+import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import Message from 'primevue/message';
 import MultiSelect from 'primevue/multiselect';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
@@ -144,6 +146,7 @@ const companyIdentifiersInput = ref('');
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
+const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const portfolioFrameworks = ref<string[]>([]);
@@ -156,19 +159,21 @@ const allFrameworks: DropdownOption[] = FRAMEWORKS_WITH_VIEW_PAGE.map((framework
 });
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const selectableFrameworks = computed(() => allFrameworks.filter((frameworkOption) => {
+const selectableFrameworks = computed(() =>
+  allFrameworks.filter((frameworkOption) => {
     return !portfolioFrameworks.value.includes(frameworkOption.value);
-  }),
+  })
 );
 
-const isValidPortfolioUpload = computed(() =>
-  portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0,
+const isValidPortfolioUpload = computed(
+  () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
 
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (!data || !data.portfolio) return;
   const portfolio = data.portfolio as EnrichedPortfolio;
+  portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
   portfolioCompanies.value = getUniqueCompanies(portfolio.entries);
   portfolioFrameworks.value = getUniqueFrameworks(portfolio.entries);
@@ -183,14 +188,6 @@ function getUniqueFrameworks(entries: EnrichedPortfolioEntry[]): string[] {
 }
 
 /**
- * Type Guard to convince typescript that undefined is really filtered out
- * @param framework
- */
-function isFramework(framework: string | undefined): framework is string {
-  return !!framework;
-}
-
-/**
  * Retrieve array of unique companyIdAndNames from EnrichedPortfolioEntry
  */
 function getUniqueCompanies(entries: EnrichedPortfolioEntry[]): CompanyIdAndName[] {
@@ -202,8 +199,6 @@ function getUniqueCompanies(entries: EnrichedPortfolioEntry[]): CompanyIdAndName
     };
   });
 }
-
-const delay = (ms: number): Promise<number> => new Promise(res => setTimeout(res, ms));
 
 /**
  * Adds identifiers from companyIdentifierInput to list.
@@ -240,10 +235,52 @@ async function addCompanies(): Promise<void> {
 }
 
 /**
+ * Function used to create or update portfolio.
+ * If portfolioId is undefined, the modal has been loaded without data passed to it, i.e. we want to add a new
+ * portfolio. Otherwise, we call the PUT endpoint.
+ */
+async function savePortfolio(): Promise<void> {
+  if (!isValidPortfolioUpload.value) return;
+
+  isPortfolioSaving.value = true;
+  try {
+    // as unknown as Set<string> cast required to ensure proper json is created
+    const response = await apiClientProvider.apiClients.portfolioController.createPortfolio({
+      portfolioName: portfolioName.value!,
+      frameworks: portfolioFrameworks.value as unknown as Set<PortfolioUploadFrameworksEnum>,
+      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+    });
+
+    console.log(response.data);
+    dialogRef?.value.close({
+      portfolioId: response.data.portfolioId,
+      portfolioName: response.data.portfolioName,
+    } as BasePortfolioName);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      portfolioErrors.value = error.status == 409 ? 'Portfolio with same name exists already.' : error.message;
+    } else {
+      portfolioErrors.value = 'An unknown error occurred.';
+      console.log(error);
+    }
+  } finally {
+    isPortfolioSaving.value = false;
+  }
+}
+
+/**
+ * Type Guard to convince typescript that undefined is really filtered out
+ * @param framework
+ */
+function isFramework(framework: string | undefined): framework is string {
+  return !!framework;
+}
+
+/**
  * Custom sorter to sort companyIdAndName objects by companyName
  */
 function sortByCompanyName(a: CompanyIdAndName, b: CompanyIdAndName): number {
-  return (a.companyName < b.companyName) ? -1 : (a.companyName > b.companyName) ? 1 : 0;
+  return a.companyName < b.companyName ? -1 : a.companyName > b.companyName ? 1 : 0;
 }
 
 /**
@@ -257,48 +294,27 @@ function processCompanyInputString(): string[] {
   uniqueIdentifiers.delete('');
   return Array.from(uniqueIdentifiers);
 }
-
-/**
- *
- */
-function savePortfolio(): void {
-  if (!isValidPortfolioUpload.value) return;
-
-  isPortfolioSaving.value = true;
-  // as unknown as Set<string> cast required to ensure proper json is created
-  apiClientProvider.apiClients.portfolioController.createPortfolio(
-    {
-      portfolioName: portfolioName.value!,
-      frameworks: portfolioFrameworks.value as unknown as Set<PortfolioUploadFrameworksEnum>,
-      companyIds: portfolioCompanies.value as unknown as Set<string>,
-    }).then((response) => {
-    dialogRef?.value.close({
-      portfolioId: response.data.portfolioId,
-      portfolioName: response.data.portfolioName,
-    } as BasePortfolioName);
-  }).catch((response) => {
-    portfolioErrors.value = response.errors[0].summary;
-  }).finally(() => isPortfolioSaving.value = false,
-  );
-}
 </script>
 
 <style scoped lang="scss">
-
 .portfolio-dialog-content {
   display: flex;
   flex-direction: column;
   width: 50vw;
 }
 
-.formkit-outer,
-.formkit-inner {
-  width: 100%;
+.p-message :deep(.p-message-wrapper) {
+  padding: 0.5rem !important;
 }
 
 .p-multiselect {
   width: 100%;
   padding: var(--fk-padding-input);
+}
+
+.formkit-outer,
+.formkit-inner {
+  width: 100%;
 }
 
 ul {
@@ -307,10 +323,6 @@ ul {
 
 li:has(> i.pi-trash):hover {
   cursor: pointer;
-}
-
-.p-button.p-disabled {
-  border: 1px solid var(--)
 }
 
 i.pi-trash {

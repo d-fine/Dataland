@@ -3,12 +3,7 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="2">
       <TheContent class="min-h-screen paper-section relative">
-        <TabView
-          v-model:activeIndex="currentIndex"
-          @tab-change="onTabChange"
-          :scrollable="true"
-          data-test="portfolios"
-        >
+        <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
           <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
             <PortfolioDetails :portfolioId="portfolio.portfolioId" />
           </TabPanel>
@@ -72,7 +67,7 @@ watch(
       return;
     }
   },
-  { flush: 'post' },
+  { flush: 'post' }
 );
 
 /**
