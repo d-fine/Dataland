@@ -319,10 +319,9 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method to patch the request status to answered for a list of data request entities and relevant
-         * data request entities of subsidiaries. At the moment, only entities with status open or non-sourceable
-         * are treated by this function. Moreover, the entities stem from a common QA approval event, whence they
-         * share the triple of company, framework and reporting period.
+         * Method to patch the request status to answered for a list of data request entities and relevant data request entities
+         * of subsidiaries. At the moment, only entities with status open or non-sourceable are processed by this function.
+         * Moreover, the entities stem from a common QA approval event (same company, framework and reporting period).
          * @param dataRequestEntities the entities of the parent company to process
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
