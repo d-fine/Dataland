@@ -193,8 +193,9 @@ function resetFilters(): void {
  * @param entry The portfolio entry for which the link is generated
  */
 function linkTarget(entry: EnrichedPortfolioEntry): string {
+  console.log(entry);
   return (
-    entry.frameworkDataRef ??
+    entry.frameworkDataRef ||
     (entry.latestReportingPeriod
       ? `/companies/${entry.companyId}/frameworks/${entry.framework}`
       : `/singledatarequest/${entry.companyId}?preSelectedFramework=${entry.framework}`)
