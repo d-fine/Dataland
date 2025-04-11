@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service
 class DataRequestUpdateUtils
     @Autowired
     constructor(
-        private val processingUtils: DataRequestProcessingUtils,
+        private val dataRequestProcessingUtils: DataRequestProcessingUtils,
         private val dataRequestLogger: DataRequestLogger,
         private val companyInfoService: CompanyInfoService,
         private val companyRolesManager: CompanyRolesManager,
@@ -66,7 +66,7 @@ class DataRequestUpdateUtils
                 newAccessStatus != dataRequestEntity.accessStatus ||
                 newRequestStatus == RequestStatus.NonSourceable
             ) {
-                processingUtils.addNewRequestStatusToHistory(
+                dataRequestProcessingUtils.addNewRequestStatusToHistory(
                     dataRequestEntity,
                     newRequestStatus,
                     newAccessStatus,
@@ -101,7 +101,7 @@ class DataRequestUpdateUtils
                 MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
             }
             return filteredContacts?.let {
-                processingUtils.addMessageToMessageHistory(dataRequestEntity, it, filteredMessage, modificationTime)
+                dataRequestProcessingUtils.addMessageToMessageHistory(dataRequestEntity, it, filteredMessage, modificationTime)
                 requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, it, filteredMessage)
                 dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
                 true
