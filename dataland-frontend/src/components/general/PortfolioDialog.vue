@@ -1,4 +1,5 @@
 <template>
+  <!--This component uses a grid layout -->
   <div class="bg-white radius-1 p-4 portfolio-dialog-content">
     <div class="grid">
       <div class="col-12" id="portfolio-name-row">
@@ -87,7 +88,7 @@
             <p v-if="!isValidPortfolioUpload" class="formkit-message">
               Please provide a portfolio name, at least one company, and at least one framework.
             </p>
-            <Message v-if="portfolioErrors" :closable="false" severity="error" class="m-0" :life="3000">
+            <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
               {{ portfolioErrors }}
             </Message>
           </div>
@@ -202,7 +203,7 @@ function getUniqueCompanies(entries: EnrichedPortfolioEntry[]): CompanyIdAndName
 }
 
 /**
- * Adds identifiers from companyIdentifierInput to list.
+ * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input textfield.
  */
 async function addCompanies(): Promise<void> {
   const newIdentifiers = processCompanyInputString();
@@ -239,6 +240,9 @@ async function addCompanies(): Promise<void> {
  * Function used to create or update portfolio.
  * If portfolioId is undefined, the modal has been loaded without data passed to it, i.e. we want to add a new
  * portfolio. Otherwise, we call the PUT endpoint.
+ * If creating/updating portfolio is successful, the name and id of the created/updated portfolio is passed to the
+ * dialog's close function. This way, the parent component (portfolioOverview) can use this information to switch to the
+ * according tab.
  */
 async function savePortfolio(): Promise<void> {
   if (!isValidPortfolioUpload.value) return;
