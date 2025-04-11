@@ -5,6 +5,7 @@ import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.email.build
 import org.dataland.datalandemailservice.email.setLateInitVars
+import org.dataland.datalandemailservice.utils.EmailStringConverter
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service
  * A service that listens for send email messages. These emails are then build and send by the email-service.
  */
 @Service
+@Suppress("LongParameterList")
 class EmailMessageListener(
     @Autowired private val emailSender: EmailSender,
     @Autowired private val objectMapper: ObjectMapper,
@@ -35,6 +37,7 @@ class EmailMessageListener(
     @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.email.service.dry.run}") private val dryRunIsActive: Boolean,
+    @Value("\${dataland.email.service.additional-recipients.bcc}") private val additionalBcc: String,
 ) {
     private val logger = LoggerFactory.getLogger(EmailMessageListener::class.java)
 
@@ -92,9 +95,10 @@ class EmailMessageListener(
      *  This function removes all receiver of the email that have unsubscribed.
      */
     fun buildAndSendEmail(emailMessage: EmailMessage) {
+        val additionalBccList = EmailStringConverter.convertEmailsJoinedStringToListOfEmailAddresses(additionalBcc)
         val receivers = resolveRecipients(emailMessage.receiver)
         val cc = resolveRecipients(emailMessage.cc)
-        val bcc = resolveRecipients(emailMessage.bcc)
+        val bcc = resolveRecipients(emailMessage.bcc + additionalBccList)
 
         val blockedContacts = receivers.blockedContacts + cc.blockedContacts + bcc.blockedContacts
         if (blockedContacts.isNotEmpty()) {

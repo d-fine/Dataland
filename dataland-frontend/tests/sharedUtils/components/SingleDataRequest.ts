@@ -6,7 +6,7 @@ export const singleDataRequestPage = {
     cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]').should('exist');
     cy.get('[data-test="toggle-chip"]').contains(reportingPeriod).click();
     cy.get('[data-test="toggle-chip"]').contains(reportingPeriod).parent().should('have.class', 'toggled');
-    cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'").should('not.exist');
+    cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage']").should('not.exist');
   },
   chooseFrameworkLksg(): void {
     const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;

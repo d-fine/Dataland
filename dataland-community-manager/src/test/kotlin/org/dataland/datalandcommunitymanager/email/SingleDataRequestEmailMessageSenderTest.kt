@@ -5,20 +5,20 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -30,8 +30,6 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -46,27 +44,19 @@ class SingleDataRequestEmailMessageSenderTest {
     private val datalandCompanyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val correlationId = UUID.randomUUID().toString()
 
-    private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
+    private lateinit var singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder
 
     @BeforeAll
     fun setup() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@example.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        `when`(authenticationMock.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
+            TestUtils.mockSecurityContext("requester@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         val companyApiMock = mock(CompanyDataControllerApi::class.java)
         val companyInfoMock = mock(CompanyInformation::class.java)
         `when`(companyInfoMock.companyName).thenReturn(companyName)
         `when`(companyApiMock.getCompanyInfo(anyString())).thenReturn(companyInfoMock)
         companyRolesManager = mock(CompanyRolesManager::class.java)
-        singleDataRequestEmailMessageSender =
-            SingleDataRequestEmailMessageSender(
+        singleDataRequestEmailMessageBuilder =
+            SingleDataRequestEmailMessageBuilder(
                 cloudEventMessageHandler = cloudEventMessageHandlerMock,
                 objectMapper = objectMapper,
                 companyApi = companyApiMock,
@@ -87,8 +77,6 @@ class SingleDataRequestEmailMessageSenderTest {
             assertTrue(emailMessage.typedEmailContent is InternalEmailContentTable)
             val internalEmailContentTable = emailMessage.typedEmailContent as InternalEmailContentTable
             assertEquals("Dataland Single Data Request", internalEmailContentTable.subject)
-            assertEquals("A single data request has been submitted", internalEmailContentTable.textTitle)
-            assertEquals("Single Data Request", internalEmailContentTable.htmlTitle)
 
             val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 
@@ -107,8 +95,8 @@ class SingleDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the internal email message sender is correctly built`() {
         mockBuildingMessageAndSendingItToQueueForInternalMails()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-            SingleDataRequestEmailMessageSender.MessageInformation(
+        singleDataRequestEmailMessageBuilder.buildSingleDataRequestInternalMessageAndSendCEMessage(
+            SingleDataRequestEmailMessageBuilder.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.lksg, reportingPeriods,
             ),
             correlationId,
@@ -125,8 +113,8 @@ class SingleDataRequestEmailMessageSenderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertTrue(arg1.typedEmailContent is DatasetRequestedClaimOwnership)
-            val emailData = arg1.typedEmailContent as DatasetRequestedClaimOwnership
+            assertTrue(arg1.typedEmailContent is DatasetRequestedClaimCompanyOwnershipEmailContent)
+            val emailData = arg1.typedEmailContent as DatasetRequestedClaimCompanyOwnershipEmailContent
             assertEquals(listOf(EmailRecipient.EmailAddress(email = "alphabet@example.com")), arg1.receiver)
             assertEquals(datalandCompanyId, emailData.companyId)
             assertEquals(companyName, emailData.companyName)
@@ -144,8 +132,8 @@ class SingleDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the external email message sender is correctly built`() {
         mockBuildingMessageAndSendingItToQueueForExternalMails()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-            SingleDataRequestEmailMessageSender.MessageInformation(
+        singleDataRequestEmailMessageBuilder.buildSingleDataRequestExternalMessageAndSendCEMessage(
+            SingleDataRequestEmailMessageBuilder.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
             ),
             setOf("alphabet@example.com"),

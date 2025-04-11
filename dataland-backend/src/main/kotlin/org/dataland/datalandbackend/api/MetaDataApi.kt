@@ -8,8 +8,8 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
@@ -171,7 +171,7 @@ interface MetaDataApi {
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
      * @param nonSourceable if set true, the method only returns meta info for datasets which are
      * non-sourceable and if set false, it returns sourceable data.
-     * @return A list of NonSourceableInfo matching the filters, or an empty list if none found.
+     * @return A list of SourceabilityInfoResponse matching the filters, or an empty list if none found.
      */
     @Operation(
         summary = "Retrieve information about the sourceability of datasets",
@@ -193,11 +193,11 @@ interface MetaDataApi {
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam nonSourceable: Boolean? = null,
-    ): ResponseEntity<List<NonSourceableInfoResponse>>
+    ): ResponseEntity<List<SourceabilityInfoResponse>>
 
     /**
      * Adds a dataset with information on sourceability.
-     * @param nonSourceableInfo includes the information on the sourceability of a specific dataset.
+     * @param sourceabilityInfo includes the information on the sourceability of a specific dataset.
      */
     @Operation(
         summary = "Adds a dataset with information on sourceability.",
@@ -221,7 +221,7 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postNonSourceabilityOfADataset(
         @Valid @RequestBody
-        nonSourceableInfo: NonSourceableInfo,
+        sourceabilityInfo: SourceabilityInfo,
     )
 
     /**

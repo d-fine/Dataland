@@ -24,11 +24,11 @@ import java.util.UUID
 @SecurityRequirement(name = "default-oauth")
 interface QaApi {
     /**
-     * Gets meta info objects for each unreviewed dataset.
+     * Gets meta info objects for each dataset.
      */
     @Operation(
-        summary = "Get relevant meta info on unreviewed datasets.",
-        description = "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
+        summary = "Get relevant meta info on datasets.",
+        description = "Gets a filtered and chronologically ordered list of relevant meta info on datasets.",
     )
     @ApiResponses(
         value = [
@@ -40,10 +40,11 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getInfoOnPendingDatasets(
+    fun getInfoOnDatasets(
         @RequestParam dataTypes: Set<DataTypeEnum>?,
         @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,
+        @RequestParam(defaultValue = "Pending") qaStatus: QaStatus,
         @RequestParam(defaultValue = "10") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>>

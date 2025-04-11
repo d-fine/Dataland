@@ -163,4 +163,21 @@ class DataRequestLogger {
                 "with admin comment $adminComment.",
         )
     }
+
+    /**
+     * Logs an appropriate message when data requests for subsidiaries of a company are patched
+     * to answered.
+     */
+    fun logMessageForPatchingSubsidiariesToAnswered(
+        parentCompanyId: String,
+        reportingPeriod: String,
+        dataTypeName: String,
+        correlationId: String,
+    ) {
+        bulkDataRequestLogger.info(
+            "Changing request status for all subsidiaries of company with Id $parentCompanyId, " +
+                "reporting period $reportingPeriod and framework $dataTypeName to answered. " +
+                "Correlation ID: $correlationId",
+        )
+    }
 }

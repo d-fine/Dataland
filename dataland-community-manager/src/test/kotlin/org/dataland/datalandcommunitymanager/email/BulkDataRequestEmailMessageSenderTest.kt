@@ -6,7 +6,8 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -16,15 +17,12 @@ import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailConten
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.kotlin.any
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class BulkDataRequestEmailMessageSenderTest {
@@ -61,26 +59,17 @@ class BulkDataRequestEmailMessageSenderTest {
             separator = ", ",
         )
 
-    private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
+    private lateinit var bulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
 
     @BeforeEach
     fun setup() {
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
-        authenticationMock =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@example.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        Mockito.`when`(authenticationMock.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
+        authenticationMock = TestUtils.mockSecurityContext("requester@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         val companyApiMock = Mockito.mock(CompanyDataControllerApi::class.java)
         val companyInfoMock = Mockito.mock(CompanyInformation::class.java)
         Mockito.`when`(companyInfoMock.companyName).thenReturn(companyName)
         Mockito.`when`(companyApiMock.getCompanyInfo(ArgumentMatchers.anyString())).thenReturn(companyInfoMock)
-        bulkDataRequestEmailMessageSender =
-            BulkDataRequestEmailMessageSender(
+        bulkDataRequestEmailMessageBuilder =
+            BulkDataRequestEmailMessageBuilder(
                 cloudEventMessageHandler = cloudEventMessageHandlerMock,
                 objectMapper = objectMapper,
             )
@@ -96,8 +85,6 @@ class BulkDataRequestEmailMessageSenderTest {
                 val internalEmailContentTable = emailMessage.typedEmailContent as InternalEmailContentTable
 
                 Assertions.assertEquals("Dataland Bulk Data Request", internalEmailContentTable.subject)
-                Assertions.assertEquals("A bulk data request has been submitted", internalEmailContentTable.textTitle)
-                Assertions.assertEquals("Bulk Data Request", internalEmailContentTable.htmlTitle)
 
                 val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 
@@ -116,7 +103,7 @@ class BulkDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the bulk internal email message sender is correctly build`() {
         buildInternalBulkEmailMessageMock()
-        bulkDataRequestEmailMessageSender.sendBulkDataRequestInternalMessage(
+        bulkDataRequestEmailMessageBuilder.buildBulkDataRequestInternalMessageAndSendCEMessage(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
             correlationId,

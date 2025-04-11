@@ -44,7 +44,7 @@ class QaServiceTest {
     private lateinit var companyIdBeta: String
 
     private val expectedClientError403Text = "Client error : 403 "
-    private val getPendingSfdrType = QaControllerApi.DataTypesGetInfoOnPendingDatasets.sfdr
+    private val getPendingSfdrType = QaControllerApi.DataTypesGetInfoOnDatasets.sfdr
     private val getNumberPendingSfdrType = QaControllerApi.DataTypesGetNumberOfPendingDatasets.sfdr
 
     @BeforeAll
@@ -364,9 +364,9 @@ class QaServiceTest {
     private fun getInfoOnPendingDatasets(
         companyName: String? = null,
         reportingPeriod: String? = null,
-        dataType: QaControllerApi.DataTypesGetInfoOnPendingDatasets? = null,
+        dataType: QaControllerApi.DataTypesGetInfoOnDatasets? = null,
     ): List<QaReviewResponse> =
-        qaServiceController.getInfoOnPendingDatasets(
+        qaServiceController.getInfoOnDatasets(
             reportingPeriods = reportingPeriod?.let { setOf(it) } ?: emptySet(),
             dataTypes = dataType?.let { listOf(it) } ?: emptyList(),
             companyName = companyName,

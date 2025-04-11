@@ -63,7 +63,7 @@ class EmailSenderTest {
             appender.contains(
                 "Sending email with subject \"${dummySubject}\"\n" +
                     "(sender: ${dummySender.emailAddress})\n" +
-                    "(receivers: ${dummyReceiver1.emailAddress}, ${dummyReceiver2.emailAddress})\n" +
+                    "(receivers: ${dummyReceiver1.emailAddress}; ${dummyReceiver2.emailAddress})\n" +
                     "(cc receivers: ${dummyCcReceiver.emailAddress})",
                 Level.INFO,
             ),
@@ -83,7 +83,7 @@ class EmailSenderTest {
             appender.contains(
                 "Withholding email with subject \"${dummySubject}\"\n" +
                     "(sender: ${dummySender.emailAddress})\n" +
-                    "(receivers: ${dummyReceiver1.emailAddress}, ${dummyReceiver2.emailAddress})\n" +
+                    "(receivers: ${dummyReceiver1.emailAddress}; ${dummyReceiver2.emailAddress})\n" +
                     "(cc receivers: ${dummyCcReceiver.emailAddress})\n" +
                     "due to email service dry run!",
                 Level.INFO,

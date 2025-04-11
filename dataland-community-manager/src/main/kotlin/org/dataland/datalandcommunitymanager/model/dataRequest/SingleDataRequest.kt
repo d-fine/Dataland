@@ -42,4 +42,6 @@ data class SingleDataRequest(
     )
     val contacts: Set<String>?,
     val message: String?,
+    @field:JsonProperty(required = false)
+    val notifyMeImmediately: Boolean = false,
 )

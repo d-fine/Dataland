@@ -8,9 +8,9 @@ import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
@@ -35,11 +35,11 @@ class SingleDataRequestManager
     constructor(
         @Autowired private val dataRequestLogger: DataRequestLogger,
         @Autowired private val dataRequestRepository: DataRequestRepository,
-        @Autowired private val companyIdValidator: CompanyIdValidator,
-        @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+        @Autowired private val companyInfoService: CompanyInfoService,
+        @Autowired private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
         @Autowired private val utils: DataRequestProcessingUtils,
         @Autowired private val dataAccessManager: DataAccessManager,
-        @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
+        @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         @Autowired private val securityUtilsService: SecurityUtilsService,
         @Autowired private val companyRolesManager: CompanyRolesManager,
         @Autowired private val keycloakUserService: KeycloakUserService,
@@ -54,6 +54,7 @@ class SingleDataRequestManager
             val companyId: String,
             val userId: String,
             val dataType: DataTypeEnum,
+            val notifyMeImmediately: Boolean,
             val contacts: Set<String>?,
             val message: String?,
             val correlationId: String,
@@ -128,6 +129,7 @@ class SingleDataRequestManager
                 companyId = companyId,
                 userId = userIdToUse,
                 dataType = singleDataRequest.dataType,
+                notifyMeImmediately = singleDataRequest.notifyMeImmediately,
                 contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 correlationId = UUID.randomUUID().toString(),
@@ -161,9 +163,13 @@ class SingleDataRequestManager
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    userId = preprocessedRequest.userId, datalandCompanyId = preprocessedRequest.companyId,
-                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
-                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
+                    userId = preprocessedRequest.userId,
+                    datalandCompanyId = preprocessedRequest.companyId,
+                    dataType = preprocessedRequest.dataType,
+                    notifyMeImmediately = preprocessedRequest.notifyMeImmediately,
+                    reportingPeriod = reportingPeriod,
+                    contacts = preprocessedRequest.contacts,
+                    message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }
@@ -263,7 +269,7 @@ class SingleDataRequestManager
         private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
             val datalandCompanyId: String? =
                 if (companyIdRegex.matches(companyIdentifier)) {
-                    companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
+                    companyInfoService.checkIfCompanyIdIsValid(companyIdentifier)
                     companyIdentifier
                 } else {
                     utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
@@ -283,7 +289,7 @@ class SingleDataRequestManager
                 return
             } else {
                 val messageInformation =
-                    SingleDataRequestEmailMessageSender.MessageInformation(
+                    SingleDataRequestEmailMessageBuilder.MessageInformation(
                         userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
                         datalandCompanyId = preprocessedRequest.companyId,
                         dataType = preprocessedRequest.dataType,
@@ -291,11 +297,11 @@ class SingleDataRequestManager
                     )
 
                 if (preprocessedRequest.contacts.isNullOrEmpty()) {
-                    singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                    singleDataRequestEmailMessageBuilder.buildSingleDataRequestInternalMessageAndSendCEMessage(
                         messageInformation, preprocessedRequest.correlationId,
                     )
                 } else {
-                    singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                    singleDataRequestEmailMessageBuilder.buildSingleDataRequestExternalMessageAndSendCEMessage(
                         messageInformation = messageInformation,
                         receiverSet = preprocessedRequest.contacts,
                         contactMessage = preprocessedRequest.message,
@@ -314,8 +320,8 @@ class SingleDataRequestManager
             } else {
                 val dataTypeDescription =
                     readableFrameworkNameMapping[preprocessedRequest.dataType] ?: preprocessedRequest.dataType.toString()
-                accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                    AccessRequestEmailSender.RequestEmailInformation(
+                accessRequestEmailBuilder.notifyCompanyOwnerAboutNewRequest(
+                    AccessRequestEmailBuilder.RequestEmailInformation(
                         preprocessedRequest.userId, preprocessedRequest.message,
                         preprocessedRequest.companyId, dataTypeDescription,
                         reportingPeriodsOfStoredAccessRequests.toSet(),

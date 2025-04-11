@@ -10,11 +10,11 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntit
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,10 +34,10 @@ class CompanyRolesManagerTest {
     private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
     private lateinit var mockCompanyRoleAssignmentEntity: CompanyRoleAssignmentEntity
 
-    private lateinit var companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender
+    private lateinit var companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder
 
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    private lateinit var mockCompanyIdValidator: CompanyIdValidator
+    private lateinit var mockCompanyInfoService: CompanyInfoService
 
     private val testUserId = UUID.randomUUID().toString()
 
@@ -50,32 +50,25 @@ class CompanyRolesManagerTest {
             countryCode = "dummyCountryCode",
         )
 
-    private val mockAuthentication =
-        AuthenticationMock.mockJwtAuthentication(
-            "username",
-            testUserId,
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
-
     @BeforeEach
     fun initializeCompanyRolesManager() {
         mockCompanyRoleAssignmentRepository = mock(CompanyRoleAssignmentRepository::class.java)
 
-        companyOwnershipAcceptedEmailMessageSender = mock(CompanyOwnershipAcceptedEmailMessageSender::class.java)
+        companyOwnershipAcceptedEmailMessageBuilder = mock(CompanyOwnershipAcceptedEmailMessageBuilder::class.java)
         `when`(
-            companyOwnershipAcceptedEmailMessageSender
+            companyOwnershipAcceptedEmailMessageBuilder
                 .getNumberOfOpenDataRequestsForCompany(any(String::class.java)),
         ).thenReturn(5)
 
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        mockCompanyIdValidator = CompanyIdValidator(mockCompanyDataControllerApi)
+        mockCompanyInfoService = CompanyInfoService(mockCompanyDataControllerApi)
 
         companyRolesManager =
             CompanyRolesManager(
-                mockCompanyIdValidator,
+                mockCompanyInfoService,
                 mockCompanyRoleAssignmentRepository,
-                mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
-                companyOwnershipAcceptedEmailMessageSender,
+                mock(CompanyOwnershipRequestedEmailMessageBuilder::class.java),
+                companyOwnershipAcceptedEmailMessageBuilder,
             )
 
         mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
@@ -83,8 +76,8 @@ class CompanyRolesManagerTest {
             .thenReturn(mockCompanyRoleAssignmentEntity)
 
         doNothing()
-            .`when`(companyOwnershipAcceptedEmailMessageSender)
-            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+            .`when`(companyOwnershipAcceptedEmailMessageBuilder)
+            .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 anyString(),
                 anyString(), anyString(), anyString(),
             )
@@ -119,6 +112,7 @@ class CompanyRolesManagerTest {
             )
         `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(true)
 
+        val mockAuthentication = TestUtils.mockSecurityContext("username", testUserId, DatalandRealmRole.ROLE_USER)
         val exception =
             assertThrows<InvalidInputApiException> {
                 companyRolesManager.triggerCompanyOwnershipRequest(
@@ -144,7 +138,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        verifyNoInteractions(companyOwnershipAcceptedEmailMessageSender)
+        verifyNoInteractions(companyOwnershipAcceptedEmailMessageBuilder)
         assertTrue(exception.summary.contains("Company not found"))
     }
 
@@ -174,8 +168,8 @@ class CompanyRolesManagerTest {
         )
 
         Mockito
-            .verify(companyOwnershipAcceptedEmailMessageSender, Mockito.times(1))
-            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+            .verify(companyOwnershipAcceptedEmailMessageBuilder, Mockito.times(1))
+            .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 anyString(),
                 anyString(),
                 anyString(),
