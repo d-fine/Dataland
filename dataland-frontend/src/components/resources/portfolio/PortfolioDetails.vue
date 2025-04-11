@@ -25,7 +25,6 @@
           </svg>
         </template>
       </Dropdown>
-      <PrimeButton class="primary-button">Request missing data</PrimeButton>
       <PrimeButton class="primary-button" @click="editPortfolio()">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
@@ -59,6 +58,9 @@
         </template>
       </Column>
       <Column :sortable="true" field="countryCode" header="Country" :showFilterMatchModes="false">
+        <template #body="company">
+          {{ company.data.countryCode }} ({{ getCountryNameFromCountryCode(company.data.countryCode) }})
+        </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
@@ -87,7 +89,10 @@
         :showFilterMatchModes="false"
       >
         <template #body="company">
-          <a :href="linkTarget(company.data)">{{ company.data.latestReportingPeriod || 'No data available' }}</a>
+          <a v-if="company.data.latestReportingPeriod" :href="linkTarget(company.data)">{{
+            company.data.latestReportingPeriod
+          }}</a>
+          <span v-else>No data available</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -119,10 +124,12 @@ import type Keycloak from 'keycloak-js';
 import { groupBy } from '@/utils/ArrayUtils.ts';
 import PortfolioDialog from '@/components/general/PortfolioDialog.vue';
 import { useDialog } from 'primevue/usedialog';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const emit = defineEmits(['update:portfolio-overview']);
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -224,16 +231,18 @@ function editPortfolio(): void {
     },
     onClose() {
       loadPortfolio();
+      emit('update:portfolio-overview');
     },
   });
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 a {
-  color: black;
+  color: var(--primary-color);
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
 }
@@ -244,7 +253,7 @@ a:after {
   font-weight: bold;
 }
 
-.p-inputtext {
+:deep(.p-inputtext) {
   background: none;
 }
 

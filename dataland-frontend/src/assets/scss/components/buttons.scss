@@ -24,6 +24,7 @@
   font-size: 0.875rem;
 
   &:enabled:hover {
+    color: white;
     background: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
     border-color: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
   }
