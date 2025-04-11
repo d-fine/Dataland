@@ -257,6 +257,14 @@ a:after {
   background: none;
 }
 
+:deep(.p-column-filter) {
+  margin: 0.5rem;
+}
+
+:deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
+  color: inherit;
+}
+
 .selection-button {
   background: white;
   color: #5a4f36;
