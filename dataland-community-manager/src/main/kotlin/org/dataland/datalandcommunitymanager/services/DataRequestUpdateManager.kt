@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 /**
- * Manages all alterations of data requests
+ * Manages all updates of data requests
  */
 @Suppress("LongParameterList")
 @Service
@@ -51,8 +51,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method for sending an immediate notification email on request status change and creating the corresponding
-         * user-specific notification event.
+         * Method for sending an immediate notification email on request status change and creating its notification event.
          */
         private fun sendImmediateNotificationAndCreateNotificationEvent(
             dataRequestEntity: DataRequestEntity,
@@ -71,8 +70,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Checks whether processing the given data request entity and patch resulted
-         * in any changes on the entity; if so, it stores the new version of the entity.
+         * Checks for changes of dataRequestEntity based on dataRequestPatch. If so, it stores the new version of the entity.
          */
         private fun updateDataRequestEntity(
             dataRequestEntity: DataRequestEntity,
@@ -122,7 +120,6 @@ class DataRequestUpdateManager
          * Method to patch a data request
          * @param dataRequestId the id of the data request to patch
          * @param dataRequestPatch the patch object containing information about the required changes
-         *
          * @return the updated data request object
          */
         @Suppress("ReturnCount")
@@ -188,7 +185,6 @@ class DataRequestUpdateManager
 
         /**
          * If applicable, send an immediate notification email corresponding to the status change to the user.
-         * @returns whether an immediate notification was sent
          */
         private fun sendImmediateNotificationOnRequestStatusChange(
             dataRequestEntity: DataRequestEntity,
@@ -203,10 +199,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Change the request status of a given data request to 'Answered'. At the moment, this is
-         * only used to patch the status from open or non-sourceable to answered.
-         * @param dataRequestEntity the entity specifying the data request
-         * @param correlationId the correlation ID of the QA event
+         * Change the request status of a given data request to 'Answered'. Only applied to open or non-sourceable requests at the moment.
          */
         private fun patchRequestStatusToAnsweredByDataRequestEntity(
             dataRequestEntity: DataRequestEntity,
@@ -267,14 +260,9 @@ class DataRequestUpdateManager
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
                         dataType = setOf(dataType),
-                        userId = null,
-                        emailAddress = null,
                         datalandCompanyIds = subsidiariesIds.map { it.companyId }.toSet(),
                         reportingPeriod = reportingPeriod,
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                        accessStatus = null,
-                        adminComment = null,
-                        requestPriority = null,
                     ),
                 )
             dataRequestEntitiesForSubsidiaries.forEach {
@@ -288,8 +276,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method for processing data requests by users after an incoming QA approval or private
-         * data received event.
+         * Method for processing data requests by users after an incoming QA approval or private data received event.
          */
         @Transactional
         fun processUserRequests(
@@ -368,9 +355,6 @@ class DataRequestUpdateManager
         /**
          * Method to deal with data requests for which no patching is required. At the moment, those are answered,
          * closed or resolved requests for which some new data was QA-approved.
-         *
-         * @param dataRequestEntities Correspond to the requests to process.
-         * @param correlationId The correlation id of the QA approval event.
          */
         private fun processWithoutPatching(
             dataRequestEntities: List<DataRequestEntity>,
@@ -418,9 +402,8 @@ class DataRequestUpdateManager
             correlationId: String,
         ) {
             require(sourceabilityInfo.isNonSourceable) {
-                "Expected information about a non-sourceable dataset but received information " +
-                    "about a sourceable dataset. No requests are patched if a dataset is reported as " +
-                    "sourceable until the dataset is uploaded."
+                "Expected information about a non-sourceable dataset but received information about a sourceable dataset. No requests " +
+                    "are patched if a dataset is reported as sourceable until the dataset is uploaded."
             }
 
             val dataRequestEntities =
