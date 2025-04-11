@@ -245,10 +245,10 @@ class MetaDataControllerTest {
     @Test
     fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
         val companyId = uploadFourDatasetsForACompany()
-        ensureCorrectDatsetsAreActiveAfterUpload(companyId)
+        ensureCorrectDatasetsAreActiveAfterUpload(companyId)
     }
 
-    private fun ensureCorrectDatsetsAreActiveAfterUpload(companyId: String) {
+    private fun ensureCorrectDatasetsAreActiveAfterUpload(companyId: String) {
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
         val listOfActiveMetaData =

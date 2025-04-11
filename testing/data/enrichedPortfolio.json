@@ -1,0 +1,67 @@
+{
+  "portfolioId": "0d3aa82c-dab5-4808-994c-2bb7326358af",
+  "portfolioName": "My First Portfolio",
+  "userId": "136a9394-4873-4a61-a25b-65b1e8e7cc2f",
+  "entries": [
+    {
+      "companyId": "55211efc-5502-430e-89b5-afed16a44407",
+      "companyName": "Boyle, Aufderhar and Smitham",
+      "sector": "ROI",
+      "countryCode": "KY",
+      "framework": "p2p",
+      "companyCockpitRef": "",
+      "frameworkDataRef": "",
+      "latestReportingPeriod": "2024"
+    },
+    {
+      "companyId": "55211efc-5502-430e-89b5-afed16a44407",
+      "companyName": "Boyle, Aufderhar and Smitham",
+      "sector": "ROI",
+      "countryCode": "KY",
+      "framework": "sfdr",
+      "companyCockpitRef": "",
+      "frameworkDataRef": "",
+      "latestReportingPeriod": null
+    },
+    {
+      "companyId": "6d9fe2f5-b46d-4e87-8ad4-45361584889a",
+      "companyName": "Beahan LLC",
+      "sector": "channels",
+      "countryCode": "BV",
+      "framework": "p2p",
+      "companyCockpitRef": "",
+      "frameworkDataRef": "",
+      "latestReportingPeriod": null
+    },
+    {
+      "companyId": "6d9fe2f5-b46d-4e87-8ad4-45361584889a",
+      "companyName": "Beahan LLC",
+      "sector": "channels",
+      "countryCode": "BV",
+      "framework": "sfdr",
+      "companyCockpitRef": "",
+      "frameworkDataRef": "",
+      "latestReportingPeriod": null
+    },
+    {
+      "companyId": "995090f5-74f0-414c-acb9-0f3076f8eea2",
+      "companyName": "Aufderhar, Herzog and King",
+      "sector": "models",
+      "countryCode": "GS",
+      "framework": "p2p",
+      "companyCockpitRef": "",
+      "frameworkDataRef": "",
+      "latestReportingPeriod": "2024"
+    },
+    {
+      "companyId": "995090f5-74f0-414c-acb9-0f3076f8eea2",
+      "companyName": "Aufderhar, Herzog and King",
+      "sector": "models",
+      "countryCode": "GS",
+      "framework": "sfdr",
+      "companyCockpitRef": "",
+      "frameworkDataRef": "",
+      "latestReportingPeriod": null
+    }
+  ]
+}

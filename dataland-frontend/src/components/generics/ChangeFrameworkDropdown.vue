@@ -6,7 +6,7 @@
       :class="dropdownExtended ? 'p-overlay-open' : ''"
       :aria-expanded="dropdownExtended"
     >
-      <span class="p-dropdown-label p-inputtext p-placeholder">
+      <span class="p-placeholder">
         {{ humanizeStringOrNumber(dataType) }}
         <span class="p-dropdown-trigger-icon pi pi-angle-down" aria-hidden="true" data-pc-section="dropdownicon"></span>
       </span>

@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.BasePortfolioName
+import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -135,4 +137,47 @@ interface PortfolioApi {
     fun deletePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
     ): ResponseEntity<Unit>
+
+    /**
+     * Get all portfolio names for currently logged-in user.
+     */
+    @Operation(
+        summary = "Get all portfolio names for the currently logged-in user.",
+        description = "All portfolio names for the currently logged-in user are retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved all portfolio names."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/names"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_USER')",
+    )
+    fun getAllPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>>
+
+    /**
+     * Get enriched portfolio by portfolioId.
+     */
+    @Operation(
+        summary = "Get enriched portfolio by portfolioId.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/{portfolioId}/enriched-portfolio"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_USER')",
+    )
+    fun getEnrichedPortfolio(
+        @PathVariable("portfolioId") portfolioId: String,
+    ): ResponseEntity<EnrichedPortfolio>
 }

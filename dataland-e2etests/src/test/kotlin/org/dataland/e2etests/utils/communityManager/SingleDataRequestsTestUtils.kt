@@ -191,7 +191,7 @@ fun causeClientExceptionBySingleDataRequest(
 }
 
 fun checkErrorMessageForNonUniqueIdentifiersInSingleRequest(clientException: ClientException) {
-    check400ClientExceptionErrorMessage(clientException)
+    checkClientExceptionErrorMessage(clientException)
     val responseBody = (clientException.response as ClientError<*>).body as String
     Assertions.assertTrue(
         responseBody.contains("No unique identifier. Multiple companies could be found."),

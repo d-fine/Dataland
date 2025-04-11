@@ -215,9 +215,9 @@ class BulkDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
             )
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 2)
         checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
-        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 1)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
     }
 }
