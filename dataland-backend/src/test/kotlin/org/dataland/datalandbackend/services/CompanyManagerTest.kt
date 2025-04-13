@@ -302,4 +302,22 @@ class CompanyManagerTest
             )
             assertEquals(expectedResults, testCompanyQueryManager.validateCompanyIdentifiers(testData))
         }
+
+        @Test
+        fun `verify that using a lei as identifier yields consistent validation results with respect to the originally provided lei`() {
+            val inputLei = UUID.randomUUID().toString()
+            val testCompany =
+                testCompanyList.first().copy(
+                    identifiers =
+                        mapOf(
+                            IdentifierType.Lei to listOf(inputLei),
+                        ),
+                )
+            testCompanyAlterationManager.addCompany(testCompany)
+
+            val validationResult = testCompanyQueryManager.validateCompanyIdentifiers(listOf(inputLei)).first()
+            assertEquals(inputLei, validationResult.identifier)
+            assertTrue(validationResult.companyInformation != null)
+            assertEquals(inputLei, validationResult.companyInformation?.lei)
+        }
     }

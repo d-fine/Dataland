@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -215,7 +216,10 @@ class CompanyQueryManager
                 headquarters = storedCompanyEntity.headquarters,
                 countryCode = storedCompanyEntity.countryCode,
                 sector = storedCompanyEntity.sector,
-                lei = null,
+                lei =
+                    storedCompanyEntity.identifiers
+                        .firstOrNull { it.identifierType == IdentifierType.Lei }
+                        ?.identifierValue,
             )
 
         /**
