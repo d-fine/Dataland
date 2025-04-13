@@ -313,11 +313,13 @@ class CompanyManagerTest
                             IdentifierType.Lei to listOf(inputLei),
                         ),
                 )
-            testCompanyAlterationManager.addCompany(testCompany)
+            val companyId = testCompanyAlterationManager.addCompany(testCompany).companyId
 
             val validationResult = testCompanyQueryManager.validateCompanyIdentifiers(listOf(inputLei)).first()
             assertEquals(inputLei, validationResult.identifier)
             assertTrue(validationResult.companyInformation != null)
             assertEquals(inputLei, validationResult.companyInformation?.lei)
+            val validationByCompanyId = testCompanyQueryManager.validateCompanyIdentifiers(listOf(companyId)).first()
+            assertEquals(inputLei, validationByCompanyId.companyInformation?.lei)
         }
     }
