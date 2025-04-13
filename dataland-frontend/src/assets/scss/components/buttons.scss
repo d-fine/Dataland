@@ -3,7 +3,9 @@
 @use '../units';
 @use '../variables';
 
-.p-button, .primary-button, .tertiary-button {
+.p-button,
+.primary-button,
+.tertiary-button {
   white-space: nowrap;
   cursor: pointer;
   font-weight: units.$button-fw;
@@ -22,6 +24,7 @@
   font-size: 0.875rem;
 
   &:enabled:hover {
+    color: white;
     background: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
     border-color: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
   }

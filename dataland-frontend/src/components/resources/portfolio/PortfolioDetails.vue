@@ -25,8 +25,9 @@
           </svg>
         </template>
       </Dropdown>
-      <PrimeButton class="primary-button">Request missing data</PrimeButton>
-      <PrimeButton class="primary-button"> <i class="material-icons pr-2">edit</i> Edit Portfolio </PrimeButton>
+      <PrimeButton class="primary-button" @click="editPortfolio()">
+        <i class="material-icons pr-2">edit</i> Edit Portfolio
+      </PrimeButton>
       <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
     </span>
 
@@ -57,6 +58,9 @@
         </template>
       </Column>
       <Column :sortable="true" field="countryCode" header="Country" :showFilterMatchModes="false">
+        <template #body="company">
+          {{ company.data.countryCode }} ({{ getCountryNameFromCountryCode(company.data.countryCode) }})
+        </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
@@ -85,7 +89,10 @@
         :showFilterMatchModes="false"
       >
         <template #body="company">
-          <a :href="linkTarget(company.data)">{{ company.data.latestReportingPeriod || 'No data available' }}</a>
+          <a v-if="company.data.latestReportingPeriod" :href="linkTarget(company.data)">{{
+            company.data.latestReportingPeriod
+          }}</a>
+          <span v-else>No data available</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -115,9 +122,14 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { groupBy } from '@/utils/ArrayUtils.ts';
+import PortfolioDialog from '@/components/general/PortfolioDialog.vue';
+import { useDialog } from 'primevue/usedialog';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const emit = defineEmits(['update:portfolio-overview']);
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -139,6 +151,17 @@ const isLoading = ref(true);
 const isError = ref(false);
 
 onMounted(() => {
+  loadPortfolio();
+});
+
+watch([selectedFramework, enrichedPortfolio], () => {
+  selectedDetails.value = groupedEntries.get(selectedFramework?.value?.value || '') || [];
+});
+
+/**
+ * (Re-)loads a portfolio
+ */
+function loadPortfolio(): void {
   isLoading.value = true;
   apiClientProvider.apiClients.portfolioController
     .getEnrichedPortfolio(props.portfolioId)
@@ -153,11 +176,7 @@ onMounted(() => {
       isError.value = true;
     })
     .finally(() => (isLoading.value = false));
-});
-
-watch([selectedFramework, enrichedPortfolio], () => {
-  selectedDetails.value = groupedEntries.get(selectedFramework?.value?.value || '') || [];
-});
+}
 
 /**
  * Resets all filters
@@ -174,8 +193,9 @@ function resetFilters(): void {
  * @param entry The portfolio entry for which the link is generated
  */
 function linkTarget(entry: EnrichedPortfolioEntry): string {
+  console.log(entry);
   return (
-    entry.frameworkDataRef ??
+    entry.frameworkDataRef ||
     (entry.latestReportingPeriod
       ? `/companies/${entry.companyId}/frameworks/${entry.framework}`
       : `/singledatarequest/${entry.companyId}?preSelectedFramework=${entry.framework}`)
@@ -197,11 +217,53 @@ function getFrameworkListSorted(): { label: string; value: string }[] {
       };
     });
 }
+
+/**
+ * Opens the PortfolioDialog. OnClose, it reloads all portfolios and
+ */
+function editPortfolio(): void {
+  dialog.open(PortfolioDialog, {
+    props: {
+      header: 'Add Portfolio',
+      modal: true,
+    },
+    data: {
+      portfolio: enrichedPortfolio.value,
+    },
+    onClose() {
+      loadPortfolio();
+      emit('update:portfolio-overview');
+    },
+  });
+}
 </script>
 
-<style lang="scss">
-.p-inputtext {
+<style scoped lang="scss">
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:after {
+  content: '>';
+  margin: 0 0.5em;
+  font-weight: bold;
+}
+
+:deep(.p-inputtext) {
   background: none;
+}
+
+:deep(.p-column-filter) {
+  margin: 0.5rem;
+}
+
+:deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
+  color: inherit;
 }
 
 .selection-button {
