@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -283,37 +284,16 @@ class DataRequestUpdateManager
             dataId: String,
             correlationId: String,
         ) {
-            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            val nonWithdrawnDataRequestEntities =
-                dataRequestRepository.searchDataRequestEntity(
-                    DataRequestsFilter(
-                        dataType = setOf(metaData.dataType),
-                        datalandCompanyIds = setOf(metaData.companyId),
-                        reportingPeriod = metaData.reportingPeriod,
-                        requestStatus =
-                            setOf(
-                                RequestStatus.Answered, RequestStatus.Closed, RequestStatus.NonSourceable,
-                                RequestStatus.Open, RequestStatus.Resolved,
-                            ),
-                    ),
-                )
-            val openOrNonSourceableDataRequestEntities =
-                nonWithdrawnDataRequestEntities.filter {
-                    it.requestStatus in listOf(RequestStatus.Open, RequestStatus.NonSourceable)
-                }
-            val answeredOrClosedOrResolvedDataRequestEntities =
-                nonWithdrawnDataRequestEntities.filter {
-                    it.requestStatus in listOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved)
-                }
+            val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
 
             patchRequestStatusToAnsweredForParentAndSubsidiaries(
-                dataRequestEntities = openOrNonSourceableDataRequestEntities,
+                dataMetaInformation = dataMetaInformation,
                 answeringDataId = dataId,
                 correlationId = correlationId,
             )
 
             processWithoutPatching(
-                dataRequestEntities = answeredOrClosedOrResolvedDataRequestEntities,
+                dataMetaInformation = dataMetaInformation,
                 correlationId = correlationId,
             )
         }
@@ -322,30 +302,34 @@ class DataRequestUpdateManager
          * Method to patch the request status to answered for a list of data request entities and relevant data request entities
          * of subsidiaries. At the moment, only entities with status open or non-sourceable are processed by this function.
          * Moreover, the entities stem from a common QA approval event (same company, framework and reporting period).
-         * @param dataRequestEntities the entities of the parent company to process
+         * @param dataMetaInformation the meta info of the QA-approved dataset
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
          */
         fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
-            dataRequestEntities: List<DataRequestEntity>,
+            dataMetaInformation: DataMetaInformation,
             answeringDataId: String,
             correlationId: String,
         ) {
-            if (dataRequestEntities.isEmpty()) return
-            dataRequestEntities.forEach {
+            val parentCompanyId = dataMetaInformation.companyId
+            val openOrNonSourceableDataRequestEntitiesForParent =
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(dataMetaInformation.dataType),
+                        datalandCompanyIds = setOf(parentCompanyId),
+                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+                    ),
+                )
+            openOrNonSourceableDataRequestEntitiesForParent.forEach {
                 patchRequestStatusToAnsweredByDataRequestEntity(
                     it, answeringDataId, correlationId,
                 )
             }
-            // All dataRequestEntities share their companyId, so we only need to take the first.
-            val firstDataRequestEntityForParent = dataRequestEntities.first()
-            val dataTypeAsEnum =
-                DataTypeEnum.decode(firstDataRequestEntityForParent.dataType)
-                    ?: throw IllegalArgumentException("Unable to parse data type.")
             patchRequestStatusOfSubsidiaries(
-                firstDataRequestEntityForParent.datalandCompanyId,
-                firstDataRequestEntityForParent.reportingPeriod,
-                dataTypeAsEnum,
+                parentCompanyId,
+                dataMetaInformation.reportingPeriod,
+                dataMetaInformation.dataType,
                 answeringDataId,
                 correlationId,
             )
@@ -356,10 +340,19 @@ class DataRequestUpdateManager
          * closed or resolved requests for which some new data was QA-approved.
          */
         private fun processWithoutPatching(
-            dataRequestEntities: List<DataRequestEntity>,
+            dataMetaInformation: DataMetaInformation,
             correlationId: String,
         ) {
-            for (dataRequestEntity in dataRequestEntities) {
+            val answeredOrClosedOrResolvedDataRequestEntities =
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(dataMetaInformation.dataType),
+                        datalandCompanyIds = setOf(dataMetaInformation.companyId),
+                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
+                    ),
+                )
+            for (dataRequestEntity in answeredOrClosedOrResolvedDataRequestEntities) {
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
                     val accessStatusIsOkay =
                         listOf(
