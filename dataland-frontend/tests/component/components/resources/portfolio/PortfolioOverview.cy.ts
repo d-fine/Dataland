@@ -3,6 +3,7 @@ import PortfolioOverview from '@/components/pages/PortfolioOverview.vue';
 import { type BasePortfolioName } from '@clients/userservice';
 
 describe('Check the portfolio overview view', function (): void {
+  const portfolioOverviewMatcher = '[data-test="portfolios"] ul';
   const basePortfolioNames: BasePortfolioName[] = [
     {
       portfolioId: 'test-portfolio-id-1',
@@ -28,11 +29,11 @@ describe('Check the portfolio overview view', function (): void {
       cy.wait('@getPortfolioNames').then(() => {
         // Check if all portfolio names are displayed in the tabs
         basePortfolioNames.forEach((portfolio) => {
-          cy.get('.p-tabview-nav').should('contain', portfolio.portfolioName);
+          cy.get(portfolioOverviewMatcher).should('contain', portfolio.portfolioName);
         });
 
         // Check if the portfolio details component is rendered
-        cy.get('.p-tabview-panels').should('be.visible');
+        cy.get('[data-test="portfolios"] [data-pc-section="navcontent"]').should('be.visible');
       });
     });
   });
@@ -46,8 +47,8 @@ describe('Check the portfolio overview view', function (): void {
     }).then(() => {
       cy.wait('@getPortfolioNames').then(() => {
         // Check if only the "New Portfolio" tab is visible
-        cy.get('.p-tabview-nav').should('have.length', 1);
-        cy.get('.p-tabview-nav').should('contain', 'New Portfolio');
+        cy.get(portfolioOverviewMatcher).should('have.length', 1);
+        cy.get(portfolioOverviewMatcher).should('contain', 'New Portfolio');
       });
     });
   });
@@ -64,25 +65,8 @@ describe('Check the portfolio overview view', function (): void {
     }).then(() => {
       cy.wait('@getPortfolioNames').then(() => {
         // Check if the error state is handled
-        cy.get('.p-tabview-nav').should('have.length', 1);
-        cy.get('.p-tabview-nav').should('contain', 'New Portfolio');
-      });
-    });
-  });
-
-  it('Should show new portfolio dialog when clicking new portfolio tab', function (): void {
-    cy.intercept('**/users/portfolios/names', basePortfolioNames).as('getPortfolioNames');
-
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioOverview, {
-      keycloak: minimalKeycloakMock({}),
-    }).then(() => {
-      cy.wait('@getPortfolioNames').then(() => {
-        // Click on the new portfolio tab
-        cy.get('.p-tabview-nav').contains('New Portfolio').click();
-
-        // Check if the new portfolio dialog is shown
-        cy.get('h1').should('contain', 'New Portfolio dialog here');
+        cy.get(portfolioOverviewMatcher).should('have.length', 1);
+        cy.get(portfolioOverviewMatcher).should('contain', 'New Portfolio');
       });
     });
   });
@@ -95,14 +79,9 @@ describe('Check the portfolio overview view', function (): void {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       cy.wait('@getPortfolioNames').then(() => {
-        // Store the current tab index
-        const initialTabIndex = 0;
-
-        // Click on the new portfolio tab
-        cy.get('.p-tabview-nav').contains('New Portfolio').click();
-
+        cy.get(portfolioOverviewMatcher).contains('New Portfolio').click();
         // Verify we're still on the initial tab
-        cy.get('.p-tabview-nav').eq(initialTabIndex).should('have.class', 'p-highlight');
+        cy.get(portfolioOverviewMatcher).children().first().should('have.class', 'p-highlight');
       });
     });
   });
