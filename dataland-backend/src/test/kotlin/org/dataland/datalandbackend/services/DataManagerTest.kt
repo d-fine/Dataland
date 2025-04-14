@@ -61,7 +61,7 @@ class DataManagerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val dataManagerUtils: DataManagerUtils,
     @Autowired val companyRoleChecker: CompanyRoleChecker,
-    @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val sourceabilityDataManager: SourceabilityDataManager,
     @Autowired val cloudEventsMessageHandler: CloudEventMessageHandler,
 ) {
     val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
@@ -85,7 +85,7 @@ class DataManagerTest(
         messageQueueListenerForDataManager =
             MessageQueueListenerForDataManager(
                 objectMapper, dataMetaInformationManager,
-                dataManager, nonSourceableDataManager,
+                dataManager, sourceabilityDataManager,
             )
     }
 

@@ -2,35 +2,36 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Robelburgh",
+			"headquarters": "South Delfina",
 			"headquartersPostalCode": null,
-			"sector": "ROI",
+			"sector": "AI",
 			"identifiers": {
 				"Lei": [
-					"6TGtm1nKMi5pP1Ru4tgA"
+					"omTyvQDE5Z1L6mJBKfNv"
 				],
 				"Isin": [
-					"IRKfw3aiBP59"
+					"Gtm1nKMi5pP1",
+					"V20MgZQ02J6T"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"ejmnuKI"
+				],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"gxAuxOLkF"
+				],
 				"CompanyRegistrationNumber": [
-					"MSXXwLNKAWEawTK"
+					"nqthNxMIURtELxM"
 				]
 			},
-			"countryCode": "PY",
+			"countryCode": "PW",
 			"companyContactDetails": [
-				"Rupert_Crona@example.com",
-				"Kamron30@example.com"
+				"Dalton51@example.com"
 			],
-			"companyAlternativeNames": [
-				"Harris LLC",
-				"Rath, Fisher and Harvey"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://reasonable-instance.net/",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://terrible-godparent.net/",
 			"isTeaserCompany": false
 		},
 		"t": {

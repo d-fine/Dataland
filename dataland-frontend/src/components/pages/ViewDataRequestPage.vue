@@ -185,6 +185,22 @@
                 <div class="card__separator" />
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
+              <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
+                <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
+                <div class="card__separator" />
+                Receive emails directly or via summary
+                <InputSwitch
+                  style="margin: 1rem 0"
+                  data-test="notifyMeImmediatelyInput"
+                  inputId="notifyMeImmediatelyInput"
+                  v-model="storedDataRequest.notifyMeImmediately"
+                  @update:modelValue="changeReceiveEmails()"
+                />
+                <label for="notifyMeImmediatelyInput">
+                  <strong v-if="storedDataRequest.notifyMeImmediately">immediate update</strong>
+                  <span v-else>weekly summary</span>
+                </label>
+              </div>
               <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
                   <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
@@ -267,6 +283,7 @@ import { accessStatusBadgeClass, badgeClass, patchDataRequest, getRequestStatusL
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
+import InputSwitch from 'primevue/inputswitch';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
@@ -285,6 +302,7 @@ export default defineComponent({
     EmailDetails,
     PrimeDialog,
     PrimeButton,
+    InputSwitch,
     BackButton,
     AuthenticationWrapper,
     TheHeader,
@@ -377,6 +395,7 @@ export default defineComponent({
     /**
      * Method to check if there exist an approved dataset for a dataRequest
      * @param storedDataRequest dataRequest
+     * @param apiClientProvider the ApiClientProvider to use for the connection
      */
     async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
       try {
@@ -416,6 +435,26 @@ export default defineComponent({
       this.reopenModalIsVisible = true;
     },
     /**
+     * Method to change if the user wants to receive emails on updates
+     */
+    async changeReceiveEmails() {
+      try {
+        await patchDataRequest(
+          this.requestId,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          this.storedDataRequest.notifyMeImmediately,
+          undefined,
+          this.getKeycloakPromise
+        );
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    },
+    /**
      * Method to reopen the non sourceable data request
      */
     async reopenRequest() {
@@ -424,6 +463,7 @@ export default defineComponent({
           await patchDataRequest(
             this.storedDataRequest.dataRequestId,
             RequestStatus.Open as RequestStatus,
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -449,6 +489,7 @@ export default defineComponent({
         await patchDataRequest(
           this.requestId,
           RequestStatus.Withdrawn as RequestStatus,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -490,6 +531,7 @@ export default defineComponent({
           // as unknown as Set<string> cast required to ensure proper json is created
           this.emailContacts as unknown as Set<string>,
           this.emailMessage,
+          undefined,
           undefined,
           this.getKeycloakPromise
         )

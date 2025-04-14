@@ -28,20 +28,22 @@ class QaController(
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun getInfoOnPendingDatasets(
+    override fun getInfoOnDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
+        qaStatus: QaStatus,
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>> {
         logger.info("Received request to respond with information about pending datasets")
         return ResponseEntity.ok(
             qaReviewManager
-                .getInfoOnPendingDatasets(
+                .getInfoOnDatasets(
                     dataTypes = dataTypes,
                     reportingPeriods = reportingPeriods,
                     companyName = companyName,
+                    qaStatus = qaStatus,
                     chunkSize = chunkSize,
                     chunkIndex = chunkIndex,
                 ),
