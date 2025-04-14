@@ -357,10 +357,9 @@ class DataRequestUpdateManager
                         requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
                     ),
                 )
-            @Suppress("LoopWithTooManyJumpStatements")
-            for (dataRequestEntity in answeredOrClosedOrResolvedDataRequestEntities) {
-                if (dataRequestEntity.dataRequestId in requestIdsToIgnore) continue
-
+            val requestsToProcess =
+                answeredOrClosedOrResolvedDataRequestEntities.filter { it.dataRequestId !in requestIdsToIgnore }
+            for (dataRequestEntity in requestsToProcess) {
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
                     val accessStatusIsOkay =
                         listOf(
