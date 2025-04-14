@@ -72,7 +72,7 @@ class DataRequestUpdateManagerTest {
     private val dummyCompanyId = "dummyCompanyId"
     private val dummyNonSourceableInfo = testDataProvider.getDummyNonSourceableInfo()
     private val dummySourceableInfo = testDataProvider.getDummySourceableInfo()
-    private val metaData = testDataProvider.getDataMetaInformation()
+    private val dataMetaInformation = testDataProvider.getDataMetaInformation()
 
     private lateinit var dummyDataRequestEntityWithoutEarlierQaApproval1: DataRequestEntity
     private lateinit var dummyDataRequestEntityWithoutEarlierQaApproval2: DataRequestEntity
@@ -100,9 +100,9 @@ class DataRequestUpdateManagerTest {
             .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        dataType = setOf(metaData.dataType),
-                        datalandCompanyIds = setOf(metaData.companyId),
-                        reportingPeriod = metaData.reportingPeriod,
+                        dataType = setOf(dataMetaInformation.dataType),
+                        datalandCompanyIds = setOf(dataMetaInformation.companyId),
+                        reportingPeriod = dataMetaInformation.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     ),
             )
@@ -111,9 +111,9 @@ class DataRequestUpdateManagerTest {
             .searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        setOf(metaData.dataType), null, null,
+                        setOf(dataMetaInformation.dataType), null, null,
                         setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
-                        metaData.reportingPeriod,
+                        dataMetaInformation.reportingPeriod,
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                         null, null, null,
                     ),
@@ -154,11 +154,11 @@ class DataRequestUpdateManagerTest {
             .getCompanySubsidiariesByParentId(any())
         doReturn(testDataProvider.getListOfBasicCompanyInformationForSubsidiaries())
             .whenever(mockCompanyDataControllerApi)
-            .getCompanySubsidiariesByParentId(metaData.companyId)
+            .getCompanySubsidiariesByParentId(dataMetaInformation.companyId)
     }
 
     private fun mockMetaDataAndQaReviewResponses() {
-        doReturn(metaData).whenever(mockMetaDataControllerApi).getDataMetaInfo(metaData.dataId)
+        doReturn(dataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(dataMetaInformation.dataId)
         mockQaReviewResponsesWithoutEarlierApproval =
             listOf(mock<QaReviewResponse>())
         mockQaReviewResponsesWithEarlierApproval =
@@ -327,8 +327,8 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that answer emails for subsidiaries are sent according to flag on request status patch from open to answered`() {
         dataRequestUpdateManager.patchRequestStatusToAnsweredForParentAndSubsidiaries(
-            dummyDataRequestEntitiesWithoutEarlierQaApproval,
-            metaData.dataId,
+            dataMetaInformation,
+            dataMetaInformation.dataId,
             correlationId,
         )
         val expectedNumberOfEmailsPerRequest = listOf(1, 0)
