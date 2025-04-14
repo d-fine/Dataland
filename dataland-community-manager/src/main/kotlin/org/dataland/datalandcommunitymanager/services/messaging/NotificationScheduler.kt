@@ -62,7 +62,7 @@ class NotificationScheduler
             processFunction: (List<NotificationEventEntity>) -> Unit,
         ) {
             val unprocessedEvents =
-                notificationEventRepository.findAllByNotificationEventTypeIsInAndProcessedFalse(eventTypes)
+                notificationEventRepository.findAllByNotificationEventTypesAndIsProcessedFalse(eventTypes)
             if (unprocessedEvents.isNotEmpty()) {
                 try {
                     processFunction(unprocessedEvents)
