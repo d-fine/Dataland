@@ -286,14 +286,16 @@ class DataRequestUpdateManager
         ) {
             val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
 
-            patchRequestStatusToAnsweredForParentAndSubsidiaries(
-                dataMetaInformation = dataMetaInformation,
-                answeringDataId = dataId,
-                correlationId = correlationId,
-            )
+            val parentRequestIds =
+                patchRequestStatusToAnsweredForParentAndSubsidiariesAndReturnParentRequestIds(
+                    dataMetaInformation = dataMetaInformation,
+                    answeringDataId = dataId,
+                    correlationId = correlationId,
+                )
 
             processWithoutPatching(
                 dataMetaInformation = dataMetaInformation,
+                requestIdsToIgnore = parentRequestIds,
                 correlationId = correlationId,
             )
         }
@@ -306,11 +308,11 @@ class DataRequestUpdateManager
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
          */
-        fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
+        fun patchRequestStatusToAnsweredForParentAndSubsidiariesAndReturnParentRequestIds(
             dataMetaInformation: DataMetaInformation,
             answeringDataId: String,
             correlationId: String,
-        ) {
+        ): List<String> {
             val parentCompanyId = dataMetaInformation.companyId
             val openOrNonSourceableDataRequestEntitiesForParent =
                 dataRequestRepository.searchDataRequestEntity(
@@ -333,6 +335,7 @@ class DataRequestUpdateManager
                 answeringDataId,
                 correlationId,
             )
+            return openOrNonSourceableDataRequestEntitiesForParent.map { it.dataRequestId }
         }
 
         /**
@@ -341,6 +344,7 @@ class DataRequestUpdateManager
          */
         private fun processWithoutPatching(
             dataMetaInformation: DataMetaInformation,
+            requestIdsToIgnore: List<String>,
             correlationId: String,
         ) {
             val answeredOrClosedOrResolvedDataRequestEntities =
@@ -352,7 +356,9 @@ class DataRequestUpdateManager
                         requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
                     ),
                 )
-            for (dataRequestEntity in answeredOrClosedOrResolvedDataRequestEntities) {
+            val requestsToProcess =
+                answeredOrClosedOrResolvedDataRequestEntities.filter { it.dataRequestId !in requestIdsToIgnore }
+            for (dataRequestEntity in requestsToProcess) {
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
                     val accessStatusIsOkay =
                         listOf(
