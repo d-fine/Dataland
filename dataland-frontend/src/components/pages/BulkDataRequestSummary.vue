@@ -28,7 +28,7 @@
             <span :data-test="section.dataTestHeader" class="flex align-items-center gap-2 w-full">
               <em class="material-icons info-icon" :class="section.iconColor">{{ section.icon }}</em>
               <span class="summary-section-heading">{{ section.title }}</span>
-              <Badge :value="section.items.length" class="ml-auto mr-2" />
+              <Badge :value="section.items?.length" class="ml-auto mr-2" />
             </span>
           </template>
           <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
@@ -36,9 +36,9 @@
           </div>
           <div
             v-if="
-              section.items === acceptedDataRequests ||
-              section.items === alreadyExistingNonFinalRequests ||
-              section.items === alreadyExistingDatasets
+              section.items === props.bulkDataRequestResponse?.acceptedDataRequests ||
+              section.items === props.bulkDataRequestResponse?.alreadyExistingNonFinalRequests ||
+              section.items === props.bulkDataRequestResponse?.alreadyExistingDatasets
             "
           >
             <div
@@ -66,7 +66,7 @@
           </div>
           <div v-else class="grid">
             <span class="col bold-text text-left px-6" :data-test="section.dataTestContent">{{
-              section.items.join(', ')
+              section.items?.join(', ')
             }}</span>
           </div>
         </AccordionTab>
@@ -83,24 +83,21 @@ import type { BulkDataRequestResponse } from '@clients/communitymanager';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 const props = defineProps<{
-  bulkDataRequestResponse: BulkDataRequestResponse;
+  bulkDataRequestResponse: BulkDataRequestResponse | undefined;
   humanizedReportingPeriods: string;
   summarySectionReportingPeriodsHeading: string;
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
 }>();
 
-const { acceptedDataRequests, alreadyExistingNonFinalRequests, alreadyExistingDatasets, rejectedCompanyIdentifiers } =
-  props.bulkDataRequestResponse;
-
-const activeIndex: number[] = alreadyExistingDatasets?.length ? [1] : [];
+const activeIndex: number[] = props.bulkDataRequestResponse?.alreadyExistingDatasets?.length ? [1] : [];
 
 const sections = [
   {
     title: 'CREATED REQUESTS',
     icon: 'check_circle',
     iconColor: 'green-text',
-    items: acceptedDataRequests,
+    items: props.bulkDataRequestResponse?.acceptedDataRequests,
     linkText: 'VIEW REQUEST',
     dataTestHeader: 'acceptedDataRequestsHeader',
     dataTestContent: 'acceptedDataRequestsContent',
@@ -109,7 +106,7 @@ const sections = [
     title: 'SKIPPED REQUESTS - DATA ALREADY EXISTS',
     icon: 'info',
     iconColor: 'info-color',
-    items: alreadyExistingDatasets,
+    items: props.bulkDataRequestResponse?.alreadyExistingDatasets,
     linkText: 'VIEW DATA',
     dataTestHeader: 'alreadyExistingDatasetsHeader',
     dataTestContent: 'alreadyExistingDatasetsContent',
@@ -121,7 +118,7 @@ const sections = [
     title: 'SKIPPED REQUESTS - REQUEST ALREADY EXISTS',
     icon: 'info',
     iconColor: 'info-color',
-    items: alreadyExistingNonFinalRequests,
+    items: props.bulkDataRequestResponse?.alreadyExistingNonFinalRequests,
     linkText: 'VIEW REQUEST',
     dataTestHeader: 'alreadyExistingNonFinalRequestsHeader',
     dataTestContent: 'alreadyExistingNonFinalRequestsContent',
@@ -130,7 +127,7 @@ const sections = [
     title: 'REJECTED IDENTIFIERS',
     icon: 'error',
     iconColor: 'red-text',
-    items: rejectedCompanyIdentifiers,
+    items: props.bulkDataRequestResponse?.rejectedCompanyIdentifiers,
     dataTestHeader: 'rejectedCompanyIdentifiersHeader',
     dataTestContent: 'rejectedCompanyIdentifiersContent',
     textBox: 'No company on Dataland is associated to any of the following identifier',

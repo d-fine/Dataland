@@ -9,12 +9,11 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
-import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,16 +26,13 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class BulkDataRequestManagerTest {
     private lateinit var bulkDataRequestManager: BulkDataRequestManager
-    private lateinit var mockBulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
+    private lateinit var mockBulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockMetaDataController: MetaDataControllerApi
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
 
     @Value("\${dataland.community-manager.proxy-primary-url}")
     private val proxyPrimaryUrl: String = "dataland.com"
@@ -50,33 +46,19 @@ class BulkDataRequestManagerTest {
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
-        mockBulkDataRequestEmailMessageSender = mock(BulkDataRequestEmailMessageSender::class.java)
+        mockBulkDataRequestEmailMessageBuilder = mock(BulkDataRequestEmailMessageBuilder::class.java)
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
         mockMetaDataController = mock(MetaDataControllerApi::class.java)
 
         bulkDataRequestManager =
             BulkDataRequestManager(
                 mock(DataRequestLogger::class.java),
-                mockBulkDataRequestEmailMessageSender,
+                mockBulkDataRequestEmailMessageBuilder,
                 mockDataRequestProcessingUtils,
                 mockMetaDataController,
                 proxyPrimaryUrl,
             )
-        val mockSecurityContext = createSecurityContextMock()
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun createSecurityContextMock(): SecurityContext {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@bigplayer.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        return mockSecurityContext
+        TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
@@ -86,6 +68,7 @@ class BulkDataRequestManagerTest {
                 userId = anyString(),
                 datalandCompanyId = anyString(),
                 dataType = any(),
+                notifyMeImmediately = anyBoolean(),
                 reportingPeriod = anyString(),
                 contacts = anyOrNull(),
                 message = anyOrNull(),
@@ -94,7 +77,8 @@ class BulkDataRequestManagerTest {
             DataRequestEntity(
                 dataRequestId = dummyRequestId,
                 datalandCompanyId = it.arguments[1] as String,
-                reportingPeriod = it.arguments[3] as String,
+                notifyMeImmediately = it.arguments[3] as Boolean,
+                reportingPeriod = it.arguments[4] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
                 dataType = (it.arguments[2] as DataTypeEnum).value,

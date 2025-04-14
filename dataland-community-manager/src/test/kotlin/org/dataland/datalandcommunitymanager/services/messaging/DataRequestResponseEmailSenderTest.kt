@@ -1,31 +1,31 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
+import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class DataRequestResponseEmailSenderTest {
     private var mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private var objectMapper = ObjectMapper()
-    private var mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
-    private val dataRequestResponseEmailSender =
-        DataRequestResponseEmailSender(
+    private var mockCompanyInfoService = mock<CompanyInfoService>()
+    private val dataRequestResponseEmailBuilder =
+        DataRequestResponseEmailBuilder(
             mockCloudEventMessageHandler,
+            mockCompanyInfoService,
             objectMapper,
-            mockCompanyDataControllerApi,
             staleDaysThreshold = "30",
         )
 
@@ -33,7 +33,7 @@ class DataRequestResponseEmailSenderTest {
     fun setUp() {
         Mockito.reset(
             mockCloudEventMessageHandler,
-            mockCompanyDataControllerApi,
+            mockCompanyInfoService,
         )
     }
 
@@ -59,19 +59,19 @@ class DataRequestResponseEmailSenderTest {
         val mockCompanyInformation = mock<CompanyInformation>()
         doReturn(dummyCompanyName).whenever(mockCompanyInformation).companyName
 
-        doReturn(mockCompanyInformation)
-            .whenever(mockCompanyDataControllerApi)
-            .getCompanyInfo(eq(dummyDatalandCompanyId))
+        doReturn(dummyCompanyName)
+            .whenever(mockCompanyInfoService)
+            .getValidCompanyNameOrId(anyOrNull())
 
         val actualMessage =
-            dataRequestResponseEmailSender.buildEmailMessageForUserWithClosedOrResolvedRequest(
+            dataRequestResponseEmailBuilder.buildDataUpdatedEmailMessage(
                 mockDataRequestEntity,
             )
 
         val expectedMessage =
             EmailMessage(
                 typedEmailContent =
-                    DataRequestUpdated(
+                    DataUpdatedEmailContent(
                         companyName = dummyCompanyName,
                         dataTypeLabel = sampleDataTypeLabel,
                         reportingPeriod = sampleReportingPeriod,
