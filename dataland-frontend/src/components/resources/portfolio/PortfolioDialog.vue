@@ -33,6 +33,7 @@
               :loading="isCompaniesLoading"
               @click="addCompanies"
               class="primary-button"
+              data-test="addCompanies"
             />
           </div>
         </div>
@@ -72,7 +73,7 @@
       </div>
       <div class="col-6">
         <label class="formkit-label" for="existing-frameworks">Frameworks in Portfolio</label>
-        <ul class="list-none overflow-y-auto h-6rem">
+        <ul class="list-none overflow-y-auto h-6rem" data-test="existingFrameworks">
           <li
             v-for="(framework, index) in portfolioFrameworks"
             :key="framework"
@@ -84,7 +85,7 @@
       </div>
       <div class="col-12 pb-0 h-3rem">
         <div class="grid">
-          <div class="col-7 vertical-middle">
+          <div class="col-7 vertical-middle" data-test="error">
             <p v-if="!isValidPortfolioUpload" class="formkit-message">
               Please provide a portfolio name, at least one company, and at least one framework.
             </p>
@@ -99,6 +100,7 @@
               @click="dialogRef?.close"
               class="primary-button mr-2"
               severity="secondary"
+              :data-test="'cancelButton'"
             />
             <PrimeButton
               label="Save Portfolio"
@@ -107,6 +109,7 @@
               :loading="isPortfolioSaving"
               @click="savePortfolio()"
               class="primary-button"
+              :data-test="'saveButton'"
             />
           </div>
         </div>
@@ -228,8 +231,9 @@ async function addCompanies(): Promise<void> {
 
     const allIdentifiers = new Set([...portfolioCompanies.value, ...validIdentifiers]);
     portfolioCompanies.value = Array.from(allIdentifiers).sort((a, b) => a.companyName.localeCompare(b.companyName));
-  } catch (exception) {
-    console.log(exception);
+  } catch (error) {
+    portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
+    console.log(error);
   } finally {
     isCompaniesLoading.value = false;
     companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';

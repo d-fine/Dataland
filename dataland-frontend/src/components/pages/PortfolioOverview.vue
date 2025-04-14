@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import contentData from '@/assets/content.json';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import PortfolioDialog from '@/components/general/PortfolioDialog.vue';
+import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';

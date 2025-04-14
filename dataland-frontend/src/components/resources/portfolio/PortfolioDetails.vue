@@ -122,7 +122,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { groupBy } from '@/utils/ArrayUtils.ts';
-import PortfolioDialog from '@/components/general/PortfolioDialog.vue';
+import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 
