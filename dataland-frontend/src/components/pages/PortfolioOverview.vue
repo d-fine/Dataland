@@ -62,9 +62,8 @@ onMounted(() => {
 watch(
   currentIndex,
   (newIndex, oldIndex) => {
-    if (portfolioNames.value.length == 0 || newIndex == portfolioNames.value.length) {
+    if (portfolioNames.value.length == 0 || newIndex >= portfolioNames.value.length) {
       currentIndex.value = oldIndex;
-      return;
     }
   },
   { flush: 'post' }

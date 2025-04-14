@@ -125,28 +125,26 @@ function checkFilter(columnSelector: string, inputSelector: string, needle: stri
  *  - null: No check is performed on that cell
  */
 function assertTable(tableSelector: string, expected: (string | number | null | (() => void))[][]): void {
-  cy.get(tableSelector).within(() => {
-    cy.get('tr').each((row, rowIndex) => {
-      cy.wrap(row).within(() => {
-        cy.get('th, td').each((cell, cellIndex) => {
-          const element = cy.wrap(cell);
-          const comparator = expected[rowIndex][cellIndex];
-          switch (typeof comparator) {
-            case 'string':
-            case 'number':
-              element.should('contain', comparator);
-              break;
-            case 'function':
-              element.within(comparator);
-              break;
-            case 'undefined':
-              break;
-            default:
-              throw new Error(
-                `Row ${rowIndex + 1}, Column ${cellIndex + 1}: Unsupported comparator type '${typeof comparator}'`
-              );
-          }
-        });
+  cy.get(tableSelector + ' tr').each((row, rowIndex) => {
+    cy.wrap(row).within(() => {
+      cy.get('th, td').each((cell, cellIndex) => {
+        const element = cy.wrap(cell);
+        const comparator = expected[rowIndex][cellIndex];
+        switch (typeof comparator) {
+          case 'string':
+          case 'number':
+            element.should('contain', comparator);
+            break;
+          case 'function':
+            element.within(comparator);
+            break;
+          case 'undefined':
+            break;
+          default:
+            throw new Error(
+              `Row ${rowIndex + 1}, Column ${cellIndex + 1}: Unsupported comparator type '${typeof comparator}'`
+            );
+        }
       });
     });
   });

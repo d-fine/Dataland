@@ -52,7 +52,7 @@ class ApiAccessor {
 
     val jwtHelper = JwtAuthenticationHelper()
 
-    val generalTestDataProvider = GeneralTestDataProvider()
+    private val generalTestDataProvider = GeneralTestDataProvider()
 
     val dataControllerApiForEuTaxonomyNonFinancials =
         EutaxonomyNonFinancialsDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
@@ -199,52 +199,31 @@ class ApiAccessor {
         reportingPeriod: String,
     ): DataMetaInformation {
         fun <T> uploadDataset(
-            frameWorkData: T,
+            testDataProvider: FrameworkTestDataProvider<T>,
             frameworkDataUploaderFunction: (
                 companyId: String,
                 frameworkData: T,
                 reportingPeriod: String,
             ) -> DataMetaInformation,
-        ) = uploadSingleFrameworkDataset(companyId, frameWorkData, reportingPeriod, frameworkDataUploaderFunction)
+        ) = uploadSingleFrameworkDataset(companyId, testDataProvider.getTData(1)[0], reportingPeriod, frameworkDataUploaderFunction)
 
         return when (dataType) {
             DataTypeEnum.lksg ->
-                uploadDataset(
-                    frameWorkData = testDataProviderForLksgData.getTData(1)[0],
-                    frameworkDataUploaderFunction = this::lksgUploaderFunction,
-                )
-
+                uploadDataset(testDataProviderForLksgData, this::lksgUploaderFunction)
             DataTypeEnum.sfdr ->
-                uploadDataset(
-                    frameWorkData = testDataProviderForSfdrData.getTData(1)[0],
-                    frameworkDataUploaderFunction = this::sfdrUploaderFunction,
-                )
-
+                uploadDataset(testDataProviderForSfdrData, this::sfdrUploaderFunction)
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
-                uploadDataset(
-                    frameWorkData = testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0],
-                    frameworkDataUploaderFunction = this::euTaxonomyNonFinancialsUploaderFunction,
-                )
-
+                uploadDataset(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
             DataTypeEnum.eutaxonomyMinusFinancials ->
-                uploadDataset(
-                    frameWorkData = testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-                    frameworkDataUploaderFunction = this::euTaxonomyFinancialsUploaderFunction,
-                )
-
+                uploadDataset(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
             DataTypeEnum.p2p ->
-                uploadDataset(
-                    frameWorkData = testDataProviderForP2pData.getTData(1)[0],
-                    frameworkDataUploaderFunction = this::p2pUploaderFunction,
-                )
-
+                uploadDataset(testDataProviderForP2pData, this::p2pUploaderFunction)
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }
         }
     }
 
-    @Suppress("kotlin:S138")
     private fun uploadForDataType(
         dataType: DataTypeEnum,
         listOfCompanyInformation: List<CompanyInformation>,
@@ -271,35 +250,15 @@ class ApiAccessor {
         )
         return when (dataType) {
             DataTypeEnum.lksg ->
-                uploadCompaniesAndDatasets(
-                    testDataProvider = testDataProviderForLksgData,
-                    frameworkDataUploadFunction = this::lksgUploaderFunction,
-                )
-
+                uploadCompaniesAndDatasets(testDataProviderForLksgData, this::lksgUploaderFunction)
             DataTypeEnum.sfdr ->
-                uploadCompaniesAndDatasets(
-                    testDataProvider = testDataProviderForSfdrData,
-                    frameworkDataUploadFunction = this::sfdrUploaderFunction,
-                )
-
+                uploadCompaniesAndDatasets(testDataProviderForSfdrData, this::sfdrUploaderFunction)
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
-                uploadCompaniesAndDatasets(
-                    testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
-                    frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
-                )
-
+                uploadCompaniesAndDatasets(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
             DataTypeEnum.eutaxonomyMinusFinancials ->
-                uploadCompaniesAndDatasets(
-                    testDataProvider = testDataProviderEuTaxonomyForFinancials,
-                    frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
-                )
-
+                uploadCompaniesAndDatasets(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
             DataTypeEnum.p2p ->
-                uploadCompaniesAndDatasets(
-                    testDataProvider = testDataProviderForP2pData,
-                    frameworkDataUploadFunction = this::p2pUploaderFunction,
-                )
-
+                uploadCompaniesAndDatasets(testDataProviderForP2pData, this::p2pUploaderFunction)
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }

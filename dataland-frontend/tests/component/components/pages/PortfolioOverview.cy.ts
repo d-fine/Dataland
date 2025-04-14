@@ -25,10 +25,8 @@ describe('Check the portfolio overview view', function (): void {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       cy.wait('@basePortfolios').then(() => {
-        cy.get('[data-test="portfolios"] ul').within(() => {
-          cy.get('li.p-highlight').should('contain', basePortfolioNames[0].portfolioName);
-          cy.get('li').should('contain', 'New Portfolio');
-        });
+        cy.get('[data-test="portfolios"] ul').should('contain', 'New Portfolio');
+        cy.get('[data-test="portfolios"] ul li.p-highlight').should('contain', basePortfolioNames[0].portfolioName);
       });
     });
   });

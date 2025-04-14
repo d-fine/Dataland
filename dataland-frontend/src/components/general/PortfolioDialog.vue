@@ -227,7 +227,7 @@ async function addCompanies(): Promise<void> {
       .map((it) => it.identifier);
 
     const allIdentifiers = new Set([...portfolioCompanies.value, ...validIdentifiers]);
-    portfolioCompanies.value = Array.from(allIdentifiers).sort(sortByCompanyName);
+    portfolioCompanies.value = Array.from(allIdentifiers).sort((a, b) => a.companyName.localeCompare(b.companyName));
   } catch (exception) {
     console.log(exception);
   } finally {
@@ -283,13 +283,6 @@ async function savePortfolio(): Promise<void> {
  */
 function isFramework(framework: string | undefined): framework is string {
   return !!framework;
-}
-
-/**
- * Custom sorter to sort companyIdAndName objects by companyName
- */
-function sortByCompanyName(a: CompanyIdAndName, b: CompanyIdAndName): number {
-  return a.companyName < b.companyName ? -1 : a.companyName > b.companyName ? 1 : 0;
 }
 
 /**
