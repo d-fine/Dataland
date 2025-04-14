@@ -32,7 +32,7 @@ class DataRequestTimeScheduler(
     /**
      * Cron job that identifies stale answered requests, patches them to closed and triggers an email notification
      */
-    @Scheduled(cron = "0 */5 * * * ?")
+    @Scheduled(cron = "0 0 12 * * *")
     fun patchStaleAnsweredRequestToClosed() {
         val correlationId = UUID.randomUUID().toString()
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
