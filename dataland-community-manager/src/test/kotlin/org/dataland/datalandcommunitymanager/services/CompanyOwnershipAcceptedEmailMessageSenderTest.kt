@@ -1,30 +1,26 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class CompanyOwnershipAcceptedEmailMessageSenderTest {
     private val objectMapper = jacksonObjectMapper()
-    private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyName = "Test Inc."
     private val correlationId = UUID.randomUUID().toString()
@@ -34,16 +30,7 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
 
     @BeforeEach
     fun setupAuthentication() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock =
-            AuthenticationMock.mockJwtAuthentication(
-                "userEmail",
-                userId,
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        Mockito.`when`(authenticationMock.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
+        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
     }
 
     @Test
@@ -51,15 +38,15 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
         mockCloudEventMessageHandlerAndSetChecks()
 
         val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
-        val companyOwnershipAcceptedEmailMessageSender =
-            CompanyOwnershipAcceptedEmailMessageSender(
+        val companyOwnershipAcceptedEmailMessageBuilder =
+            CompanyOwnershipAcceptedEmailMessageBuilder(
                 cloudEventMessageHandlerMock,
                 objectMapper,
                 dataRequestQueryManager,
             )
 
-        companyOwnershipAcceptedEmailMessageSender
-            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+        companyOwnershipAcceptedEmailMessageBuilder
+            .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 newCompanyOwnerId = userId,
                 datalandCompanyId = companyId,
                 companyName = companyName,
@@ -83,12 +70,12 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
                 val arg3 = it.getArgument<String>(2)
                 val arg4 = it.getArgument<String>(3)
                 val arg5 = it.getArgument<String>(4)
-                Assertions.assertTrue(emailMessage.typedEmailContent is CompanyOwnershipClaimApproved)
-                val companyOwnershipClaimApproved = emailMessage.typedEmailContent as CompanyOwnershipClaimApproved
-                Assertions.assertEquals(companyId, companyOwnershipClaimApproved.companyId)
-                Assertions.assertEquals(companyName, companyOwnershipClaimApproved.companyName)
+                Assertions.assertTrue(emailMessage.typedEmailContent is CompanyOwnershipClaimApprovedEmailContent)
+                val companyOwnershipClaimApprovedEmailContent = emailMessage.typedEmailContent as CompanyOwnershipClaimApprovedEmailContent
+                Assertions.assertEquals(companyId, companyOwnershipClaimApprovedEmailContent.companyId)
+                Assertions.assertEquals(companyName, companyOwnershipClaimApprovedEmailContent.companyName)
                 Assertions.assertEquals(
-                    numberOfOpenDataRequestsForCompany, companyOwnershipClaimApproved.numberOfOpenDataRequestsForCompany,
+                    numberOfOpenDataRequestsForCompany, companyOwnershipClaimApprovedEmailContent.numberOfOpenDataRequestsForCompany,
                 )
                 Assertions.assertEquals(listOf(EmailRecipient.UserId(userId)), emailMessage.receiver)
                 Assertions.assertEquals(MessageType.SEND_EMAIL, arg2)
