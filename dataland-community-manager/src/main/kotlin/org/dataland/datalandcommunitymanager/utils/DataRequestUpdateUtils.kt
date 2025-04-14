@@ -140,7 +140,7 @@ class DataRequestUpdateUtils
          * dataRequestEntity, checks whether there was at least one other QA approval event for the corresponding
          * triple of company, framework and reporting period.
          */
-        fun existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(dataRequestEntity: DataRequestEntity): Boolean {
+        fun existsEarlierQaApprovalOfDatasetForDataDimension(dataRequestEntity: DataRequestEntity): Boolean {
             val dataTypeAsDataTypesGetInfoOnDatasets =
                 DataTypesGetInfoOnDatasets.entries.first {
                     it.toString() == dataRequestEntity.dataType

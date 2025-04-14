@@ -76,7 +76,7 @@ class NotificationSchedulerTest {
         val entityList = listOf(notificationEventEntity, notificationEventEntity)
         doReturn(entityList)
             .whenever(mockNotificationEventRepository)
-            .findAllByNotificationEventTypesAndIsProcessedFalse(any())
+            .findAllByNotificationEventTypeIsInAndProcessedFalse(any())
 
         notificationScheduler.scheduledWeeklyEmailSending()
 

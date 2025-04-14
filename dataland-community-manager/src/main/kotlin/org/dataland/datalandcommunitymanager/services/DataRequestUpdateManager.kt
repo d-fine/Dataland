@@ -44,7 +44,7 @@ class DataRequestUpdateManager
         ) {
             dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
                 dataRequestEntity, dataRequestPatch.requestStatus, dataRequestEntity.notifyMeImmediately,
-                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(
                     dataRequestEntity,
                 ),
             )
@@ -61,7 +61,7 @@ class DataRequestUpdateManager
             sendImmediateNotificationOnRequestStatusChange(
                 dataRequestEntity,
                 dataRequestPatch,
-                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(
                     dataRequestEntity,
                 ),
                 correlationId,
@@ -144,7 +144,7 @@ class DataRequestUpdateManager
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus,
                     dataRequestPatch.requestStatusChangeReason,
-                    dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+                    dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(
                         dataRequestEntity,
                     ),
                     correlationId,

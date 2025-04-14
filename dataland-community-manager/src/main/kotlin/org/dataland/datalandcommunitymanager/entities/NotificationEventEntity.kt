@@ -1,12 +1,12 @@
 package org.dataland.datalandcommunitymanager.entities
 
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Index
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.converters.NotificationEventTypeAttributeConverter
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import java.time.Instant
 import java.util.UUID
@@ -22,7 +22,7 @@ import java.util.UUID
 data class NotificationEventEntity(
     @Id
     val notificationEventId: UUID = UUID.randomUUID(),
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = NotificationEventTypeAttributeConverter::class)
     val notificationEventType: NotificationEventType,
     val userId: UUID? = null,
     var isProcessed: Boolean,

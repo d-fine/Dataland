@@ -131,16 +131,16 @@ class DataRequestUpdateManagerTest {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
             doReturn(false)
                 .whenever(mockDataRequestUpdateUtils)
-                .existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(it)
+                .existsEarlierQaApprovalOfDatasetForDataDimension(it)
         }
         doReturn(false)
             .whenever(mockDataRequestUpdateUtils)
-            .existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+            .existsEarlierQaApprovalOfDatasetForDataDimension(
                 dummyChildCompanyDataRequestEntityWithoutEarlierQaApproval,
             )
         doReturn(true)
             .whenever(mockDataRequestUpdateUtils)
-            .existsEarlierQaApprovalOfDatasetForCompanyAndFrameworkAndReportingPeriod(
+            .existsEarlierQaApprovalOfDatasetForDataDimension(
                 dummyChildCompanyDataRequestEntityWithEarlierQaApproval,
             )
     }
