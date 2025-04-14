@@ -22,28 +22,24 @@ data class CompanyIdentifierValidationResult(
         lei: String? = null,
     ) : this(
         identifier,
-        object : BasicCompanyInformation {
-            override val companyId = companyId
-            override val companyName = companyName
-            override val headquarters = headquarters
-            override val countryCode = countryCode
-            override val sector = sector
-            override val lei: String? = lei
-        },
+        companyInformation =
+            BasicCompanyInformation(
+                companyId = companyId,
+                companyName = companyName,
+                headquarters = headquarters,
+                countryCode = countryCode,
+                sector = sector,
+                lei = lei,
+            ),
     )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other !is CompanyIdentifierValidationResult) return false
 
-        with(other as CompanyIdentifierValidationResult) {
-            return this.identifier == identifier &&
-                this.companyInformation?.companyId == companyInformation?.companyId &&
-                this.companyInformation?.companyName == companyInformation?.companyName &&
-                this.companyInformation?.headquarters == companyInformation?.headquarters &&
-                this.companyInformation?.countryCode == companyInformation?.countryCode &&
-                this.companyInformation?.sector == companyInformation?.sector &&
-                this.companyInformation?.lei == companyInformation?.lei
-        }
+        return identifier == other.identifier &&
+            companyInformation == other.companyInformation
     }
+
+    override fun hashCode(): Int = identifier.hashCode() * 31 + (companyInformation?.hashCode() ?: 0)
 }

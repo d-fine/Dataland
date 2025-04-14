@@ -244,7 +244,7 @@ class CompanyQueryManager
          */
         @Transactional(readOnly = true)
         fun validateCompanyIdentifiers(identifiers: List<String>): List<CompanyIdentifierValidationResult> =
-            identifiers.map { getCompanyIdentifierValidationResult(it) }.distinctBy {
+            identifiers.map { getCompanyIdentifierValidationResult(it.trim()) }.distinctBy {
                 it.companyInformation?.companyId ?: it.identifier
             }
     }

@@ -270,6 +270,12 @@ class CompanyManagerTest
                         headquarters = it.headquarters,
                         countryCode = it.countryCode,
                         sector = it.sector,
+                        lei =
+                            testCompanyQueryManager
+                                .validateCompanyIdentifiers(mutableListOf(identifier))
+                                .first()
+                                .companyInformation
+                                ?.lei,
                     ),
                 )
             }
@@ -298,6 +304,12 @@ class CompanyManagerTest
                     headquarters = testCompany.headquarters,
                     countryCode = testCompany.countryCode,
                     sector = testCompany.sector,
+                    lei =
+                        testCompanyQueryManager
+                            .validateCompanyIdentifiers(mutableListOf(identifier))
+                            .first()
+                            .companyInformation
+                            ?.lei,
                 ),
             )
             assertEquals(expectedResults, testCompanyQueryManager.validateCompanyIdentifiers(testData))
@@ -321,5 +333,49 @@ class CompanyManagerTest
             assertEquals(inputLei, validationResult.companyInformation?.lei)
             val validationByCompanyId = testCompanyQueryManager.validateCompanyIdentifiers(listOf(companyId)).first()
             assertEquals(inputLei, validationByCompanyId.companyInformation?.lei)
+        }
+
+        @Test
+        fun `verify that two results are equal when identifier and companyInformation are equal`() {
+            val testCompany = testCompanyList.first()
+            val identifier =
+                testCompany.identifiers.values
+                    .first { values -> values.isNotEmpty() }
+                    .first()
+
+            val result1 =
+                CompanyIdentifierValidationResult(
+                    identifier = identifier,
+                    companyId =
+                        testCompanyQueryManager
+                            .searchCompaniesByNameOrIdentifierAndGetApiModel(identifier, 1)
+                            .first()
+                            .companyId,
+                    companyName = testCompany.companyName,
+                    headquarters = testCompany.headquarters,
+                    countryCode = testCompany.countryCode,
+                    sector = testCompany.sector,
+                    lei = "f09rj43ifdwfdd",
+                )
+
+            val result2 =
+                CompanyIdentifierValidationResult(
+                    identifier = identifier,
+                    companyId =
+                        testCompanyQueryManager
+                            .searchCompaniesByNameOrIdentifierAndGetApiModel(identifier, 1)
+                            .first()
+                            .companyId,
+                    companyName = testCompany.companyName,
+                    headquarters = testCompany.headquarters,
+                    countryCode = testCompany.countryCode,
+                    sector = testCompany.sector,
+                    lei = "New LEI Code",
+                )
+
+            val result1Copy = result1.copy()
+
+            assertTrue(result1.equals(result1Copy))
+            assertTrue(result1 != result2)
         }
     }

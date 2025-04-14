@@ -213,4 +213,22 @@ internal class CompanyDataControllerTest(
         assertEquals(basicChildCompanyInformationList?.get(0)?.companyName, companyWithParent.companyName)
         assertEquals(basicChildCompanyInformationList?.get(0)?.lei, testChildLei)
     }
+
+    @Test
+    fun `postCompanyValidation trims correctly LEI Codes but not spaces inside company names `() {
+        val resultLEICodes =
+            companyController
+                .postCompanyValidation(listOf("    ze03VSQH8elRgYoZgV3c", "7tSuSlwbMYu2Po0aqlVm     "))
+                .body
+                ?.map { it.identifier }
+
+        val resultCompanyNames =
+            companyController
+                .postCompanyValidation(listOf("     Company A", "Company B     "))
+                .body
+                ?.map { it.identifier }
+
+        assertEquals(listOf("ze03VSQH8elRgYoZgV3c", "7tSuSlwbMYu2Po0aqlVm"), resultLEICodes)
+        assertEquals(listOf("Company A", "Company B"), resultCompanyNames)
+    }
 }
