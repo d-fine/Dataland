@@ -369,7 +369,6 @@ jobs:
           INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
-          COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: true
           DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
           LOGGING_OPTIONS_MAX_SIZE: "1G"
           LOGGING_OPTIONS_MAX_FILE: 1
