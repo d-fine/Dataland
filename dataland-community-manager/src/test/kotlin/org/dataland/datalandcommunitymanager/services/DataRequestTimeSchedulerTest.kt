@@ -85,7 +85,6 @@ class DataRequestTimeSchedulerTest {
             DataRequestTimeScheduler(
                 mockDataRequestUpdateManager,
                 mockDataRequestRepository,
-                staleDaysThreshold,
             )
     }
 

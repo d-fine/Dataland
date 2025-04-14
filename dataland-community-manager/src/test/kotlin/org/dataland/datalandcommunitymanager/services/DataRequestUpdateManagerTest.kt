@@ -326,7 +326,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that answer emails for subsidiaries are sent according to flag on request status patch from open to answered`() {
-        dataRequestUpdateManager.patchRequestStatusToAnsweredForParentAndSubsidiaries(
+        dataRequestUpdateManager.patchRequestStatusToAnsweredForParentAndSubsidiariesAndReturnParentRequestIds(
             dataMetaInformation,
             dataMetaInformation.dataId,
             correlationId,
