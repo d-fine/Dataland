@@ -6,9 +6,11 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,14 +23,17 @@ import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMetaInfoAlterationManagerTest {
-    private val mockDataMetaInformationManager = mock<DataMetaInformationManager>()
     private val mockDataManager: DataManager = mock<DataManager>()
+    private val mockDataMetaInformationManager = mock<DataMetaInformationManager>()
+    private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockMessageQueuePublications = mock<MessageQueuePublications>()
     private lateinit var dataMetaInfoAlterationManager: DataMetaInfoAlterationManager
 
     private val dataId = "dummyDataId"
@@ -62,22 +67,26 @@ class DataMetaInfoAlterationManagerTest {
     @BeforeEach
     fun setup() {
         initializePartialMocks()
-        reset(mockDataMetaInformationManager, mockDataManager, mockKeycloakUserService)
+        reset(mockDataManager, mockDataMetaInformationManager, mockDataManager, mockKeycloakUserService, mockMessageQueuePublications)
 
+        doNothing().whenever(mockDataManager).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
         doReturn(partiallyMockedDataMetaInformationEntity)
             .whenever(mockDataMetaInformationManager)
             .getDataMetaInformationByDataId(any())
-        doNothing().whenever(mockDataManager).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
         doReturn(storableDataset).whenever(mockDataManager).getPublicDataset(any(), any(), any())
+        doReturn(null).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
+        doNothing().whenever(mockMessageQueuePublications).publishDatasetMetaInfoPatchMessage(any(), any(), any())
 
         doReturn(false).whenever(mockKeycloakUserService).isKeycloakUserId(any())
         doReturn(true).whenever(mockKeycloakUserService).isKeycloakUserId(newValidUploaderUserId)
 
         dataMetaInfoAlterationManager =
             DataMetaInfoAlterationManager(
-                this.mockDataMetaInformationManager,
                 this.mockDataManager,
+                this.mockDataMetaInformationManager,
+                this.mockDataPointUtils,
                 this.mockKeycloakUserService,
+                this.mockMessageQueuePublications,
             )
     }
 
@@ -100,6 +109,22 @@ class DataMetaInfoAlterationManagerTest {
         assertEquals(newValidUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
         verify(mockDataManager).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), argumentCaptor.capture(), any())
         assertEquals(newValidUploaderUserId, argumentCaptor.firstValue.uploaderUserId)
+    }
+
+    @Test
+    fun `test that patch functionality runs as expected on happy path for assembled datasets`() {
+        doReturn(mock<FrameworkSpecification>()).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
+        val dataMetaInformationPatch = DataMetaInformationPatch(newValidUploaderUserId)
+
+        assertDoesNotThrow {
+            dataMetaInfoAlterationManager.patchDataMetaInformation(
+                dataId,
+                dataMetaInformationPatch,
+                correlationId,
+            )
+        }
+        assertEquals(newValidUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
+        verify(mockDataManager, times(0)).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
     }
 
     @Test

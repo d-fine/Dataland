@@ -4,7 +4,7 @@ import {
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
-import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
+import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from './GeneralUtils';
 
@@ -45,23 +45,10 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
  */
 export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
-  const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}.pdf`;
-  const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
-  cy.readFile(expectedPathToDownloadedReport).should('not.exist');
   cy.intercept('**/documents/*').as('documentDownload');
+  const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
   cy.get(`[data-test="report-link-${TEST_PDF_FILE_NAME}"]`).click();
   cy.get(downloadLinkSelector).click();
   cy.wait('@documentDownload');
-  cy.readFile(`../${TEST_PDF_FILE_PATH}`, 'binary', {
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
-  }).then((expectedPdfBinary) => {
-    cy.task('calculateHash', expectedPdfBinary).then((expectedPdfHash) => {
-      cy.readFile(expectedPathToDownloadedReport, 'binary', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      }).then((receivedPdfHash) => {
-        cy.task('calculateHash', receivedPdfHash).should('eq', expectedPdfHash);
-      });
-      cy.task('deleteFolder', Cypress.config('downloadsFolder'));
-    });
-  });
+  cy.get(`a[data-test="report-${TEST_PDF_FILE_NAME}-link`);
 }

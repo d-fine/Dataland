@@ -496,5 +496,16 @@ describeIf(
       validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
       validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active');
     });
+
+    it(
+      'Check that using the reporting period in URL still yields data for assembled datasets',
+      { defaultCommandTimeout: Cypress.env('short_timeout_in_ms') as number },
+      () => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}/reportingPeriods/2019`);
+        cy.get('.d-content').should('not.contain.text', 'We are having issues loading the data.');
+        cy.get('[data-test="frameworkNewDataTableTitle"]').should('be.visible');
+      }
+    );
   }
 );

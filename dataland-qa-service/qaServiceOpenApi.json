@@ -1676,16 +1676,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1759,9 +1759,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get relevant meta info on unreviewed datasets.",
-        "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
-        "operationId": "getInfoOnPendingDatasets",
+        "summary": "Get relevant meta info on datasets.",
+        "description": "Gets a filtered and chronologically ordered list of relevant meta info on datasets.",
+        "operationId": "getInfoOnDatasets",
         "parameters": [
           {
             "name": "dataTypes",
@@ -1773,16 +1773,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1805,6 +1805,14 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "qaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/QaStatus"
             }
           },
           {
@@ -5371,9 +5379,6 @@
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
           },
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
-          },
           "areAllGroupEntitiesCovered": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
@@ -6161,16 +6166,16 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "lksg",
               "p2p",
-              "sfdr",
+              "lksg",
+              "additional-company-information",
               "vsme",
               "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
+              "heimathafen"
             ]
           },
           "uploadTime": {

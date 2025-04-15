@@ -12,6 +12,7 @@ import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpStatus
 import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -42,7 +44,7 @@ class QaServiceTest {
     private lateinit var companyIdBeta: String
 
     private val expectedClientError403Text = "Client error : 403 "
-    private val getPendingSfdrType = QaControllerApi.DataTypesGetInfoOnPendingDatasets.sfdr
+    private val getPendingSfdrType = QaControllerApi.DataTypesGetInfoOnDatasets.sfdr
     private val getNumberPendingSfdrType = QaControllerApi.DataTypesGetNumberOfPendingDatasets.sfdr
 
     @BeforeAll
@@ -66,7 +68,9 @@ class QaServiceTest {
     fun setAllPendingDatasetsToRejected() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             while (getNumberOfPendingDatasets() > 0) {
-                getInfoOnPendingDatasets().forEach { changeQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
+                getInfoOnPendingDatasets().forEach {
+                    changeQaStatus(it.dataId, QaServiceQaStatus.Rejected)
+                }
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 getNumberOfPendingDatasets() == 0 && getInfoOnPendingDatasets().isEmpty()
@@ -360,9 +364,9 @@ class QaServiceTest {
     private fun getInfoOnPendingDatasets(
         companyName: String? = null,
         reportingPeriod: String? = null,
-        dataType: QaControllerApi.DataTypesGetInfoOnPendingDatasets? = null,
+        dataType: QaControllerApi.DataTypesGetInfoOnDatasets? = null,
     ): List<QaReviewResponse> =
-        qaServiceController.getInfoOnPendingDatasets(
+        qaServiceController.getInfoOnDatasets(
             reportingPeriods = reportingPeriod?.let { setOf(it) } ?: emptySet(),
             dataTypes = dataType?.let { listOf(it) } ?: emptyList(),
             companyName = companyName,
@@ -385,7 +389,10 @@ class QaServiceTest {
         dataId: String,
         qaStatus: QaStatus,
     ) {
-        qaServiceController.changeQaStatus(dataId, qaStatus)
+        // Longer wait time to avoid flakiness in the CI pipeline due to low speed
+        ApiAwait.waitForSuccess(timeoutInSeconds = 60, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+            qaServiceController.changeQaStatus(dataId, qaStatus)
+        }
     }
 
     private fun getReviewInfoById(dataId: UUID): QaReviewResponse = qaServiceController.getQaReviewResponseByDataId(dataId)

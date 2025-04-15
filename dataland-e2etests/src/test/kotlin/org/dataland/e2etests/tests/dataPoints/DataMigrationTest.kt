@@ -18,6 +18,7 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -30,6 +31,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
@@ -138,6 +140,8 @@ class DataMigrationTest {
             QaService.qaControllerApi.changeQaStatus(dataMetaInfo.dataId, qaStatus)
         }
 
+        val datasetQaEntity = QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataMetaInfo.dataId))
+
         ApiAwait.waitForCondition {
             Backend.metaDataControllerApi
                 .getDataMetaInfo(dataMetaInfo.dataId)
@@ -153,7 +157,11 @@ class DataMigrationTest {
                 .waitForData(
                     supplier = { QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPoint) },
                     condition = { it.isNotEmpty() },
-                ).let { assertEquals(qaStatus, it[0].qaStatus) }
+                ).let {
+                    assertEquals(qaStatus, it[0].qaStatus)
+                    assertEquals(datasetQaEntity.timestamp, it[0].timestamp)
+                    assertEquals(datasetQaEntity.triggeringUserId, it[0].reviewerId)
+                }
         }
     }
 
@@ -183,7 +191,10 @@ class DataMigrationTest {
         val dataMetaInfo = uploadGenericDummyDataset(data = originalData, dataType = DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
-        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(originalData, migratedData.data)
+        assertDataEqualsIgnoringDates(
+            originalData, migratedData.data,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @ParameterizedTest
@@ -209,7 +220,7 @@ class DataMigrationTest {
                 QaService.sfdrDataQaReportControllerApi
                     .getSfdrDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
             }.let {
-                assertEquals(DataPointTestUtils().removeEmptyEntries(linkedQaReportData.qaReport), it.report)
+                assertEquals(DataPointTestUtils.removeEmptyEntries(linkedQaReportData.qaReport), it.report)
             }
     }
 
@@ -223,14 +234,20 @@ class DataMigrationTest {
                 .getByCompanyName("Sfdr-dataset-with-no-null-fields")
                 .t
 
-        uploadGenericDummyDataset(firstDataset, DataTypeEnum.sfdr, companyId = companyId)
-        uploadGenericDummyDataset(secondDataset, DataTypeEnum.sfdr, companyId = companyId)
-        Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
-        Thread.sleep(30000)
+        val metaInfo1 = uploadGenericDummyDataset(firstDataset, DataTypeEnum.sfdr, companyId = companyId)
+        val metaInfo2 = uploadGenericDummyDataset(secondDataset, DataTypeEnum.sfdr, companyId = companyId)
+
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(metaInfo1.dataId)
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(metaInfo2.dataId)
+        val allDataPoints = Backend.metaDataControllerApi.getContainedDataPoints(metaInfo2.dataId)
+
+        ApiAwait.waitForCondition {
+            allDataPoints.all { Backend.dataPointControllerApi.getDataPointMetaInfo(it.value).currentlyActive }
+        }
 
         val downloadedData =
             Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
-        DataPointTestUtils().assertSfdrDataEquals(downloadedData.data, secondDataset)
+        DataPointTestUtils.assertSfdrDataEquals(downloadedData.data, secondDataset)
     }
 
     private val minimalDatasetDebt =

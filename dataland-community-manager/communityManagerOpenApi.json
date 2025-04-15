@@ -342,7 +342,7 @@
           }
         ],
         "responses": {
-           "200": {
+          "200": {
             "description": "The specified user has the company role."
           },
           "404": {
@@ -727,16 +727,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -955,16 +955,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1108,16 +1108,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1456,6 +1456,7 @@
         "required": [
           "companyIdentifier",
           "dataType",
+          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1468,16 +1469,16 @@
             "type": "string",
             "example": "p2p",
             "enum": [
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "lksg",
               "p2p",
-              "sfdr",
+              "lksg",
+              "additional-company-information",
               "vsme",
               "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
+              "heimathafen"
             ]
           },
           "reportingPeriods": {
@@ -1503,6 +1504,9 @@
           },
           "message": {
             "type": "string"
+          },
+          "notifyMeImmediately": {
+            "type": "boolean"
           }
         }
       },
@@ -1542,6 +1546,7 @@
         "required": [
           "companyIdentifiers",
           "dataTypes",
+          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1566,16 +1571,16 @@
             "items": {
               "type": "string",
               "enum": [
+                "sfdr",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
-                "lksg",
                 "p2p",
-                "sfdr",
+                "lksg",
+                "additional-company-information",
                 "vsme",
                 "esg-datenkatalog",
-                "heimathafen",
-                "additional-company-information"
+                "heimathafen"
               ]
             }
           },
@@ -1589,6 +1594,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notifyMeImmediately": {
+            "type": "boolean"
           }
         }
       },
@@ -1720,6 +1728,9 @@
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
           },
+          "notifyMeImmediately": {
+            "type": "boolean"
+          },
           "adminComment": {
             "type": "string"
           },
@@ -1758,6 +1769,7 @@
           "datalandCompanyId",
           "lastModifiedDate",
           "messageHistory",
+          "notifyMeImmediately",
           "reportingPeriod",
           "requestPriority",
           "requestStatus",
@@ -1773,6 +1785,9 @@
           },
           "userEmailAddress": {
             "type": "string"
+          },
+          "notifyMeImmediately": {
+            "type": "boolean"
           },
           "creationTimestamp": {
             "type": "integer",
@@ -1947,16 +1962,16 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "lksg",
               "p2p",
-              "sfdr",
+              "lksg",
+              "additional-company-information",
               "vsme",
               "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
+              "heimathafen"
             ]
           },
           "reportingPeriod": {

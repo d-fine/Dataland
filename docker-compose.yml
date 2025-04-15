@@ -226,7 +226,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.9.0@sha256:c29271c7f2b4788fe9b90a7506d790dc8f2ff46132e1b70e71bf0c0679c8451c
+    image: node:23.10.0@sha256:990d0ab35ae15d8a322ee1eeaf4f7cf14e367d3d0ee2f472704b7b3df4c9e7c1
     networks:
       internal:
         aliases:
@@ -524,7 +524,6 @@ services:
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
-      COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: ${COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG:-false}
     depends_on:
       - community-manager-db
     extra_hosts:
@@ -578,6 +577,7 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       EMAIL_SERVICE_DRY_RUN: ${EMAIL_SERVICE_DRY_RUN:-false}
+      ADDITIONAL_RECIPIENTS_BCC: ${ADDITIONAL_RECIPIENTS_BCC}
     logging:
       <<: *loki-logging
   email-service-db:
