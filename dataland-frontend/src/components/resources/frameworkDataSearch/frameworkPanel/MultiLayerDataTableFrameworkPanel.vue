@@ -75,7 +75,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
-import { type BaseFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { AxiosError } from 'axios';
 import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
 import { useDialog } from 'primevue/usedialog';
@@ -192,18 +192,24 @@ async function loadDataForDisplay(
   singleDataMetaInfoToDisplay?: DataMetaInformation
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
-    | BaseFrameworkDataApi<FrameworkDataType>
+    | PublicFrameworkDataApi<FrameworkDataType>
     | undefined;
-  if (dataControllerApi) {
-    if (singleDataMetaInfoToDisplay) {
-      const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-      return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-    } else {
-      return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
-    }
-  } else {
-    throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
+  if (!dataControllerApi) throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
+  if (!singleDataMetaInfoToDisplay) return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+  let singleDataset;
+  try {
+    singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
+  } catch (error) {
+    console.error(error);
+    console.log(`Unable to fetch data via ID. Falling back to reporting Period.`);
+    singleDataset = (
+      await dataControllerApi.getCompanyAssociatedDataByDimensions(
+        singleDataMetaInfoToDisplay.reportingPeriod,
+        singleDataMetaInfoToDisplay.companyId
+      )
+    ).data.data;
   }
+  return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
 }
 
 /**
