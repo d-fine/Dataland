@@ -9,7 +9,6 @@
     persists.
   </div>
   <div v-else>
-    <h1>Portfolio Details of {{ enrichedPortfolio?.portfolioName }}</h1>
     <span class="button_bar">
       <Dropdown
         v-model="selectedFramework"
@@ -57,10 +56,7 @@
           />
         </template>
       </Column>
-      <Column :sortable="true" field="countryCode" header="Country" :showFilterMatchModes="false">
-        <template #body="company">
-          {{ company.data.countryCode }} ({{ getCountryNameFromCountryCode(company.data.countryCode) }})
-        </template>
+      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false">
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
@@ -89,10 +85,10 @@
         :showFilterMatchModes="false"
       >
         <template #body="company">
-          <a v-if="company.data.latestReportingPeriod" :href="linkTarget(company.data)">{{
+          <a v-if="company.data.frameworkDataRef" :href="company.data.frameworkDataRef">{{
             company.data.latestReportingPeriod
           }}</a>
-          <span v-else>No data available</span>
+          <span v-else>{{ company.data.latestReportingPeriod }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -126,6 +122,32 @@ import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vu
 import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 
+class PortfolioEntryPrepared {
+  readonly companyId: string;
+  readonly companyName: string;
+  readonly sector?: string;
+  readonly country: string;
+  readonly framework: string;
+  readonly companyCockpitRef: string;
+  readonly frameworkDataRef?: string;
+  readonly latestReportingPeriod?: string;
+
+  constructor(portfolioEntry: EnrichedPortfolioEntry) {
+    this.companyId = portfolioEntry.companyId;
+    this.companyName = portfolioEntry.companyName;
+    this.sector = portfolioEntry.sector;
+    this.country = getCountryNameFromCountryCode(portfolioEntry.countryCode) ?? 'unknown';
+    this.framework = portfolioEntry.framework ?? '';
+    this.companyCockpitRef = portfolioEntry.companyCockpitRef;
+    this.frameworkDataRef =
+      portfolioEntry.frameworkDataRef ||
+      (portfolioEntry.latestReportingPeriod
+        ? `/companies/${portfolioEntry.companyId}/frameworks/${portfolioEntry.framework}`
+        : undefined);
+    this.latestReportingPeriod = portfolioEntry.latestReportingPeriod || 'No data available';
+  }
+}
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -133,7 +155,7 @@ const emit = defineEmits(['update:portfolio-overview']);
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  countryCode: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  country: { value: null, matchMode: FilterMatchMode.CONTAINS },
   sector: { value: null, matchMode: FilterMatchMode.CONTAINS },
   latestReportingPeriod: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
@@ -143,10 +165,10 @@ const props = defineProps<{
 }>();
 
 const enrichedPortfolio = ref<EnrichedPortfolio>();
-let groupedEntries = {} as Map<string, EnrichedPortfolioEntry[]>;
+let groupedEntries = {} as Map<string, PortfolioEntryPrepared[]>;
 const frameworks = ref<{ label: string; value: string }[]>([]);
 const selectedFramework = ref<{ label: string; value: string }>();
-const selectedDetails = ref([] as EnrichedPortfolioEntry[]);
+const selectedDetails = ref([] as PortfolioEntryPrepared[]);
 const isLoading = ref(true);
 const isError = ref(false);
 
@@ -167,7 +189,8 @@ function loadPortfolio(): void {
     .getEnrichedPortfolio(props.portfolioId)
     .then((response) => {
       enrichedPortfolio.value = response.data;
-      groupedEntries = groupBy(enrichedPortfolio.value.entries, (item) => item.framework || '');
+      const preparedPortfolioEntries = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+      groupedEntries = groupBy(preparedPortfolioEntries, (item) => item.framework);
       frameworks.value = getFrameworkListSorted();
       selectedFramework.value = frameworks.value[0];
     })
@@ -186,20 +209,6 @@ function resetFilters(): void {
   for (filterName in filters.value) {
     filters.value[filterName].value = null;
   }
-}
-
-/**
- * Generates a link target to the reporting framework or to request new data
- * @param entry The portfolio entry for which the link is generated
- */
-function linkTarget(entry: EnrichedPortfolioEntry): string {
-  console.log(entry);
-  return (
-    entry.frameworkDataRef ||
-    (entry.latestReportingPeriod
-      ? `/companies/${entry.companyId}/frameworks/${entry.framework}`
-      : `/singledatarequest/${entry.companyId}?preSelectedFramework=${entry.framework}`)
-  );
 }
 
 /**
