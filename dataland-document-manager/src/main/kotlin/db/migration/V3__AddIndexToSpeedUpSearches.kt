@@ -15,7 +15,10 @@ class V3__AddIndexToSpeedUpSearches : BaseJavaMigration() {
         }
     }
 
-    private fun tableExists(context: Context, tableName: String): Boolean {
+    private fun tableExists(
+        context: Context,
+        tableName: String,
+    ): Boolean {
         val connection = context.connection
         val resultSet: ResultSet = connection.metaData.getTables(null, null, tableName, null)
         return resultSet.next()
