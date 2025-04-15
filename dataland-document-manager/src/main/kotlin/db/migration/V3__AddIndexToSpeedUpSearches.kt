@@ -16,7 +16,7 @@ class V3__AddIndexToSpeedUpSearches : BaseJavaMigration() {
         context.connection.createStatement().execute(
             """
             ALTER TABLE IF EXISTS document_meta_info_company_ids
-            CREATE INDEX idx_company_ids ON document_meta_info_company_ids (company_id);
+            CREATE INDEX idx_company_ids ON document_meta_info_company_ids (company_id)
             """.trimIndent(),
         )
     }
