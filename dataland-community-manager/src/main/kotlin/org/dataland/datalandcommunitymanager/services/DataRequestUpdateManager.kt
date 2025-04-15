@@ -287,7 +287,7 @@ class DataRequestUpdateManager
             val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
 
             val parentRequestIds =
-                patchRequestStatusToAnsweredForParentAndSubsidiariesAndReturnParentRequestIds(
+                patchRequestStatusToAnsweredForParentAndSubsidiaries(
                     dataMetaInformation = dataMetaInformation,
                     answeringDataId = dataId,
                     correlationId = correlationId,
@@ -307,8 +307,9 @@ class DataRequestUpdateManager
          * @param dataMetaInformation the meta info of the QA-approved dataset
          * @param answeringDataId the id of the uploaded dataset
          * @param correlationId correlationId
+         * @return the list of request ids of the processed requests of the parent company
          */
-        fun patchRequestStatusToAnsweredForParentAndSubsidiariesAndReturnParentRequestIds(
+        fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
             dataMetaInformation: DataMetaInformation,
             answeringDataId: String,
             correlationId: String,
