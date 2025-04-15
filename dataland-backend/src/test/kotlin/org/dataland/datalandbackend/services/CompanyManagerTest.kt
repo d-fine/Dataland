@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -375,7 +376,7 @@ class CompanyManagerTest
 
             val result1Copy = result1.copy()
 
-            assertTrue(result1.equals(result1Copy))
-            assertTrue(result1 != result2)
+            assertEquals(result1, result1Copy)
+            assertNotEquals(result1, result2)
         }
     }
