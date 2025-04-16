@@ -39,31 +39,31 @@
     >
       <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
       <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
-        <template #body="slotProps">
-          {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
+        <template #body="tableRow">
+          {{ humanizeStringOrNumber(tableRow.data.documentCategory) }}
         </template>
       </Column>
       <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
-        <template #body="slotProps">
+        <template #body="tableRow">
           <div>
-            {{ dateStringFormatter(slotProps.data.publicationDate) }}
+            {{ dateStringFormatter(tableRow.data.publicationDate) }}
           </div>
         </template>
       </Column>
       <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body="documentProps">
-          <a class="tertiary-button" @click="openMetaInfoDialog(documentProps.data.documentId)">
+        <template #body="tableRow">
+          <a class="tertiary-button" @click="openMetaInfoDialog(tableRow.data.documentId)">
             VIEW DETAILS <span class="material-icons">arrow_forward_ios</span>
           </a>
         </template>
       </Column>
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body="document">
+        <template #body="tableRow">
           <DocumentLink
-            :download-name="truncatedDocumentName(document.data)"
-            :label="truncatedDocumentName(document.data) + ' (' + document.data.publicationDate + ')'"
-            :file-reference="document.data.documentId"
+            :download-name="truncatedDocumentName(tableRow.data)"
+            :label="truncatedDocumentNameWithPublicationDate(tableRow.data)"
+            :file-reference="tableRow.data.documentId"
             show-icon
             data-test="download-button"
           />
@@ -102,7 +102,11 @@ import {
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
+import {
+  humanizeStringOrNumber,
+  truncatedDocumentName,
+  truncatedDocumentNameWithPublicationDate,
+} from '@/utils/StringFormatter.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import type { DataMetaInformation } from '@clients/backend';
