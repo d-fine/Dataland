@@ -185,9 +185,24 @@ export function getPluralCategory(category: string): string {
 /**
  * Returns the filename to a given document, that has not more than 28 characters.
  * @param document The document of interest
- * @return A string containing the eventually shortened name
+ * @return A string containing the possibly shortened name
  */
 export function truncatedDocumentName(document: DocumentMetaInfoResponse): string {
   const name = document.documentName ?? document.documentId;
   return name.length > 28 ? name.slice(0, 25) + '...' : name;
+}
+
+/**
+ * If document has a publication date that is not undefined, returns its truncatedDocumentName with the
+ * publication date appended in parentheses. Otherwise, simply returns the truncatedDocumentName.
+ * @param document The document of interest
+ * @return A string consisting of the possibly shortened name and the publication date if existent
+ */
+export function truncatedDocumentNameWithPublicationDate(document: DocumentMetaInfoResponse): string {
+  const publicationDateString = document.publicationDate ?? '';
+  if (publicationDateString) {
+    return truncatedDocumentName(document) + ' (' + publicationDateString + ')';
+  } else {
+    return truncatedDocumentName(document);
+  }
 }
