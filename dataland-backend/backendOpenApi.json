@@ -320,7 +320,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
+                    "$ref": "#/components/schemas/SourceabilityInfoResponse"
                   }
                 }
               }
@@ -367,7 +367,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NonSourceableInfo"
+                "$ref": "#/components/schemas/SourceabilityInfo"
               }
             }
           },
@@ -6317,7 +6317,7 @@
           }
         }
       },
-      "NonSourceableInfo": {
+      "SourceabilityInfo": {
         "required": [
           "companyId",
           "dataType",
@@ -20405,7 +20405,7 @@
           }
         }
       },
-      "NonSourceableInfoResponse": {
+      "SourceabilityInfoResponse": {
         "required": [
           "companyId",
           "creationTime",
@@ -20637,10 +20637,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

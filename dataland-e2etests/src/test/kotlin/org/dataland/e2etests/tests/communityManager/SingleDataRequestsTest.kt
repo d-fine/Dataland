@@ -63,6 +63,7 @@ class SingleDataRequestsTest {
                 reportingPeriods = reportingPeriods,
                 contacts = setOf("someContact@example.com", "simpleString@example.com"),
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+                notifyMeImmediately = false,
             )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -91,6 +92,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = invalidCompanyIdentifier,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2022"),
+                notifyMeImmediately = false,
             )
         val clientException =
             assertThrows<ClientException> {
@@ -112,6 +114,7 @@ class SingleDataRequestsTest {
                         companyIdentifier = companyId,
                         dataType = SingleDataRequest.DataType.lksg,
                         reportingPeriods = setOf(),
+                        notifyMeImmediately = false,
                     ),
                 )
             }
@@ -133,6 +136,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = unknownCompanyId,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2022"),
+                notifyMeImmediately = false,
             )
         val clientException =
             assertThrows<ClientException> {
@@ -153,6 +157,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = companyIdOfNewCompany,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2022"),
+                notifyMeImmediately = false,
             )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -278,6 +283,7 @@ class SingleDataRequestsTest {
                     companyIdentifier = companyId,
                     dataType = SingleDataRequest.DataType.lksg,
                     reportingPeriods = setOf("2021", "2022", "2023"),
+                    notifyMeImmediately = false,
                 ),
             )
         checkThatAllReportingPeriodsAreTreatedAsExpected(
@@ -306,6 +312,7 @@ class SingleDataRequestsTest {
                 reportingPeriods = reportingPeriods,
                 contacts = setOf("someContact@example.com", "simpleString@example.com"),
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+                notifyMeImmediately = false,
             )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -332,6 +339,7 @@ class SingleDataRequestsTest {
                 reportingPeriods = setOf("2025"),
                 contacts = setOf("someMail@example.com"),
                 message = "Does not matter for this test.",
+                notifyMeImmediately = false,
             )
 
         withTechnicalUser(TechnicalUser.Reader) {

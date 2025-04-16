@@ -8,15 +8,14 @@ import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +34,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
@@ -46,26 +44,25 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 class SingleDataRequestManagerServiceTest(
     @Autowired val dataRequestLogger: DataRequestLogger,
     @Autowired val dataRequestProcessingUtils: DataRequestProcessingUtils,
-    @Autowired val accessRequestEmailSender: AccessRequestEmailSender,
+    @Autowired val accessRequestEmailBuilder: AccessRequestEmailBuilder,
     @Autowired val dataRequestRepository: DataRequestRepository,
     @Autowired val securityUtilsService: SecurityUtilsService,
     @Autowired val companyRolesManager: CompanyRolesManager,
 ) {
     @MockitoBean
-    private val mockCompanyIdValidator = mock<CompanyIdValidator>()
+    private val mockCompanyInfoService = mock<CompanyInfoService>()
 
     @MockitoBean
     private val mockDataAccessManager = mock<DataAccessManager>()
 
     @MockitoBean
-    private val mockSingleDataRequestEmailMessageSender = mock<SingleDataRequestEmailMessageSender>()
+    private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
 
     @MockitoBean
     private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private lateinit var singleDataRequestManager: SingleDataRequestManager
     private lateinit var spyDataRequestProcessingUtils: DataRequestProcessingUtils
-    private lateinit var mockAuthentication: DatalandAuthentication
 
     private val mockSecurityContext = mock<SecurityContext>()
     private val dummyCompanyId = "00000000-0000-0000-0000-000000000000"
@@ -89,9 +86,9 @@ class SingleDataRequestManagerServiceTest(
         spyDataRequestProcessingUtils = spy(dataRequestProcessingUtils)
 
         reset(
-            mockCompanyIdValidator,
+            mockCompanyInfoService,
             mockDataAccessManager,
-            mockSingleDataRequestEmailMessageSender,
+            mockSingleDataRequestEmailMessageBuilder,
             mockSecurityContext,
             mockKeycloakUserService,
         )
@@ -121,24 +118,21 @@ class SingleDataRequestManagerServiceTest(
             SingleDataRequestManager(
                 dataRequestLogger = dataRequestLogger,
                 dataRequestRepository = dataRequestRepository,
-                singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
+                singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
                 utils = spyDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
-                accessRequestEmailSender = accessRequestEmailSender,
+                accessRequestEmailBuilder = accessRequestEmailBuilder,
                 securityUtilsService = securityUtilsService,
                 companyRolesManager = companyRolesManager,
                 keycloakUserService = mockKeycloakUserService,
                 maxRequestsForUser = 10,
             )
 
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                username = adminUserName,
-                userId = adminUserId,
-                roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
-            )
-        doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
-        SecurityContextHolder.setContext(mockSecurityContext)
+        TestUtils.mockSecurityContext(
+            username = adminUserName,
+            userId = adminUserId,
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
     }
 
     @Test

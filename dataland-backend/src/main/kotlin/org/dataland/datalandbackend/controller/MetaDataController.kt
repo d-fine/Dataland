@@ -5,13 +5,13 @@ import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
+import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackend.services.SourceabilityDataManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.IdUtils
@@ -32,7 +32,7 @@ import java.util.UUID
  * Controller for the company metadata endpoints
  * @param dataMetaInformationManager service for handling data meta information
  * @param logMessageBuilder a helper for building log messages
- * @param nonSourceableDataManager service for handling information on datasets and their sourceability
+ * @param sourceabilityDataManager service for handling information on datasets and their sourceability
  */
 
 @RestController
@@ -41,7 +41,7 @@ class MetaDataController(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
-    @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val sourceabilityDataManager: SourceabilityDataManager,
     @Autowired val assembledDataManager: AssembledDataManager,
     @Autowired val dataPointUtils: DataPointUtils,
     @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
@@ -152,10 +152,10 @@ class MetaDataController(
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): ResponseEntity<List<NonSourceableInfoResponse>> =
+    ): ResponseEntity<List<SourceabilityInfoResponse>> =
         ResponseEntity.ok(
-            nonSourceableDataManager
-                .getNonSourceableDataByFilters(
+            sourceabilityDataManager
+                .getSourceabilityDataByFilters(
                     companyId,
                     dataType,
                     reportingPeriod,
@@ -163,8 +163,8 @@ class MetaDataController(
                 ),
         )
 
-    override fun postNonSourceabilityOfADataset(nonSourceableInfo: NonSourceableInfo) {
-        nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
+    override fun postNonSourceabilityOfADataset(sourceabilityInfo: SourceabilityInfo) {
+        sourceabilityDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
     }
 
     override fun isDataNonSourceable(
@@ -172,10 +172,10 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        val latestNonSourceableInfo =
-            nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
+        val latestSourceabilityInfo =
+            sourceabilityDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
 
-        if (latestNonSourceableInfo?.isNonSourceable != true) {
+        if (latestSourceabilityInfo?.isNonSourceable != true) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset is sourceable or not found.",
                 message =

@@ -60,7 +60,10 @@ fun Value.setLateInitVars(emailSubscriptionTracker: EmailSubscriptionTracker) {
  * template for the html content. Then it processes the templates with the instance of TypedEmailContent and
  * creates the EmailContent.
  */
-fun TypedEmailContent.build(): EmailContent =
-    EmailContent.fromTemplates(
-        this.subject, this, this.textTemplate, this.htmlTemplate,
+fun TypedEmailContent.build(): EmailContent {
+    this.htmlTemplate = "/html/$templateName"
+    this.textTemplate = "/text/$templateName"
+    return EmailContent.fromTemplates(
+        this.subject, this, textTemplate, htmlTemplate,
     )
+}

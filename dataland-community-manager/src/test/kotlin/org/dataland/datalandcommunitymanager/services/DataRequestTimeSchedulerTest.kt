@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
@@ -24,8 +25,7 @@ import java.time.Instant
 import java.util.UUID
 
 class DataRequestTimeSchedulerTest {
-    private val testUtils = TestUtils()
-    private lateinit var mockDataRequestAlterationManager: DataRequestAlterationManager
+    private lateinit var mockDataRequestUpdateManager: DataRequestUpdateManager
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestTimeScheduler: DataRequestTimeScheduler
     private val dataRequestIdStaleAndAnswered = UUID.randomUUID().toString()
@@ -49,6 +49,7 @@ class DataRequestTimeSchedulerTest {
                 dataType = "dummyDataType",
                 reportingPeriod = "dummyReportingPeriod",
                 datalandCompanyId = "dummyCompanyId",
+                notifyMeImmediately = true,
                 messageHistory = emptyList(),
                 dataRequestStatusHistory = emptyList(),
                 lastModifiedDate = lastModifiedDate,
@@ -70,17 +71,19 @@ class DataRequestTimeSchedulerTest {
 
     @BeforeEach
     fun setUpDataRequestTimeScheduler() {
-        testUtils.mockSecurityContext()
-        mockDataRequestAlterationManager = mock(DataRequestAlterationManager::class.java)
+        TestUtils.mockSecurityContext()
+        mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
         `when`(
-            mockDataRequestAlterationManager.patchDataRequest(
-                dataRequestIdStaleAndAnswered, DataRequestPatch(requestStatus = RequestStatus.Closed),
+            mockDataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+                dataRequestIdStaleAndAnswered,
+                DataRequestPatch(requestStatus = RequestStatus.Closed),
+                UUID.randomUUID().toString(),
             ),
         ).thenReturn(null)
         mockDataRequestRepository = mock(DataRequestRepository::class.java)
         dataRequestTimeScheduler =
             DataRequestTimeScheduler(
-                mockDataRequestAlterationManager,
+                mockDataRequestUpdateManager,
                 mockDataRequestRepository,
                 staleDaysThreshold,
             )
@@ -106,10 +109,11 @@ class DataRequestTimeSchedulerTest {
             ),
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
-        verify(mockDataRequestAlterationManager, times(2))
-            .patchDataRequest(
-                dataRequestIdStaleAndAnswered,
-                DataRequestPatch(requestStatus = RequestStatus.Closed),
+        verify(mockDataRequestUpdateManager, times(2))
+            .processExternalPatchRequestForDataRequest(
+                eq(dataRequestIdStaleAndAnswered),
+                eq(DataRequestPatch(requestStatus = RequestStatus.Closed)),
+                anyString(),
             )
     }
 
@@ -135,6 +139,6 @@ class DataRequestTimeSchedulerTest {
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
 
-        verifyNoInteractions(mockDataRequestAlterationManager)
+        verifyNoInteractions(mockDataRequestUpdateManager)
     }
 }

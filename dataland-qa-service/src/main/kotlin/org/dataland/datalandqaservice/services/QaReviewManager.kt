@@ -86,10 +86,11 @@ class QaReviewManager(
      * @param chunkSize the chunkSize of the request
      */
     @Transactional(readOnly = true)
-    fun getInfoOnPendingDatasets(
+    fun getInfoOnDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
+        qaStatus: QaStatus = QaStatus.Pending,
         chunkSize: Int,
         chunkIndex: Int,
     ): List<QaReviewResponse> {
@@ -102,7 +103,7 @@ class QaReviewManager(
                     reportingPeriods = reportingPeriods,
                     companyIds = getCompanyIdsForCompanyName(companyName),
                     companyName = companyName,
-                    qaStatuses = setOf(QaStatus.Pending),
+                    qaStatuses = setOf(qaStatus),
                 ),
                 resultOffset = offset,
                 resultLimit = chunkSize,

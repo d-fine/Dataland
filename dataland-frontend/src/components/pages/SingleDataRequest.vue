@@ -57,6 +57,20 @@
                         data-test="datapoint-framework"
                       />
                     </BasicFormSection>
+                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
+                      Receive emails directly or via summary
+                      <InputSwitch
+                        class="p-inputswitch p-inputswitch-slider"
+                        style="display: block; margin: 1rem 0"
+                        data-test="notifyMeImmediatelyInput"
+                        inputId="notifyMeImmediatelyInput"
+                        v-model="notifyMeImmediately"
+                      />
+                      <label for="notifyMeImmediatelyInput" data-test="notifyMeImmediatelyText">
+                        <strong v-if="notifyMeImmediately">immediate update</strong>
+                        <span v-else>weekly summary</span>
+                      </label>
+                    </BasicFormSection>
                     <BasicFormSection
                       :data-test="'informationCompanyOwnership'"
                       header="Information about company ownership"
@@ -231,6 +245,7 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import PrimeDialog from 'primevue/dialog';
+import InputSwitch from 'primevue/inputswitch';
 import { openEmailClient } from '@/utils/Email';
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -243,6 +258,7 @@ export default defineComponent({
   components: {
     SingleSelectFormElement,
     PrimeDialog,
+    InputSwitch,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
@@ -301,6 +317,7 @@ export default defineComponent({
       becomePremiumUserEmailTemplate,
       MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
       hasCompanyAtLeastOneOwner: false,
+      notifyMeImmediately: false,
     };
   },
   computed: {
@@ -444,6 +461,7 @@ export default defineComponent({
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         contacts: this.selectedContacts as unknown as Set<string>,
         message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : '',
+        notifyMeImmediately: this.notifyMeImmediately,
       };
     },
     /**

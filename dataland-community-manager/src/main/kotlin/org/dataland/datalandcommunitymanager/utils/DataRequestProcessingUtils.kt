@@ -74,10 +74,12 @@ class DataRequestProcessingUtils
          * @param contacts a list of email addresses to inform about the potentially stored data request
          * @param message a message to equip the notification with
          */
+        @Suppress("complexity:LongParameterList")
         fun storeDataRequestEntityAsOpen(
             userId: String,
             datalandCompanyId: String,
             dataType: DataTypeEnum,
+            notifyMeImmediately: Boolean,
             reportingPeriod: String,
             contacts: Set<String>? = null,
             message: String? = null,
@@ -88,6 +90,7 @@ class DataRequestProcessingUtils
                 DataRequestEntity(
                     userId,
                     dataType.value,
+                    notifyMeImmediately,
                     reportingPeriod,
                     datalandCompanyId,
                     creationTime,
@@ -132,7 +135,7 @@ class DataRequestProcessingUtils
         /**
          * For a given dataRequestEntity, this function adds and persists a new entry to
          * the requestStatusHistory of the dataRequestEntity.
-         * The new entry contains a requestStatis, an accessStatus and a modificationTime.
+         * The new entry contains a requestStatus, an accessStatus and a modificationTime.
          * This function should be called within a transaction.
          */
         fun addNewRequestStatusToHistory(
