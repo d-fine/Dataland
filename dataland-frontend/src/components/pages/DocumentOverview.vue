@@ -61,8 +61,8 @@
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
           <DocumentLink
-            :download-name="truncatedDocumentName(tableRow.data)"
-            :label="truncatedDocumentNameWithPublicationDate(tableRow.data)"
+            :download-name="documentNameOrId(tableRow.data)"
+            :label="documentNameOrIdWithPublicationDate(tableRow.data)"
             :file-reference="tableRow.data.documentId"
             show-icon
             data-test="download-button"
@@ -104,8 +104,8 @@ import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import {
   humanizeStringOrNumber,
-  truncatedDocumentName,
-  truncatedDocumentNameWithPublicationDate,
+  documentNameOrId,
+  documentNameOrIdWithPublicationDate,
 } from '@/utils/StringFormatter.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';

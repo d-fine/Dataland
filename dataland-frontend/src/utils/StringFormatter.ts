@@ -183,26 +183,26 @@ export function getPluralCategory(category: string): string {
 }
 
 /**
- * Returns the filename to a given document, that has not more than 28 characters.
+ * Returns the filename to a given document, i.e., its documentName unless it is undefined or null, in which case
+ * the documentId is returned.
  * @param document The document of interest
- * @return A string containing the possibly shortened name
+ * @return The filename as a string
  */
-export function truncatedDocumentName(document: DocumentMetaInfoResponse): string {
-  const name = document.documentName ?? document.documentId;
-  return name.length > 28 ? name.slice(0, 25) + '...' : name;
+export function documentNameOrId(document: DocumentMetaInfoResponse): string {
+  return document.documentName ?? document.documentId;
 }
 
 /**
- * If document has a publication date that is not undefined, returns its truncatedDocumentName with the
- * publication date appended in parentheses. Otherwise, simply returns the truncatedDocumentName.
+ * If document has a publication date that is not undefined, returns its documentNameOrId with the
+ * publication date appended in parentheses. Otherwise, simply returns the documentNameOrId.
  * @param document The document of interest
- * @return A string consisting of the possibly shortened name and the publication date if existent
+ * @return A string consisting of the documentNameOrId and the publication date if existent
  */
-export function truncatedDocumentNameWithPublicationDate(document: DocumentMetaInfoResponse): string {
+export function documentNameOrIdWithPublicationDate(document: DocumentMetaInfoResponse): string {
   const publicationDateString = document.publicationDate ?? '';
   if (publicationDateString) {
-    return truncatedDocumentName(document) + ' (' + publicationDateString + ')';
+    return documentNameOrId(document) + ' (' + publicationDateString + ')';
   } else {
-    return truncatedDocumentName(document);
+    return documentNameOrId(document);
   }
 }

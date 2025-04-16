@@ -1,6 +1,12 @@
 <template>
   <div class="text-primary">
-    <a @click="downloadDocument()" class="cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">
+    <a
+      @click="downloadDocument()"
+      class="cursor-pointer"
+      :class="fontStyle"
+      :title="downloadName"
+      style="flex: 0 0 auto"
+    >
       <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
       <i
         v-if="showIcon"

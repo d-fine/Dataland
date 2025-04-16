@@ -13,8 +13,8 @@
             <div v-else>
               <div v-for="document in getDocumentData(category)" :key="document.documentId">
                 <DocumentLink
-                  :download-name="truncatedDocumentName(document)"
-                  :label="truncatedDocumentNameWithPublicationDate(document)"
+                  :download-name="documentNameOrId(document)"
+                  :label="documentNameOrIdWithPublicationDate(document)"
                   :file-reference="document.documentId"
                   show-icon
                 />
@@ -88,11 +88,7 @@ import {
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import {
-  getPluralCategory,
-  truncatedDocumentName,
-  truncatedDocumentNameWithPublicationDate,
-} from '@/utils/StringFormatter';
+import { getPluralCategory, documentNameOrId, documentNameOrIdWithPublicationDate } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -181,8 +177,8 @@ export default defineComponent({
     void this.getMetaInfoForLatestDocuments();
   },
   methods: {
-    truncatedDocumentNameWithPublicationDate,
-    truncatedDocumentName,
+    documentNameOrIdWithPublicationDate,
+    documentNameOrId,
     getPluralCategory,
     /**
      * Retrieves the aggregated framework data summary

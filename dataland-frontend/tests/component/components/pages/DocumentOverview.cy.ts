@@ -6,7 +6,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
-import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
+import { humanizeStringOrNumber, documentNameOrId } from '@/utils/StringFormatter.ts';
 
 describe('Component test for the Document Overview', () => {
   let companyInformationForTest: CompanyInformation;
@@ -114,7 +114,7 @@ describe('Component test for the Document Overview', () => {
               .eq(5)
               .should(
                 'contain',
-                `${truncatedDocumentName(mockFetchedDocuments[0])} (${mockFetchedDocuments[0].publicationDate})`
+                `${documentNameOrId(mockFetchedDocuments[0])} (${mockFetchedDocuments[0].publicationDate})`
               );
           });
       });
