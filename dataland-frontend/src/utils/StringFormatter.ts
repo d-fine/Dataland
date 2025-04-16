@@ -201,7 +201,7 @@ export function documentNameOrId(document: DocumentMetaInfoResponse): string {
 export function documentNameOrIdWithPublicationDate(document: DocumentMetaInfoResponse): string {
   const publicationDateString = document.publicationDate ?? '';
   if (publicationDateString) {
-    return documentNameOrId(document) + ' (' + publicationDateString + ')';
+    return '(' + publicationDateString + ') ' + documentNameOrId(document);
   } else {
     return documentNameOrId(document);
   }
