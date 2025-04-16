@@ -14,7 +14,7 @@ class V14__AddNotifyMeImmediatelyColumn : BaseJavaMigration() {
         val sql =
             """
             ALTER TABLE data_requests ADD COLUMN IF NOT EXISTS 
-            notify_me_immediately BOOLEAN;
+            notify_me_immediately BOOLEAN NOT NULL DEFAULT false;
             """.trimIndent()
 
         context!!.connection.createStatement().use { statement ->
