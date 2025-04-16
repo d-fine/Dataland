@@ -23,6 +23,11 @@
               />
             </td>
           </tr>
+          <tr v-if="dataSourcePages">
+            <th class="headers-bg" v-if="dataSourcePagesRefersToMultiplePages">Pages</th>
+            <th class="headers-bg" v-else>Page</th>
+            <td>{{ dataSourcePages }}</td>
+          </tr>
           <tr v-if="dataPointDisplay.comment">
             <th class="headers-bg">Comment</th>
             <td>{{ dataPointDisplay.comment }}</td>
@@ -58,10 +63,19 @@ export default defineComponent({
     dataSourceLabel(): string | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
       if (!dataSource || !dataSource.fileName) return undefined;
-      if ('page' in dataSource && dataSource.page != null) {
-        return `${dataSource.fileName}, page(s) ${dataSource.page}`;
-      }
       return dataSource.fileName;
+    },
+    dataSourcePages(): string | undefined {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return dataSource.page;
+      } else return undefined;
+    },
+    dataSourcePagesRefersToMultiplePages(): boolean {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return dataSource.page.search('-') >= 0;
+      } else return false;
     },
     dataSourcePage(): number | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
