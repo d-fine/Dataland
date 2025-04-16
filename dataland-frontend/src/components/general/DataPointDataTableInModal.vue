@@ -65,11 +65,11 @@ export default defineComponent({
       if (!dataSource || !dataSource.fileName) return undefined;
       return dataSource.fileName;
     },
-    dataSourcePages(): string | undefined {
+    dataSourcePages(): string {
       const dataSource = this.dataPointDisplay?.dataSource;
       if (dataSource && 'page' in dataSource && dataSource.page != null) {
         return dataSource.page;
-      } else return undefined;
+      } else return '';
     },
     dataSourcePagesRefersToMultiplePages(): boolean {
       const dataSource = this.dataPointDisplay?.dataSource;
