@@ -14,8 +14,9 @@
               <div v-for="document in getDocumentData(category)" :key="document.documentId">
                 <DocumentLink
                   :download-name="documentNameOrId(document)"
-                  :label="documentNameOrIdWithPublicationDate(document)"
+                  :label="documentNameOrId(document)"
                   :file-reference="document.documentId"
+                  :suffix="documentPublicationDateOrEmpty(document)"
                   show-icon
                 />
               </div>
@@ -88,7 +89,7 @@ import {
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { getPluralCategory, documentNameOrId, documentNameOrIdWithPublicationDate } from '@/utils/StringFormatter';
+import { getPluralCategory, documentNameOrId, documentPublicationDateOrEmpty } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -177,7 +178,7 @@ export default defineComponent({
     void this.getMetaInfoForLatestDocuments();
   },
   methods: {
-    documentNameOrIdWithPublicationDate,
+    documentPublicationDateOrEmpty,
     documentNameOrId,
     getPluralCategory,
     /**

@@ -198,11 +198,11 @@ export function documentNameOrId(document: DocumentMetaInfoResponse): string {
  * @param document The document of interest
  * @return A string consisting of the documentNameOrId and the publication date if existent
  */
-export function documentNameOrIdWithPublicationDate(document: DocumentMetaInfoResponse): string {
-  const publicationDateString = document.publicationDate ?? '';
-  if (publicationDateString) {
-    return '(' + publicationDateString + ') ' + documentNameOrId(document);
+export function documentPublicationDateOrEmpty(document: DocumentMetaInfoResponse): string {
+  const documentPublicationDate = document.publicationDate;
+  if (documentPublicationDate == undefined) {
+    return '';
   } else {
-    return documentNameOrId(document);
+    return '(' + document.publicationDate + ')';
   }
 }
