@@ -19,20 +19,19 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('h1').contains(portfolioFixture.portfolioName);
         assertTable('table', [
           ['Company Name', 'Country', 'Sector', 'Last Reporting Period'],
-          ['Boyle, Aufderhar and Smitham', 'KY', 'ROI', 2024],
-          ['Beahan LLC', 'BV', 'channels', 'No data available'],
-          ['Aufderhar, Herzog and King', 'GS', 'models', 2024],
+          ['Boyle, Aufderhar and Smitham', 'Cayman Islands', 'ROI', 2024],
+          ['Beahan LLC', 'Bouvet Island', 'channels', 'No data available'],
+          ['Aufderhar, Herzog and King', 'South Georgia and the South Sandwich Islands', 'models', 2024],
         ]);
         cy.get('[data-test="framework-dropdown"]').click();
         cy.get('[data-pc-section="item"]:contains(SFDR)').click();
         assertTable('table', [
           [checkHeader, checkHeader, checkHeader, checkHeader],
-          ['Boyle, Aufderhar and Smitham', 'KY', 'ROI', 'No data available'],
-          ['Beahan LLC', 'BV', 'channels', 'No data available'],
-          ['Aufderhar, Herzog and King', 'GS', 'models', 'No data available'],
+          ['Boyle, Aufderhar and Smitham', 'Cayman Islands', 'ROI', 'No data available'],
+          ['Beahan LLC', 'Bouvet Island', 'channels', 'No data available'],
+          ['Aufderhar, Herzog and King', 'South Georgia and the South Sandwich Islands', 'models', 'No data available'],
         ]);
       });
     });
@@ -47,9 +46,9 @@ describe('Check the portfolio details view', function (): void {
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
         checkSort('first-child', 'Aufderhar, Herzog and King', 'Boyle, Aufderhar and Smitham');
-        checkSort('nth-child(2)', 'Beahan LLC', 'Boyle, Aufderhar and Smitham');
+        checkSort('nth-child(2)', 'Beahan LLC', 'Aufderhar, Herzog and King');
         checkSort('nth-child(3)', 'Beahan LLC', 'Boyle, Aufderhar and Smitham');
-        checkSort('nth-child(4)', 'Boyle, Aufderhar and Smitham', 'Boyle, Aufderhar and Smitham');
+        checkSort('nth-child(4)', 'Boyle, Aufderhar and Smitham', 'Beahan LL');
       });
     });
   });
@@ -63,7 +62,7 @@ describe('Check the portfolio details view', function (): void {
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
         checkFilter('first-child', 'companyNameFilterValue', 'b', 3);
-        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'GS', 2);
+        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'South Georgia', 2);
         checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 3);
         checkFilter('nth-child(4)', 'latestReportingPeriodeFilterValue', '2024', 3);
       });

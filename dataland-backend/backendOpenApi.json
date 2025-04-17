@@ -2399,7 +2399,7 @@
         ],
         "summary": "Checks if any data is available applying the provided filters.",
         "description": "Checks if any data is available using the given filters and returns the corresponding data dimensions.",
-        "operationId": "getAvailableData",
+        "operationId": "getAvailableDataDimensions",
         "parameters": [
           {
             "name": "companyIds",
@@ -20205,17 +20205,17 @@
           "companyName": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }
@@ -20637,10 +20637,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

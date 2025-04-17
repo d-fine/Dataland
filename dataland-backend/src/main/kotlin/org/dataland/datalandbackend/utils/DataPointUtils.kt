@@ -106,7 +106,7 @@ class DataPointUtils
          */
         fun getAllActiveDataDimensions(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val dataMetaInformationEntities =
-                metaDataManager.getAllActiveDataPoints(
+                metaDataManager.getActiveDataDimensionsFromDataPoints(
                     companyIds = dataDimensionFilter.companyIds,
                     dataPointTypes = dataDimensionFilter.dataTypes,
                     reportingPeriods = dataDimensionFilter.reportingPeriods,
@@ -122,7 +122,7 @@ class DataPointUtils
             val frameworks = dataDimensionFilter.dataTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
-                    metaDataManager.getAllActiveDataPoints(
+                    metaDataManager.getActiveDataDimensionsFromDataPoints(
                         companyIds = dataDimensionFilter.companyIds,
                         dataPointTypes = getRelevantDataPointTypes(framework).toList(),
                         reportingPeriods = dataDimensionFilter.reportingPeriods,

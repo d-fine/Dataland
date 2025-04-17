@@ -271,7 +271,7 @@ interface MetaDataApi {
         value = ["/available-data-dimensions"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAvailableData(
+    fun getAvailableDataDimensions(
         @RequestParam companyIds: List<String>? = null,
         @RequestParam dataTypes: List<String>? = null,
         @RequestParam reportingPeriods: List<String>? = null,

@@ -119,7 +119,7 @@ class SingleDataRequestManagerServiceTest(
                 dataRequestLogger = dataRequestLogger,
                 dataRequestRepository = dataRequestRepository,
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                utils = spyDataRequestProcessingUtils,
+                dataRequestProcessingUtils = spyDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = accessRequestEmailBuilder,
                 securityUtilsService = securityUtilsService,

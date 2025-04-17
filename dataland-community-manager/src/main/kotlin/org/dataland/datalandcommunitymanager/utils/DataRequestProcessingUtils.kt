@@ -47,7 +47,7 @@ class DataRequestProcessingUtils
         }
 
         /**
-         * Validates provided company identifiers by querring the backend.
+         * Validates provided company identifiers by querying the backend.
          * @param identifiers the identifiers to validate
          * @return a pair of a map of valid identifiers to company ID and name and a list of invalid identifiers
          */

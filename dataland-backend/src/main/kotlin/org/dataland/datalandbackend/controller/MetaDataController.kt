@@ -196,7 +196,7 @@ class MetaDataController(
         return ResponseEntity.ok(dataPoints)
     }
 
-    override fun getAvailableData(
+    override fun getAvailableDataDimensions(
         companyIds: List<String>?,
         dataTypes: List<String>?,
         reportingPeriods: List<String>?,
@@ -208,8 +208,8 @@ class MetaDataController(
                 message = "At least one filter must be provided.",
             )
         }
-        val activeDataSets = dataMetaInformationManager.getAllActiveDatasets(dataDimensionFilter)
-        val activeDataPoints = dataPointUtils.getAllActiveDataDimensions(dataDimensionFilter)
-        return ResponseEntity.ok((activeDataSets + activeDataPoints).distinct())
+        val activeDimensionsFromDatasets = dataMetaInformationManager.getActiveDataDimensionsFromDatasets(dataDimensionFilter)
+        val activeDimensionsFromDataPoints = dataPointUtils.getAllActiveDataDimensions(dataDimensionFilter)
+        return ResponseEntity.ok((activeDimensionsFromDatasets + activeDimensionsFromDataPoints).distinct())
     }
 }

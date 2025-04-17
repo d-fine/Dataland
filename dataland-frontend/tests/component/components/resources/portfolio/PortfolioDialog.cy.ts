@@ -1,7 +1,6 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { type EnrichedPortfolio } from '@clients/userservice';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 describe('Check the portfolio dialog', function (): void {
   let portfolioFixture: EnrichedPortfolio;
@@ -19,7 +18,6 @@ describe('Check the portfolio dialog', function (): void {
     }).then(() => {
       cy.get('[name="portfolioName"]').should('have.value', '');
       cy.get('[name="company-identifiers"]').should('have.value', '');
-      cy.get('[data-test="selectFramework"]').should('have.value', '');
       cy.get('[data-test="saveButton"]').should('contain.text', 'Save').and('be.disabled');
     });
   });
@@ -44,11 +42,7 @@ describe('Check the portfolio dialog', function (): void {
       portfolioFixture.entries.forEach((entry) => {
         cy.get('#existing-company-identifiers').should('contain', entry.companyName);
       });
-      const uniqueFrameworks = new Set(portfolioFixture.entries.map((entry) => entry.framework));
-      uniqueFrameworks.forEach((framework) => {
-        cy.get('[data-test="existingFrameworks"]').should('contain', humanizeStringOrNumber(framework));
-        cy.get('[data-test="saveButton"]').should('contain.text', 'Save').and('not.be.disabled');
-      });
+      cy.get('[data-test="saveButton"]').should('contain.text', 'Save').and('not.be.disabled');
     });
   });
 
@@ -84,10 +78,6 @@ describe('Check the portfolio dialog', function (): void {
       cy.wait('@validateCompanies');
       cy.get('#existing-company-identifiers').should('contain', portfolioFixture.entries[0].companyName);
       cy.get('[name="company-identifiers"]').should('have.value', invalidIdentifier);
-      cy.get('[data-test="saveButton"]').should('be.disabled');
-
-      cy.get('[data-test="selectFramework"]').click();
-      cy.get('.p-multiselect-item').first().click();
       cy.get('[data-test="saveButton"]').should('not.be.disabled');
 
       cy.get('#existing-company-identifiers .pi-trash').click();
