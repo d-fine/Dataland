@@ -88,7 +88,7 @@ class CompanyInfoService(
     }
 
     /**
-     * Asserts that a companyId is valid by querring the backend.
+     * Asserts that a companyId is valid by querying the backend.
      * If it does not exist the method catches the client exception and throws a
      * resource-not-found exception.
      * @param companyId is the companyId to check for

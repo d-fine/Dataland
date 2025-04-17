@@ -52,7 +52,7 @@ class PortfolioEnrichmentService
             dataTypes: List<String>,
         ): Map<Pair<String, String>, String> {
             val availableDataDimensions =
-                metaDataControllerApi.getAvailableData(
+                metaDataControllerApi.getAvailableDataDimensions(
                     companyIds = companyIds,
                     dataTypes = dataTypes,
                 )

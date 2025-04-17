@@ -120,7 +120,7 @@ class DataMetaInformationManager(
      * @param dataDimensionFilter the filters to apply to the search
      * @return a list of data dimensions for which a dataset is active
      */
-    fun getAllActiveDatasets(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+    fun getActiveDataDimensionsFromDatasets(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
         val dataMetaInformationEntities =
             dataMetaInformationRepository.getBulkActiveDatasets(
                 companyIds = dataDimensionFilter.companyIds,

@@ -215,7 +215,7 @@ internal class CompanyDataControllerTest(
     }
 
     @Test
-    fun `postCompanyValidation trims correctly LEI Codes but not spaces inside company names `() {
+    fun `postCompanyValidation correctly trims LEI Codes but not spaces inside company names`() {
         val resultLEICodes =
             companyController
                 .postCompanyValidation(listOf("    ze03VSQH8elRgYoZgV3c", "7tSuSlwbMYu2Po0aqlVm     "))

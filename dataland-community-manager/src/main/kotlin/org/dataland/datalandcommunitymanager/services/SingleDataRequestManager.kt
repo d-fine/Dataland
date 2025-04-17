@@ -37,7 +37,7 @@ class SingleDataRequestManager
         private val dataRequestLogger: DataRequestLogger,
         private val dataRequestRepository: DataRequestRepository,
         private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
-        private val utils: DataRequestProcessingUtils,
+        private val dataRequestProcessingUtils: DataRequestProcessingUtils,
         private val dataAccessManager: DataAccessManager,
         private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         private val securityUtilsService: SecurityUtilsService,
@@ -113,10 +113,10 @@ class SingleDataRequestManager
             singleDataRequest: SingleDataRequest,
             userIdToUse: String,
         ): PreprocessedRequest {
-            utils.throwExceptionIfNotJwtAuth()
+            dataRequestProcessingUtils.throwExceptionIfNotJwtAuth()
 
             val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
-                utils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
+                dataRequestProcessingUtils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
             if (rejectedIdentifiers.isNotEmpty()) {
                 throw ResourceNotFoundApiException(
                     "The company identifier is unknown.",
@@ -158,7 +158,7 @@ class SingleDataRequestManager
                     contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
-            } else if (utils.existsDataRequestWithNonFinalStatus(
+            } else if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
@@ -169,7 +169,7 @@ class SingleDataRequestManager
             ) {
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
-                utils.storeDataRequestEntityAsOpen(
+                dataRequestProcessingUtils.storeDataRequestEntityAsOpen(
                     userId = preprocessedRequest.userId,
                     datalandCompanyId = preprocessedRequest.companyId,
                     dataType = preprocessedRequest.dataType,
@@ -188,7 +188,7 @@ class SingleDataRequestManager
             userId: String,
         ): Boolean {
             val matchingDatasetExists =
-                utils.matchingDatasetExists(
+                dataRequestProcessingUtils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,
                     dataType = dataType,
                 )

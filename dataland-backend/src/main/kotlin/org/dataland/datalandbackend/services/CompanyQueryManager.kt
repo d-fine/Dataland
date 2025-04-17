@@ -34,11 +34,11 @@ class CompanyQueryManager
         private val highlightedCompanyIdsInMemoryStorage = ConcurrentHashMap<String, String>()
 
         /**
-         * Method to verify if a company exists or not given an ID
+         * Method to verify if a company ID represents an actual company on Dataland or not
          * @param companyId the ID of the to be verified company
          * @return a boolean signaling if the company exists or not
          */
-        private fun doesCompanyIdExist(companyId: String): Boolean = companyRepository.existsById(companyId)
+        private fun checkCompanyIdExists(companyId: String): Boolean = companyRepository.existsById(companyId)
 
         /**
          * Method to verify that a given company exists in the company store
@@ -46,7 +46,7 @@ class CompanyQueryManager
          * @throws ResourceNotFoundApiException if the company does not exist
          */
         fun assertCompanyIdExists(companyId: String) {
-            if (!doesCompanyIdExist(companyId)) {
+            if (!checkCompanyIdExists(companyId)) {
                 throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
             }
         }
@@ -106,7 +106,7 @@ class CompanyQueryManager
         }
 
         /**
-         * Method to check if ever dropdownFilter is deactivated
+         * Method to check if every dropdownFilter is deactivated
          * @param filter The filter to use during searching
          */
         private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean =
@@ -229,7 +229,7 @@ class CompanyQueryManager
         private fun getCompanyIdentifierValidationResult(identifier: String): CompanyIdentifierValidationResult =
             if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
                 CompanyIdentifierValidationResult(identifier)
-            } else if (doesCompanyIdExist(identifier)) {
+            } else if (checkCompanyIdExists(identifier)) {
                 buildCompanyIdentifierValidationResult(identifier, getCompanyById(identifier))
             } else {
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {

@@ -82,7 +82,7 @@ class SingleDataRequestManagerTest {
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                utils = mockDataRequestProcessingUtils,
+                dataRequestProcessingUtils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
                 securityUtilsService = mockSecurityUtilsService,

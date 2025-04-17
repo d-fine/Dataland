@@ -204,7 +204,7 @@ class DataPointMetaInformationManager
          * @param reportingPeriods the reporting periods to filter by
          * @return a list of all active data point meta information entities
          */
-        fun getAllActiveDataPoints(
+        fun getActiveDataDimensionsFromDataPoints(
             companyIds: List<String>?,
             dataPointTypes: List<String>?,
             reportingPeriods: List<String>?,
