@@ -91,12 +91,13 @@
           <span v-else>{{ company.data.latestReportingPeriod }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
+          <MultiSelect
             v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Filter by last reporting period"
-            :data-test="'latestReportingPeriodeFilterValue'"
+            @change="filterCallback()"
+            :options="reportingPeriodOptions"
+            placeholder="Filter by Reporting Period"
+            style="min-width: 14rem"
+            :maxSelectedLabels="1"
           />
         </template>
       </Column>
@@ -113,6 +114,7 @@ import PrimeButton from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
+import MultiSelect from 'primevue/multiselect';
 import { FilterMatchMode } from 'primevue/api';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -152,12 +154,13 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
+const reportingPeriodOptions = ref<string[]>([]);
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
   country: { value: null, matchMode: FilterMatchMode.CONTAINS },
   sector: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  latestReportingPeriod: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  latestReportingPeriod: { value: [], matchMode: FilterMatchMode.IN },
 });
 
 const props = defineProps<{
@@ -189,10 +192,20 @@ function loadPortfolio(): void {
     .getEnrichedPortfolio(props.portfolioId)
     .then((response) => {
       enrichedPortfolio.value = response.data;
+
       const preparedPortfolioEntries = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+
       groupedEntries = groupBy(preparedPortfolioEntries, (item) => item.framework);
       frameworks.value = getFrameworkListSorted();
       selectedFramework.value = frameworks.value[0];
+
+      reportingPeriodOptions.value = Array.from(
+        new Set(
+          preparedPortfolioEntries
+            .map((entry) => entry.latestReportingPeriod)
+            .filter((period): period is string => typeof period === 'string')
+        )
+      ).sort();
     })
     .catch((reason) => {
       console.error(reason);
