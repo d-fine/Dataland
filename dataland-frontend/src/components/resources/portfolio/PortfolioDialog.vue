@@ -1,128 +1,74 @@
 <template>
-  <!--This component uses a grid layout -->
-  <div class="bg-white radius-1 p-4 portfolio-dialog-content">
-    <div class="grid">
-      <div class="col-12" id="portfolio-name-row">
-        <FormKit
-          v-model="portfolioName"
-          type="text"
-          label="Portfolio Name"
-          name="portfolioName"
-          :placeholder="portfolioName"
-        />
-      </div>
-      <div class="col-6">
-        <label class="formkit-label" for="company-identifiers">Add Company Identifier</label>
-        <FormKit
-          v-model="companyIdentifiersInput"
-          type="textarea"
-          name="company-identifiers"
-          placeholder="Enter company identifier, e.g. DE-000402625-0, SWE402626."
-          :disabled="isCompaniesLoading"
-        />
-        <div class="grid">
-          <div class="col-6 m-0">
-            <p class="gray-text font-italic text-xs m-0">
-              Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
-            </p>
-          </div>
-          <div class="col-6 m-0">
-            <PrimeButton
-              label="Add Companies"
-              icon="pi pi-plus"
-              :loading="isCompaniesLoading"
-              @click="addCompanies"
-              class="primary-button"
-              data-test="addCompanies"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <label class="formkit-label" for="frameworks">Add Frameworks</label>
-        <div class="formkit-inner">
-          <MultiSelect
-            v-model="portfolioFrameworks"
-            name="frameworks-selector"
-            data-test="selectFramework"
-            placeholder="Select frameworks"
-            selected-items-label="Select frameworks"
-            :options="selectableFrameworks"
-            option-label="label"
-            option-value="value"
-            :max-selected-labels="0"
-            :show-toggle-all="false"
-            variant="outlined"
-            class="w-full"
-          />
-        </div>
-      </div>
+  <div class="bg-white radius-1 p-4 portfolio-dialog-content" style="max-width: 28em">
+    <FormKit
+      v-model="portfolioName"
+      type="text"
+      label="Portfolio Name"
+      name="portfolioName"
+      :placeholder="portfolioName"
+    />
+    <label class="formkit-label" for="company-identifiers">Add Company Identifier</label>
+    <FormKit
+      v-model="companyIdentifiersInput"
+      type="textarea"
+      name="company-identifiers"
+      placeholder="Enter company identifier, e.g. DE-000402625-0, SWE402626."
+      :disabled="isCompaniesLoading"
+    />
+    <p class="gray-text font-italic text-xs m-0">
+      Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
+    </p>
+    <PrimeButton
+      label="Add Companies"
+      icon="pi pi-plus"
+      :loading="isCompaniesLoading"
+      @click="addCompanies"
+      class="primary-button"
+      data-test="addCompanies"
+      style="margin: 1em 0"
+    />
+    <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
+    <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
+      <li
+        v-for="(company, index) in portfolioCompanies"
+        :key="company.companyId"
+        @click="portfolioCompanies.splice(index, 1)"
+      >
+        <i class="pi pi-trash" /> {{ company.companyName }}
+      </li>
+    </ul>
+    <div data-test="error">
+      <p v-if="!isValidPortfolioUpload" class="formkit-message">
+        Please provide a portfolio name, at least one company, and at least one framework.
+      </p>
+      <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
+        {{ portfolioErrors }}
+      </Message>
     </div>
-    <div class="grid">
-      <div class="col-6">
-        <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
-        <ul class="list-none overflow-y-auto h-6rem" id="existing-company-identifiers">
-          <li
-            v-for="(company, index) in portfolioCompanies"
-            :key="company.companyId"
-            @click="portfolioCompanies.splice(index, 1)"
-          >
-            <i class="pi pi-trash" /> {{ company.companyName }}
-          </li>
-        </ul>
-      </div>
-      <div class="col-6">
-        <label class="formkit-label" for="existing-frameworks">Frameworks in Portfolio</label>
-        <ul class="list-none overflow-y-auto h-6rem" data-test="existingFrameworks">
-          <li
-            v-for="(framework, index) in portfolioFrameworks"
-            :key="framework"
-            @click="portfolioFrameworks.splice(index, 1)"
-          >
-            <i class="pi pi-trash mr-2" /> {{ humanizeStringOrNumber(framework) }}
-          </li>
-        </ul>
-      </div>
-      <div class="col-12 pb-0 h-3rem">
-        <div class="grid">
-          <div class="col-7 vertical-middle" data-test="error">
-            <p v-if="!isValidPortfolioUpload" class="formkit-message">
-              Please provide a portfolio name, at least one company, and at least one framework.
-            </p>
-            <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
-              {{ portfolioErrors }}
-            </Message>
-          </div>
-          <div class="col-5" style="text-align: end">
-            <PrimeButton
-              label="Cancel"
-              icon="pi pi-times"
-              @click="dialogRef?.close"
-              class="primary-button mr-2"
-              severity="secondary"
-              :data-test="'cancelButton'"
-            />
-            <PrimeButton
-              label="Save Portfolio"
-              icon="pi pi-save"
-              :disabled="!isValidPortfolioUpload"
-              :loading="isPortfolioSaving"
-              @click="savePortfolio()"
-              class="primary-button"
-              :data-test="'saveButton'"
-            />
-          </div>
-        </div>
-      </div>
+    <div class="buttonbar">
+      <PrimeButton
+        label="Cancel"
+        icon="pi pi-times"
+        @click="dialogRef?.close"
+        class="primary-button"
+        severity="secondary"
+        :data-test="'cancelButton'"
+      />
+      <PrimeButton
+        label="Save Portfolio"
+        icon="pi pi-save"
+        :disabled="!isValidPortfolioUpload"
+        :loading="isPortfolioSaving"
+        @click="savePortfolio()"
+        class="primary-button"
+        :data-test="'saveButton'"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
-import type { DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type {
   BasePortfolioName,
@@ -136,7 +82,6 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
-import MultiSelect from 'primevue/multiselect';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
 type CompanyIdAndName = {
@@ -154,21 +99,14 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const portfolioFrameworks = ref<string[]>([]);
+const portfolioFrameworks = ref<string[]>([
+  'sfdr',
+  'eutaxonomy-financials',
+  'eutaxonomy-non-financials',
+  'nuclear-and-gas',
+]);
 
-const allFrameworks: DropdownOption[] = FRAMEWORKS_WITH_VIEW_PAGE.map((framework) => {
-  return {
-    value: framework,
-    label: humanizeStringOrNumber(framework),
-  };
-});
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-const selectableFrameworks = computed(() =>
-  allFrameworks.filter((frameworkOption) => {
-    return !portfolioFrameworks.value.includes(frameworkOption.value);
-  })
-);
 
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
@@ -307,6 +245,7 @@ function processCompanyInputString(): string[] {
   display: flex;
   flex-direction: column;
   width: 50vw;
+  position: relative;
 }
 
 .p-message :deep(.p-message-wrapper) {
@@ -318,9 +257,11 @@ function processCompanyInputString(): string[] {
   padding: var(--fk-padding-input);
 }
 
-.formkit-outer,
-.formkit-inner {
-  width: 100%;
+.buttonbar {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1em;
+  margin-left: auto;
 }
 
 ul {
