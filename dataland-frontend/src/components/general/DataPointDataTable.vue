@@ -19,7 +19,6 @@
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
-                :label="dataSourceLabel"
                 :download-name="
                   dialogData.dataPointDisplay.dataSource.fileName ??
                   dialogData.dataPointDisplay.dataSource.fileReference
@@ -31,6 +30,13 @@
                 show-icon
               />
             </td>
+          </tr>
+          <tr v-if="dataSourcePages">
+            <th class="headers-bg width-auto" v-if="dataSourcePagesRefersToMultiplePages">
+              <span class="table-left-label">Pages</span>
+            </th>
+            <th class="headers-bg width-auto" v-else><span class="table-left-label">Page</span></th>
+            <td>{{ dataSourcePages }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
@@ -68,23 +74,23 @@ export default defineComponent({
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
     },
-    dataSourceLabel(): string {
-      const dataSource = this.dialogData.dataPointDisplay.dataSource;
-      if (!dataSource) return '';
-      if ('page' in dataSource) {
-        return dataSource.page === null
-          ? `${dataSource.fileName}`
-          : `${dataSource.fileName},
-         page(s) ${dataSource.page}`;
-      } else {
-        return dataSource.fileName ?? '';
-      }
-    },
     dataSourcePage(): number | undefined {
       const dataSource = this.dialogData.dataPointDisplay.dataSource;
       if (dataSource && 'page' in dataSource && dataSource.page != null) {
         return Number(dataSource.page.split('-')[0]) || undefined;
       } else return undefined;
+    },
+    dataSourcePages(): string {
+      const dataSource = this.dialogData.dataPointDisplay.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return dataSource.page;
+      } else return '';
+    },
+    dataSourcePagesRefersToMultiplePages(): boolean {
+      const dataSource = this.dialogData.dataPointDisplay.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return dataSource.page.search('-') >= 0;
+      } else return false;
     },
   },
 });

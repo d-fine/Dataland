@@ -5,7 +5,7 @@
       class="cursor-pointer"
       :class="fontStyle"
       :title="downloadName"
-      style="display: grid; grid-template-columns: 1fr max-content 1.5em 1.5em"
+      style="display: grid; grid-template-columns: max-content max-content 1.5em 1.5em"
     >
       <span
         class="underline pl-1"
@@ -13,7 +13,7 @@
         :data-test="'Report-Download-' + downloadName"
         >{{ label ?? downloadName }}</span
       >
-      <span class="underline ml-1 pl-1">{{ suffix }}</span>
+      <span v-if="suffix" class="underline ml-1 pl-1">{{ suffix }}</span>
       <i
         v-if="showIcon"
         class="pi pi-download pl-1"
