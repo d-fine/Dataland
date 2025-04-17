@@ -1,38 +1,38 @@
 <template>
   <div class="bg-white radius-1 p-4 portfolio-dialog-content" style="max-width: 28em">
     <FormKit
-      v-model="portfolioName"
-      type="text"
-      label="Portfolio Name"
-      name="portfolioName"
-      :placeholder="portfolioName"
+        v-model="portfolioName"
+        type="text"
+        label="Portfolio Name"
+        name="portfolioName"
+        :placeholder="portfolioName"
     />
     <label class="formkit-label" for="company-identifiers">Add Company Identifier</label>
     <FormKit
-      v-model="companyIdentifiersInput"
-      type="textarea"
-      name="company-identifiers"
-      placeholder="Enter company identifier, e.g. DE-000402625-0, SWE402626."
-      :disabled="isCompaniesLoading"
+        v-model="companyIdentifiersInput"
+        type="textarea"
+        name="company-identifiers"
+        placeholder="Enter company identifier, e.g. DE-000402625-0, SWE402626."
+        :disabled="isCompaniesLoading"
     />
     <p class="gray-text font-italic text-xs m-0">
       Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
     </p>
     <PrimeButton
-      label="Add Companies"
-      icon="pi pi-plus"
-      :loading="isCompaniesLoading"
-      @click="addCompanies"
-      class="primary-button"
-      data-test="addCompanies"
-      style="margin: 1em 0"
+        label="Add Companies"
+        icon="pi pi-plus"
+        :loading="isCompaniesLoading"
+        @click="addCompanies"
+        class="primary-button"
+        data-test="addCompanies"
+        style="margin: 1em 0"
     />
     <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
     <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
       <li
-        v-for="(company, index) in portfolioCompanies"
-        :key="company.companyId"
-        @click="portfolioCompanies.splice(index, 1)"
+          v-for="(company, index) in portfolioCompanies"
+          :key="company.companyId"
+          @click="portfolioCompanies.splice(index, 1)"
       >
         <i class="pi pi-trash" /> {{ company.companyName }}
       </li>
@@ -47,21 +47,21 @@
     </div>
     <div class="buttonbar">
       <PrimeButton
-        label="Cancel"
-        icon="pi pi-times"
-        @click="dialogRef?.close"
-        class="primary-button"
-        severity="secondary"
-        :data-test="'cancelButton'"
+          label="Cancel"
+          icon="pi pi-times"
+          @click="dialogRef?.close"
+          class="primary-button"
+          severity="secondary"
+          :data-test="'cancelButton'"
       />
       <PrimeButton
-        label="Save Portfolio"
-        icon="pi pi-save"
-        :disabled="!isValidPortfolioUpload"
-        :loading="isPortfolioSaving"
-        @click="savePortfolio()"
-        class="primary-button"
-        :data-test="'saveButton'"
+          label="Save Portfolio"
+          icon="pi pi-save"
+          :disabled="!isValidPortfolioUpload"
+          :loading="isPortfolioSaving"
+          @click="savePortfolio()"
+          class="primary-button"
+          :data-test="'saveButton'"
       />
     </div>
   </div>
@@ -109,7 +109,7 @@ const portfolioFrameworks = ref<string[]>([
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isValidPortfolioUpload = computed(
-  () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
+    () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
 
 onMounted(() => {
@@ -153,19 +153,19 @@ async function addCompanies(): Promise<void> {
   try {
     isCompaniesLoading.value = true;
     const companyValidationResults = (
-      await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
+        await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
     const validIdentifiers: CompanyIdAndName[] = companyValidationResults
-      .filter((validationResult) => validationResult.companyInformation)
-      .map((validEntry): CompanyIdAndName => {
-        return {
-          companyId: validEntry.companyInformation!.companyId,
-          companyName: validEntry.companyInformation!.companyName,
-        };
-      });
+        .filter((validationResult) => validationResult.companyInformation)
+        .map((validEntry): CompanyIdAndName => {
+          return {
+            companyId: validEntry.companyInformation!.companyId,
+            companyName: validEntry.companyInformation!.companyName,
+          };
+        });
     invalidIdentifiers = companyValidationResults
-      .filter((validationResult) => !validationResult.companyInformation)
-      .map((it) => it.identifier);
+        .filter((validationResult) => !validationResult.companyInformation)
+        .map((it) => it.identifier);
 
     const allIdentifiers = new Set([...portfolioCompanies.value, ...validIdentifiers]);
     portfolioCompanies.value = Array.from(allIdentifiers).sort((a, b) => a.companyName.localeCompare(b.companyName));
@@ -197,8 +197,8 @@ async function savePortfolio(): Promise<void> {
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
-      ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
-      : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
+        ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
+        : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
 
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
@@ -207,9 +207,9 @@ async function savePortfolio(): Promise<void> {
   } catch (error) {
     if (error instanceof AxiosError) {
       portfolioErrors.value =
-        error.status == 409
-          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
-          : error.message;
+          error.status == 409
+              ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+              : error.message;
     } else {
       portfolioErrors.value = 'An unknown error occurred.';
       console.log(error);
