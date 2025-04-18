@@ -37,25 +37,25 @@
       @page="onPage($event)"
       :alwaysShowPaginator="true"
     >
-      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" :style="{ flex: '0 0 20%' }" />
-      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true" :style="{ flex: '0 0 max-content' }">
+      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" :style="{ flex: '0 0 25%' }" />
+      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true" :style="{ flex: '0 0 15%' }">
         <template #body="tableRow">
           {{ humanizeStringOrNumber(tableRow.data.documentCategory) }}
         </template>
       </Column>
-      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" :style="{ flex: '0 0 max-content' }">
+      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" :style="{ flex: '0 0 15%' }">
         <template #body="tableRow">
           <div>
             {{ dateStringFormatter(tableRow.data.publicationDate) }}
           </div>
         </template>
       </Column>
-      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" :style="{ flex: '0 0 max-content' }" />
+      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" :style="{ flex: '0 0 15%' }" />
       <Column
         field="documentType"
         header=""
         class="d-bg-white w-1 d-datatable-column-right"
-        :style="{ flex: '0 0 max-content' }"
+        :style="{ flex: '0 0 15%' }"
       >
         <template #body="tableRow">
           <a class="tertiary-button" @click="openMetaInfoDialog(tableRow.data.documentId)">
@@ -67,7 +67,7 @@
         field="documentType"
         header=""
         class="d-bg-white w-1 d-datatable-column-right"
-        :style="{ flex: '0 0 1fr' }"
+        :style="{ flex: '0 0 15%' }"
       >
         <template #body="tableRow">
           <DocumentLink
