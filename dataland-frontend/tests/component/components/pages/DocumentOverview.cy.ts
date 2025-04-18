@@ -6,7 +6,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
-import { humanizeStringOrNumber, documentNameOrId } from '@/utils/StringFormatter.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 describe('Component test for the Document Overview', () => {
   let companyInformationForTest: CompanyInformation;
@@ -110,12 +110,7 @@ describe('Component test for the Document Overview', () => {
             cy.get('td').eq(2).should('contain', dateStringFormatter(myPublicationDateToTest));
             cy.get('td').eq(3).should('contain', mockFetchedDocuments[0].reportingPeriod);
             cy.get('td').eq(4).should('contain', 'VIEW DETAILS');
-            cy.get('td')
-              .eq(5)
-              .should(
-                'contain',
-                `${documentNameOrId(mockFetchedDocuments[0])} (${mockFetchedDocuments[0].publicationDate})`
-              );
+            cy.get('td').eq(5).should('contain', 'DOWNLOAD');
           });
       });
   });

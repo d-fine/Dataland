@@ -62,7 +62,8 @@
         <template #body="tableRow">
           <DocumentLink
             :download-name="documentNameOrId(tableRow.data)"
-            :label="documentPublicationDateOrEmpty(tableRow.data)"
+            label=""
+            suffix="DOWNLOAD"
             :file-reference="tableRow.data.documentId"
             show-icon
             data-test="download-button"
@@ -102,7 +103,7 @@ import {
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { humanizeStringOrNumber, documentNameOrId, documentPublicationDateOrEmpty } from '@/utils/StringFormatter.ts';
+import { humanizeStringOrNumber, documentNameOrId } from '@/utils/StringFormatter.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import type { DataMetaInformation } from '@clients/backend';
