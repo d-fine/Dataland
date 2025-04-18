@@ -274,7 +274,8 @@ describe('Component test for the company cockpit', () => {
     for (const category of Object.keys(DocumentMetaInfoDocumentCategoryEnum)) {
       cy.get('[data-test="' + category + '"]')
         .should('exist')
-        .contains('test_document (2025-02-25)');
+        .and('contain', 'test_document')
+        .and('contain', '(2025-02-25)');
     }
   });
 
