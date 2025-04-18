@@ -13,7 +13,6 @@
         <i class="pi pi-check progress-completed-checkmark" data-test="checkmark-icon" />
       </span>
     </div>
-    <div v-else />
   </transition>
 </template>
 
