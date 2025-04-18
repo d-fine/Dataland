@@ -5,6 +5,7 @@
       class="cursor-pointer"
       :class="fontStyle"
       :title="downloadName"
+      :data-test="'download-link-' + downloadName"
       style="display: grid; grid-template-columns: fit-content(500px) max-content 1.5em 1.5em"
     >
       <span

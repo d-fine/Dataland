@@ -84,8 +84,8 @@ describe('Component test for the company cockpit', () => {
         body: [
           {
             documentId: 'a12d2cd3014c2601e6d3e32a7f0ec92fe3e5a9a8519519d93b8bb7c56141849d',
-            documentName: 'test_' + (request.query['documentCategory'] ?? 'document'),
-            documentCategory: request.query['documentCategory'] ?? 'AnnualReport',
+            documentName: 'test_' + (request.query['documentCategories'] ?? 'document'),
+            documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
             companyIds: [request.query['companyId'] ?? '???'],
             publicationDate: '2025-02-25',
             reportingPeriod: '2025',
@@ -274,8 +274,12 @@ describe('Component test for the company cockpit', () => {
     for (const category of Object.keys(DocumentMetaInfoDocumentCategoryEnum)) {
       cy.get('[data-test="' + category + '"]')
         .should('exist')
-        .and('contain', 'test_document')
-        .and('contain', '(2025-02-25)');
+        .and('contain', 'test_' + category)
+        .and('contain', '(2025-02-25)')
+        .and('not.contain', 'null');
+      cy.get('[data-test="download-link-test_' + category + '"]')
+        .should('exist')
+        .and('have.attr', 'title', 'test_' + category);
     }
   });
 
