@@ -8,15 +8,15 @@
               dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED
             "
           >
-            <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
+            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
             <td>{{ dialogData.dataPointDisplay.value }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.quality">
-            <th class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
+            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
             <td>{{ humanizeStringOrNumber(dialogData.dataPointDisplay.quality) }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.dataSource">
-            <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
+            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
                 :download-name="
@@ -32,14 +32,14 @@
             </td>
           </tr>
           <tr v-if="dataSourcePages">
-            <th class="headers-bg width-auto" v-if="dataSourcePagesRefersToMultiplePages">
+            <th scope="row" class="headers-bg width-auto" v-if="dataSourcePagesRefersToMultiplePages">
               <span class="table-left-label">Pages</span>
             </th>
-            <th class="headers-bg width-auto" v-else><span class="table-left-label">Page</span></th>
+            <th scope="row" class="headers-bg width-auto" v-else><span class="table-left-label">Page</span></th>
             <td>{{ dataSourcePages }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
-            <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
+            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
             <td>
               <RenderSanitizedMarkdownInput :text="dialogData.dataPointDisplay.comment" />
             </td>

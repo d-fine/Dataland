@@ -9,7 +9,7 @@
     >
       <span
         class="underline pl-1"
-        style="overflow: hidden; text-overflow: ellipsis; max-width: 100%"
+        style="overflow: hidden; text-overflow: ellipsis"
         :data-test="'Report-Download-' + downloadName"
         >{{ label ?? downloadName }}</span
       >
