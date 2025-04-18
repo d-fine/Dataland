@@ -37,28 +37,28 @@
       @page="onPage($event)"
       :alwaysShowPaginator="true"
     >
-      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" style="width: 25%" />
-      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true" style="width: 15%">
+      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
+      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
         <template #body="tableRow">
           {{ humanizeStringOrNumber(tableRow.data.documentCategory) }}
         </template>
       </Column>
-      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" style="width: 15%">
+      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
         <template #body="tableRow">
           <div>
             {{ dateStringFormatter(tableRow.data.publicationDate) }}
           </div>
         </template>
       </Column>
-      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" style="width: 15%" />
-      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right" style="width: 15%">
+      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
           <a class="tertiary-button" @click="openMetaInfoDialog(tableRow.data.documentId)">
             VIEW DETAILS <span class="material-icons">arrow_forward_ios</span>
           </a>
         </template>
       </Column>
-      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right" style="width: 15%">
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
           <DocumentLink
             :download-name="documentNameOrId(tableRow.data)"
