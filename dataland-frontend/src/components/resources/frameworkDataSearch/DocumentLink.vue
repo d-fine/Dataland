@@ -5,7 +5,7 @@
       class="cursor-pointer"
       :class="fontStyle"
       :title="downloadName"
-      style="display: grid; grid-template-columns: 1fr max-content 1.5em 1.5em; justify-items: safe end"
+      style="display: grid; grid-template-columns: fit-content(500px) max-content 1.5em 1.5em"
     >
       <span
         class="underline pl-1"
