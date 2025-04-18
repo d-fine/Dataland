@@ -26,7 +26,7 @@ interface DocumentMetaInfoRepository : JpaRepository<DocumentMetaInfoEntity, Str
             "WHERE (:companyId is null or c = :companyId) and " +
             "(:documentCategories is null or d.documentCategory IN :documentCategories) and " +
             "(:reportingPeriod is null or d.reportingPeriod = :reportingPeriod) and " +
-            "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC " +
+            "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC NULLS LAST, d.uploadTime DESC " +
             "LIMIT :limit OFFSET :offset",
     )
     fun findByCompanyIdAndDocumentCategoryAndReportingPeriod(

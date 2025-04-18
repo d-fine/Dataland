@@ -1,17 +1,29 @@
 <template>
   <div class="text-primary">
-    <a @click="downloadDocument()" class="cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">
-      <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
+    <a
+      @click="downloadDocument()"
+      class="cursor-pointer"
+      :class="fontStyle"
+      :title="downloadName"
+      :data-test="'download-link-' + downloadName"
+      style="display: grid; grid-template-columns: fit-content(500px) max-content 1.5em 1.5em"
+    >
+      <span
+        class="underline pl-1"
+        style="overflow: hidden; text-overflow: ellipsis"
+        :data-test="'Report-Download-' + downloadName"
+        >{{ label ?? downloadName }}</span
+      >
+      <span v-if="suffix" class="underline ml-1 pl-1">{{ suffix }}</span>
       <i
         v-if="showIcon"
         class="pi pi-download pl-1"
         data-test="download-icon"
         aria-hidden="true"
-        style="font-size: 12px"
+        style="font-size: 12px; margin: auto"
       />
-      <span class="underline ml-1 pl-1">{{ suffix }}</span>
+      <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
-    <DownloadProgressSpinner :percent-completed="percentCompleted" />
   </div>
 </template>
 
@@ -152,8 +164,6 @@ export default defineComponent({
 
 <style scoped>
 div {
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
   max-width: calc(41vw - 175px);
   @media only screen and (max-width: 768px) {

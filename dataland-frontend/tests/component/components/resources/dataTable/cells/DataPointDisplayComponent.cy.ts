@@ -30,8 +30,10 @@ it('tests if modal with link into position in text file works', () => {
   cy.get('.p-datatable-body > :nth-child(1)').should('not.be.empty');
   cy.get(':nth-child(2)').should('contain.text', 'Data source');
   cy.get('.p-dialog-content').should('contain', 'a');
+  cy.get(':nth-child(3)').should('contain.text', 'Page');
+  cy.get('.p-datatable-body > :nth-child(3)').should('contain.text', '5');
   //test if optional/empty field is not displayed
-  cy.get('.p-datatable-body > tr').should('have.length', 2);
+  cy.get('.p-datatable-body > tr').should('have.length', 3);
 
   //populate first optional field
   cy.mountWithDialog(
@@ -54,9 +56,12 @@ it('tests if modal with link into position in text file works', () => {
       },
     }
   ).then(() => {});
-  //test if optional field is displayed when content is present
   cy.get('a').click();
-  cy.get('.p-datatable-body > tr').should('have.length', 3);
+  //test if optional field is displayed when content is present and table content adjusts to page
+  // range instead of single page
+  cy.get(':nth-child(4)').should('contain.text', 'Pages');
+  cy.get('.p-datatable-body > :nth-child(4)').should('contain.text', '5-7');
+  cy.get('.p-datatable-body > tr').should('have.length', 4);
 
   //populate second optional field
   cy.mountWithDialog(
@@ -81,7 +86,7 @@ it('tests if modal with link into position in text file works', () => {
   ).then(() => {});
   //test if optional field is displayed when content is present
   cy.get('a').click();
-  cy.get('.p-datatable-body > tr').should('have.length', 3);
+  cy.get('.p-datatable-body > tr').should('have.length', 4);
 
   //populate second optinal field
   cy.mountWithDialog(
@@ -107,5 +112,5 @@ it('tests if modal with link into position in text file works', () => {
   ).then(() => {});
   //test if optional field is displayed when content is present
   cy.get('a').click();
-  cy.get('.p-datatable-body > tr').should('have.length', 4);
+  cy.get('.p-datatable-body > tr').should('have.length', 5);
 });

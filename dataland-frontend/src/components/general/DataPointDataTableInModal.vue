@@ -4,15 +4,15 @@
       <table class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
           <tr>
-            <th class="headers-bg">Value</th>
+            <th scope="row" class="headers-bg">Value</th>
             <td class="nowrap">{{ dataPointDisplay.value ?? '' }}</td>
           </tr>
           <tr v-if="dataPointDisplay.quality">
-            <th class="headers-bg">Quality</th>
+            <th scope="row" class="headers-bg">Quality</th>
             <td>{{ dataPointDisplay.quality }}</td>
           </tr>
           <tr v-if="dataPointDisplay.dataSource">
-            <th class="headers-bg">Data source</th>
+            <th scope="row" class="headers-bg">Data source</th>
             <td class="nowrap">
               <DocumentLink
                 :label="dataSourceLabel"
@@ -23,8 +23,13 @@
               />
             </td>
           </tr>
+          <tr v-if="dataSourcePages">
+            <th scope="row" class="headers-bg" v-if="dataSourcePagesRefersToMultiplePages">Pages</th>
+            <th scope="row" class="headers-bg" v-else>Page</th>
+            <td>{{ dataSourcePages }}</td>
+          </tr>
           <tr v-if="dataPointDisplay.comment">
-            <th class="headers-bg">Comment</th>
+            <th scope="row" class="headers-bg">Comment</th>
             <td>{{ dataPointDisplay.comment }}</td>
           </tr>
         </tbody>
@@ -58,10 +63,19 @@ export default defineComponent({
     dataSourceLabel(): string | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
       if (!dataSource || !dataSource.fileName) return undefined;
-      if ('page' in dataSource && dataSource.page != null) {
-        return `${dataSource.fileName}, page(s) ${dataSource.page}`;
-      }
       return dataSource.fileName;
+    },
+    dataSourcePages(): string {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return dataSource.page;
+      } else return '';
+    },
+    dataSourcePagesRefersToMultiplePages(): boolean {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return dataSource.page.search('-') >= 0;
+      } else return false;
     },
     dataSourcePage(): number | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
