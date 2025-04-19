@@ -47,6 +47,7 @@ describeIf(
     const frameworkDropdownSelector = '[data-test="chooseFrameworkDropdown"]';
     const dropdownItemsSelector = '[data-test="chooseFrameworkList"] a';
     const dropdownItemList = '[data-test="chooseFrameworkList"]';
+    const dropdownLabelSelector = frameworkDropdownSelector + ' [data-test="chooseFrameworkLabel"]';
 
     const nonExistingDataId = 'abcd123123123123123-non-existing';
     const nonExistingCompanyId = 'ABC-non-existing';
@@ -125,9 +126,7 @@ describeIf(
         humanizeStringOrNumber(expectedChosenFramework)
       );
       cy.get("h2:contains('Checking if')").should('not.exist');
-      cy.get(frameworkDropdownSelector)
-        .find('.p-dropdown-label')
-        .contains(humanizeStringOrNumber(expectedChosenFramework));
+      cy.get(dropdownLabelSelector).contains(humanizeStringOrNumber(expectedChosenFramework));
       cy.get('table').should('exist');
     }
 
@@ -140,7 +139,7 @@ describeIf(
       cy.get('body').click(0, 0);
       cy.get(dropdownItemList).should('not.exist');
 
-      cy.get(frameworkDropdownSelector + ' .p-dropdown-label').click();
+      cy.get(dropdownLabelSelector).click();
       let optionsCounter = 0;
       cy.get(dropdownItemsSelector).should('exist');
       cy.get(`${dropdownItemsSelector}:contains("No available options")`).should('not.exist');
@@ -152,7 +151,7 @@ describeIf(
       cy.then(() => {
         expect(expectedDropdownOptions.size).to.equal(optionsCounter);
       });
-      cy.get(frameworkDropdownSelector + ' .p-dropdown-label').click({ force: true });
+      cy.get(dropdownLabelSelector).click({ force: true });
     }
 
     /**

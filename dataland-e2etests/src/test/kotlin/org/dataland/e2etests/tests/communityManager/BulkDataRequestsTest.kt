@@ -227,9 +227,9 @@ class BulkDataRequestsTest {
                     false,
                 ),
             )
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 2)
         checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
-        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 1)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
     }
 }

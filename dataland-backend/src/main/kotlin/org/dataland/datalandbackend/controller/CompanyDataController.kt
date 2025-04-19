@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyId
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -212,11 +213,15 @@ class CompanyDataController(
         )
 
     override fun isCompanyIdValid(companyId: String) {
-        companyQueryManager.verifyCompanyIdExists(companyId)
+        companyQueryManager.assertCompanyIdExists(companyId)
     }
 
     override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
         ResponseEntity.ok(
             companyQueryManager.getCompanySubsidiariesByParentId(companyId),
         )
+
+    override fun postCompanyValidation(identifiers: List<String>): ResponseEntity<List<CompanyIdentifierValidationResult>> =
+        ResponseEntity
+            .ok(companyQueryManager.validateCompanyIdentifiers(identifiers))
 }

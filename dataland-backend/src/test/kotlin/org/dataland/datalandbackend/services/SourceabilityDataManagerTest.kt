@@ -116,7 +116,7 @@ class SourceabilityDataManagerTest(
             )
         doNothing()
             .whenever(mockCompanyQueryManager)
-            .verifyCompanyIdExists(sourceabilityInfo.companyId)
+            .assertCompanyIdExists(sourceabilityInfo.companyId)
         whenever(
             mockDataMetaInformationManager.searchDataMetaInfo(
                 DataMetaInformationSearchFilter(

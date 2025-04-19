@@ -65,7 +65,7 @@ class SourceabilityDataManager(
      */
     fun processSourceabilityDataStorageRequest(sourceabilityInfo: SourceabilityInfo) {
         val correlationId = generateCorrelationId(sourceabilityInfo.companyId, null)
-        companyQueryManager.verifyCompanyIdExists(sourceabilityInfo.companyId)
+        companyQueryManager.assertCompanyIdExists(sourceabilityInfo.companyId)
         val dataMetaInfo =
             dataMetaInformationManager.searchDataMetaInfo(
                 DataMetaInformationSearchFilter(

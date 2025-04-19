@@ -1,0 +1,308 @@
+<template>
+  <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
+    <h1>Loading portfolio data...</h1>
+    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+  </div>
+  <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
+    <h1>Error loading portfolio data</h1>
+    An unexpected error occurred. Please try again later or with [Ctrl] + [F5] or contact the support team if the issue
+    persists.
+  </div>
+  <div v-else>
+    <span class="button_bar">
+      <Dropdown
+        v-model="selectedFramework"
+        :options="frameworks"
+        optionLabel="label"
+        class="selection-button flex flex-row align-items-center"
+        style="width: 16em; display: inline-flex !important"
+        :data-test="'framework-dropdown'"
+      >
+        <template #dropdownicon>
+          <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
+            <polygon points="0,0 5,5 10,0" fill="currentColor" />
+          </svg>
+        </template>
+      </Dropdown>
+      <PrimeButton class="primary-button" @click="editPortfolio()">
+        <i class="material-icons pr-2">edit</i> Edit Portfolio
+      </PrimeButton>
+      <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+    </span>
+
+    <DataTable
+      stripedRows
+      removableSort
+      v-model:filters="filters"
+      filterDisplay="menu"
+      :value="selectedDetails"
+      tableStyle="min-width: 50rem"
+    >
+      <template #empty>
+        Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
+        companies or remove filter criteria.
+      </template>
+      <Column :sortable="true" field="companyName" header="Company Name" :showFilterMatchModes="false">
+        <template #body="company">
+          <a :href="`/companies/${company.data.companyId}`">{{ company.data.companyName }}</a>
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by company name"
+            :data-test="'companyNameFilterValue'"
+          />
+        </template>
+      </Column>
+      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false">
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by country"
+            :data-test="'countryCodeFilterValue'"
+          />
+        </template>
+      </Column>
+      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false">
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by sector"
+            :data-test="'sectorFilterValue'"
+          />
+        </template>
+      </Column>
+      <Column
+        :sortable="true"
+        field="latestReportingPeriod"
+        header="Last Reporting Period"
+        :showFilterMatchModes="false"
+      >
+        <template #body="company">
+          <a v-if="company.data.frameworkDataRef" :href="company.data.frameworkDataRef">{{
+            company.data.latestReportingPeriod
+          }}</a>
+          <span v-else>{{ company.data.latestReportingPeriod }}</span>
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <MultiSelect
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="reportingPeriodOptions"
+            placeholder="Filter by Reporting Period"
+            style="min-width: 14rem"
+            :maxSelectedLabels="1"
+          />
+        </template>
+      </Column>
+    </DataTable>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, inject, watch } from 'vue';
+import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import Dropdown from 'primevue/dropdown';
+import PrimeButton from 'primevue/button';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import InputText from 'primevue/inputtext';
+import MultiSelect from 'primevue/multiselect';
+import { FilterMatchMode } from 'primevue/api';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type Keycloak from 'keycloak-js';
+import { groupBy } from '@/utils/ArrayUtils.ts';
+import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
+import { useDialog } from 'primevue/usedialog';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
+
+class PortfolioEntryPrepared {
+  readonly companyId: string;
+  readonly companyName: string;
+  readonly sector?: string;
+  readonly country: string;
+  readonly framework: string;
+  readonly companyCockpitRef: string;
+  readonly frameworkDataRef?: string;
+  readonly latestReportingPeriod?: string;
+
+  constructor(portfolioEntry: EnrichedPortfolioEntry) {
+    this.companyId = portfolioEntry.companyId;
+    this.companyName = portfolioEntry.companyName;
+    this.sector = portfolioEntry.sector;
+    this.country = getCountryNameFromCountryCode(portfolioEntry.countryCode) ?? 'unknown';
+    this.framework = portfolioEntry.framework ?? '';
+    this.companyCockpitRef = portfolioEntry.companyCockpitRef;
+    this.frameworkDataRef =
+      portfolioEntry.frameworkDataRef ||
+      (portfolioEntry.latestReportingPeriod
+        ? `/companies/${portfolioEntry.companyId}/frameworks/${portfolioEntry.framework}`
+        : undefined);
+    this.latestReportingPeriod = portfolioEntry.latestReportingPeriod || 'No data available';
+  }
+}
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const dialog = useDialog();
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const emit = defineEmits(['update:portfolio-overview']);
+const reportingPeriodOptions = ref<string[]>([]);
+
+const filters = ref({
+  companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  country: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  sector: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  latestReportingPeriod: { value: [], matchMode: FilterMatchMode.IN },
+});
+
+const props = defineProps<{
+  portfolioId: string;
+}>();
+
+const enrichedPortfolio = ref<EnrichedPortfolio>();
+let groupedEntries = {} as Map<string, PortfolioEntryPrepared[]>;
+const frameworks = ref<{ label: string; value: string }[]>([]);
+const selectedFramework = ref<{ label: string; value: string }>();
+const selectedDetails = ref([] as PortfolioEntryPrepared[]);
+const isLoading = ref(true);
+const isError = ref(false);
+
+onMounted(() => {
+  loadPortfolio();
+});
+
+watch([selectedFramework, enrichedPortfolio], () => {
+  selectedDetails.value = groupedEntries.get(selectedFramework?.value?.value || '') || [];
+});
+
+/**
+ * (Re-)loads a portfolio
+ */
+function loadPortfolio(): void {
+  isLoading.value = true;
+  apiClientProvider.apiClients.portfolioController
+    .getEnrichedPortfolio(props.portfolioId)
+    .then((response) => {
+      enrichedPortfolio.value = response.data;
+
+      const preparedPortfolioEntries = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+
+      groupedEntries = groupBy(preparedPortfolioEntries, (item) => item.framework);
+      frameworks.value = getFrameworkListSorted();
+      selectedFramework.value = frameworks.value[0];
+
+      reportingPeriodOptions.value = Array.from(
+        new Set(
+          preparedPortfolioEntries
+            .map((entry) => entry.latestReportingPeriod)
+            .filter((period): period is string => typeof period === 'string')
+        )
+      ).sort();
+    })
+    .catch((reason) => {
+      console.error(reason);
+      isError.value = true;
+    })
+    .finally(() => (isLoading.value = false));
+}
+
+/**
+ * Resets all filters
+ */
+function resetFilters(): void {
+  let filterName: keyof typeof filters.value;
+  for (filterName in filters.value) {
+    filters.value[filterName].value = null;
+  }
+}
+
+/**
+ * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
+ * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
+ * implemented, the distinct frameworks are set as options for the framework-dropdown element.
+ */
+function getFrameworkListSorted(): { label: string; value: string }[] {
+  return Array.from(groupedEntries.keys())
+    .sort((a, b) => a.localeCompare(b))
+    .map((dataType) => {
+      return {
+        label: humanizeStringOrNumber(dataType),
+        value: dataType,
+      };
+    });
+}
+
+/**
+ * Opens the PortfolioDialog. OnClose, it reloads all portfolios and
+ */
+function editPortfolio(): void {
+  dialog.open(PortfolioDialog, {
+    props: {
+      header: 'Add Portfolio',
+      modal: true,
+    },
+    data: {
+      portfolio: enrichedPortfolio.value,
+    },
+    onClose() {
+      loadPortfolio();
+      emit('update:portfolio-overview');
+    },
+  });
+}
+</script>
+
+<style scoped lang="scss">
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:after {
+  content: '>';
+  margin: 0 0.5em;
+  font-weight: bold;
+}
+
+:deep(.p-inputtext) {
+  background: none;
+}
+
+:deep(.p-column-filter) {
+  margin: 0.5rem;
+}
+
+:deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
+  color: inherit;
+}
+
+.selection-button {
+  background: white;
+  color: #5a4f36;
+  border: 2px solid #5a4f36;
+  border-radius: 0.5em;
+  height: 2.25rem;
+}
+
+.button_bar {
+  display: flex;
+  margin: 1rem;
+  gap: 1rem;
+
+  :last-child {
+    margin-left: auto;
+  }
+}
+</style>

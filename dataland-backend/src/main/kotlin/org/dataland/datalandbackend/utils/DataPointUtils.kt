@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -97,4 +98,37 @@ class DataPointUtils
                     companyId = companyId,
                 )
             }
+
+        /**
+         * Retrieves all active data dimensions in regard to data points given the filter parameters
+         * @param dataDimensionFilter the filter parameters for the data dimensions
+         * @return a list of all active data dimensions
+         */
+        fun getAllActiveDataDimensions(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+            val dataMetaInformationEntities =
+                metaDataManager.getActiveDataDimensionsFromDataPoints(
+                    companyIds = dataDimensionFilter.companyIds,
+                    dataPointTypes = dataDimensionFilter.dataTypes,
+                    reportingPeriods = dataDimensionFilter.reportingPeriods,
+                )
+            val dataPointBasedDimensions = dataMetaInformationEntities.map { it.toBasicDataDimensions() }
+            val frameworkBasedDimensions = getAllActiveDataDimensionsForFrameworks(dataDimensionFilter)
+            return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
+        }
+
+        private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+            val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
+            val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
+            val frameworks = dataDimensionFilter.dataTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+            for (framework in frameworks) {
+                val activeDataPointMetaInformation =
+                    metaDataManager.getActiveDataDimensionsFromDataPoints(
+                        companyIds = dataDimensionFilter.companyIds,
+                        dataPointTypes = getRelevantDataPointTypes(framework).toList(),
+                        reportingPeriods = dataDimensionFilter.reportingPeriods,
+                    )
+                allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
+            }
+            return allRelevantDimensions.distinct()
+        }
     }

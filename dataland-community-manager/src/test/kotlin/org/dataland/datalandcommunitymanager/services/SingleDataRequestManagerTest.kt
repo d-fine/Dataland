@@ -20,16 +20,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
@@ -82,9 +81,8 @@ class SingleDataRequestManagerTest {
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
-                companyInfoService = mockCompanyInfoService,
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                utils = mockDataRequestProcessingUtils,
+                dataRequestProcessingUtils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
                 securityUtilsService = mockSecurityUtilsService,
@@ -249,7 +247,7 @@ class SingleDataRequestManagerTest {
             userId = any(),
             datalandCompanyId = any(),
             dataType = any(),
-            notifyMeImmediately = anyBoolean(),
+            notifyMeImmediately = any(),
             reportingPeriod = any(),
             contacts = any(),
             message = any(),
@@ -262,7 +260,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = DatalandAuthentication.fromContext().userId
 
-        assertThrows<NullPointerException> {
+        assertThrows<NoSuchElementException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
 
@@ -275,7 +273,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = "impersonated-user-id"
 
-        assertThrows<NullPointerException> {
+        assertThrows<NoSuchElementException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
         }
 

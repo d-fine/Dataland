@@ -29,6 +29,14 @@ export function assertDefined<T>(input: T | undefined | null): T {
 }
 
 /**
+ * Utility function to delay the execution of consequent code blocks
+ * @param ms time in milliseconds
+ */
+export function delay(ms: number): Promise<number> {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+/**
  * Verifies that the input is a string array in a typescript typesafe manner
  * @param input the input to check
  * @returns true iff the input is a string array

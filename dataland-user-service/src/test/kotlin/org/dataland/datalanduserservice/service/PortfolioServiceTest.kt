@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -155,6 +156,16 @@ class PortfolioServiceTest {
                 dummyCorrelationId,
             )
         }
+    }
+
+    @Test
+    fun `verify that retrieving all portfolio names for dummyUser1 yields correct results`() {
+        doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
+            .whenever(mockPortfolioRepository)
+            .getAllByUserId(dummyUserId)
+        val expectedPortfolioNames = listOf(BasePortfolioName(dummyPortfolio), BasePortfolioName(dummyPortfolio2))
+        val portfolioNames = assertDoesNotThrow { portfolioService.getAllPortfolioNamesForCurrentUser() }
+        assertEquals(expectedPortfolioNames, portfolioNames)
     }
 
     /**
