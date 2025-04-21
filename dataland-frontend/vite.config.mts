@@ -85,6 +85,9 @@ export default defineConfig({
     host: '0.0.0.0',
     strictPort: true,
     allowedHosts: true,
+    warmup: {
+      clientFiles: ['./src/components/pages/*.vue'],
+    },
     watch: {
       ignored: ['**/coverage/**'],
       usePolling: process.env.POLLING === 'true',
