@@ -19,12 +19,13 @@ describe('check that the document link component works and is displayed correctl
       },
     }).then(() => {
       validateNoIcons();
-      cy.get("[data-test='Report-Download-Test']").should('exist').click();
+      cy.get("[data-test='Report-Download-Test']").click();
       cy.wait('@downloadComplete').then(() => {
         validateNoIcons();
       });
     });
   });
+
   it('Check that Download Progress Spinner appears if the prop changes', function (): void {
     cy.mountWithPlugins(DocumentLink, {
       props: {
@@ -32,23 +33,16 @@ describe('check that the document link component works and is displayed correctl
         fileReference: 'dummyFileReference',
         dataType: DataTypeEnum.Heimathafen,
       },
-      data() {
-        return {
-          percentCompleted: undefined,
-        };
-      },
     }).then((mounted) => {
       validateNoIcons();
 
-      void mounted.wrapper
-        .setData({
-          percentCompleted: 50,
-        })
-        .then(() => {
-          cy.get('[data-test="spinner-icon"]').should('exist');
-          cy.get("[data-test='percentage-text']").should('exist').should('have.text', '50%');
-          cy.get("[data-test='checkmark-icon']").should('not.exist');
-        });
+      mounted.wrapper.percentCompleted = 50;
+
+      console.log(mounted.wrapper.percentCompleted);
+
+      cy.get('[data-test="spinner-icon"]').should('exist');
+      cy.get("[data-test='percentage-text']").should('exist').should('have.text', '50%');
+      cy.get("[data-test='checkmark-icon']").should('not.exist');
     });
   });
 
