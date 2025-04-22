@@ -242,8 +242,7 @@ async function deletePortfolio(): Promise<void> {
       portfolioId: portfolioId.value,
     });
   } catch (error) {
-    portfolioErrors.value =
-        error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
+    portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }
 }
 
@@ -277,8 +276,8 @@ function processCompanyInputString(): string[] {
 }
 
 .deleteButton {
-    min-width: fit-content;
-    padding: 1em;
+  min-width: fit-content;
+  padding: 1em;
 }
 
 .p-message :deep(.p-message-wrapper) {
