@@ -229,7 +229,12 @@ async function savePortfolio(): Promise<void> {
 }
 
 async function deletePortfolio(): Promise<void> {
-  if (!portfolioId.value) return;
+  console.log('🧪 DELETE portfolio triggered');
+  if (!portfolioId.value) {
+    console.warn('⚠️ No portfolioId!');
+    return;
+  }
+
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
     dialogRef?.value.close({
@@ -237,7 +242,8 @@ async function deletePortfolio(): Promise<void> {
       portfolioId: portfolioId.value,
     });
   } catch (error) {
-    portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
+    portfolioErrors.value =
+        error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }
 }
 

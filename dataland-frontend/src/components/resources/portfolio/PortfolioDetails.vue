@@ -92,7 +92,13 @@
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <div v-for="category of reportingPeriodOptions" :key="category" class="filter-checkbox">
-            <Checkbox v-model="filterModel.value" :inputId="category" name="category" :value="category" @change="filterCallback"/>
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="category"
+              name="category"
+              :value="category"
+              @change="filterCallback"
+            />
             <label :for="category">{{ category }}</label>
           </div>
         </template>
@@ -176,9 +182,19 @@ onMounted(() => {
 });
 
 watch([selectedFramework, enrichedPortfolio], () => {
-  selectedDetails.value = groupedEntries.get(selectedFramework?.value?.value || '') || [];
-});
+  const currentFramework = selectedFramework?.value?.value || '';
+  const entries = groupedEntries.get(currentFramework) || [];
 
+  selectedDetails.value = entries;
+
+  reportingPeriodOptions.value = Array.from(
+      new Set(
+          entries
+              .map((entry) => entry.latestReportingPeriod)
+              .filter((period): period is string => typeof period === 'string')
+      )
+  ).sort();
+});
 /**
  * (Re-)loads a portfolio
  */
@@ -194,14 +210,6 @@ function loadPortfolio(): void {
       groupedEntries = groupBy(preparedPortfolioEntries, (item) => item.framework);
       frameworks.value = getFrameworkListSorted();
       selectedFramework.value = frameworks.value[0];
-
-      reportingPeriodOptions.value = Array.from(
-        new Set(
-          preparedPortfolioEntries
-            .map((entry) => entry.latestReportingPeriod)
-            .filter((period): period is string => typeof period === 'string')
-        )
-      ).sort();
     })
     .catch((reason) => {
       console.error(reason);
@@ -242,7 +250,7 @@ function getFrameworkListSorted(): { label: string; value: string }[] {
 function editPortfolio(): void {
   dialog.open(PortfolioDialog, {
     props: {
-      header: 'Add Portfolio',
+      header: 'Edit Portfolio',
       modal: true,
     },
     data: {
@@ -257,7 +265,6 @@ function editPortfolio(): void {
 </script>
 
 <style scoped lang="scss">
-
 label {
   margin-left: 0.5em;
 }
