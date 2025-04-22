@@ -65,12 +65,11 @@ class UserServiceTest {
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
             val timestampBeforeUpload = System.currentTimeMillis()
-            Thread.sleep(10)
             ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolio) }
             val portfolioResponse =
                 assertDoesNotThrow {
                     UserService.portfolioControllerApi.getAllPortfoliosForCurrentUser().filter {
-                        it.creationTimestamp > timestampBeforeUpload
+                        it.creationTimestamp >= timestampBeforeUpload
                     }
                 }
             assertEquals(1, portfolioResponse.size)
@@ -79,7 +78,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `test that enriched portfolios are build as expected`() {
+    fun `test that enriched portfolios are built as expected`() {
         val storedCompanies = uploadDummyCompaniesAndDatasets()
         val portfolioUpload = createDummyPortfolioUpload(storedCompanies.map { it.companyId }.toSet())
 
