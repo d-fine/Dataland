@@ -31,21 +31,20 @@ describeIf(
     it('Creates, edits, and deletes a portfolio', () => {
       cy.closeCookieBannerIfItExists();
 
-      // Timeout für das Abrufen des Buttons erhöhen
       cy.get('[data-test="addNewPortfolio"]', { timeout: 10000 }).click();
 
       cy.get('[name="portfolioName"]').type(portfolioName, { timeout: 10000 });
       cy.get('[name="company-identifiers"]').type(permIdOfExistingCompany, { timeout: 10000 });
       cy.get('[data-test="addCompanies"]', { timeout: 10000 }).click();
 
-      // Timeout erhöhen für den Speichern-Button
       cy.get('[data-test="saveButton"]', { timeout: 10000 }).should('not.be.disabled').click();
       cy.contains('[name="portfolioName"]', portfolioName, { timeout: 10000 }).should('be.visible');
 
       cy.contains('[name="portfolioName"]', portfolioName, { timeout: 10000 }).click();
       cy.get('[data-test="edit-portfolio"]', { timeout: 10000 }).click();
 
-      cy.get('[name="portfolioName"]', { timeout: 10000 }).clear().type(editedPortfolioName);
+      cy.get('[name="portfolioName"]', { timeout: 10000 }).clear();
+      cy.get('[name="portfolioName"]', { timeout: 10000 }).type(editedPortfolioName);
       cy.get('[data-test="saveButton"]', { timeout: 10000 }).click();
       cy.contains('[data-test="portfolio-name"]', editedPortfolioName, { timeout: 10000 }).should('be.visible');
 
