@@ -103,4 +103,42 @@ describe('Check the portfolio dialog', function (): void {
       });
     });
   });
+
+  it('Should delete the portfolio', function (): void {
+    cy.intercept('DELETE', '**/portfolios/**', (req) => {
+      console.log('Intercepted DELETE:', req.url);
+      req.reply({
+        statusCode: 200,
+        body: { message: 'Portfolio deleted successfully' },
+      });
+    }).as('deletePortfolio');
+
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDialog, {
+      keycloak: minimalKeycloakMock({}),
+      global: {
+        provide: {
+          dialogRef: {
+            value: {
+              data: {
+                portfolio: portfolioFixture,
+              },
+              close: cy.stub().as('dialogClose'),
+            },
+          },
+        },
+      },
+    }).then(() => {
+      cy.get('[data-test="deleteButton"]').should('exist');
+      cy.get('[data-test="deleteButton"]').click();
+      cy.wait('@deletePortfolio').its('response.statusCode').should('eq', 200);
+      cy.intercept('DELETE', '**/portfolios/**', (req) => {
+        console.log('Intercepted DELETE call to:', req.url);
+        req.reply({
+          statusCode: 200,
+          body: { message: 'Portfolio deleted successfully' },
+        });
+      }).as('deletePortfolio');
+    });
+  });
 });
