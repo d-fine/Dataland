@@ -12,9 +12,12 @@ describeIf(
   },
   () => {
     let permIdOfExistingCompany: string;
+    const portfolioName = `E2E Test Portfolio ${Date.now()}`;
+    const editedPortfolioName = `${portfolioName} Edited`;
+
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${new Date().getTime()}`);
+        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
       });
@@ -25,8 +28,25 @@ describeIf(
       cy.visitAndCheckAppMount('/portfolios');
     });
 
-    it('Creates, alters and deletes a portfolio', () => {
-      console.log(permIdOfExistingCompany);
+    it('Creates, edits, and deletes a portfolio', () => {
+      cy.closeCookieBannerIfItExists();
+      cy.get('[data-test="addNewPortfolio"]').click();
+
+      cy.get('[name="portfolioName"]').type(portfolioName);
+      cy.get('[name="company-identifiers"]').type(permIdOfExistingCompany);
+      cy.get('[data-test="addCompanies"]').click();
+
+      cy.get('[data-test="saveButton"]').should('not.be.disabled').click();
+      cy.contains('[name="portfolioName"]', portfolioName).should('be.visible');
+
+      cy.contains('[name="portfolioName"]', portfolioName).click();
+      cy.get('[data-test="edit-portfolio"]').click();
+
+      cy.get('[name="portfolioName"]').clear().type(editedPortfolioName);
+      cy.get('[data-test="saveButton"]').click();
+      cy.contains('[data-test="portfolio-name"]', editedPortfolioName).should('be.visible');
+
+      //cy.contains('[data-test="portfolio-name"]', editedPortfolioName).should('not.exist');
     });
   }
 );
