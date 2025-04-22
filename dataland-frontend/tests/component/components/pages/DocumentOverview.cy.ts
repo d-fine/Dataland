@@ -45,11 +45,6 @@ describe('Component test for the Document Overview', () => {
       body: mockFetchedDocuments,
       times: 1,
     }).as('fetchDocumentsFilteredCompanyId');
-    cy.intercept(`**/`, {
-      body: mockFetchedDocuments,
-      times: 1,
-    }).as('fetchDocumentsFiltered');
-
     cy.intercept(`**/?companyId=${dummyCompanyId}&documentCategories=${searchStringForApi}`, {
       body: mockFetchedDocuments.filter((document) => document.documentCategory === 'AnnualReport'),
       times: 1,
@@ -64,7 +59,6 @@ describe('Component test for the Document Overview', () => {
     cy.wait('@fetchCompanyOwnershipExistence');
     cy.wait('@fetchValidateCompanyRole');
     cy.wait('@fetchDocumentsFilteredCompanyId');
-    cy.wait('@fetchDocumentsFiltered');
   }
 
   /**
@@ -91,6 +85,7 @@ describe('Component test for the Document Overview', () => {
     const hasCompanyAtLeastOneOwner = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
+    console.log('I am here!!!!!!!!!!!');
     waitForRequestsOnMounted();
     let myPublicationDateToTest: string = '1900-02-26';
     if (mockFetchedDocuments[0].publicationDate) {

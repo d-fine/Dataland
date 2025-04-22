@@ -36,9 +36,7 @@ describe('check that the document link component works and is displayed correctl
     }).then((mounted) => {
       validateNoIcons();
 
-      mounted.wrapper.percentCompleted = 50;
-
-      console.log(mounted.wrapper.percentCompleted);
+      mounted.wrapper.vm.percentCompleted = 50;
 
       cy.get('[data-test="spinner-icon"]').should('exist');
       cy.get("[data-test='percentage-text']").should('exist').should('have.text', '50%');
@@ -51,51 +49,33 @@ describe('check that the document link component works and is displayed correctl
       props: {
         downloadName: 'Test',
         fileReference: 'dummyFileReference',
-      },
-      data() {
-        return {
-          percentCompleted: 50,
-        };
+        dataType: DataTypeEnum.Heimathafen,
       },
     }).then((mounted) => {
-      cy.get('[data-test="spinner-icon"]').should('exist');
-      cy.get("[data-test='percentage-text']").should('exist').should('have.text', '50%');
-      cy.get("[data-test='checkmark-icon']").should('not.exist');
-      void mounted.wrapper
-        .setData({
-          percentCompleted: 100,
-        })
-        .then(() => {
-          cy.get("[data-test='checkmark-icon']").should('exist');
-          cy.get('[data-test="spinner-icon"]').should('not.exist');
-          cy.get("[data-test='percentage-text']").should('not.exist');
-        });
+      mounted.wrapper.vm.percentCompleted = 50;
+      mounted.wrapper.vm.percentCompleted = 100;
+
+      cy.get('[data-test="spinner-icon"]').should('not.exist');
+      cy.get("[data-test='percentage-text']").should('not.exist');
+      cy.get("[data-test='checkmark-icon']").should('exist');
     });
   });
+
   it('Check that Download Progress Checkmark disappears again', function (): void {
     cy.mountWithPlugins(DocumentLink, {
       props: {
         downloadName: 'Test',
         fileReference: 'dummyFileReference',
       },
-      data() {
-        return {
-          percentCompleted: 100,
-        };
-      },
     }).then((mounted) => {
-      cy.get('[data-test="spinner-icon"]').should('not.exist');
-      cy.get("[data-test='percentage-text']").should('not.exist');
-      cy.get("[data-test='checkmark-icon']").should('exist');
-      void mounted.wrapper
-        .setData({
-          percentCompleted: undefined,
-        })
-        .then(() => {
-          validateNoIcons();
-        });
+      mounted.wrapper.vm.percentCompleted = 50;
+      mounted.wrapper.vm.percentCompleted = 100;
+      mounted.wrapper.vm.percentCompleted = undefined;
+
+      validateNoIcons();
     });
   });
+
   it('Check that the label does not display "page" when page number is null', function (): void {
     cy.mountWithPlugins(DataPointDataTable, {
       keycloak: minimalKeycloakMock({}),

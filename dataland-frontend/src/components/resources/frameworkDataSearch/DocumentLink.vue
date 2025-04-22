@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, provide, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -45,8 +45,6 @@ import { getFileExtensionFromHeaders, getMimeTypeFromHeaders } from '@/utils/Axi
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const percentCompleted = ref<number | undefined>(undefined);
-
-provide('percentCompleted', percentCompleted);
 
 const props = defineProps({
   label: String,
