@@ -63,6 +63,15 @@
         class="primary-button"
         :data-test="'saveButton'"
       />
+      <PrimeButton
+        v-if="portfolioId"
+        icon="pi pi-trash"
+        @click="deletePortfolio"
+        class="primary-button p-button-sm deleteButton"
+        :data-test="'deleteButton'"
+        title="Delete the selected Portfolio"
+        style="width: 1em; padding: 1em"
+      />
     </div>
   </div>
 </template>
@@ -219,6 +228,19 @@ async function savePortfolio(): Promise<void> {
   }
 }
 
+async function deletePortfolio(): Promise<void> {
+  if (!portfolioId.value) return;
+  try {
+    await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
+    dialogRef?.value.close({
+      deleted: true,
+      portfolioId: portfolioId.value,
+    });
+  } catch (error) {
+    portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
+  }
+}
+
 /**
  * Type Guard to convince typescript that undefined is really filtered out
  * @param framework
@@ -246,6 +268,11 @@ function processCompanyInputString(): string[] {
   flex-direction: column;
   width: 50vw;
   position: relative;
+}
+
+.deleteButton {
+    min-width: fit-content;
+    padding: 1em;
 }
 
 .p-message :deep(.p-message-wrapper) {
