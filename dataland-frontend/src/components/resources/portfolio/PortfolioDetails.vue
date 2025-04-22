@@ -188,11 +188,11 @@ watch([selectedFramework, enrichedPortfolio], () => {
   selectedDetails.value = entries;
 
   reportingPeriodOptions.value = Array.from(
-      new Set(
-          entries
-              .map((entry) => entry.latestReportingPeriod)
-              .filter((period): period is string => typeof period === 'string')
-      )
+    new Set(
+      entries
+        .map((entry) => entry.latestReportingPeriod)
+        .filter((period): period is string => typeof period === 'string')
+    )
   ).sort();
 });
 /**
