@@ -91,14 +91,10 @@
           <span v-else>{{ company.data.latestReportingPeriod }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <MultiSelect
-            v-model="filterModel.value"
-            @change="filterCallback()"
-            :options="reportingPeriodOptions"
-            placeholder="Filter by Reporting Period"
-            style="min-width: 14rem"
-            :maxSelectedLabels="1"
-          />
+          <div v-for="category of reportingPeriodOptions" :key="category" class="filter-checkbox">
+            <Checkbox v-model="filterModel.value" :inputId="category" name="category" :value="category" @change="filterCallback"/>
+            <label :for="category">{{ category }}</label>
+          </div>
         </template>
       </Column>
     </DataTable>
@@ -114,7 +110,6 @@ import PrimeButton from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
-import MultiSelect from 'primevue/multiselect';
 import { FilterMatchMode } from 'primevue/api';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -123,6 +118,7 @@ import { groupBy } from '@/utils/ArrayUtils.ts';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
+import Checkbox from 'primevue/checkbox';
 
 class PortfolioEntryPrepared {
   readonly companyId: string;
@@ -261,6 +257,15 @@ function editPortfolio(): void {
 </script>
 
 <style scoped lang="scss">
+
+label {
+  margin-left: 0.5em;
+}
+
+.filter-checkbox {
+  margin: 0.25em 0;
+}
+
 a {
   color: var(--primary-color);
   text-decoration: none;
