@@ -45,9 +45,9 @@ class PortfolioEnrichmentService
         /**
          * Return a mapping "(companyId, framework) --> latest available reporting period" for each combination of companies and frameworks
          * @param companyIds the list of companies for which the latest available reporting period shall be returned
-         * @param dataTypes the list of framworks for which the latest available reporting period shall be returned
+         * @param dataTypes the list of frameworks for which the latest available reporting period shall be returned
          */
-        private fun getMostRecentDataPerCompanyAndFramework(
+        private fun getMostRecentReportingPeriodPerCompanyAndFramework(
             companyIds: List<String>,
             dataTypes: List<String>,
         ): Map<Pair<String, String>, String> {
@@ -71,11 +71,11 @@ class PortfolioEnrichmentService
             frameworkList: List<String>,
         ): List<EnrichedPortfolioEntry> {
             val companyValidationResults = companyDataControllerApi.postCompanyValidation(companyIdList)
-            val mostRecentData = getMostRecentDataPerCompanyAndFramework(companyIdList, frameworkList)
+            val mostRecentData = getMostRecentReportingPeriodPerCompanyAndFramework(companyIdList, frameworkList)
             val enrichedEntries = mutableListOf<EnrichedPortfolioEntry>()
 
             companyValidationResults.forEach { validationResult ->
-                val companyInformation = validationResult?.companyInformation ?: return@forEach
+                val companyInformation = validationResult.companyInformation ?: return@forEach
                 frameworkList.forEach { framework ->
                     enrichedEntries.add(
                         getEnrichedEntry(
