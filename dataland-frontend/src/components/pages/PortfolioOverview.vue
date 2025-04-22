@@ -9,7 +9,7 @@
           </TabPanel>
           <TabPanel>
             <template #header>
-              <div class="p-tabview-nav" @click="addNewPortfolio">
+              <div class="p-tabview-nav" @click="addNewPortfolio" data-test="addNewPortfolio">
                 <span class="align-self-start"><i class="pi pi-plus pr-2" /> New Portfolio</span>
               </div>
             </template>
