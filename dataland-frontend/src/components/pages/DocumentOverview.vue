@@ -130,6 +130,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
@@ -142,16 +143,14 @@ watch(selectedDocumentType, () => {
 async function getAllDocumentsForFilters(): Promise<void> {
   waitingForData.value = true;
   try {
-    const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-      .documentController;
+    const documentControllerApi = apiClientProvider.apiClients.documentController;
     documentsFiltered.value = (
       await documentControllerApi.searchForDocumentMetaInformation(
         props.companyId,
         selectedDocumentType.value ? convertToEnumSet(selectedDocumentType) : undefined
       )
     ).data;
-    const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
-    const metaDataControllerApi = backendClients.metaDataController;
+    const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
     const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
     dataMetaInformation.value = apiResponse.data;
   } catch (error) {
