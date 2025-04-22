@@ -28,8 +28,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject } from 'vue';
+<script setup lang="ts">
+import { computed, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -42,125 +42,114 @@ import {
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import { getFileExtensionFromHeaders, getMimeTypeFromHeaders } from '@/utils/Axios';
 
-export default defineComponent({
-  name: 'DocumentLink',
-  components: { DownloadProgressSpinner },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  data() {
-    return {
-      percentCompleted: undefined as number | undefined,
-    };
-  },
-  props: {
-    label: String,
-    suffix: String,
-    page: { type: Number, required: false },
-    downloadName: { type: String, required: true },
-    fileReference: { type: String, required: true },
-    dataId: String,
-    dataType: String,
-    showIcon: Boolean,
-    fontStyle: String,
-  },
-  methods: {
-    /**
-     * Method to download available reports
-     */
-    async downloadDocument() {
-      const fileReference: string = this.fileReference;
-      this.percentCompleted = 0;
-      try {
-        const docUrl = document.createElement('a');
-        if (this.isPrivateFrameworkDocumentLink) {
-          await this.handlePrivateDocumentDownload(fileReference, docUrl);
-        } else {
-          await this.handlePublicDocumentDownload(fileReference, docUrl);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      this.percentCompleted = undefined;
-    },
-    /**
-     * This method retrieves the documents for private data frameworks
-     * @param fileReference hash of the document to be retrieved
-     * @param docUrl initial reference of the document reference
-     */
-    async handlePrivateDocumentDownload(fileReference: string, docUrl: HTMLAnchorElement) {
-      if (!this.dataId) throw new Error('Data id is required for private framework document download');
-      if (!this.dataType) throw new Error('Data type is required for private framework document download');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      let privateDataControllerApi: PrivateFrameworkDataApi<unknown>;
-      const frameworkDefinition = getBasePrivateFrameworkDefinition(this.dataType);
-      if (frameworkDefinition) {
-        privateDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
-          undefined,
-          apiClientProvider.axiosInstance
-        );
-        let downloadCompleted = false;
-        await privateDataControllerApi
-          .getPrivateDocument(this.dataId, fileReference, {
-            responseType: 'arraybuffer',
-            onDownloadProgress: (progressEvent) => {
-              if (!downloadCompleted && progressEvent.total != null)
-                this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            },
-          })
-          .then((getDocumentsFromStorageResponse) => {
-            downloadCompleted = true;
-            this.percentCompleted = 100;
-            const fileExtension = getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-            const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
-            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
-            docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute('download', `${this.downloadName}.${fileExtension}`);
-            document.body.appendChild(docUrl);
-            docUrl.click();
-          });
-      }
-    },
-    /**
-     * This method retrieves the documents for public data frameworks
-     * @param fileReference hash of the document to be retrieved
-     * @param docUrl initial reference of the document reference
-     */
-    async handlePublicDocumentDownload(fileReference: string, docUrl: HTMLAnchorElement) {
-      const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-        .documentController;
-      let downloadCompleted = false;
-      await documentControllerApi
-        .getDocument(fileReference, {
-          responseType: 'arraybuffer',
-          onDownloadProgress: (progressEvent) => {
-            if (!downloadCompleted && progressEvent.total != null)
-              this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          },
-        })
-        .then((getDocumentsFromStorageResponse) => {
-          downloadCompleted = true;
-          this.percentCompleted = 100;
-          const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
-          const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
-          docUrl.href = URL.createObjectURL(newBlob);
-          docUrl.target = '_blank';
-          docUrl.dataset.test = `report-${this.downloadName}-link`;
-          if (this.page) docUrl.href += `#page=${this.page}`;
-          document.body.appendChild(docUrl);
-          docUrl.click();
-        });
-    },
-  },
-  computed: {
-    isPrivateFrameworkDocumentLink(): boolean {
-      return !!this.dataType && getAllPrivateFrameworkIdentifiers().includes(this.dataType);
-    },
-  },
+const percentCompleted = ref<number | undefined>(undefined);
+
+const props = defineProps({
+  label: String,
+  suffix: String,
+  page: { type: Number, required: false },
+  downloadName: { type: String, required: true },
+  fileReference: { type: String, required: true },
+  dataId: String,
+  dataType: String,
+  showIcon: Boolean,
+  fontStyle: String,
 });
+
+const isForDownloadOfPrivateFrameworkDocument = computed(() => {
+  return !!props.dataType && getAllPrivateFrameworkIdentifiers().includes(props.dataType);
+});
+
+/**
+ * Method to download available reports
+ */
+const downloadDocument = async (): Promise<void> => {
+  percentCompleted.value = 0;
+  try {
+    const docUrl = document.createElement('a');
+    if (isForDownloadOfPrivateFrameworkDocument.value) {
+      await handlePrivateDocumentDownload(props.fileReference, docUrl);
+    } else {
+      await handlePublicDocumentDownload(props.fileReference, docUrl);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  percentCompleted.value = undefined;
+};
+
+/**
+ * This method retrieves the documents for private data frameworks
+ * @param fileReference hash of the document to be retrieved
+ * @param docUrl initial reference of the document reference
+ */
+const handlePrivateDocumentDownload = async (fileReference: string, docUrl: HTMLAnchorElement): Promise<void> => {
+  if (!props.dataId) throw new Error('Data id is required for private framework document download');
+  if (!props.dataType) throw new Error('Data type is required for private framework document download');
+
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  let privateDataControllerApi: PrivateFrameworkDataApi<unknown>;
+  const frameworkDefinition = getBasePrivateFrameworkDefinition(props.dataType);
+  if (frameworkDefinition) {
+    privateDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
+      undefined,
+      apiClientProvider.axiosInstance
+    );
+    let downloadCompleted = false;
+    await privateDataControllerApi
+      .getPrivateDocument(props.dataId, fileReference, {
+        responseType: 'arraybuffer',
+        onDownloadProgress: (progressEvent) => {
+          if (!downloadCompleted && progressEvent.total != null)
+            percentCompleted.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        },
+      })
+      .then((getDocumentsFromStorageResponse) => {
+        downloadCompleted = true;
+        percentCompleted.value = 100;
+        const fileExtension = getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+        const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+        const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
+        docUrl.href = URL.createObjectURL(newBlob);
+        docUrl.setAttribute('download', `${props.downloadName}.${fileExtension}`);
+        document.body.appendChild(docUrl);
+        docUrl.click();
+      });
+  }
+};
+
+/**
+ * This method retrieves the documents for public data frameworks
+ * @param fileReference hash of the document to be retrieved
+ * @param docUrl initial reference of the document reference
+ */
+const handlePublicDocumentDownload = async (fileReference: string, docUrl: HTMLAnchorElement): Promise<void> => {
+  const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+    .documentController;
+  let downloadCompleted = false;
+  await documentControllerApi
+    .getDocument(fileReference, {
+      responseType: 'arraybuffer',
+      onDownloadProgress: (progressEvent) => {
+        if (!downloadCompleted && progressEvent.total != null)
+          percentCompleted.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      },
+    })
+    .then((getDocumentsFromStorageResponse) => {
+      downloadCompleted = true;
+      percentCompleted.value = 100;
+      const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+      const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
+      docUrl.href = URL.createObjectURL(newBlob);
+      docUrl.target = '_blank';
+      docUrl.dataset.test = `report-${props.downloadName}-link`;
+      if (props.page) docUrl.href += `#page=${props.page}`;
+      document.body.appendChild(docUrl);
+      docUrl.click();
+    });
+};
 </script>
 
 <style scoped>
