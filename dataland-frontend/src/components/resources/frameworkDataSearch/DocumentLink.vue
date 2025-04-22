@@ -6,7 +6,7 @@
       :class="fontStyle"
       :title="downloadName"
       :data-test="'download-link-' + downloadName"
-      style="display: grid; grid-template-columns: fit-content(500px) max-content 1.5em 1.5em"
+      style="display: grid; grid-template-columns: fit-content(100%) max-content 1.5em 0.5em 1.5em"
     >
       <span
         class="underline pl-1"
@@ -22,6 +22,7 @@
         aria-hidden="true"
         style="font-size: 12px; margin: auto"
       />
+      <span> </span>
       <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
   </div>
