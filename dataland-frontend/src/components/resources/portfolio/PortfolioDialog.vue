@@ -69,9 +69,6 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
-import type { DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type {
   BasePortfolioName,
@@ -109,12 +106,6 @@ const portfolioFrameworks = ref<string[]>([
   'nuclear-and-gas',
 ]);
 
-const allFrameworks: DropdownOption[] = FRAMEWORKS_WITH_VIEW_PAGE.map((framework) => {
-  return {
-    value: framework,
-    label: humanizeStringOrNumber(framework),
-  };
-});
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isValidPortfolioUpload = computed(
