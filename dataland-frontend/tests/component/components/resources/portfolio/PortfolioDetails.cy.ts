@@ -108,7 +108,12 @@ function checkFilter(columnSelector: string, inputSelector: string, needle: stri
   const filterButtonSelector = `table tr:first-child th:${columnSelector} [data-pc-section="filtermenubutton"]`;
   cy.get(rowsSelector).should('have.length', 4);
   cy.get(filterButtonSelector).click();
-  cy.get(`[data-test="${inputSelector}"]`).type(needle);
+
+  if (inputSelector == 'latestReportingPeriodeFilterValue') {
+    cy.get(`[data-test="${inputSelector}"]`).first().click();
+  } else {
+    cy.get(`[data-test="${inputSelector}"]`).type(needle);
+  }
   cy.get(filterButtonSelector).click();
   cy.get(rowsSelector).should('have.length', matches);
   cy.get('[data-test="reset-filter"]').click();

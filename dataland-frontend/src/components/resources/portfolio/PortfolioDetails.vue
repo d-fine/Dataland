@@ -97,6 +97,7 @@
               :inputId="category"
               name="category"
               :value="category"
+              :data-test="'latestReportingPeriodeFilterValue'"
               @change="filterCallback"
             />
             <label :for="category">{{ category }}</label>
