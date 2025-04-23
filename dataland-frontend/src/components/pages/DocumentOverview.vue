@@ -68,6 +68,7 @@
               dataId: undefined,
               dataType: undefined,
             }"
+            style="display: grid; grid-template-columns: 7em; justify-items: center; grid-template-rows: 1.75em"
           />
         </template>
       </Column>
