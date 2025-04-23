@@ -127,6 +127,11 @@ import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import Checkbox from 'primevue/checkbox';
 
+/**
+ * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
+ * by transforming and enriching fields, such as converting country codes to names,
+ * resolving fallback values, and constructing framework-related URLs.
+ */
 class PortfolioEntryPrepared {
   readonly companyId: string;
   readonly companyName: string;
@@ -230,9 +235,8 @@ function resetFilters(): void {
 }
 
 /**
- * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
- * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
- * implemented, the distinct frameworks are set as options for the framework-dropdown element.
+ * Extracts all distinct frameworks that are supported in the frontend from the metadata.
+ * Then the resulting list is sorted alphabetically.
  */
 function getFrameworkListSorted(): { label: string; value: string }[] {
   return Array.from(groupedEntries.keys())
@@ -246,7 +250,9 @@ function getFrameworkListSorted(): { label: string; value: string }[] {
 }
 
 /**
- * Opens the PortfolioDialog. OnClose, it reloads all portfolios and
+ * Opens the PortfolioDialog with the current portfolio's data for editing.
+ * Once the dialog is closed, it reloads the portfolio data and emits an update event
+ * to refresh the portfolio overview.
  */
 function editPortfolio(): void {
   dialog.open(PortfolioDialog, {

@@ -153,7 +153,7 @@ function getUniqueCompanies(entries: EnrichedPortfolioEntry[]): CompanyIdAndName
 }
 
 /**
- * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input textfield.
+ * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input text field.
  */
 async function addCompanies(): Promise<void> {
   const newIdentifiers = processCompanyInputString();
@@ -233,9 +233,7 @@ async function savePortfolio(): Promise<void> {
  * Logs a warning if portfolioId is missing.
  */
 async function deletePortfolio(): Promise<void> {
-  console.log('🧪 DELETE portfolio triggered');
   if (!portfolioId.value) {
-    console.warn('⚠️ No portfolioId!');
     return;
   }
 
@@ -251,7 +249,7 @@ async function deletePortfolio(): Promise<void> {
 }
 
 /**
- * Type Guard to convince typescript that undefined is really filtered out
+ * Type Guard to convince typescript that undefined is really filtered out.
  * @param framework
  */
 function isFramework(framework: string | undefined): framework is string {
@@ -259,8 +257,8 @@ function isFramework(framework: string | undefined): framework is string {
 }
 
 /**
- * Processes the companyIdentifierInput, replaces whitespaces by commas, adds the individual companyIds to
- * portfolioCompanyIds, and afterward updates the input
+ * Parses the user input of company identifiers by replacing whitespace and separators
+ * with commas, then splits and filters the input into a unique list of non-empty identifiers.
  */
 function processCompanyInputString(): string[] {
   const uniqueIdentifiers = new Set<string>([

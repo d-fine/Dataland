@@ -136,7 +136,8 @@ function onTabChange(event: TabViewChangeEvent): void {
 }
 
 /**
- * Opens the PortfolioDialog. OnClose, it reloads all portfolios and
+ * Opens the PortfolioDialog, reloads all portfolios and
+ * sets the newly created one as the active tab by updating currentIndex.
  */
 function addNewPortfolio(): void {
   dialog.open(PortfolioDialog, {

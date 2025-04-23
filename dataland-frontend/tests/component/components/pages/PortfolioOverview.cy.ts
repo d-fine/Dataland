@@ -61,4 +61,30 @@ describe('Check the portfolio overview view', function (): void {
       });
     });
   });
+  it('Should persist selected portfolio after page reload', function (): void {
+    const portfolios: BasePortfolioName[] = [
+      { portfolioId: '1', portfolioName: 'MyFirstPortfolio' },
+      { portfolioId: '2', portfolioName: 'MySecondPortfolio' },
+      { portfolioId: '3', portfolioName: 'MyThirdPortfolio' },
+    ];
+
+    window.localStorage.setItem('lastPortfolioIndex', '2');
+
+    cy.intercept('**/users/portfolios/names', portfolios).as('basePortfolios');
+
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioOverview, {
+      keycloak: minimalKeycloakMock({}),
+    });
+
+    cy.wait('@basePortfolios').then(() => {
+      cy.get('[class="p-tabview-header p-highlight"]').should('contain', 'MyThirdPortfolio');
+
+      cy.reload();
+
+      cy.wait('@basePortfolios').then(() => {
+        cy.get('[class="p-tabview-header p-highlight"]').should('contain', 'MyThirdPortfolio');
+      });
+    });
+  });
 });
