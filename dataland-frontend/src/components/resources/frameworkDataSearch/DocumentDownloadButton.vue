@@ -6,7 +6,7 @@
     data-test="document-download-button"
   >
     <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress" />
-    <span class="px-2 py-1" v-else>download</span>
+    <span class="px-2 py-1" v-else>DOWNLOAD</span>
   </PrimeButton>
 </template>
 
