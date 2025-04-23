@@ -61,6 +61,7 @@ describe('Check the portfolio overview view', function (): void {
       });
     });
   });
+
   it('Should persist selected portfolio after page reload', function (): void {
     const portfolios: BasePortfolioName[] = [
       { portfolioId: '1', portfolioName: 'MyFirstPortfolio' },
@@ -68,7 +69,7 @@ describe('Check the portfolio overview view', function (): void {
       { portfolioId: '3', portfolioName: 'MyThirdPortfolio' },
     ];
 
-    window.localStorage.setItem('lastPortfolioIndex', '2');
+    window.localStorage.setItem('lastPortfolioName', portfolios[2].portfolioName);
 
     cy.intercept('**/users/portfolios/names', portfolios).as('basePortfolios');
 
@@ -77,14 +78,15 @@ describe('Check the portfolio overview view', function (): void {
       keycloak: minimalKeycloakMock({}),
     });
 
-    cy.wait('@basePortfolios').then(() => {
-      cy.get('[class="p-tabview-header p-highlight"]').should('contain', 'MyThirdPortfolio');
+    cy.wait('@basePortfolios');
+    cy.get('[class="p-tabview-header p-highlight"]').should('contain', portfolios[2].portfolioName);
 
-      cy.reload();
-
-      cy.wait('@basePortfolios').then(() => {
-        cy.get('[class="p-tabview-header p-highlight"]').should('contain', 'MyThirdPortfolio');
+    cy.get('[class="p-tabview-header"]').contains(portfolios[1].portfolioName).click();
+    cy.get('[class="p-tabview-header p-highlight"]')
+      .should('contain', portfolios[1].portfolioName)
+      .and(() => {
+        const valueFromStorage = window.localStorage.getItem('lastPortfolioName');
+        expect(valueFromStorage).to.equal(portfolios[1].portfolioName);
       });
-    });
   });
 });

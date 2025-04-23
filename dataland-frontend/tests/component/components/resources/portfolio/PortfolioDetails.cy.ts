@@ -21,17 +21,17 @@ describe('Check the portfolio details view', function (): void {
       cy.wait('@downloadComplete').then(() => {
         assertTable('table', [
           ['Company Name', 'Country', 'Sector', 'Last Reporting Period'],
-          ['Boyle, Aufderhar and Smitham', 'Cayman Islands', 'ROI', 2024],
-          ['Beahan LLC', 'Bouvet Island', 'channels', 'No data available'],
-          ['Aufderhar, Herzog and King', 'South Georgia and the South Sandwich Islands', 'models', 2024],
+          ['Apricot Inc.', 'Cayman Islands', 'ROI', 2024],
+          ['Banana LLC', 'Bouvet Island', 'channels', 'No data available'],
+          ['Cherry Co', 'Germany', 'models', 2024],
         ]);
         cy.get('[data-test="framework-dropdown"]').click();
         cy.get('[data-pc-section="item"]:contains(SFDR)').click();
         assertTable('table', [
           [checkHeader, checkHeader, checkHeader, checkHeader],
-          ['Boyle, Aufderhar and Smitham', 'Cayman Islands', 'ROI', 'No data available'],
-          ['Beahan LLC', 'Bouvet Island', 'channels', 'No data available'],
-          ['Aufderhar, Herzog and King', 'South Georgia and the South Sandwich Islands', 'models', 'No data available'],
+          ['Apricot Inc.', 'Cayman Islands', 'ROI', 'No data available'],
+          ['Banana LLC', 'Bouvet Island', 'channels', 'No data available'],
+          ['Cherry Co', 'Germany', 'models', 'No data available'],
         ]);
       });
     });
@@ -45,10 +45,10 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        checkSort('first-child', 'Aufderhar, Herzog and King', 'Boyle, Aufderhar and Smitham');
-        checkSort('nth-child(2)', 'Beahan LLC', 'Aufderhar, Herzog and King');
-        checkSort('nth-child(3)', 'Beahan LLC', 'Boyle, Aufderhar and Smitham');
-        checkSort('nth-child(4)', 'Boyle, Aufderhar and Smitham', 'Beahan LL');
+        checkSort('first-child', 'Apricot Inc.', 'Cherry Co');
+        checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
+        checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
+        checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
       });
     });
   });
@@ -61,8 +61,8 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        checkFilter('first-child', 'companyNameFilterValue', 'b', 3);
-        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'South Georgia', 2);
+        checkFilter('first-child', 'companyNameFilterValue', 'b', 2);
+        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'Germany', 2);
         checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 3);
         checkFilter('nth-child(4)', 'latestReportingPeriodeFilterValue', '2024', 3);
       });
@@ -87,13 +87,13 @@ function checkHeader(): void {
 function checkSort(selector: string, companyUp: string, copmanyDown: string): void {
   const firstCellSelector = 'table tr:first-child td:first-child';
   const sortSelector = `table tr:first-child th:${selector} [data-pc-section="sort"]`;
-  cy.get(firstCellSelector).contains('Boyle, Aufderhar and Smitham');
+  cy.get(firstCellSelector).contains('Apricot Inc.');
   cy.get(sortSelector).click();
   cy.get(firstCellSelector).contains(companyUp);
   cy.get(sortSelector).click();
   cy.get(firstCellSelector).contains(copmanyDown);
   cy.get(sortSelector).click();
-  cy.get(firstCellSelector).contains('Boyle, Aufderhar and Smitham');
+  cy.get(firstCellSelector).contains('Apricot Inc.');
 }
 
 /**

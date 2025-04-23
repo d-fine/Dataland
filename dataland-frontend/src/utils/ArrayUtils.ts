@@ -2,7 +2,7 @@
  * Checks if two arrays have the same unique values
  * @param a the first array
  * @param b the second array
- * @returns true if the two arrays contain the same unique values
+ * @returns true iff the two arrays contain the same unique values
  */
 export function arraySetEquals<T>(a: Array<T>, b: Array<T>): boolean {
   const aSet = new Set([...a]);
@@ -22,7 +22,9 @@ export function range(numElements: number): number[] {
 
 /**
  * Takes an iterable of items and groups them by a key specified in a callback.
- * It's an implementation of the Object.groupBy() method available in ES2024 and should be replaced by it, when we have it.
+ * Note: This is an implementation of the Object.groupBy() method available in ES2024.
+ * Currently, we use an older TypeScript version and if we change to a newer one in the future, the native
+ * implementation should be used instead.
  * @param items the iterable containing the original items
  * @param callbackFn the callback function that generates the key from an item
  * @returns a map of arrays of items grouped by the key

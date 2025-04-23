@@ -123,7 +123,7 @@ describe('Check the portfolio dialog', function (): void {
               data: {
                 portfolio: portfolioFixture,
               },
-              close: cy.stub().as('dialogClose'),
+              close: cy.stub(),
             },
           },
         },
@@ -138,7 +138,7 @@ describe('Check the portfolio dialog', function (): void {
           statusCode: 200,
           body: { message: 'Portfolio deleted successfully' },
         });
-      }).as('deletePortfolio');
+      });
     });
   });
 });
