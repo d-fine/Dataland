@@ -52,7 +52,12 @@ const footerSections: Section[] | undefined = content.pages.find((page) => page.
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 onMounted(() => {
-  void getPortfolios();
+  void getPortfolios().then(() => {
+    const savedIndex = Number(localStorage.getItem('lastPortfolioIndex'));
+    if (savedIndex !== null && savedIndex < portfolioNames.value.length) {
+      currentIndex.value = savedIndex;
+    }
+  });
 });
 
 /**
@@ -64,6 +69,8 @@ watch(
   (newIndex, oldIndex) => {
     if (portfolioNames.value.length == 0 || newIndex >= portfolioNames.value.length) {
       currentIndex.value = oldIndex;
+    } else {
+      localStorage.setItem('lastPortfolioIndex', newIndex.toString());
     }
   },
   { flush: 'post' }
