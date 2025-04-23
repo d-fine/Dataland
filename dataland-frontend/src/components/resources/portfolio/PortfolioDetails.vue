@@ -24,7 +24,7 @@
           </svg>
         </template>
       </Dropdown>
-      <PrimeButton class="primary-button" @click="editPortfolio()">
+      <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
       <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
