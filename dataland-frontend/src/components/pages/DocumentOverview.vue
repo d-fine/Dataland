@@ -62,8 +62,7 @@
         <template #body="tableRow">
           <DocumentLink
             :download-name="documentNameOrId(tableRow.data)"
-            label=""
-            suffix="DOWNLOAD"
+            label="DOWNLOAD"
             :file-reference="tableRow.data.documentId"
             show-icon
             data-test="download-button"

@@ -14,7 +14,7 @@
         :data-test="'Report-Download-' + downloadName"
         >{{ label ?? downloadName }}</span
       >
-      <span v-if="suffix" class="underline ml-1 pl-1">{{ suffix }}</span>
+      <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
       <i
         v-if="showIcon"
         class="pi pi-download pl-1"
