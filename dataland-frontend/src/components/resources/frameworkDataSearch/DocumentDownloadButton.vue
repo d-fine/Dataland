@@ -27,7 +27,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const percentCompleted = createNewPercentCompletedRef();
 
 const downloadIsInProgress = computed(() => {
-  return percentCompleted != undefined;
+  return percentCompleted.value != undefined;
 });
 
 const props = defineProps({
