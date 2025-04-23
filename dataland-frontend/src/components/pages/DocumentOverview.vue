@@ -77,43 +77,38 @@
     </div>
   </TheContent>
   <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
-  <TheFooter :is-light-version="true" :sections="footerContent" />
+  <TheFooter />
 </template>
 
 <script setup lang="ts">
-import { type Content, type Page } from '@/types/ContentTypes.ts';
-import contentData from '@/assets/content.json';
-import { inject, onMounted, ref, watch } from 'vue';
-import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import TheContent from '@/components/generics/TheContent.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
+import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { dateStringFormatter } from '@/utils/DataFormatUtils';
+import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
+import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type { DataMetaInformation } from '@clients/backend';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
   type SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
-import { dateStringFormatter } from '@/utils/DataFormatUtils';
-import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
-import type { DataMetaInformation } from '@clients/backend';
+import Column from 'primevue/column';
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
+import { inject, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
   companyId: string;
 }>();
 
-const content: Content = contentData;
-const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-const footerContent = footerPage?.sections;
 const waitingForData = ref(true);
 const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);

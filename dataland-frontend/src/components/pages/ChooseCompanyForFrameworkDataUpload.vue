@@ -48,29 +48,27 @@
         </Card>
       </TheContent>
     </AuthorizationWrapper>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from 'vue';
-import TheContent from '@/components/generics/TheContent.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import BackButton from '@/components/general/BackButton.vue';
-import Card from 'primevue/card';
 import CreateCompany from '@/components/forms/CreateCompany.vue';
+import BackButton from '@/components/general/BackButton.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from '@/utils/Constants';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
+import router from '@/router';
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from '@/utils/Constants';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
-import router from '@/router';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import Card from 'primevue/card';
+import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'ChooseCompany',
@@ -90,13 +88,6 @@ export default defineComponent({
       KEYCLOAK_ROLE_UPLOADER,
       isAdmin: undefined as boolean | undefined,
     };
-  },
-  computed: {
-    footerContent() {
-      const content: Content = contentData;
-      const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-      return footerPage?.sections;
-    },
   },
   setup() {
     return {

@@ -219,39 +219,37 @@
         </div>
       </div>
     </TheContent>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import { FormKit } from '@formkit/vue';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import BasicFormSection from '@/components/general/BasicFormSection.vue';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import { defineComponent, inject } from 'vue';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { type Content, type Page } from '@/types/ContentTypes';
-import contentData from '@/assets/content.json';
-import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { openEmailClient } from '@/utils/Email';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { isEmailAddressValid } from '@/utils/ValidationUtils';
 import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from '@clients/backend';
 import { type SingleDataRequest, type SingleDataRequestDataTypeEnum } from '@clients/communitymanager';
-import PrimeButton from 'primevue/button';
-import type Keycloak from 'keycloak-js';
+import { FormKit } from '@formkit/vue';
 import { AxiosError } from 'axios';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
-import BasicFormSection from '@/components/general/BasicFormSection.vue';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import InputSwitch from 'primevue/inputswitch';
-import { openEmailClient } from '@/utils/Email';
-import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
-import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
-import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
-import router from '@/router';
-import { isEmailAddressValid } from '@/utils/ValidationUtils';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'SingleDataRequest',
@@ -275,10 +273,6 @@ export default defineComponent({
     };
   },
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
-
     const companiesPage = content.pages.find((page) => page.url === '/companies');
     const singleDatRequestSection = companiesPage
       ? companiesPage.sections.find((section) => section.title === 'Single Data Request')
@@ -291,7 +285,6 @@ export default defineComponent({
 
     return {
       singleDataRequestModel: {},
-      footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
       frameworkName: router.currentRoute.value.query.preSelectedFramework as SingleDataRequestDataTypeEnum,

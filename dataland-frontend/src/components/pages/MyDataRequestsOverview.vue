@@ -158,40 +158,38 @@
         </div>
       </TheContent>
     </DatasetsTabMenu>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import TheContent from '@/components/generics/TheContent.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import { defineComponent, inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, {
-  type DataTablePageEvent,
-  type DataTableRowClickEvent,
-  type DataTableSortEvent,
-} from 'primevue/datatable';
-import Column from 'primevue/column';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
-import InputText from 'primevue/inputtext';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForRequestStatus,
   retrieveAvailableAccessStatus,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
-import router from '@/router';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import type Keycloak from 'keycloak-js';
+import Column from 'primevue/column';
+import DataTable, {
+  type DataTablePageEvent,
+  type DataTableRowClickEvent,
+  type DataTableSortEvent,
+} from 'primevue/datatable';
+import InputText from 'primevue/inputtext';
+import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -221,15 +219,11 @@ export default defineComponent({
   },
 
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       waitingForData: true,
       currentPage: 0,
       storedDataRequests: [] as ExtendedStoredDataRequest[],
       displayedData: [] as ExtendedStoredDataRequest[],
-      footerContent,
       searchBarInput: '',
       searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,

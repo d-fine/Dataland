@@ -58,37 +58,35 @@
       </div>
     </div>
   </TheContent>
-  <TheFooter :is-light-version="true" :sections="footerContent" />
+  <TheFooter />
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import TheContent from '@/components/generics/TheContent.vue';
-import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
-import { ApiClientProvider } from '@/services/ApiClients';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import type Keycloak from 'keycloak-js';
-import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
-import { isCompanyIdValid } from '@/utils/ValidationUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { getPluralCategory, truncatedDocumentName } from '@/utils/StringFormatter';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { isCompanyIdValid } from '@/utils/ValidationUtils';
+import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
+import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { getPluralCategory, truncatedDocumentName } from '@/utils/StringFormatter';
+import type Keycloak from 'keycloak-js';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -116,9 +114,6 @@ export default defineComponent({
     };
   },
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     const latestDocuments: Record<string, DocumentMetaInfoResponse[]> = {};
     Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach((key) => {
       latestDocuments[`latest${key}`] = [];
@@ -134,7 +129,6 @@ export default defineComponent({
       isUserKeycloakUploader: false,
       isAnyCompanyOwnerExisting: false,
       hasUserAnyRoleInCompany: false,
-      footerContent,
       showAllFrameworks: false,
       latestDocuments,
       chunkSize: 3,
