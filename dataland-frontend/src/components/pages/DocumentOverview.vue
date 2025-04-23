@@ -151,7 +151,7 @@ async function getAllDocumentsForFilters(): Promise<void> {
         props.companyId,
         selectedDocumentType.value ? convertToEnumSet(selectedDocumentType) : undefined
       )
-    ).data;
+    ).data.reverse();
     const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
     const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
     dataMetaInformation.value = apiResponse.data;
