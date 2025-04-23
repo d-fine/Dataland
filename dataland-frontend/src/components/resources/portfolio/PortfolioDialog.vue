@@ -229,7 +229,8 @@ async function savePortfolio(): Promise<void> {
 }
 
 /**
- * Call the endpoint to delete a portfolio and return to the portfolio overview page
+ * Deletes the current portfolio if a valid portfolioId is present.
+ * Logs a warning if portfolioId is missing.
  */
 async function deletePortfolio(): Promise<void> {
   console.log('🧪 DELETE portfolio triggered');
