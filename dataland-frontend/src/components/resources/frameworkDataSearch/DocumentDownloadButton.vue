@@ -3,7 +3,7 @@
     class="uppercase p-button p-button-sm d-letters ml-3"
     aria-label="download document"
     @click="downloadDocumentFromButton"
-    data-test="downloadDocumentButton"
+    data-test="document-download-button"
   >
     <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress" />
     <span class="px-2 py-1" v-else>download</span>
@@ -42,5 +42,3 @@ const downloadDocumentFromButton = async (): Promise<void> => {
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };
 </script>
-
-<style scoped lang="scss"></style>
