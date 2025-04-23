@@ -40,6 +40,7 @@ import TabPanel from 'primevue/tabpanel';
 import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
@@ -51,13 +52,11 @@ const content: Content = contentData;
 const footerSections: Section[] | undefined = content.pages.find((page) => page.url === '/')?.sections;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
+const route = useRoute();
+const router = useRouter();
+
 onMounted(() => {
-  void getPortfolios().then(() => {
-    const savedIndex = Number(localStorage.getItem('lastPortfolioIndex'));
-    if (savedIndex !== null && savedIndex < portfolioNames.value.length) {
-      currentIndex.value = savedIndex;
-    }
-  });
+  void getPortfolios();
 });
 
 /**
@@ -66,15 +65,49 @@ onMounted(() => {
  */
 watch(
   currentIndex,
-  (newIndex, oldIndex) => {
-    if (portfolioNames.value.length == 0 || newIndex >= portfolioNames.value.length) {
-      currentIndex.value = oldIndex;
-    } else {
-      localStorage.setItem('lastPortfolioIndex', newIndex.toString());
+  (newIndex) => {
+    if (portfolioNames.value.length > 0 && newIndex < portfolioNames.value.length) {
+      const name = encodeURI(portfolioNames.value[newIndex].portfolioName);
+      router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
     }
   },
   { flush: 'post' }
 );
+
+/**
+ * If current name changes, retrieve portfolio for new name.
+ */
+watch(
+  () => route.params.portfolioName,
+  (newName) => {
+    const newIndex = portfolioNames.value.findIndex((p) => decodeURI(p.portfolioName) === newName);
+    if (newIndex !== -1) {
+      currentIndex.value = newIndex;
+    }
+  }
+);
+
+/**
+ * If page is revisited, retrieve last watched portfolio.
+ */
+watch(portfolioNames, (newPortfolios) => {
+  if (newPortfolios.length > 0) {
+    let name = route.params.portfolioName as string | undefined;
+
+    if (!name) {
+      name = localStorage.getItem('lastPortfolioName') ?? '';
+    }
+    const matchedIndex = newPortfolios.findIndex((p) => decodeURI(p.portfolioName) === name);
+    if (matchedIndex !== -1) {
+      currentIndex.value = matchedIndex;
+      router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
+    } else {
+      currentIndex.value = 0;
+      const fallbackName = decodeURI(newPortfolios[0].portfolioName);
+      router.replace({ name: 'Portfolio Overview', params: { portfolioName: fallbackName } });
+    }
+  }
+});
 
 /**
  * Retrieve all portfolios for the currently logged-in user.
@@ -93,6 +126,13 @@ async function getPortfolios(): Promise<void> {
  */
 function onTabChange(event: TabViewChangeEvent): void {
   currentIndex.value = event.index;
+
+  const selectedPortfolio = portfolioNames.value[event.index];
+  if (selectedPortfolio) {
+    const name = encodeURI(selectedPortfolio.portfolioName);
+    localStorage.setItem('lastPortfolioName', name);
+    router.push({ name: 'Portfolio Overview', params: { portfolioName: name } });
+  }
 }
 
 /**

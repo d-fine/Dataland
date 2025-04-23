@@ -150,7 +150,7 @@ const routes = [
     component: PortfolioOverview,
   },
   {
-    path: '/portfolios/:portfolioId',
+    path: '/portfolios/:portfolioName',
     name: 'Portfolio Overview',
     component: PortfolioOverview,
   },
