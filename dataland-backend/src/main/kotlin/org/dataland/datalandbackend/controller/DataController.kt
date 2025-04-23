@@ -139,15 +139,15 @@ open class DataController<T>(
     }
 
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
+        reportingPeriods: List<String>,
+        companyIds: List<String>,
         exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource> {
         val dataDimensions =
             BasicDataDimensions(
-                companyId = companyId,
+                companyId = companyIds[0],
                 dataType = dataType.toString(),
-                reportingPeriod = reportingPeriod,
+                reportingPeriod = reportingPeriods[0],
             )
         val correlationId = IdUtils.generateCorrelationId(dataDimensions)
         val companyAssociatedData = this.buildCompanyAssociatedData(dataDimensions, correlationId)

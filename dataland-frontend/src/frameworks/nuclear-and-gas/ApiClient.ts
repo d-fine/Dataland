@@ -48,15 +48,15 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
   }
 
   exportCompanyAssociatedDataByDimensions(
-    reportingPeriod: string,
-    companyId: string,
+    reportingPeriods: string[],
+    companyIds: string[],
     fileFormat: ExportFileType,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataByDimensions(
-      reportingPeriod,
-      companyId,
+      reportingPeriods,
+      companyIds,
       fileFormat,
       options
     );

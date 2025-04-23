@@ -137,8 +137,8 @@ internal class DataControllerTest(
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
             dataController.exportCompanyAssociatedDataByDimensions(
-                reportingPeriod = testReportingPeriod,
-                companyId = testCompanyId,
+                reportingPeriods = listOf(testReportingPeriod),
+                companyIds = listOf(testCompanyId),
                 exportFileType = exportFileType,
             )
         }

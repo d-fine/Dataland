@@ -55,10 +55,10 @@ class HeimathafenDataController(
 
     @Operation(operationId = "exportCompanyAssociatedHeimathafenDataByDimensions")
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
+        reportingPeriods: List<String>,
+        companyIds: List<String>,
         exportFileType: ExportFileType,
-    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
+    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType)
 
     @Operation(operationId = "getAllCompanyHeimathafenData")
     override fun getFrameworkDatasetsForCompany(

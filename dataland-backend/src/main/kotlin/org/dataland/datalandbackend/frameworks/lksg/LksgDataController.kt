@@ -55,10 +55,10 @@ class LksgDataController(
 
     @Operation(operationId = "exportCompanyAssociatedLksgDataByDimensions")
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
+        reportingPeriods: List<String>,
+        companyIds: List<String>,
         exportFileType: ExportFileType,
-    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
+    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType)
 
     @Operation(operationId = "getAllCompanyLksgData")
     override fun getFrameworkDatasetsForCompany(

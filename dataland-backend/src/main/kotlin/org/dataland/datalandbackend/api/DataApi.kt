@@ -106,14 +106,14 @@ interface DataApi<T> {
      * @return JSON of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
-        summary = "Export data for the reportingPeriod and companyId provided.",
+        summary = "Export data for the reportingPeriods and companyIds provided.",
         description =
-            "Export data for the reportingPeriod and companyId provided into a file of the specified format" +
-                "(CSV, Excel-compatible CSV, JSON).",
+            "Export data for the each combination of reportingPeriod and companyId provided into a file of the " +
+                "specified format (CSV, Excel-compatible CSV, JSON).",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset."),
+            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
         ],
     )
     @GetMapping(
@@ -122,8 +122,8 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataByDimensions(
-        @RequestParam("reportingPeriod") reportingPeriod: String,
-        @RequestParam("companyId") companyId: String,
+        @RequestParam("reportingPeriods") reportingPeriod: List<String>,
+        @RequestParam("companyIds") companyId: List<String>,
         @RequestParam("fileFormat") exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource>
 
