@@ -17,8 +17,13 @@
               <th>Name</th>
               <td class="nowrap" data-test="document-link">
                 <DocumentLink
-                  :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
-                  :file-reference="metaData.documentId"
+                  :document-download-info="{
+                    downloadName: metaData.documentName ? metaData.documentName : metaData.documentId,
+                    fileReference: metaData.documentId,
+                    page: undefined,
+                    dataId: undefined,
+                    dataType: undefined,
+                  }"
                   show-icon
                 />
               </td>

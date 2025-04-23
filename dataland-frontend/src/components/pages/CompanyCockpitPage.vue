@@ -13,9 +13,14 @@
             <div v-else>
               <div v-for="document in getDocumentData(category)" :key="document.documentId">
                 <DocumentLink
-                  :download-name="documentNameOrId(document)"
+                  :document-download-info="{
+                    downloadName: documentNameOrId(document),
+                    fileReference: document.documentId,
+                    page: undefined,
+                    dataId: undefined,
+                    dataType: undefined,
+                  }"
                   :label="documentNameOrId(document)"
-                  :file-reference="document.documentId"
                   :suffix="documentPublicationDateOrEmpty(document)"
                   show-icon
                 />
@@ -271,6 +276,7 @@ export default defineComponent({
     padding: 24px 17px;
   }
 }
+
 .grid-container {
   display: grid;
   grid-template-columns: 3fr 6fr 30px;
@@ -298,6 +304,7 @@ export default defineComponent({
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
 .card {
   width: 90%;
   background-color: var(--surface-card);

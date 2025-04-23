@@ -19,14 +19,15 @@
             <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
-                :download-name="
-                  dialogData.dataPointDisplay.dataSource.fileName ??
-                  dialogData.dataPointDisplay.dataSource.fileReference
-                "
-                :file-reference="dialogData.dataPointDisplay.dataSource.fileReference"
-                :data-id="dialogData.dataId"
-                :data-type="dialogData.dataType"
-                :page="dataSourcePage"
+                :document-download-info="{
+                  downloadName:
+                    dialogData.dataPointDisplay.dataSource.fileName ??
+                    dialogData.dataPointDisplay.dataSource.fileReference,
+                  fileReference: dialogData.dataPointDisplay.dataSource.fileReference,
+                  page: dataSourcePage,
+                  dataId: dialogData.dataId,
+                  dataType: dialogData.dataType,
+                }"
                 show-icon
               />
             </td>

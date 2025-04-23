@@ -7,9 +7,13 @@
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
-                :download-name="companyReport.fileName ? companyReport.fileName : 'Unnamed_File'"
-                :fileReference="companyReport.fileReference"
-                data-type=""
+                :document-download-info="{
+                  downloadName: companyReport.fileName ? companyReport.fileName : 'Unnamed_File',
+                  fileReference: companyReport.fileReference,
+                  page: undefined,
+                  dataId: undefined,
+                  dataType: '',
+                }"
                 font-style="font-semibold"
                 show-icon
               />

@@ -1,8 +1,13 @@
 <template>
   <DocumentLink
+    :document-download-info="{
+      downloadName: content.displayValue.dataSource.fileName ?? content.displayValue.dataSource.fileReference,
+      fileReference: content.displayValue.dataSource.fileReference,
+      page: undefined,
+      dataId: undefined,
+      dataType: undefined,
+    }"
     :label="content.displayValue.label"
-    :download-name="content.displayValue.dataSource.fileName ?? content.displayValue.dataSource.fileReference"
-    :file-reference="content.displayValue.dataSource.fileReference"
     show-icon
   />
 </template>

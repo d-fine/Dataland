@@ -31,11 +31,14 @@ const tableData = computed(() => {
     <Column :header="dialogData.documentColumnHeader" headerStyle="width: 15vw;">
       <template #body="{ data }">
         <DocumentLink
+          :document-download-info="{
+            downloadName: data.dataSource?.fileName,
+            fileReference: data.dataSource?.fileReference,
+            page: undefined,
+            dataId: dialogData.metaInfo?.dataId,
+            dataType: dialogData.metaInfo?.dataType,
+          }"
           :label="data.dataSource?.fileName"
-          :download-name="data.dataSource?.fileName"
-          :file-reference="data.dataSource?.fileReference"
-          :data-id="dialogData.metaInfo?.dataId"
-          :data-type="dialogData.metaInfo?.dataType"
           :show-icon="!(data.dataSource == undefined)"
         />
       </template>

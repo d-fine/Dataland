@@ -61,9 +61,14 @@
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
           <DocumentLink
-            :download-name="documentNameOrId(tableRow.data)"
+            :document-download-info="{
+              downloadName: documentNameOrId(tableRow.data),
+              fileReference: tableRow.data.documentId,
+              page: undefined,
+              dataId: undefined,
+              dataType: undefined,
+            }"
             label="DOWNLOAD"
-            :file-reference="tableRow.data.documentId"
             show-icon
             data-test="download-button"
           />

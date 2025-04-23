@@ -11,7 +11,7 @@ import type Keycloak from 'keycloak-js';
 
 export interface DocumentDownloadInfo {
   fileReference: string;
-  page: string | undefined;
+  page: number | undefined;
   dataId: string | undefined;
   dataType: string | undefined;
   downloadName: string;
@@ -42,7 +42,7 @@ function isForDownloadOfPrivateFrameworkDocument(documentDownloadInfo: DocumentD
 async function handlePrivateDocumentDownload(
   documentDownloadInfo: DocumentDownloadInfo,
   docUrl: HTMLAnchorElement,
-  getKeycloakPromise: () => Promise<Keycloak>,
+  getKeycloakPromise: (() => Promise<Keycloak>) | undefined,
   percentCompleted: Ref<number | undefined, number | undefined>
 ): Promise<void> {
   if (!documentDownloadInfo.dataId) throw new Error('Data id is required for private framework document download');
@@ -89,7 +89,7 @@ async function handlePrivateDocumentDownload(
 async function handlePublicDocumentDownload(
   documentDownloadInfo: DocumentDownloadInfo,
   docUrl: HTMLAnchorElement,
-  getKeycloakPromise: () => Promise<Keycloak>,
+  getKeycloakPromise: (() => Promise<Keycloak>) | undefined,
   percentCompleted: Ref<number | undefined, number | undefined>
 ): Promise<void> {
   const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
@@ -125,7 +125,7 @@ async function handlePublicDocumentDownload(
  */
 export async function downloadDocument(
   documentDownloadInfo: DocumentDownloadInfo,
-  getKeycloakPromise: () => Promise<Keycloak>,
+  getKeycloakPromise: (() => Promise<Keycloak>) | undefined,
   percentCompleted: Ref<number | undefined, number | undefined>
 ): Promise<void> {
   percentCompleted.value = 0;

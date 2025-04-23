@@ -15,10 +15,14 @@
             <th scope="row" class="headers-bg">Data source</th>
             <td class="nowrap">
               <DocumentLink
+                :document-download-info="{
+                  downloadName: dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference,
+                  fileReference: dataPointDisplay.dataSource.fileReference,
+                  page: dataSourcePage,
+                  dataId: undefined,
+                  dataType: undefined,
+                }"
                 :label="dataSourceLabel"
-                :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
-                :file-reference="dataPointDisplay.dataSource.fileReference"
-                :page="dataSourcePage"
                 show-icon
               />
             </td>
