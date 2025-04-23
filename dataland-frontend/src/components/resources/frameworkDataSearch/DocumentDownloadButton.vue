@@ -1,15 +1,12 @@
 <template>
   <PrimeButton
     class="uppercase p-button p-button-sm d-letters ml-3"
-    aria-label="DOWNLOAD DATA"
+    aria-label="DOWNLOAD DOCUMENT"
     @click="downloadDocumentFromButton"
-    data-test="downloadDataButton"
+    data-test="downloadDocumentButton"
+    @animationend="toggleDownloadIsInProgressFlag"
   >
-    <DownloadProgressSpinner
-      :percent-completed="percentCompleted"
-      v-if="downloadIsInProgress"
-      @animationend="toggleDownloadIsInProgressFlag"
-    />
+    <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress" />
     <span class="px-2 py-1" v-else>DOWNLOAD</span>
   </PrimeButton>
 </template>
