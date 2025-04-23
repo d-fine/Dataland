@@ -5,6 +5,7 @@ version: "3.8"
 # testing: The profile to be used for testing in the CI (i.e.: starts a testing-container along with the rest of the stack)
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
+# To deactivate EuroDaT, an additional profile "donotstarteurodat" was introduced.
 
 
 
@@ -613,7 +614,7 @@ services:
       <<: *loki-logging
   eurodat-client:
     restart: always
-    profiles: [ "production", "development" ]
+    profiles: [ "donotstarteurodat" ]
     image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.34@sha256:ac78891e34ce7f14b8e20811043cf9749f2dfbb827350459d98024a195da8b23
     networks:
       - internal
