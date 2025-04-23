@@ -88,6 +88,7 @@ export default defineComponent({
     opacity: 0;
   }
 }
+
 .spinner-transition-leave-active {
   animation: spinner-transition 2s;
 }

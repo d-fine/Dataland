@@ -60,7 +60,7 @@
       </Column>
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
-          <DocumentLink
+          <DocumentDownloadButton
             :document-download-info="{
               downloadName: documentNameOrId(tableRow.data),
               fileReference: tableRow.data.documentId,
@@ -68,9 +68,6 @@
               dataId: undefined,
               dataType: undefined,
             }"
-            label="DOWNLOAD"
-            show-icon
-            data-test="download-button"
           />
         </template>
       </Column>
@@ -106,11 +103,11 @@ import {
   type SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { humanizeStringOrNumber, documentNameOrId } from '@/utils/StringFormatter.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import type { DataMetaInformation } from '@clients/backend';
+import DocumentDownloadButton from '@/components/resources/frameworkDataSearch/DocumentDownloadButton.vue';
 
 const props = defineProps<{
   companyId: string;
