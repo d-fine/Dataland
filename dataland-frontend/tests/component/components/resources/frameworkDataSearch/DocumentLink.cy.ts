@@ -13,9 +13,13 @@ describe('check that the document link component works and is displayed correctl
       keycloak: minimalKeycloakMock({}),
 
       props: {
-        downloadName: 'Test',
-        fileReference: 'dummyFileReference',
-        dataType: DataTypeEnum.Heimathafen,
+        documentDownloadInfo: {
+          downloadName: 'Test',
+          fileReference: 'dummyFileReference',
+          dataType: DataTypeEnum.Heimathafen,
+          dataId: undefined,
+          page: undefined,
+        },
       },
     }).then(() => {
       validateNoIcons();
@@ -29,9 +33,13 @@ describe('check that the document link component works and is displayed correctl
   it('Check that Download Progress Spinner appears if the prop changes', function (): void {
     cy.mountWithPlugins(DocumentLink, {
       props: {
-        downloadName: 'Test',
-        fileReference: 'dummyFileReference',
-        dataType: DataTypeEnum.Heimathafen,
+        documentDownloadInfo: {
+          downloadName: 'Test',
+          fileReference: 'dummyFileReference',
+          dataType: DataTypeEnum.Heimathafen,
+          dataId: undefined,
+          page: undefined,
+        },
       },
     }).then((mounted) => {
       validateNoIcons();
@@ -47,9 +55,13 @@ describe('check that the document link component works and is displayed correctl
   it('Check that Download Progress Spinner disappears and the checkmark appears', function (): void {
     cy.mountWithPlugins(DocumentLink, {
       props: {
-        downloadName: 'Test',
-        fileReference: 'dummyFileReference',
-        dataType: DataTypeEnum.Heimathafen,
+        documentDownloadInfo: {
+          downloadName: 'Test',
+          fileReference: 'dummyFileReference',
+          dataType: DataTypeEnum.Heimathafen,
+          dataId: undefined,
+          page: undefined,
+        },
       },
     }).then((mounted) => {
       mounted.wrapper.vm.percentCompleted = 50;
@@ -64,8 +76,13 @@ describe('check that the document link component works and is displayed correctl
   it('Check that Download Progress Checkmark disappears again', function (): void {
     cy.mountWithPlugins(DocumentLink, {
       props: {
-        downloadName: 'Test',
-        fileReference: 'dummyFileReference',
+        documentDownloadInfo: {
+          downloadName: 'Test',
+          fileReference: 'dummyFileReference',
+          dataType: undefined,
+          dataId: undefined,
+          page: undefined,
+        },
       },
     }).then((mounted) => {
       mounted.wrapper.vm.percentCompleted = 50;
