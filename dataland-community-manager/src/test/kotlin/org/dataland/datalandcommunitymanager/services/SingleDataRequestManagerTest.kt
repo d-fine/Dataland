@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
@@ -28,6 +31,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
@@ -77,6 +81,10 @@ class SingleDataRequestManagerTest {
         )
         doNothing().whenever(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
         setUpDataRequestRepositoryMock()
+        doAnswer { invocation ->
+            val identifiers = invocation.arguments[0] as List<String?>
+            Pair(mapOf(identifiers[0] to CompanyIdAndName(identifiers[0] ?: "", "")), emptyList<String>())
+        }.whenever(mockDataRequestProcessingUtils).performIdentifierValidation(anyList())
         singleDataRequestManager =
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
@@ -260,7 +268,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = DatalandAuthentication.fromContext().userId
 
-        assertThrows<NoSuchElementException> {
+        assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
 
@@ -273,7 +281,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = "impersonated-user-id"
 
-        assertThrows<NoSuchElementException> {
+        assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
         }
 
