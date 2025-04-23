@@ -1,18 +1,17 @@
 <template>
   <PrimeButton
     class="uppercase p-button p-button-sm d-letters ml-3"
-    aria-label="DOWNLOAD DOCUMENT"
+    aria-label="download document"
     @click="downloadDocumentFromButton"
     data-test="downloadDocumentButton"
-    @animationend="toggleDownloadIsInProgressFlag"
   >
     <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress" />
-    <span class="px-2 py-1" v-else>DOWNLOAD</span>
+    <span class="px-2 py-1" v-else>download</span>
   </PrimeButton>
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from 'vue';
+import { computed, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import {
@@ -27,7 +26,9 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const percentCompleted = createNewPercentCompletedRef();
 
-const downloadIsInProgress = ref(false);
+const downloadIsInProgress = computed(() => {
+  return percentCompleted != undefined;
+});
 
 const props = defineProps({
   documentDownloadInfo: {
@@ -36,13 +37,8 @@ const props = defineProps({
   },
 });
 
-const toggleDownloadIsInProgressFlag = (): void => {
-  downloadIsInProgress.value = !downloadIsInProgress.value;
-};
-
 const downloadDocumentFromButton = async (): Promise<void> => {
   if (downloadIsInProgress.value) return;
-  toggleDownloadIsInProgressFlag();
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };
 </script>
