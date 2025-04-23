@@ -39,7 +39,7 @@
     </ul>
     <div data-test="error">
       <p v-if="!isValidPortfolioUpload" class="formkit-message">
-        Please provide a portfolio name, at least one company, and at least one framework.
+        Please provide a portfolio name and at least one company.
       </p>
       <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
         {{ portfolioErrors }}
@@ -228,6 +228,9 @@ async function savePortfolio(): Promise<void> {
   }
 }
 
+/**
+ * Call the endpoint to delete a portfolio and return to the portfolio overview page
+ */
 async function deletePortfolio(): Promise<void> {
   console.log('🧪 DELETE portfolio triggered');
   if (!portfolioId.value) {
