@@ -21,7 +21,9 @@ interface DocumentMetaInfoRepository : JpaRepository<DocumentMetaInfoEntity, Str
      * only at most limit many results are returned, skipping the first offset many.
      */
     @Query(
-        "SELECT d FROM DocumentMetaInfoEntity d WHERE (:companyId is null or :companyId MEMBER OF d.companyIds) and " +
+        "SELECT d FROM DocumentMetaInfoEntity d " +
+            "LEFT JOIN d.companyIds c " +
+            "WHERE (:companyId is null or c = :companyId) and " +
             "(:documentCategories is null or d.documentCategory IN :documentCategories) and " +
             "(:reportingPeriod is null or d.reportingPeriod = :reportingPeriod) and " +
             "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC NULLS LAST, d.uploadTime DESC " +
