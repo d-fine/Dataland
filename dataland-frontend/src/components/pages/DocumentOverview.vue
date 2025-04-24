@@ -151,7 +151,7 @@ async function getAllDocumentsForFilters(): Promise<void> {
         props.companyId,
         selectedDocumentType.value ? convertToEnumSet(selectedDocumentType) : undefined
       )
-    ).data.reverse();
+    ).data;
     const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
     const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
     dataMetaInformation.value = apiResponse.data;
@@ -159,7 +159,7 @@ async function getAllDocumentsForFilters(): Promise<void> {
     console.error(error);
   } finally {
     waitingForData.value = false;
-    updateCurrentDisplayedData();
+    updateCurrentDisplayedData(false);
   }
 }
 
@@ -173,8 +173,10 @@ function resetFilter(): void {
 /**
  * Updates the displayedDocumentData
  */
-function updateCurrentDisplayedData(): void {
-  documentsFiltered.value.sort((a, b) => customSorting(a, b));
+function updateCurrentDisplayedData(sort: boolean = true): void {
+  if (sort) {
+    documentsFiltered.value.sort((a, b) => customSorting(a, b));
+  }
   totalRecords.value = documentsFiltered.value.length;
   documentsFiltered.value = documentsFiltered.value.slice(
     rowsPerPage * currentPage.value,
