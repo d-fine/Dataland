@@ -6,7 +6,7 @@
         <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
           <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId">
             <template #header>
-              <div :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
+              <div class="p-tabview-title" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
             </template>
             <PortfolioDetails :portfolioId="portfolio.portfolioId" @update:portfolio-overview="getPortfolios" />
           </TabPanel>
