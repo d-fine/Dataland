@@ -14,7 +14,6 @@ describeIf(
     let permIdOfExistingCompany: string;
     const portfolioName = `E2E Test Portfolio`;
     const editedPortfolioName = `${portfolioName} Edited`;
-    const shortTimeOut = Cypress.env('short_timeout_in_ms') as number;
 
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
@@ -32,32 +31,24 @@ describeIf(
     it('Creates, edits, and deletes a portfolio', () => {
       cy.closeCookieBannerIfItExists();
 
-      cy.get('[data-test="addNewPortfolio"]').should('be.visible').click();
+      cy.get('[data-test="addNewPortfolio"]').click();
       cy.get('[name="portfolioName"]').type(portfolioName);
       cy.get('[data-test="saveButton"]').should('be.disabled');
       cy.get('[name="company-identifiers"]').type(permIdOfExistingCompany);
-      cy.get('[data-test="addCompanies"]').should('be.visible').click();
-      cy.get('[data-test="saveButton"]').should('not.be.disabled').click();
-      cy.get('li[data-pc-name="tabpanel"]')
-        .contains(portfolioName,{ timeout: shortTimeOut })
-        .should('be.visible')
-        .click();
-      cy.get('[data-test="edit-portfolio"]', { timeout: shortTimeOut }).click();
+      cy.get('[data-test="addCompanies"]').click();
+      cy.get('[data-test="saveButton"]').should('not.be.disabled');
+      cy.get('[data-test="saveButton"]').click();
 
-      cy.get('[name="portfolioName"]', { timeout: shortTimeOut }).clear();
-      cy.get('[name="portfolioName"]', { timeout: shortTimeOut }).type(editedPortfolioName);
-      cy.get('[data-test="saveButton"]', { timeout: shortTimeOut }).click();
-      cy.get('li[data-pc-name="tabpanel"]')
-        .contains(editedPortfolioName,{ timeout: shortTimeOut })
-        .should('be.visible')
-        .click();
-      cy.get('[data-test="edit-portfolio"]', { timeout: shortTimeOut }).click();
-      cy.get('[data-test="deleteButton"]').should('be.visible').click();
-      cy.get('li[data-pc-name="tabpanel"]')
-        .contains(editedPortfolioName,{ timeout: shortTimeOut })
-        .should('not.exist');
-      // cy.contains('[data-test="portfolio-name"]', editedPortfolioName, { timeout: shortTimeOut }).should('be.visible');
-      //cy.contains('[data-test="portfolio-name"]', editedPortfolioName).should('not.exist');
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
+      cy.get('[data-test="edit-portfolio"]').click();
+      cy.get('[name="portfolioName"]').clear();
+      cy.get('[name="portfolioName"]').type(editedPortfolioName);
+      cy.get('[data-test="saveButton"]').click();
+
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click();
+      cy.get('[data-test="edit-portfolio"]').click();
+      cy.get('[data-test="deleteButton"]').click();
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).should('not.exist');
     });
   }
 );

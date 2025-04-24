@@ -68,7 +68,7 @@ watch(
   (newIndex) => {
     if (portfolioNames.value.length > 0 && newIndex < portfolioNames.value.length) {
       const name = encodeURI(portfolioNames.value[newIndex].portfolioName);
-      router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
+      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
     }
   },
   { flush: 'post' }
@@ -100,11 +100,11 @@ watch(portfolioNames, (newPortfolios) => {
     const matchedIndex = newPortfolios.findIndex((p) => decodeURI(p.portfolioName) === name);
     if (matchedIndex !== -1) {
       currentIndex.value = matchedIndex;
-      router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
+      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
     } else {
       currentIndex.value = 0;
       const fallbackName = decodeURI(newPortfolios[0].portfolioName);
-      router.replace({ name: 'Portfolio Overview', params: { portfolioName: fallbackName } });
+      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: fallbackName } });
     }
   }
 });
@@ -131,7 +131,7 @@ function onTabChange(event: TabViewChangeEvent): void {
   if (selectedPortfolio) {
     const name = encodeURI(selectedPortfolio.portfolioName);
     localStorage.setItem('lastPortfolioName', name);
-    router.push({ name: 'Portfolio Overview', params: { portfolioName: name } });
+    void router.push({ name: 'Portfolio Overview', params: { portfolioName: name } });
   }
 }
 
