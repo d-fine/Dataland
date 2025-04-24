@@ -5,7 +5,11 @@
       <TheContent class="min-h-screen paper-section relative">
         <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
           <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
-            <PortfolioDetails :portfolioId="portfolio.portfolioId" @update:portfolio-overview="getPortfolios" />
+            <PortfolioDetails
+              :portfolioId="portfolio.portfolioId"
+              @update:portfolio-overview="getPortfolios"
+              :data-test="`portfolio-${portfolio.portfolioName}`"
+            />
           </TabPanel>
           <TabPanel>
             <template #header>
