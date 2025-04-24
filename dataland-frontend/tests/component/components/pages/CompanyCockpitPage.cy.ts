@@ -78,17 +78,31 @@ describe('Component test for the company cockpit', () => {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
     }).as('fetchCompanyOwnershipExistence');
     cy.intercept('**/documents/**', (request) => {
-      console.log(request.query['companyId']);
       request.reply({
         statusCode: 200,
         body: [
           {
             documentId: 'a12d2cd3014c2601e6d3e32a7f0ec92fe3e5a9a8519519d93b8bb7c56141849d',
-            documentName: 'test_' + (request.query['documentCategories'] ?? 'document'),
+            documentName: 'test_' + (request.query['documentCategories'] ?? 'document') + '_1',
             documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
             companyIds: [request.query['companyId'] ?? '???'],
             publicationDate: '2025-02-25',
             reportingPeriod: '2025',
+          },
+          {
+            documentId: 'e0dfbaf044f44cacbb304a4686d890205a9f1acc493a4eb290ca355fb9e56dcf',
+            documentName: 'test_' + (request.query['documentCategories'] ?? 'document') + '_2',
+            documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
+            companyIds: [request.query['companyId'] ?? '???'],
+            publicationDate: '2024-01-13',
+            reportingPeriod: '2024',
+          },
+          {
+            documentId: 'e0dfbaf044f44cacbb304a4686d890205a9f1acc493a4eb290ca355fb9e56dcf',
+            documentName: 'test_' + (request.query['documentCategories'] ?? 'document') + '_3',
+            documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
+            companyIds: [request.query['companyId'] ?? '???'],
+            reportingPeriod: '2023',
           },
         ],
       });
@@ -275,11 +289,18 @@ describe('Component test for the company cockpit', () => {
       cy.get('[data-test="' + category + '"]')
         .should('exist')
         .and('contain', 'test_' + category)
-        .and('contain', '(2025-02-25)')
-        .and('not.contain', 'null');
-      cy.get('[data-test="download-link-test_' + category + '"]')
-        .should('exist')
-        .and('have.attr', 'title', 'test_' + category);
+        .find('div[class=text-primary]')
+        .then((children) => {
+          expect(children[0]).to.contain('(2025-02-25)');
+          expect(children[1]).to.contain('(2024-01-13)');
+          expect(children[2]).not.to.contain('null');
+        });
+
+      for (let i = 1; i <= 3; i++) {
+        cy.get('[data-test="download-link-test_' + category + `_${i}"]`)
+          .should('exist')
+          .and('have.attr', 'title', 'test_' + category + `_${i}`);
+      }
     }
   });
 
