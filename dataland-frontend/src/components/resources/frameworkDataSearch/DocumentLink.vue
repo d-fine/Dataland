@@ -37,6 +37,7 @@ import type Keycloak from 'keycloak-js';
 import {
   createNewPercentCompletedRef,
   downloadDocument,
+  downloadIsInProgress,
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
@@ -57,6 +58,7 @@ const props = defineProps({
 });
 
 const downloadDocumentFromLink = async (): Promise<void> => {
+  if (downloadIsInProgress(percentCompleted.value)) return;
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };
 </script>

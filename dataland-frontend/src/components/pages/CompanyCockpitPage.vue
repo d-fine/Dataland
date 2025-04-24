@@ -98,6 +98,7 @@ import { getPluralCategory, documentNameOrId, documentPublicationDateOrEmpty } f
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
+
   components: {
     DocumentLink,
     ClaimOwnershipPanel,
@@ -107,12 +108,14 @@ export default defineComponent({
     TheHeader,
     TheFooter,
   },
+
   props: {
     companyId: {
       type: String,
       required: true,
     },
   },
+
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -121,6 +124,7 @@ export default defineComponent({
       injectedUseMobileView: inject<boolean>('useMobileView'),
     };
   },
+
   data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
@@ -146,6 +150,7 @@ export default defineComponent({
       chunkSize: 3,
     };
   },
+
   computed: {
     useMobileView() {
       return this.injectedUseMobileView;
@@ -157,6 +162,7 @@ export default defineComponent({
       return this.showAllFrameworks ? this.FRAMEWORKS_ALL : this.FRAMEWORKS_MAIN;
     },
   },
+
   watch: {
     async companyId(newCompanyId, oldCompanyId) {
       if (newCompanyId !== oldCompanyId) {
@@ -182,6 +188,7 @@ export default defineComponent({
     void this.getAggregatedFrameworkDataSummary();
     void this.getMetaInfoForLatestDocuments();
   },
+
   methods: {
     documentPublicationDateOrEmpty,
     documentNameOrId,

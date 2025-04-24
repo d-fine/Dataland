@@ -65,12 +65,15 @@ export default defineComponent({
   methods: {
     humanizeStringOrNumber,
   },
+
   components: { RenderSanitizedMarkdownInput, DocumentLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
+
   data: () => {
     return { ONLY_AUXILIARY_DATA_PROVIDED };
   },
+
   computed: {
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;

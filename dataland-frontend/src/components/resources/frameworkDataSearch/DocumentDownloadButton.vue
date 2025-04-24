@@ -5,18 +5,19 @@
     @click="downloadDocumentFromButton"
     data-test="document-download-button"
   >
-    <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress" />
+    <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress(percentCompleted)" />
     <span class="px-2 py-1" v-else>DOWNLOAD</span>
   </PrimeButton>
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue';
+import { inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import {
   createNewPercentCompletedRef,
   downloadDocument,
+  downloadIsInProgress,
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
@@ -26,10 +27,6 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const percentCompleted = createNewPercentCompletedRef();
 
-const downloadIsInProgress = computed(() => {
-  return percentCompleted.value != undefined;
-});
-
 const props = defineProps({
   documentDownloadInfo: {
     type: Object as () => DocumentDownloadInfo,
@@ -38,7 +35,7 @@ const props = defineProps({
 });
 
 const downloadDocumentFromButton = async (): Promise<void> => {
-  if (downloadIsInProgress.value) return;
+  if (downloadIsInProgress(percentCompleted.value)) return;
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };
 </script>

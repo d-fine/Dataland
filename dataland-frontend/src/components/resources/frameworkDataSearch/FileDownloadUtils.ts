@@ -141,3 +141,13 @@ export async function downloadDocument(
   }
   percentCompleted.value = undefined;
 }
+
+/**
+ * Checks, based on the value of percentCompleted, whether a download triggered from the component
+ * is currently in progress.
+ * @param percentCompleted the progress in percent of the download, if any (if no download is in
+ * progress, its value is undefined)
+ */
+export function downloadIsInProgress(percentCompleted: number | undefined): boolean {
+  return percentCompleted != undefined;
+}
