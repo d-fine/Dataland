@@ -104,14 +104,14 @@ class DataPointUtils
          * @param dataDimensionFilter the filter parameters for the data dimensions
          * @return a list of all active data dimensions
          */
-        fun getAllActiveDataDimensions(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
-            val dataMetaInformationEntities =
-                metaDataManager.getActiveDataDimensionsFromDataPoints(
+        fun getActiveDataDimensionsFromDataPoints(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+            val dataPointMetaInformationEntities =
+                metaDataManager.getActiveDataPointMetaInformationList(
                     companyIds = dataDimensionFilter.companyIds,
                     dataPointTypes = dataDimensionFilter.dataTypes,
                     reportingPeriods = dataDimensionFilter.reportingPeriods,
                 )
-            val dataPointBasedDimensions = dataMetaInformationEntities.map { it.toBasicDataDimensions() }
+            val dataPointBasedDimensions = dataPointMetaInformationEntities.map { it.toBasicDataDimensions() }
             val frameworkBasedDimensions = getAllActiveDataDimensionsForFrameworks(dataDimensionFilter)
             return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
         }
@@ -122,7 +122,7 @@ class DataPointUtils
             val frameworks = dataDimensionFilter.dataTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
-                    metaDataManager.getActiveDataDimensionsFromDataPoints(
+                    metaDataManager.getActiveDataPointMetaInformationList(
                         companyIds = dataDimensionFilter.companyIds,
                         dataPointTypes = getRelevantDataPointTypes(framework).toList(),
                         reportingPeriods = dataDimensionFilter.reportingPeriods,
