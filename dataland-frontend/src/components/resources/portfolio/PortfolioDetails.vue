@@ -43,8 +43,8 @@
         companies or remove filter criteria.
       </template>
       <Column :sortable="true" field="companyName" header="Company Name" :showFilterMatchModes="false">
-        <template #body="company">
-          <a :href="`/companies/${company.data.companyId}`">{{ company.data.companyName }}</a>
+        <template #body="portfolioEntry">
+          <a :href="`/companies/${portfolioEntry.data.companyId}`">{{ portfolioEntry.data.companyName }}</a>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -84,11 +84,11 @@
         header="Last Reporting Period"
         :showFilterMatchModes="false"
       >
-        <template #body="company">
-          <a v-if="company.data.frameworkDataRef" :href="company.data.frameworkDataRef">{{
-            company.data.latestReportingPeriod
+        <template #body="portfolioEntry">
+          <a v-if="portfolioEntry.data.frameworkDataRef" :href="portfolioEntry.data.frameworkDataRef">{{
+            portfolioEntry.data.latestReportingPeriod
           }}</a>
-          <span v-else>{{ company.data.latestReportingPeriod }}</span>
+          <span v-else>{{ portfolioEntry.data.latestReportingPeriod }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <div v-for="category of reportingPeriodOptions" :key="category" class="filter-checkbox">

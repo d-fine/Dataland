@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white radius-1 p-4 portfolio-dialog-content" style="max-width: 28em">
+  <div class="portfolio-dialog-content">
     <FormKit
       v-model="portfolioName"
       type="text"
@@ -7,17 +7,14 @@
       name="portfolioName"
       :placeholder="portfolioName"
     />
-    <label class="formkit-label" for="company-identifiers">Add Company Identifier</label>
+    <label class="formkit-label" for="company-identifiers">Add Company Identifiers</label>
     <FormKit
       v-model="companyIdentifiersInput"
       type="textarea"
       name="company-identifiers"
-      placeholder="Enter company identifier, e.g. DE-000402625-0, SWE402626."
+      placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
       :disabled="isCompaniesLoading"
     />
-    <p class="gray-text font-italic text-xs m-0">
-      Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
-    </p>
     <PrimeButton
       label="Add Companies"
       icon="pi pi-plus"
@@ -25,16 +22,16 @@
       @click="addCompanies"
       class="primary-button"
       data-test="addCompanies"
-      style="margin: 1em 0"
+      style="margin-left: 1em; float: right"
     />
+    <p class="gray-text font-italic text-xs m-0">
+      Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
+    </p>
     <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
     <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
-      <li
-        v-for="(company, index) in portfolioCompanies"
-        :key="company.companyId"
-        @click="portfolioCompanies.splice(index, 1)"
-      >
-        <i class="pi pi-trash" /> {{ company.companyName }}
+      <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
+        <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
+        {{ company.companyName }}
       </li>
     </ul>
     <div data-test="error">
@@ -47,12 +44,14 @@
     </div>
     <div class="buttonbar">
       <PrimeButton
-        label="Cancel"
-        icon="pi pi-times"
-        @click="dialogRef?.close"
-        class="primary-button"
-        severity="secondary"
-        :data-test="'cancelButton'"
+        v-if="portfolioId"
+        label="Delete Portfolio"
+        icon="pi pi-trash"
+        @click="deletePortfolio"
+        class="primary-button deleteButton"
+        :data-test="'deleteButton'"
+        title="Delete the selected Portfolio"
+        style="width: 1em; padding: 1em"
       />
       <PrimeButton
         label="Save Portfolio"
@@ -62,15 +61,6 @@
         @click="savePortfolio()"
         class="primary-button"
         :data-test="'saveButton'"
-      />
-      <PrimeButton
-        v-if="portfolioId"
-        icon="pi pi-trash"
-        @click="deletePortfolio"
-        class="primary-button p-button-sm deleteButton"
-        :data-test="'deleteButton'"
-        title="Delete the selected Portfolio"
-        style="width: 1em; padding: 1em"
       />
     </div>
   </div>
@@ -93,10 +83,15 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
-type CompanyIdAndName = {
+class CompanyIdAndName {
   companyId: string;
   companyName: string;
-};
+
+  public constructor(portfolioEntry: EnrichedPortfolioEntry) {
+    this.companyId = portfolioEntry.companyId;
+    this.companyName = portfolioEntry.companyName;
+  }
+}
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -127,7 +122,7 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueCompanies(portfolio.entries);
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   portfolioFrameworks.value = getUniqueFrameworks(portfolio.entries);
 });
 
@@ -140,16 +135,11 @@ function getUniqueFrameworks(entries: EnrichedPortfolioEntry[]): string[] {
 }
 
 /**
- * Retrieve array of unique companyIdAndNames from EnrichedPortfolioEntry
+ * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
-function getUniqueCompanies(entries: EnrichedPortfolioEntry[]): CompanyIdAndName[] {
-  const uniqueCompanyIds = new Set([...entries.map((entry) => entry.companyId)]);
-  return Array.from(uniqueCompanyIds).map((companyId): CompanyIdAndName => {
-    return {
-      companyId: companyId,
-      companyName: entries.find((entry) => entry.companyId == companyId)?.companyName || 'undefined',
-    };
-  });
+function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
+  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
+  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
 }
 
 /**
@@ -176,8 +166,7 @@ async function addCompanies(): Promise<void> {
       .filter((validationResult) => !validationResult.companyInformation)
       .map((it) => it.identifier);
 
-    const allIdentifiers = new Set([...portfolioCompanies.value, ...validIdentifiers]);
-    portfolioCompanies.value = Array.from(allIdentifiers).sort((a, b) => a.companyName.localeCompare(b.companyName));
+    portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
@@ -276,10 +265,10 @@ function processCompanyInputString(): string[] {
 
 <style scoped lang="scss">
 .portfolio-dialog-content {
-  display: flex;
-  flex-direction: column;
-  width: 50vw;
-  position: relative;
+  width: 28em;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 1.5rem;
 }
 
 .deleteButton {
@@ -287,36 +276,28 @@ function processCompanyInputString(): string[] {
   padding: 1em;
 }
 
-.p-message :deep(.p-message-wrapper) {
-  padding: 0.5rem !important;
-}
-
-.p-multiselect {
-  width: 100%;
-  padding: var(--fk-padding-input);
-}
-
-.formkit-outer,
-.formkit-inner {
-  width: 100%;
-}
-
 .buttonbar {
   display: flex;
   gap: 1rem;
   margin-top: 1em;
   margin-left: auto;
+  justify-content: end;
+}
+
+label {
+  margin-top: 1.5em;
 }
 
 ul {
   padding-inline-start: 0;
-}
-
-li:has(> i.pi-trash):hover {
-  cursor: pointer;
+  height: 7.5em;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 i.pi-trash {
   color: var(--primary-color);
+  margin-right: 0.25em;
+  cursor: pointer;
 }
 </style>
