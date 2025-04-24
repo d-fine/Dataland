@@ -4,13 +4,16 @@
     <DatasetsTabMenu :initial-tab-index="2">
       <TheContent class="min-h-screen paper-section relative">
         <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
-          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :header="portfolio.portfolioName">
+          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId">
+            <template #header>
+              <div :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
+            </template>
             <PortfolioDetails :portfolioId="portfolio.portfolioId" @update:portfolio-overview="getPortfolios" />
           </TabPanel>
           <TabPanel>
             <template #header>
-              <div class="p-tabview-nav" @click="addNewPortfolio" data-test="addNewPortfolio">
-                <span class="align-self-start"><i class="pi pi-plus pr-2" /> New Portfolio</span>
+              <div @click="addNewPortfolio" data-test="addNewPortfolio">
+                <i class="pi pi-plus pr-2" /> New Portfolio
               </div>
             </template>
             <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>

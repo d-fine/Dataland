@@ -106,7 +106,6 @@ describe('Check the portfolio dialog', function (): void {
 
   it('Should delete the portfolio', function (): void {
     cy.intercept('DELETE', '**/portfolios/**', (req) => {
-      console.log('Intercepted DELETE:', req.url);
       req.reply({
         statusCode: 200,
         body: { message: 'Portfolio deleted successfully' },
@@ -133,7 +132,6 @@ describe('Check the portfolio dialog', function (): void {
       cy.get('[data-test="deleteButton"]').click();
       cy.wait('@deletePortfolio').its('response.statusCode').should('eq', 200);
       cy.intercept('DELETE', '**/portfolios/**', (req) => {
-        console.log('Intercepted DELETE call to:', req.url);
         req.reply({
           statusCode: 200,
           body: { message: 'Portfolio deleted successfully' },

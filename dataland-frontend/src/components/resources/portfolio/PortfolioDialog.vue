@@ -138,15 +138,8 @@ function getUniqueFrameworks(entries: EnrichedPortfolioEntry[]): string[] {
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
 function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
-  const uniqueCompanyIds = new Set([...entries.map((entry) => entry.companyId)]);
-  return Array.from(uniqueCompanyIds)
-    .map((companyId): CompanyIdAndName => {
-      return {
-        companyId: companyId,
-        companyName: entries.find((entry) => entry.companyId == companyId)?.companyName || 'undefined',
-      };
-    })
-    .sort((a, b) => a.companyName.localeCompare(b.companyName));
+  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
+  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
 }
 
 /**
