@@ -278,7 +278,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
   }
 
-  it.only('Checks the latest documents', () => {
+  it('Checks the latest documents', () => {
     mockRequestsOnMounted(false);
     mountCompanyCockpitWithAuthentication(false, false, []);
     // For each category a request is made.
