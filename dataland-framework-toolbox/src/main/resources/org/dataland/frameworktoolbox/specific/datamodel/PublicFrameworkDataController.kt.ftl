@@ -62,11 +62,11 @@ class ${frameworkDataType.shortenedQualifier}Controller(
 
     @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ByDimensions")
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
+        reportingPeriods: List<String>,
+        companyIds: List<String>,
         exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
+        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType)
     }
 
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")
