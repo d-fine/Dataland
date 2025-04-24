@@ -85,27 +85,25 @@ describe('Component test for the Document Overview', () => {
     const hasCompanyAtLeastOneOwner = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
-    console.log('I am here!!!!!!!!!!!');
     waitForRequestsOnMounted();
-    let myPublicationDateToTest: string = '1900-02-26';
-    if (mockFetchedDocuments[0].publicationDate) {
-      myPublicationDateToTest = mockFetchedDocuments[0].publicationDate;
-    }
-
     cy.get("[data-test='sheet']").should('exist').and('contain', companyInformationForTest.companyName);
     cy.get("[data-test='documents-overview-table']")
       .should('exist')
       .within(() => {
         cy.get('tbody tr')
           .should('have.length', Object.keys(mockFetchedDocuments).length)
-          .first() //make sure first object in testing/data/documents/CompanyDocumentsMock.json is the one with earliest publicationDate
-          .within(() => {
-            cy.get('td').eq(0).should('contain', mockFetchedDocuments[0].documentName);
-            cy.get('td').eq(1).should('contain', humanizeStringOrNumber(mockFetchedDocuments[0].documentCategory));
-            cy.get('td').eq(2).should('contain', dateStringFormatter(myPublicationDateToTest));
-            cy.get('td').eq(3).should('contain', mockFetchedDocuments[0].reportingPeriod);
-            cy.get('td').eq(4).should('contain', 'VIEW DETAILS');
-            cy.get('td').eq(5).should('contain', 'DOWNLOAD');
+          .each(($el, index) => {
+            cy.wrap($el).within(() => {
+              cy.get('td').eq(0).should('have.text', mockFetchedDocuments[index].documentName);
+              cy.get('td')
+                .eq(1)
+                .should('have.text', humanizeStringOrNumber(mockFetchedDocuments[index].documentCategory));
+              cy.get('td').eq(2).should('not.contain', '1970');
+              cy.get('td').eq(2).should('have.text', dateStringFormatter(mockFetchedDocuments[index].publicationDate));
+              cy.get('td').eq(3).should('have.text', mockFetchedDocuments[index].reportingPeriod);
+              cy.get('td').eq(4).should('contain', 'VIEW DETAILS');
+              cy.get('td').eq(5).should('have.text', 'DOWNLOAD');
+            });
           });
       });
   });
