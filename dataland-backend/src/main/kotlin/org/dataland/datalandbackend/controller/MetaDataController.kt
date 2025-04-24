@@ -198,10 +198,10 @@ class MetaDataController(
 
     override fun getAvailableDataDimensions(
         companyIds: List<String>?,
-        dataTypes: List<String>?,
+        frameworksOrDataPointTypes: List<String>?,
         reportingPeriods: List<String>?,
     ): ResponseEntity<List<BasicDataDimensions>> {
-        val dataDimensionFilter = DataDimensionFilter(companyIds, dataTypes, reportingPeriods)
+        val dataDimensionFilter = DataDimensionFilter(companyIds, frameworksOrDataPointTypes, reportingPeriods)
         if (dataDimensionFilter.isEmpty()) {
             throw InvalidInputApiException(
                 summary = "All filters are empty.",
@@ -209,7 +209,7 @@ class MetaDataController(
             )
         }
         val activeDimensionsFromDatasets = dataMetaInformationManager.getActiveDataDimensionsFromDatasets(dataDimensionFilter)
-        val activeDimensionsFromDataPoints = dataPointUtils.getAllActiveDataDimensions(dataDimensionFilter)
+        val activeDimensionsFromDataPoints = dataPointUtils.getActiveDataDimensionsFromDataPoints(dataDimensionFilter)
         return ResponseEntity.ok((activeDimensionsFromDatasets + activeDimensionsFromDataPoints).distinct())
     }
 }
