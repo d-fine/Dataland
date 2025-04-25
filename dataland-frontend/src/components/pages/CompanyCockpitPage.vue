@@ -16,9 +16,6 @@
                   :document-download-info="{
                     downloadName: documentNameOrId(document),
                     fileReference: document.documentId,
-                    page: undefined,
-                    dataId: undefined,
-                    dataType: undefined,
                   }"
                   :label="documentNameOrId(document)"
                   :suffix="documentPublicationDateOrEmpty(document)"
@@ -93,14 +90,14 @@ import {
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { getPluralCategory, documentNameOrId, documentPublicationDateOrEmpty } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
 
   components: {
-    DocumentLink,
+    DocumentLink: DocumentDownloadLink,
     ClaimOwnershipPanel,
     CompanyInfoSheet,
     FrameworkSummaryPanel,
@@ -193,6 +190,7 @@ export default defineComponent({
     documentPublicationDateOrEmpty,
     documentNameOrId,
     getPluralCategory,
+
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -260,6 +258,7 @@ export default defineComponent({
       }
       this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
+
     /**
      * Expands or collapses the framework tiles
      */

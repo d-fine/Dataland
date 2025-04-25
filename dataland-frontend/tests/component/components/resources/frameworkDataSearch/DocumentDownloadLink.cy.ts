@@ -1,5 +1,5 @@
 // @ts-nocheck
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
@@ -9,7 +9,7 @@ describe('check that the document link component works and is displayed correctl
     cy.intercept('**/documents/dummyFile**', {
       statusCode: 200,
     }).as('downloadComplete');
-    cy.mountWithPlugins(DocumentLink, {
+    cy.mountWithPlugins(DocumentDownloadLink, {
       keycloak: minimalKeycloakMock({}),
 
       props: {
@@ -17,8 +17,6 @@ describe('check that the document link component works and is displayed correctl
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
           dataType: DataTypeEnum.Heimathafen,
-          dataId: undefined,
-          page: undefined,
         },
       },
     }).then(() => {
@@ -31,14 +29,12 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that Download Progress Spinner appears if the prop changes', function (): void {
-    cy.mountWithPlugins(DocumentLink, {
+    cy.mountWithPlugins(DocumentDownloadLink, {
       props: {
         documentDownloadInfo: {
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
           dataType: DataTypeEnum.Heimathafen,
-          dataId: undefined,
-          page: undefined,
         },
       },
     }).then((mounted) => {
@@ -53,14 +49,12 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that Download Progress Spinner disappears and the checkmark appears', function (): void {
-    cy.mountWithPlugins(DocumentLink, {
+    cy.mountWithPlugins(DocumentDownloadLink, {
       props: {
         documentDownloadInfo: {
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
           dataType: DataTypeEnum.Heimathafen,
-          dataId: undefined,
-          page: undefined,
         },
       },
     }).then((mounted) => {
@@ -74,14 +68,11 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that Download Progress Checkmark disappears again', function (): void {
-    cy.mountWithPlugins(DocumentLink, {
+    cy.mountWithPlugins(DocumentDownloadLink, {
       props: {
         documentDownloadInfo: {
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
-          dataType: undefined,
-          dataId: undefined,
-          page: undefined,
         },
       },
     }).then((mounted) => {

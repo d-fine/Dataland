@@ -64,9 +64,6 @@
             :document-download-info="{
               downloadName: documentNameOrId(tableRow.data),
               fileReference: tableRow.data.documentId,
-              page: undefined,
-              dataId: undefined,
-              dataType: undefined,
             }"
             style="display: grid; grid-template-columns: 7em; justify-items: center; grid-template-rows: 1.75em"
           />

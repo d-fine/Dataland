@@ -33,10 +33,9 @@
             </td>
           </tr>
           <tr v-if="dataSourcePages">
-            <th scope="row" class="headers-bg width-auto" v-if="dataSourcePagesRefersToMultiplePages">
-              <span class="table-left-label">Pages</span>
+            <th scope="row" class="headers-bg width-auto">
+              <span class="table-left-label">{{ dataSourcePagesRefersToMultiplePages ? 'Pages' : 'Page' }}</span>
             </th>
-            <th scope="row" class="headers-bg width-auto" v-else><span class="table-left-label">Page</span></th>
             <td>{{ dataSourcePages }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
@@ -54,19 +53,20 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataPointDataTableRefProps } from '@/utils/Frameworks';
+import { getPageInfo } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 
 export default defineComponent({
   methods: {
     humanizeStringOrNumber,
   },
 
-  components: { RenderSanitizedMarkdownInput, DocumentLink },
+  components: { RenderSanitizedMarkdownInput, DocumentLink: DocumentDownloadLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
 
@@ -78,23 +78,17 @@ export default defineComponent({
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
     },
+
     dataSourcePage(): number | undefined {
-      const dataSource = this.dialogData.dataPointDisplay.dataSource;
-      if (dataSource && 'page' in dataSource && dataSource.page != null) {
-        return Number(dataSource.page.split('-')[0]) || undefined;
-      } else return undefined;
+      return getPageInfo(this.dialogData.dataPointDisplay.dataSource).firstPageInRange;
     },
+
     dataSourcePages(): string {
-      const dataSource = this.dialogData.dataPointDisplay.dataSource;
-      if (dataSource && 'page' in dataSource && dataSource.page != null) {
-        return dataSource.page;
-      } else return '';
+      return getPageInfo(this.dialogData.dataPointDisplay.dataSource).pageRange;
     },
+
     dataSourcePagesRefersToMultiplePages(): boolean {
-      const dataSource = this.dialogData.dataPointDisplay.dataSource;
-      if (dataSource && 'page' in dataSource && dataSource.page != null) {
-        return dataSource.page.search('-') >= 0;
-      } else return false;
+      return getPageInfo(this.dialogData.dataPointDisplay.dataSource).hasMultiplePages;
     },
   },
 });

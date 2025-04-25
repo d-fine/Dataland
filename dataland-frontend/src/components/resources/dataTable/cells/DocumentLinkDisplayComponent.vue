@@ -3,9 +3,6 @@
     :document-download-info="{
       downloadName: content.displayValue.dataSource.fileName ?? content.displayValue.dataSource.fileReference,
       fileReference: content.displayValue.dataSource.fileReference,
-      page: undefined,
-      dataId: undefined,
-      dataType: undefined,
     }"
     :label="content.displayValue.label"
     show-icon
@@ -18,11 +15,11 @@ import {
   type MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 
 export default defineComponent({
   name: 'DocumentLinkDisplayComponent',
-  components: { DocumentLink },
+  components: { DocumentLink: DocumentDownloadLink },
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>,

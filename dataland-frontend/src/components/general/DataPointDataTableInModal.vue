@@ -19,8 +19,6 @@
                   downloadName: dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference,
                   fileReference: dataPointDisplay.dataSource.fileReference,
                   page: dataSourcePage,
-                  dataId: undefined,
-                  dataType: undefined,
                 }"
                 :label="dataSourceLabel"
                 show-icon
@@ -28,8 +26,7 @@
             </td>
           </tr>
           <tr v-if="dataSourcePages">
-            <th scope="row" class="headers-bg" v-if="dataSourcePagesRefersToMultiplePages">Pages</th>
-            <th scope="row" class="headers-bg" v-else>Page</th>
+            <th scope="row" class="headers-bg">{{ dataSourcePagesRefersToMultiplePages ? 'Pages' : 'Page' }}</th>
             <td>{{ dataSourcePages }}</td>
           </tr>
           <tr v-if="dataPointDisplay.comment">
@@ -45,18 +42,21 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
+import { getPageInfo } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 
 export default defineComponent({
-  components: { DocumentLink },
+  components: { DocumentLink: DocumentDownloadLink },
   name: 'DataPointDataTableInModal',
+
   props: {
     dataPointDisplay: {
       type: Object as () => DataPointDisplay,
       require: true,
     },
   },
+
   computed: {
     isDataCorrect() {
       return (
@@ -64,28 +64,23 @@ export default defineComponent({
         (!!this.dataPointDisplay?.comment && this.dataPointDisplay?.comment !== '')
       );
     },
+
     dataSourceLabel(): string | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
       if (!dataSource || !dataSource.fileName) return undefined;
       return dataSource.fileName;
     },
-    dataSourcePages(): string {
-      const dataSource = this.dataPointDisplay?.dataSource;
-      if (dataSource && 'page' in dataSource && dataSource.page != null) {
-        return dataSource.page;
-      } else return '';
-    },
-    dataSourcePagesRefersToMultiplePages(): boolean {
-      const dataSource = this.dataPointDisplay?.dataSource;
-      if (dataSource && 'page' in dataSource && dataSource.page != null) {
-        return dataSource.page.search('-') >= 0;
-      } else return false;
-    },
+
     dataSourcePage(): number | undefined {
-      const dataSource = this.dataPointDisplay?.dataSource;
-      if (dataSource && 'page' in dataSource && dataSource.page != null) {
-        return Number(dataSource.page.split('-')[0]);
-      } else return undefined;
+      return getPageInfo(this.dataPointDisplay?.dataSource).firstPageInRange;
+    },
+
+    dataSourcePages(): string {
+      return getPageInfo(this.dataPointDisplay?.dataSource).pageRange;
+    },
+
+    dataSourcePagesRefersToMultiplePages(): boolean {
+      return getPageInfo(this.dataPointDisplay?.dataSource).hasMultiplePages;
     },
   },
 });

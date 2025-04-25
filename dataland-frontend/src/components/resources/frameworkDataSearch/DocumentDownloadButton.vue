@@ -2,7 +2,7 @@
   <PrimeButton
     class="uppercase p-button p-button-sm d-letters ml-3"
     aria-label="download document"
-    @click="downloadDocumentFromButton"
+    @click="handleDocumentDownload"
     data-test="document-download-button"
   >
     <DownloadProgressSpinner :percent-completed="percentCompleted" v-if="downloadIsInProgress(percentCompleted)" />
@@ -34,7 +34,7 @@ const props = defineProps({
   },
 });
 
-const downloadDocumentFromButton = async (): Promise<void> => {
+const handleDocumentDownload = async (): Promise<void> => {
   if (downloadIsInProgress(percentCompleted.value)) return;
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };

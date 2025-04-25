@@ -21,22 +21,27 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'DownloadProgressSpinner',
+
   props: {
     percentCompleted: { type: Number, default: undefined },
   },
+
   computed: {
     displayAnything() {
       return this.displaySpinner || this.displayCheckmark;
     },
+
     displaySpinner() {
       return this.percentCompleted !== undefined && this.percentCompleted < 100;
     },
+
     displayCheckmark() {
       return this.percentCompleted === 100;
     },
   },
 });
 </script>
+
 <style lang="scss" scoped>
 @use '@/assets/scss/variables';
 

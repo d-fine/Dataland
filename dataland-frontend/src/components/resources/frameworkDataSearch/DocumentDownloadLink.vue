@@ -1,7 +1,7 @@
 <template>
   <div class="text-primary">
     <a
-      @click="downloadDocumentFromLink()"
+      @click="handleDocumentDownload()"
       class="cursor-pointer"
       :class="fontStyle"
       :title="documentDownloadInfo.downloadName"
@@ -57,7 +57,7 @@ const props = defineProps({
   fontStyle: String,
 });
 
-const downloadDocumentFromLink = async (): Promise<void> => {
+const handleDocumentDownload = async (): Promise<void> => {
   if (downloadIsInProgress(percentCompleted.value)) return;
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };

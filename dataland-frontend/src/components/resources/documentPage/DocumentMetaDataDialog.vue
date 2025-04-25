@@ -16,13 +16,10 @@
             <tr>
               <th>Name</th>
               <td class="nowrap" data-test="document-link">
-                <DocumentLink
+                <DocumentDownloadLink
                   :document-download-info="{
                     downloadName: metaData.documentName ? metaData.documentName : metaData.documentId,
                     fileReference: metaData.documentId,
-                    page: undefined,
-                    dataId: undefined,
-                    dataType: undefined,
                   }"
                   show-icon
                 />
@@ -74,7 +71,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 

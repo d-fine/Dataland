@@ -8,13 +8,14 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { PrivateFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { getFileExtensionFromHeaders, getMimeTypeFromHeaders } from '@/utils/Axios.ts';
 import type Keycloak from 'keycloak-js';
+import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
 
 export interface DocumentDownloadInfo {
-  fileReference: string;
-  page: number | undefined;
-  dataId: string | undefined;
-  dataType: string | undefined;
   downloadName: string;
+  fileReference: string;
+  page?: number;
+  dataId?: string;
+  dataType?: string;
 }
 
 /**
@@ -150,4 +151,27 @@ export async function downloadDocument(
  */
 export function downloadIsInProgress(percentCompleted: number | undefined): boolean {
   return percentCompleted != undefined;
+}
+
+/**
+ * Based on the given data source, returns the triple of info what the first document page for this
+ * source is, what the entire page range is (can also be just a single page), and whether the source
+ * corresponds to multiple pages.
+ * @param dataSource the data source in question
+ */
+export function getPageInfo(dataSource: ExtendedDocumentReference | BaseDocumentReference | undefined): {
+  firstPageInRange: number | undefined;
+  pageRange: string;
+  hasMultiplePages: boolean;
+} {
+  const pageInfo = { firstPageInRange: undefined as number | undefined, pageRange: '', hasMultiplePages: false };
+
+  if (dataSource && 'page' in dataSource && dataSource.page != null) {
+    const pageRange = dataSource.page;
+    pageInfo.firstPageInRange = Number(pageRange.split('-')[0]) || undefined;
+    pageInfo.pageRange = pageRange;
+    pageInfo.hasMultiplePages = pageRange.includes('-');
+  }
+
+  return pageInfo;
 }
