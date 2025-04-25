@@ -1,9 +1,9 @@
+//@ts-nocheck
 import TheFooter from '@/components/generics/TheFooter.vue';
-import { mount } from 'cypress/vue';
 
 describe('Component test for the footer', () => {
   it('Check if essential elements are present', () => {
-    mount(TheFooter);
+    cy.mountWithPlugins(TheFooter, {});
 
     cy.get('footer').should('exist');
     cy.get('.footer__logo').should('exist');
