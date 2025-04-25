@@ -2413,7 +2413,7 @@
             }
           },
           {
-            "name": "dataTypes",
+            "name": "frameworksOrDataPointTypes",
             "in": "query",
             "required": false,
             "schema": {
@@ -20637,10 +20637,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
