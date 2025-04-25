@@ -106,11 +106,7 @@ class DataPointUtils
          */
         fun getActiveDataDimensionsFromDataPoints(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val dataPointMetaInformationEntities =
-                metaDataManager.getActiveDataPointMetaInformationList(
-                    companyIds = dataDimensionFilter.companyIds,
-                    dataPointTypes = dataDimensionFilter.dataTypes,
-                    reportingPeriods = dataDimensionFilter.reportingPeriods,
-                )
+                metaDataManager.getActiveDataPointMetaInformationList(dataDimensionFilter)
             val dataPointBasedDimensions = dataPointMetaInformationEntities.map { it.toBasicDataDimensions() }
             val frameworkBasedDimensions = getAllActiveDataDimensionsForFrameworks(dataDimensionFilter)
             return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
@@ -119,13 +115,15 @@ class DataPointUtils
         private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
-            val frameworks = dataDimensionFilter.dataTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+            val frameworks = dataDimensionFilter.dataTypesOrDataPointTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
                     metaDataManager.getActiveDataPointMetaInformationList(
-                        companyIds = dataDimensionFilter.companyIds,
-                        dataPointTypes = getRelevantDataPointTypes(framework).toList(),
-                        reportingPeriods = dataDimensionFilter.reportingPeriods,
+                        DataDimensionFilter(
+                            companyIds = dataDimensionFilter.companyIds,
+                            dataTypesOrDataPointTypes = getRelevantDataPointTypes(framework).toList(),
+                            reportingPeriods = dataDimensionFilter.reportingPeriods,
+                        ),
                     )
                 allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
             }

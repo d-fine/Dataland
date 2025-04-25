@@ -124,7 +124,7 @@ class DataMetaInformationManager(
         val dataMetaInformationEntities =
             dataMetaInformationRepository.getBulkActiveDatasets(
                 companyIds = dataDimensionFilter.companyIds,
-                dataTypes = dataDimensionFilter.dataTypes,
+                dataTypes = dataDimensionFilter.dataTypesOrDataPointTypes,
                 reportingPeriods = dataDimensionFilter.reportingPeriods,
             )
         return dataMetaInformationEntities.map { it.toBasicDataDimensions() }

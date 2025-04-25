@@ -232,7 +232,7 @@ internal class MetaDataControllerTest
 
             val filterForType =
                 dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(DataDimensionFilter(dataTypes = listOf(nonDefaultDataType)))
+                    .getActiveDataDimensionsFromDatasets(DataDimensionFilter(dataTypesOrDataPointTypes = listOf(nonDefaultDataType)))
             assertTrue(filterForType.first() == allDimensions.last())
         }
 
@@ -269,7 +269,7 @@ internal class MetaDataControllerTest
                     .getActiveDataDimensionsFromDatasets(
                         DataDimensionFilter(
                             companyIds = listOf(storedCompanies[0].companyId),
-                            dataTypes = listOf(defaultDataType.toString()),
+                            dataTypesOrDataPointTypes = listOf(defaultDataType.toString()),
                             reportingPeriods = listOf(singleReportingPeriod),
                         ),
                     )
@@ -280,7 +280,7 @@ internal class MetaDataControllerTest
                     .getActiveDataDimensionsFromDatasets(
                         DataDimensionFilter(
                             companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
-                            dataTypes = listOf(defaultDataType.toString(), singleDataType),
+                            dataTypesOrDataPointTypes = listOf(defaultDataType.toString(), singleDataType),
                             reportingPeriods = listOf(singleReportingPeriod, defaultReportingPeriod),
                         ),
                     )

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
@@ -204,14 +205,10 @@ class DataPointMetaInformationManager
          * @param reportingPeriods the reporting periods to filter by
          * @return a list of all active data point meta information entities
          */
-        fun getActiveDataPointMetaInformationList(
-            companyIds: List<String>?,
-            dataPointTypes: List<String>?,
-            reportingPeriods: List<String>?,
-        ): List<DataPointMetaInformationEntity> =
+        fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
-                companyIds = companyIds,
-                dataPointTypes = dataPointTypes,
-                reportingPeriods = reportingPeriods,
+                companyIds = dataDimensionFilter.companyIds,
+                dataPointTypes = dataDimensionFilter.dataTypesOrDataPointTypes,
+                reportingPeriods = dataDimensionFilter.reportingPeriods,
             )
     }

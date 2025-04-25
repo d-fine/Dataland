@@ -137,16 +137,18 @@ class CompanyQueryManager
             return companiesWithFetchedFields
         }
 
+        private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {
+            assertCompanyIdExists(companyId)
+            return companyRepository.findById(companyId).get()
+        }
+
         /**
          * Method to retrieve information about a specific company as stored in the database (entity class)
          * @param companyId
          * @return the StoredCompanyEntity object of the retrieved company
          */
         @Transactional
-        fun getCompanyById(companyId: String): StoredCompanyEntity {
-            assertCompanyIdExists(companyId)
-            return companyRepository.findById(companyId).get()
-        }
+        fun getCompanyById(companyId: String): StoredCompanyEntity = getCompanyByIdAndAssertExistence(companyId)
 
         /**
          * Method to retrieve information about a specific company that may be returned to the user (API model)
@@ -155,7 +157,7 @@ class CompanyQueryManager
          */
         @Transactional
         fun getCompanyApiModelById(companyId: String): StoredCompany {
-            val searchResult = getCompanyById(companyId)
+            val searchResult = getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
         }
 
@@ -172,7 +174,7 @@ class CompanyQueryManager
          * @return a boolean signalling if the company is public or not
          */
         @Transactional
-        fun isCompanyPublic(companyId: String): Boolean = getCompanyById(companyId).isTeaserCompany
+        fun isCompanyPublic(companyId: String): Boolean = getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
 
         /**
          * Get all reporting periods for which at least one active dataset of the specified company and data type exists
@@ -233,7 +235,7 @@ class CompanyQueryManager
             if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
                 CompanyIdentifierValidationResult(identifier)
             } else if (checkCompanyIdExists(identifier)) {
-                buildCompanyIdentifierValidationResult(identifier, getCompanyById(identifier))
+                buildCompanyIdentifierValidationResult(identifier, getCompanyByIdAndAssertExistence(identifier))
             } else {
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
                     buildCompanyIdentifierValidationResult(identifier, it)
