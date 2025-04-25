@@ -101,12 +101,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue';
+
 type Link = {
   text: string;
   url: string;
 };
-
-import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue';
 
 const { isLightVersion } = defineProps({
   isLightVersion: {

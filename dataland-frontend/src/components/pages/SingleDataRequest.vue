@@ -224,6 +224,7 @@
 </template>
 
 <script lang="ts">
+import contentData from '@/assets/content.json';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
@@ -235,6 +236,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
+import type { Content } from '@/types/ContentTypes.ts';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { openEmailClient } from '@/utils/Email';
@@ -273,6 +275,7 @@ export default defineComponent({
     };
   },
   data() {
+    const content: Content = contentData;
     const companiesPage = content.pages.find((page) => page.url === '/companies');
     const singleDatRequestSection = companiesPage
       ? companiesPage.sections.find((section) => section.title === 'Single Data Request')
