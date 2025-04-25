@@ -79,25 +79,12 @@ class SingleDataRequestManagerTest {
             mockDataAccessManager,
             mockKeycloakUserService,
         )
-
         doNothing().whenever(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
         setUpDataRequestRepositoryMock()
-
         doAnswer { invocation ->
-            val arg = invocation.arguments[0]
-            val identifiers =
-                if (arg is List<*> && arg.all { it == null || it is String }) {
-                    arg.map { it as String? }
-                } else {
-                    throw IllegalArgumentException("Expected a List<String?>, but got: ${arg::class}")
-                }
-
-            Pair(
-                mapOf(identifiers[0] to CompanyIdAndName(identifiers[0] ?: "", "")),
-                emptyList<String>(),
-            )
+            val identifiers = invocation.arguments[0] as List<String?>
+            Pair(mapOf(identifiers[0] to CompanyIdAndName(identifiers[0] ?: "", "")), emptyList<String>())
         }.whenever(mockDataRequestProcessingUtils).performIdentifierValidation(anyList())
-
         singleDataRequestManager =
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
@@ -111,12 +98,7 @@ class SingleDataRequestManagerTest {
                 keycloakUserService = mockKeycloakUserService,
                 maxRequestsForUser = maxRequestsForUser,
             )
-
-        TestUtils.mockSecurityContext(
-            "requester@bigplayer.com",
-            "1234-221-1111elf",
-            DatalandRealmRole.ROLE_USER,
-        )
+        TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     private fun setUpDataRequestRepositoryMock() {
