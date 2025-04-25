@@ -83,7 +83,16 @@ class SingleDataRequestManagerTest {
         setUpDataRequestRepositoryMock()
         doAnswer { invocation ->
             val identifiers = invocation.arguments[0] as List<String?>
-            Pair(mapOf(identifiers[0] to CompanyIdAndName(identifiers[0] ?: "", "")), emptyList<String>())
+            Pair(
+                mapOf(
+                    identifiers[0] to
+                        CompanyIdAndName(
+                            companyName = "",
+                            companyId = identifiers[0] ?: UUID.randomUUID().toString(),
+                        ),
+                ),
+                emptyList<String>(),
+            )
         }.whenever(mockDataRequestProcessingUtils).performIdentifierValidation(anyList())
         singleDataRequestManager =
             SingleDataRequestManager(
