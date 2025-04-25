@@ -281,6 +281,13 @@ class DataManager
             return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
         }
 
+        override fun getDatasetData(dataDimensionList: List<Pair<BasicDataDimensions, String>>): List<Pair<BasicDataDimensions, String>> =
+            dataDimensionList.mapNotNull {
+                metaDataManager.getActiveDatasetIdByDataDimensions(it.first)?.let { dataId ->
+                    Pair(it.first, getPublicDataset(dataId, DataType.valueOf(it.first.dataType), it.second).data)
+                }
+            }
+
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,

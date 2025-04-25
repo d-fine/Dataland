@@ -32,15 +32,17 @@ class DataExportServiceTest {
 
     @Test
     fun `check that exported json coincides with input object`() {
-        val jsonStream = dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedEuTaxonomyTestData, ExportFileType.JSON)
-        val exportedJsonObject = objectMapper.readValue<CompanyAssociatedData<EutaxonomyNonFinancialsData>>(jsonStream.inputStream)
+        val jsonStream =
+            dataExportService
+                .buildStreamFromCompanyAssociatedData(listOf(companyAssociatedEuTaxonomyTestData), ExportFileType.JSON)
+        val exportedJsonObject = objectMapper.readValue<List<CompanyAssociatedData<EutaxonomyNonFinancialsData>>>(jsonStream.inputStream)
 
-        Assertions.assertEquals(companyAssociatedEuTaxonomyTestData, exportedJsonObject)
+        Assertions.assertEquals(listOf(companyAssociatedEuTaxonomyTestData), exportedJsonObject)
     }
 
     @Test
     fun `check that exported csv coincides with predefined output`() {
-        val csvStream = dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedLksgTestData, ExportFileType.CSV)
+        val csvStream = dataExportService.buildStreamFromCompanyAssociatedData(listOf(companyAssociatedLksgTestData), ExportFileType.CSV)
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").inputStream().readAllBytes().toString(Charsets.UTF_8)
 
@@ -49,7 +51,9 @@ class DataExportServiceTest {
 
     @Test
     fun `check that exported Excel starts with declaration of separator`() {
-        val excelStream = dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedLksgTestData, ExportFileType.EXCEL)
+        val excelStream =
+            dataExportService
+                .buildStreamFromCompanyAssociatedData(listOf(companyAssociatedLksgTestData), ExportFileType.EXCEL)
         val csvString = String(excelStream.inputStream.readAllBytes(), Charsets.UTF_8)
 
         Assertions.assertTrue(csvString.matches("^.?sep=,.*$".toRegex()))

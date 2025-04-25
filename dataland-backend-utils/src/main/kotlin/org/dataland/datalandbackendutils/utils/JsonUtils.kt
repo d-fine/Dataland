@@ -6,8 +6,46 @@ object JsonUtils {
     private const val JSON_PATH_SEPARATOR = "."
 
     /**
+     * Get all leaf node field names mapped to their corresponding value from a JSON node.
+     * The field names are essentially the leafs JSON paths using the default JSON path child operator "."
+     * Leaf null values are ignored.
+     *
+     * @param node The JSON node
+     * @param currentPath The current path
+     * @return a mapping of the names of non-empty fields to their respective values
+     */
+    fun getNonEmptyNodesAsMapping(
+        node: JsonNode,
+        currentPath: String = "",
+    ): Map<String, String> {
+        val result = mutableMapOf<String, String>()
+
+        when {
+            node.isValueNode && !node.isNull -> {
+                result[currentPath] = if (node.isTextual) node.textValue() else node.toString()
+            }
+
+            node.isObject -> {
+                node.fields().forEachRemaining { (fieldName, value) ->
+                    val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
+                    result.putAll(getNonEmptyNodesAsMapping(value, newPath))
+                }
+            }
+
+            node.isArray -> {
+                node.elements().withIndex().forEachRemaining { (index, element) ->
+                    val newPath = if (currentPath.isEmpty()) "$index" else "$currentPath$JSON_PATH_SEPARATOR$index"
+                    result.putAll(getNonEmptyNodesAsMapping(element, newPath))
+                }
+            }
+        }
+
+        return result
+    }
+
+    /**
      * Get all leaf node field names from a JSON node.
-     * The field names are essentially the leaves' JSON paths using the default JSON path child operator "."
+     * The field names are essentially the leafs JSON paths using the default JSON path child operator "."
      * Leaf null values are ignored.
      * @param node The JSON node
      * @param currentPath The current path
@@ -18,12 +56,13 @@ object JsonUtils {
         node: JsonNode,
         currentPath: String = "",
         ignoreArrays: Boolean = false,
+        keepEmptyFields: Boolean = false,
     ): List<String> {
         val leafNodeFieldNames = mutableListOf<String>()
 
         when {
             node.isValueNode -> {
-                if (!node.isNull) {
+                if (!node.isNull || keepEmptyFields) {
                     leafNodeFieldNames.add(currentPath)
                 }
             }
@@ -31,14 +70,14 @@ object JsonUtils {
             node.isObject -> {
                 node.fields().forEachRemaining { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
-                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(value, newPath, ignoreArrays))
+                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(value, newPath, ignoreArrays, keepEmptyFields))
                 }
             }
 
             node.isArray && !ignoreArrays -> {
                 node.elements().withIndex().forEachRemaining { (index, element) ->
                     val newPath = if (currentPath.isEmpty()) "$index" else "$currentPath$JSON_PATH_SEPARATOR$index"
-                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(element, newPath, ignoreArrays))
+                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(element, newPath, ignoreArrays, keepEmptyFields))
                 }
             }
         }

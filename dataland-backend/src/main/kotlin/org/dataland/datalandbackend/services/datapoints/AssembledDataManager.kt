@@ -289,6 +289,10 @@ class AssembledDataManager
             return assembleDatasetFromDataPoints(dataPoints.values.toList(), dataType, correlationId)
         }
 
+        @Transactional
+        override fun getDatasetData(dataDimensionList: List<Pair<BasicDataDimensions, String>>): List<Pair<BasicDataDimensions, String>> =
+            listOf()
+
         /**
          * Retrieves a key value map containing the IDs of the data points contained in a dataset mapped to their technical IDs
          * @param datasetId the ID of the dataset

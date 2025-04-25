@@ -122,8 +122,8 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataByDimensions(
-        @RequestParam("reportingPeriods") reportingPeriod: List<String>,
-        @RequestParam("companyIds") companyId: List<String>,
+        @RequestParam("reportingPeriods") reportingPeriods: List<String>,
+        @RequestParam("companyIds") companyIds: List<String>,
         @RequestParam("fileFormat") exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource>
 
