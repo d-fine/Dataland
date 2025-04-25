@@ -20,13 +20,16 @@ declare global {
  * @returns the cypress chainable
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
-  return cy.visit(endpoint).get('#app').should('exist');
+  cy.visit(endpoint);
+  cy.get('#app', { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
+  closeCookieBannerIfItExists();
+  return cy.get('#app');
 }
 
 /**
  * Close the cookie banner if it exists and do nothing if it doesn't exist.
  */
-export function closeCookieBannerIfItExists(): void {
+function closeCookieBannerIfItExists(): void {
   cy.get('body').then(($body) => {
     const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
     if (allowCookies.length == 1) {
@@ -36,7 +39,6 @@ export function closeCookieBannerIfItExists(): void {
 }
 
 Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
-Cypress.Commands.add('closeCookieBannerIfItExists', closeCookieBannerIfItExists);
 Cypress.Commands.add('ensureLoggedIn', ensureLoggedIn);
 Cypress.Commands.add('getKeycloakToken', getKeycloakToken);
 Cypress.Commands.add('browserThen', browserThen);
