@@ -42,7 +42,7 @@ class CompanyQueryManager
 
         /**
          * Method to verify that a given company exists in the company store
-         * @param companyId the ID of the to be verified company
+         * @param companyId the ID of the company to be verified
          * @throws ResourceNotFoundApiException if the company does not exist
          */
         fun assertCompanyIdExists(companyId: String) {
@@ -52,12 +52,12 @@ class CompanyQueryManager
         }
 
         /**
-         * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeding
-         * the given size
+         * Return a chunk of all companies matching the given filter. Iterating over chunkIndex will yield all results, eventually.
+         *
          * @param chunkSize the package size of the records
          * @param chunkIndex the index of the chunk which is requested
          * @param filter The filter to use during searching
-         * @return list of lists each containing BasicCompanyInformation objects
+         * @return list of BasicCompanyInformation objects which is a subset of the entire search result
          */
         @Transactional
         fun getCompaniesInChunks(
@@ -137,25 +137,27 @@ class CompanyQueryManager
             return companiesWithFetchedFields
         }
 
-        /**
-         * Method to retrieve information about a specific company
-         * @param companyId
-         * @return the StoredCompanyEntity object of the retrieved company
-         */
-        @Transactional
-        fun getCompanyById(companyId: String): StoredCompanyEntity {
+        private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {
             assertCompanyIdExists(companyId)
             return companyRepository.findById(companyId).get()
         }
 
         /**
-         * Method to retrieve information about a specific company
+         * Method to retrieve information about a specific company as stored in the database (entity class)
+         * @param companyId
+         * @return the StoredCompanyEntity object of the retrieved company
+         */
+        @Transactional
+        fun getCompanyById(companyId: String): StoredCompanyEntity = getCompanyByIdAndAssertExistence(companyId)
+
+        /**
+         * Method to retrieve information about a specific company that may be returned to the user (API model)
          * @param companyId
          * @return the StoredCompany object of the retrieved company
          */
         @Transactional
         fun getCompanyApiModelById(companyId: String): StoredCompany {
-            val searchResult = getCompanyById(companyId)
+            val searchResult = getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
         }
 
@@ -163,6 +165,7 @@ class CompanyQueryManager
          * Method to retrieve the list of currently set teaser company IDs
          * @return a list of company IDs that are currently labeled as teaser companies
          */
+        @Transactional
         fun getTeaserCompanyIds(): List<String> = companyRepository.getAllByIsTeaserCompanyIsTrue().map { it.companyId }
 
         /**
@@ -170,7 +173,8 @@ class CompanyQueryManager
          * @param companyId the ID of the company to be checked
          * @return a boolean signalling if the company is public or not
          */
-        fun isCompanyPublic(companyId: String): Boolean = getCompanyById(companyId).isTeaserCompany
+        @Transactional
+        fun isCompanyPublic(companyId: String): Boolean = getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
 
         /**
          * Get all reporting periods for which at least one active dataset of the specified company and data type exists
@@ -178,6 +182,7 @@ class CompanyQueryManager
          * @param dataType the data type for which the datasets should be counted
          * @returns the reporting periods of active datasets of the specified company and data type
          */
+        @Transactional
         fun getAllReportingPeriodsWithActiveDatasets(
             companyId: String,
             dataType: DataType,
@@ -230,7 +235,7 @@ class CompanyQueryManager
             if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
                 CompanyIdentifierValidationResult(identifier)
             } else if (checkCompanyIdExists(identifier)) {
-                buildCompanyIdentifierValidationResult(identifier, getCompanyById(identifier))
+                buildCompanyIdentifierValidationResult(identifier, getCompanyByIdAndAssertExistence(identifier))
             } else {
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
                     buildCompanyIdentifierValidationResult(identifier, it)

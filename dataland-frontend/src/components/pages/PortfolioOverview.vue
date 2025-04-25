@@ -8,7 +8,11 @@
             <template #header>
               <div class="p-tabview-title" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
             </template>
-            <PortfolioDetails :portfolioId="portfolio.portfolioId" @update:portfolio-overview="getPortfolios" />
+            <PortfolioDetails
+              :portfolioId="portfolio.portfolioId"
+              @update:portfolio-overview="getPortfolios"
+              :data-test="`portfolio-${portfolio.portfolioName}`"
+            />
           </TabPanel>
           <TabPanel>
             <template #header>

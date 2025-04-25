@@ -255,7 +255,7 @@ interface MetaDataApi {
     /**
      * A method to retrieve all available data dimensions filtered by the provided parameters.
      * @param companyIds a list of company identifiers to filter for
-     * @param dataTypes a list of either frameworks or data point types to filter for
+     * @param frameworksOrDataPointTypes a list of frameworks or data point types (or mixture thereof) to filter for
      * @param reportingPeriods a list of reporting periods to filter for
      */
     @Operation(
@@ -273,7 +273,7 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAvailableDataDimensions(
         @RequestParam companyIds: List<String>? = null,
-        @RequestParam dataTypes: List<String>? = null,
+        @RequestParam frameworksOrDataPointTypes: List<String>? = null,
         @RequestParam reportingPeriods: List<String>? = null,
     ): ResponseEntity<List<BasicDataDimensions>>
 }

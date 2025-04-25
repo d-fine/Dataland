@@ -54,7 +54,7 @@ class PortfolioEnrichmentService
             val availableDataDimensions =
                 metaDataControllerApi.getAvailableDataDimensions(
                     companyIds = companyIds,
-                    dataTypes = dataTypes,
+                    frameworksOrDataPointTypes = dataTypes,
                 )
             return availableDataDimensions.groupBy { Pair(it.companyId, it.dataType) }.mapValues {
                 it.value.maxOf { it.reportingPeriod }
