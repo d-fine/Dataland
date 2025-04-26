@@ -65,7 +65,7 @@
     "npm-check-updates": "17.1.18",
     "otplib": "12.0.1",
     "prettier": "3.5.3",
-    "sass": "1.86.1",
+    "sass": "1.86.3",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.8.2",
