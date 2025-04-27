@@ -26,6 +26,7 @@ http {
     listen 6789 default_server;
     server_name _;
 
+<#if keycloak>
     location /keycloak {
       proxy_pass http://keycloak:8080/keycloak;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -33,6 +34,8 @@ http {
       proxy_set_header X-Forwarded-Host $host;
     }
 
+</#if>
+<#if pgadmin>
     location /pgadmin {
       proxy_set_header X-Script-Name /pgadmin;
       proxy_set_header X-Scheme $scheme;
@@ -41,14 +44,18 @@ http {
       proxy_redirect off;
     }
 
+</#if>
+<#if rabbitmq>
     location /rabbitmq/ {
       proxy_pass http://rabbitmq:15672/;
     }
 
+</#if>
+
     location /health/admin-proxy {
       return 200 'UP';
     }
-
+<#if grafana>
     location /grafana/ {
        rewrite  ^/grafana/(.*)  /$1 break;
        proxy_set_header Host $http_host;
@@ -64,10 +71,12 @@ http {
       proxy_set_header Host $http_host;
       proxy_pass http://grafana:3000;
     }
+</#if>
   }
 }
 
 stream {
+<#if backendDb>
     # BACKEND
     upstream backend-db {
         server backend-db:5432;
@@ -78,6 +87,8 @@ stream {
         proxy_pass backend-db;
     }
 
+</#if>
+<#if keycloak>
     # KEYCLOAK
     upstream keycloak-db {
         server keycloak-db:5432;
@@ -88,6 +99,8 @@ stream {
         proxy_pass keycloak-db;
     }
 
+</#if>
+<#if apiKeyManager>
     # API-KEY-MANAGER
     upstream api-key-manager-db {
         server api-key-manager-db:5432;
@@ -98,6 +111,8 @@ stream {
         proxy_pass api-key-manager-db;
     }
 
+</#if>
+<#if documentManager>
     # DOCUMENT-MANAGER
     upstream document-manager-db {
         server document-manager-db:5432;
@@ -108,6 +123,8 @@ stream {
         proxy_pass document-manager-db;
     }
 
+</#if>
+<#if qaService>
     # QA Service
     upstream qa-service-db {
         server qa-service-db:5432;
@@ -118,6 +135,8 @@ stream {
         proxy_pass qa-service-db;
     }
 
+</#if>
+<#if communityManager>
     # COMMUNITY-MANAGER
     upstream community-manager-db {
         server community-manager-db:5432;
@@ -128,6 +147,8 @@ stream {
         proxy_pass community-manager-db;
     }
 
+</#if>
+<#if emailService>
     # EMAIL-SERVICE
     upstream email-service-db {
         server email-service-db:5432;
@@ -138,6 +159,8 @@ stream {
         proxy_pass email-service-db;
     }
 
+</#if>
+<#if userService>
     # USER-SERVICE
     upstream user-service-db {
         server user-service-db:5432;
@@ -148,6 +171,8 @@ stream {
         proxy_pass user-service-db;
     }
 
+</#if>
+<#if rabbitmq>
     # RabbitMQ
     upstream rabbitmq {
         server rabbitmq:5672;
@@ -158,6 +183,8 @@ stream {
         proxy_pass rabbitmq;
     }
 
+</#if>
+<#if internalStorage>
     # Internal-Storage
     upstream internal-storage-db {
         server internal-storage-db:5432;
@@ -167,4 +194,5 @@ stream {
         listen 5436 so_keepalive=on;
         proxy_pass internal-storage-db;
     }
+</#if>
 }
