@@ -95,5 +95,13 @@ fi
 mkdir -p "${LOKI_VOLUME}/health-check-log"
 ./health-check/healthCheck.sh &
 
+if [[ -s ./localContainer.conf ]]; then
+  until docker ps | grep admin-proxy | grep -q \(healthy\)
+  do
+    echo "Waiting for admin-proxy to be healthy as it is required for executing the backend."
+    sleep 5
+  done
+fi
+
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite --open",
-    "analyse": "vite --debug transform --open",
+    "dev": "vite",
+    "analyse": "vite --debug transform",
     "build": "vite build",
     "format": "prettier --write .",
     "formatci": "prettier --check .",

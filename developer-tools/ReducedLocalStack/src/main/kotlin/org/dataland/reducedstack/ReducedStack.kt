@@ -23,17 +23,17 @@ fun main() {
             "proxy" to true, // always required
             "adminProxy" to true, // always required
             "apiKeyManager" to false,
-            "documentManager" to false,
+            "documentManager" to true,
             "backendDb" to true, // always required
             "internalStorage" to true, // always required
             "keycloak" to true, // always required
             "pgadmin" to false,
             "rabbitmq" to true, // always required
-            "qaService" to false,
+            "qaService" to true,
             "userService" to false,
             "batchManager" to false,
-            "communityManager" to false,
-            "specificationService" to false,
+            "communityManager" to true,
+            "specificationService" to true,
             "emailService" to false,
             "externalStorage" to false,
             "eurodatClient" to false,
@@ -41,7 +41,7 @@ fun main() {
             "grafana" to false,
             "loki" to false,
             "alloy" to false,
-            "frontendDev" to false, // start the stack in reduced mode only works with a local frontend
+            "frontendDev" to false, // if this is set to false, use -l flag and start the frontend dev server manually
         )
 
     val serviceNames =
