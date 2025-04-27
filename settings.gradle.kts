@@ -25,7 +25,7 @@ include(
     "dataland-specification-lib",
     "dataland-specification-service",
     "dataland-user-service",
-    "developer-tools:ReducedLocalStack",
+    //"developer-tools:ReducedLocalStack",
 )
 
 plugins {
