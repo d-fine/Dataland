@@ -65,7 +65,7 @@
               downloadName: documentNameOrId(tableRow.data),
               fileReference: tableRow.data.documentId,
             }"
-            style="display: grid; grid-template-columns: 8em; justify-items: center; grid-template-rows: 1.75em"
+            style="display: grid; grid-template-columns: 8.25em; justify-items: center; grid-template-rows: 1.75em"
           />
         </template>
       </Column>
