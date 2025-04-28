@@ -1,6 +1,6 @@
 <template>
   <PrimeButton
-    class="primary-button"
+    class="uppercase p-button p-button-sm d-letters ml-3"
     aria-label="download document"
     @click="handleDocumentDownload"
     data-test="document-download-button"
