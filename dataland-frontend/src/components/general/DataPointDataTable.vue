@@ -18,7 +18,7 @@
           <tr v-if="dialogData.dataPointDisplay.dataSource">
             <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
-              <DocumentLink
+              <DocumentDownloadLink
                 :document-download-info="{
                   downloadName:
                     dialogData.dataPointDisplay.dataSource.fileName ??
@@ -66,7 +66,7 @@ export default defineComponent({
     humanizeStringOrNumber,
   },
 
-  components: { RenderSanitizedMarkdownInput, DocumentLink: DocumentDownloadLink },
+  components: { RenderSanitizedMarkdownInput, DocumentDownloadLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
 

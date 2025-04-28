@@ -14,7 +14,7 @@
           <tr v-if="dataPointDisplay.dataSource">
             <th scope="row" class="headers-bg">Data source</th>
             <td class="nowrap">
-              <DocumentLink
+              <DocumentDownloadLink
                 :document-download-info="{
                   downloadName: dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference,
                   fileReference: dataPointDisplay.dataSource.fileReference,
@@ -47,7 +47,7 @@ import { type DataPointDisplay } from '@/utils/DataPoint';
 import { getPageInfo } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 
 export default defineComponent({
-  components: { DocumentLink: DocumentDownloadLink },
+  components: { DocumentDownloadLink },
   name: 'DataPointDataTableInModal',
 
   props: {
