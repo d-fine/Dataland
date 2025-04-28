@@ -7,7 +7,7 @@
     <div v-if="displayAnything" style="position: relative; width: 1.5rem">
       <span v-if="displaySpinner" class="progress-spinner-container">
         <i class="pi pi-spin pi-spinner progress-spinner-spinner" data-test="spinner-icon" />
-        <span class="progress-spinner-value" data-test="percentage-text">{{ percentCompleted }}%</span>
+        <span :class="progressSpinnerValueClass" data-test="percentage-text">{{ percentCompleted }}%</span>
       </span>
       <span v-if="displayCheckmark" class="progress-spinner-container">
         <i class="pi pi-check progress-completed-checkmark" data-test="checkmark-icon" />
@@ -24,6 +24,7 @@ export default defineComponent({
 
   props: {
     percentCompleted: { type: Number, default: undefined },
+    whiteSpinner: { type: Boolean, required: false, default: false },
   },
 
   computed: {
@@ -37,6 +38,10 @@ export default defineComponent({
 
     displayCheckmark() {
       return this.percentCompleted === 100;
+    },
+
+    progressSpinnerValueClass() {
+      return this.whiteSpinner ? 'progress-spinner-value--white' : 'progress-spinner-value--black';
     },
   },
 });
@@ -61,7 +66,14 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 0.45rem;
-  color: black;
+
+  &--black {
+    color: black;
+  }
+
+  &--white {
+    color: white;
+  }
 }
 
 .progress-spinner-spinner {
