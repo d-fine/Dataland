@@ -20,7 +20,8 @@ declare global {
  * @returns the cypress chainable
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
-  return cy.visit(endpoint).get('#app').should('exist');
+  cy.visit(endpoint);
+  return cy.get('#app').should('exist');
 }
 
 /**

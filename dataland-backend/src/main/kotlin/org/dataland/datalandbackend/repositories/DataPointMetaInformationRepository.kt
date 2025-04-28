@@ -29,15 +29,18 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
      */
     @Query(
         "SELECT dataPointMetaInformation FROM DataPointMetaInformationEntity dataPointMetaInformation " +
-            "WHERE dataPointMetaInformation.reportingPeriod IN :#{#reportingPeriods} " +
-            "AND dataPointMetaInformation.companyId IN :#{#companyIds} " +
-            "AND dataPointMetaInformation.dataPointType IN :#{#dataPointTypes} " +
-            "AND dataPointMetaInformation.currentlyActive = true ",
+            "WHERE (:#{#reportingPeriods == null || #reportingPeriods.isEmpty()} = true " +
+            "OR dataPointMetaInformation.reportingPeriod IN :#{#reportingPeriods}) " +
+            "AND (:#{#companyIds == null || #companyIds.isEmpty()} = true " +
+            "OR dataPointMetaInformation.companyId IN :#{#companyIds}) " +
+            "AND (:#{#dataPointTypes == null || #dataPointTypes.isEmpty()} = true " +
+            "OR dataPointMetaInformation.dataPointType IN :#{#dataPointTypes}) " +
+            "AND dataPointMetaInformation.currentlyActive = true",
     )
     fun getBulkActiveDataPoints(
-        @Param("companyIds") companyIds: List<String>,
-        @Param("dataPointTypes") dataPointTypes: List<String>,
-        @Param("reportingPeriods") reportingPeriods: List<String>,
+        @Param("companyIds") companyIds: List<String>?,
+        @Param("dataPointTypes") dataPointTypes: List<String>?,
+        @Param("reportingPeriods") reportingPeriods: List<String>?,
     ): List<DataPointMetaInformationEntity>
 
     /**

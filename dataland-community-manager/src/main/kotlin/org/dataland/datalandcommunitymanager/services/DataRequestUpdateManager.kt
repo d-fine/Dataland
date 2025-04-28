@@ -395,7 +395,7 @@ class DataRequestUpdateManager
          * @param correlationId correlationId
          */
         @Transactional
-        fun patchAllRequestsToStatusNonSourceable(
+        fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfo: SourceabilityInfo,
             correlationId: String,
         ) {
@@ -403,6 +403,16 @@ class DataRequestUpdateManager
                 "Expected information about a non-sourceable dataset but received information about a sourceable dataset. No requests " +
                     "are patched if a dataset is reported as sourceable until the dataset is uploaded."
             }
+
+            val dataRequestEntities =
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(dataMetaInformation.dataType),
+                        datalandCompanyIds = setOf(sourceabilityInfo.companyId),
+                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
+                    ),
+                )
 
             val dataRequestEntities =
                 dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(

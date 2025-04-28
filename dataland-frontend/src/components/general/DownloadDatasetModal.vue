@@ -1,7 +1,7 @@
 <template>
   <PrimeDialog
     v-model:visible="isModalVisible"
-    style="text-align: center; width: 20%"
+    style="text-align: center; width: 20em"
     header="Download dataset"
     :show-header="true"
     :closable="true"

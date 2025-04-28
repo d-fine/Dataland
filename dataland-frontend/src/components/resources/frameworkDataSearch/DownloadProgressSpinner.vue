@@ -65,7 +65,7 @@ export default defineComponent({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.45rem;
+  font-size: 0.45em;
   color: black;
 }
 
