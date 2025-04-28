@@ -3,8 +3,6 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -191,45 +189,5 @@ class BulkDataRequestsTest {
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), reportingPeriods)
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), emptySet())
-    }
-
-    @Test
-    fun `post bulk data request and verify that only unique identifiers are accepted`() {
-        val permId1 = generateRandomPermId(20)
-        val permId2 = generateRandomPermId(20)
-        val companyOne =
-            CompanyInformation(
-                companyName = "companyOne",
-                headquarters = "HQ",
-                identifiers = mapOf(IdentifierType.PermId.value to listOf(permId1)),
-                countryCode = "DE",
-            )
-        val companyTwo =
-            companyOne.copy(
-                companyName = "companyTwo",
-                identifiers = mapOf(IdentifierType.Lei.value to listOf(permId1)),
-            )
-        val companyWithUniqueId =
-            companyOne.copy(
-                companyName = "companyWithUniqueId",
-                identifiers = mapOf(IdentifierType.PermId.value to listOf(permId2)),
-            )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyDataControllerApi.postCompany(companyOne)
-        apiAccessor.companyDataControllerApi.postCompany(companyTwo)
-        apiAccessor.companyDataControllerApi.postCompany(companyWithUniqueId)
-        val response =
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    setOf(permId1, permId2),
-                    setOf(BulkDataRequest.DataTypes.sfdr),
-                    setOf("2023"),
-                    false,
-                ),
-            )
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
-        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
-        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 1)
     }
 }

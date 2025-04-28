@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -90,7 +91,7 @@ class DataMetaInformationManager(
      * @return a list of meta info about data depending on the filters
      */
     fun searchDataMetaInfo(searchFilter: DataMetaInformationSearchFilter): List<DataMetaInformationEntity> {
-        searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
+        searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.assertCompanyIdExists(it) }
         return dataMetaInformationRepository.searchDataMetaInformation(searchFilter)
     }
 
@@ -113,4 +114,19 @@ class DataMetaInformationManager(
         dataMetaInformationRepository
             .getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
+
+    /**
+     * Method to get all data dimensions for which a dataset is active given a set of filters
+     * @param dataDimensionFilter the filters to apply to the search
+     * @return a list of data dimensions for which a dataset is active
+     */
+    fun getActiveDataDimensionsFromDatasets(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+        val dataMetaInformationEntities =
+            dataMetaInformationRepository.getBulkActiveDatasets(
+                companyIds = dataDimensionFilter.companyIds,
+                dataTypes = dataDimensionFilter.dataTypesOrDataPointTypes,
+                reportingPeriods = dataDimensionFilter.reportingPeriods,
+            )
+        return dataMetaInformationEntities.map { it.toBasicDataDimensions() }
+    }
 }

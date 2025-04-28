@@ -11,7 +11,7 @@
       />
       <span class="underline ml-1 pl-1">{{ suffix }}</span>
     </a>
-    <DownloadProgressSpinner :percent-completed="percentCompleted" />
+    <DownloadProgressSpinner :percent-completed="percentCompleted" style="width: 5rem; height: 5rem" />
   </div>
 </template>
 

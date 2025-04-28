@@ -17,13 +17,11 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Value
 import java.util.UUID
@@ -46,13 +44,13 @@ class BulkDataRequestManagerTest {
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
-        mockBulkDataRequestEmailMessageBuilder = mock(BulkDataRequestEmailMessageBuilder::class.java)
+        mockBulkDataRequestEmailMessageBuilder = mock<BulkDataRequestEmailMessageBuilder>()
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
-        mockMetaDataController = mock(MetaDataControllerApi::class.java)
+        mockMetaDataController = mock<MetaDataControllerApi>()
 
         bulkDataRequestManager =
             BulkDataRequestManager(
-                mock(DataRequestLogger::class.java),
+                mock<DataRequestLogger>(),
                 mockBulkDataRequestEmailMessageBuilder,
                 mockDataRequestProcessingUtils,
                 mockMetaDataController,
@@ -62,13 +60,13 @@ class BulkDataRequestManagerTest {
     }
 
     private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
-        val utilsMock = mock(DataRequestProcessingUtils::class.java)
-        `when`(
+        val utilsMock = mock<DataRequestProcessingUtils>()
+        whenever(
             utilsMock.storeDataRequestEntityAsOpen(
                 userId = anyString(),
                 datalandCompanyId = anyString(),
                 dataType = any(),
-                notifyMeImmediately = anyBoolean(),
+                notifyMeImmediately = any(),
                 reportingPeriod = anyString(),
                 contacts = anyOrNull(),
                 message = anyOrNull(),
@@ -96,8 +94,8 @@ class BulkDataRequestManagerTest {
     fun `process bulk data request`() {
         val emptyList: List<DataMetaInformation> = listOf()
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
 
         val bulkDataRequest =
             BulkDataRequest(
@@ -129,9 +127,9 @@ class BulkDataRequestManagerTest {
     fun `process bulk data request with existing request`() {
         val emptyList: List<DataMetaInformation> = listOf()
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
-        `when`(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
+        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
             .thenReturn(dummyRequestId)
 
         val bulkDataRequest =
@@ -162,9 +160,9 @@ class BulkDataRequestManagerTest {
 
     @Test
     fun `process bulk data request with existing data`() {
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
-        `when`(mockMetaDataController.postListOfDataMetaInfoFilters(anyList())).thenAnswer {
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
+        whenever(mockMetaDataController.postListOfDataMetaInfoFilters(anyList())).thenAnswer {
             val dataMetaInformationList =
                 listOf(
                     DataMetaInformation(
@@ -212,8 +210,8 @@ class BulkDataRequestManagerTest {
         val emptyList: List<DataMetaInformation> = listOf()
 
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(null)
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(emptyMap(), listOf(dummyUserProvidedCompanyId)))
 
         val bulkDataRequest =
             BulkDataRequest(

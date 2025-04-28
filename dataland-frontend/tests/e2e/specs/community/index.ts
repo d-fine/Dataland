@@ -4,4 +4,5 @@
 describe('Community pages tests', () => {
   require('./BulkDataRequest');
   require('./SingleDataRequest');
+  require('./MyPortfolios');
 });
