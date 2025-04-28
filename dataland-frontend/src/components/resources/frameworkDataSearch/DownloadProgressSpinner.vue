@@ -41,7 +41,7 @@ export default defineComponent({
     },
 
     progressSpinnerValueClass() {
-      return this.whiteSpinner ? 'progress-spinner-value-white' : 'progress-spinner-value-black';
+      return `progress-spinner-value ${this.whiteSpinner ? 'white' : 'black'}`;
     },
   },
 });
@@ -60,7 +60,7 @@ export default defineComponent({
   height: 1.5rem;
 }
 
-.progress-spinner-value-black {
+.progress-spinner-value {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -69,12 +69,11 @@ export default defineComponent({
   color: black;
 }
 
-.progress-spinner-value-white {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.45rem;
+.black {
+  color: black;
+}
+
+.white {
   color: white;
 }
 
