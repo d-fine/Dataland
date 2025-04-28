@@ -110,7 +110,7 @@ class SingleDataRequestManagerServiceTest(
         doReturn(listOf("ROLE_USER"))
             .whenever(mockKeycloakUserService)
             .getUserRoleNames(eq(dummyUserId))
-        doReturn(Pair(mapOf(dummyCompanyId to CompanyIdAndName(dummyCompanyId, "dummy")), emptyList<String>()))
+        doReturn(Pair(mapOf(dummyCompanyId to CompanyIdAndName(companyName = "dummy", companyId = dummyCompanyId)), emptyList<String>()))
             .whenever(spyDataRequestProcessingUtils)
             .performIdentifierValidation(anyList())
 
