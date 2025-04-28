@@ -45,7 +45,7 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        checkSort('first-child', 'Apricot Inc.', 'Cherry Co');
+        checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
         checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
         checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
         checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
@@ -82,16 +82,20 @@ function checkHeader(): void {
  * Checks the sorting functionality of a column
  * @param selector CSS selector to find the element for switching selection to up/down/off
  * @param companyUp First company in the table when sorting is UP
- * @param copmanyDown First company in the table when sorting is DOWN
+ * @param companyDown First company in the table when sorting is DOWN
+ * @param isAlreadySorted Checks if pre sorting is already in place
  */
-function checkSort(selector: string, companyUp: string, copmanyDown: string): void {
+function checkSort(selector: string, companyUp: string, companyDown: string, isAlreadySorted: boolean = false): void {
   const firstCellSelector = 'table tr:first-child td:first-child';
   const sortSelector = `table tr:first-child th:${selector} [data-pc-section="sort"]`;
-  cy.get(firstCellSelector).contains('Apricot Inc.');
-  cy.get(sortSelector).click();
+
+  if (!isAlreadySorted) {
+    cy.get(firstCellSelector).contains('Apricot Inc.');
+    cy.get(sortSelector).click();
+  }
   cy.get(firstCellSelector).contains(companyUp);
   cy.get(sortSelector).click();
-  cy.get(firstCellSelector).contains(copmanyDown);
+  cy.get(firstCellSelector).contains(companyDown);
   cy.get(sortSelector).click();
   cy.get(firstCellSelector).contains('Apricot Inc.');
 }
