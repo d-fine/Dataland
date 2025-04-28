@@ -18,16 +18,16 @@
                 :document-download-info="{
                   downloadName: dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference,
                   fileReference: dataPointDisplay.dataSource.fileReference,
-                  page: dataSourcePage,
+                  page: dataSourceFirstPageInRange,
                 }"
                 :label="dataSourceLabel"
                 show-icon
               />
             </td>
           </tr>
-          <tr v-if="dataSourcePages">
-            <th scope="row" class="headers-bg">{{ dataSourcePagesRefersToMultiplePages ? 'Pages' : 'Page' }}</th>
-            <td>{{ dataSourcePages }}</td>
+          <tr v-if="dataSourcePageRange">
+            <th scope="row" class="headers-bg">{{ dataSourceHasMultiplePages ? 'Pages' : 'Page' }}</th>
+            <td>{{ dataSourcePageRange }}</td>
           </tr>
           <tr v-if="dataPointDisplay.comment">
             <th scope="row" class="headers-bg">Comment</th>
@@ -71,15 +71,15 @@ export default defineComponent({
       return dataSource.fileName;
     },
 
-    dataSourcePage(): number | undefined {
+    dataSourceFirstPageInRange(): number | undefined {
       return getPageInfo(this.dataPointDisplay?.dataSource).firstPageInRange;
     },
 
-    dataSourcePages(): string {
+    dataSourcePageRange(): string {
       return getPageInfo(this.dataPointDisplay?.dataSource).pageRange;
     },
 
-    dataSourcePagesRefersToMultiplePages(): boolean {
+    dataSourceHasMultiplePages(): boolean {
       return getPageInfo(this.dataPointDisplay?.dataSource).hasMultiplePages;
     },
   },

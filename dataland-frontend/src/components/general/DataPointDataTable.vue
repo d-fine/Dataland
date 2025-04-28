@@ -24,7 +24,7 @@
                     dialogData.dataPointDisplay.dataSource.fileName ??
                     dialogData.dataPointDisplay.dataSource.fileReference,
                   fileReference: dialogData.dataPointDisplay.dataSource.fileReference,
-                  page: dataSourcePage,
+                  page: dataSourceFirstPageInRange,
                   dataId: dialogData.dataId,
                   dataType: dialogData.dataType,
                 }"
@@ -32,11 +32,11 @@
               />
             </td>
           </tr>
-          <tr v-if="dataSourcePages">
+          <tr v-if="dataSourcePageRange">
             <th scope="row" class="headers-bg width-auto">
-              <span class="table-left-label">{{ dataSourcePagesRefersToMultiplePages ? 'Pages' : 'Page' }}</span>
+              <span class="table-left-label">{{ dataSourceHasMultiplePages ? 'Pages' : 'Page' }}</span>
             </th>
-            <td>{{ dataSourcePages }}</td>
+            <td>{{ dataSourcePageRange }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
@@ -79,15 +79,15 @@ export default defineComponent({
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
     },
 
-    dataSourcePage(): number | undefined {
+    dataSourceFirstPageInRange(): number | undefined {
       return getPageInfo(this.dialogData.dataPointDisplay.dataSource).firstPageInRange;
     },
 
-    dataSourcePages(): string {
+    dataSourcePageRange(): string {
       return getPageInfo(this.dialogData.dataPointDisplay.dataSource).pageRange;
     },
 
-    dataSourcePagesRefersToMultiplePages(): boolean {
+    dataSourceHasMultiplePages(): boolean {
       return getPageInfo(this.dialogData.dataPointDisplay.dataSource).hasMultiplePages;
     },
   },
