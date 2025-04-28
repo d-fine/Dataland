@@ -23,6 +23,13 @@ describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
+  const dummyDocumentIds = [
+    'a12d2cd3014c2601e6d3e32a7f0ec92fe3e5a9a8519519d93b8bb7c56141849d',
+    'e0dfbaf044f44cacbb304a4686d890205a9f1acc493a4eb290ca355fb9e56dcf',
+    'e30cf2dfd5ef4a6fb347bcca75e79f316f7e79399139462491f31baf1fdfe4f7',
+  ];
+  const dummyPublicationDates = ['2025-02-25', '2024-01-13', undefined];
+  const dummyReportingPeriods = ['2025', '2024', '2023'];
   const dummyUserId = 'mock-user-id';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
@@ -61,6 +68,32 @@ describe('Component test for the company cockpit', () => {
   }
 
   /**
+   * Generates a dummy document metainformation in response to an HTTP query.
+   * @param index ranges inclusively from 0 to 2
+   * @param query the associated HTTP query
+   */
+  function generateDocumentMetaInformation(
+    index: number,
+    query: Record<string, string | number>
+  ): {
+    documentId: string;
+    documentName: string;
+    documentCategory: string;
+    companyIds: string[];
+    publicationDate: string | undefined;
+    reportingPeriod: string;
+  } {
+    return {
+      documentId: dummyDocumentIds[index],
+      documentName: 'test_' + (query['documentCategories'] ?? 'document') + `_${index + 1}`,
+      documentCategory: (query['documentCategories'] as string) ?? 'AnnualReport',
+      companyIds: [(query['companyId'] as string) ?? '???'],
+      publicationDate: dummyPublicationDates[index],
+      reportingPeriod: dummyReportingPeriods[index],
+    };
+  }
+
+  /**
    * Mocks the requests that happen when the company cockpit page is being mounted
    * @param hasCompanyAtLeastOneOwner has the company at least one company owner
    */
@@ -81,29 +114,9 @@ describe('Component test for the company cockpit', () => {
       request.reply({
         statusCode: 200,
         body: [
-          {
-            documentId: 'a12d2cd3014c2601e6d3e32a7f0ec92fe3e5a9a8519519d93b8bb7c56141849d',
-            documentName: 'test_' + (request.query['documentCategories'] ?? 'document') + '_1',
-            documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
-            companyIds: [request.query['companyId'] ?? '???'],
-            publicationDate: '2025-02-25',
-            reportingPeriod: '2025',
-          },
-          {
-            documentId: 'e0dfbaf044f44cacbb304a4686d890205a9f1acc493a4eb290ca355fb9e56dcf',
-            documentName: 'test_' + (request.query['documentCategories'] ?? 'document') + '_2',
-            documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
-            companyIds: [request.query['companyId'] ?? '???'],
-            publicationDate: '2024-01-13',
-            reportingPeriod: '2024',
-          },
-          {
-            documentId: 'e0dfbaf044f44cacbb304a4686d890205a9f1acc493a4eb290ca355fb9e56dcf',
-            documentName: 'test_' + (request.query['documentCategories'] ?? 'document') + '_3',
-            documentCategory: request.query['documentCategories'] ?? 'AnnualReport',
-            companyIds: [request.query['companyId'] ?? '???'],
-            reportingPeriod: '2023',
-          },
+          generateDocumentMetaInformation(0, request.query),
+          generateDocumentMetaInformation(1, request.query),
+          generateDocumentMetaInformation(2, request.query),
         ],
       });
     }).as('fetchDocumentMetadata');
