@@ -359,7 +359,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
         assertThrows<IllegalArgumentException> {
-            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(
                 dummySourceableInfo,
                 correlationId,
             )
@@ -368,7 +368,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that notification behaviour is as expected when requests are patched from Open to NonSourceable`() {
-        dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
+        dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyDataRequestEntityWithoutEarlierQaApproval1),
@@ -395,7 +395,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that patching corresponding requests for a dataset only processes the corresponding requests`() {
-        dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
+        dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(
             dummyNonSourceableInfo,
             correlationId,
         )

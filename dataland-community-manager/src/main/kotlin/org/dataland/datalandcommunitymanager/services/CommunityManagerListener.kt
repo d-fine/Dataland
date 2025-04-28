@@ -210,7 +210,7 @@ class CommunityManagerListener(
             )
 
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)
+            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)
         }
     }
 }
