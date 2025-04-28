@@ -100,10 +100,11 @@
         },
         {
           "title": "Brands",
-          "text": ["See who ", "is involved"],
+          "text": ["Already a trusted partner ", "for top companies"],
           "image": [
             "/static/logos/img_Atlas_Metrics.png",
             "/static/logos/img_bantleon.png",
+            "/static/logos/img_bayern_invest.png",
             "/static/logos/img_bvi.png",
             "/static/logos/img_chom_capital.png",
             "/static/logos/img_deka.png",
@@ -259,6 +260,10 @@
                 {
                   "text": "QUALITY ASSURANCE",
                   "url": "/qa/swagger-ui/index.html"
+                },
+                {
+                  "text": "USERS",
+                  "url": "/users/swagger-ui/index.html"
                 }
               ]
             },
@@ -306,7 +311,7 @@
                   "url": "https://www.wertestiftung.org"
                 }
               ],
-              "icon": "/static/logos/werte-stiftung-logo__light.png"
+              "icon": "/static/logos/footer_wertestiftung.png"
             }
           ]
         }
