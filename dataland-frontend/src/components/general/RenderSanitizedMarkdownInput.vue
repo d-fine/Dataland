@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="markdown-content">
     <vue-markdown :source="sanitizedMarkdown" :options="displayRenderedMarkdownOptions" />
   </div>
 </template>
