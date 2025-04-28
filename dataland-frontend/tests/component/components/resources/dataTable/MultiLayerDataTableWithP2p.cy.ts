@@ -60,7 +60,7 @@ describe('Component test for P2pPanel', () => {
 
     getSectionHead('Livestock farming').should('exist');
     getSectionHead('Animal feed').should('exist');
-    cy.get('span[data-test=Report-Download-Policy]').next('i[data-test=download-icon]').should('be.visible');
+    cy.get('a[data-test=download-link-Policy]').find('i[data-test=download-icon]').should('be.visible');
 
     getSectionHead('Cement').should('exist');
     getSectionHead('Material').should('exist');

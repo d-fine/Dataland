@@ -32,7 +32,7 @@ describeIf(
      */
     function visitPageAndClickDownloadButton(): void {
       cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/documents`);
-      cy.get('[data-test="download-button"]').should('exist').click();
+      cy.get('[data-test="document-download-button"]').should('exist').click();
     }
 
     before(() => {

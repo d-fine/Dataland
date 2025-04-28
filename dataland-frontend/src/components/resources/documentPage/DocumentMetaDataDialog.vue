@@ -16,9 +16,11 @@
             <tr>
               <th>Name</th>
               <td class="nowrap" data-test="document-link">
-                <DocumentLink
-                  :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
-                  :file-reference="metaData.documentId"
+                <DocumentDownloadLink
+                  :document-download-info="{
+                    downloadName: metaData.documentName ? metaData.documentName : metaData.documentId,
+                    fileReference: metaData.documentId,
+                  }"
                   show-icon
                 />
               </td>
@@ -69,7 +71,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
@@ -95,26 +97,25 @@ const baseURL = ref(window.location.origin);
  * Get metadata of document
  */
 async function getDocumentMetaInformation(): Promise<void> {
+  if (!getKeycloakPromise || !props.documentId) return;
   try {
-    if (getKeycloakPromise) {
-      const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-        .documentController;
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
-        .companyDataController;
-      const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
-        .data;
-      const companyDetailsPromises = Array.from(data.companyIds).map((companyId) => {
-        return { id: companyId, promise: companyDataControllerApi.getCompanyInfo(companyId) };
+    const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+      .documentController;
+    const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
+      .companyDataController;
+    const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
+      .data;
+    const companyDetailsPromises = Array.from(data.companyIds).map((companyId) => {
+      return { id: companyId, promise: companyDataControllerApi.getCompanyInfo(companyId) };
+    });
+    const companyDetails: CompanyDetails[] = [];
+    for (const companyDetailPromise of companyDetailsPromises) {
+      companyDetails.push({
+        id: companyDetailPromise.id,
+        name: (await companyDetailPromise.promise).data.companyName,
       });
-      const companyDetails: CompanyDetails[] = [];
-      for (const companyDetailPromise of companyDetailsPromises) {
-        companyDetails.push({
-          id: companyDetailPromise.id,
-          name: (await companyDetailPromise.promise).data.companyName,
-        });
-      }
-      metaData.value = { ...data, company: companyDetails };
     }
+    metaData.value = { ...data, company: companyDetails };
   } catch (error) {
     console.error(error);
   }
