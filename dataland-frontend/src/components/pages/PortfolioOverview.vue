@@ -6,7 +6,7 @@
         <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
           <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId">
             <template #header>
-              <div class="p-tabview-title" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
+              <div class="p-tabview-header" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
             </template>
             <PortfolioDetails
               :portfolioId="portfolio.portfolioId"
@@ -167,9 +167,10 @@ function addNewPortfolio(): void {
 </script>
 
 <style scoped lang="scss">
-:deep(.p-tabview-title) {
+.p-tabview-header {
   max-width: 15em;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
