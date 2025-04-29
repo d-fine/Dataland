@@ -52,7 +52,8 @@ export default defineComponent({
       required: true,
     },
     publicationDate: {
-      type: String,
+      type: [String, null],
+      default: null,
     },
   },
   computed: {
