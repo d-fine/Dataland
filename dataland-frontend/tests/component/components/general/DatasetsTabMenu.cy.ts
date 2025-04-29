@@ -8,6 +8,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   enum AlwaysVisibleTabs {
     Companies = 'COMPANIES',
     MyDatasets = 'MY DATASETS',
+    MyPortfolios = 'MY PORTFOLIOS',
     MyDataRequests = 'MY DATA REQUESTS',
   }
 

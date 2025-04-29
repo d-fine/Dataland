@@ -13,9 +13,12 @@
             <div v-else>
               <div v-for="document in getDocumentData(category)" :key="document.documentId">
                 <DocumentLink
-                  :download-name="truncatedDocumentName(document)"
-                  :label="truncatedDocumentName(document) + ' (' + document.publicationDate + ')'"
-                  :file-reference="document.documentId"
+                  :document-download-info="{
+                    downloadName: documentNameOrId(document),
+                    fileReference: document.documentId,
+                  }"
+                  :label="documentNameOrId(document)"
+                  :suffix="documentPublicationDateOrEmpty(document)"
                   show-icon
                 />
               </div>
@@ -64,18 +67,17 @@
 <script lang="ts">
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { getPluralCategory, truncatedDocumentName } from '@/utils/StringFormatter';
+import { getPluralCategory } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
@@ -91,7 +93,7 @@ import { defineComponent, inject } from 'vue';
 export default defineComponent({
   name: 'CompanyCockpitPage',
   components: {
-    DocumentLink,
+    DocumentLink: DocumentDownloadLink,
     ClaimOwnershipPanel,
     CompanyInfoSheet,
     FrameworkSummaryPanel,
@@ -99,12 +101,14 @@ export default defineComponent({
     TheHeader,
     TheFooter,
   },
+
   props: {
     companyId: {
       type: String,
       required: true,
     },
   },
+
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -113,6 +117,7 @@ export default defineComponent({
       injectedUseMobileView: inject<boolean>('useMobileView'),
     };
   },
+
   data() {
     const latestDocuments: Record<string, DocumentMetaInfoResponse[]> = {};
     Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach((key) => {
@@ -134,6 +139,7 @@ export default defineComponent({
       chunkSize: 3,
     };
   },
+
   computed: {
     useMobileView() {
       return this.injectedUseMobileView;
@@ -145,6 +151,7 @@ export default defineComponent({
       return this.showAllFrameworks ? this.FRAMEWORKS_ALL : this.FRAMEWORKS_MAIN;
     },
   },
+
   watch: {
     async companyId(newCompanyId, oldCompanyId) {
       if (newCompanyId !== oldCompanyId) {
@@ -170,9 +177,12 @@ export default defineComponent({
     void this.getAggregatedFrameworkDataSummary();
     void this.getMetaInfoForLatestDocuments();
   },
+
   methods: {
-    truncatedDocumentName,
+    documentPublicationDateOrEmpty,
+    documentNameOrId,
     getPluralCategory,
+
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -240,6 +250,7 @@ export default defineComponent({
       }
       this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
+
     /**
      * Expands or collapses the framework tiles
      */
@@ -263,6 +274,7 @@ export default defineComponent({
     padding: 24px 17px;
   }
 }
+
 .grid-container {
   display: grid;
   grid-template-columns: 3fr 6fr 30px;
@@ -290,6 +302,7 @@ export default defineComponent({
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
 .card {
   width: 90%;
   background-color: var(--surface-card);

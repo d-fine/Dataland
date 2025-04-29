@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "analyse": "vite --debug transform",
     "build": "vite build",
     "format": "prettier --write .",
     "formatci": "prettier --check .",

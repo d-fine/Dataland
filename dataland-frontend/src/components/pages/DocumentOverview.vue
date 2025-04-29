@@ -39,33 +39,33 @@
     >
       <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
       <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
-        <template #body="slotProps">
-          {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
+        <template #body="tableRow">
+          {{ humanizeStringOrNumber(tableRow.data.documentCategory) }}
         </template>
       </Column>
       <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
-        <template #body="slotProps">
+        <template #body="tableRow">
           <div>
-            {{ dateStringFormatter(slotProps.data.publicationDate) }}
+            {{ dateStringFormatter(tableRow.data.publicationDate) }}
           </div>
         </template>
       </Column>
       <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body="documentProps">
-          <a class="tertiary-button" @click="openMetaInfoDialog(documentProps.data.documentId)">
+        <template #body="tableRow">
+          <a class="tertiary-button" @click="openMetaInfoDialog(tableRow.data.documentId)">
             VIEW DETAILS <span class="material-icons">arrow_forward_ios</span>
           </a>
         </template>
       </Column>
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body="document">
-          <DocumentLink
-            :download-name="truncatedDocumentName(document.data)"
-            :label="truncatedDocumentName(document.data) + ' (' + document.data.publicationDate + ')'"
-            :file-reference="document.data.documentId"
-            show-icon
-            data-test="download-button"
+        <template #body="tableRow">
+          <DocumentDownloadButton
+            :document-download-info="{
+              downloadName: documentNameOrId(tableRow.data),
+              fileReference: tableRow.data.documentId,
+            }"
+            style="display: grid; grid-template-columns: 8.25em; justify-items: center; grid-template-rows: 1.75em"
           />
         </template>
       </Column>
@@ -87,12 +87,12 @@ import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadButton from '@/components/resources/frameworkDataSearch/DocumentDownloadButton.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
+import { documentNameOrId, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { DataMetaInformation } from '@clients/backend';
 import {
@@ -124,6 +124,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
@@ -136,23 +137,21 @@ watch(selectedDocumentType, () => {
 async function getAllDocumentsForFilters(): Promise<void> {
   waitingForData.value = true;
   try {
-    const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-      .documentController;
+    const documentControllerApi = apiClientProvider.apiClients.documentController;
     documentsFiltered.value = (
       await documentControllerApi.searchForDocumentMetaInformation(
         props.companyId,
         selectedDocumentType.value ? convertToEnumSet(selectedDocumentType) : undefined
       )
     ).data;
-    const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
-    const metaDataControllerApi = backendClients.metaDataController;
+    const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
     const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
     dataMetaInformation.value = apiResponse.data;
   } catch (error) {
     console.error(error);
   } finally {
     waitingForData.value = false;
-    updateCurrentDisplayedData();
+    updateCurrentDisplayedData(false);
   }
 }
 
@@ -166,8 +165,10 @@ function resetFilter(): void {
 /**
  * Updates the displayedDocumentData
  */
-function updateCurrentDisplayedData(): void {
-  documentsFiltered.value.sort((a, b) => customSorting(a, b));
+function updateCurrentDisplayedData(sort: boolean = true): void {
+  if (sort) {
+    documentsFiltered.value.sort((a, b) => customSorting(a, b));
+  }
   totalRecords.value = documentsFiltered.value.length;
   documentsFiltered.value = documentsFiltered.value.slice(
     rowsPerPage * currentPage.value,

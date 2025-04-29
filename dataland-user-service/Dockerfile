@@ -1,7 +1,7 @@
 ARG DATALAND_USER_SERVICE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_user_service_base:${DATALAND_USER_SERVICE_BASE_VERSION} AS builder
 
-FROM eclipse-temurin:21.0.6_7-jre-alpine@sha256:4e9ab608d97796571b1d5bbcd1c9f430a89a5f03fe5aa6c093888ceb6756c502
+FROM eclipse-temurin:21.0.7_6-jre-alpine@sha256:8728e354e012e18310faa7f364d00185277dec741f4f6d593af6c61fc0eb15fd
 COPY --from=builder /app/dataland-user-service/build/libs/dataland-user-service-0.0.1-SNAPSHOT.jar /jar/dataland-user-service.jar
 CMD ["java","-jar","/jar/dataland-user-service.jar"]
 
