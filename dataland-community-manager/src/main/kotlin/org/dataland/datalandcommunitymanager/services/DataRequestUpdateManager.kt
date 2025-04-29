@@ -395,7 +395,7 @@ class DataRequestUpdateManager
          * @param correlationId correlationId
          */
         @Transactional
-        fun patchAllRequestsToStatusNonSourceable(
+        fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfo: SourceabilityInfo,
             correlationId: String,
         ) {
@@ -405,13 +405,16 @@ class DataRequestUpdateManager
             }
 
             val dataRequestEntities =
-                dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                    datalandCompanyId = sourceabilityInfo.companyId,
-                    dataType = sourceabilityInfo.dataType.toString(),
-                    reportingPeriod = sourceabilityInfo.reportingPeriod,
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(sourceabilityInfo.dataType),
+                        datalandCompanyIds = setOf(sourceabilityInfo.companyId),
+                        reportingPeriod = sourceabilityInfo.reportingPeriod,
+                        requestStatus = RequestStatus.entries.filter { it != RequestStatus.Withdrawn }.toSet(),
+                    ),
                 )
 
-            dataRequestEntities?.forEach {
+            dataRequestEntities.forEach {
                 patchDataRequest(
                     dataRequestId = it.dataRequestId,
                     dataRequestPatch =
