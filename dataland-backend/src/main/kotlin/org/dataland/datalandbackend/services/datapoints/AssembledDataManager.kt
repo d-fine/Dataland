@@ -350,7 +350,7 @@ class AssembledDataManager
             return datasetAsJsonNode.toString()
         }
 
-        override fun getDatasetData(
+        private fun getDatasetData(
             dataDimensions: BasicDataDimensions,
             correlationId: String,
         ): String? {

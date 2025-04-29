@@ -25,8 +25,9 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
@@ -130,9 +131,10 @@ internal class DataControllerTest(
     @ParameterizedTest
     @EnumSource(ExportFileType::class)
     fun `test that the export functionality does not throw an error`(exportFileType: ExportFileType) {
-        doReturn(someEuTaxoDataAsString)
-            .whenever(mockDataManager)
-            .getDatasetData(any<BasicDataDimensions>(), any())
+        doAnswer { invocation ->
+            val argument = invocation.arguments[0] as List<Pair<*, *>>
+            argument.map { Pair(it.first, someEuTaxoDataAsString) }
+        }.whenever(mockDataManager).getDatasetData(any<List<Pair<BasicDataDimensions, String>>>())
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
@@ -160,7 +162,10 @@ internal class DataControllerTest(
 
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
-        doReturn(someEuTaxoDataAsString).whenever(mockDataManager).getDatasetData(eq(testDataDimensions), any())
+        doAnswer { invocation ->
+            val argument = invocation.arguments[0] as List<Pair<BasicDataDimensions, String>>
+            argument.map { Pair(it.first, someEuTaxoDataAsString) }
+        }.whenever(mockDataManager).getDatasetData(argThat { it -> it.size == 1 && it.first().first == testDataDimensions })
         val response =
             dataController.getCompanyAssociatedDataByDimensions(
                 reportingPeriod = testReportingPeriod,
