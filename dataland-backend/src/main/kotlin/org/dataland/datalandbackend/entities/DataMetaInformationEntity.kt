@@ -11,6 +11,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -82,4 +83,15 @@ data class DataMetaInformationEntity(
         dataMetaInformation.ref = "https://$proxyPrimaryUrl/companies/${company.companyId}/frameworks/$dataType/$dataId"
         return dataMetaInformation
     }
+
+    /**
+     * Converts the entity into the basic data dimension object
+     * return a BasicDataDimensions object
+     */
+    fun toBasicDataDimensions(): BasicDataDimensions =
+        BasicDataDimensions(
+            companyId = company.companyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+        )
 }

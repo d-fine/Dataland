@@ -26,6 +26,7 @@ export default defineConfig({
       'primevue/inputtext',
       'primevue/inputswitch',
       'primevue/dynamicdialog',
+      'primevue/dynamicdialogoptions',
       'primevue/usedialog',
       'primevue/dialog',
       'primevue/textarea',
@@ -86,7 +87,12 @@ export default defineConfig({
     strictPort: true,
     allowedHosts: true,
     warmup: {
-      clientFiles: ['./src/components/pages/*.vue'],
+      clientFiles: [
+        './src/components/*/*.vue',
+        './src/components/*/*/*.vue',
+        './src/assets/*/*.scss',
+        './src/assets/*/*/*.scss',
+      ],
     },
     watch: {
       ignored: ['**/coverage/**'],

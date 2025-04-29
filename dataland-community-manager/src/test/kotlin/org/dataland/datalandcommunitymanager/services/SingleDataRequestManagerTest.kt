@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
@@ -20,16 +22,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anyBoolean
+import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
@@ -78,13 +81,25 @@ class SingleDataRequestManagerTest {
         )
         doNothing().whenever(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
         setUpDataRequestRepositoryMock()
+        doAnswer { invocation ->
+            val identifiers = invocation.arguments[0] as List<String?>
+            Pair(
+                mapOf(
+                    identifiers[0] to
+                        CompanyIdAndName(
+                            companyName = "",
+                            companyId = identifiers[0] ?: UUID.randomUUID().toString(),
+                        ),
+                ),
+                emptyList<String>(),
+            )
+        }.whenever(mockDataRequestProcessingUtils).performIdentifierValidation(anyList())
         singleDataRequestManager =
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
-                companyInfoService = mockCompanyInfoService,
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                utils = mockDataRequestProcessingUtils,
+                dataRequestProcessingUtils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
                 securityUtilsService = mockSecurityUtilsService,
@@ -249,7 +264,7 @@ class SingleDataRequestManagerTest {
             userId = any(),
             datalandCompanyId = any(),
             dataType = any(),
-            notifyMeImmediately = anyBoolean(),
+            notifyMeImmediately = any(),
             reportingPeriod = any(),
             contacts = any(),
             message = any(),
@@ -262,7 +277,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = DatalandAuthentication.fromContext().userId
 
-        assertThrows<NullPointerException> {
+        assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
 
@@ -275,7 +290,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = "impersonated-user-id"
 
-        assertThrows<NullPointerException> {
+        assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
         }
 

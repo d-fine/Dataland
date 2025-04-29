@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPat
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -250,4 +251,29 @@ interface MetaDataApi {
         @PathVariable("dataType") dataType: DataType,
         @PathVariable("reportingPeriod") reportingPeriod: String,
     )
+
+    /**
+     * A method to retrieve all available data dimensions filtered by the provided parameters.
+     * @param companyIds a list of company identifiers to filter for
+     * @param frameworksOrDataPointTypes a list of frameworks or data point types (or mixture thereof) to filter for
+     * @param reportingPeriods a list of reporting periods to filter for
+     */
+    @Operation(
+        summary = "Checks if any data is available applying the provided filters.",
+        description = "Checks if any data is available using the given filters and returns the corresponding data dimensions.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully checked if data is available."),
+        ],
+    )
+    @GetMapping(
+        value = ["/available-data-dimensions"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getAvailableDataDimensions(
+        @RequestParam companyIds: List<String>? = null,
+        @RequestParam frameworksOrDataPointTypes: List<String>? = null,
+        @RequestParam reportingPeriods: List<String>? = null,
+    ): ResponseEntity<List<BasicDataDimensions>>
 }
