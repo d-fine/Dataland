@@ -1,5 +1,10 @@
 <template>
-  <PrimeButton @click="onClick" class="uppercase p-button p-button-sm" data-test="singleDataRequestButton">
+  <PrimeButton
+    @click="onClick"
+    class="uppercase p-button p-button-sm"
+    style="min-width: fit-content !important"
+    data-test="singleDataRequestButton"
+  >
     <span class="d-letters pl-2"> Request Data </span>
   </PrimeButton>
 </template>
