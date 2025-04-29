@@ -6,7 +6,7 @@
           <tr>
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
-              <DocumentLink
+              <DocumentDownloadLink
                 :document-download-info="{
                   downloadName: companyReport.fileName ? companyReport.fileName : 'Unnamed_File',
                   fileReference: companyReport.fileReference,
@@ -32,7 +32,7 @@ import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/Doc
 import type { CompanyReport } from '@clients/backend';
 
 export default defineComponent({
-  components: { DocumentLink: DocumentDownloadLink },
+  components: { DocumentDownloadLink },
   inject: ['dialogRef'],
   name: 'ReportDataTable',
   data() {
