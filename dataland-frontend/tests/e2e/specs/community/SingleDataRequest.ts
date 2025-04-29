@@ -67,14 +67,12 @@ describeIf(
 
     it('Navigate to the single request page via the company cockpit', () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}`);
-      cy.closeCookieBannerIfItExists();
       cy.get('[data-test="singleDataRequestButton"]').click();
       cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
     });
 
     it('Navigate to the single request page via the view page and verify that the viewed framework is preselected.', () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.closeCookieBannerIfItExists();
       cy.get('[data-test="singleDataRequestButton"]').click();
       cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
       cy.get('[data-test="datapoint-framework"]').find('span').should('have.text', 'LkSG');
@@ -83,7 +81,6 @@ describeIf(
     it('Fill out the request page and check correct validation, request and success message', () => {
       cy.intercept('POST', '**/community/requests/single').as('postRequestData');
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      cy.closeCookieBannerIfItExists();
       checkCompanyInfoSheet();
       checkValidation();
       singleDataRequestPage.chooseReportingPeriod(testYear);
