@@ -5,7 +5,7 @@
     style="min-width: fit-content !important"
     data-test="singleDataRequestButton"
   >
-    <span class="d-letters pl-2"> Request Data </span>
+    <span class="d-letters"> Request Data </span>
   </PrimeButton>
 </template>
 
