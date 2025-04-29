@@ -86,4 +86,26 @@ class CompanyInfoService(
             }
         }
     }
+
+    /**
+     * Asserts that a companyId is valid by querying the backend.
+     * If it does not exist the method catches the client exception and throws a
+     * resource-not-found exception.
+     * @param companyId is the companyId to check for
+     * @throws ResourceNotFoundApiException if the companyId is not valid
+     */
+    fun assertCompanyIdIsValid(companyId: String) {
+        try {
+            return companyApi.isCompanyIdValid(companyId)
+        } catch (e: ClientException) {
+            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                throw ResourceNotFoundApiException(
+                    "Company not found",
+                    "Dataland does not know the company ID $companyId",
+                )
+            } else {
+                throw e
+            }
+        }
+    }
 }

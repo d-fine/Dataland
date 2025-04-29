@@ -1,9 +1,9 @@
-//@ts-nocheck
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component test for DownloadDatasetModal', () => {
   it('DownloadDatasetModal component works correctly', () => {
+    // @ts-ignore
     cy.mountWithPlugins(DownloadDatasetModal, {
       data() {
         return {
@@ -20,7 +20,7 @@ describe('Component test for DownloadDatasetModal', () => {
       cy.get('[data-test="downloadModal"]').should('exist').should('be.visible');
       cy.get('[data-test="reportingYearSelector"]').should('exist');
       cy.get('[data-test="fileTypeSelector"]').should('exist');
-      cy.get('button[data-test=downloadDataButtonInModal]').should('exist').click();
+      cy.get('button[data-test=downloadDataButtonInModal]').click();
 
       cy.wrap(mounted.component).its('showReportingPeriodError').should('eq', true);
       cy.wrap(mounted.component).its('showFileTypeError').should('eq', true);

@@ -6,7 +6,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
-import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 describe('Component test for the Document Overview', () => {
   let companyInformationForTest: CompanyInformation;
@@ -45,11 +45,6 @@ describe('Component test for the Document Overview', () => {
       body: mockFetchedDocuments,
       times: 1,
     }).as('fetchDocumentsFilteredCompanyId');
-    cy.intercept(`**/`, {
-      body: mockFetchedDocuments,
-      times: 1,
-    }).as('fetchDocumentsFiltered');
-
     cy.intercept(`**/?companyId=${dummyCompanyId}&documentCategories=${searchStringForApi}`, {
       body: mockFetchedDocuments.filter((document) => document.documentCategory === 'AnnualReport'),
       times: 1,
@@ -64,7 +59,6 @@ describe('Component test for the Document Overview', () => {
     cy.wait('@fetchCompanyOwnershipExistence');
     cy.wait('@fetchValidateCompanyRole');
     cy.wait('@fetchDocumentsFilteredCompanyId');
-    cy.wait('@fetchDocumentsFiltered');
   }
 
   /**
@@ -92,31 +86,21 @@ describe('Component test for the Document Overview', () => {
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
-    let myPublicationDateToTest: string = '1900-02-26';
-    if (mockFetchedDocuments[0].publicationDate) {
-      myPublicationDateToTest = mockFetchedDocuments[0].publicationDate;
-    }
-
     cy.get("[data-test='sheet']").should('exist').and('contain', companyInformationForTest.companyName);
-    cy.get("[data-test='documents-overview-table']")
-      .should('exist')
-      .within(() => {
-        cy.get('tbody tr')
-          .should('have.length', Object.keys(mockFetchedDocuments).length)
-          .first() //make sure first object in testing/data/documents/CompanyDocumentsMock.json is the one with earliest publicationDate
-          .within(() => {
-            cy.get('td').eq(0).should('contain', mockFetchedDocuments[0].documentName);
-            cy.get('td').eq(1).should('contain', humanizeStringOrNumber(mockFetchedDocuments[0].documentCategory));
-            cy.get('td').eq(2).should('contain', dateStringFormatter(myPublicationDateToTest));
-            cy.get('td').eq(3).should('contain', mockFetchedDocuments[0].reportingPeriod);
-            cy.get('td').eq(4).should('contain', 'VIEW DETAILS');
-            cy.get('td')
-              .eq(5)
-              .should(
-                'contain',
-                `${truncatedDocumentName(mockFetchedDocuments[0])} (${mockFetchedDocuments[0].publicationDate})`
-              );
-          });
+    cy.get("[data-test='documents-overview-table']").should('exist');
+    cy.get("[data-test='documents-overview-table'] tbody tr")
+      .should('have.length', Object.keys(mockFetchedDocuments).length)
+      .each(($el, index) => {
+        cy.wrap($el).within(() => {
+          cy.get('td').eq(0).should('have.text', mockFetchedDocuments[index].documentName);
+          cy.get('td').eq(1).should('have.text', humanizeStringOrNumber(mockFetchedDocuments[index].documentCategory));
+          // Check that a null publication date is not converted to Jan 1, 1970.
+          cy.get('td').eq(2).should('not.contain', '1970');
+          cy.get('td').eq(2).should('have.text', dateStringFormatter(mockFetchedDocuments[index].publicationDate));
+          cy.get('td').eq(3).should('have.text', mockFetchedDocuments[index].reportingPeriod);
+          cy.get('td').eq(4).should('contain', 'VIEW DETAILS');
+          cy.get('td').eq(5).should('have.text', 'DOWNLOAD');
+        });
       });
   });
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="markdown-content">
     <vue-markdown :source="sanitizedMarkdown" :options="displayRenderedMarkdownOptions" />
   </div>
 </template>
@@ -33,3 +33,10 @@ const sanitizedMarkdown = computed(() => {
   return DOMPurify.sanitize(renderedMarkdown);
 });
 </script>
+
+<style>
+.markdown-content p {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}
+</style>
