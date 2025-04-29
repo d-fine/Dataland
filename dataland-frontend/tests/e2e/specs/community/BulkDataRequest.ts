@@ -29,7 +29,6 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/bulkdatarequest');
-      cy.closeCookieBannerIfItExists();
     });
 
     it('When identifiers are accepted and rejected', () => {
