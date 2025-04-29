@@ -18,11 +18,19 @@
           </h3>
           <ul
             class="footer__column--list"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('techhub') ? '500px' : '0' }"
+            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('techhub') ? '30rem' : '0' }"
           >
-            <li v-for="link in techHubLinks" :key="link.text">
-              <a :href="link.url" class="footer--link" rel="noopener noreferrer">{{ link.text }}</a>
+            <li><a href="/api/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">DATASETS</a></li>
+            <li>
+              <a href="/documents/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">DOCUMENTS</a>
             </li>
+            <li>
+              <a href="/community/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">COMMUNITY</a>
+            </li>
+            <li>
+              <a href="/qa/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">QUALITY ASSURANCE</a>
+            </li>
+            <li><a href="/users/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">USERS</a></li>
           </ul>
         </div>
         <div class="footer__column" @click="isSmallScreen && toggleAccordion('esgframeworks')">
@@ -34,7 +42,7 @@
           </h3>
           <ul
             class="footer__column--list"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('esgframeworks') ? '500px' : '0' }"
+            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('esgframeworks') ? '30rem' : '0' }"
           >
             <li>
               <a
@@ -53,7 +61,7 @@
           </h3>
           <ul
             class="footer__column--list"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('follow') ? '500px' : '0px' }"
+            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('follow') ? '30rem' : '0' }"
           >
             <li>
               <a
@@ -77,10 +85,24 @@
           </h3>
           <ul
             class="footer__column--list inline-flex gap-5"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('integration') ? '500px' : '0px' }"
+            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('integration') ? '30rem' : '0' }"
           >
-            <li><img src="/static/logos/footer_gleif.png" alt="GLEIF Logo" class="footer__section--logo" /></li>
-            <li><img src="/static/logos/footer_eurodat.png" alt="EuroDaT Logo" class="footer__section--logo" /></li>
+            <li>
+              <img
+                src="/static/logos/footer_gleif.svg"
+                alt="GLEIF Logo"
+                class="footer__section--logo"
+                style="height: 2.5rem"
+              />
+            </li>
+            <li>
+              <img
+                src="/static/logos/footer_eurodat.svg"
+                alt="EuroDaT Logo"
+                class="footer__section--logo"
+                style="height: 2.5rem"
+              />
+            </li>
           </ul>
         </div>
       </div>
@@ -88,25 +110,20 @@
     <div class="footer__row footer__row--bottom">
       <div class="footer__section footer__section--legal">
         <ul>
-          <li v-for="link in legalLinks" :key="link.text">
-            <router-link :to="link.url">{{ link.text }}</router-link>
-          </li>
+          <li><router-link to="/terms">LEGAL</router-link></li>
+          <li><router-link to="/imprint">IMPRINT</router-link></li>
+          <li><router-link to="/dataprivacy">DATA PRIVACY</router-link></li>
         </ul>
       </div>
       <div class="footer__copyright">
-        {{ copyrightText }}
+        {{ `Copyright © ${new Date().getFullYear()} Dataland` }}
       </div>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue';
-
-type Link = {
-  text: string;
-  url: string;
-};
+import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 
 const { isLightVersion } = defineProps({
   isLightVersion: {
@@ -114,49 +131,6 @@ const { isLightVersion } = defineProps({
     required: false,
     default: true,
   },
-});
-
-const legalLinks: Link[] = [
-  {
-    text: 'LEGAL',
-    url: '/terms',
-  },
-  {
-    text: 'IMPRINT',
-    url: '/imprint',
-  },
-  {
-    text: 'DATA PRIVACY',
-    url: '/dataprivacy',
-  },
-];
-
-const techHubLinks: Link[] = [
-  {
-    text: 'DATASETS',
-    url: '/api/swagger-ui/index.html',
-  },
-  {
-    text: 'DOCUMENTS',
-    url: '/documents/swagger-ui/index.html',
-  },
-  {
-    text: 'COMMUNITY',
-    url: '/community/swagger-ui/index.html',
-  },
-  {
-    text: 'QUALITY ASSURANCE',
-    url: '/qa/swagger-ui/index.html',
-  },
-  {
-    text: 'USERS',
-    url: '/users/swagger-ui/index.html',
-  },
-];
-
-const copyrightText = computed(() => {
-  const currentYear = new Date().getFullYear();
-  return `Copyright © ${currentYear} Dataland`;
 });
 
 const openAccordions = ref<Record<string, boolean>>({});
@@ -200,35 +174,34 @@ onUnmounted(() => {
   background-color: var(--basic-dark);
   color: var(--default-neutral-white);
   padding: 6rem 4rem 3rem;
+  line-height: 1.25rem;
 
   &--title {
     color: var(--grey-tones-300);
     font-size: 0.875rem;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px;
-    letter-spacing: 0.25px;
     margin: 0;
   }
 
   &--link {
     color: var(--default-neutral-white);
     font-weight: 600;
-    line-height: 24px;
-    letter-spacing: 0.75px;
+    line-height: 1.5rem;
+    letter-spacing: 0.05rem;
     text-transform: uppercase;
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
-      text-underline-offset: 4px;
-      text-decoration-thickness: 2px;
+      text-underline-offset: 0.25rem;
+      text-decoration-thickness: 0.125rem;
     }
 
     &::after {
       content: '';
       display: inline-block;
-      top: 3px;
+      top: 0.1875rem;
       width: 1rem;
       height: 1rem;
       background-image: url(/static/icons/Arrow--up-right.svg);
@@ -242,7 +215,6 @@ onUnmounted(() => {
   &__copyright {
     font-weight: 400;
     line-height: normal;
-    letter-spacing: 0.25px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: right;
@@ -260,7 +232,7 @@ onUnmounted(() => {
     justify-content: space-between;
     align-items: center;
     padding: 2.5rem 0;
-    border-top: 2px solid var(--grey-tones-900);
+    border-top: 0.125rem solid var(--grey-tones-900);
   }
 
   &__section {
@@ -283,7 +255,6 @@ onUnmounted(() => {
     }
 
     &--logo {
-      max-height: 39px;
       filter: invert(1);
     }
 
@@ -300,14 +271,14 @@ onUnmounted(() => {
         color: var(--default-neutral-white);
         font-weight: 600;
         line-height: 1.5rem;
-        letter-spacing: 0.75px;
+        letter-spacing: 0.05rem;
         text-transform: uppercase;
         text-decoration: none;
 
         &:hover {
           text-decoration: underline;
-          text-underline-offset: 4px;
-          text-decoration-thickness: 2px;
+          text-underline-offset: 0.25rem;
+          text-decoration-thickness: 0.125rem;
         }
       }
     }
@@ -318,7 +289,7 @@ onUnmounted(() => {
       list-style: none;
       padding-left: 0;
       margin: 1.75rem 0 0 0;
-      max-height: 500px;
+      max-height: 30rem;
       overflow: hidden;
       transition: max-height 0.4s ease;
     }
@@ -339,18 +310,18 @@ onUnmounted(() => {
     &--follow {
       & .linkedin {
         position: relative;
-        top: -3px;
+        top: -0.1875rem;
 
         &::before {
           content: '';
           display: inline-block;
-          top: 3px;
+          top: 0.1875rem;
           width: 1.5rem;
-          height: 21px;
+          height: 1.3125rem;
           background-image: url(/static/icons/Logo--linkedin.svg);
           background-size: cover;
           position: relative;
-          margin-right: 6px;
+          margin-right: 0.375rem;
         }
 
         &::after {
