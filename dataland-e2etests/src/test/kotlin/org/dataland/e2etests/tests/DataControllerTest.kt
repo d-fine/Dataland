@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import java.lang.IllegalArgumentException
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -129,6 +129,19 @@ class DataControllerTest {
             } else {
                 assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
             }
+        }
+    }
+
+    @Test
+    fun `check that requesting data for a company without data successfully returns an empty list`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        assertDoesNotThrow {
+            assertEquals(
+                emptyList<DataAndMetaInformationSfdrData>(),
+                apiAccessor.dataControllerApiForSfdrData.getAllCompanySfdrData(companyId),
+            )
         }
     }
 
