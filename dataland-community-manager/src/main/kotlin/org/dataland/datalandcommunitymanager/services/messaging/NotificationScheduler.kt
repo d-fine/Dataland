@@ -31,7 +31,7 @@ class NotificationScheduler
          * Scheduled method to send emails for unprocessed notification events.
          * Runs every Sunday at midnight.
          */
-        @Scheduled(cron = "0 0 0 * * SUN")
+        @Scheduled(cron = "0 */3 * * * ?")
         fun scheduledWeeklyEmailSending() {
             processNotificationEvents(
                 "Investor Relations",
