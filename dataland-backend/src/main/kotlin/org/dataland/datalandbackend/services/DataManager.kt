@@ -268,10 +268,13 @@ class DataManager
             publicDataInMemoryStorage.remove(dataId)
         }
 
-        override fun getDatasetData(dataDimensionList: List<Pair<BasicDataDimensions, String>>): List<Pair<BasicDataDimensions, String>> =
+        override fun getDatasetData(
+            dataDimensionList: List<BasicDataDimensions>,
+            correlationId: String,
+        ): List<Pair<BasicDataDimensions, String>> =
             dataDimensionList.mapNotNull {
-                metaDataManager.getActiveDatasetIdByDataDimensions(it.first)?.let { dataId ->
-                    Pair(it.first, getPublicDataset(dataId, DataType.valueOf(it.first.dataType), it.second).data)
+                metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
+                    Pair(it, getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data)
                 }
             }
 
@@ -290,15 +293,13 @@ class DataManager
             val listOfDataDimensionsWithDataAsString =
                 getDatasetData(
                     metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.map {
-                        Pair(
-                            BasicDataDimensions(
-                                companyId = searchFilter.companyId,
-                                dataType = it.dataType,
-                                reportingPeriod = it.reportingPeriod,
-                            ),
-                            correlationId,
+                        BasicDataDimensions(
+                            companyId = searchFilter.companyId,
+                            dataType = it.dataType,
+                            reportingPeriod = it.reportingPeriod,
                         )
                     },
+                    correlationId,
                 )
             if (listOfDataDimensionsWithDataAsString.isEmpty()) {
                 logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")

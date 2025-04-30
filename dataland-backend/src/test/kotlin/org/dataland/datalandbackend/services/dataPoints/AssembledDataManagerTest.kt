@@ -171,7 +171,7 @@ class AssembledDataManagerTest {
         `when`(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
 
-        val dynamicDataset = assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        val dynamicDataset = assembledDataManager.getDatasetData(listOf(dataDimensions), correlationId).first().second
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
         assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
@@ -182,7 +182,7 @@ class AssembledDataManagerTest {
         `when`(metaDataManager.getCurrentlyActiveDataId(any())).thenReturn(null)
 
         assertThrows<ResourceNotFoundApiException> {
-            assembledDataManager.getDatasetData(dataDimensions, correlationId)
+            assembledDataManager.getDatasetData(listOf(dataDimensions), correlationId)
         }
 
         val searchFilter =

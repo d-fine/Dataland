@@ -99,7 +99,7 @@ open class DataController<T>(
             )
         val correlationId = IdUtils.generateCorrelationId(dataDimensions)
         return ResponseEntity.ok(
-            this.buildCompanyAssociatedData(listOf(Pair(dataDimensions, correlationId))).first(),
+            this.buildCompanyAssociatedData(listOf(dataDimensions), correlationId).first(),
         )
     }
 
@@ -143,23 +143,29 @@ open class DataController<T>(
         companyIds: List<String>,
         exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource> {
-        val dataDimensions = mutableListOf<Pair<BasicDataDimensions, String>>()
+        val dataDimensions = mutableListOf<BasicDataDimensions>()
         companyIds.forEach { companyId ->
             reportingPeriods.forEach { reportingPeriod ->
-                BasicDataDimensions(
-                    companyId = companyId,
-                    dataType = dataType.toString(),
-                    reportingPeriod = reportingPeriod,
-                ).let { dataDimensions.add(Pair(it, IdUtils.generateCorrelationId(it))) }
+                dataDimensions.add(
+                    BasicDataDimensions(
+                        companyId = companyId,
+                        dataType = dataType.toString(),
+                        reportingPeriod = reportingPeriod,
+                    ),
+                )
             }
         }
 
-        val companyAssociatedData = this.buildCompanyAssociatedData(dataDimensions)
+        val correlationId = IdUtils.generateUUID()
+        logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
 
         val companyAssociatedDataForExport =
-            dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedData, exportFileType)
+            dataExportService.buildStreamFromCompanyAssociatedData(
+                this.buildCompanyAssociatedData(dataDimensions, correlationId),
+                exportFileType,
+            )
 
-        logger.info("Creation of ${exportFileType.name} for export successful.")
+        logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
 
         return ResponseEntity
             .ok()
@@ -225,14 +231,17 @@ open class DataController<T>(
         )
     }
 
-    private fun buildCompanyAssociatedData(dataDimensions: List<Pair<BasicDataDimensions, String>>): List<CompanyAssociatedData<T>> {
-        val dataDimensionsWithDataStrings = datasetStorageService.getDatasetData(dataDimensions)
+    private fun buildCompanyAssociatedData(
+        dataDimensions: List<BasicDataDimensions>,
+        correlationId: String,
+    ): List<CompanyAssociatedData<T>> {
+        val dataDimensionsWithDataStrings = datasetStorageService.getDatasetData(dataDimensions, correlationId)
         if (dataDimensionsWithDataStrings.isEmpty()) {
             throw ResourceNotFoundApiException(
                 summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
                 message =
                     if (dataDimensions.size == 1) {
-                        logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions.first().first)
+                        logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions.first())
                     } else {
                         "No dataset available for the given combinations of company, reporting period and framework."
                     },

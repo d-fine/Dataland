@@ -290,8 +290,10 @@ class AssembledDataManager
         }
 
         @Transactional
-        override fun getDatasetData(dataDimensionList: List<Pair<BasicDataDimensions, String>>): List<Pair<BasicDataDimensions, String>> =
-            listOf()
+        override fun getDatasetData(
+            dataDimensionList: List<BasicDataDimensions>,
+            correlationId: String,
+        ): List<Pair<BasicDataDimensions, String>> = listOf()
 
         /**
          * Retrieves a key value map containing the IDs of the data points contained in a dataset mapped to their technical IDs
