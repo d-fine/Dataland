@@ -134,7 +134,7 @@ class DataControllerTest {
 
     @Test
     fun `check that requesting data for a company without data successfully returns an empty list`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         assertDoesNotThrow {
