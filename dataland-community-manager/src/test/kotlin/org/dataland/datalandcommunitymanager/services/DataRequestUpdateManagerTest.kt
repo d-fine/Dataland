@@ -80,6 +80,25 @@ class DataRequestUpdateManagerTest {
     private lateinit var dummyChildCompanyDataRequestEntityWithEarlierQaApproval: DataRequestEntity
     private lateinit var dummyDataRequestEntityWithdrawn: DataRequestEntity
 
+    private val requestStatusSets =
+        listOf(
+            setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+            setOf(
+                RequestStatus.Open, RequestStatus.NonSourceable,
+                RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved,
+            ),
+        )
+
+    private val dataRequestFilters =
+        requestStatusSets.map {
+            DataRequestsFilter(
+                dataType = setOf(dataMetaInformation.dataType),
+                datalandCompanyIds = setOf(dataMetaInformation.companyId),
+                reportingPeriod = dataMetaInformation.reportingPeriod,
+                requestStatus = it,
+            )
+        }
+
     private fun mockRepos() {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
             doReturn(it)
@@ -95,25 +114,6 @@ class DataRequestUpdateManagerTest {
         doReturn(dummyChildCompanyDataRequestEntityWithEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .findByDataRequestId(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
-
-        val requestStatusSets =
-            listOf(
-                setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                setOf(
-                    RequestStatus.Open, RequestStatus.NonSourceable,
-                    RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved,
-                ),
-            )
-
-        val dataRequestFilters =
-            requestStatusSets.map {
-                DataRequestsFilter(
-                    dataType = setOf(dataMetaInformation.dataType),
-                    datalandCompanyIds = setOf(dataMetaInformation.companyId),
-                    reportingPeriod = dataMetaInformation.reportingPeriod,
-                    requestStatus = it,
-                )
-            }
 
         dataRequestFilters.forEach {
             doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
