@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -28,8 +29,10 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -179,7 +182,7 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that an exception is thrown if no data exists for the dynamic dataset`() {
-        `when`(metaDataManager.getCurrentlyActiveDataId(any())).thenReturn(null)
+        doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
 
         assertThrows<ResourceNotFoundApiException> {
             assembledDataManager.getDatasetData(dataDimensions, correlationId)
@@ -192,8 +195,11 @@ class AssembledDataManagerTest {
                 reportingPeriod = reportingPeriod,
                 onlyActive = true,
             )
-        assertThrows<ResourceNotFoundApiException> {
-            assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId)
+        assertDoesNotThrow {
+            assertEquals(
+                emptyList<PlainDataAndMetaInformation>(),
+                assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId),
+            )
         }
     }
 
