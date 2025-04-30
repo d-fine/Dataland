@@ -368,9 +368,11 @@ class AssembledDataManager
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
         ): List<PlainDataAndMetaInformation> {
-            requireNotNull(searchFilter.dataType) { "Framework must be specified." }
-            requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
             val companyId = searchFilter.companyId
+            requireNotNull(searchFilter.dataType) { "Framework must be specified." }
+            requireNotNull(companyId) { "Company ID must be specified." }
+            companyManager.assertCompanyIdExists(companyId)
+
             val framework = searchFilter.dataType.toString()
             val reportingPeriods =
                 dataPointUtils
