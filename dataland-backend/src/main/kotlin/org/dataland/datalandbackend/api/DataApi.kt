@@ -99,9 +99,9 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData by its [reportingPeriod], [companyId] as a [fileFormat] file.
-     * @param reportingPeriod specifies the reporting period
-     * @param companyId specifies the company
+     * A method to export the CompanyAssociatedData by its [reportingPeriods], [companyIds] as a [exportFileType] file.
+     * @param reportingPeriods specifies the reporting period
+     * @param companyIds specifies the company
      * @param exportFileType specifies the file type to export to
      * @return JSON of companyAssociatedData in form of InputStreamResource
      */
