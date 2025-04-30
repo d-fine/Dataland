@@ -95,17 +95,32 @@ class DataRequestUpdateManagerTest {
         doReturn(dummyChildCompanyDataRequestEntityWithEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .findByDataRequestId(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
-        doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
-            .whenever(mockDataRequestRepository)
-            .searchDataRequestEntity(
-                searchFilter =
-                    DataRequestsFilter(
-                        dataType = setOf(dataMetaInformation.dataType),
-                        datalandCompanyIds = setOf(dataMetaInformation.companyId),
-                        reportingPeriod = dataMetaInformation.reportingPeriod,
-                        requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                    ),
+
+        val requestStatusSets =
+            listOf(
+                setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+                setOf(
+                    RequestStatus.Open, RequestStatus.NonSourceable,
+                    RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved,
+                ),
             )
+
+        val dataRequestFilters =
+            requestStatusSets.map {
+                DataRequestsFilter(
+                    dataType = setOf(dataMetaInformation.dataType),
+                    datalandCompanyIds = setOf(dataMetaInformation.companyId),
+                    reportingPeriod = dataMetaInformation.reportingPeriod,
+                    requestStatus = it,
+                )
+            }
+
+        dataRequestFilters.forEach {
+            doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
+                .whenever(mockDataRequestRepository)
+                .searchDataRequestEntity(searchFilter = it)
+        }
+
         doReturn(dummyChildCompanyDataRequestEntities)
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
