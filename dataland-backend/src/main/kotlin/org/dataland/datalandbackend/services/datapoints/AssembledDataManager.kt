@@ -375,12 +375,6 @@ class AssembledDataManager
             val reportingPeriods =
                 dataPointUtils
                     .getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
-            if (reportingPeriods.isEmpty()) {
-                throw ResourceNotFoundApiException(
-                    "No data available.",
-                    "No data found for company $companyId and framework $framework.",
-                )
-            }
 
             return reportingPeriods.map { reportingPeriod ->
                 val dataPointDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
