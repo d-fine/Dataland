@@ -4,7 +4,7 @@ Often it is not required to run all services during local development. To reduce
 time, you can run a reduced local stack by following the instructions below:
 
 1. Determine which services you do not require and set them to false in the ``ReducedStack.kt`` script. There are 
-   certain service that are always required and are marked as such in the script. The services set to true by default 
+   certain services that are always required and are marked as such in the script. The services set to true by default 
    represent a reduced service setup that covers the most common use cases.
 2. Run the ``ReducedStack.kt`` script from the IDE or via gradle.
 3. The script will overwrite certain nginx configuration files and the ``localContainer.conf``. Do not commit these or 
