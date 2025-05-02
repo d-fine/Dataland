@@ -14,26 +14,28 @@
     </BasicFormSection>
     <div class="select-group">
       <BasicFormSection header="Select Reporting Period(s)">
-        <div class="flex flex-wrap mt-4 py-2">
-          <template v-if="dynamicReportingPeriods.length > 0">
+        <template v-if="selectedFramework">
+          <div v-if="dynamicReportingPeriods.length > 0" class="flex flex-wrap mt-4 py-2">
             <ToggleChipFormInputs
               :name="'listOfReportingPeriods'"
               :options="dynamicReportingPeriods"
               @changed="selectedReportingPeriodsError = false"
             />
-          </template>
-          <template v-else>
-            <p class="gray-text font-italic text-xs m-0">
-              Selection of reporting periods is available upon framework selection.
-            </p>
-          </template>
-        </div>
+          </div>
+          <p v-else class="text-sm text-danger mt-2">
+            No reporting periods available for {{ getFrameworkLabel(selectedFramework) }} and selected Portfolio.
+          </p>
+        </template>
+        <template v-else>
+          <p class="gray-text font-italic text-xs m-0">
+            Selection of reporting periods is available upon framework selection.
+          </p>
+        </template>
         <p v-if="selectedReportingPeriodsError" class="text-danger text-xs mt-2">
           Select at least one reporting period.
         </p>
       </BasicFormSection>
       <BasicFormSection header="File type">
-        <template v-if="selectedFramework">
           <Dropdown
             name="fileType"
             v-model="selectedFileType"
@@ -43,29 +45,26 @@
             placeholder="Select"
             class="long"
           />
-        </template>
-        <template v-else>
-          <p class="gray-text font-italic text-xs m-0">
-            Selection of reporting periods is available upon framework selection.
-          </p>
-        </template>
+      <p  v-if="!canDownload" class="red-text font-italic text-xs m-0 errorMessage" data-test="errorMessage">
+        Select Framework, at least one reporting period and a file type to download.
+      </p>
       </BasicFormSection>
       <PrimeButton
         label="Download Portfolio"
         icon="pi pi-download"
-        @click="downloadPortfolio()"
+        @click="downloadPortfolio"
         class="primary-button downloadButton"
         :data-test="'downloadButton'"
         title="Download the selected frameworks and reporting periods for current portfolio"
         style="width: max-content"
-        :disabled="dynamicReportingPeriods.length === 0"
+        :disabled="!canDownload"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, type Ref, ref } from 'vue';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
@@ -94,13 +93,21 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const selectedReportingPeriodsError = ref(false);
-const selectedFramework = ref<string | null>(null);
+const selectedFramework = ref<string | undefined>(undefined);
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFileType = ref<ExportFileType | null>(null);
 const fileTypeOptions = [
   { label: 'CSV', value: ExportFileType.Csv },
   { label: 'Excel', value: ExportFileType.Excel },
 ];
+
+const canDownload = computed(() => {
+  return (
+    selectedFramework.value !== undefined &&
+    selectedFileType.value !== null &&
+    getSelectedReportingPeriods().length > 0
+  );
+});
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -111,6 +118,14 @@ onMounted(() => {
     portfolioEntries.value = portfolio.entries;
   }
 });
+
+/**
+ * Retrieves currently selected framework
+ */
+function getFrameworkLabel(value: string | undefined): string {
+  const framework = availableFrameworks.find(fw => fw.value === value);
+  return framework?.label ?? value ?? 'selected framework';
+}
 
 /**
  * When the framework changes, update the available reporting periods based on the selected framework
@@ -167,6 +182,11 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
 async function downloadPortfolio(): Promise<void> {
   try {
 
+    if (!selectedFramework.value) {
+      alert('Please select a framework.');
+      return;
+    }
+
     if (!selectedFileType.value) {
       alert('Please select a file type.');
       return;
@@ -185,7 +205,7 @@ async function downloadPortfolio(): Promise<void> {
     }
 
     const companyIds = getCompanyIds();
-    const filename = `portfolio-download`;
+    const filename = "portfolio-download";
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       selectedPeriods,
       companyIds,
@@ -273,5 +293,9 @@ ul {
 :deep(.basic-form-section) {
   margin-bottom: 0.5rem !important;
   padding-bottom: 0 !important;
+}
+
+.errorMessage{
+  gap: 10em;
 }
 </style>
