@@ -161,21 +161,22 @@ function editCellConfigForHighlightingHiddenFields<T>(
 function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
   switch (typeof value) {
     case 'string':
-      return !!(value && value != NO_DATA_PROVIDED);
+      return !!(value && value !== NO_DATA_PROVIDED);
     case 'object':
       if (!!value && 'modalOptions' in value) {
         return !!(
           // prettier-ignore
-          (value.modalOptions?.data?.listOfRowContents?.length ||
-            value.modalOptions?.data?.input ||
-            value.modalOptions?.data?.values?.length)
+          value.modalOptions?.data?.listOfRowContents?.length ??
+          value.modalOptions?.data?.input ??
+          value.modalOptions?.data?.values?.length
         );
       } else if (!!value && 'innerContents' in value) {
-        return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != '';
+        return (
+          value.innerContents.displayValue !== NO_DATA_PROVIDED && value.innerContents.displayValue !== ''
+        );
       } else {
         return !!value;
       }
-
     default:
       return !!value;
   }
