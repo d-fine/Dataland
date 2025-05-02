@@ -235,6 +235,11 @@ describe('Component test for the company cockpit', () => {
         'contain',
         frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
+      if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0) {
+        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('exist');
+      } else {
+        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('not.exist');
+      }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
         return;
@@ -293,7 +298,7 @@ describe('Component test for the company cockpit', () => {
 
   it('Checks the latest documents', () => {
     mockRequestsOnMounted(false);
-    mountCompanyCockpitWithAuthentication(false, false, []);
+    mountCompanyCockpitWithAuthentication(true, false, []);
     // For each category a request is made.
     Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach(() => {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
