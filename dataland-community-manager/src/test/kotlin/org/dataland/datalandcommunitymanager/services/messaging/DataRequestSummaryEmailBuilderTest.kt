@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -93,13 +93,20 @@ class DataRequestSummaryEmailBuilderTest {
             userId,
         )
 
-        verify(spyObjectMapper).writeValueAsString(
-            argThat { message ->
-                (message as? EmailMessage)?.typedEmailContent?.let { content ->
-                    content is DataRequestSummaryEmailContent &&
-                        content.newData.first().dataTypeLabel == dataTypeHumanReadableName
-                } ?: false
-            },
+        val emailMessageCaptor = argumentCaptor<EmailMessage>()
+
+        verify(spyObjectMapper).writeValueAsString(emailMessageCaptor.capture())
+
+        val parsedEmailMessage = emailMessageCaptor.firstValue
+
+        assert(
+            parsedEmailMessage.typedEmailContent is DataRequestSummaryEmailContent,
+        )
+
+        val parsedEmailMessageContent = parsedEmailMessage.typedEmailContent as DataRequestSummaryEmailContent
+
+        assert(
+            parsedEmailMessageContent.newData.first().dataTypeLabel == dataTypeHumanReadableName,
         )
     }
 }

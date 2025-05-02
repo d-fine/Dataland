@@ -387,7 +387,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method to patch all non-witdrawn data requests corresponding to a dataset to status non-sourceable.
+         * Method to patch all non-withdrawn data requests corresponding to a dataset to status non-sourceable.
          * @param sourceabilityInfo the info on the non-sourceable dataset
          */
         @Transactional

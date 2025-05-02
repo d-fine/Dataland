@@ -27,7 +27,8 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 
 /**
- * A service that listens for send email messages. These emails are then build and send by the email-service.
+ * A service that listens to messages for emails to be sent. These emails are then built and sent
+ * by the email-service.
  */
 @Service
 @Suppress("LongParameterList")
@@ -96,7 +97,7 @@ class EmailMessageListener
         /**
          * This function builds an email and then sends the email.
          * @param emailMessage The email message specifies the receiver and the content of the email that should be sent.
-         *  This function removes all receiver of the email that have unsubscribed.
+         *  This function removes all receivers of the email that have unsubscribed.
          */
         fun buildAndSendEmail(emailMessage: EmailMessage) {
             val receivers = resolveRecipients(emailMessage.receiver)
