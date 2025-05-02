@@ -377,6 +377,7 @@ class AssembledDataManager
             val reportingPeriods =
                 dataPointUtils
                     .getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
+                    .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
             return reportingPeriods.map { reportingPeriod ->
                 val dataPointDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
