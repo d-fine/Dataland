@@ -1,6 +1,7 @@
 <template>
   <div class="text-primary">
     <a
+      v-if="isUserLoggedIn"
       @click="handleDocumentDownload()"
       class="cursor-pointer"
       :class="fontStyle"
@@ -27,11 +28,26 @@
       <span> </span>
       <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
+    <span
+      v-else
+      :class="fontStyle"
+      :title="documentDownloadInfo.downloadName"
+      :data-test="'download-text-' + documentDownloadInfo.downloadName"
+      style="display: grid; grid-template-columns: fit-content(100%) max-content"
+    >
+      <span
+        class="underline pl-1"
+        style="overflow: hidden; text-overflow: ellipsis"
+        :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
+        >{{ label ?? documentDownloadInfo.downloadName }}</span
+      >
+      <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
+    </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import {
@@ -41,10 +57,13 @@ import {
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const percentCompleted = createNewPercentCompletedRef();
+
+const isUserLoggedIn = ref<undefined | boolean>(undefined);
 
 const props = defineProps({
   label: String,
@@ -55,6 +74,14 @@ const props = defineProps({
   },
   showIcon: Boolean,
   fontStyle: String,
+});
+
+onMounted(() => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      isUserLoggedIn.value = keycloak.authenticated;
+    })
+    .catch((error) => console.error(error));
 });
 
 const handleDocumentDownload = async (): Promise<void> => {
