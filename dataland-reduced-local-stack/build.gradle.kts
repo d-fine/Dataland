@@ -11,5 +11,5 @@ val jacocoClasses by extra(
 )
 
 dependencies {
-    implementation("org.freemarker:freemarker:2.3.31")
+    implementation("org.freemarker:freemarker:2.3.34")
 }
