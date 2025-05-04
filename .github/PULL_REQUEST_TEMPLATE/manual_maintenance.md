@@ -16,7 +16,7 @@ consult the internal Dataland Wiki.
 
 - [ ] Update the wiki page (should display current issues why specific updates were not done)
 
-### Dataland EuroDaT client
+### Dataland EuroDaT client (CURRENTLY NO MAINTENANCE NEEDED)
 
 - [ ] Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
   then update the version number used in docker-compose.
