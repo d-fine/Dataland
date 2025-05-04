@@ -30,8 +30,6 @@ describeIf(
     });
 
     it('Creates, edits, and deletes a portfolio', () => {
-      cy.closeCookieBannerIfItExists();
-
       cy.get('[data-test="addNewPortfolio"]').click();
       cy.get('[name="portfolioName"]').type(portfolioName);
       cy.get('[data-test="saveButton"]').should('be.disabled');
