@@ -166,9 +166,9 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
       if (!!value && 'modalOptions' in value) {
         return !!(
           // prettier-ignore
-          (value.modalOptions?.data?.listOfRowContents?.length ||
-            value.modalOptions?.data?.input ||
-            value.modalOptions?.data?.values?.length)
+          value.modalOptions?.data?.listOfRowContents?.length ??
+          value.modalOptions?.data?.input ??
+          value.modalOptions?.data?.values?.length
         );
       } else if (!!value && 'innerContents' in value) {
         return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != '';
