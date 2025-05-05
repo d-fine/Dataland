@@ -80,13 +80,6 @@ class DataRequestUpdateManagerTestDataProvider {
                 argumentsList.add(Arguments.of(entry1, entry2))
             }
         }
-        // val argumentsStream = Stream.of<Arguments>()
-        // argumentsList.forEach {
-        //    Stream.concat(
-        //        argumentsStream, Stream.of(it),
-        //    )
-        // }
-        // return argumentsStream
         return argumentsList.stream()
     }
 
