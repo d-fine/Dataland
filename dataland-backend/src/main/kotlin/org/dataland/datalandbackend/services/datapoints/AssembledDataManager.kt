@@ -368,19 +368,16 @@ class AssembledDataManager
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
         ): List<PlainDataAndMetaInformation> {
-            requireNotNull(searchFilter.dataType) { "Framework must be specified." }
-            requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
             val companyId = searchFilter.companyId
+            requireNotNull(searchFilter.dataType) { "Framework must be specified." }
+            requireNotNull(companyId) { "Company ID must be specified." }
+            companyManager.assertCompanyIdExists(companyId)
+
             val framework = searchFilter.dataType.toString()
             val reportingPeriods =
                 dataPointUtils
                     .getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
-            if (reportingPeriods.isEmpty()) {
-                throw ResourceNotFoundApiException(
-                    "No data available.",
-                    "No data found for company $companyId and framework $framework.",
-                )
-            }
+                    .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
             return reportingPeriods.map { reportingPeriod ->
                 val dataPointDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
