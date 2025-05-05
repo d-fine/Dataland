@@ -109,26 +109,27 @@ class DocumentMetaInfoEntityTest {
                 qaStatus = qaStatus,
             )
 
-        if (qaStatus == QaStatus.Accepted) {
-            assertTrue(
-                documentMetaInfoEntity.isViewableByUser(),
-                "Method returned false although QaStatus is Accepted.",
-            )
-        } else if (!isUserLoggedIn) {
-            assertFalse(
-                documentMetaInfoEntity.isViewableByUser(),
-                "Method returned true although QaStatus is Pending and user is not logged in.",
-            )
-        } else if (uploaderId != DUMMY_USER_ID && userRoles.isEmpty()) {
-            assertFalse(
-                documentMetaInfoEntity.isViewableByUser(),
-                "Method returned true although all conditions failed.",
-            )
-        } else {
-            assertTrue(
-                documentMetaInfoEntity.isViewableByUser(),
-                "Method returned false although user should have the right to view the non-accepted document.",
-            )
+        when {
+            qaStatus == QaStatus.Accepted ->
+                assertTrue(
+                    documentMetaInfoEntity.isViewableByUser(),
+                    "Method returned false although QaStatus is Accepted.",
+                )
+            !isUserLoggedIn ->
+                assertFalse(
+                    documentMetaInfoEntity.isViewableByUser(),
+                    "Method returned true although QaStatus is Pending and user is not logged in.",
+                )
+            uploaderId != DUMMY_USER_ID && userRoles.isEmpty() ->
+                assertFalse(
+                    documentMetaInfoEntity.isViewableByUser(),
+                    "Method returned true although all conditions failed.",
+                )
+            else ->
+                assertTrue(
+                    documentMetaInfoEntity.isViewableByUser(),
+                    "Method returned false although user should have the right to view the non-accepted document.",
+                )
         }
     }
 }
