@@ -213,11 +213,13 @@ describe('Component test for the company cockpit', () => {
   /**
    * Validates the framework summary panels by asserting their existence and checking for their contents
    * @param isProvideDataButtonExpected determines if a provide-data-button is expected to be found in the panels
+   * @param isMobileViewActive determines whether the company cockpit page is in mobile view mode
    * @param frameworksToTest the frameworks that are tested for
    * @param isCompanyOwner is the current user company owner
    */
   function validateDisplayedFrameworkSummaryPanels(
     isProvideDataButtonExpected: boolean,
+    isMobileViewActive: boolean,
     frameworksToTest: Set<DataTypeEnum>,
     isCompanyOwner: boolean = false
   ): void {
@@ -235,7 +237,7 @@ describe('Component test for the company cockpit', () => {
         'contain',
         frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
-      if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0) {
+      if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0 && !isMobileViewActive) {
         cy.get(`[data-test=${frameworkName}-view-data-button]`).should('exist');
       } else {
         cy.get(`[data-test=${frameworkName}-view-data-button]`).should('not.exist');
@@ -286,13 +288,32 @@ describe('Component test for the company cockpit', () => {
    * Validates whether the displayed framework summary panels are as expected before, during and
    * after extension from the initially displayed four panels to all.
    */
-  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, isCompanyOwner: boolean = false): void {
-    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, initiallyDisplayedFrameworks, isCompanyOwner);
+  function validateFrameworkSummaryPanels(
+    isProvideDataButtonExpected: boolean,
+    isMobileViewActive: boolean = false,
+    isCompanyOwner: boolean = false
+  ): void {
+    validateDisplayedFrameworkSummaryPanels(
+      isProvideDataButtonExpected,
+      isMobileViewActive,
+      initiallyDisplayedFrameworks,
+      isCompanyOwner
+    );
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
     cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
-    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, allFrameworks, isCompanyOwner);
+    validateDisplayedFrameworkSummaryPanels(
+      isProvideDataButtonExpected,
+      isMobileViewActive,
+      allFrameworks,
+      isCompanyOwner
+    );
     cy.get('[data-test=toggleShowAll]').contains('SHOW LESS').click();
-    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, initiallyDisplayedFrameworks, isCompanyOwner);
+    validateDisplayedFrameworkSummaryPanels(
+      isProvideDataButtonExpected,
+      isMobileViewActive,
+      initiallyDisplayedFrameworks,
+      isCompanyOwner
+    );
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
   }
 
@@ -383,7 +404,7 @@ describe('Component test for the company cockpit', () => {
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-    validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected, false, true);
     validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
   it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
@@ -432,6 +453,6 @@ describe('Component test for the company cockpit', () => {
     validateSearchBarExistence(false);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
   });
 });
