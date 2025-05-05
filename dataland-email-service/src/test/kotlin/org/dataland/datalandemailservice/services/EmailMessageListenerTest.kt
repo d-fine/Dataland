@@ -11,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -139,12 +139,17 @@ class EmailMessageListenerTest {
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(mockEmailSender).sendEmail(
-            argThat { email ->
-                assertSenderReceiverCcAndBcc(email, allowedReceiver, allowedCc, additionalBccForNonSummaryEmail) &&
-                    keywords.all { keyword ->
-                        email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
-                    }
+        val emailCaptor = argumentCaptor<Email>()
+
+        verify(mockEmailSender).sendEmail(emailCaptor.capture())
+
+        val sentEmail = emailCaptor.firstValue
+
+        assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, additionalBccForNonSummaryEmail)
+        assert(
+            keywords.all { keyword ->
+                sentEmail.content.htmlContent.contains(keyword) &&
+                    sentEmail.content.textContent.contains(keyword)
             },
         )
     }
@@ -169,12 +174,17 @@ class EmailMessageListenerTest {
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(mockEmailSender).sendEmail(
-            argThat { email ->
-                assertSenderReceiverCcAndBcc(email, allowedReceiver, allowedCc, allowedBcc) &&
-                    keywords.all { keyword ->
-                        email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
-                    }
+        val emailCaptor = argumentCaptor<Email>()
+
+        verify(mockEmailSender).sendEmail(emailCaptor.capture())
+
+        val sentEmail = emailCaptor.firstValue
+
+        assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, allowedBcc)
+        assert(
+            keywords.all { keyword ->
+                sentEmail.content.htmlContent.contains(keyword) &&
+                    sentEmail.content.textContent.contains(keyword)
             },
         )
     }
@@ -208,12 +218,17 @@ class EmailMessageListenerTest {
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(mockEmailSender).sendEmail(
-            argThat { email ->
-                assertSenderReceiverCcAndBcc(email, listOf(receiverContact), emptyList(), emptyList()) &&
-                    keywords.all { keyword ->
-                        email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
-                    }
+        val emailCaptor = argumentCaptor<Email>()
+
+        verify(mockEmailSender).sendEmail(emailCaptor.capture())
+
+        val sentEmail = emailCaptor.firstValue
+
+        assertSenderReceiverCcAndBcc(sentEmail, listOf(receiverContact), emptyList(), emptyList())
+        assert(
+            keywords.all { keyword ->
+                sentEmail.content.htmlContent.contains(keyword) &&
+                    sentEmail.content.textContent.contains(keyword)
             },
         )
     }
