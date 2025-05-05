@@ -26,24 +26,38 @@ class DataRequestUpdateUtils
         private val requestEmailManager: RequestEmailManager,
         private val qaControllerApi: QaControllerApi,
     ) {
+
         /**
-         * Patches the email-on-update-field if necessary and returns if it was updated.
+         * Patches the email-on-update-field if requestStatus changes and returns if it was updated.
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
          * @return true if the notifyMeImmediately was updated, false otherwise
          */
+
         fun updateNotifyMeImmediatelyIfRequired(
             dataRequestPatch: DataRequestPatch,
             dataRequestEntity: DataRequestEntity,
-        ): Boolean =
-            dataRequestPatch.notifyMeImmediately?.let {
-                if (dataRequestEntity.notifyMeImmediately != it) {
-                    dataRequestEntity.notifyMeImmediately = it
-                    true
-                } else {
-                    false
+        ): Boolean {
+            var updated = false
+
+            if (
+                dataRequestPatch.requestStatus != null &&
+                dataRequestPatch.requestStatus != dataRequestEntity.requestStatus &&
+                dataRequestEntity.notifyMeImmediately
+            ) {
+                dataRequestEntity.notifyMeImmediately = false
+                updated = true
+            }
+
+            // Additionally, allow patch to explicitly set notifyMeImmediately
+            dataRequestPatch.notifyMeImmediately?.let { newValue ->
+                if (dataRequestEntity.notifyMeImmediately != newValue) {
+                    dataRequestEntity.notifyMeImmediately = newValue
+                    updated = true
                 }
-            } ?: false
+            }
+            return updated
+        }
 
         /**
          * Updates the request status history if the request status changed and returns
