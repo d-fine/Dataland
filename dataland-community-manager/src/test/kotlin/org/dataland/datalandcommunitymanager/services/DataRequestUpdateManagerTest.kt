@@ -7,10 +7,13 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
@@ -23,6 +26,8 @@ import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.model.QaReviewResponse
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -31,6 +36,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doCallRealMethod
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -48,6 +54,9 @@ class DataRequestUpdateManagerTest {
 
         @JvmStatic
         fun provideParametersToCheckDataRequestUpdateUtils() = testDataProvider.getStreamOfArgumentsToTestDataRequestUpdateUtils()
+
+        @JvmStatic
+        fun provideParametersToCheckNotificationFlagResetBehavior() = testDataProvider.getStreamOfArgumentsToTestFlagResetBehavior()
     }
 
     private lateinit var dataRequestUpdateManager: DataRequestUpdateManager
@@ -407,5 +416,99 @@ class DataRequestUpdateManagerTest {
                 )
         }
         verifyNoMoreInteractions(mockDataRequestSummaryNotificationService)
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideParametersToCheckNotificationFlagResetBehavior")
+    fun `validate that the notification flag is set from true to false if and only if requestStatus changes`(
+        requestStatusBefore: RequestStatus,
+        requestStatusAfter: RequestStatus,
+    ) {
+        val dataRequestId = UUID.randomUUID().toString()
+        val dataRequestEntity =
+            DataRequestEntity(
+                dataRequestId = dataRequestId, userId = UUID.randomUUID().toString(), creationTimestamp = 0L,
+                dataType = "sfdr", reportingPeriod = "2023", datalandCompanyId = UUID.randomUUID().toString(),
+                notifyMeImmediately = true, messageHistory = listOf<MessageEntity>(),
+                dataRequestStatusHistory =
+                    listOf(
+                        RequestStatusEntity(
+                            StoredDataRequestStatusObject(
+                                status = requestStatusBefore,
+                                creationTimestamp = 1L,
+                                accessStatus = AccessStatus.Public,
+                                requestStatusChangeReason = null,
+                                answeringDataId = null,
+                            ),
+                            mock<DataRequestEntity>(),
+                        ),
+                    ),
+                lastModifiedDate = 1L,
+                requestPriority = RequestPriority.High,
+                adminComment = null,
+            )
+        val dataRequestPatch = DataRequestPatch(requestStatus = requestStatusAfter)
+
+        doReturn(dataRequestEntity).whenever(mockDataRequestRepository).findByDataRequestId(dataRequestEntity.dataRequestId)
+        doCallRealMethod().whenever(mockDataRequestUpdateUtils).updateNotifyMeImmediatelyIfRequired(any(), any())
+        doReturn(mock<DataRequestEntity>()).whenever(mockDataRequestRepository).save(any())
+
+        val storedDataRequest =
+            dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+                dataRequestId,
+                dataRequestPatch,
+                UUID.randomUUID().toString(),
+            )
+
+        if (requestStatusBefore == requestStatusAfter) {
+            assertTrue(storedDataRequest.notifyMeImmediately)
+        } else {
+            assertFalse(storedDataRequest.notifyMeImmediately)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideParametersToCheckNotificationFlagResetBehavior")
+    fun `validate that the notification flag remains true under changes of requestStatus if explicitly set true by patch`(
+        requestStatusBefore: RequestStatus,
+        requestStatusAfter: RequestStatus,
+    ) {
+        val dataRequestId = UUID.randomUUID().toString()
+        val dataRequestEntity =
+            DataRequestEntity(
+                dataRequestId = dataRequestId, userId = UUID.randomUUID().toString(), creationTimestamp = 0L,
+                dataType = "sfdr", reportingPeriod = "2023", datalandCompanyId = UUID.randomUUID().toString(),
+                notifyMeImmediately = true, messageHistory = listOf<MessageEntity>(),
+                dataRequestStatusHistory =
+                    listOf(
+                        RequestStatusEntity(
+                            StoredDataRequestStatusObject(
+                                status = requestStatusBefore,
+                                creationTimestamp = 1L,
+                                accessStatus = AccessStatus.Public,
+                                requestStatusChangeReason = null,
+                                answeringDataId = null,
+                            ),
+                            mock<DataRequestEntity>(),
+                        ),
+                    ),
+                lastModifiedDate = 1L,
+                requestPriority = RequestPriority.High,
+                adminComment = null,
+            )
+        val dataRequestPatch = DataRequestPatch(requestStatus = requestStatusAfter, notifyMeImmediately = true)
+
+        doReturn(dataRequestEntity).whenever(mockDataRequestRepository).findByDataRequestId(dataRequestEntity.dataRequestId)
+        doCallRealMethod().whenever(mockDataRequestUpdateUtils).updateNotifyMeImmediatelyIfRequired(any(), any())
+        doReturn(mock<DataRequestEntity>()).whenever(mockDataRequestRepository).save(any())
+
+        val storedDataRequest =
+            dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+                dataRequestId,
+                dataRequestPatch,
+                UUID.randomUUID().toString(),
+            )
+
+        assertTrue(storedDataRequest.notifyMeImmediately)
     }
 }
