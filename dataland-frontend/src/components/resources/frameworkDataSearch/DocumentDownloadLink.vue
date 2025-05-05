@@ -1,5 +1,5 @@
 <template>
-  <div class="text-primary">
+  <div class="text-primary" style="max-width: 100%">
     <a
       @click="handleDocumentDownload()"
       class="cursor-pointer"
