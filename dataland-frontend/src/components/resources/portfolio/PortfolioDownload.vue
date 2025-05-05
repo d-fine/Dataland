@@ -70,13 +70,13 @@ import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue'
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import {type CompanyIdAndName, ExportFileType} from '@clients/backend';
-import {ApiClientProvider} from "@/services/ApiClients.ts";
-import {assertDefined} from "@/utils/TypeScriptUtils.ts";
-import {type PublicFrameworkDataApi} from "@/utils/api/UnifiedFrameworkDataApi.ts";
-import type Keycloak from "keycloak-js";
-import {type FrameworkData} from "@/utils/GenericFrameworkTypes.ts";
-import {getFrameworkDataApiForIdentifier} from "@/frameworks/FrameworkApiUtils.ts";
+import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import type Keycloak from 'keycloak-js';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 
 const dynamicReportingPeriods = ref<{ name: string; value: boolean }[]>([]);
 const availableFrameworks = [
@@ -94,10 +94,10 @@ const selectedFramework = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
-const selectedFileType = ref<ExportFileType | null>(null);
+const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
 const fileTypeSelectionOptions = [
-  { label: 'CSV', value: ExportFileType.Csv },
-  { label: 'Excel', value: ExportFileType.Excel },
+  { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
+  { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
 ];
 
 onMounted(() => {
@@ -188,7 +188,6 @@ function checkIfShowErrors(): void {
  */
 async function downloadPortfolio(): Promise<void> {
   try {
-
     if (!selectedFramework.value) {
       alert('Please select a framework.');
       return;
@@ -212,7 +211,7 @@ async function downloadPortfolio(): Promise<void> {
     }
 
     const companyIds = getCompanyIds();
-    const filename = "portfolio-download";
+    const filename = 'portfolio-download';
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       selectedPeriods,
       companyIds,
@@ -228,11 +227,9 @@ async function downloadPortfolio(): Promise<void> {
     alert('Download failed');
   }
 }
-
 </script>
 
 <style scoped lang="scss">
-
 .downloadButton {
   width: max-content;
   margin-left: auto;
@@ -255,7 +252,7 @@ label {
 }
 
 .portfolio-download-content {
-  width: 28em;
+  width: 20em;
   border-radius: 0.25rem;
   background-color: white;
   padding: 1.5rem;
