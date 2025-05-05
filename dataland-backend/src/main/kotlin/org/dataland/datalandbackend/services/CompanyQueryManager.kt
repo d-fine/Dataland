@@ -45,6 +45,7 @@ class CompanyQueryManager
          * @param companyId the ID of the company to be verified
          * @throws ResourceNotFoundApiException if the company does not exist
          */
+        @Throws(ResourceNotFoundApiException::class)
         fun assertCompanyIdExists(companyId: String) {
             if (!checkCompanyIdExists(companyId)) {
                 throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
