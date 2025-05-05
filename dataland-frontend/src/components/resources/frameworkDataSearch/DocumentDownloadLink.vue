@@ -15,7 +15,7 @@
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
       <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
-      <span>
+      <span class="pr-2">
         <i
           v-if="showIcon"
           class="pi pi-download pl-1"
@@ -24,7 +24,7 @@
           style="font-size: 12px; margin: auto"
         />
       </span>
-      <DownloadProgressSpinner :percent-completed="percentCompleted" class="pl-2" />
+      <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
   </div>
 </template>
