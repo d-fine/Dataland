@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyId
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -407,4 +408,51 @@ interface CompanyApi {
     fun isCompanyIdValid(
         @PathVariable("companyId") companyId: String,
     )
+
+    /**
+     * A method to retrieve a list of subsidiaries of an ultimate parent company.
+     * @param companyId identifier of the ultimate parent company in dataland
+     * @return list of subsidiaries
+     */
+    @Operation(
+        summary = "Retrieve subsidiaries.",
+        description = "Retrieve the IDs of all subsidiaries of a given ultimate parent company.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company information."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{companyId}/subsidiaries"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompanySubsidiariesByParentId(
+        @PathVariable("companyId") companyId: String,
+    ): ResponseEntity<List<BasicCompanyInformation>>
+
+    /**
+     * A method to post a list of company identifiers and retrieve the corresponding validation objects
+     * @param identifiers a list of strings representing potential company identifiers
+     * @return CompanyIdentifierValidationResults for all the provided identifiers
+     */
+    @Operation(
+        summary = "Validate if companies exist based on Identifiers.",
+        description = "Checks if companies exists based on a list of provided identifiers. Duplicated results are removed.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved validation results."),
+        ],
+    )
+    @PostMapping(
+        value = ["/validation"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postCompanyValidation(
+        @Valid @RequestBody
+        identifiers: List<String>,
+    ): ResponseEntity<List<CompanyIdentifierValidationResult>>
 }

@@ -2,127 +2,196 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Keventown",
-			"headquartersPostalCode": "08624-9889",
-			"sector": "web services",
+			"headquarters": "Toystead",
+			"headquartersPostalCode": null,
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [
-					"ZSW19V9gRjT8dOwHuHw8"
-				],
+				"Lei": [],
 				"Isin": [
-					"7isXp6iT68ka"
+					"yV7YC5eoLvOM",
+					"vIC7eN0WbKAs"
 				],
 				"PermId": [],
 				"Ticker": [
-					"NJ56EIw"
+					"NNbSVWO"
 				],
 				"Duns": [
-					"Uv5q40XAG"
+					"HK9c0NusB"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"ZpBjhhkxNgn3BlA"
+					"4mtohdmOskA6Fn3"
 				]
 			},
-			"countryCode": "AE",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Abbott, Stroman and Rempel"
+			"countryCode": "FM",
+			"companyContactDetails": [
+				"Jonatan_Schuppe@example.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://reflecting-jungle.name",
+			"companyAlternativeNames": [
+				"Hansen, Stiedemann and Kozey",
+				"Wolff, Gutkowski and Von"
+			],
+			"companyLegalForm": null,
+			"website": "https://serene-bourgeoisie.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
 					"fiscalYearDeviation": {
-						"value": "Deviation",
+						"value": "NoDeviation",
 						"dataSource": {
-							"page": "109-1241",
+							"page": "1188",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
+							"publicationDate": null
 						},
-						"comment": "parse optical driver",
-						"quality": "Estimated"
-					},
-					"fiscalYearEnd": {
-						"value": "2024-12-10",
-						"dataSource": {
-							"page": "1197-1214",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
-						},
-						"comment": "synthesize mobile pixel",
+						"comment": "transmit multi-byte protocol",
 						"quality": "Reported"
 					},
-					"referencedReports": {
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"publicationDate": "2023-04-01"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"fiscalYearEnd": {
+						"value": "2024-11-09",
+						"dataSource": {
+							"page": "254",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-18"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "override solid state monitor",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-23"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 9602059661.42,
+						"value": 1371402224.13,
 						"dataSource": {
-							"page": "689",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"page": "284-733",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
 						},
-						"comment": "input mobile microchip",
-						"quality": "Estimated",
-						"currency": "LAK"
+						"comment": "bypass haptic bus",
+						"quality": "Reported",
+						"currency": "MWK"
 					},
 					"debt": {
-						"value": 1098737262.65,
+						"value": 4081221785.44,
 						"dataSource": {
-							"page": "752-1062",
+							"page": "671",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
 						},
-						"comment": "index 1080p bus",
-						"quality": "Reported",
-						"currency": "CDF"
+						"comment": "input cross-platform firewall",
+						"quality": "Incomplete",
+						"currency": "GIP"
 					},
 					"balanceSheetTotal": {
-						"value": 4386258840.09,
+						"value": 3396198318.78,
 						"dataSource": {
-							"page": "300-1131",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"page": "609",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
 						},
-						"comment": "program primary monitor",
+						"comment": "navigate 1080p protocol",
 						"quality": "Incomplete",
-						"currency": "MAD"
+						"currency": "UGX"
 					},
 					"evic": {
-						"value": 5305528752.51,
+						"value": 4004570079.45,
 						"dataSource": {
-							"page": "599",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"page": "1175",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
 						},
-						"comment": "copy optical array",
-						"quality": "NoDataFound",
-						"currency": "BWP"
+						"comment": "reboot multi-byte driver",
+						"quality": "Audited",
+						"currency": "COP"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "additional-company-information-dataset-with-nullish-fields",
+			"headquarters": "Santa Monica",
+			"headquartersPostalCode": "24874-7765",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [
+					"fObQRs66XVrci4Ek4xcX"
+				],
+				"Isin": [
+					"V4KusqRjvD2V",
+					"GFoj3pYKkBRB"
+				],
+				"PermId": [],
+				"Ticker": [
+					"kXRn7jz"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "HM",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Beahan - Stoltenberg",
+				"Marquardt, Ferry and Mayer",
+				"Wisoky LLC"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://oily-wriggler.info/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"quality": null,
+						"comment": "",
+						"dataSource": {
+							"page": "58",
+							"tagName": null,
+							"fileName": "2024_VOEBS_Jahresbericht_2024_web",
+							"fileReference": "1"
+						}
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"2024_VOEBS_Jahresbericht_2024_web": {
+							"fileReference": "1",
+							"fileName": null,
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": null,
+					"balanceSheetTotal": null,
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
 	}
 ]

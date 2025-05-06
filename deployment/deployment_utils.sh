@@ -44,6 +44,7 @@ build_directories () {
 
   mkdir -p $target_dir/dataland-keycloak/users
   mkdir -p $target_dir/environments
+  mkdir -p $target_dir/health-check
 
   echo "Copying env variable files."
   cat ./*github_env.log > "$target_dir"/.env
@@ -60,6 +61,9 @@ build_directories () {
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
 
   cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils,docker_utils}.sh "$target_dir"/dataland-keycloak
+
+  echo "Copying health check configuration file."
+  cp ./deployment/configure_container_health_check.sh "$target_dir"/health-check
 }
 
 wait_for_docker_containers_healthy_remote () {
@@ -67,4 +71,14 @@ wait_for_docker_containers_healthy_remote () {
   location="$2"
   docker_compose_profile="$3"
   ssh ubuntu@"$target_server_url" "cd \"$location\"; source ./dataland-keycloak/deployment_utils.sh; timeout 600 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
+}
+
+create_loki_dir () {
+  target_server_url="$1"
+  loki_volume="$2"
+  ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
+      echo 'Creating $loki_volume dir as volume for Loki container'
+      sudo mkdir -p '$loki_volume'
+      sudo chmod a+w '$loki_volume'
+  fi"
 }

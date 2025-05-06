@@ -213,7 +213,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        registerAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
@@ -221,6 +221,8 @@ const register = (): void => {
 </script>
 
 <style lang="scss">
+@use '@/assets/scss/newVariables';
+
 .quotes {
   margin: 0 auto 120px;
   display: flex;
@@ -391,7 +393,7 @@ const register = (): void => {
   opacity: 0.5;
   pointer-events: none;
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .quotes {
     margin: 32px auto 64px;
     gap: 32px;

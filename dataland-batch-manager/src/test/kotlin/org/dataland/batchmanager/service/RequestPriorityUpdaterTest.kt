@@ -11,11 +11,13 @@ import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import java.util.UUID
 
 class RequestPriorityUpdaterTest {
@@ -100,5 +102,11 @@ class RequestPriorityUpdaterTest {
 
         verify(mockRequestControllerApi, never())
             .patchDataRequest(dataRequestId = requestIdNormalUserPrioLow, dataRequestPatch = patchHigh)
+    }
+
+    @Test
+    fun `check that the update priority process exits if the list of premium users is empty`() {
+        `when`(mockKeycloakUserService.getUsersByRole(any())).thenReturn(listOf())
+        assertThrows<IllegalArgumentException> { requestPriorityUpdater.processRequestPriorityUpdates() }
     }
 }

@@ -121,6 +121,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "overwriteDataPointQaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -873,17 +881,17 @@
         ]
       }
     },
-    "/data-points/{dataId}": {
+    "/data-points/{dataPointId}": {
       "get": {
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get the QA review information of an uploaded dataset for a given id.",
-        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
+        "summary": "Get the QA review information of an uploaded data point for a given id.",
+        "description": "Get the QA review information of uploaded data point for a given id.Users can get the review information of their own data points.Admins and reviewer can get the review information for all data points.",
         "operationId": "getDataPointQaReviewInformationByDataId",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -957,7 +965,7 @@
         "operationId": "changeDataPointQaStatus",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1016,17 +1024,17 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports": {
+    "/data-points/{dataPointId}/reports": {
       "get": {
         "tags": [
           "data-point-qa-report-controller"
         ],
         "summary": "Retrieve all QA reports.",
-        "description": "Retrieve all QA reports associated to given dataset.",
-        "operationId": "getAllQaReportsForDataset",
+        "description": "Retrieve all QA reports associated to given data point.",
+        "operationId": "getAllQaReportsForDataPoint",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1103,7 +1111,7 @@
         "operationId": "postQaReport",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1128,6 +1136,76 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataPointQaReport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/stored-qa-report/{dataId}": {
+      "post": {
+        "tags": [
+          "assembled-data-migration-controller"
+        ],
+        "summary": "Triggers a forced upload of a QA Report as a stored QA Report for testing.",
+        "description": "The data is stored.",
+        "operationId": "forceUploadStoredQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Data stored.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
                 }
               }
             }
@@ -1508,7 +1586,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports/{qaReportId}/status": {
+    "/data-points/{dataPointId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
           "data-point-qa-report-controller"
@@ -1518,7 +1596,7 @@
         "operationId": "setQaReportStatus",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1598,16 +1676,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1681,9 +1759,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get relevant meta info on unreviewed datasets.",
-        "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
-        "operationId": "getInfoOnPendingDatasets",
+        "summary": "Get relevant meta info on datasets.",
+        "description": "Gets a filtered and chronologically ordered list of relevant meta info on datasets.",
+        "operationId": "getInfoOnDatasets",
         "parameters": [
           {
             "name": "dataTypes",
@@ -1695,16 +1773,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1727,6 +1805,14 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "qaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/QaStatus"
             }
           },
           {
@@ -2358,7 +2444,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports/{qaReportId}": {
+    "/data-points/{dataPointId}/reports/{qaReportId}": {
       "get": {
         "tags": [
           "data-point-qa-report-controller"
@@ -2368,7 +2454,7 @@
         "operationId": "getQaReport",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2661,24 +2747,6 @@
           "Rejected"
         ]
       },
-      "CompanyReport": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileReference": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "publicationDate": {
-            "type": "string",
-            "format": "date"
-          }
-        }
-      },
       "CurrencyDataPoint": {
         "type": "object",
         "properties": {
@@ -2800,13 +2868,16 @@
           },
           "fileName": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
       "QaReportDataPointCurrencyDataPoint": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2825,7 +2896,6 @@
       "QaReportDataPointExtendedDataPointBigDecimal": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2844,7 +2914,6 @@
       "QaReportDataPointExtendedDataPointBigInteger": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2863,7 +2932,6 @@
       "QaReportDataPointExtendedDataPointYesNo": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2879,28 +2947,6 @@
           }
         }
       },
-      "QaReportDataPointMapStringCompanyReport": {
-        "required": [
-          "comment",
-          "correctedData",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string"
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            }
-          }
-        }
-      },
       "QaReportDataPointVerdict": {
         "type": "string",
         "enum": [
@@ -2913,9 +2959,6 @@
       "SfdrData": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
-          },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
           },
@@ -3169,22 +3212,6 @@
           }
         }
       },
-      "SfdrGeneral": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneral"
-          }
-        }
-      },
-      "SfdrGeneralGeneral": {
-        "type": "object",
-        "properties": {
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
-          }
-        }
-      },
       "SfdrHighImpactClimateSectorEnergyConsumption": {
         "type": "object",
         "properties": {
@@ -3399,6 +3426,24 @@
           },
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
@@ -3729,7 +3774,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3748,7 +3792,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3767,7 +3810,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3786,7 +3828,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasNonEligible": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3799,6 +3840,27 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
+          }
+        }
+      },
+      "QaReportDataPointMapStringCompanyReport": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
           }
         }
       },
@@ -4429,6 +4491,18 @@
           "numberOfEmployees": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "iloCoreLabourStandards": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "humanRightsDueDiligence": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
           "referencedReports": {
             "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           }
@@ -4818,7 +4892,6 @@
       "QaReportDataPointExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4837,7 +4910,6 @@
       "QaReportDataPointExtendedDataPointListEuTaxonomyActivity": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4856,7 +4928,6 @@
       "QaReportDataPointExtendedDataPointListEuTaxonomyAlignedActivity": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4875,7 +4946,6 @@
       "QaReportDataPointExtendedDataPointLocalDate": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4894,7 +4964,6 @@
       "QaReportDataPointExtendedDataPointYesNoNa": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -5309,9 +5378,6 @@
           },
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
-          },
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           },
           "areAllGroupEntitiesCovered": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
@@ -5825,7 +5891,6 @@
       "QaReportDataPointExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -5885,9 +5950,6 @@
           },
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
-          },
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           }
         }
       },
@@ -5922,7 +5984,6 @@
       "QaReportDataPointExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -5941,7 +6002,6 @@
       "QaReportDataPointString": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -5998,6 +6058,9 @@
             "type": "string"
           }
         }
+      },
+      "JsonNode": {
+        "type": "object"
       },
       "QaReportStatusPatch": {
         "required": [
@@ -6103,16 +6166,16 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "lksg",
               "p2p",
-              "sfdr",
+              "lksg",
+              "additional-company-information",
               "vsme",
               "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
+              "heimathafen"
             ]
           },
           "uploadTime": {
@@ -6134,6 +6197,9 @@
             ]
           },
           "uploaderUserId": {
+            "type": "string"
+          },
+          "ref": {
             "type": "string"
           }
         }
@@ -6202,7 +6268,7 @@
         "required": [
           "companyId",
           "companyName",
-          "dataId",
+          "dataPointId",
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
@@ -6210,7 +6276,7 @@
         ],
         "type": "object",
         "properties": {
-          "dataId": {
+          "dataPointId": {
             "type": "string"
           },
           "companyId": {

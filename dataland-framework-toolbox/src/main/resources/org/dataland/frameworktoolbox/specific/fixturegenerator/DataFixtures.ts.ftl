@@ -6,6 +6,7 @@
 }</#macro>
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
+<#if !reportingPeriodGetter??>import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';</#if>
 import { ${frameworkBaseName}Generator } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkBaseName}Generator";
 <#list imports as import>import {<#list import.members as member>${member}<#sep>, </#sep></#list>} from "${import.file}";
 </#list>
@@ -23,7 +24,8 @@ export function generate${frameworkBaseName}Fixtures(
   return generateFixtureDataset<${frameworkBaseName}Data>(
     () => generate${frameworkBaseName}Data(nullProbability),
     numFixtures,
-    <#if reportingPeriodGetter??> (dataset) => ${reportingPeriodGetter},</#if>
+    <#if reportingPeriodGetter??> (dataset) => ${reportingPeriodGetter},<#else>generateReportingPeriod,</#if>
+    <#if referencedReportGetter??> (dataset) => ${referencedReportGetter},</#if>
   );
 }
 

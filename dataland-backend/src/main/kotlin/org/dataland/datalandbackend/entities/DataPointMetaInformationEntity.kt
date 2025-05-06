@@ -9,6 +9,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -59,7 +60,7 @@ data class DataPointMetaInformationEntity(
     private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
         roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataPointMetaInformation =
+    override fun toApiModel(): DataPointMetaInformation =
         DataPointMetaInformation(
             dataPointId = dataPointId,
             companyId = companyId,
@@ -69,5 +70,16 @@ data class DataPointMetaInformationEntity(
             reportingPeriod = reportingPeriod,
             currentlyActive = currentlyActive == true,
             qaStatus = qaStatus,
+        )
+
+    /**
+     * Converts the entity into the basic data dimension object
+     * return a BasicDataDimensions object
+     */
+    fun toBasicDataDimensions(framework: String? = null): BasicDataDimensions =
+        BasicDataDimensions(
+            companyId = companyId,
+            dataType = framework ?: dataPointType,
+            reportingPeriod = reportingPeriod,
         )
 }

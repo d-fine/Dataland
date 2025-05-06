@@ -7,6 +7,8 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 
 /**
@@ -24,7 +26,7 @@ interface TemporarilyCachedDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(
@@ -36,6 +38,27 @@ interface TemporarilyCachedDataApi {
     ): ResponseEntity<String>
 
     /**
+     * Retrieve batched data from the internal cache
+     * @param dataIds filters the requested data according to a list of data IDs.
+     */
+    @Operation(
+        summary = "Retrieve specific data from the cache store of the backend.",
+        description = "Data identified by the provided data IDs is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
+        ],
+    )
+    @PostMapping(
+        value = ["/public/get-batch"],
+        produces = ["application/json"],
+    )
+    fun getBatchReceivedPublicData(
+        @RequestBody dataIds: List<String>,
+    ): ResponseEntity<Map<String, String>>
+
+    /**
      * This method retrieves private data entries from the temporary storage
      * @param dataId filters the requested data to a specific entry.
      */
@@ -45,7 +68,7 @@ interface TemporarilyCachedDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(

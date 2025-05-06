@@ -26,18 +26,6 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
   } else return [];
 }
 
-export const KEYCLOAK_ROLE_USER = 'ROLE_USER';
-export const KEYCLOAK_ROLE_UPLOADER = 'ROLE_UPLOADER';
-export const KEYCLOAK_ROLE_REVIEWER = 'ROLE_REVIEWER';
-export const KEYCLOAK_ROLE_ADMIN = 'ROLE_ADMIN';
-export const KEYCLOAK_ROLE_PREMIUM_USER = 'ROLE_PREMIUM_USER';
-export const KEYCLOAK_ROLES = [
-  KEYCLOAK_ROLE_UPLOADER,
-  KEYCLOAK_ROLE_USER,
-  KEYCLOAK_ROLE_ADMIN,
-  KEYCLOAK_ROLE_REVIEWER,
-  KEYCLOAK_ROLE_PREMIUM_USER,
-];
 /**
  * Derives the roles from the resolved Keycloak-promise of a logged in user
  * and checks if the provided role is included.
@@ -75,9 +63,9 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
  * Logs the user in and redirects her/him to the Dataland companies search page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
+export async function loginAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
+  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }
 
@@ -85,9 +73,9 @@ export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
  * Registers and logs the user in and redirects her/him to the Dataland companies search page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
+export async function registerAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
+  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }
 

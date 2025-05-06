@@ -56,7 +56,7 @@ describeIf(
                 '2021',
                 euTaxonomyForNonFinancialsFixtureForTest.t
               ).then((dataMetaInformation) => {
-                let dataSetFromPrefillRequest: EutaxonomyNonFinancialsData;
+                let datasetFromPrefillRequest: EutaxonomyNonFinancialsData;
                 cy.ensureLoggedIn(admin_name, admin_pw);
                 cy.intercept({
                   url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
@@ -73,7 +73,7 @@ describeIf(
 
                 cy.wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (interception) => {
-                    dataSetFromPrefillRequest = (
+                    datasetFromPrefillRequest = (
                       interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
                     ).data;
                   }
@@ -94,7 +94,7 @@ describeIf(
                       .then((axiosResponse) => {
                         const reuploadedDatasetFromBackend = axiosResponse.data.data;
                         compareObjectKeysAndValuesDeep(
-                          dataSetFromPrefillRequest as Record<string, object>,
+                          datasetFromPrefillRequest as Record<string, object>,
                           reuploadedDatasetFromBackend as Record<string, object>
                         );
                         cy.url().should('eq', getBaseUrl() + '/datasets');

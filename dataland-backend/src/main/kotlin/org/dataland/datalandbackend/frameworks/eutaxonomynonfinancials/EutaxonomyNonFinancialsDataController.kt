@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -40,23 +41,26 @@ class EutaxonomyNonFinancialsDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
+        super
+            .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedEutaxonomyNonFinancialsData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<EutaxonomyNonFinancialsData>,
         bypassQa: Boolean,
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToJson(dataId)
-
-    @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataToCsv")
-    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToCsv(dataId)
-
-    @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataToExcel")
-    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToExcel(dataId)
+    @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
+    override fun exportCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+        exportFileType: ExportFileType,
+    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
 
     @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
     override fun getFrameworkDatasetsForCompany(

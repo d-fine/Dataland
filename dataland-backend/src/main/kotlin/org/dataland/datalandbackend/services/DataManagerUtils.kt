@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
@@ -113,7 +113,7 @@ class DataManagerUtils(
      * @param dataType to check the correctness of the type of the retrieved data
      * @param correlationId to use in combination with dataId to retrieve data and assert type
      * @param datasetJsonStringGetter the function to retrieve the dataset from the respective storage service
-     * @return data set associated with the data ID provided in the input
+     * @return dataset associated with the data ID provided in the input
      */
     fun getStorableDataset(
         dataId: String,
@@ -121,7 +121,7 @@ class DataManagerUtils(
         correlationId: String,
         datasetJsonStringGetter: (String, String)
         -> String,
-    ): StorableDataSet {
+    ): StorableDataset {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
         lateinit var dataAsString: String
@@ -131,9 +131,9 @@ class DataManagerUtils(
             handleStorageClientException(e, dataId, correlationId)
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
-        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
-        return dataAsStorableDataSet
+        val dataAsStorableDataset = objectMapper.readValue(dataAsString, StorableDataset::class.java)
+        dataAsStorableDataset.requireConsistencyWith(dataMetaInformation)
+        return dataAsStorableDataset
     }
 
     /**

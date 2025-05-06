@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyId
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -16,9 +17,9 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -39,6 +40,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val companyBaseManager: CompanyBaseManager,
+    @Autowired private val dataPointUtils: DataPointUtils,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -48,7 +50,7 @@ class CompanyDataController(
         return ResponseEntity.ok(
             companyAlterationManager
                 .addCompany(companyInformation)
-                .toApiModel(DatalandAuthentication.fromContext()),
+                .toApiModel(),
         )
     }
 
@@ -162,7 +164,7 @@ class CompanyDataController(
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> =
         ResponseEntity.ok(
             companyQueryManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
+                .getCompanyApiModelById(companyId),
         )
 
     override fun patchCompanyById(
@@ -173,7 +175,7 @@ class CompanyDataController(
         companyAlterationManager.patchCompany(companyId, companyInformationPatch)
         return ResponseEntity.ok(
             companyQueryManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
+                .getCompanyApiModelById(companyId),
         )
     }
 
@@ -185,7 +187,7 @@ class CompanyDataController(
         companyAlterationManager.putCompany(companyId, companyInformation)
         return ResponseEntity.ok(
             companyQueryManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
+                .getCompanyApiModelById(companyId),
         )
     }
 
@@ -194,18 +196,32 @@ class CompanyDataController(
     override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
         ResponseEntity.ok(
             DataType.values.associateWith {
-                AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
+                AggregatedFrameworkDataSummary(
+                    (
+                        companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
+                            dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
+                    ).size.toLong(),
+                )
             },
         )
 
     override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
         ResponseEntity.ok(
             companyQueryManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull())
+                .getCompanyApiModelById(companyId)
                 .companyInformation,
         )
 
     override fun isCompanyIdValid(companyId: String) {
-        companyQueryManager.verifyCompanyIdExists(companyId)
+        companyQueryManager.assertCompanyIdExists(companyId)
     }
+
+    override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
+        ResponseEntity.ok(
+            companyQueryManager.getCompanySubsidiariesByParentId(companyId),
+        )
+
+    override fun postCompanyValidation(identifiers: List<String>): ResponseEntity<List<CompanyIdentifierValidationResult>> =
+        ResponseEntity
+            .ok(companyQueryManager.validateCompanyIdentifiers(identifiers))
 }

@@ -18,12 +18,6 @@
           </div>
         </div>
         <div class="right-elements">
-          <ReviewRequestButtons
-            v-if="!!framework && !!mapOfReportingPeriodToActiveDataset"
-            :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
-            :framework="framework"
-            :company-id="companyId"
-          />
           <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
@@ -72,14 +66,8 @@
 
 <script lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients';
-import { defineComponent, inject, type PropType } from 'vue';
-import {
-  type CompanyIdAndName,
-  type CompanyInformation,
-  type DataMetaInformation,
-  type DataTypeEnum,
-  IdentifierType,
-} from '@clients/backend';
+import { defineComponent, inject } from 'vue';
+import { type CompanyIdAndName, type CompanyInformation, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import ContextMenuButton from '@/components/general/ContextMenuButton.vue';
@@ -87,14 +75,13 @@ import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwn
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
 
 export default defineComponent({
   name: 'CompanyInformation',
-  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton, ReviewRequestButtons },
+  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -148,28 +135,20 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    framework: {
-      type: String as PropType<DataTypeEnum>,
-      required: false,
-    },
-    mapOfReportingPeriodToActiveDataset: {
-      type: Map as PropType<Map<string, DataMetaInformation>>,
-      required: false,
-    },
   },
   mounted() {
     this.fetchDataForThisPage();
   },
   watch: {
-    async companyId() {
-      await this.fetchDataForThisPage();
+    companyId() {
+      this.fetchDataForThisPage();
     },
   },
   methods: {
     /**
      * A complete fetch of all data that is relevant for UI elements of this page
      */
-    async fetchDataForThisPage() {
+    fetchDataForThisPage() {
       try {
         void this.getCompanyInformation();
         void this.setCompanyOwnershipStatus();
@@ -276,6 +255,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables';
+@use '@/assets/scss/variables';
+
 .inline-loading {
   width: 450px;
 }
@@ -297,7 +279,7 @@ export default defineComponent({
   }
 
   &__separator {
-    @media only screen and (max-width: $small) {
+    @media only screen and (max-width: newVariables.$small) {
       width: 100%;
       border-bottom: #e0dfde 1px solid;
       margin-bottom: 0.5rem;
@@ -307,14 +289,14 @@ export default defineComponent({
   &__info-holder {
     display: flex;
     flex-direction: row;
-    @media only screen and (max-width: $small) {
+    @media only screen and (max-width: newVariables.$small) {
       flex-direction: column;
     }
   }
 
   &__info {
     padding-top: 0.3rem;
-    @media only screen and (min-width: $small) {
+    @media only screen and (min-width: newVariables.$small) {
       padding-right: 40px;
     }
   }
@@ -327,7 +309,7 @@ export default defineComponent({
 }
 
 .fs-sm {
-  font-size: $fs-sm;
+  font-size: variables.$fs-sm;
   margin-right: 0.25rem;
 }
 </style>

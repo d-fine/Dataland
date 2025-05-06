@@ -22,7 +22,6 @@ describe('Tests for the MultiLayerDataTable component', () => {
     dataAndMetaInfo: Array<DataAndMetaInformation<DummyFrameworkForTest>>
   ): Cypress.Chainable {
     return cy.mountWithPlugins(MultiLayerDataTable, {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         config: dummyFrameworkMLDTConfig,
@@ -274,7 +273,6 @@ describe('Tests for the MultiLayerDataTable component', () => {
 
   it('Validate that show-if hidden fields and sections are displayed and highlighted in review mode', () => {
     cy.mountWithPlugins(MultiLayerDataTable, {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         config: editMultiLayerDataTableConfigForHighlightingHiddenFields(dummyFrameworkMLDTConfig, true, false),

@@ -94,7 +94,7 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   After the grace time, you will be redirected to the usual Keycloak login page.
    */
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-    loginAndRedirectToSearchPage(keycloak);
+    void loginAndRedirectToSearchPage(keycloak);
   } else {
     void updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.validator.DocumentExists
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -15,4 +16,5 @@ data class BaseDocumentReference(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
+    override val publicationDate: LocalDate? = null,
 ) : BaseDocumentReference

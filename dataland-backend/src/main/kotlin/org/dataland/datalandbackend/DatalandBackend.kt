@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Import
+import org.springframework.scheduling.annotation.EnableAsync
 
 /**
  * Class to define the spring boot application
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.Import
     ],
 )
 @ComponentScan(basePackages = ["org.dataland"])
+@EnableAsync
 class DatalandBackend : OpenAPIConfiguration
 
 /**

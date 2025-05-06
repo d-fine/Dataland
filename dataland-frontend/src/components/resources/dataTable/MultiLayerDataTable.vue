@@ -119,7 +119,7 @@ function hasPublicationDate(): boolean {
 
     switch (singleDataAndMetaInfo.metaInfo.dataType) {
       case DataTypeEnum.Sfdr:
-        referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
+        referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports;
         break;
       case DataTypeEnum.EutaxonomyFinancials:
         referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general
@@ -154,7 +154,7 @@ function latestDate(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
   let referencedReports;
   switch (singleDataAndMetaInfo.metaInfo.dataType) {
     case DataTypeEnum.Sfdr:
-      referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
+      referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports;
       break;
     case DataTypeEnum.EutaxonomyFinancials:
       referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports;
@@ -180,7 +180,7 @@ function latestDate(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
   }
   return latestDate ? dateStringFormatter(latestDate) : '';
 }
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const props = defineProps<{
   config: MLDTConfig<T>;
   dataAndMetaInfo: Array<DataAndMetaInformation<T>>;

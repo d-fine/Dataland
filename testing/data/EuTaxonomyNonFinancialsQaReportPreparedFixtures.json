@@ -2,34 +2,36 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "North Wallaceworth",
-			"headquartersPostalCode": "97416-7205",
-			"sector": "metrics",
+			"headquarters": "South Delfina",
+			"headquartersPostalCode": null,
+			"sector": "AI",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"omTyvQDE5Z1L6mJBKfNv"
+				],
 				"Isin": [
-					"Q3CoERJfyoUh"
+					"Gtm1nKMi5pP1",
+					"V20MgZQ02J6T"
 				],
-				"PermId": [
-					"hWr3EB4NVC"
+				"PermId": [],
+				"Ticker": [
+					"ejmnuKI"
 				],
-				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"Y0KbP18Xg"
+					"gxAuxOLkF"
 				],
 				"CompanyRegistrationNumber": [
-					"2ZvCn2oatj9aSG1"
+					"nqthNxMIURtELxM"
 				]
 			},
-			"countryCode": "GU",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Hilll - Corkery",
-				"Rodriguez Inc"
+			"countryCode": "PW",
+			"companyContactDetails": [
+				"Dalton51@example.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://terrible-godparent.net/",
 			"isTeaserCompany": false
 		},
 		"t": {

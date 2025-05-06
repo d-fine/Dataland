@@ -52,7 +52,7 @@ const login = (): void => {
     .then((keycloak) => {
       if (keycloak.authenticated) return;
       if (window.location.pathname == '/') {
-        loginAndRedirectToSearchPage(keycloak);
+        void loginAndRedirectToSearchPage(keycloak);
       } else {
         keycloak.login().catch((error) => console.error(error));
       }
@@ -83,7 +83,7 @@ const register = (): void => {
     .then((keycloak) => {
       if (keycloak.authenticated) return;
       if (window.location.pathname == '/') {
-        registerAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToSearchPage(keycloak);
       } else {
         keycloak.register().catch((error) => console.error(error));
       }
@@ -92,6 +92,8 @@ const register = (): void => {
 };
 </script>
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables';
+
 .header {
   &__authsection {
     display: flex;
@@ -133,7 +135,7 @@ const register = (): void => {
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .header {
     padding: 16px;
     margin: 0;

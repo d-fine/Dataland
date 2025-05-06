@@ -31,6 +31,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import JoinDatalandButton from '@/components/general/JoinDatalandButton.vue';
 import BackButton from '@/components/general/BackButton.vue';
+import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'ViewTeaserCompanyData',
@@ -47,7 +48,7 @@ export default defineComponent({
   data: () => ({
     companyId: '',
     dataId: '',
-    dataType: '',
+    dataType: '' as DataTypeEnum,
     reportingPeriod: '',
     isMetaInfoFetched: false,
     isAtLeastOneTeaserCompanyExisting: true,

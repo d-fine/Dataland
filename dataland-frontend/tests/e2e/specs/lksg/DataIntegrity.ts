@@ -82,7 +82,9 @@ describeIf(
 
                         compareObjectKeysAndValuesDeep(
                           originallyUploadedLksgDataset as unknown as Record<string, object>,
-                          frontendSubmittedLksgDataset as unknown as Record<string, object>
+                          frontendSubmittedLksgDataset as unknown as Record<string, object>,
+                          '',
+                          ['publicationDate']
                         );
                       });
                   }
@@ -141,7 +143,7 @@ describeIf(
     }
 
     it(
-      'Create a company and a Lksg dataset via api with most entries being null and then verify that it can be' +
+      'Create a company and a Lksg dataset via api with most entries being null and then verify that it can be ' +
         'reuploaded.',
       () => {
         cy.ensureLoggedIn(admin_name, admin_pw);

@@ -1,0 +1,28 @@
+{
+  "general": {
+    "general": {
+      "fiscalYearDeviation": {
+        "value": "Deviation",
+        "dataSource": {
+          "page": "213",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "e-business"
+        },
+        "comment": "generate primary application",
+        "quality": null
+      },
+      "fiscalYearEnd": {
+        "value": "2024-09-30",
+        "dataSource": {
+          "page": "270-1149",
+          "fileName": "ESEFReport",
+          "fileReference": "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "channels"
+        },
+        "comment": "reboot solid state firewall",
+        "quality": "Reported"
+      }
+    }
+  }
+}

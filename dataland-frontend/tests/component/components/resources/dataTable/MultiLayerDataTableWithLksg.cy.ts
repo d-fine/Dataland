@@ -8,7 +8,7 @@ import {
   type LksgProductionSite,
   QaStatus,
 } from '@clients/backend';
-import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from '@/utils/DataTableDisplay';
+import { type ReportingPeriodOfDatasetWithId, sortReportingPeriodsToDisplayAsColumns } from '@/utils/DataTableDisplay';
 import { lksgViewConfiguration } from '@/frameworks/lksg/ViewConfig';
 import {
   mountMLDTFrameworkPanelFromFakeFixture,
@@ -75,7 +75,7 @@ describe('Component test for the LksgPanel', () => {
     cy.get(`span.p-column-title`).should('contain.text', reportingPeriod.substring(0, 4));
     getSectionHead('Production-specific').should('have.attr', 'data-section-expanded', 'true');
     getCellValueContainer('List Of Production Sites').contains('a').should('be.visible').click();
-    lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
+    lksgData.general.productionSpecific.listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
       if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
         cy.get('tbody.p-datatable-tbody p').contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
       }
@@ -213,10 +213,10 @@ describe('Component test for the LksgPanel', () => {
  * @returns the sorted reporting periods to display based on the given list of data dates
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDatasetWithId[],
   shouldSwap = false
-): ReportingPeriodOfDataSetWithId[] {
-  let swappedList: ReportingPeriodOfDataSetWithId[];
+): ReportingPeriodOfDatasetWithId[] {
+  let swappedList: ReportingPeriodOfDatasetWithId[];
   if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {
     swappedList = listOfDataDateToDisplayAsColumns.slice();
     swappedList[0] = listOfDataDateToDisplayAsColumns[1];

@@ -2,26 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "D'Amoreworth",
-			"headquartersPostalCode": "44380",
-			"sector": "initiatives",
+			"headquarters": "Lake Kaylinview",
+			"headquartersPostalCode": null,
+			"sector": "solutions",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"0mD4x6MKUdFi",
-					"My2jlcOrf81j"
+					"sbkazW0HZhVQ",
+					"KT68Clm7WCWn"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Ticker": [
+					"MXsHJZE"
+				],
+				"Duns": [
+					"wUDAYlV7K"
+				],
+				"VatNumber": [
+					"AcE5pYc9N"
+				],
+				"CompanyRegistrationNumber": [
+					"YSzD0togEqvWlZB"
+				]
 			},
-			"countryCode": "GL",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://definitive-state.name/",
+			"countryCode": "EH",
+			"companyContactDetails": [
+				"Kayleigh.Strosin@example.com"
+			],
+			"companyAlternativeNames": [
+				"Powlowski Inc"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://ambitious-teriyaki.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -38,6 +50,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	}
 ]

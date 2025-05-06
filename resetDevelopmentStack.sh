@@ -28,6 +28,11 @@ source ./*github_env.log
 source ./environments/.env.uncritical
 set +o allexport
 
+./build-utils/rebuild_postgres_image.sh
+set -o allexport
+source ./*github_env.log
+set +o allexport
+
 ./build-utils/rebuild_keycloak_image.sh
 set -o allexport
 source ./*github_env.log

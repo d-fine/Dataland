@@ -17,6 +17,12 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     fun findFirstByDataIdOrderByTimestampDesc(dataId: String): QaReviewEntity?
 
     /**
+     * Find Upload QA entry for a specific dataId. Take first of all entries ordered by ascending timestamp
+     * (oldest first).
+     */
+    fun findFirstByDataIdOrderByTimestampAsc(dataId: String): QaReviewEntity?
+
+    /**
      * Deletes QA information for a specific dataId.
      */
     fun deleteAllByDataId(dataId: String)

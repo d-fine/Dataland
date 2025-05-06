@@ -1,91 +1,93 @@
+@use 'variables';
+
 // buttons
-$btn-primary-color: $white;
-$btn-primary-bg: $orange-prime;
-$btn-danger-bg: $red;
-$btn-success-bg: $green;
-$btn-disabled-color: $gray;
-$btn-focus-border-color: $blue-light;
+$btn-primary-color: variables.$white;
+$btn-primary-bg: variables.$orange-prime;
+$btn-danger-bg: variables.$red;
+$btn-success-bg: variables.$green;
+$btn-disabled-color: variables.$gray;
+$btn-focus-border-color: variables.$blue-light;
 
 //table
-$table-background-color: $white;
-$table-background-hover-color: $gray-lighter;
-$table-background-hover-color-light: $gray-lighter;
-$table-border: $gray-light;
-$table-border-dark: $gray;
-$table-icon-color: $gray;
-$tables-headers-bg: $surface-ground;
+$table-background-color: variables.$white;
+$table-background-hover-color: variables.$gray-lighter;
+$table-background-hover-color-light: variables.$gray-lighter;
+$table-border: variables.$gray-light;
+$table-border-dark: variables.$gray;
+$table-icon-color: variables.$gray;
+$tables-headers-bg: variables.$surface-ground;
 
 //pagination
-$pagination-color: $gray;
-$pagination-bg-hover: $gray-light;
+$pagination-color: variables.$gray;
+$pagination-bg-hover: variables.$gray-light;
 
 // typography
-$main-text-color: $brown-dark;
-$main-color: $orange-prime;
-$bg-text-primary: $white;
-$text-color-secondary: $gray;
-$text-color-third: $brown-light;
-$menu-text-color: $orange-prime;
+$main-text-color: variables.$brown-dark;
+$main-color: variables.$orange-prime;
+$bg-text-primary: variables.$white;
+$text-color-secondary: variables.$gray;
+$text-color-third: variables.$brown-light;
+$menu-text-color: variables.$orange-prime;
 
 //cards
-$card-background: $paper-white;
-$card-text: $brown-dark;
-$progressbar-bg: $surface-ground;
-$progressbar-color: $orange-prime;
-$shadow-color: $gray-lighter;
+$card-background: variables.$paper-white;
+$card-text: variables.$brown-dark;
+$progressbar-bg: variables.$surface-ground;
+$progressbar-color: variables.$orange-prime;
+$shadow-color: variables.$gray-lighter;
 
 //forms
-$input-text-color: $brown-dark;
-$input-label-color: $aquamarine-dark;
-$input-text-bg: $gray-lighter;
-$input-text-border: $brown-lighter;
-$input-text-border-hover: $orange-prime;
-$outline-dropdown-border: $brown-light;
-$fill-dropdown-bg: $brown-light;
-$fill-dropdown-hover-bg: $gray-light;
-$fill-dropdown-hover-text: $brown-light;
-$fill-dropdown-select-text-color: $white;
-$fill-dropdown-select-bg-color: $orange-prime;
-$fill-input-color: $white;
-$upload-form-bg: $white;
-$input-separator: $gray-light;
-$el-list-item-bg: $gray-light;
-$input-error: $red;
-$input-checked-color: $orange-prime;
+$input-text-color: variables.$brown-dark;
+$input-label-color: variables.$aquamarine-dark;
+$input-text-bg: variables.$gray-lighter;
+$input-text-border: variables.$brown-lighter;
+$input-text-border-hover: variables.$orange-prime;
+$outline-dropdown-border: variables.$brown-light;
+$fill-dropdown-bg: variables.$brown-light;
+$fill-dropdown-hover-bg: variables.$gray-light;
+$fill-dropdown-hover-text: variables.$brown-light;
+$fill-dropdown-select-text-color: variables.$white;
+$fill-dropdown-select-bg-color: variables.$orange-prime;
+$fill-input-color: variables.$white;
+$upload-form-bg: variables.$white;
+$input-separator: variables.$gray-light;
+$el-list-item-bg: variables.$gray-light;
+$input-error: variables.$red;
+$input-checked-color: variables.$orange-prime;
 $dropdown-options-bg: var(--surface-hover);
-$inputswitch-slider-bg: $orange-prime;
-$inputswitch-slider-bg-off: $gray-light;
-$inputswitch-singlecolor-slider-bg: $gray-light;
+$inputswitch-slider-bg: variables.$orange-prime;
+$inputswitch-slider-bg-off: variables.$gray-light;
+$inputswitch-singlecolor-slider-bg: variables.$gray-light;
 
 //messages
 $message-block-bg: var(--primary-color-100);
-$message-block-border: $orange-prime;
-$message-block-text: $brown-dark;
+$message-block-border: variables.$orange-prime;
+$message-block-text: variables.$brown-dark;
 
 $message-info-bg: var(--blue-600);
 $message-info-border: var(--blue-800);
-$message-info-text: $white;
+$message-info-text: variables.$white;
 
-$message-bordered-success-bg: $white;
-$message-bordered-success-border: $green;
-$message-bordered-success-text: $brown-light;
+$message-bordered-success-bg: variables.$white;
+$message-bordered-success-border: variables.$green;
+$message-bordered-success-text: variables.$brown-light;
 
-$message-success-bg: $green;
-$message-success-border: $green;
-$message-success-text: $white;
+$message-success-bg: variables.$green;
+$message-success-border: variables.$green;
+$message-success-text: variables.$white;
 
 $message-warn-bg: var(--yellow-600);
 $message-warn-border: var(--yellow-800);
-$message-warn-text: $brown-dark;
+$message-warn-text: variables.$brown-dark;
 
-$message-error-bg: $red;
-$message-error-border: $red;
-$message-error-text: $white;
+$message-error-bg: variables.$red;
+$message-error-border: variables.$red;
+$message-error-text: variables.$white;
 
 //navigation
-$jumpLinks-color: $brown-lighter;
-$jumpLinks-hover: $orange-prime;
+$jumpLinks-color: variables.$brown-lighter;
+$jumpLinks-hover: variables.$orange-prime;
 
 //info-bar
-$info-bar-bg: $gray-light;
-$info-bar-border: $orange-prime;
+$info-bar-bg: variables.$gray-light;
+$info-bar-border: variables.$orange-prime;

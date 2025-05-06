@@ -12,11 +12,11 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedRe
  * The root data-model for the Sfdr Framework
  */
 @Suppress("MagicNumber")
-@DataType("sfdr", 6)
+@DataType("sfdr", 1)
 @ReferencedReportsListValidator()
 data class SfdrData(
     @field:Valid()
-    val general: SfdrGeneral,
+    val general: SfdrGeneral? = null,
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,
     @field:Valid()

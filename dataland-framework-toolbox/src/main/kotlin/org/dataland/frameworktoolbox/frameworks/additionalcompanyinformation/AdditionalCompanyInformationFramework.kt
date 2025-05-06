@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.frameworks.additionalcompanyinformation
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -19,12 +20,15 @@ class AdditionalCompanyInformationFramework :
         label = "Additional Company Information",
         explanation = "Additional Company Information",
         File("./dataland-framework-toolbox/inputs/additional-company-information/additional-company-information.xlsx"),
-        order = 10,
+        order = 6,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("general") {
+                edit<ReportPreuploadComponent>("referencedReports") {
+                    isPartOfQaReport = false
+                }
                 edit<SingleSelectComponent>("fiscalYearDeviation") {
                     specificationGenerator = { categoryBuilder ->
                         categoryBuilder.addDefaultDatapointAndSpecification(

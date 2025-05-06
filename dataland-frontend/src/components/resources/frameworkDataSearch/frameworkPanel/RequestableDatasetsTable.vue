@@ -89,12 +89,13 @@ async function submitDataRequestsForSelection(): Promise<void> {
       await requestController.postSingleDataRequest({
         companyIdentifier: props.companyId,
         dataType: props.dataType as SingleDataRequestDataTypeEnum,
+        notifyMeImmediately: false,
         // as unknown as Set<string> cast required to ensure proper json is created
         reportingPeriods: reportingPeriodsToRequest as unknown as Set<string>,
       });
       await router.push('/requests');
       emit('submittedAccessRequests');
-    } catch (e) {
+    } catch {
       isAccessRequestFailed.value = true;
     }
   }

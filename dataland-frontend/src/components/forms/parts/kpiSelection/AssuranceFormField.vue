@@ -123,7 +123,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    nextTick(() => (this.isMounted = true));
+    void nextTick(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {

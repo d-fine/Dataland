@@ -2,14 +2,9 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
-import org.dataland.datalandbackendutils.exceptions.ConflictApiException
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -40,7 +35,6 @@ class DataRequestProcessingUtils
         private val dataRequestLogger: DataRequestLogger,
         private val companyApi: CompanyDataControllerApi,
         private val metaDataApi: MetaDataControllerApi,
-        private val exceptionForwarder: ExceptionForwarder,
     ) {
         /**
          * We want to avoid users from using other authentication methods than jwt-authentication, such as
@@ -53,45 +47,23 @@ class DataRequestProcessingUtils
         }
 
         /**
-         * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
-         * @param identifierValue the identifier value
-         * @param returnOnlyUnique boolean if only unique matches should be returned (null if not unique) or if an
-         * exception will be thrown (default)
-         * @return the company ID or null
+         * Validates provided company identifiers by querying the backend.
+         * @param identifiers the identifiers to validate
+         * @return a pair of a map of valid identifiers to company ID and name and a list of invalid identifiers
          */
-        fun getDatalandCompanyIdAndNameForIdentifierValue(
-            identifierValue: String,
-            returnOnlyUnique: Boolean = false,
-        ): CompanyIdAndName? {
-            val matchingCompanyIdsAndNamesOnDataland =
-                try {
-                    companyApi.getCompaniesBySearchString(identifierValue)
-                } catch (clientException: ClientException) {
-                    val responseBody = (clientException.response as ClientError<*>).body.toString()
-                    exceptionForwarder.catchSearchStringTooShortClientException(
-                        responseBody,
-                        clientException.statusCode,
-                        clientException,
+        fun performIdentifierValidation(identifiers: List<String>): Pair<Map<String, CompanyIdAndName>, List<String>> {
+            val validationResults = companyApi.postCompanyValidation(identifiers)
+            val validIdentifiers = mutableMapOf<String, CompanyIdAndName>()
+            val invalidIdentifiers = validationResults.filter { it.companyInformation == null }.map { it.identifier }
+            validationResults.filter { it.companyInformation != null }.forEach {
+                validIdentifiers[it.identifier] =
+                    CompanyIdAndName(
+                        companyName = it.companyInformation?.companyName ?: "",
+                        companyId = it.companyInformation?.companyId ?: "",
                     )
-                    throw clientException
-                }
-            val datalandCompanyIdAndName =
-                if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-                    matchingCompanyIdsAndNamesOnDataland.first()
-                } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
-                    throw InvalidInputApiException(
-                        summary = "No unique identifier. Multiple companies could be found.",
-                        message = "Multiple companies have been found for the identifier you specified.",
-                    )
-                } else {
-                    null
-                }
-            dataRequestLogger
-                .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(
-                    identifierValue,
-                    datalandCompanyIdAndName?.companyId,
-                )
-            return datalandCompanyIdAndName
+            }
+
+            return Pair(validIdentifiers, invalidIdentifiers)
         }
 
         /**
@@ -102,9 +74,12 @@ class DataRequestProcessingUtils
          * @param contacts a list of email addresses to inform about the potentially stored data request
          * @param message a message to equip the notification with
          */
+        @Suppress("complexity:LongParameterList")
         fun storeDataRequestEntityAsOpen(
+            userId: String,
             datalandCompanyId: String,
             dataType: DataTypeEnum,
+            notifyMeImmediately: Boolean,
             reportingPeriod: String,
             contacts: Set<String>? = null,
             message: String? = null,
@@ -113,8 +88,9 @@ class DataRequestProcessingUtils
 
             val dataRequestEntity =
                 DataRequestEntity(
-                    DatalandAuthentication.fromContext().userId,
+                    userId,
                     dataType.value,
+                    notifyMeImmediately,
                     reportingPeriod,
                     datalandCompanyId,
                     creationTime,
@@ -159,7 +135,7 @@ class DataRequestProcessingUtils
         /**
          * For a given dataRequestEntity, this function adds and persists a new entry to
          * the requestStatusHistory of the dataRequestEntity.
-         * The new entry contains a requestStatis, an accessStatus and a modificationTime.
+         * The new entry contains a requestStatus, an accessStatus and a modificationTime.
          * This function should be called within a transaction.
          */
         fun addNewRequestStatusToHistory(
@@ -168,9 +144,12 @@ class DataRequestProcessingUtils
             accessStatus: AccessStatus,
             requestStatusChangeReason: String?,
             modificationTime: Long,
+            answeringDataId: String? = null,
         ) {
             val requestStatusObject =
-                StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus, requestStatusChangeReason)
+                StoredDataRequestStatusObject(
+                    requestStatus, modificationTime, accessStatus, requestStatusChangeReason, answeringDataId,
+                )
             val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 
             requestStatusRepository.save(requestStatusEntity)
@@ -185,22 +164,23 @@ class DataRequestProcessingUtils
          * @param requestStatus the status of the data request
          * @return a list of the found data requests, or null if none was found
          */
-        fun findAlreadyExistingDataRequestForCurrentUser(
+        fun findAlreadyExistingDataRequestForUser(
+            userId: String,
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
             requestStatus: RequestStatus,
         ): List<DataRequestEntity>? {
-            val requestingUserId = DatalandAuthentication.fromContext().userId
             val foundRequests =
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        requestingUserId, companyId, framework.name, reportingPeriod,
+                        userId, companyId, framework.value, reportingPeriod,
                     )?.filter {
                         it.requestStatus == requestStatus
                     }
-            if (foundRequests != null) {
+            if (!foundRequests.isNullOrEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
+                    userId,
                     companyId,
                     framework,
                     reportingPeriod,
@@ -211,7 +191,7 @@ class DataRequestProcessingUtils
         }
 
         /**
-         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered"
+         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
          * @param companyId the company ID of the data request
          * @param framework the framework of the data request
          * @param reportingPeriod the reporting period of the data request
@@ -221,32 +201,43 @@ class DataRequestProcessingUtils
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
+            userId: String,
         ): Boolean {
             val openDataRequests =
-                findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Open,
+                findAlreadyExistingDataRequestForUser(
+                    userId, companyId, framework, reportingPeriod, RequestStatus.Open,
                 )
             val answeredDataRequests =
-                findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Answered,
+                findAlreadyExistingDataRequestForUser(
+                    userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
                 )
-            return if (openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty()) {
-                false
-            } else {
-                if (openDataRequests != null && openDataRequests.size > 1) {
-                    throw ConflictApiException(
-                        "More than one open data request.",
-                        "There seems to be more than one open data request with the same specifications.",
-                    )
-                }
-                if (answeredDataRequests != null && answeredDataRequests.size > 1) {
-                    throw ConflictApiException(
-                        "More than one answered data request.",
-                        "There seems to be more than one answered data request with the same specifications.",
-                    )
-                }
-                true
-            }
+            return !(openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty())
+        }
+
+        /**
+         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
+         * and returns the request id
+         * @param companyId the company ID of the data request
+         * @param framework the framework of the data request
+         * @param reportingPeriod the reporting period of the data request
+         * @return the requestId if a request in non-final status exists, else null
+         */
+        fun getRequestIdForDataRequestWithNonFinalStatus(
+            companyId: String,
+            framework: DataTypeEnum,
+            reportingPeriod: String,
+        ): String? {
+            val foundRequests = mutableListOf<DataRequestEntity>()
+            val userId = DatalandAuthentication.fromContext().userId
+            findAlreadyExistingDataRequestForUser(
+                userId, companyId, framework, reportingPeriod, RequestStatus.Open,
+            )?.forEach { foundRequests.add(it) }
+
+            findAlreadyExistingDataRequestForUser(
+                userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
+            )?.forEach { foundRequests.add(it) }
+
+            return foundRequests.firstOrNull()?.dataRequestId
         }
 
         /**

@@ -1,5 +1,5 @@
 import { doThingsInChunks, admin_name, admin_pw, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
-import { countCompaniesAndDataSetsForDataType } from '@e2e//utils/GeneralApiUtils';
+import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
@@ -54,7 +54,7 @@ describe(
         () => {
           cy.getKeycloakToken(admin_name, admin_pw)
             .then((token) =>
-              wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier))
+              wrapPromiseToCypressPromise(countCompaniesAndDatasetsForDataType(token, frameworkIdentifier))
             )
             .then((response) => {
               assert(

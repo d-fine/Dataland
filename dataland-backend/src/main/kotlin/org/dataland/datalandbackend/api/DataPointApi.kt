@@ -45,7 +45,7 @@ interface DataPointApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun validateDataPoint(
         @Valid @RequestBody dataPoint: DataPointToValidate,
-    ): ResponseEntity<Unit>
+    ): ResponseEntity<Void>
 
     /**
      * A method to store a data point via Dataland into a data store
@@ -98,7 +98,7 @@ interface DataPointApi {
 
     /**
      * A method to retrieve meta-information about a data point by providing its ID
-     * @param dataId the unique identifier for the data point
+     * @param dataPointId the unique identifier for the data point
      * @return the meta-information of the data point identified by the ID
      */
     @Operation(
@@ -111,11 +111,11 @@ interface DataPointApi {
         ],
     )
     @GetMapping(
-        value = ["/{dataId}/metadata"],
+        value = ["/{dataPointId}/metadata"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPointMetaInfo(
-        @PathVariable dataId: String,
+        @PathVariable dataPointId: String,
     ): ResponseEntity<DataPointMetaInformation>
 }

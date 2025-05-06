@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="4">
+    <DatasetsTabMenu :initial-tab-index="5">
       <TheContent class="min-h-screen paper-section relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div
@@ -270,7 +270,7 @@ export default defineComponent({
       this.updateCurrentDisplayedData();
     },
     companyRoleAssignments() {
-      this.getStoredCompanyRequestDataList();
+      void this.getStoredCompanyRequestDataList();
     },
   },
   methods: {

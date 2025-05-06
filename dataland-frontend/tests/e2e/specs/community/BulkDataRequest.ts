@@ -7,18 +7,21 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
 
 describeIf(
-  'As a user I want to be able to conduct a bulk request request',
+  'As a user I want to be able to conduct a bulk data request',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   () => {
     let permIdOfExistingCompany: string;
+    let testCompanyName: string;
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${new Date().getTime()}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
+        testCompanyName = companyToUpload.companyName;
         await uploadCompanyViaApi(token, companyToUpload);
       });
     });
@@ -29,85 +32,95 @@ describeIf(
     });
 
     it('When identifiers are accepted and rejected', () => {
-      cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
-
-      checksBasicValidation();
-      chooseReportingPeriod();
-      chooseFrameworks();
-
-      cy.get("textarea[name='listOfCompanyIdentifiers']").type(`${permIdOfExistingCompany}, 12345incorrectNumber`);
-      cy.get("button[type='submit']").should('exist').click();
-
-      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
-        checkIfIdentifiersProperlyDisplayed(interception);
+      createRequest(1, `${permIdOfExistingCompany}, 12345incorrectNumber`, () => {
+        cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
+        cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-inputswitch-checked');
+        cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+        cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
       });
 
-      cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersHeading"]').contains('1 REQUESTED IDENTIFIER');
-      cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersHeading"]').contains('1 REJECTED IDENTIFIER');
+      cy.get('[data-test="reportingPeriodsHeading"]').contains('1 REPORTING PERIOD');
+      cy.get('[data-test="frameworksHeading"]').contains('1 FRAMEWORK');
+      verifyOnRequestPage();
+      verifyOnSingleRequestPage(testCompanyName, true);
     });
 
     it('When identifiers are accepted', () => {
-      cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
+      createRequest(2);
 
-      checksBasicValidation();
-      chooseReportingPeriod();
-      chooseFrameworks();
+      cy.get('[data-test="requestStatusText"]').contains('Success');
+      verifyOnRequestPage();
+      verifyOnSingleRequestPage(testCompanyName, false);
+    });
 
-      cy.get("textarea[name='listOfCompanyIdentifiers']").type(permIdOfExistingCompany);
-      cy.get("button[type='submit']").should('exist').click();
+    it('When request already exists', () => {
+      createRequest(3);
+      cy.visit('bulkdatarequest');
+      createRequest(3);
 
-      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
-        checkIfIdentifiersProperlyDisplayed(interception);
-      });
-
-      cy.get('[data-test="acceptedIdentifiers"]')
-        .should('exist')
-        .get('[data-test="identifiersHeading"')
-        .contains('1 REQUESTED IDENTIFIER');
-
-      cy.get('[data-test="requestStatusText"]').should('exist').contains('Success');
-      cy.get("button[type='button']").should('exist').should('be.visible').click();
+      cy.get('[data-test="requestStatusText"]').contains('Success');
+      cy.get('button[type="button"]').should('be.visible');
+      cy.get('button[type="button"]').click();
       cy.url().should('not.include', '/bulkdatarequest');
       cy.url().should('include', '/requests');
     });
 
     it('When identifiers are rejected', () => {
-      checksBasicValidation();
-      chooseFrameworks();
+      createRequest(1, '12345incorrectNumber, 54321incorrectnumber');
 
-      cy.get("textarea[name='listOfCompanyIdentifiers']").type('12345incorrectNumber');
-      cy.get("button[type='submit']").should('exist').click();
-
-      cy.get('[data-test="selectedIdentifiersUnsuccessfulSubmit"]')
-        .should('exist')
-        .get('[data-test="identifiersHeading"')
-        .contains('SELECTED IDENTIFIERS');
-
-      cy.get('[data-test="requestStatusText"]').should('exist').contains('Request Unsuccessful');
+      cy.get('[data-test="requestStatusText"]').contains('Request Unsuccessful');
     });
+
+    /**
+     * Creates a bulk data request
+     * @param frameworkIndex The number of the framework for which the request shall be created
+     * @param companyIdentifiers The Identifiers of the companies for which the request shall be created
+     * @param additionalTodos Any additional things that shall be done or tested for
+     */
+    function createRequest(
+      frameworkIndex: number,
+      companyIdentifiers: string = permIdOfExistingCompany,
+      additionalTodos: () => void = (): void => {}
+    ): void {
+      cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
+      checksBasicValidation();
+      chooseFirstReportingPeriod();
+      chooseFrameworkByIndex(frameworkIndex);
+
+      cy.get('textarea[name="listOfCompanyIdentifiers"]').type(companyIdentifiers);
+      additionalTodos();
+      cy.get('button[type="submit"]').click();
+
+      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
+        checkIfIdentifiersProperlyDisplayed(interception);
+      });
+    }
 
     /**
      * Choose reporting periods
      */
-    function chooseReportingPeriod(): void {
+    function chooseFirstReportingPeriod(): void {
       cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]').should('exist');
-      cy.get('[data-test="toggle-chip"').should('have.length', 5).first().click();
-      cy.get('[data-test="toggle-chip"').should('have.length', 5).first().should('have.class', 'toggled');
+      cy.get('[data-test="toggle-chip"]').should('have.length', 5);
+      cy.get('[data-test="toggle-chip"]').first().click();
+      cy.get('[data-test="toggle-chip"]').first().should('have.class', 'toggled');
 
-      cy.get("div[data-test='reportingPeriodsDiv'] p[data-test='reportingPeriodErrorMessage'").should('not.exist');
+      cy.get('div[data-test="reportingPeriodsDiv"] p[data-test="reportingPeriodErrorMessage"]').should('not.exist');
     }
 
     /**
-     * Chose frameworks
+     * Choose frameworks by index
+     * @param index The index of the framework to choose.
      */
-    function chooseFrameworks(): void {
+    function chooseFrameworkByIndex(index: number): void {
       const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;
-      cy.get('[data-test="selectFrameworkSelect"] .p-multiselect').should('exist').click();
-      cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item')
-        .should('have.length', numberOfFrameworks)
-        .eq(3)
-        .click();
-      cy.get("div[data-test='addedFrameworks'] span").should('have.length', 1);
+      cy.get('[data-test="selectFrameworkSelect"] .p-multiselect').click();
+      cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item').should(
+        'have.length',
+        numberOfFrameworks
+      );
+      cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item').eq(index).click();
+      cy.get('div[data-test="addedFrameworks"] span').should('have.length', 1);
     }
 
     /**
@@ -115,38 +128,68 @@ describeIf(
      * @param interception request
      */
     function checkIfIdentifiersProperlyDisplayed(interception: Interception): void {
-      if (interception.response !== undefined) {
-        const rejectedIdentifiers = (interception.response.body as BulkDataRequestResponse).rejectedCompanyIdentifiers;
-        const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedCompanyIdentifiers;
-        if (rejectedIdentifiers.length > 0) {
-          cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersList"]')
-            .children()
-            .should('have.length', rejectedIdentifiers.length);
-        }
-        if (acceptedIdentifiers.length > 0) {
-          cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersList"]').should(
-            'have.length',
-            acceptedIdentifiers.length
-          );
-        }
+      if (interception.response === undefined || interception.response === null) {
+        return;
       }
+      const bulkDataRequestResponse = interception.response.body as BulkDataRequestResponse;
+      const acceptedDataRequests = bulkDataRequestResponse.acceptedDataRequests;
+      const alreadyExistingDatasets = bulkDataRequestResponse.alreadyExistingDatasets;
+      const alreadyExistingNonFinalRequests = bulkDataRequestResponse.alreadyExistingNonFinalRequests;
+      const rejectedCompanyIdentifiers = bulkDataRequestResponse.rejectedCompanyIdentifiers;
+
+      cy.get('[data-test="acceptedDataRequestsHeader"]').find('.p-badge').contains(acceptedDataRequests.length);
+      cy.get('[data-test="alreadyExistingDatasetsHeader"]').find('.p-badge').contains(alreadyExistingDatasets.length);
+      cy.get('[data-test="alreadyExistingNonFinalRequestsHeader"]')
+        .find('.p-badge')
+        .contains(alreadyExistingNonFinalRequests.length);
+      cy.get('[data-test="rejectedCompanyIdentifiersHeader"]')
+        .find('.p-badge')
+        .contains(rejectedCompanyIdentifiers.length)
+        .click();
+
+      cy.get('[data-test="acceptedDataRequestsContent"]').should('have.length', acceptedDataRequests.length);
+      cy.get('[data-test="alreadyExistingDatasetsContent"]').should('have.length', alreadyExistingDatasets.length);
+      cy.get('[data-test="alreadyExistingNonFinalRequestsContent"]').should(
+        'have.length',
+        alreadyExistingNonFinalRequests.length
+      );
+      cy.get('[data-test="rejectedCompanyIdentifiersContent"]').should('contain.text', '');
+      cy.get('[data-test="rejectedCompanyIdentifiersContent"]').within(($div) => {
+        const identifiers: string[] = $div
+          .text()
+          .split(', ')
+          .filter((identifier) => identifier != '');
+        assert(identifiers.length == rejectedCompanyIdentifiers.length);
+      });
+    }
+
+    /**
+     * Verifies the successful creation of the request on the request page
+     */
+    function verifyOnRequestPage(): void {
+      cy.get('button[type="button"]').should('be.visible');
+      cy.get('button[type="button"]').click();
+      cy.url().should('not.include', '/bulkdatarequest');
+      cy.url().should('include', '/requests');
+      cy.get(`td:contains("${testCompanyName}")`).first().scrollIntoView();
+      cy.get(`td:contains("${testCompanyName}")`).first().click();
     }
 
     /**
      * Checks basic validation
      */
     function checksBasicValidation(): void {
-      cy.get("button[type='submit']").should('exist').click();
+      cy.get('button[type="submit"]').click();
 
-      cy.get("div[data-test='reportingPeriodsDiv'] p[data-test='reportingPeriodErrorMessage'")
+      cy.get('div[data-test="reportingPeriodsDiv"] p[data-test="reportingPeriodErrorMessage"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period.');
 
-      cy.get("div[data-test='selectFrameworkDiv'] li[data-message-type='validation']")
+      cy.get('div[data-test="selectFrameworkDiv"] li[data-message-type="validation"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one framework');
 
-      cy.get("div[data-test='selectIdentifiersDiv'] li[data-message-type='validation']")
+      cy.get('div[data-test="selectIdentifiersDiv"] li[data-message-type="validation"]')
         .should('be.visible')
         .should('contain.text', 'Provide at least one identifier');
     }

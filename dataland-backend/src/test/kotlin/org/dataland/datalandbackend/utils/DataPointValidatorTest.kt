@@ -1,24 +1,39 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import jakarta.validation.Validation
+import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
-import java.text.SimpleDateFormat
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+import java.time.LocalDate
 
 class DataPointValidatorTest {
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
-    private val specificationClient = mock(SpecificationControllerApi::class.java)
-    private val dataPointValidator = DataPointValidator(objectMapper, specificationClient)
+    private val objectMapper = JsonTestUtils.testObjectMapper
+    private val specificationClient = mock<SpecificationControllerApi>()
+    private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
+    private val dataPointValidator =
+        DataPointValidator(
+            objectMapper, specificationClient, referencedReportsUtilities,
+            Validation
+                .buildDefaultValidatorFactory()
+                .validator,
+        )
 
     private val correlationId = "correlationId"
-    private val validationClass = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint"
+    private val validationClass = "org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint"
 
     private val currencyDataPoint = "./dataPointValidation/currencyDataPoint.json"
     private val invalidCurrencyDataPoint = "./dataPointValidation/invalidCurrencyDataPoint.json"
@@ -56,7 +71,7 @@ class DataPointValidatorTest {
     @Test
     fun `check that invalid classes are rejected`() {
         val className = "org.dataland.datalandbackend.model.datapoints.standard.DummyDataPoint"
-        assertThrows<ClassNotFoundException> { dataPointValidator.validateConsistency("{}", className, correlationId) }
+        assertThrows<IllegalArgumentException> { dataPointValidator.validateConsistency("{}", className, correlationId) }
     }
 
     @Test
@@ -64,8 +79,9 @@ class DataPointValidatorTest {
         val dataPoint = "dummy"
         val dataPointType = "non-existent-identifier"
 
-        `when`(specificationClient.getDataPointTypeSpecification(dataPointType))
-            .thenThrow(ClientException("Data point identifier not found."))
+        doThrow(ClientException("Data point identifier not found."))
+            .whenever(specificationClient)
+            .getDataPointTypeSpecification(dataPointType)
 
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)
@@ -76,6 +92,56 @@ class DataPointValidatorTest {
     fun `check that parsing a data point with a broken enum results in the expected exception`() {
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithBrokenEnum), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that unused referenced reports are rejected`() {
+        val dataPointId = "someCurrencyDataPoint"
+        val dataPointBaseTypeId = "extendedCurrencyDataPoint"
+
+        val dataPoint =
+            JsonSpecificationLeaf(
+                dataPointId = dataPointId,
+                jsonPath = "dummy",
+                content = getJsonNode(currencyDataPoint),
+            )
+
+        val companyReport =
+            CompanyReport(
+                fileReference = "fileReference",
+                fileName = "fileName",
+                publicationDate = LocalDate.parse("2021-01-01"),
+            )
+
+        doReturn(
+            mock<DataPointTypeSpecification> {
+                on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+                on { dataPointType } doReturn IdWithRef(id = dataPointId, ref = "dummy")
+            },
+        ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
+
+        doReturn(
+            mock<DataPointBaseTypeSpecification> {
+                on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+                on { validatedBy } doReturn "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint"
+            },
+        ).whenever(specificationClient).getDataPointBaseType(dataPointBaseTypeId)
+
+        assertThrows<InvalidInputApiException> {
+            dataPointValidator.validateDataset(mapOf(dataPointId to dataPoint), mapOf("report" to companyReport), correlationId)
+        }
+    }
+
+    @Test
+    fun `verify that an unknown constraint in the specification service causes an internal server exception`() {
+        assertThrows<InternalServerErrorApiException> {
+            dataPointValidator.validateConsistency(
+                getJsonString(currencyDataPoint),
+                validationClass,
+                correlationId,
+                listOf("between:0,100", "invalid constraint", "max:200"),
+            )
         }
     }
 }

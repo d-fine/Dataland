@@ -106,7 +106,8 @@ class CurrencyComponent(
         specificationCategoryBuilder.addDefaultDatapointAndSpecification(
             this,
             "Currency",
-            "${documentSupport.getNamingPrefix()}Currency",
         )
     }
+
+    override fun getConstraints(): List<String>? = getMinMaxValidationRule(minimumValue, maximumValue)?.let { listOf(it) }
 }

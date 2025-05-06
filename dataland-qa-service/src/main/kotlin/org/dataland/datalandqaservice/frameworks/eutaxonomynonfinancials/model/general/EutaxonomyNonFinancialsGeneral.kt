@@ -27,5 +27,13 @@ data class EutaxonomyNonFinancialsGeneral(
     val euTaxonomyActivityLevelReporting: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val unGlobalCompactPrinciplesCompliancePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    @field:Valid()
+    val oecdGuidelinesForMultinationalEnterprisesCompliancePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    @field:Valid()
+    val iloCoreLabourStandards: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    @field:Valid()
+    val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
 )

@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="5">
+    <DatasetsTabMenu :initial-tab-index="6">
       <TheContent class="min-h-screen paper-section relative">
         <div>
           <div
@@ -416,7 +416,7 @@ export default defineComponent({
       this.selectedPriority = [];
       this.searchBarInputEmail = '';
       this.searchBarInputComment = '';
-      this.getAllRequestsForFilters();
+      void this.getAllRequestsForFilters();
     },
 
     /**
@@ -428,7 +428,7 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
-        this.getAllRequestsForFilters();
+        void this.getAllRequestsForFilters();
       }
     },
 

@@ -1,4 +1,4 @@
-import { countCompaniesAndDataSetsForDataType } from '@e2e/utils/GeneralApiUtils';
+import { countCompaniesAndDatasetsForDataType } from '@e2e/utils/GeneralApiUtils';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { reader_name, reader_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
@@ -46,7 +46,7 @@ describeIf(
           .then(() => getKeycloakToken(reader_name, reader_pw))
           .then({ timeout: 120000 }, async (token) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
-              countCompaniesAndDataSetsForDataType(token, key as keyof typeof frameworkFixtureMap)
+              countCompaniesAndDatasetsForDataType(token, key as keyof typeof frameworkFixtureMap)
             );
 
             const totalCompanies = (await Promise.all(responsePromises))

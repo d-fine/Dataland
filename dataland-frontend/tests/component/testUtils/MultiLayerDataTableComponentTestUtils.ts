@@ -32,6 +32,7 @@ export function mountMLDTFrameworkPanelFromFakeFixture<FrameworkDataType>(
         reportingPeriod: it.reportingPeriod,
         qaStatus: 'Accepted',
         currentlyActive: true,
+        ref: 'https://example.com',
       };
       return {
         data: it.t,

@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -40,23 +41,24 @@ class NuclearAndGasDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedNuclearAndGasDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,
         bypassQa: Boolean,
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToJson(dataId)
-
-    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToCsv")
-    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToCsv(dataId)
-
-    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToExcel")
-    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToExcel(dataId)
+    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataByDimensions")
+    override fun exportCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+        exportFileType: ExportFileType,
+    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
 
     @Operation(operationId = "getAllCompanyNuclearAndGasData")
     override fun getFrameworkDatasetsForCompany(

@@ -7,9 +7,6 @@ export default defineConfig({
   //This section is to prevent the vite cold start issue https://github.com/cypress-io/cypress/issues/22557
   optimizeDeps: {
     include: [
-      '@clients/backend',
-      '@clients/apikeymanager',
-      '@clients/documentmanager',
       '@vue/test-utils',
       'cypress/vue',
       'vue-router',
@@ -29,6 +26,7 @@ export default defineConfig({
       'primevue/inputtext',
       'primevue/inputswitch',
       'primevue/dynamicdialog',
+      'primevue/dynamicdialogoptions',
       'primevue/usedialog',
       'primevue/dialog',
       'primevue/textarea',
@@ -44,6 +42,10 @@ export default defineConfig({
       'primevue/radiobutton',
       'primevue/icons/chevrondown',
       'primevue/icons/chevronleft',
+      'primevue/config',
+      'primevue/dialogservice',
+      'pinia',
+      'pinia-shared-state',
       '@formkit/vue',
       'axios',
       'i18n-iso-countries',
@@ -53,6 +55,9 @@ export default defineConfig({
       'markdown-it',
       '@faker-js/faker',
       'primevue/icons/chevronup',
+      'primevue/accordion',
+      'primevue/accordiontab',
+      'primevue/badge',
     ],
   },
   plugins: [
@@ -80,16 +85,18 @@ export default defineConfig({
     port: 8090,
     host: '0.0.0.0',
     strictPort: true,
+    allowedHosts: true,
+    warmup: {
+      clientFiles: [
+        './src/components/*/*.vue',
+        './src/components/*/*/*.vue',
+        './src/assets/*/*.scss',
+        './src/assets/*/*/*.scss',
+      ],
+    },
     watch: {
       ignored: ['**/coverage/**'],
       usePolling: process.env.POLLING === 'true',
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@import "./src/assets/scss/newVariables.scss"; @import "./src/assets/scss/variables.scss";`,
-      },
     },
   },
 });

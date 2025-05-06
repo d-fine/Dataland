@@ -62,9 +62,11 @@ const openLogoutModal = (): void => {
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/scss/newVariables';
+
 main {
   margin-top: 132px;
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     margin-top: 52px;
   }
 }

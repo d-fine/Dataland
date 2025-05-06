@@ -5,7 +5,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Qa
 
 /**
  * Comparable to the QaReviewEntity with the difference that the triggeringUserId is optional.
- * This class is used or the GET Response.
+ * This class is used for the GET Response.
  */
 data class QaReviewResponse(
     val dataId: String,

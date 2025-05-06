@@ -2,10 +2,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from 'axios';
 import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 import {
+  AdditionalCompanyInformationDataControllerApi,
+  type AdditionalCompanyInformationData,
   type Configuration,
   type DataMetaInformation,
-  type AdditionalCompanyInformationData,
-  AdditionalCompanyInformationDataControllerApi,
+  type ExportFileType,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -50,27 +51,30 @@ export class AdditionalCompanyInformationApiClient implements PublicFrameworkDat
     return this.openApiDataController.postCompanyAssociatedAdditionalCompanyInformationData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataToJson(
-    dataId: string,
+  exportCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    fileFormat: ExportFileType,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataToJson(dataId, options);
+    return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+      reportingPeriod,
+      companyId,
+      fileFormat,
+      options
+    );
   }
 
-  exportCompanyAssociatedDataToCsv(
-    dataId: string,
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
     options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataToCsv(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToExcel(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataToExcel(dataId, options);
+  ): AxiosPromise<CompanyAssociatedData<AdditionalCompanyInformationData>> {
+    return this.openApiDataController.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }

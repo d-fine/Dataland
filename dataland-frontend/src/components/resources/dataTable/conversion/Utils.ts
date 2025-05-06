@@ -8,11 +8,11 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFieldValueFromFrameworkDataset(identifier: string, frameworkDataset: any): any {
   const splits = identifier.split('.');
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let currentObject: any = frameworkDataset;
   for (const split of splits) {
     if (currentObject === undefined || currentObject === null) return currentObject;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+
     currentObject = currentObject[split];
   }
   return currentObject;
@@ -28,11 +28,11 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFieldValueFromDataModel(identifier: string, dataModel: any): any {
   const splits = identifier.split('.');
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let currentObject: any = dataModel;
   for (const split of splits) {
     if (currentObject === undefined || currentObject === null) return currentObject;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+
     currentObject = currentObject[split];
   }
   return currentObject;

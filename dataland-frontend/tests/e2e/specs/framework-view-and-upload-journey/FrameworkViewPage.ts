@@ -35,6 +35,7 @@ describeIf(
       humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
+      'Documents',
     ]);
     let companyIdOfAlpha: string;
 
@@ -43,9 +44,10 @@ describeIf(
     const nameOfCompanyBeta = 'company-beta-with-eutaxo-and-lksg-data-' + uniqueCompanyMarker;
     let companyIdOfBeta: string;
 
-    const frameworkDropdownSelector = 'div#chooseFrameworkDropdown';
-    const dropdownItemsSelector = 'div.p-dropdown-items-wrapper li';
-    const dropdownPanelSelector = 'div.p-dropdown-panel';
+    const frameworkDropdownSelector = '[data-test="chooseFrameworkDropdown"]';
+    const dropdownItemsSelector = '[data-test="chooseFrameworkList"] a';
+    const dropdownItemList = '[data-test="chooseFrameworkList"]';
+    const dropdownLabelSelector = frameworkDropdownSelector + ' [data-test="chooseFrameworkLabel"]';
 
     const nonExistingDataId = 'abcd123123123123123-non-existing';
     const nonExistingCompanyId = 'ABC-non-existing';
@@ -97,14 +99,9 @@ describeIf(
     /**
      * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
      * @param companyName to type into the search bar
-     * @param expectedCompanyId of the company that is expected to be the first autocomplete suggestion
      * @param isOnViewPage determines if cypress is expected to be on the view page
      */
-    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
-      companyName: string,
-      expectedCompanyId: string,
-      isOnViewPage: boolean
-    ): void {
+    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
       const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search_bar_top';
       cy.intercept({
         url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
@@ -129,9 +126,7 @@ describeIf(
         humanizeStringOrNumber(expectedChosenFramework)
       );
       cy.get("h2:contains('Checking if')").should('not.exist');
-      cy.get(frameworkDropdownSelector)
-        .find('.p-dropdown-label')
-        .should('have.text', humanizeStringOrNumber(expectedChosenFramework));
+      cy.get(dropdownLabelSelector).contains(humanizeStringOrNumber(expectedChosenFramework));
       cy.get('table').should('exist');
     }
 
@@ -142,9 +137,9 @@ describeIf(
     function validateFrameworkDropdownOptions(expectedDropdownOptions: Set<string>): void {
       // Click anywhere and assert that there is no currently open dropdown modal (fix for flakyness)
       cy.get('body').click(0, 0);
-      cy.get(dropdownPanelSelector).should('not.exist');
+      cy.get(dropdownItemList).should('not.exist');
 
-      cy.get(frameworkDropdownSelector).click();
+      cy.get(dropdownLabelSelector).click();
       let optionsCounter = 0;
       cy.get(dropdownItemsSelector).should('exist');
       cy.get(`${dropdownItemsSelector}:contains("No available options")`).should('not.exist');
@@ -156,7 +151,7 @@ describeIf(
       cy.then(() => {
         expect(expectedDropdownOptions.size).to.equal(optionsCounter);
       });
-      cy.get(frameworkDropdownSelector).click({ force: true });
+      cy.get(dropdownLabelSelector).click({ force: true });
     }
 
     /**
@@ -371,9 +366,11 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha, false);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, false);
 
       validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
+      cy.get('[data-test=toggleShowAll]').scrollIntoView();
+      cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
       validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
       validateChosenFramework(DataTypeEnum.Lksg);
@@ -387,6 +384,8 @@ describeIf(
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
 
+        cy.get('[data-test=toggleShowAll]').scrollIntoView();
+        cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
         validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
         validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
 
@@ -394,7 +393,7 @@ describeIf(
         selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
         validateChosenFramework(DataTypeEnum.Sfdr);
-        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
+        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, true);
 
         validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
       }
@@ -441,14 +440,14 @@ describeIf(
       getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
       getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');
 
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, true);
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
 
       clickBackButton();
 
       getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'exist');
-      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'exist');
+      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
     });
 
     it('Check if the version change bar works as expected on several framework view pages', () => {
@@ -496,5 +495,16 @@ describeIf(
       validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
       validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active');
     });
+
+    it(
+      'Check that using the reporting period in URL still yields data for assembled datasets',
+      { defaultCommandTimeout: Cypress.env('short_timeout_in_ms') as number },
+      () => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}/reportingPeriods/2019`);
+        cy.get('.d-content').should('not.contain.text', 'We are having issues loading the data.');
+        cy.get('[data-test="frameworkNewDataTableTitle"]').should('be.visible');
+      }
+    );
   }
 );

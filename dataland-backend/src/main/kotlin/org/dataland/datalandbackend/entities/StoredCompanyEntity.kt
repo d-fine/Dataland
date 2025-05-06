@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -57,7 +56,7 @@ data class StoredCompanyEntity(
     var website: String?,
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
-    override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
+    override fun toApiModel(): StoredCompany {
         val identifierMap = createIdentifierMap()
 
         return StoredCompany(
@@ -78,7 +77,7 @@ data class StoredCompanyEntity(
                     website = website,
                     parentCompanyLei = parentCompanyLei,
                 ),
-            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
+            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel() }.toMutableList(),
         )
     }
 

@@ -8,7 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDatasetQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SfdrDataQaReportController(
     @Autowired objectMapper: ObjectMapper,
-    @Autowired qaReportManager: QaReportManager,
+    @Autowired qaReportManager: AssembledDatasetQaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<SfdrData>(
         objectMapper = objectMapper,

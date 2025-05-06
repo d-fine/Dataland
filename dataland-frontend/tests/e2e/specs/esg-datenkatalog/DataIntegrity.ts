@@ -94,7 +94,9 @@ describeIf(
                         frontendSubmittedEsgDatenkatalogDataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInGremien?.sort();
                         compareObjectKeysAndValuesDeep(
                           esgDatenkatalogFixtureForTest.t as unknown as Record<string, object>,
-                          frontendSubmittedEsgDatenkatalogDataset as unknown as Record<string, object>
+                          frontendSubmittedEsgDatenkatalogDataset as unknown as Record<string, object>,
+                          '',
+                          ['publicationDate']
                         );
                       });
                   });

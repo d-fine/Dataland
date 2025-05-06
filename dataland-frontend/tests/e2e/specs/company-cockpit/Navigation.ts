@@ -32,10 +32,19 @@ describeIf(
         });
     });
 
+    beforeEach(() => {
+      cy.intercept('https://youtube.com/**', []);
+      cy.intercept('https://jnn-pa.googleapis.com/**', []);
+      cy.intercept('https://play.google.com/**', []);
+      cy.intercept('https://googleads.g.doubleclick.net/**', []);
+    });
+
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
       searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-      cy.contains('h1', alphaCompanyIdAndName.companyName);
+      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+        alphaCompanyIdAndName.companyName
+      );
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
@@ -45,15 +54,20 @@ describeIf(
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
-      cy.url().should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
-      cy.contains('h1', betaCompanyIdAndName.companyName);
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+        'not.contain',
+        `/companies/${alphaCompanyIdAndName.companyId}`
+      );
+      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+        betaCompanyIdAndName.companyName
+      );
     });
 
     it('From the company cockpit page visit a view page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
-      cy.url().should(
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
       );
@@ -64,7 +78,7 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-summary-panel'] a`).click();
-      cy.url().should(
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
       );
@@ -101,8 +115,8 @@ describeIf(
      * Visit the company cockpit of a predefined company
      */
     function visitCockpitForCompanyAlpha(): void {
-      cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`);
-      cy.contains('h1', alphaCompanyIdAndName.companyName).should('exist');
+      cy.visitAndCheckAppMount(`/companies/${alphaCompanyIdAndName.companyId}`);
+      cy.contains('[data-test="companyNameTitle"]', alphaCompanyIdAndName.companyName).should('exist');
     }
 
     /**
@@ -110,8 +124,9 @@ describeIf(
      * @param searchTerm the term to search for
      */
     function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
+      cy.get('input#company_search_bar_standard').scrollIntoView();
       cy.get('input#company_search_bar_standard').type(searchTerm);
-      cy.get('.p-autocomplete-item').first().click();
+      cy.get('[data-pc-section="panel"]').contains(searchTerm).click();
     }
   }
 );

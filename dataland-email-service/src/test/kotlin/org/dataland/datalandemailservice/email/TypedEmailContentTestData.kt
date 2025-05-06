@@ -1,15 +1,14 @@
 package org.dataland.datalandemailservice.email
 
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
-import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGrantedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequestedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetAvailableClaimCompanyOwnershipEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
@@ -38,12 +37,12 @@ class TypedEmailContentTestData : ArgumentsProvider {
         const val NON_SOURCEABLE_COMMENT = "No bananas means no data available. Donkey Kong ate all the bananas..."
     }
 
-    val companyId = UUID.randomUUID().toString()
+    private val companyId = UUID.randomUUID().toString()
     val subscriptionUuid = UUID.randomUUID().toString()
-    val dataRequestId = UUID.randomUUID().toString()
+    private val dataRequestId = UUID.randomUUID().toString()
 
-    val datasetRequestedClaimOwnership =
-        DatasetRequestedClaimOwnership(
+    private val datasetRequestedClaimCompanyOwnershipEmailContent =
+        DatasetRequestedClaimCompanyOwnershipEmailContent(
             companyId, COMPANY_NAME, REQUESTER_EMAIL, DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B),
             MESSAGE, FIRST_NAME, LAST_NAME,
         ).also {
@@ -51,47 +50,45 @@ class TypedEmailContentTestData : ArgumentsProvider {
             it.baseUrl = BASE_URL
         }
 
-    val datasetRequestedClaimOwnershipKeywords =
+    private val datasetRequestedClaimOwnershipKeywords =
         listOf(
             companyId, COMPANY_NAME, REQUESTER_EMAIL, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A,
             REPORTING_PERIOD_B, MESSAGE, FIRST_NAME, LAST_NAME, subscriptionUuid, BASE_URL,
             "REGISTER AND CLAIM OWNERSHIP",
         )
 
-    val dataRequestAnswered =
-        DataRequestAnswered(
+    private val dataAvailableEmailContent =
+        DataAvailableEmailContent(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS,
         ).also {
             it.baseUrl = BASE_URL
         }
 
-    val dataRequestAnsweredKeywords =
+    private val dataAvailableKeywords =
         listOf(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
             "Your data request has been answered.",
         )
 
-    val dataRequestClosed =
-        DataRequestClosed(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS,
-        ).also {
+    private val dataUpdatedEmailContent =
+        DataUpdatedEmailContent(COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId).also {
             it.baseUrl = BASE_URL
         }
 
-    val dataRequestClosedKeywords =
+    private val dataUpdatedKeywords =
         listOf(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
-            "Your answered data request has been automatically closed as no action was taken within the last",
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, BASE_URL,
+            "Your data request has been updated with new data.",
         )
 
-    val dataRequestNonSourceableMail =
-        DataRequestNonSourceable(
+    val dataNonSourceableEmailContent =
+        DataNonSourceableEmailContent(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NON_SOURCEABLE_COMMENT,
         ).also {
             it.baseUrl = BASE_URL
         }
 
-    val dataRequestNonSourceableKeywords =
+    val dataNonSourceableKeywords =
         listOf(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, dataRequestId, BASE_URL, NON_SOURCEABLE_COMMENT,
             "Unfortunately, no public sources could be found for your requested dataset by a data provider.",
@@ -100,21 +97,21 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "If you are certain the requested data should exist, you may reopen your request ",
         )
 
-    val companyOwnershipClaimApproved =
-        CompanyOwnershipClaimApproved(
+    private val companyOwnershipClaimApprovedEmailContent =
+        CompanyOwnershipClaimApprovedEmailContent(
             companyId, COMPANY_NAME, NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY,
         ).also {
             it.baseUrl = BASE_URL
         }
 
-    val companyOwnershipClaimApprovedKeywords =
+    private val companyOwnershipClaimApprovedKeywords =
         listOf(
             companyId, COMPANY_NAME, NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY.toString(), BASE_URL,
             "You've successfully claimed company ownership for",
         )
 
-    val accessToDatasetRequested =
-        AccessToDatasetRequested(
+    val accessToDatasetRequestedEmailContent =
+        AccessToDatasetRequestedEmailContent(
             companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B),
             MESSAGE, REQUESTER_EMAIL, FIRST_NAME, LAST_NAME,
         ).also {
@@ -128,59 +125,42 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "is requesting access to your data from",
         )
 
-    val accessToDatasetGranted =
-        AccessToDatasetGranted(
+    private val accessToDatasetGrantedEmailContent =
+        AccessToDatasetGrantedEmailContent(
             companyId, COMPANY_NAME, DATA_TYPE_A, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE,
         ).also {
             it.baseUrl = BASE_URL
         }
 
-    val accessToDatasetGrantedKeywords =
+    private val accessToDatasetGrantedKeywords =
         listOf(
             companyId, COMPANY_NAME, DATA_TYPE_A, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, BASE_URL,
             "You have now access to the following dataset on Dataland",
         )
 
-    val singleDatasetUploadedEngagement =
-        SingleDatasetUploadedEngagement(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A,
-        ).also {
-            it.baseUrl = BASE_URL
-            it.subscriptionUuid = subscriptionUuid
-        }
-
-    val singleDatasetUploadedEngagementKeywords =
-        listOf(
-            companyId, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, BASE_URL, subscriptionUuid,
-            "We are Dataland, an open, neutral, and transparent data engagement platform.",
-            "One of our members has specifically requested data about your company.",
-            "A data provider within our network has created a dataset for your company, which is now accessible on Dataland:",
-            "CLAIM COMPANY OWNERSHIP",
-        )
-
-    val multipleDatasetsUploadedEngagement =
-        MultipleDatasetsUploadedEngagement(
+    private val datasetUploadedClaimCompanyOwnershipEmailContent =
+        DatasetAvailableClaimCompanyOwnershipEmailContent(
             companyId, COMPANY_NAME,
             listOf(
-                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
-                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
+                DatasetAvailableClaimCompanyOwnershipEmailContent
+                    .FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
+                DatasetAvailableClaimCompanyOwnershipEmailContent.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
             ),
-            NUMBER_OF_DAYS.toLong(),
         ).also {
             it.baseUrl = BASE_URL
             it.subscriptionUuid = subscriptionUuid
         }
 
-    val multipleDatasetsUploadedEngagementKeywords =
+    private val datasetUploadedClaimCompanyOwnershipKeywords =
         listOf(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTING_PERIOD_C,
+            companyId, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTING_PERIOD_C,
             NUMBER_OF_DAYS.toString(), BASE_URL, subscriptionUuid,
             "CLAIM COMPANY OWNERSHIP",
         )
 
-    val internalEmailContentTable =
+    private val internalEmailContentTable =
         InternalEmailContentTable(
-            "subject", EMAIL_TITLE, EMAIL_TITLE,
+            "subject", EMAIL_TITLE,
             listOf(
                 "Key0" to Value.Text("ValueA"),
                 "Key1" to Value.RelativeLink("/example", "Link-TitleA"),
@@ -199,7 +179,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
             (it.table[4].second as Value.EmailAddressWithSubscriptionStatus).subscribed = false
         }
 
-    val keyValueTableKeywords =
+    private val keyValueTableKeywords =
         listOf(
             EMAIL_TITLE,
             "testA@example.com (subscribed)",
@@ -214,15 +194,14 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments> =
         Stream.of(
-            Arguments.of(datasetRequestedClaimOwnership, datasetRequestedClaimOwnershipKeywords),
-            Arguments.of(dataRequestAnswered, dataRequestAnsweredKeywords),
-            Arguments.of(dataRequestClosed, dataRequestClosedKeywords),
-            Arguments.of(dataRequestNonSourceableMail, dataRequestNonSourceableKeywords),
-            Arguments.of(companyOwnershipClaimApproved, companyOwnershipClaimApprovedKeywords),
-            Arguments.of(accessToDatasetRequested, accessToDatasetRequestedKeywords),
-            Arguments.of(accessToDatasetGranted, accessToDatasetGrantedKeywords),
-            Arguments.of(singleDatasetUploadedEngagement, singleDatasetUploadedEngagementKeywords),
-            Arguments.of(multipleDatasetsUploadedEngagement, multipleDatasetsUploadedEngagementKeywords),
+            Arguments.of(dataAvailableEmailContent, dataAvailableKeywords),
+            Arguments.of(dataUpdatedEmailContent, dataUpdatedKeywords),
+            Arguments.of(dataNonSourceableEmailContent, dataNonSourceableKeywords),
+            Arguments.of(companyOwnershipClaimApprovedEmailContent, companyOwnershipClaimApprovedKeywords),
+            Arguments.of(accessToDatasetRequestedEmailContent, accessToDatasetRequestedKeywords),
+            Arguments.of(accessToDatasetGrantedEmailContent, accessToDatasetGrantedKeywords),
+            Arguments.of(datasetRequestedClaimCompanyOwnershipEmailContent, datasetRequestedClaimOwnershipKeywords),
+            Arguments.of(datasetUploadedClaimCompanyOwnershipEmailContent, datasetUploadedClaimCompanyOwnershipKeywords),
             Arguments.of(internalEmailContentTable, keyValueTableKeywords),
         )
 }

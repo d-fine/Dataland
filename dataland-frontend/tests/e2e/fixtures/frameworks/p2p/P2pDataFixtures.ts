@@ -36,7 +36,7 @@ export function generateP2pFixtures(
   return generateFixtureDataset<PathwaysToParisData>(
     () => generateP2pData(nullProbability, toggleRandomSectors),
     numFixtures,
-    (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4)
+    (dataset: PathwaysToParisData) => dataset.general.general.dataDate.substring(0, 4)
   );
 }
 

@@ -942,7 +942,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Welche CO²-Intensität berechnet sich für das Unternehmen? Hierzu die Treibhausgasemissionen nach Scope 1 bis 3 addieren und durch den Gesamtumsatz des Unternehmens teilen. Daraus ergibt sich die CO²-Intensität in der Einheit tCO²eq pro Euro Umsatz.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.umwelt?.emissionen?.co2IntensitaetDesUnternehmens, 'tCO2eq/\u20AC'),
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.co2IntensitaetDesUnternehmens, 'tCO2eq\/\u20AC'),
           },
           {
             type: 'cell',

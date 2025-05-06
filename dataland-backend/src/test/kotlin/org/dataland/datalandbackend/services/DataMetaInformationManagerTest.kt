@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -32,12 +33,10 @@ class DataMetaInformationManagerTest(
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
                 dataMetaInformationManager.searchDataMetaInfo(
-                    companyId = nonExistingCompanyId,
-                    dataType = null,
-                    showOnlyActive = true,
-                    reportingPeriod = null,
-                    uploaderUserIds = null,
-                    qaStatus = null,
+                    DataMetaInformationSearchFilter(
+                        companyId = nonExistingCompanyId,
+                        onlyActive = true,
+                    ),
                 )
             }
         assertEquals(

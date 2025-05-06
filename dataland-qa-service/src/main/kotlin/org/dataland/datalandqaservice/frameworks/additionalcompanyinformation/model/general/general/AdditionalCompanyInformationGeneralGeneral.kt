@@ -2,7 +2,6 @@
 package org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.general.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model
     .ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
@@ -17,5 +16,4 @@ data class AdditionalCompanyInformationGeneralGeneral(
         QaReportDataPoint<ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
 )

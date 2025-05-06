@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -42,10 +42,10 @@ class QaReportMetadataServiceTest(
     @Autowired private val qaReportMetadataService: QaReportMetadataService,
     @Autowired private val qaReportRepository: QaReportRepository,
 ) {
-    @MockBean
+    @MockitoBean
     lateinit var companyController: CompanyDataControllerApi
 
-    @MockBean
+    @MockitoBean
     lateinit var metadataController: MetaDataControllerApi
 
     val reporterId1: UUID = UUID.randomUUID()
@@ -115,8 +115,8 @@ class QaReportMetadataServiceTest(
     fun `search active reports without additional filter`() {
         val dataMetaInformation: List<DataMetaInformation> =
             listOf(
-                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
             )
         Mockito
             .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
@@ -176,8 +176,8 @@ class QaReportMetadataServiceTest(
     fun `search closed date range`() {
         val dataMetaInformation: List<DataMetaInformation> =
             listOf(
-                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
             )
         Mockito
             .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
@@ -199,8 +199,8 @@ class QaReportMetadataServiceTest(
     fun `search semi open date ranges`() {
         val dataMetaInformation: List<DataMetaInformation> =
             listOf(
-                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
             )
         Mockito
             .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))

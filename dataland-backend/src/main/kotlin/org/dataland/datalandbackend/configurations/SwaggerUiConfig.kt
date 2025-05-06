@@ -19,7 +19,7 @@ class SwaggerUiConfig {
         GroupedOpenApi
             .builder()
             .group("public")
-            .pathsToExclude("/internal/**")
+            .pathsToExclude("/internal/**", "/assembled-dataset-migration/**")
             .addOpenApiCustomizer(
                 DataTypeSchemaCustomizer(),
             ).addOpenApiCustomizer(esgDatenkatalogCustomizer)

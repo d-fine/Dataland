@@ -1,3 +1,7 @@
+@use '../colors';
+@use '../units';
+@use '../variables';
+
 * {
   box-sizing: border-box;
 }
@@ -6,7 +10,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: $brown-dark;
+  color: variables.$brown-dark;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,9 +18,9 @@
 }
 
 body {
-  font-family: $ibm-plex-sans;
-  font-size: $fs-base;
-  font-weight: $fw-normal;
+  font-family: variables.$ibm-plex-sans;
+  font-size: variables.$fs-base;
+  font-weight: variables.$fw-normal;
   margin: 0;
   padding: 0;
 }
@@ -115,11 +119,11 @@ body {
 }
 
 .p-badge {
-  color: $btn-primary-color;
-  background: $btn-primary-bg;
-  font-size: $fs-sm;
-  font-weight: $fw-semibold;
-  margin: $spacing-xxxs;
+  color: colors.$btn-primary-color;
+  background: colors.$btn-primary-bg;
+  font-size: variables.$fs-sm;
+  font-weight: variables.$fw-semibold;
+  margin: variables.$spacing-xxxs;
   text-align: center;
   min-width: 1.5rem;
   height: 1.5rem;
@@ -176,7 +180,7 @@ body {
   }
 
   &.badge-brown {
-    color: $brown-light;
+    color: variables.$brown-light;
     background: #e2d9c5;
   }
 
@@ -209,23 +213,23 @@ body {
 
 // sections
 .third-section {
-  background-color: $brown-lighter;
-  color: $white;
+  background-color: variables.$brown-lighter;
+  color: variables.$white;
 }
 
 .second-section {
-  background-color: $paper-white;
-  color: $aquamarine-dark;
+  background-color: variables.$paper-white;
+  color: variables.$aquamarine-dark;
 }
 
 .paper-section {
-  background-color: $paper-white;
+  background-color: variables.$paper-white;
 }
 
 // We want this classes to always overwrite styles to main colors
 .text-primary,
 .primary-color {
-  color: $main-color !important;
+  color: colors.$main-color !important;
 }
 
 .text-danger {
@@ -233,79 +237,79 @@ body {
 }
 
 .bg-primary {
-  color: $bg-text-primary !important;
-  background-color: $main-color !important;
+  color: colors.$bg-text-primary !important;
+  background-color: colors.$main-color !important;
 }
 
 .bg-white {
-  background-color: $white !important;
+  background-color: variables.$white !important;
 }
 
 // --- //
 
 // 12px
 .fs-xs {
-  font-size: $fs-xs;
+  font-size: variables.$fs-xs;
 }
 
 // 14px
 .fs-sm {
-  font-size: $fs-sm;
+  font-size: variables.$fs-sm;
 }
 
 // 16px
 .fs-base {
-  font-size: $fs-base;
+  font-size: variables.$fs-base;
 }
 
 // 18px
 .fs-lg {
-  font-size: $fs-lg;
+  font-size: variables.$fs-lg;
 }
 
 // 24px
 .fs-xl {
-  font-size: $fs-xl;
+  font-size: variables.$fs-xl;
 }
 
 // 32px
 .fs-xxl {
-  font-size: $fs-xxl;
+  font-size: variables.$fs-xxl;
 }
 
 //font-weight
 .fw-normal {
-  font-weight: $normal-weight;
+  font-weight: units.$normal-weight;
 }
 
 .fw-light-bold {
-  font-weight: $fw-medium;
+  font-weight: variables.$fw-medium;
 }
 
 .fw-semi-bold {
-  font-weight: $fw-semibold;
+  font-weight: variables.$fw-semibold;
 }
 
 // Typography //
 .gray-text {
-  color: $gray;
+  color: variables.$gray;
 }
 
 .gray-text-light {
-  color: $gray-light;
+  color: variables.$gray-light;
 }
 
 .red-text {
-  color: $red;
+  color: variables.$red;
 }
 
 .green-text {
-  color: $green;
+  color: variables.$green;
 }
 
 // Radius //
 .radius-1 {
-  border-radius: $radius-xxxs;
+  border-radius: variables.$radius-xxxs;
 }
 
 // Home Page
@@ -328,19 +332,19 @@ body {
 .top-left-blue-border {
   border-style: solid;
   border-width: 1px 0 0 1px;
-  border-color: $blue-light;
+  border-color: variables.$blue-light;
 }
 
 .right-bottom-blue-border {
   border-style: solid;
   border-width: 0 1px 1px 0;
-  border-color: $blue-light;
+  border-color: variables.$blue-light;
 }
 
 .all-sides-blue-border {
   border-style: solid;
   border-width: 1px 1px 1px 1px;
-  border-color: $blue-light;
+  border-color: variables.$blue-light;
 }
 
 .middle-center-div {
@@ -391,7 +395,7 @@ ul.unstyled-ul-list {
   grid-template-columns: 1fr 1fr;
 
   > div:nth-child(even) {
-    border-left: 1px solid $table-border;
+    border-left: 1px solid colors.$table-border;
     padding: 0 0 0 20px;
   }
 
@@ -404,6 +408,7 @@ ul.unstyled-ul-list {
     margin: 0;
   }
 
+  grid-gap: 10px;
   @media screen and (max-width: 1200px) {
     grid-template-columns: 1fr;
     > div:nth-child(even) {
@@ -417,7 +422,6 @@ ul.unstyled-ul-list {
       margin-bottom: 1rem;
     }
   }
-  grid-gap: 10px;
 }
 
 .grid3 {

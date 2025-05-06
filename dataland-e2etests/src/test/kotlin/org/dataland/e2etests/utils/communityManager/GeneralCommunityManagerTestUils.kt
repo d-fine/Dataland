@@ -84,7 +84,7 @@ fun getIdForUploadedCompanyWithIdentifiers(
     permId: String? = null,
 ): String = apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
 
-fun checkThatTheNumberOfRejectedIdentifiersIsAsExpected(
+fun checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
@@ -93,40 +93,6 @@ fun checkThatTheNumberOfRejectedIdentifiersIsAsExpected(
         requestResponse.rejectedCompanyIdentifiers.size,
         "Not all identifiers were accepted as expected.",
     )
-}
-
-fun checkThatMessageIsAsExpected(
-    requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
-    expectedNumberOfRejectedIdentifiers: Int,
-) {
-    val totalNumberOfCompanyIdentifiers = expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers
-    val errorMessage = "The message sent as part of the response to the bulk data request is not as expected."
-    when (expectedNumberOfRejectedIdentifiers) {
-        0 ->
-            assertEquals(
-                "All of your $totalNumberOfCompanyIdentifiers distinct company identifiers were accepted.",
-                requestResponse.message,
-                errorMessage,
-            )
-
-        1 ->
-            assertEquals(
-                "One of your $totalNumberOfCompanyIdentifiers distinct company identifiers was rejected " +
-                    "because it could not be uniquely matched with an existing company on Dataland.",
-                requestResponse.message,
-                errorMessage,
-            )
-
-        else ->
-            assertEquals(
-                "$expectedNumberOfRejectedIdentifiers of your $totalNumberOfCompanyIdentifiers distinct company " +
-                    "identifiers were rejected because they could not be uniquely matched with existing " +
-                    "companies on Dataland.",
-                requestResponse.message,
-                errorMessage,
-            )
-    }
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
@@ -159,9 +125,12 @@ fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
     )
 }
 
-fun check400ClientExceptionErrorMessage(clientException: ClientException) {
-    assertEquals(400, clientException.statusCode)
-    assertEquals("Client error : 400 ", clientException.message)
+fun checkClientExceptionErrorMessage(
+    clientException: ClientException,
+    errorCode: Int? = 400,
+) {
+    assertEquals(errorCode, clientException.statusCode)
+    assertEquals("Client error : $errorCode ", clientException.message)
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
@@ -293,13 +262,7 @@ fun generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMa
         apiAccessor.companyDataControllerApi.postCompany(
             baseCompany.copy(
                 companyName = "Company${identifierType.value}",
-                identifiers =
-                    mapOf(
-                        identifierType.value to
-                            listOf(
-                                "Test-${identifierType.value}${uniqueIdentifiersMap.getValue(identifierType)}",
-                            ),
-                    ),
+                identifiers = mapOf(identifierType.value to listOf(uniqueIdentifiersMap.getValue(identifierType))),
             ),
         )
     }
@@ -316,6 +279,9 @@ fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDa
     requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
         storedDataRequest.creationTimestamp > timestamp
     }
+
+fun getUsersStoredRequestWithLatestCreationTime(): ExtendedStoredDataRequest =
+    requestControllerApi.getDataRequestsForRequestingUser().maxBy { it.creationTimestamp }
 
 fun getMessageHistoryOfRequest(dataRequestId: String): List<StoredDataRequestMessageObject> =
     requestControllerApi

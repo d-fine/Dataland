@@ -8,6 +8,7 @@ import org.springframework.cloud.function.cloudevent.CloudEventMessageBuilder
 import org.springframework.cloud.function.cloudevent.CloudEventMessageUtils
 import org.springframework.messaging.MessageHeaders
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.MimeTypeUtils
 import org.springframework.amqp.core.Message as MessageMQ
 import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
@@ -25,7 +26,13 @@ class CloudEventMessageHandler(
     var converter: MessagingMessageConverter = MessagingMessageConverter()
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private fun buildCEMessage(
+    /**
+     * Build a RabbitMQ message in the CloudEvents format
+     * @param body the payload of the message to be constructed
+     * @param type criterion to distinguish different messages to RabbitMQ apart from used queue
+     * @param correlationId to be used as ID in header of CloudEvents message
+     */
+    fun buildCEMessage(
         body: String,
         type: String,
         correlationId: String,
@@ -48,6 +55,7 @@ class CloudEventMessageHandler(
      * @param correlationId to be used as ID in header of CloudEvents message
      * @param exchange RabbitMQ exchange to send the constructed message to
      */
+    @Transactional
     fun buildCEMessageAndSendToQueue(
         body: String,
         type: String,

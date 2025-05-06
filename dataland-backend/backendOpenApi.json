@@ -275,9 +275,9 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Retrieve information about the sourceability of data sets",
-        "description": "Retrieve information about the sourceability of data sets by the filters.",
-        "operationId": "getInfoOnNonSourceabilityOfDataSets",
+        "summary": "Retrieve information about the sourceability of datasets",
+        "description": "Retrieve information about the sourceability of datasets by the filters.",
+        "operationId": "getInfoOnNonSourceabilityOfDatasets",
         "parameters": [
           {
             "name": "companyId",
@@ -314,13 +314,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data sets.",
+            "description": "Successfully retrieved datasets.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
+                    "$ref": "#/components/schemas/SourceabilityInfoResponse"
                   }
                 }
               }
@@ -360,28 +360,28 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Adds a data set with information on sourceability.",
-        "description": "A data set is added with information on its sourceability.",
+        "summary": "Adds a dataset with information on sourceability.",
+        "description": "A dataset is added with information on its sourceability.",
         "operationId": "postNonSourceabilityOfADataset",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NonSourceableInfo"
+                "$ref": "#/components/schemas/SourceabilityInfo"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Invalid input parameters."
-          },
           "200": {
             "description": "Successfully added dataset."
           },
           "400": {
             "description": "Bad request has been submitted."
+          },
+          "404": {
+            "description": "Invalid input parameters."
           },
           "default": {
             "description": "An error occurred",
@@ -412,6 +412,130 @@
             "default-bearer-auth": []
           }
         ]
+      }
+    },
+    "/metadata/filters": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Search in Dataland for meta info about data using multiple filters.",
+        "description": "Meta info about datasets registered by Dataland can be retrieved.",
+        "operationId": "postListOfDataMetaInfoFilters",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DataMetaInformationSearchFilter"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/internal/cached/public/get-batch": {
+      "post": {
+        "tags": [
+          "temporarily-cached-data-controller"
+        ],
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided data IDs is retrieved.",
+        "operationId": "getBatchReceivedPublicData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/data/vsme": {
@@ -1199,8 +1323,7 @@
         },
         "responses": {
           "204": {
-            "description": "Successfully verified specification conformity.",
-            "content": {}
+            "description": "Successfully verified specification conformity."
           },
           "default": {
             "description": "An error occurred",
@@ -1410,13 +1533,382 @@
         ]
       }
     },
+    "/companies/validation": {
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Validate if companies exist based on Identifiers.",
+        "description": "Checks if companies exists based on a list of provided identifiers. Duplicated results are removed.",
+        "operationId": "postCompanyValidation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved validation results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyIdentifierValidationResult"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/upload-as-stored-dataset/{dataType}": {
+      "post": {
+        "tags": [
+          "assembled-dataset-migration-controller"
+        ],
+        "summary": "Triggers a forced upload of a dataset as a stored dataset for testing.",
+        "description": "The data is stored.",
+        "operationId": "forceUploadDatasetAsStoredDataset",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          },
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataJsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Data Stored.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration": {
+      "post": {
+        "tags": [
+          "assembled-dataset-migration-controller"
+        ],
+        "summary": "Triggers the migration from stored datasets to assembled datasets for all available datasets.",
+        "description": "The data is migrated.",
+        "operationId": "triggerMigrationForAllStoredDatasets",
+        "responses": {
+          "200": {
+            "description": "Migration successful."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration/{dataId}": {
+      "post": {
+        "tags": [
+          "assembled-dataset-migration-controller"
+        ],
+        "summary": "Triggers the migration from stored datasets to assembled datasets.",
+        "description": "The data is migrated.",
+        "operationId": "migrateStoredDatasetToAssembledDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Migration successful."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/{dataId}": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Look up meta info about a specific dataset.",
+        "description": "Meta info about a specific dataset registered by Dataland and identified by its data ID is retrieved.",
+        "operationId": "getDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved specific meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Update meta data of dataset selectively",
+        "description": "Provided fields of the meta data with the given dataId are updated.",
+        "operationId": "patchDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataMetaInformationPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}": {
       "head": {
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Checks if a data set is non-sourceable.",
-        "description": "Checks if a specific data set is non-sourceable.",
+        "summary": "Checks if a dataset is non-sourceable.",
+        "description": "Checks if a specific dataset is non-sourceable.",
         "operationId": "isDataNonSourceable",
         "parameters": [
           {
@@ -1446,10 +1938,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that data set is non-sourceable."
+            "description": "Successfully checked that dataset is non-sourceable."
           },
           "404": {
-            "description": "Successfully checked that data set is sourceable."
+            "description": "Successfully checked that dataset is sourceable."
           },
           "default": {
             "description": "An error occurred",
@@ -1509,8 +2001,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Found no company corresponding the identifier.",
+          "200": {
+            "description": "Found a company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1519,8 +2011,8 @@
               }
             }
           },
-          "200": {
-            "description": "Found a company corresponding the identifier.",
+          "404": {
+            "description": "Found no company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1734,7 +2226,7 @@
           "meta-data-controller"
         ],
         "summary": "Search in Dataland for meta info about data.",
-        "description": "Meta info about data sets registered by Dataland can be retrieved.",
+        "description": "Meta info about datasets registered by Dataland can be retrieved.",
         "operationId": "getListOfDataMetaInfo",
         "parameters": [
           {
@@ -1837,14 +2329,14 @@
         ]
       }
     },
-    "/metadata/{dataId}": {
+    "/metadata/{dataId}/data-points": {
       "get": {
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Look up meta info about a specific data set.",
-        "description": "Meta info about a specific data set registered by Dataland and identified by its data ID is retrieved.",
-        "operationId": "getDataMetaInfo",
+        "summary": "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        "description": "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+        "operationId": "getContainedDataPoints",
         "parameters": [
           {
             "name": "dataId",
@@ -1857,11 +2349,102 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved specific meta info.",
+            "description": "Successfully retrieved list of data point IDs.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/available-data-dimensions": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if any data is available applying the provided filters.",
+        "description": "Checks if any data is available using the given filters and returns the corresponding data dimensions.",
+        "operationId": "getAvailableDataDimensions",
+        "parameters": [
+          {
+            "name": "companyIds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "frameworksOrDataPointTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked if data is available.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicDataDimensions"
+                  }
                 }
               }
             }
@@ -1917,7 +2500,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1969,7 +2552,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2072,7 +2655,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2289,7 +2872,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2329,145 +2912,43 @@
         ]
       }
     },
-    "/data/sfdr/{dataId}/json": {
+    "/data/sfdr/export": {
       "get": {
         "tags": [
           "sfdr-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedSfdrDataToJson",
+        "operationId": "exportCompanyAssociatedSfdrDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/sfdr/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "sfdr-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedSfdrDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/sfdr/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "sfdr-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedSfdrDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -2584,6 +3065,72 @@
         ]
       }
     },
+    "/data/sfdr/": {
+      "get": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedSfdrDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/p2p/{dataId}": {
       "get": {
         "tags": [
@@ -2602,7 +3149,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2642,145 +3189,43 @@
         ]
       }
     },
-    "/data/p2p/{dataId}/json": {
+    "/data/p2p/export": {
       "get": {
         "tags": [
           "p-2p-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedP2pDataToJson",
+        "operationId": "exportCompanyAssociatedP2pDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/p2p/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "p-2p-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedP2pDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/p2p/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "p-2p-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedP2pDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -2897,6 +3342,72 @@
         ]
       }
     },
+    "/data/p2p/": {
+      "get": {
+        "tags": [
+          "p-2p-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedP2pDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/nuclear-and-gas/{dataId}": {
       "get": {
         "tags": [
@@ -2915,7 +3426,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2955,145 +3466,43 @@
         ]
       }
     },
-    "/data/nuclear-and-gas/{dataId}/json": {
+    "/data/nuclear-and-gas/export": {
       "get": {
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/nuclear-and-gas/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "nuclear-and-gas-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/nuclear-and-gas/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "nuclear-and-gas-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -3210,6 +3619,72 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedNuclearAndGasDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg/{dataId}": {
       "get": {
         "tags": [
@@ -3228,7 +3703,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3268,145 +3743,43 @@
         ]
       }
     },
-    "/data/lksg/{dataId}/json": {
+    "/data/lksg/export": {
       "get": {
         "tags": [
           "lksg-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedLksgDataToJson",
+        "operationId": "exportCompanyAssociatedLksgDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/lksg/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "lksg-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedLksgDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/lksg/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "lksg-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedLksgDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -3523,6 +3896,72 @@
         ]
       }
     },
+    "/data/lksg/": {
+      "get": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedLksgDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/heimathafen/{dataId}": {
       "get": {
         "tags": [
@@ -3541,7 +3980,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3581,145 +4020,43 @@
         ]
       }
     },
-    "/data/heimathafen/{dataId}/json": {
+    "/data/heimathafen/export": {
       "get": {
         "tags": [
           "heimathafen-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedHeimathafenDataToJson",
+        "operationId": "exportCompanyAssociatedHeimathafenDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/heimathafen/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "heimathafen-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedHeimathafenDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/heimathafen/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "heimathafen-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedHeimathafenDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -3836,6 +4173,72 @@
         ]
       }
     },
+    "/data/heimathafen/": {
+      "get": {
+        "tags": [
+          "heimathafen-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedHeimathafenDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataHeimathafenData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
@@ -3854,7 +4257,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3894,145 +4297,43 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials/{dataId}/json": {
+    "/data/eutaxonomy-non-financials/export": {
       "get": {
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToJson",
+        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-non-financials/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "eutaxonomy-non-financials-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-non-financials/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "eutaxonomy-non-financials-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4149,6 +4450,72 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials/": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-financials/{dataId}": {
       "get": {
         "tags": [
@@ -4167,7 +4534,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4207,145 +4574,43 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/{dataId}/json": {
+    "/data/eutaxonomy-financials/export": {
       "get": {
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToJson",
+        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-financials/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "eutaxonomy-financials-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-financials/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "eutaxonomy-financials-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4462,6 +4727,72 @@
         ]
       }
     },
+    "/data/eutaxonomy-financials/": {
+      "get": {
+        "tags": [
+          "eutaxonomy-financials-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/esg-datenkatalog/{dataId}": {
       "get": {
         "tags": [
@@ -4480,7 +4811,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4520,145 +4851,43 @@
         ]
       }
     },
-    "/data/esg-datenkatalog/{dataId}/json": {
+    "/data/esg-datenkatalog/export": {
       "get": {
         "tags": [
           "esg-datenkatalog-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToJson",
+        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/esg-datenkatalog/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "esg-datenkatalog-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/esg-datenkatalog/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "esg-datenkatalog-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4775,6 +5004,72 @@
         ]
       }
     },
+    "/data/esg-datenkatalog/": {
+      "get": {
+        "tags": [
+          "esg-datenkatalog-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEsgDatenkatalogDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgDatenkatalogData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/additional-company-information/{dataId}": {
       "get": {
         "tags": [
@@ -4793,7 +5088,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4833,145 +5128,43 @@
         ]
       }
     },
-    "/data/additional-company-information/{dataId}/json": {
+    "/data/additional-company-information/export": {
       "get": {
         "tags": [
           "additional-company-information-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedAdditionalCompanyInformationDataToJson",
+        "operationId": "exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions",
         "parameters": [
           {
-            "name": "dataId",
-            "in": "path",
+            "name": "reportingPeriod",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as JSON file.",
+            "description": "Successfully exported dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/additional-company-information/{dataId}/excel": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedAdditionalCompanyInformationDataToExcel",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as Excel-compatible CSV file.",
-            "content": {
-              "text/csv": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/additional-company-information/{dataId}/csv": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-controller"
-        ],
-        "operationId": "exportCompanyAssociatedAdditionalCompanyInformationDataToCsv",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset as plain CSV file.",
-            "content": {
-              "text/csv": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -5088,6 +5281,72 @@
         ]
       }
     },
+    "/data/additional-company-information/": {
+      "get": {
+        "tags": [
+          "additional-company-information-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedAdditionalCompanyInformationDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data-points/{dataPointId}": {
       "get": {
         "tags": [
@@ -5148,7 +5407,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/metadata": {
+    "/data-points/{dataPointId}/metadata": {
       "get": {
         "tags": [
           "data-point-controller"
@@ -5158,7 +5417,7 @@
         "operationId": "getDataPointMetaInfo",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -5173,6 +5432,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataPointMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/subsidiaries": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve subsidiaries.",
+        "description": "Retrieve the IDs of all subsidiaries of a given ultimate parent company.",
+        "operationId": "getCompanySubsidiariesByParentId",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
+                  }
                 }
               }
             }
@@ -5784,7 +6106,7 @@
         "tags": [
           "data-deletion-controller"
         ],
-        "summary": "Delete a data set.",
+        "summary": "Delete a dataset.",
         "description": "The data is removed from the data store.",
         "operationId": "deleteCompanyAssociatedData",
         "parameters": [
@@ -5958,6 +6280,10 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "ref": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -5991,7 +6317,7 @@
           }
         }
       },
-      "NonSourceableInfo": {
+      "SourceabilityInfo": {
         "required": [
           "companyId",
           "dataType",
@@ -6015,6 +6341,50 @@
           },
           "reason": {
             "type": "string"
+          }
+        }
+      },
+      "DataMetaInformationSearchFilter": {
+        "required": [
+          "onlyActive"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataType": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "nullable": true
+          },
+          "onlyActive": {
+            "type": "boolean"
+          },
+          "uploaderUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "qaStatus": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaStatus"
+              }
+            ]
           }
         }
       },
@@ -6102,6 +6472,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -6143,7 +6518,13 @@
             "nullable": true
           }
         },
-        "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "publicationDate": "2023-10-12"
+          }
+        }
       },
       "ExtendedDataPointBigDecimal": {
         "type": "object",
@@ -6194,6 +6575,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -6332,7 +6718,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -7107,13 +7499,15 @@
         }
       },
       "SfdrData": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneral"
+              }
+            ]
           },
           "environmental": {
             "nullable": true,
@@ -7938,34 +8332,38 @@
         }
       },
       "SfdrGeneral": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneral"
+              }
+            ]
           }
         }
       },
       "SfdrGeneralGeneral": {
-        "required": [
-          "dataDate",
-          "fiscalYearDeviation",
-          "fiscalYearEnd"
-        ],
         "type": "object",
         "properties": {
           "dataDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
@@ -7973,7 +8371,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -10094,7 +10498,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           },
           "nuclearEnergyRelatedActivitiesSection426": {
             "nullable": true,
@@ -15316,13 +15726,51 @@
               }
             ]
           },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "iloCoreLabourStandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "humanRightsDueDiligence": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -17054,7 +17502,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           },
           "areAllGroupEntitiesCovered": {
             "nullable": true,
@@ -19589,7 +20043,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -19683,7 +20143,8 @@
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime"
+          "uploadTime",
+          "uploaderUserId"
         ],
         "type": "object",
         "properties": {
@@ -19700,8 +20161,7 @@
             "type": "string"
           },
           "uploaderUserId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "uploadTime": {
             "type": "integer",
@@ -19726,6 +20186,89 @@
             "type": "string"
           },
           "dataPointType": {
+            "type": "string"
+          }
+        }
+      },
+      "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CompanyIdentifierValidationResult": {
+        "required": [
+          "identifier"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "companyInformation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicCompanyInformation"
+              }
+            ]
+          }
+        }
+      },
+      "CompanyAssociatedDataJsonNode": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/JsonNode"
+          }
+        }
+      },
+      "JsonNode": {
+        "type": "object"
+      },
+      "DataMetaInformationPatch": {
+        "required": [
+          "uploaderUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "uploaderUserId": {
             "type": "string"
           }
         }
@@ -19862,7 +20405,7 @@
           }
         }
       },
-      "NonSourceableInfoResponse": {
+      "SourceabilityInfoResponse": {
         "required": [
           "companyId",
           "creationTime",
@@ -19898,6 +20441,25 @@
           }
         }
       },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -19912,6 +20474,14 @@
             "$ref": "#/components/schemas/VsmeData"
           }
         }
+      },
+      "ExportFileType": {
+        "type": "string",
+        "enum": [
+          "CSV",
+          "EXCEL",
+          "JSON"
+        ]
       },
       "DataAndMetaInformationSfdrData": {
         "required": [
@@ -20048,37 +20618,6 @@
           }
         }
       },
-      "BasicCompanyInformation": {
-        "required": [
-          "companyId",
-          "companyName",
-          "countryCode",
-          "headquarters"
-        ],
-        "type": "object",
-        "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "lei": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
@@ -20156,16 +20695,16 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "sfdr",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "nuclear-and-gas",
-          "lksg",
           "p2p",
-          "sfdr",
+          "lksg",
+          "additional-company-information",
           "vsme",
           "esg-datenkatalog",
-          "heimathafen",
-          "additional-company-information"
+          "heimathafen"
         ]
       },
       "ErrorDetails": {

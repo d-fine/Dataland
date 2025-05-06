@@ -100,22 +100,28 @@
         },
         {
           "title": "Brands",
-          "text": ["See who ", "is involved"],
+          "text": ["Already a trusted partner ", "for top companies"],
           "image": [
             "/static/logos/img_Atlas_Metrics.png",
+            "/static/logos/img_bantleon.png",
+            "/static/logos/img_bayern_invest.png",
             "/static/logos/img_bvi.png",
             "/static/logos/img_chom_capital.png",
             "/static/logos/img_deka.png",
             "/static/logos/img_d-fine.png",
             "/static/logos/img_dydon_ai.png",
             "/static/logos/img_envoria.png",
+            "/static/logos/img_eurodat.png",
             "/static/logos/img_Experience_One.png",
             "/static/logos/img_fmf.png",
+            "/static/logos/img_gleif.png",
             "/static/logos/img_HansaInvest.png",
+            "/static/logos/img_ikb.png",
             "/static/logos/img_impact_cubed.png",
             "/static/logos/img_laiqon.png",
             "/static/logos/img_leonardo.png",
             "/static/logos/img_Metzler.png",
+            "/static/logos/img_nordlb.png",
             "/static/logos/img_oxari.png",
             "/static/logos/img_pua.png",
             "/static/logos/img_pwc.png",
@@ -124,7 +130,8 @@
             "/static/logos/img_t_systems.png",
             "/static/logos/img_university-of-oxford-eci.png",
             "/static/logos/img_value_balancing_alliance.png",
-            "/static/logos/img_voeb.png"
+            "/static/logos/img_voeb.png",
+            "/static/logos/img_wertestiftung.png"
           ]
         },
         {
@@ -257,6 +264,10 @@
                 {
                   "text": "QUALITY ASSURANCE",
                   "url": "/qa/swagger-ui/index.html"
+                },
+                {
+                  "text": "USERS",
+                  "url": "/users/swagger-ui/index.html"
                 }
               ]
             },
@@ -304,7 +315,7 @@
                   "url": "https://www.wertestiftung.org"
                 }
               ],
-              "icon": "/static/logos/werte-stiftung-logo__light.png"
+              "icon": "/static/logos/footer_wertestiftung.png"
             }
           ]
         }

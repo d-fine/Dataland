@@ -1,21 +1,20 @@
 package org.dataland.datalandqaservice.controller
 
 import jakarta.transaction.Transactional
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DataPointQaReportController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.utils.NoBackendRequestQaReportConfiguration
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.dataland.datalandbackendutils.model.QaStatus as UtilsQaStatus
 
 @Transactional
@@ -42,21 +41,20 @@ import org.dataland.datalandbackendutils.model.QaStatus as UtilsQaStatus
 )
 @SpringRabbitTest
 class DataPointQaReportTest(
+    @Autowired private val dataPointQaReviewRepository: DataPointQaReviewRepository,
     @Autowired private val dataPointQaReportController: DataPointQaReportController,
     @Autowired private val qaController: QaController,
 ) {
-    @MockBean private lateinit var dataPointApi: DataPointControllerApi
-
-    @MockBean private lateinit var companyDataControllerApi: CompanyDataControllerApi
+    @MockitoBean private lateinit var dataPointApi: DataPointControllerApi
 
     // Mocked to avoid keycloak token request
     @Suppress("UnusedPrivateProperty")
-    @MockBean
+    @MockitoBean
     private lateinit var metaDataControllerApi: MetaDataControllerApi
 
     // Mocked to avoid RabbitMQ connection exceptions
     @Suppress("UnusedPrivateProperty")
-    @MockBean
+    @MockitoBean
     private lateinit var rabbitTemplate: RabbitTemplate
 
     private val dummyQaReportDataPoint =
@@ -83,25 +81,24 @@ class DataPointQaReportTest(
             currentlyActive = true,
         )
 
-    private val dummyCompanyInformation =
-        StoredCompany(
-            companyId = dummyCompanyId,
-            companyInformation =
-                CompanyInformation(
-                    companyName = "dummyCompanyName",
-                    headquarters = "dummyHeadquarters",
-                    countryCode = "de",
-                    identifiers = emptyMap(),
-                ),
-            dataRegisteredByDataland = emptyList(),
-        )
-
     @BeforeEach
-    fun `setup api mocks`() {
+    fun `insert dummy entry to simulate message queue uploaded`() {
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = dummyDataId,
+                companyId = dummyCompanyId,
+                companyName = "dummyCompanyName",
+                dataPointType = dummyDataPointType,
+                reportingPeriod = "dummyReportingPeriod",
+                timestamp = 0,
+                qaStatus = UtilsQaStatus.Pending,
+                triggeringUserId = "some-reviewer",
+                comment = "comment",
+            ),
+        )
         `when`(dataPointApi.getDataPointMetaInfo(dummyDataId)).thenReturn(dummyDataMetaInformation)
         `when`(dataPointApi.validateDataPoint(DataPointToValidate(incorrectDataPlaceholder, dummyDataPointType)))
             .thenThrow(ClientException(statusCode = 400))
-        `when`(companyDataControllerApi.getCompanyById(dummyCompanyId)).thenReturn(dummyCompanyInformation)
     }
 
     @Test

@@ -12,7 +12,11 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.getType
+import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -35,7 +39,7 @@ class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
-    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired private val sourceabilityDataManager: SourceabilityDataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -120,9 +124,6 @@ class MessageQueueListenerForDataManager(
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
      * stored in the persisted database. Further it logs success notification associated containing dataId and
      * correlationId
-     * @param payload the body of the message containing the dataId of the stored data
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
      */
     @RabbitListener(
         bindings = [
@@ -140,18 +141,20 @@ class MessageQueueListenerForDataManager(
                 key = [RoutingKeyNames.DATA],
             ),
         ],
+        containerFactory = "consumerBatchContainerFactory",
     )
-    fun removeStoredItemFromTemporaryStore(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-    ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
+    fun removeStoredItemsFromTemporaryStore(messages: List<Message>) {
+        logger.info("Processing ${messages.size} Data Point Received Messages.")
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
-            MessageQueueUtils.validateDataId(dataId)
-            logger.info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
-            dataManager.removeDataSetFromInMemoryStore(dataId)
+            for (message in messages) {
+                MessageQueueUtils.validateMessageType(message.getType(), MessageType.DATA_STORED)
+                val dataId = message.readMessagePayload<DataIdPayload>(objectMapper).dataId
+                val correlationId = message.getCorrelationId()
+                MessageQueueUtils.validateDataId(dataId)
+                logger
+                    .info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
+                dataManager.removeDatasetFromInMemoryStore(dataId)
+            }
         }
     }
 
@@ -161,14 +164,14 @@ class MessageQueueListenerForDataManager(
      * @param updatedDataMetaInformation DataMetaInformationEntity that holds information of the updated dataset.
      */
     private fun storeUpdatedDataToNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
-        if (nonSourceableDataManager
-                .getLatestNonSourceableInfoForDataset(
+        if (sourceabilityDataManager
+                .getLatestSourceabilityInfoForDataset(
                     updatedDataMetaInformation.company.companyId,
                     DataType.valueOf(updatedDataMetaInformation.dataType),
                     updatedDataMetaInformation.reportingPeriod,
                 )?.isNonSourceable == true
         ) {
-            nonSourceableDataManager.storeSourceableData(
+            sourceabilityDataManager.storeSourceableData(
                 updatedDataMetaInformation.company.companyId,
                 DataType.valueOf(updatedDataMetaInformation.dataType),
                 updatedDataMetaInformation.reportingPeriod,

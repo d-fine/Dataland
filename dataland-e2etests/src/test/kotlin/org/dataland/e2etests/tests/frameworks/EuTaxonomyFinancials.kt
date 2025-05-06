@@ -2,8 +2,11 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -36,7 +39,11 @@ class EuTaxonomyFinancials {
             apiAccessor.dataControllerApiForEuTaxonomyFinancials
                 .getCompanyAssociatedEutaxonomyFinancialsData(dataId)
                 .data
-        assertEquals(euTaxoFinancialsDataset, downloadedData)
+        assertDataEqualsIgnoringDates(
+            euTaxoFinancialsDataset,
+            downloadedData,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @Test
@@ -45,11 +52,10 @@ class EuTaxonomyFinancials {
         val companyName = "TestForIncompleteReferencedReport"
 
         val companyInformation =
-            apiAccessor.testDataProviderEuTaxonomyForFinancials
-                .getSpecificCompanyByNameFromEuTaxonomyFinancialsPreparedFixtures(companyName)
-        val dataSet = companyInformation!!.t
+            FrameworkTestDataProvider.forFrameworkPreparedFixtures(EutaxonomyFinancialsData::class.java).getByCompanyName(companyName)
+        val dataset = companyInformation.t
 
-        val uploadPair = Pair(dataSet, "2023")
+        val uploadPair = Pair(dataset, "2023")
 
         val exception =
             assertThrows<ClientException> {

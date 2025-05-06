@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import org.springframework.stereotype.Repository
 
 /**
  * A JPA repository for QA reports.
  */
+@Repository
 interface QaReportRepository : JpaRepository<QaReportEntity, String> {
     /**
      * Returns all QA reports for a specific dataId. Supports filtering by reporterUserId and active status.
@@ -25,7 +27,7 @@ interface QaReportRepository : JpaRepository<QaReportEntity, String> {
     fun searchQaReportMetaInformation(
         @Param("dataId") dataId: String,
         @Param("showInactive") showInactive: Boolean,
-        @Param("reporterUserId") reporterUserId: String?,
+        @Param("reporterUserId") reporterUserId: String? = null,
     ): List<QaReportEntity>
 
     /**

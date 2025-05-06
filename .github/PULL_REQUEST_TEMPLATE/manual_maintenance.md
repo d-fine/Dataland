@@ -9,10 +9,12 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
-- In the wiki 'Problematic Updates'.
+- See 'Problematic Updates' in the wiki (evaluate if issues persist or if newer versions are available that fix them)
 
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
+
+- [ ] Update the wiki page (should display current issues why specific updates were not done)
 
 ### Dataland EuroDaT client
 
@@ -71,6 +73,20 @@ Check the cloud provider's dashboard for manually created backups and images. De
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
+## Check the alerts and critical alerts for prod in the grafana dashboard
+
+On the prod environment the grafana alerts should be investigated. 
+Go to the slack-alerts-channels and click on the link to the dashboard in one of the alerts (for instructions how to connect, consult the 
+internal wiki). Check the critical alerts and alerts on prod in the dashboard since the last manual maintenance 
+Time-boxed investigation (2h-3h) of errors:
+- [ ] Are there any unresolved critical alerts for unhealthy containers? (That should not be the case and needs to be resolved immediately)
+- [ ] Are there any unresolved critical alerts for internal server errors? (Should resolve automatically after 6h when the problem doesn't persist)
+  Is there a persisting problem? Needs to be investigated.
+- [ ] Are there a lot of alerts during the same time when no critical alert occurred? Those should be investigated.
+- [ ] Investigate alerts (within last week/last two weeks) that happen often or with a specific pattern? Investigate
+
+Discuss findings with the team.
+
 ## Check that the main branch has no sonar issues
 - [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
   findings, either fix them directly or bring them up for discussion with the team.
@@ -81,8 +97,6 @@ Check the cloud provider's dashboard for manually created backups and images. De
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
     - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template and the internal wiki page have been updated to reflect the latest state of tasks required and known issues with upgrades
-- [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in
-  future commits
 
 # Review (to be completed by the reviewer)
 
@@ -98,7 +112,7 @@ Check the cloud provider's dashboard for manually created backups and images. De
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
-- [ ] It is assured that deploying this feature branch over the current main does not break anything
+- [ ] It is assured that deploying this feature branch over the current main does not break anything (depending on the actual changes this step may be skipped)
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
   - [ ] Deploy the feature branch to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
   - [ ] Verify that the CD run is green

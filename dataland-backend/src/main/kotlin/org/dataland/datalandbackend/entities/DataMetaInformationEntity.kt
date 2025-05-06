@@ -11,6 +11,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -61,7 +62,7 @@ data class DataMetaInformationEntity(
     private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
         roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation =
+    override fun toApiModel(): DataMetaInformation =
         DataMetaInformation(
             dataId = dataId,
             companyId = company.companyId,
@@ -71,5 +72,26 @@ data class DataMetaInformationEntity(
             reportingPeriod = reportingPeriod,
             currentlyActive = currentlyActive == true,
             qaStatus = qaStatus,
+        )
+
+    /**
+     * Converts this entity to the DataMetaInformation API model and sets the URL to the proxy primary URL
+     * @param proxyPrimaryUrl the proxy primary URL to set
+     */
+    fun toApiModel(proxyPrimaryUrl: String): DataMetaInformation {
+        val dataMetaInformation = this.toApiModel()
+        dataMetaInformation.ref = "https://$proxyPrimaryUrl/companies/${company.companyId}/frameworks/$dataType/$dataId"
+        return dataMetaInformation
+    }
+
+    /**
+     * Converts the entity into the basic data dimension object
+     * return a BasicDataDimensions object
+     */
+    fun toBasicDataDimensions(): BasicDataDimensions =
+        BasicDataDimensions(
+            companyId = company.companyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
         )
 }

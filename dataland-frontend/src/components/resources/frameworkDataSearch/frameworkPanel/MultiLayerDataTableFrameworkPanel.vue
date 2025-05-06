@@ -75,19 +75,19 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
-import { type BaseFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { AxiosError } from 'axios';
 import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
 import { useDialog } from 'primevue/usedialog';
 import RequestableDatasetsTableModalWrapper from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTableModalWrapper.vue';
-import { PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { isFrameworkPrivate } from '@/utils/Frameworks';
 
 const dialog = useDialog();
 
 type ViewPanelStates = 'LoadingDatasets' | 'DisplayingDatasets' | 'Error' | 'InsufficientRights';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const injecHideEmptyFields = inject<{ value: boolean }>('hideEmptyFields');
+const injectHideEmptyFields = inject<{ value: boolean }>('hideEmptyFields');
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -99,7 +99,7 @@ const props = defineProps<{
   inReviewMode: boolean;
 }>();
 
-const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields?.value);
+const hideEmptyFields = computed<boolean | undefined>(() => injectHideEmptyFields?.value);
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 const sortedDataAndMetaInfo = computed(() => {
   return sortDatasetsByReportingPeriod(rawDataAndMetaInfoForDisplay.value);
@@ -127,7 +127,7 @@ const sortedReports = computed(() => {
     }
     case DataTypeEnum.Sfdr: {
       return sortedDataAndMetaInfo.value
-        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports)
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports)
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     default: {
@@ -192,18 +192,24 @@ async function loadDataForDisplay(
   singleDataMetaInfoToDisplay?: DataMetaInformation
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
-    | BaseFrameworkDataApi<FrameworkDataType>
+    | PublicFrameworkDataApi<FrameworkDataType>
     | undefined;
-  if (dataControllerApi) {
-    if (singleDataMetaInfoToDisplay) {
-      const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-      return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-    } else {
-      return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
-    }
-  } else {
-    throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
+  if (!dataControllerApi) throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
+  if (!singleDataMetaInfoToDisplay) return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+  let singleDataset;
+  try {
+    singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
+  } catch (error) {
+    console.error(error);
+    console.log(`Unable to fetch data via ID. Falling back to reporting Period.`);
+    singleDataset = (
+      await dataControllerApi.getCompanyAssociatedDataByDimensions(
+        singleDataMetaInfoToDisplay.reportingPeriod,
+        singleDataMetaInfoToDisplay.companyId
+      )
+    ).data.data;
   }
+  return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
 }
 
 /**
@@ -212,8 +218,7 @@ async function loadDataForDisplay(
  * that the user might want to request access to.
  */
 async function fetchMetaInfoOfInaccessibleDatasets(): Promise<void> {
-  const isFrameworkPrivate = PRIVATE_FRAMEWORKS.includes(props.frameworkIdentifier as DataTypeEnum);
-  if (isFrameworkPrivate) {
+  if (isFrameworkPrivate(props.frameworkIdentifier as DataTypeEnum)) {
     const allMetaInfoOfAvailableDatasets = (
       await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
         props.companyId,

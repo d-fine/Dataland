@@ -14,7 +14,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -30,10 +30,13 @@ it('tests if modal with link into position in text file works', () => {
   cy.get('.p-datatable-body > :nth-child(1)').should('not.be.empty');
   cy.get(':nth-child(2)').should('contain.text', 'Data source');
   cy.get('.p-dialog-content').should('contain', 'a');
-  //test if optional/empty field is not displayed
-  cy.get('.p-datatable-body > tr').should('have.length', 2);
+  //test if optional field "page" is displayed correctly
+  cy.get(':nth-child(3)').should('contain.text', 'Page');
+  cy.get('.p-datatable-body > :nth-child(3)').should('contain.text', '5');
+  //test if empty optional fields are not displayed
+  cy.get('.p-datatable-body > tr').should('have.length', 3);
 
-  //populate first optional field
+  //populate optional field "quality"
   cy.mountWithDialog(
     DataPointDisplayComponent,
     {
@@ -45,7 +48,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5-7',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -54,11 +57,14 @@ it('tests if modal with link into position in text file works', () => {
       },
     }
   ).then(() => {});
-  //test if optional field is displayed when content is present
   cy.get('a').click();
-  cy.get('.p-datatable-body > tr').should('have.length', 3);
+  //test if optional field is displayed when content is present and table content adjusts to page
+  // range instead of single page
+  cy.get(':nth-child(4)').should('contain.text', 'Pages');
+  cy.get('.p-datatable-body > :nth-child(4)').should('contain.text', '5-7');
+  cy.get('.p-datatable-body > tr').should('have.length', 4);
 
-  //populate second optinal field
+  //populate optional field "comment"
   cy.mountWithDialog(
     DataPointDisplayComponent,
     {
@@ -70,7 +76,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -81,9 +87,9 @@ it('tests if modal with link into position in text file works', () => {
   ).then(() => {});
   //test if optional field is displayed when content is present
   cy.get('a').click();
-  cy.get('.p-datatable-body > tr').should('have.length', 3);
+  cy.get('.p-datatable-body > tr').should('have.length', 4);
 
-  //populate second optinal field
+  //populate both "quality" and "comment"
   cy.mountWithDialog(
     DataPointDisplayComponent,
     {
@@ -95,17 +101,40 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
           quality: 'MaxQuality',
-          comment: 'Testin both optional fields',
+          comment: 'Testing both optional fields',
         },
       },
     }
   ).then(() => {});
-  //test if optional field is displayed when content is present
+  //test if optional fields are displayed when content is present
   cy.get('a').click();
-  cy.get('.p-datatable-body > tr').should('have.length', 4);
+  cy.get('.p-datatable-body > tr').should('have.length', 5);
+
+  //populate with minimal information (no page, no quality, no comment)
+  cy.mountWithDialog(
+    DataPointDisplayComponent,
+    {
+      keycloak: minimalKeycloakMock({}),
+    },
+    {
+      content: {
+        displayValue: {
+          fieldLabel: 'testingFieldLabel',
+          value: 'testingValue',
+          dataSource: {
+            fileName: 'testFileName',
+            fileReference: 'fileReference',
+          },
+        },
+      },
+    }
+  ).then(() => {});
+  //test if length is as expected
+  cy.get('a').click();
+  cy.get('.p-datatable-body > tr').should('have.length', 2);
 });

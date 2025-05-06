@@ -29,10 +29,10 @@ export default defineComponent({
      */
     register() {
       assertDefined(this.getKeycloakPromise)()
-        .then((keycloak) => {
+        .then(async (keycloak) => {
           if (!keycloak.authenticated) {
             const baseUrl = window.location.origin;
-            const url = keycloak.createRegisterUrl({
+            const url = await keycloak.createRegisterUrl({
               redirectUri: `${baseUrl}/companies`,
             });
             location.assign(url);

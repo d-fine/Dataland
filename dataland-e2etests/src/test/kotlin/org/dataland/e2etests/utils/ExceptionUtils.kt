@@ -5,11 +5,15 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
 
 object ExceptionUtils {
-    fun assertAccessDeniedWrapper(operation: () -> Any) {
-        val expectedAccessDeniedClientException =
-            assertThrows<ClientException> {
-                operation()
-            }
-        assertEquals("Client error : 403 ", expectedAccessDeniedClientException.message)
-    }
+    private fun assertClientException(
+        operation: () -> Any,
+        expectedMessage: String,
+    ) = assertEquals(
+        expectedMessage,
+        assertThrows<ClientException> { operation() }.message,
+    )
+
+    fun assertAccessDeniedWrapper(operation: () -> Any) = assertClientException(operation, "Client error : 403 ")
+
+    fun assertResourceNotFoundWrapper(operation: () -> Any) = assertClientException(operation, "Client error : 404 ")
 }

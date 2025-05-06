@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
@@ -31,14 +32,11 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForReceivingSingleDataRequest(
-        companyIdentifier: String,
-        userId: String,
-        correlationId: String,
-    ) {
+    fun logMessageForReceivingSingleDataRequest(preprocessedRequest: SingleDataRequestManager.PreprocessedRequest) {
         singleDataRequestLogger.info(
-            "Received a single data request with Identifier $companyIdentifier by user $userId. " +
-                "-> Processing it. (correlationId: $correlationId)",
+            "Received a single data request with Identifier ${preprocessedRequest.companyId}" +
+                " for user ${preprocessedRequest.userId}. -> Processing it. " +
+                "(correlationId: ${preprocessedRequest.correlationId})",
         )
     }
 
@@ -64,13 +62,14 @@ class DataRequestLogger {
      * returned "true".
      */
     fun logMessageForCheckingIfDataRequestAlreadyExists(
+        userId: String,
         companyId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
         requestStatus: RequestStatus,
     ) {
         bulkDataRequestLogger.info(
-            "The following data request already exists for the requesting user and therefore " +
+            "The following data request already exists for user with id $userId and therefore " +
                 "is not being recreated: (companyId: $companyId, framework: $framework, " +
                 "reportingPeriod: $reportingPeriod, requestStatus: $requestStatus)",
         )
@@ -92,6 +91,20 @@ class DataRequestLogger {
                 "can be associated with the companyId $companyId on Dataland."
             }
         bulkDataRequestLogger.info(logMessage)
+    }
+
+    /**
+     * Logs an appropriate message when a data request has been stored in the database.
+     */
+    fun logBulkDataOverwiew(
+        response: BulkDataRequestResponse,
+        correlationId: String,
+    ) {
+        bulkDataRequestLogger.info("Processed bulk data request with correlationId: $correlationId.")
+        bulkDataRequestLogger.info("Number of accepted requests: ${response.acceptedDataRequests.size}")
+        bulkDataRequestLogger.info("Number of already existing non-final requests: ${response.alreadyExistingNonFinalRequests.size}")
+        bulkDataRequestLogger.info("Number of already existing datasets: ${response.alreadyExistingDatasets.size}")
+        bulkDataRequestLogger.info("Number of rejected identifiers: ${response.rejectedCompanyIdentifiers.size}")
     }
 
     /**
@@ -148,6 +161,23 @@ class DataRequestLogger {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId " +
                 "with admin comment $adminComment.",
+        )
+    }
+
+    /**
+     * Logs an appropriate message when data requests for subsidiaries of a company are patched
+     * to answered.
+     */
+    fun logMessageForPatchingSubsidiariesToAnswered(
+        parentCompanyId: String,
+        reportingPeriod: String,
+        dataTypeName: String,
+        correlationId: String,
+    ) {
+        bulkDataRequestLogger.info(
+            "Changing request status for all subsidiaries of company with Id $parentCompanyId, " +
+                "reporting period $reportingPeriod and framework $dataTypeName to answered. " +
+                "Correlation ID: $correlationId",
         )
     }
 }

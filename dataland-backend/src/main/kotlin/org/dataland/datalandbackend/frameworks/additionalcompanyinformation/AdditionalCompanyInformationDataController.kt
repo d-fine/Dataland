@@ -9,8 +9,9 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/additional-company-information")
 @RestController
 class AdditionalCompanyInformationDataController(
-    @Autowired var myDataManager: DataManager,
+    @Autowired var myDataManager: AssembledDataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
@@ -40,23 +41,26 @@ class AdditionalCompanyInformationDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
+        super
+            .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedAdditionalCompanyInformationData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<AdditionalCompanyInformationData>,
         bypassQa: Boolean,
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToJson(dataId)
-
-    @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToCsv")
-    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToCsv(dataId)
-
-    @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToExcel")
-    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
-        super.exportCompanyAssociatedDataToExcel(dataId)
+    @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
+    override fun exportCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+        exportFileType: ExportFileType,
+    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
 
     @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
     override fun getFrameworkDatasetsForCompany(

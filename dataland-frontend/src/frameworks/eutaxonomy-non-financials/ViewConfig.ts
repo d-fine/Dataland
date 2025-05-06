@@ -7,12 +7,12 @@ import { wrapDisplayValueWithDatapointInformation } from '@/components/resources
 import { formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable } from '@/components/resources/dataTable/conversion/EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import { formatNonAlignedActivitiesForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
+import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
 } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
-import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
@@ -118,6 +118,58 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             formatNumberForDatatable(dataset.general?.numberOfEmployees?.value, ''),
             'Number Of Employees',
             dataset.general?.numberOfEmployees
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'UN Global Compact Principles Compliance Policy',
+        explanation: 'Existence of a policy to monitor compliance with the UNGC principles.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.unGlobalCompactPrinciplesCompliancePolicy?.value),
+            'UN Global Compact Principles Compliance Policy',
+            dataset.general?.unGlobalCompactPrinciplesCompliancePolicy
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'OECD Guidelines for Multinational Enterprises Compliance Policy',
+        explanation:
+          'Existence of a policy to monitor compliance with the OECD Guidelines for Multinational Enterprises.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(
+              dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy?.value
+            ),
+            'OECD Guidelines for Multinational Enterprises Compliance Policy',
+            dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'ILO Core Labour Standards',
+        explanation: 'Abidance by the ILO Core Labour Standards.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.iloCoreLabourStandards?.value),
+            'ILO Core Labour Standards',
+            dataset.general?.iloCoreLabourStandards
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Human Rights Due Diligence',
+        explanation:
+          'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.humanRightsDueDiligence?.value),
+            'Human Rights Due Diligence',
+            dataset.general?.humanRightsDueDiligence
           ),
       },
     ],

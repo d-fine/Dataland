@@ -1,46 +1,6 @@
 import type Keycloak from 'keycloak-js';
-import {
-  type AccessStatus,
-  type ExtendedStoredDataRequest,
-  RequestStatus,
-  type RequestPriority,
-} from '@clients/communitymanager';
+import { type AccessStatus, RequestStatus, type RequestPriority } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { type DataTypeEnum } from '@clients/backend';
-
-/**
- * Returns the List of StoredDataRequest from user with ReqeustStatus 'answered' and matching framework and companyId
- * @param companyId the dataland companyId
- * @param framework the dataland framework
- * @param reportingPeriods list of reporting periods in the view page
- * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
- * @returns a promise, which resolves to an array of StoredDataRequest
- */
-export async function getAnsweredDataRequestsForViewPage(
-  companyId: string,
-  framework: DataTypeEnum,
-  reportingPeriods: string[],
-  keycloakPromiseGetter?: () => Promise<Keycloak>
-): Promise<ExtendedStoredDataRequest[]> {
-  try {
-    if (keycloakPromiseGetter) {
-      return (
-        await new ApiClientProvider(
-          keycloakPromiseGetter()
-        ).apiClients.requestController.getDataRequestsForRequestingUser()
-      ).data.filter(
-        (dataRequest) =>
-          dataRequest.dataType == framework &&
-          dataRequest.datalandCompanyId == companyId &&
-          reportingPeriods.includes(dataRequest.reportingPeriod) &&
-          dataRequest.requestStatus == RequestStatus.Answered
-      );
-    }
-  } catch (error) {
-    console.error(error);
-  }
-  return [];
-}
 
 /**
  * Patches the RequestStatus of a StoredDataRequest
@@ -49,6 +9,7 @@ export async function getAnsweredDataRequestsForViewPage(
  * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
+ * @param notifyMeImmediately
  * @param requestStatusChangeReason provided reason why data should be available
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
@@ -58,6 +19,7 @@ export async function patchDataRequest(
   accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
+  notifyMeImmediately: boolean | undefined,
   requestStatusChangeReason: string | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<void> {
@@ -70,6 +32,7 @@ export async function patchDataRequest(
           accessStatus: accessStatus,
           contacts: contacts,
           message: message,
+          notifyMeImmediately: notifyMeImmediately,
           requestStatusChangeReason: requestStatusChangeReason,
         }
       );

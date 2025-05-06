@@ -1,8 +1,8 @@
 package org.dataland.datalandemailservice.services
 
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandemailservice.email.EmailContact
+import org.dataland.datalandemailservice.utils.EmailStringConverter
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,23 +22,20 @@ class EmailContactService(
     @Value("\${dataland.notification.sender.name}") private val senderName: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val internalContacts: List<EmailContact>
+    private val internalCcContacts: List<EmailContact>
 
-    private val internalContacts: List<EmailContact> = getEmailContactsFromString(semicolonSeparatedInternalRecipients)
-    private val internalCcContacts: List<EmailContact> = getEmailContactsFromString(semicolonSeparatedInternalCcRecipients)
-
-    private fun getEmailContactsFromString(semicolonSeperatedEmailAddresses: String): List<EmailContact> =
-        semicolonSeperatedEmailAddresses.split(";").map { emailAddress ->
-            if (emailAddress.isEmailAddress()) {
-                EmailContact.create(emailAddress)
-            } else {
-                logger.error(
-                    "One email address provided by the Spring properties has a wrong format. " +
-                        "The following email address was parsed from that prop and caused this error: $emailAddress. " +
-                        "This email address is ignored. The service shuts down.",
-                )
-                exitProcess(1)
-            }
+    init {
+        try {
+            internalContacts = EmailStringConverter.convertEmailsJoinedStringToListOfEmailContacts(semicolonSeparatedInternalRecipients)
+            internalCcContacts = EmailStringConverter.convertEmailsJoinedStringToListOfEmailContacts(semicolonSeparatedInternalCcRecipients)
+        } catch (exception: IllegalArgumentException) {
+            logger.error(
+                exception.message,
+            )
+            exitProcess(1)
         }
+    }
 
     /**
      * Retrieves a list of email contacts based on the specified recipient type.

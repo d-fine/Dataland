@@ -66,21 +66,21 @@ class QaReportSecurityPolicy(
 
     /**
      * Checks if a user can view a QA report.
-     * @param dataId the ID of the data set the QA report is associated with
+     * @param dataPointId the ID of the data set the QA report is associated with
      * @param user the user requesting the view
      */
-    fun ensureUserCanViewDataPointForDataId(
-        dataId: String,
+    fun ensureUserCanViewDataPoint(
+        dataPointId: String,
         user: DatalandAuthentication,
     ) {
         val userAuthenticatedMetadataController =
             userAuthenticatedBackendClient
                 .getDataPointControllerApiForUserAuthentication(user)
         try {
-            userAuthenticatedMetadataController.getDataPointMetaInfo(dataId)
+            userAuthenticatedMetadataController.getDataPointMetaInfo(dataPointId)
             return
         } catch (apiRequestException: ClientException) {
-            throw relayAccessRequestException(apiRequestException, dataId)
+            throw relayAccessRequestException(apiRequestException, dataPointId)
         }
     }
 

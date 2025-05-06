@@ -1,4 +1,4 @@
-# Dataland Data Upload And QA Process (Technical)
+# Dataland Data Point Upload And QA Process (Technical)
 | Metadata        | Value                                                                                                                                                                                                                               |
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Target Audience | Dataland Developers                                                                                                                                                                                                                 |
@@ -21,12 +21,12 @@ sequenceDiagram
     activate backend
     backend ->> backend: Store Meta-Data
     backend ->> backend: Store Data Point in Temporary Storage
-    backend --) mq: Send 'Public Data received'
+    backend --) mq: Send 'Data Point Uploaded'
     activate mq
     backend -->> Uploader: Upload completed
     deactivate backend
 
-    mq -) storage: Receive 'Public Data received'
+    mq -) storage: Receive 'Data Point Uploaded'
     deactivate mq
     activate storage
     storage ->> backend: Get Data Point from Temporary Storage
@@ -42,14 +42,23 @@ sequenceDiagram
     activate backend
     backend ->> backend: Remove Data Point from Temporary Storage
     deactivate backend
-    mq -) qaService: Receive 'Public Data received'
+    mq -) qaService: Receive 'Data Point Uploaded'
     deactivate mq
     activate qaService
 
-    opt bypassQa is false
-        qaService ->> qaService: Store Pending entry in QA-DB table
-        deactivate qaService
 
+    qaService ->> qaService: Store initial entry in QA-DB table
+    qaService --) mq: Send 'QA status updated'
+    deactivate qaService
+    activate mq
+
+    mq -) backend: Receive 'QA status updated'
+    activate backend
+    deactivate mq
+    backend ->> backend: Update QA Decision in Metadata
+    deactivate backend
+
+    opt Reviewer Performs Quality Assurance (if requierd)
         qaler ->> qaService: Get Data Points to QA
         activate qaService
         activate qaler
@@ -58,16 +67,17 @@ sequenceDiagram
         qaler ->> qaService: Quality Assured
         deactivate qaler
         activate qaService
+
+        qaService ->> qaService: Store decision in QA-DB table
+
+        qaService --) mq: Send 'QA status updated'
+        deactivate qaService
+        activate mq
+
+        mq -) backend: Receive 'QA status updated'
+        activate backend
+        deactivate mq
+        backend ->> backend: Update QA Decision in Metadata
+        deactivate backend
     end
-
-    qaService ->> qaService: Store decision in QA-DB table
-
-    qaService --) mq: Send 'QA status updated'
-    deactivate qaService
-    activate mq
-
-    mq -) backend: Receive 'QA status updated'
-    activate backend
-    backend ->> backend: Update QA Decision in Metadata
-    deactivate backend
 ```

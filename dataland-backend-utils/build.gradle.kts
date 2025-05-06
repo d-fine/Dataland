@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
     implementation(libs.mailjet.client)
+    implementation(libs.jackson.module.kotlin)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
 }

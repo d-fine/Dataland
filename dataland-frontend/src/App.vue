@@ -100,7 +100,7 @@ export default defineComponent({
      */
     processUserAuthentication() {
       this.keycloakPromise = this.initKeycloak();
-      if (this.keycloakPromise) {
+      if (this.keycloakPromise !== undefined) {
         const apiClientProvider = new ApiClientProvider(this.keycloakPromise);
         this.apiClientProvider = apiClientProvider;
         this.keycloakPromise
@@ -152,7 +152,7 @@ export default defineComponent({
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
     setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
+      void getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
         (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
       );
     },

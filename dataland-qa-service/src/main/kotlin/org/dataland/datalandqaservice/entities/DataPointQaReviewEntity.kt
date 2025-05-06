@@ -47,7 +47,7 @@ data class DataPointQaReviewEntity(
      */
     fun toDataPointQaReviewInformation() =
         DataPointQaReviewInformation(
-            dataId = this.dataPointId,
+            dataPointId = this.dataPointId,
             companyId = this.companyId,
             companyName = this.companyName,
             dataPointType = this.dataPointType,

@@ -5,8 +5,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.QaRepor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetQaReportService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaLogMessageBuilder
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ import java.time.Instant
  */
 open class QaReportController<QaReportType>(
     private val objectMapper: ObjectMapper,
-    private val qaReportManager: QaReportManager,
+    private val qaReportManager: DatasetQaReportService,
     private val qaReportSecurityPolicy: QaReportSecurityPolicy,
     private val clazz: Class<QaReportType>,
     private val dataType: String,
@@ -34,7 +34,7 @@ open class QaReportController<QaReportType>(
         logger.info(qaLogMessageBuilder.postQaReportMessage(dataId, reportingUser.userId))
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, reportingUser)
         val uploadTime = Instant.now().toEpochMilli()
-        val reportEntity =
+        val reportApiModel =
             qaReportManager.createQaReport(
                 report = qaReport,
                 dataId = dataId,
@@ -42,8 +42,7 @@ open class QaReportController<QaReportType>(
                 reporterUserId = reportingUser.userId,
                 uploadTime = uploadTime,
             )
-        val apiModel = reportEntity.toMetaInformationApiModel()
-        return ResponseEntity.ok(apiModel)
+        return ResponseEntity.ok(reportApiModel)
     }
 
     override fun getQaReport(
@@ -53,9 +52,8 @@ open class QaReportController<QaReportType>(
         val user = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.getQaReportMessage(qaReportId, dataId))
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, user)
-        val reportEntity = qaReportManager.getQaReportById(dataId, dataType, qaReportId)
-        val apiModel = reportEntity.toFullApiModel(objectMapper, clazz)
-        return ResponseEntity.ok(apiModel)
+        val reportApiModel = qaReportManager.getQaReportById(dataId, dataType, qaReportId, objectMapper, clazz)
+        return ResponseEntity.ok(reportApiModel)
     }
 
     override fun setQaReportStatus(
@@ -82,18 +80,16 @@ open class QaReportController<QaReportType>(
         val user = DatalandAuthentication.fromContext()
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, user)
         logger.info(qaLogMessageBuilder.getAllQaReportsForDataIdMessage(dataId, reporterUserId))
-        val reportEntities =
+        val reportApiModels =
             qaReportManager.searchQaReportMetaInfo(
                 dataId = dataId,
                 dataType = dataType,
                 reporterUserId = reporterUserId,
                 showInactive = showInactive ?: false,
+                objectMapper = objectMapper,
+                clazz = clazz,
             )
-        val apiModel =
-            reportEntities.map {
-                it.toFullApiModel(objectMapper, clazz)
-            }
 
-        return ResponseEntity.ok(apiModel)
+        return ResponseEntity.ok(reportApiModels)
     }
 }

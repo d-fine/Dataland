@@ -4,16 +4,15 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.MetaDataUtils
 import org.dataland.e2etests.utils.UploadConfiguration
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
-import java.time.Instant
 
 class MetaDataControllerAuthorizationTest {
     private val apiAccessor = ApiAccessor()
-    private val metaDataControllerTest = MetaDataControllerTest()
 
     private val listOfOneTeaserTestCompanyInformation =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).map {
@@ -33,17 +32,15 @@ class MetaDataControllerAuthorizationTest {
             )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
-        val uploadTime = Instant.now().toEpochMilli()
-        Assertions.assertEquals(
-            metaDataControllerTest.buildAcceptedAndActiveDataMetaInformation(
-                testDataId,
-                listOfUploadInfo[0].actualStoredCompany.companyId,
-                testDataType,
-                uploadTime,
-                TechnicalUser.Admin,
-            ),
-            dataMetaInformation.copy(uploadTime = uploadTime),
-            "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
+        MetaDataUtils.assertDataMetaInfoMatches(
+            actualDataMetaInfo = dataMetaInformation,
+            expectedDataMetaInfo =
+                MetaDataUtils.buildAcceptedAndActiveDataMetaInformation(
+                    dataId = testDataId,
+                    companyId = listOfUploadInfo[0].actualStoredCompany.companyId,
+                    testDataType = testDataType,
+                    user = TechnicalUser.Admin,
+                ),
         )
     }
 
@@ -70,21 +67,22 @@ class MetaDataControllerAuthorizationTest {
             )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val uploadTime = Instant.now().toEpochMilli()
         val expectedMetaInformation =
-            metaDataControllerTest.buildAcceptedAndActiveDataMetaInformation(
-                dataId = testDataId, companyId = testCompanyId,
+            MetaDataUtils.buildAcceptedAndActiveDataMetaInformation(
+                dataId = testDataId,
+                companyId = testCompanyId,
                 testDataType = testDataType,
-                uploadTime = uploadTime,
                 user = TechnicalUser.Admin,
             )
-        Assertions.assertTrue(
+        val actualMetaInformation =
             apiAccessor.unauthorizedMetaDataControllerApi
-                .getListOfDataMetaInfo(testCompanyId, testDataType)
-                .map { it.copy(uploadTime = uploadTime) }
-                .contains(expectedMetaInformation),
-            "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
-                "does not match the retrieved meta info.",
+                .getListOfDataMetaInfo(
+                    companyId = testCompanyId,
+                    dataType = testDataType,
+                ).filter { it.dataId == testDataId }
+        MetaDataUtils.assertDataMetaInfoMatches(
+            actualDataMetaInfo = actualMetaInformation.first(),
+            expectedDataMetaInfo = expectedMetaInformation,
         )
     }
 
@@ -111,7 +109,7 @@ class MetaDataControllerAuthorizationTest {
             apiAccessor
                 .uploadCompanyAndFrameworkDataForMultipleFrameworks(
                     companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
-                    numberOfDataSetsPerCompany = 1,
+                    numberOfDatasetsPerCompany = 1,
                     uploadConfig = UploadConfiguration(TechnicalUser.Uploader, false),
                     ensureQaPassed = false,
                 )[0]

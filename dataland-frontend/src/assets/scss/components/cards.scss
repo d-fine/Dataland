@@ -1,83 +1,87 @@
+@use '../colors';
+@use '../units';
+@use '../variables';
+
 .p-card {
-  background: $card-background;
-  color: $card-text;
+  background: colors.$card-background;
+  color: colors.$card-text;
   &.page-wrapper-card {
     .p-card-title {
       text-align: left;
       padding: 1rem 0;
       margin: 1rem 0;
-      border-bottom: 1px solid $input-separator;
+      border-bottom: 1px solid colors.$input-separator;
     }
   }
   .p-card-title {
-    font-size: $fs-xl;
-    font-weight: $fw-bold;
+    font-size: variables.$fs-xl;
+    font-weight: variables.$fw-bold;
   }
   .p-card-subtitle {
-    font-weight: $fw-bold;
-    margin-bottom: $spacing-xxs;
-    color: $gray;
+    font-weight: variables.$fw-bold;
+    margin-bottom: variables.$spacing-xxs;
+    color: variables.$gray;
   }
   .p-card-content {
-    padding: $spacing-sm 0;
-    color: $aquamarine-dark;
+    padding: variables.$spacing-sm 0;
+    color: variables.$aquamarine-dark;
   }
   .p-card-footer {
-    padding: $spacing-sm 0 0 0;
+    padding: variables.$spacing-sm 0 0 0;
   }
 }
 .d-card {
-  background: $white;
-  padding: $spacing-sm;
-  box-shadow: 0 0 3px 3px $shadow-color;
-  border-radius: $upload-form-radius;
+  background: variables.$white;
+  padding: variables.$spacing-sm;
+  box-shadow: 0 0 3px 3px colors.$shadow-color;
+  border-radius: units.$upload-form-radius;
 }
 
 .top-border-section {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid $input-separator;
+  border-top: 1px solid colors.$input-separator;
 }
 
 .bottom-border-section {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid $input-separator;
+  border-bottom: 1px solid colors.$input-separator;
 }
 
 .bottom-border-section-dots {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px dotted $input-separator;
+  border-bottom: 1px dotted colors.$input-separator;
 }
 
 .p-progressbar {
   height: 2rem;
-  background: $white;
-  border: 1px solid $gray-light;
+  background: variables.$white;
+  border: 1px solid variables.$gray-light;
   border-radius: 6px;
   .p-progressbar-value {
     margin: 0;
-    background: $orange-prime;
+    background: variables.$orange-prime;
   }
   .p-progressbar-label {
-    color: $white;
+    color: variables.$white;
     line-height: 1.5rem;
   }
 }
 
 .progressbar-finished p {
-  color: $green;
+  color: variables.$green;
 }
 
 .progressbar-finished .p-progressbar-value {
-  background-color: $green;
+  background-color: variables.$green;
 }
 
 .progressbar-window-indication {
-  border-color: $red;
+  border-color: variables.$red;
   border-radius: 4px;
-  color: $red;
+  color: variables.$red;
 }
 .p-fileupload .p-fileupload-content {
   background: #fff;

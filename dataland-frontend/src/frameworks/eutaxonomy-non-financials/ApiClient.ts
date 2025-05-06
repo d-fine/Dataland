@@ -2,10 +2,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from 'axios';
 import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 import {
+  EutaxonomyNonFinancialsDataControllerApi,
+  type EutaxonomyNonFinancialsData,
   type Configuration,
   type DataMetaInformation,
-  type EutaxonomyNonFinancialsData,
-  EutaxonomyNonFinancialsDataControllerApi,
+  type ExportFileType,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -46,27 +47,30 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
     return this.openApiDataController.postCompanyAssociatedEutaxonomyNonFinancialsData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataToJson(
-    dataId: string,
+  exportCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    fileFormat: ExportFileType,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataToJson(dataId, options);
+    return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+      reportingPeriod,
+      companyId,
+      fileFormat,
+      options
+    );
   }
 
-  exportCompanyAssociatedDataToCsv(
-    dataId: string,
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
     options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataToCsv(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToExcel(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataToExcel(dataId, options);
+  ): AxiosPromise<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
+    return this.openApiDataController.getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }

@@ -9,9 +9,11 @@ import {
 } from '@clients/backend';
 import { type QaReviewResponse, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
 describe('Component tests for the Quality Assurance page', () => {
   let p2pFixture: FixtureData<PathwaysToParisData>;
@@ -313,19 +315,26 @@ describe('Component tests for the Quality Assurance page', () => {
       reportingPeriod: '2023',
       currentlyActive: false,
       qaStatus: QaStatus.Pending,
+      ref: 'https://example.com',
     };
-
-    cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
-    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
-    cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
     const mockCompanyAssociatedP2pData: CompanyAssociatedDataPathwaysToParisData = {
       companyId: mockDataMetaInfo.companyId,
       reportingPeriod: mockDataMetaInfo.reportingPeriod,
       data: p2pFixture.t,
     };
+    const mockP2pDataAndMetaInfo: DataAndMetaInformation<PathwaysToParisData> = buildDataAndMetaInformationMock(
+      mockDataMetaInfo,
+      p2pFixture.t
+    );
+
+    cy.intercept(`**/community/requests/user`, {});
+    cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
+    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
+    cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
     cy.intercept(`**/api/data/${DataTypeEnum.P2p}/${mockDataMetaInfo.dataId}`, mockCompanyAssociatedP2pData).as(
       'fetchP2pData'
     );
+    cy.intercept(`**/api/data/${DataTypeEnum.P2p}/companies/${mockDataMetaInfo.companyId}*`, [mockP2pDataAndMetaInfo]);
 
     getMountingFunction({
       keycloak: keycloakMockWithUploaderAndReviewerRoles,
@@ -341,7 +350,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('h1').contains(p2pFixture.companyInformation.companyName).should('be.visible');
 
     cy.get('#framework_data_search_bar_standard').should('not.exist');
-    cy.get('#chooseFrameworkDropdown').should('not.exist');
+    cy.get('[data-test="chooseFrameworkDropdown"').should('not.exist');
     cy.get('a[data-test="gotoNewDatasetButton"]').should('not.exist');
 
     cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains('This dataset is currently pending review');

@@ -91,7 +91,9 @@ describeIf(
 
                       compareObjectKeysAndValuesDeep(
                         additionalCompanyInformationFixtureForTest.t as Record<string, object>,
-                        frontendSubmittedAdditionalCompanyInformationDataset as Record<string, object>
+                        frontendSubmittedAdditionalCompanyInformationDataset as Record<string, object>,
+                        '',
+                        ['publicationDate']
                       );
                     });
                 });

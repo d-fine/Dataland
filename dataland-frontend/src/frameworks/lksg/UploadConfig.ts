@@ -1156,7 +1156,7 @@ export const lksgDataModel = [
             name: 'forcedLaborAndSlaveryPreventionEmploymentContracts',
             label: 'Forced Labor and Slavery Prevention - Employment Contracts',
             description:
-              "Do you have a formal hiring process, including employment contracts in the employee's local language, with appropriate wage and termination clauses?",
+              "Do you have a formal hiring process, including employment contracts in the employee\'s local language, with appropriate wage and termination clauses?",
 
             component: 'YesNoFormField',
             required: false,
@@ -1177,7 +1177,7 @@ export const lksgDataModel = [
             name: 'forcedLaborAndSlaveryPreventionFreeMovement',
             label: 'Forced Labor and Slavery Prevention - Free Movement',
             description:
-              "Do you ensure that doors and windows can be opened to allow the free movement of employees, as well as the ability to leave the company's premises at any time?",
+              "Do you ensure that doors and windows can be opened to allow the free movement of employees, as well as the ability to leave the company\'s premises at any time?",
 
             component: 'YesNoFormField',
             required: false,
@@ -1558,7 +1558,7 @@ export const lksgDataModel = [
             name: 'diversityAndInclusionRole',
             label: 'Diversity and Inclusion Role',
             description:
-              "Is a member of your company's management responsible for promoting diversity in the workforce and among business partners?",
+              "Is a member of your company\'s management responsible for promoting diversity in the workforce and among business partners?",
 
             component: 'YesNoFormField',
             required: false,
@@ -1569,7 +1569,7 @@ export const lksgDataModel = [
             name: 'preventionOfMistreatments',
             label: 'Prevention of Mistreatments',
             description:
-              "Does your company's management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
+              "Does your company\'s management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
 
             component: 'YesNoFormField',
             required: false,
@@ -1937,7 +1937,7 @@ export const lksgDataModel = [
             name: 'contaminationPreventionMeasures',
             label: 'Contamination Prevention Measures',
             description:
-              "Have other measures been taken to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person's access to sanitary facilities; Harms the health of any person",
+              "Have other measures been taken to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\'s access to sanitary facilities; Harms the health of any person",
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
@@ -1947,7 +1947,7 @@ export const lksgDataModel = [
             name: 'contaminationPreventionMeasuresDescription',
             label: 'Contamination Prevention Measures Description',
             description:
-              "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person's access to sanitary facilities; Harms the health of any person",
+              "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\'s access to sanitary facilities; Harms the health of any person",
 
             component: 'InputTextFormField',
             required: false,
@@ -1965,7 +1965,7 @@ export const lksgDataModel = [
             name: 'unlawfulEvictionAndTakingOfLand',
             label: 'Unlawful Eviction and Taking of Land',
             description:
-              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person's livelihood, at risk of carrying out: Unlawful evictions; Unlawful claims of land, forests, or water?",
+              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person\'s livelihood, at risk of carrying out: Unlawful evictions; Unlawful claims of land, forests, or water?",
 
             component: 'YesNoFormField',
             required: false,

@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="2">
+    <DatasetsTabMenu :initial-tab-index="3">
       <TheContent class="min-h-screen paper-section relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
           <div
@@ -145,7 +145,6 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import { defineComponent, inject } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import Column from 'primevue/column';
@@ -157,9 +156,10 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import { type GetInfoOnPendingDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
+import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import router from '@/router';
 import { type DataTypeEnum } from '@clients/backend';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -214,14 +214,14 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        this.getQaDataForCurrentPage();
+        void this.getQaDataForCurrentPage();
       }
     },
     availableReportingPeriods() {
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        this.getQaDataForCurrentPage();
+        void this.getQaDataForCurrentPage();
       }
     },
     searchBarInput() {
@@ -245,8 +245,8 @@ export default defineComponent({
      * @param input is a value with type DataTypeEnum
      * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
      */
-    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnPendingDatasetsDataTypesEnum {
-      return input as GetInfoOnPendingDatasetsDataTypesEnum;
+    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
+      return input as GetInfoOnDatasetsDataTypesEnum;
     },
     /**
      * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
@@ -256,7 +256,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnPendingDatasetsDataTypesEnum>(
+        const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
           this.selectedFrameworks.map((selectableItem) =>
             this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
           )
@@ -265,10 +265,11 @@ export default defineComponent({
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
-        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnPendingDatasets(
+        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnDatasets(
           selectedFrameworksAsSet,
           reportingPeriodFilter,
           companyNameFilter,
+          undefined,
           this.datasetsPerPage,
           this.currentChunkIndex
         );
@@ -314,7 +315,7 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
-        this.getQaDataForCurrentPage();
+        void this.getQaDataForCurrentPage();
       }
     },
     /**

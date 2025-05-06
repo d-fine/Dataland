@@ -18,10 +18,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataAccessManager
-import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
+import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandcommunitymanager.utils.UserAuthenticationTool
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -39,7 +40,7 @@ class RequestController(
     @Autowired private val bulkDataRequestManager: BulkDataRequestManager,
     @Autowired private val singleDataRequestManager: SingleDataRequestManager,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
-    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
+    @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : RequestApi {
@@ -66,10 +67,16 @@ class RequestController(
             ),
         )
 
-    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<SingleDataRequestResponse> =
-        ResponseEntity.ok(
-            singleDataRequestManager.processSingleDataRequest(singleDataRequest),
+    override fun postSingleDataRequest(
+        singleDataRequest: SingleDataRequest,
+        userId: String?,
+    ): ResponseEntity<SingleDataRequestResponse> {
+        val userAuthenticationTool = UserAuthenticationTool()
+        userAuthenticationTool.checkAuthenticationForUserImpersonationAttempt(userId)
+        return ResponseEntity.ok(
+            singleDataRequestManager.processSingleDataRequest(singleDataRequest, userId),
         )
+    }
 
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
@@ -94,7 +101,7 @@ class RequestController(
                 dataType,
                 userId,
                 emailAddress,
-                datalandCompanyId,
+                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                 reportingPeriod,
                 requestStatus,
                 accessStatus,
@@ -135,7 +142,7 @@ class RequestController(
                 dataType,
                 userId,
                 emailAddress,
-                datalandCompanyId,
+                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                 reportingPeriod,
                 requestStatus,
                 accessStatus,
@@ -160,16 +167,10 @@ class RequestController(
         dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
-            dataRequestAlterationManager.patchDataRequest(
-                dataRequestId.toString(),
-                dataRequestPatch.requestStatus,
-                dataRequestPatch.accessStatus,
-                dataRequestPatch.contacts,
-                dataRequestPatch.message,
-                correlationId = null,
-                dataRequestPatch.requestPriority,
-                dataRequestPatch.adminComment,
-                dataRequestPatch.requestStatusChangeReason,
+            dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+                dataRequestId = dataRequestId.toString(),
+                dataRequestPatch = dataRequestPatch,
+                correlationId = UUID.randomUUID().toString(),
             ),
         )
 }

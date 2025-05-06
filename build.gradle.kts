@@ -51,7 +51,6 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt(libs.detekt.cli)
-    detekt(libs.kotlin.compiler.embeddable)
 }
 
 java.sourceCompatibility = jvmVersion
@@ -72,6 +71,7 @@ plugins {
     alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
 sonar {
@@ -95,7 +95,8 @@ sonar {
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
-                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts",
+                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
+                "dataland-reduced-local-stack/**",
         )
         property(
             "sonar.sources",
@@ -161,6 +162,7 @@ sonar {
                 "dataland-frontend/src/components/generics/TheNewFooter.vue," +
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
+                "dataland-frontend/src/components/forms/CreateHeimathafenDataset.vue," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
@@ -173,8 +175,14 @@ sonar {
                 "Activity.kt," +
 
                 // qa-service
-                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**",
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
+                "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt",
         )
+        property("sonar.issue.ignore.multicriteria", "upload, view")
+        property("sonar.issue.ignore.multicriteria.upload.ruleKey", "typescript:S6535")
+        property("sonar.issue.ignore.multicriteria.upload.resourceKey", "**/UploadConfig.ts")
+        property("sonar.issue.ignore.multicriteria.view.ruleKey", "typescript:S6535")
+        property("sonar.issue.ignore.multicriteria.view.resourceKey", "**/ViewConfig.ts")
     }
 }
 
@@ -206,6 +214,7 @@ detekt {
     val detektFileTree = fileTree("$projectDir")
     detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude(".gradle")
     detektFileTree.exclude("**/ReferencedReportsListValidator.kt")
+    detektFileTree.exclude("**/dataland-loki/data/**")
     source.setFrom(detektFileTree)
 }
 

@@ -2,10 +2,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from "axios";
 import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
 import {
+  ${frameworkBaseName}DataControllerApi,
+  type ${frameworkBaseName}Data,
   type Configuration,
   type DataMetaInformation,
-  type ${frameworkBaseName}Data,
-  ${frameworkBaseName}DataControllerApi,
+  type ExportFileType,
 } from "@clients/backend";
 import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
@@ -38,21 +39,21 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
     return this.openApiDataController.postCompanyAssociated${frameworkBaseName}Data(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataToJson(dataId: string, options?: AxiosRequestConfig):
+  exportCompanyAssociatedDataByDimensions(
+     reportingPeriod: string,
+     companyId: string,
+     fileFormat: ExportFileType,
+     options?: AxiosRequestConfig):
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
     AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataToJson(dataId, options);
+    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataByDimensions(reportingPeriod, companyId, fileFormat, options);
   }
 
-  exportCompanyAssociatedDataToCsv(dataId: string, options?: AxiosRequestConfig):
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataToCsv(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToExcel(dataId: string, options?: AxiosRequestConfig):
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataToExcel(dataId, options);
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<CompanyAssociatedData<${frameworkBaseName}Data>> {
+    return this.openApiDataController.getCompanyAssociated${frameworkBaseName}DataByDimensions(reportingPeriod, companyId, options);
   }
 }

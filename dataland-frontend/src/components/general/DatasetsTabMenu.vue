@@ -20,10 +20,11 @@
 import { defineComponent, inject } from 'vue';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import router from '@/router';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'DatasetsTabMenu',
@@ -42,6 +43,7 @@ export default defineComponent({
       tabs: [
         { label: 'COMPANIES', route: '/companies', isVisible: true },
         { label: 'MY DATASETS', route: '/datasets', isVisible: true },
+        { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
         { label: 'QA', route: '/qualityassurance', isVisible: false },
         { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
         { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
@@ -71,8 +73,8 @@ export default defineComponent({
      * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
      */
     setVisibilityForTabWithQualityAssurance() {
-      checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
-        this.tabs[2].isVisible = hasUserReviewerRights;
+      void checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
+        this.tabs[3].isVisible = hasUserReviewerRights;
       });
     },
 
@@ -85,7 +87,7 @@ export default defineComponent({
         (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
       );
       if (companyOwnershipAssignments) {
-        this.tabs[4].isVisible = companyOwnershipAssignments.length > 0;
+        this.tabs[5].isVisible = companyOwnershipAssignments.length > 0;
       }
     },
     /**
@@ -93,8 +95,8 @@ export default defineComponent({
      * Only Admins can see the tab.
      */
     setVisibilityForAdminTab() {
-      checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise).then((hasUserAdminRights) => {
-        this.tabs[5].isVisible = hasUserAdminRights;
+      void checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise).then((hasUserAdminRights) => {
+        this.tabs[6].isVisible = hasUserAdminRights;
       });
     },
     /**

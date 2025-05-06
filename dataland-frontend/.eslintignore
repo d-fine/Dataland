@@ -1,8 +1,0 @@
-.eslintrc.js
-cypress.config.ts
-vite.config.mts
-**/build/
-**/coverage
-**/cypress
-**/dist
-**/plugins/index.js

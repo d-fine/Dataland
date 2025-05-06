@@ -118,7 +118,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
     The VueWrapper component from "@vue/test-utils" is, however, "close enough" to the actual return value for our
     purposes. That is the reason for the ts-ignore and eslint-ignores
    */
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
   // @ts-ignore
   return mount(component, options);
 }

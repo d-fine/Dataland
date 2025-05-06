@@ -24,7 +24,7 @@ describe('Component test for FrameworkDataSearchFilters', () => {
     cy.get('span').contains('DummySector').click();
 
     // Ignored as TS does not understand that "vue" is not a JQuery Component but rather the whole wrapper
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     // @ts-ignore
     cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
       const emittedCountryCodes = wrapper.emitted('update:selectedCountryCodes');

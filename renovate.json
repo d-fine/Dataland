@@ -37,6 +37,15 @@
       ]
     },
     {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "labels": [
+        "dependencies",
+        "Minor"
+      ]
+    },
+    {
       "groupName": "formkit-packages",
       "matchPackageNames": [
         "/^@formkit//"
@@ -51,7 +60,8 @@
     {
       "matchUpdateTypes": [
         "digest",
-        "patch"
+        "patch",
+        "minor"
       ],
       "automerge": true
     }

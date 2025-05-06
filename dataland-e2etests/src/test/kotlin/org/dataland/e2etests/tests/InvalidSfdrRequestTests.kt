@@ -2,8 +2,10 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -13,7 +15,7 @@ import org.junit.jupiter.api.assertThrows
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
     private val errorCode400 = "Client error : 400"
     private val errorMessage = "Input validation failed."
 
@@ -24,15 +26,16 @@ class InvalidSfdrRequestTests {
 
     fun getErrorFromApi(companyName: String): ClientException {
         val oneInvalidSfdrDataset =
-            apiAccessor.testDataProviderForSfdrData
-                .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
+            FrameworkTestDataProvider
+                .forFrameworkPreparedFixtures(SfdrData::class.java)
+                .getByCompanyName(companyName)
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         val errorForInvalidInput =
             assertThrows<ClientException> {
                 apiAccessor.sfdrUploaderFunction(
                     companyInformation.actualStoredCompany.companyId,
-                    oneInvalidSfdrDataset!!.t,
+                    oneInvalidSfdrDataset.t,
                     "",
                 )
             }

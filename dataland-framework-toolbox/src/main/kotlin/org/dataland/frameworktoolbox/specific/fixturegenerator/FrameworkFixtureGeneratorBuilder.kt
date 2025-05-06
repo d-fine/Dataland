@@ -1,7 +1,9 @@
 package org.dataland.frameworktoolbox.specific.fixturegenerator
 
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
@@ -86,7 +88,10 @@ class FrameworkFixtureGeneratorBuilder(
         }
     }
 
-    private fun buildDataFixtures(dataFixturesTsPath: Path) {
+    private fun buildDataFixtures(
+        dataFixturesTsPath: Path,
+        referencedReportGetter: String?,
+    ) {
         val imports =
             rootSectionBuilder.imports +
                 TypeScriptImport("generateFixtureDataset", "@e2e/fixtures/FixtureUtils") +
@@ -102,6 +107,7 @@ class FrameworkFixtureGeneratorBuilder(
                 "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
                 "imports" to TypeScriptImport.mergeImports(imports),
                 "rootSection" to rootSectionBuilder,
+                "referencedReportGetter" to referencedReportGetter,
             )
 
         val freemarkerTemplate =
@@ -124,6 +130,11 @@ class FrameworkFixtureGeneratorBuilder(
             into.path / "dataland-frontend" / "tests" /
                 "e2e" / "fixtures" / "frameworks" / framework.identifier
 
+        val referencedReportGetter =
+            framework.root.nestedChildren.find { it is ReportPreuploadComponent }?.let {
+                it.getTypescriptFieldAccessor(valueAccessor = true)
+            }
+
         frameworkConfigDir.toFile().mkdirs()
 
         buildIndexTs(frameworkConfigDir / "index.ts")
@@ -131,6 +142,7 @@ class FrameworkFixtureGeneratorBuilder(
             frameworkConfigDir / "${getNameFromLabel(
                 framework.identifier,
             ).capitalizeEn()}DataFixtures.ts",
+            referencedReportGetter,
         )
         buildPreparedFixturesTs(
             frameworkConfigDir /

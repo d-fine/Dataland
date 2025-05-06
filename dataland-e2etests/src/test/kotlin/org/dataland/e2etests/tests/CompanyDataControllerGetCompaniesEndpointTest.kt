@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -27,7 +27,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
 
     private val setOfAllDataTypes = enumValues<DataTypeEnum>().toSet()
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
     private val company1 = "Company 1"
     private val company2 = "Company 2"
     private val company3 = "Company 3"
@@ -44,7 +44,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val expectedDataset =
-            uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
+            uploadTestEuTaxonomyFinancialsDataset(uploadInfo.actualStoredCompany.companyId)
                 .copy(uploaderUserId = null)
         val getCompaniesResponse =
             apiAccessor.getCompaniesByNameAndIdentifier(
@@ -65,7 +65,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val expectedDataMetaInfo = uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
+        val expectedDataMetaInfo = uploadTestEuTaxonomyFinancialsDataset(uploadInfo.actualStoredCompany.companyId)
         val expectedStoredCompany =
             uploadInfo.actualStoredCompany
                 .copy(dataRegisteredByDataland = listOf(expectedDataMetaInfo))
@@ -120,7 +120,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val allCompaniesListSizeBefore = apiAccessor.getNumberOfStoredCompanies()
         val listOfUploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(3)
         listOfUploadInfo.forEach {
-            uploadTestEuTaxonomyFinancialsDataSet(it.actualStoredCompany.companyId)
+            uploadTestEuTaxonomyFinancialsDataset(it.actualStoredCompany.companyId)
         }
         val allCompaniesListSizeAfter = apiAccessor.getNumberOfStoredCompanies()
         assertEquals(
@@ -146,7 +146,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             IdentifierType.PermId,
             firstIdentifier,
         )
-        uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
+        uploadTestEuTaxonomyFinancialsDataset(uploadInfo.actualStoredCompany.companyId)
         assertTrue(
             apiAccessor.companyDataControllerApi
                 .getCompanies(
@@ -198,7 +198,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first())
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        uploadTestEuTaxonomyFinancialsDataSet(companyResponse.companyId)
+        uploadTestEuTaxonomyFinancialsDataset(companyResponse.companyId)
         testThatSearchForCompanyIdentifierWorks(IdentifierType.Isin.value, "Isin$testString")
         testThatSearchForCompanyIdentifierWorks(IdentifierType.Lei.value, "Lei$testString")
     }
@@ -218,7 +218,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
+        val uploadedData = uploadTestEuTaxonomyFinancialsDataset(uploadedCompany.companyId).copy(uploaderUserId = null)
         val expectedCompany =
             StoredCompany(
                 uploadedCompany.companyId,
@@ -243,7 +243,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
+        val uploadedData = uploadTestEuTaxonomyFinancialsDataset(uploadedCompany.companyId).copy(uploaderUserId = null)
         val expectedCompany =
             convertStoredToBasicCompanyInformation(
                 StoredCompany(
@@ -271,7 +271,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val companyList = createCompaniesForTestingOrdering(testString)
         for (company in companyList) {
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
-            uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId)
+            uploadTestEuTaxonomyFinancialsDataset(uploadedCompany.companyId)
         }
         val sortedCompanyNames =
             apiAccessor.companyDataControllerApi
@@ -378,9 +378,9 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             CompanyInformation(inputString, "", mapOf(), "", listOf()),
         )
 
-    private fun uploadTestEuTaxonomyFinancialsDataSet(companyId: String): DataMetaInformation =
+    private fun uploadTestEuTaxonomyFinancialsDataset(companyId: String): DataMetaInformation =
         apiAccessor
-            .uploadSingleFrameworkDataSet(
+            .uploadSingleFrameworkDataset(
                 companyId = companyId,
                 frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
                 reportingPeriod = "2023",

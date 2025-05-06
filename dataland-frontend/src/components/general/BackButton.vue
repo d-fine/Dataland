@@ -35,9 +35,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables';
+
 .back-button {
   width: fit-content;
-  @media only screen and (min-width: $small) {
+  @media only screen and (min-width: newVariables.$small) {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }

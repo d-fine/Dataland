@@ -7,7 +7,7 @@
     <div v-if="displayAnything" style="position: relative; width: 1.5rem">
       <span v-if="displaySpinner" class="progress-spinner-container">
         <i class="pi pi-spin pi-spinner progress-spinner-spinner" data-test="spinner-icon" />
-        <span class="progress-spinner-value" data-test="percentage-text">{{ percentCompleted }}%</span>
+        <span :class="progressSpinnerValueClass" data-test="percentage-text">{{ percentCompleted }}%</span>
       </span>
       <span v-if="displayCheckmark" class="progress-spinner-container">
         <i class="pi pi-check progress-completed-checkmark" data-test="checkmark-icon" />
@@ -21,23 +21,35 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'DownloadProgressSpinner',
+
   props: {
     percentCompleted: { type: Number, default: undefined },
+    whiteSpinner: { type: Boolean, required: false, default: false },
   },
+
   computed: {
     displayAnything() {
       return this.displaySpinner || this.displayCheckmark;
     },
+
     displaySpinner() {
       return this.percentCompleted !== undefined && this.percentCompleted < 100;
     },
+
     displayCheckmark() {
       return this.percentCompleted === 100;
+    },
+
+    progressSpinnerValueClass() {
+      return `progress-spinner-value ${this.whiteSpinner ? 'white' : 'black'}`;
     },
   },
 });
 </script>
+
 <style lang="scss" scoped>
+@use '@/assets/scss/variables';
+
 .progress-spinner-container {
   position: absolute;
   top: 50%;
@@ -53,13 +65,21 @@ export default defineComponent({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.45rem;
+  font-size: 0.45em;
   color: black;
+}
+
+.black {
+  color: black;
+}
+
+.white {
+  color: white;
 }
 
 .progress-spinner-spinner {
   font-size: 1.5rem;
-  color: $orange-prime;
+  color: variables.$orange-prime;
 }
 
 .progress-completed-checkmark {
@@ -68,7 +88,7 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.2rem;
-  color: $orange-prime;
+  color: variables.$orange-prime;
 }
 
 .spinner-transition-enter-active {
@@ -86,6 +106,7 @@ export default defineComponent({
     opacity: 0;
   }
 }
+
 .spinner-transition-leave-active {
   animation: spinner-transition 2s;
 }

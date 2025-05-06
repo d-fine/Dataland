@@ -2,18 +2,19 @@ package org.dataland.datalandqaservice.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -26,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as OpenApiClientQaStatus
 import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
@@ -41,15 +42,14 @@ import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
 )
 class QaControllerTest(
     @Autowired private val qaController: QaController,
+    @Autowired private val dataPointQaReviewManager: DataPointQaReviewManager,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val dataPointQaReviewRepository: DataPointQaReviewRepository,
 ) {
-    @MockBean
+    @MockitoBean
     private lateinit var dataPointControllerApi: DataPointControllerApi
 
-    @MockBean
-    private lateinit var companyControllerApi: CompanyDataControllerApi
-
-    @MockBean
+    @MockitoBean
     private lateinit var cloudEventMessageHandler: CloudEventMessageHandler
 
     val dataId = UUID.randomUUID().toString()
@@ -70,22 +70,25 @@ class QaControllerTest(
                 qaStatus = OpenApiClientQaStatus.Accepted,
                 currentlyActive = true,
                 uploadTime = 0,
+                uploaderUserId = "",
             ),
         )
 
-        `when`(companyControllerApi.getCompanyById(companyId)).thenReturn(
-            StoredCompany(
-                companyId = companyId,
-                companyInformation =
-                    CompanyInformation(
-                        companyName = companyName,
-                        headquarters = "some-headquarters",
-                        countryCode = "some-country",
-                        identifiers = mapOf("LEI" to listOf("some-lei")),
-                    ),
-                dataRegisteredByDataland = emptyList(),
-            ),
-        )
+        for (dataId in listOf(dataId, originalActiveDataId)) {
+            dataPointQaReviewRepository.save(
+                DataPointQaReviewEntity(
+                    dataPointId = dataId,
+                    companyId = companyId,
+                    companyName = companyName,
+                    dataPointType = dataPointType,
+                    reportingPeriod = reportingPeriod,
+                    timestamp = 0,
+                    qaStatus = QaStatus.Pending,
+                    triggeringUserId = "some-reviewer",
+                    comment = "comment",
+                ),
+            )
+        }
 
         `when`(cloudEventMessageHandler.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()))
             .thenAnswer { println("Sending message to queue") }
@@ -121,12 +124,26 @@ class QaControllerTest(
         specifyMocks()
         val expectedBodyForNewSetToActive = createMessageBody(dataId, BackendUtilsQaStatus.Accepted, dataId)
         val expectedBodyForOriginalSetToActive: String = createMessageBody(dataId, BackendUtilsQaStatus.Rejected, originalActiveDataId)
+        for (mockDataId in listOf(dataId, originalActiveDataId)) {
+            dataPointQaReviewManager.reviewDataPoints(
+                listOf(
+                    DataPointQaReviewManager.ReviewDataPointTask(
+                        dataPointId = mockDataId,
+                        qaStatus = QaStatus.Pending,
+                        triggeringUserId = "some-user-id",
+                        comment = "This simulates the message queue event from the backend.",
+                        correlationId = "some-correlation-id",
+                        timestamp = 0,
+                    ),
+                ),
+            )
+        }
+
         UtilityFunctions.withReviewerAuthentication {
             qaController.changeDataPointQaStatus(originalActiveDataId, BackendUtilsQaStatus.Accepted, firstComment)
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Pending, "Pending")
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Accepted, "Accepted")
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Rejected, "Rejected")
-
             verify(cloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
                 eq(expectedBodyForNewSetToActive),
                 eq(MessageType.QA_STATUS_UPDATED),
@@ -144,7 +161,7 @@ class QaControllerTest(
             )
 
             val reviewEntries = qaController.getDataPointQaReviewInformationByDataId(dataId).body!!
-            assertEquals(3, reviewEntries.size)
+            assertEquals(5, reviewEntries.size)
             assertEquals(BackendUtilsQaStatus.Rejected, reviewEntries.first().qaStatus)
 
             val latestReviewEntries = getReviewEntries(onlyLatest = true)
@@ -152,8 +169,8 @@ class QaControllerTest(
             assertEquals(BackendUtilsQaStatus.Rejected, latestReviewEntries.first().qaStatus)
 
             val allReviewEntries = getReviewEntries(onlyLatest = false)
-            assertEquals(4, allReviewEntries.size)
-            assertEquals(firstComment, allReviewEntries.last().comment)
+            assertEquals(8, allReviewEntries.size)
+            assertEquals(firstComment, allReviewEntries[allReviewEntries.size - 5].comment)
         }
     }
 }

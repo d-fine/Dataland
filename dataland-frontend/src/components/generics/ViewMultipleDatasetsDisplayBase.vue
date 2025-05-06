@@ -69,9 +69,8 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
-import { defineComponent, inject } from 'vue';
+import { defineComponent, inject, type PropType } from 'vue';
 import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -84,8 +83,8 @@ import { convertDataModelToMLDTConfig } from '@/components/resources/dataTable/c
 import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
-  type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
+  type FrontendFrameworkDefinition,
 } from '@/frameworks/BaseFrameworkDefinition';
 
 export default defineComponent({
@@ -94,10 +93,10 @@ export default defineComponent({
     p2pDataModel() {
       return p2pDataModel;
     },
-    frameworkConfiguration(): FrontendFrameworkDefinition<unknown> | undefined {
+    frameworkConfiguration(): FrontendFrameworkDefinition<object> | undefined {
       return this.dataType ? getFrontendFrameworkDefinition(this.dataType) : undefined;
     },
-    frameworkViewConfiguration(): FrameworkViewConfiguration<unknown> | undefined {
+    frameworkViewConfiguration(): FrameworkViewConfiguration<object> | undefined {
       return this.frameworkConfiguration?.getFrameworkViewConfiguration();
     },
   },
@@ -112,7 +111,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: true,
     },
     dataId: {
@@ -131,7 +130,7 @@ export default defineComponent({
       isWaitingForListOfDataIdsToDisplay: true,
       isListOfDataIdsToDisplayFound: false,
       receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
-      singleDataMetaInfoToDisplay: null as null | DataMetaInformation,
+      singleDataMetaInfoToDisplay: undefined as undefined | DataMetaInformation,
       humanizeString: humanizeStringOrNumber,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
@@ -150,7 +149,7 @@ export default defineComponent({
         this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
       } else if (!this.reportingPeriod) {
-        this.setSingleDataMetaInfoToDisplay(null);
+        this.setSingleDataMetaInfoToDisplay(undefined);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
@@ -170,7 +169,7 @@ export default defineComponent({
           this.isReportingPeriodInUrlInvalid = true;
         }
       } else if (!this.dataId) {
-        this.setSingleDataMetaInfoToDisplay(null);
+        this.setSingleDataMetaInfoToDisplay(undefined);
       }
     },
   },
@@ -215,7 +214,7 @@ export default defineComponent({
      * Method to set a data meta information object as the only one to display
      * @param dataMetaInfoToDisplay the data meta information to display
      */
-    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
+    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | undefined) {
       this.setFlagsToDataFoundState();
       this.singleDataMetaInfoToDisplay = dataMetaInfoToDisplay;
     },

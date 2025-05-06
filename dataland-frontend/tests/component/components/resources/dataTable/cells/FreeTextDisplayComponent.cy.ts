@@ -5,7 +5,6 @@ const shortTestString = 'Short String';
 
 it('Should entirely display a short string without an expand option', () => {
   cy.mountWithPlugins(FreeTextDisplayComponent, {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     props: {
       content: {
@@ -22,7 +21,6 @@ const longText = 'long'.repeat(100);
 
 it('Should initially show the collapsed string but allow expanding for longer texts', () => {
   cy.mountWithPlugins(FreeTextDisplayComponent, {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     props: {
       content: {

@@ -4,6 +4,7 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 WORKDIR /app
 COPY ./dataland-qa-service/ ./dataland-qa-service/
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-specification-service/specificationServiceOpenApi.json
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json

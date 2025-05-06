@@ -212,7 +212,6 @@ describeIf(
       cy.visitAndCheckAppMount(
         '/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme + '/upload'
       );
-      //cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.get('h1').should('contain', storedTestCompany.companyInformation.companyName);
       cy.intercept({
         url: `**/api/data/${DataTypeEnum.Vsme}`,

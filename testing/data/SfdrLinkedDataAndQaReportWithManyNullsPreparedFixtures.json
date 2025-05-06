@@ -1,0 +1,1180 @@
+{
+	"data": {
+		"general": {
+			"general": {
+				"dataDate": "2022-01-01",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2022-12-31",
+				"referencedReports": {
+					"test_report": {
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"fileName": null,
+						"publicationDate": null
+					}
+				}
+			}
+		},
+		"environmental": {
+			"greenhouseGasEmissions": {
+				"scope1GhgEmissionsInTonnes": {
+					"value": 27268,
+					"quality": "Reported",
+					"comment": "The value for Scope 1 emissions in 2022 is directly provided in the table.",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope2GhgEmissionsInTonnes": {
+					"value": 196553,
+					"quality": "Reported",
+					"comment": "The value for Scope 2 Location-Based emissions in 2022 is directly provided in the table.",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope2GhgEmissionsLocationBasedInTonnes": {
+					"value": 196553,
+					"quality": "Reported",
+					"comment": "The table on page 58 provides the Scope 2 location-based emissions for the year 2022 as 196,553 mtCO2e.",
+					"dataSource": {
+						"page": "58",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope2GhgEmissionsMarketBasedInTonnes": {
+					"value": 40150,
+					"quality": "Reported",
+					"comment": "The table on page 58 provides the Scope 2 market-based emissions for the year 2022 as 40,150 mtCO2e.",
+					"dataSource": {
+						"page": "58",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope1And2GhgEmissionsInTonnes": {
+					"value": 223821,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope1And2GhgEmissionsLocationBasedInTonnes": {
+					"value": 223821,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "58",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope1And2GhgEmissionsMarketBasedInTonnes": {
+					"value": 67418,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "58",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope3GhgEmissionsInTonnes": {
+					"value": 57268,
+					"quality": "Reported",
+					"comment": "The value for Scope 3 Total Category 6 & 13 emissions in 2022 is directly provided in the table.",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope3UpstreamGhgEmissionsInTonnes": {
+					"value": 57057,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope3DownstreamGhgEmissionsInTonnes": {
+					"value": 211,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope1And2And3GhgEmissionsInTonnes": {
+					"value": 281089,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+					"value": 281089,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "58",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+					"value": 124686,
+					"quality": "Estimated",
+					"comment": "Field estimated",
+					"dataSource": {
+						"page": "58",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"scope4GhgEmissionsInTonnes": null,
+				"enterpriseValue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null,
+					"currency": null
+				},
+				"totalRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null,
+					"currency": null
+				},
+				"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"fossilFuelSectorExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"financedScope1AndScope2Emissions": null,
+				"financedScope3Emissions": null
+			},
+			"energyPerformance": {
+				"renewableEnergyProductionInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"renewableEnergyConsumptionInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyProductionInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"relativeNonRenewableEnergyProductionInPercent": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"relativeNonRenewableEnergyConsumptionInPercent": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"applicableHighImpactClimateSectors": {
+					"NaceCodeD": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeE": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeB": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeC": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeH": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeF": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeG": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeL": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					},
+					"NaceCodeA": {
+						"highImpactClimateSectorEnergyConsumptionInGWh": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						},
+						"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+							"value": null,
+							"quality": null,
+							"comment": null,
+							"dataSource": null
+						}
+					}
+				},
+				"totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionCrudeOilInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionNaturalGasInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionLigniteInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionCoalInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRenewableEnergyConsumptionOtherInGWh": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"biodiversity": {
+				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"protectedAreasExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"rareOrEndangeredEcosystemsExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"highlyBiodiverseGrasslandExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"manufactureOfAgrochemicalPesticidesProducts": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"landDegradationDesertificationSoilSealingExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"sustainableAgriculturePolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"sustainableOceansAndSeasPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"threatenedSpeciesExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"biodiversityProtectionPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"deforestationPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"water": {
+				"emissionsToWaterInTonnes": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"waterConsumptionInCubicMeters": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"waterReusedInCubicMeters": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"waterManagementPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"highWaterStressAreaExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"waste": {
+				"hazardousAndRadioactiveWasteInTonnes": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"nonRecycledWasteInTonnes": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"emissions": {
+				"emissionsOfInorganicPollutantsInTonnes": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"emissionsOfAirPollutantsInTonnes": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"emissionsOfOzoneDepletionSubstancesInTonnes": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"carbonReductionInitiatives": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			}
+		},
+		"social": {
+			"socialAndEmployeeMatters": {
+				"humanRightsLegalProceedings": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"iloCoreLabourStandards": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"environmentalPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"corruptionLegalProceedings": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"transparencyDisclosurePolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"humanRightsDueDiligencePolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"policyAgainstChildLabour": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"policyAgainstForcedLabour": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"policyAgainstDiscriminationInTheWorkplace": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"iso14001Certificate": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"policyAgainstBriberyAndCorruption": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"fairBusinessMarketingAdvertisingPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"technologiesExpertiseTransferPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"fairCompetitionPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"violationOfTaxRulesAndRegulation": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"unGlobalCompactPrinciplesCompliancePolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"averageGrossHourlyEarningsMaleEmployees": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null,
+					"currency": null
+				},
+				"averageGrossHourlyEarningsFemaleEmployees": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null,
+					"currency": null
+				},
+				"unadjustedGenderPayGapInPercent": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"femaleBoardMembersSupervisoryBoard": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"femaleBoardMembersBoardOfDirectors": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"maleBoardMembersSupervisoryBoard": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"maleBoardMembersBoardOfDirectors": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"boardGenderDiversitySupervisoryBoardInPercent": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"boardGenderDiversityBoardOfDirectorsInPercent": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"controversialWeaponsExposure": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"workplaceAccidentPreventionPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"rateOfAccidents": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"workdaysLostInDays": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"supplierCodeOfConduct": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"grievanceHandlingMechanism": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"whistleblowerProtectionPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"reportedIncidentsOfDiscrimination": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"sanctionedIncidentsOfDiscrimination": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"excessiveCeoPayRatio": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"greenSecurities": {
+				"securitiesNotCertifiedAsGreen": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"humanRights": {
+				"humanRightsPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"humanRightsDueDiligence": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"traffickingInHumanBeingsPolicy": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"reportedChildLabourIncidents": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"reportedForcedOrCompulsoryLabourIncidents": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"numberOfReportedIncidentsOfHumanRightsViolations": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				}
+			},
+			"antiCorruptionAndAntiBribery": {
+				"casesOfInsufficientActionAgainstBriberyAndCorruption": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"reportedConvictionsOfBriberyAndCorruption": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null
+				},
+				"totalAmountOfReportedFinesOfBriberyAndCorruption": {
+					"value": null,
+					"quality": null,
+					"comment": null,
+					"dataSource": null,
+					"currency": null
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"environmental": {
+			"greenhouseGasEmissions": {
+				"scope1GhgEmissionsInTonnes": {
+					"comment": "The scope1GhgEmissionsInTonnes for Test Company in 2022 is 27,268 mtCO2e as stated in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 27268,
+						"quality": "Reported",
+						"comment": "The scope1GhgEmissionsInTonnes for Test Company in 2022 is 27,268 mtCO2e as stated in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope2GhgEmissionsInTonnes": {
+					"comment": "The Scope 2 Location-Based emissions for Test Company in 2022 are listed as 196,553 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 196553,
+						"quality": "Reported",
+						"comment": "The Scope 2 Location-Based emissions for Test Company in 2022 are listed as 196,553 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope2GhgEmissionsLocationBasedInTonnes": {
+					"comment": "The Scope 2 Location-Based emissions for Test Company in 2022 are listed as 196,553 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 196553,
+						"quality": "Reported",
+						"comment": "The Scope 2 Location-Based emissions for Test Company in 2022 are listed as 196,553 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "58",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope2GhgEmissionsMarketBasedInTonnes": {
+					"comment": "The Scope 2 Market-Based emissions for Test Company in 2022 are listed as 40,150 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 40150,
+						"quality": "Reported",
+						"comment": "The Scope 2 Market-Based emissions for Test Company in 2022 are listed as 40,150 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "58",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope1And2GhgEmissionsInTonnes": {
+					"comment": "The total location-based Scope 1 and 2 emissions for Test Company in 2022 are listed as 223,821 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 223821,
+						"quality": "Estimated",
+						"comment": "The total location-based Scope 1 and 2 emissions for Test Company in 2022 are listed as 223,821 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope1And2GhgEmissionsLocationBasedInTonnes": {
+					"comment": "The total location-based Scope 1 and 2 emissions for Test Company in 2022 are listed as 223,821 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 223821,
+						"quality": "Estimated",
+						"comment": "The total location-based Scope 1 and 2 emissions for Test Company in 2022 are listed as 223,821 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "58",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope1And2GhgEmissionsMarketBasedInTonnes": {
+					"comment": "The total market-based Scope 1 and 2 emissions for Test Company in 2022 are listed as 67,418 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 67418,
+						"quality": "Estimated",
+						"comment": "The total market-based Scope 1 and 2 emissions for Test Company in 2022 are listed as 67,418 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "58",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope3GhgEmissionsInTonnes": {
+					"comment": "",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 57268,
+						"quality": "Reported",
+						"comment": "The value for Scope 3 Total Category 6 & 13 emissions in 2022 is directly provided in the table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope3UpstreamGhgEmissionsInTonnes": {
+					"comment": "",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 57057,
+						"quality": "Estimated",
+						"comment": "Field estimated",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope3DownstreamGhgEmissionsInTonnes": {
+					"comment": "The 'Operational GHG Emissions Data' table lists the Scope 3: Category 13 Downstream Leased Assets emissions for Test Company in 2022 as 211 mtCO2e.",
+					"verdict": "QaRejected",
+					"correctedData": {
+						"value": 211,
+						"quality": "Estimated",
+						"comment": "The 'Operational GHG Emissions Data' table lists the Scope 3: Category 13 Downstream Leased Assets emissions for Test Company in 2022 as 211 mtCO2e.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope1And2And3GhgEmissionsInTonnes": {
+					"comment": "",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 281089,
+						"quality": "Estimated",
+						"comment": "Field estimated",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "69",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+					"comment": "The total location-based emissions for Test Company in 2022, which include Scope 1, Scope 2 (location-based), and Scope 3 emissions, are listed as 281,089 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 281089,
+						"quality": "Estimated",
+						"comment": "The total location-based emissions for Test Company in 2022, which include Scope 1, Scope 2 (location-based), and Scope 3 emissions, are listed as 281,089 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "58",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+					"comment": "The total market-based emissions for Test Company in 2022, which include Scope 1, Scope 2 (market-based), and Scope 3 emissions, are listed as 124,686 mtCO2e in the 'Operational GHG Emissions Data' table.",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": 124686,
+						"quality": "Estimated",
+						"comment": "The total market-based emissions for Test Company in 2022, which include Scope 1, Scope 2 (market-based), and Scope 3 emissions, are listed as 124,686 mtCO2e in the 'Operational GHG Emissions Data' table.",
+						"dataSource": {
+							"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+							"page": "58",
+							"tagName": "",
+							"fileName": "test_report",
+							"publicationDate": null
+						}
+					}
+				},
+				"scope4GhgEmissionsInTonnes": null,
+				"enterpriseValue": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null,
+						"currency": null
+					}
+				},
+				"totalRevenue": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null
+					}
+				},
+				"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null
+					}
+				},
+				"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null
+					}
+				},
+				"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null
+					}
+				},
+				"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null
+					}
+				},
+				"fossilFuelSectorExposure": {
+					"comment": "",
+					"verdict": "QaNotAttempted",
+					"correctedData": {
+						"value": null,
+						"quality": null,
+						"comment": null,
+						"dataSource": null
+					}
+				},
+				"financedScope1AndScope2Emissions": null,
+				"financedScope3Emissions": null
+			},
+			"energyPerformance": null,
+			"biodiversity": null,
+			"water": null,
+			"waste": null,
+			"emissions": null
+		},
+		"social": null
+	}
+}

@@ -28,6 +28,16 @@
         "summary": "Send a single request",
         "description": "A single of data requests for specific frameworks and companies is being sent.",
         "operationId": "postSingleDataRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -41,6 +51,16 @@
         "responses": {
           "200": {
             "description": "Successfully processed a single data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleDataRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins can impersonate another user.",
             "content": {
               "application/json": {
                 "schema": {
@@ -322,11 +342,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Either the specified company does not exist on Dataland or the user does not have the company role for it."
-          },
           "200": {
             "description": "The specified user has the company role."
+          },
+          "404": {
+            "description": "Either the specified company does not exist on Dataland or the user does not have the company role for it."
           },
           "default": {
             "description": "An error occurred",
@@ -439,11 +459,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The specified company has no company owner(s) yet"
-          },
           "200": {
             "description": "The specified company has company owner(s)."
+          },
+          "404": {
+            "description": "The specified company has no company owner(s) yet"
           },
           "default": {
             "description": "An error occurred",
@@ -707,16 +727,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -935,16 +955,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1088,16 +1108,16 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "lksg",
                   "p2p",
-                  "sfdr",
+                  "lksg",
+                  "additional-company-information",
                   "vsme",
                   "esg-datenkatalog",
-                  "heimathafen",
-                  "additional-company-information"
+                  "heimathafen"
                 ]
               }
             }
@@ -1201,8 +1221,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The specified company does not exist on Dataland.",
+          "200": {
+            "description": "Successfully retrieved company role assignments.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1214,8 +1234,8 @@
               }
             }
           },
-          "200": {
-            "description": "Successfully retrieved company role assignments.",
+          "404": {
+            "description": "The specified company does not exist on Dataland.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1436,6 +1456,7 @@
         "required": [
           "companyIdentifier",
           "dataType",
+          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1448,16 +1469,16 @@
             "type": "string",
             "example": "p2p",
             "enum": [
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "lksg",
               "p2p",
-              "sfdr",
+              "lksg",
+              "additional-company-information",
               "vsme",
               "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
+              "heimathafen"
             ]
           },
           "reportingPeriods": {
@@ -1483,6 +1504,9 @@
           },
           "message": {
             "type": "string"
+          },
+          "notifyMeImmediately": {
+            "type": "boolean"
           }
         }
       },
@@ -1522,6 +1546,7 @@
         "required": [
           "companyIdentifiers",
           "dataTypes",
+          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1546,16 +1571,16 @@
             "items": {
               "type": "string",
               "enum": [
+                "sfdr",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
-                "lksg",
                 "p2p",
-                "sfdr",
+                "lksg",
+                "additional-company-information",
                 "vsme",
                 "esg-datenkatalog",
-                "heimathafen",
-                "additional-company-information"
+                "heimathafen"
               ]
             }
           },
@@ -1569,24 +1594,37 @@
             "items": {
               "type": "string"
             }
+          },
+          "notifyMeImmediately": {
+            "type": "boolean"
           }
         }
       },
       "BulkDataRequestResponse": {
         "required": [
-          "acceptedCompanyIdentifiers",
-          "message",
+          "acceptedDataRequests",
+          "alreadyExistingDatasets",
+          "alreadyExistingNonFinalRequests",
           "rejectedCompanyIdentifiers"
         ],
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
-          "acceptedCompanyIdentifiers": {
+          "acceptedDataRequests": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ResourceResponse"
+            }
+          },
+          "alreadyExistingNonFinalRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceResponse"
+            }
+          },
+          "alreadyExistingDatasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
@@ -1594,6 +1632,36 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "ResourceResponse": {
+        "required": [
+          "companyName",
+          "framework",
+          "reportingPeriod",
+          "resourceId",
+          "userProvidedIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "userProvidedIdentifier": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "resourceId": {
+            "type": "string"
+          },
+          "resourceUrl": {
+            "type": "string"
           }
         }
       },
@@ -1660,6 +1728,9 @@
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
           },
+          "notifyMeImmediately": {
+            "type": "boolean"
+          },
           "adminComment": {
             "type": "string"
           },
@@ -1698,6 +1769,7 @@
           "datalandCompanyId",
           "lastModifiedDate",
           "messageHistory",
+          "notifyMeImmediately",
           "reportingPeriod",
           "requestPriority",
           "requestStatus",
@@ -1713,6 +1785,9 @@
           },
           "userEmailAddress": {
             "type": "string"
+          },
+          "notifyMeImmediately": {
+            "type": "boolean"
           },
           "creationTimestamp": {
             "type": "integer",
@@ -1800,6 +1875,9 @@
           },
           "requestStatusChangeReason": {
             "type": "string"
+          },
+          "answeringDataId": {
+            "type": "string"
           }
         }
       },
@@ -1884,16 +1962,16 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "lksg",
               "p2p",
-              "sfdr",
+              "lksg",
+              "additional-company-information",
               "vsme",
               "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
+              "heimathafen"
             ]
           },
           "reportingPeriod": {

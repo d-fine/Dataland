@@ -1,0 +1,98 @@
+{
+	"data": {
+		"general": {
+			"general": {
+				"dataDate": "2024-09-21",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2024-03-10",
+				"referencedReports": {
+					"AnnualReport": {
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-11-23"
+					},
+					"IntegratedReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-04-26"
+					}
+				}
+			}
+		},
+		"social": {
+			"humanRights": {
+				"numberOfReportedIncidentsOfHumanRightsViolations": {
+					"value": 7610,
+					"dataSource": {
+						"page": "400-419",
+						"fileName": "AnnualReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "models",
+						"publicationDate": null
+					},
+					"comment": "transmit bluetooth capacitor",
+					"quality": "Incomplete"
+				}
+			}
+		},
+		"environmental": {
+			"biodiversity": {
+				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+					"value": "No",
+					"dataSource": {
+						"page": "324",
+						"fileName": "AnnualReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "ROI",
+						"publicationDate": null
+					},
+					"comment": "hack optical microchip",
+					"quality": "Reported"
+				},
+				"biodiversityProtectionPolicy": {
+					"value": "No",
+					"dataSource": {
+						"page": "642-1241",
+						"fileName": "IntegratedReport",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "convergence",
+						"publicationDate": null
+					},
+					"comment": "bypass cross-platform port",
+					"quality": "Audited"
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"social": {
+			"humanRights": {
+				"numberOfReportedIncidentsOfHumanRightsViolations": {
+					"comment": "data is wrong",
+					"verdict": "QaRejected",
+					"correctedData": {
+						"value": 5,
+						"quality": "Estimated"
+					}
+				}
+			}
+		},
+		"environmental": {
+			"biodiversity": {
+				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+					"comment": "some comment",
+					"verdict": "QaInconclusive",
+					"correctedData": {
+						"value": "Yes",
+						"quality": "Estimated"
+					}
+				},
+				"biodiversityProtectionPolicy": {
+					"comment": "data is correct",
+					"verdict": "QaAccepted",
+					"correctedData": {}
+				}
+			}
+		}
+	}
+}

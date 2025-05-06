@@ -1,0 +1,99 @@
+{
+	"data": {
+		"general": {
+			"general": {
+				"referencedReports": {
+					"AnnualReport": {
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-10-22"
+					},
+					"ESEFReport": {
+						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+						"fileName": "ESEFReport",
+						"publicationDate": "2024-01-04"
+					},
+					"IntegratedReport": {
+						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-09-16"
+					}
+				}
+			},
+			"financialInformation": {
+				"equity": {
+					"value": 7451409111.95,
+					"dataSource": {
+						"page": "445",
+						"fileName": "ESEFReport",
+						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+						"tagName": "communities",
+						"publicationDate": null
+					},
+					"comment": "override auxiliary monitor",
+					"quality": "Incomplete",
+					"currency": "UYU"
+				},
+				"debt": {
+					"value": 8942640892.53,
+					"dataSource": {
+						"page": "372-1084",
+						"fileName": "AnnualReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "models",
+						"publicationDate": null
+					},
+					"comment": "generate digital matrix",
+					"quality": "NoDataFound",
+					"currency": "MKD"
+				},
+				"evic": {
+					"value": 7117288694.36,
+					"dataSource": {
+						"page": "498",
+						"fileName": "IntegratedReport",
+						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
+						"tagName": "paradigms",
+						"publicationDate": null
+					},
+					"comment": "index redundant sensor",
+					"quality": "Reported",
+					"currency": "QAR"
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"general": {
+			"financialInformation": {
+				"equity": {
+					"verdict": "QaAccepted",
+					"comment": "Equity is fine",
+					"correctedData": {}
+				},
+				"debt": {
+					"verdict": "QaNotAttempted",
+					"comment": "Qa for debt was inconclusive",
+					"correctedData": {}
+				},
+				"evic": {
+					"verdict": "QaRejected",
+					"comment": "EVIC is not correct",
+					"correctedData": {
+						"value": 9801827824,
+						"dataSource": {
+							"page": "566-1239",
+							"fileName": "ESEFReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "markets",
+							"publicationDate": null
+						},
+						"comment": "calculate optical firewall",
+						"quality": "Audited",
+						"currency": "UZS"
+					}
+				}
+			}
+		}
+	}
+}
