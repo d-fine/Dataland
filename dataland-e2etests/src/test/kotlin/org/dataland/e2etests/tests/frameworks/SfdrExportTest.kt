@@ -89,7 +89,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     }
 
     @Test
-    fun `test CSV export includes column for null field when company with non-null value is exported`() {
+    fun `test CSV export includes column for null field when company with non null value is exported`() {
         testCsvExportIncludesColumnForNonNullField()
     }
 

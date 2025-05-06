@@ -169,7 +169,7 @@
             "description": "Successfully checked that the companyId is known by dataland."
           },
           "404": {
-            "description": "Check was successfull. CompanyId is not known by dataland."
+            "description": "Check was successful. CompanyId is not known by dataland."
           },
           "default": {
             "description": "An error occurred",

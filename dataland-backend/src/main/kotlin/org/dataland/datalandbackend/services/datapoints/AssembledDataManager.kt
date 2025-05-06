@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
@@ -24,6 +25,7 @@ import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
@@ -286,12 +288,11 @@ class AssembledDataManager
             correlationId: String,
         ): String {
             val dataPoints = getDataPointIdsForDataset(datasetId)
-            return assembleDatasetFromDataPoints(dataPoints.values.toList(), dataType, correlationId)
+            return assembleSingleDataSet(
+                dataPointManager.retrieveDataPoints(dataPoints.values, correlationId).values,
+                getFrameworkTemplate(dataType),
+            )
         }
-
-        @Transactional
-        override fun getDatasetData(dataDimensionList: List<Pair<BasicDataDimensions, String>>): List<Pair<BasicDataDimensions, String>> =
-            listOf()
 
         /**
          * Retrieves a key value map containing the IDs of the data points contained in a dataset mapped to their technical IDs
@@ -310,50 +311,89 @@ class AssembledDataManager
         }
 
         /**
-         * Assembles a dataset by retrieving the data points from the internal storage
-         * and filling their content into the framework template
-         * @param dataIds a list of all required data points
-         * @param framework the type of dataset
-         * @param correlationId the correlation id for the operation
-         * @return the dataset in form of a JSON string
+         * Return the template of a specific framework
+         *
+         * @param framework the framework for which the template shall be returned
          */
-        private fun assembleDatasetFromDataPoints(
-            dataIds: List<String>,
-            framework: String,
-            correlationId: String,
-        ): String {
+        private fun getFrameworkTemplate(framework: String): JsonNode {
             val frameworkSpecification = dataPointUtils.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
             referencedReportsUtilities
                 .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
+            return frameworkTemplate
+        }
 
+        /**
+         * Assemble a single data set using the provided list of uploaded data points and the framework template
+         *
+         * @param dataPoints the data points of the data set as retrieved from the internal storage
+         * @param frameworkTemplate the framework template to be used as a basis
+         */
+        private fun assembleSingleDataSet(
+            dataPoints: Collection<UploadedDataPoint>,
+            frameworkTemplate: JsonNode,
+        ): String {
             val referencedReports = mutableMapOf<String, CompanyReport>()
-            val allStoredDatapoints = dataPointManager.retrieveDataPoints(dataIds, correlationId)
             val allDataPoints =
-                allStoredDatapoints.entries
+                dataPoints
                     .associate {
-                        it.value.dataPointType to objectMapper.readTree(it.value.dataPoint)
+                        it.dataPointType to objectMapper.readTree(it.dataPoint)
                     }.toMutableMap()
 
-            allStoredDatapoints.values.forEach {
+            dataPoints.forEach {
                 val companyReports = mutableListOf<CompanyReport>()
                 referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
                 companyReports.forEach { companyReport ->
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
             }
-            allDataPoints[REFERENCED_REPORTS_ID] =
-                objectMapper.valueToTree(referencedReports)
+            allDataPoints[REFERENCED_REPORTS_ID] = objectMapper.valueToTree(referencedReports)
 
-            val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
+            val datasetAsJsonNode =
+                JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) {
+                    allDataPoints[it]
+                }
 
             return datasetAsJsonNode.toString()
+        }
+
+        /**
+         * Assembles datasets by retrieving the data points from the internal storage
+         * and filling their content into the framework template
+         *
+         * This function processes multiple datasets at once. Each dataset in the input is identified by a
+         * BasicDataDimensions object.
+         *
+         * @param dataDimensionsToDataIdMap a map of all required data point IDs grouped by data set
+         * @param correlationId the correlation ID for the operation
+         * @return the dataset in form of a JSON string
+         */
+        private fun assembleDatasetsFromDataIds(
+            dataDimensionsToDataIdMap: Map<BasicDataDimensions, List<String>>,
+            correlationId: String,
+        ): List<Pair<BasicDataDimensions, String>> {
+            val allStoredDatapoints =
+                dataPointManager.retrieveDataPoints(dataDimensionsToDataIdMap.flatMap { it.value }, correlationId)
+            val dataPointsPerDatasetGroupedByFramework = mutableMapOf<String, MutableMap<BasicDataDimensions, List<UploadedDataPoint>>>()
+            dataDimensionsToDataIdMap.forEach { (dataDimensions, listOfDataIds) ->
+                val uploadedDataPoints = listOfDataIds.mapNotNull { allStoredDatapoints[it] }
+                dataPointsPerDatasetGroupedByFramework
+                    .getOrPut(dataDimensions.dataType) { mutableMapOf() }[dataDimensions] = uploadedDataPoints
+            }
+
+            return dataPointsPerDatasetGroupedByFramework
+                .map { (framework, dataSetsPerFramework) ->
+                    val frameworkTemplate = getFrameworkTemplate(framework)
+                    dataSetsPerFramework.map { (dataDimensions, dataPoints) ->
+                        Pair(dataDimensions, assembleSingleDataSet(dataPoints, frameworkTemplate))
+                    }
+                }.flatten()
         }
 
         private fun getDatasetData(
             dataDimensions: BasicDataDimensions,
             correlationId: String,
-        ): String? {
+        ): String {
             val framework = dataDimensions.dataType
             val relevantDataPointTypes = dataPointUtils.getRelevantDataPointTypes(framework)
             val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
@@ -365,9 +405,49 @@ class AssembledDataManager
                     message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
                 )
             }
-            return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
+            return assembleDatasetsFromDataIds(mapOf(dataDimensions to dataPointIds), correlationId).first().second
         }
 
+        /**
+         * Obtain data point dimensions for all given data dimensions.
+         *
+         * @param dataDimensionList a list of data dimensions
+         */
+        private fun getDataPointDimensions(
+            dataDimensionList: List<BasicDataDimensions>,
+            correlationId: String,
+        ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
+            logger.info("Request data point dimensions for a list of data dimension objects. Correlation ID: $correlationId")
+            val dataDimensionsByFramework = dataDimensionList.groupBy { it.dataType }
+            val result = mutableMapOf<BasicDataDimensions, List<BasicDataPointDimensions>>()
+
+            dataDimensionsByFramework.entries.forEach { (framework, frameworkSpecificDataDimensions) ->
+                val relevantDataPointTypes = dataPointUtils.getRelevantDataPointTypes(framework)
+                result.putAll(
+                    frameworkSpecificDataDimensions.associateWith { dataDimension ->
+                        relevantDataPointTypes.map { dataPointType -> dataDimension.toBasicDataPointDimensions(dataPointType) }
+                    },
+                )
+            }
+
+            return result
+        }
+
+        @Transactional(readOnly = true)
+        override fun getDatasetData(
+            dataDimensionList: List<BasicDataDimensions>,
+            correlationId: String,
+        ): List<Pair<BasicDataDimensions, String>> {
+            val dataPointDimensions = getDataPointDimensions(dataDimensionList, correlationId)
+            val dataPointIds =
+                dataPointDimensions.entries.associate { (dataDimension, dataPointDimensionList) ->
+                    dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
+                }
+
+            return assembleDatasetsFromDataIds(dataPointIds, correlationId)
+        }
+
+        @Transactional(readOnly = true)
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
@@ -388,12 +468,7 @@ class AssembledDataManager
 
             return reportingPeriods.map { reportingPeriod ->
                 val dataPointDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
-                val data =
-                    getDatasetData(dataPointDimensions, correlationId)
-                        ?: throw IllegalStateException(
-                            "Data expected for $reportingPeriod, $companyId and ${searchFilter.dataType}" +
-                                " but not found. Correlation ID: $correlationId",
-                        )
+                val data = getDatasetData(dataPointDimensions, correlationId)
                 PlainDataAndMetaInformation(
                     metaInfo =
                         DataMetaInformation(
