@@ -7,13 +7,19 @@ import org.slf4j.Logger
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 
+/**
+ * Logs standardized messages for REST endpoint access.
+ *
+ * @param logger The logger to use for logging.
+ */
 fun logAccess(logger: Logger) {
     val authentication = DatalandAuthentication.fromContextOrNull()
-    val authenticationType = when (authentication) {
-        is DatalandJwtAuthentication -> "JWT Authentication"
-        is DatalandApiKeyAuthentication -> "API Key Authentication"
-        else -> "No Authentication"
-    }
+    val authenticationType =
+        when (authentication) {
+            is DatalandJwtAuthentication -> "JWT Authentication"
+            is DatalandApiKeyAuthentication -> "API Key Authentication"
+            else -> "No Authentication"
+        }
     val userId = authentication?.userId ?: "None"
 
     val attributes = RequestContextHolder.getRequestAttributes() as? ServletRequestAttributes
