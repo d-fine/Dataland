@@ -435,7 +435,7 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  // On the local stack, this test passes only when run in isolation (using it.only).
+  // On the local stack, this test passes only when run in isolation.
   it('Check for all expected elements for an uploader-user on a mobile device for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
