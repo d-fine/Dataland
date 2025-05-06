@@ -42,9 +42,9 @@ interface DatasetStorageService {
      * @return a list of the found datasets where each dataset is stored in form of a JSON string
      */
     fun getDatasetData(
-        dataDimensionList: List<BasicDataDimensions>,
+        dataDimensionList: Set<BasicDataDimensions>,
         correlationId: String,
-    ): List<Pair<BasicDataDimensions, String>>
+    ): Map<BasicDataDimensions, String>
 
     /**
      * Retrieves all datasets for a certain company and data type depending on the content of the [searchFilter]

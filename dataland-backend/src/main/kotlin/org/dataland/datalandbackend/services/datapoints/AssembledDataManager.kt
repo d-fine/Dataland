@@ -371,7 +371,7 @@ class AssembledDataManager
         private fun assembleDatasetsFromDataIds(
             dataDimensionsToDataIdMap: Map<BasicDataDimensions, List<String>>,
             correlationId: String,
-        ): List<Pair<BasicDataDimensions, String>> {
+        ): Map<BasicDataDimensions, String> {
             val allStoredDatapoints =
                 dataPointManager.retrieveDataPoints(dataDimensionsToDataIdMap.flatMap { it.value }, correlationId)
             val dataPointsPerDatasetGroupedByFramework = mutableMapOf<String, MutableMap<BasicDataDimensions, List<UploadedDataPoint>>>()
@@ -381,13 +381,14 @@ class AssembledDataManager
                     .getOrPut(dataDimensions.dataType) { mutableMapOf() }[dataDimensions] = uploadedDataPoints
             }
 
-            return dataPointsPerDatasetGroupedByFramework
-                .map { (framework, dataSetsPerFramework) ->
-                    val frameworkTemplate = getFrameworkTemplate(framework)
-                    dataSetsPerFramework.map { (dataDimensions, dataPoints) ->
-                        Pair(dataDimensions, assembleSingleDataSet(dataPoints, frameworkTemplate))
-                    }
-                }.flatten()
+            val result = mutableMapOf<BasicDataDimensions, String>()
+            dataPointsPerDatasetGroupedByFramework.forEach { (framework, dataSetsPerFramework) ->
+                val frameworkTemplate = getFrameworkTemplate(framework)
+                dataSetsPerFramework.forEach { (dataDimensions, dataPoints) ->
+                    result[dataDimensions] = assembleSingleDataSet(dataPoints, frameworkTemplate)
+                }
+            }
+            return result
         }
 
         private fun getDatasetData(
@@ -414,7 +415,7 @@ class AssembledDataManager
          * @param dataDimensionList a list of data dimensions
          */
         private fun getDataPointDimensions(
-            dataDimensionList: List<BasicDataDimensions>,
+            dataDimensionList: Set<BasicDataDimensions>,
             correlationId: String,
         ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
             logger.info("Request data point dimensions for a list of data dimension objects. Correlation ID: $correlationId")
@@ -435,9 +436,9 @@ class AssembledDataManager
 
         @Transactional(readOnly = true)
         override fun getDatasetData(
-            dataDimensionList: List<BasicDataDimensions>,
+            dataDimensionList: Set<BasicDataDimensions>,
             correlationId: String,
-        ): List<Pair<BasicDataDimensions, String>> {
+        ): Map<BasicDataDimensions, String> {
             val dataPointDimensions = getDataPointDimensions(dataDimensionList, correlationId)
             val dataPointIds =
                 dataPointDimensions.entries.associate { (dataDimension, dataPointDimensionList) ->

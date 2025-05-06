@@ -101,7 +101,7 @@ open class DataController<T>(
 
         val companyAssociatedDataList =
             this.buildCompanyAssociatedData(
-                listOf(Pair(companyId, reportingPeriod)),
+                setOf(Pair(companyId, reportingPeriod)),
                 dataType.toString(),
                 correlationId,
             )
@@ -154,7 +154,7 @@ open class DataController<T>(
         companyIds: List<String>,
         exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource> {
-        val companyIdAndReportingPeriodPairs = mutableListOf<Pair<String, String>>()
+        val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
         companyIds.forEach { companyId ->
             reportingPeriods.forEach { reportingPeriod ->
                 companyIdAndReportingPeriodPairs.add(Pair(companyId, reportingPeriod))
@@ -237,21 +237,21 @@ open class DataController<T>(
     }
 
     private fun buildCompanyAssociatedData(
-        companyAndReportingPeriodPairs: List<Pair<String, String>>,
+        companyAndReportingPeriodPairs: Set<Pair<String, String>>,
         framework: String,
         correlationId: String,
     ): List<CompanyAssociatedData<T>> {
         val dataDimensionsWithDataStrings =
             datasetStorageService.getDatasetData(
-                companyAndReportingPeriodPairs.map { BasicDataDimensions(it.first, framework, it.second) },
+                companyAndReportingPeriodPairs.mapTo(mutableSetOf()) { BasicDataDimensions(it.first, framework, it.second) },
                 correlationId,
             )
 
         return dataDimensionsWithDataStrings.map {
             CompanyAssociatedData(
-                companyId = it.first.companyId,
-                reportingPeriod = it.first.reportingPeriod,
-                data = objectMapper.readValue(it.second, clazz),
+                companyId = it.key.companyId,
+                reportingPeriod = it.key.reportingPeriod,
+                data = objectMapper.readValue(it.value, clazz),
             )
         }
     }

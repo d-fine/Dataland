@@ -269,14 +269,15 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensionList: List<BasicDataDimensions>,
+            dataDimensionList: Set<BasicDataDimensions>,
             correlationId: String,
-        ): List<Pair<BasicDataDimensions, String>> =
-            dataDimensionList.mapNotNull {
-                metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
-                    Pair(it, getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data)
-                }
-            }
+        ): Map<BasicDataDimensions, String> =
+            dataDimensionList
+                .associateWith {
+                    metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
+                        getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data
+                    } ?: ""
+                }.filterNot { it.value.isEmpty() }
 
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
@@ -290,9 +291,9 @@ class DataManager
                 }
             val authentication = DatalandAuthentication.fromContextOrNull()
 
-            val listOfDataDimensionsWithDataAsString =
+            val mapOfDataDimensionsWithDataAsString =
                 getDatasetData(
-                    metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.map {
+                    metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
                         BasicDataDimensions(
                             companyId = searchFilter.companyId,
                             dataType = it.dataType,
@@ -301,16 +302,16 @@ class DataManager
                     },
                     correlationId,
                 )
-            if (listOfDataDimensionsWithDataAsString.isEmpty()) {
+            if (mapOfDataDimensionsWithDataAsString.isEmpty()) {
                 logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
                 throw IllegalArgumentException("Data not found for given search filter.")
             }
 
-            return listOfDataDimensionsWithDataAsString.mapNotNull { dataInfo ->
-                metaInfos[dataInfo.first]?.let { metaInfo ->
+            return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->
+                metaInfos[dataDimension]?.let { metaInfo ->
                     PlainDataAndMetaInformation(
                         metaInfo = metaInfo.toApiModel(),
-                        data = dataInfo.second,
+                        data = dataString,
                     )
                 }
             }
