@@ -6,7 +6,7 @@
       :class="fontStyle"
       :title="documentDownloadInfo.downloadName"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
-      style="display: grid; grid-template-columns: fit-content(100%) max-content max-content 0.5em 1.5em"
+      style="display: grid; grid-template-columns: fit-content(100%) max-content max-content 1.5em"
     >
       <span
         class="underline pl-1"
@@ -15,7 +15,7 @@
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
       <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
-      <span>
+      <span class="pr-2">
         <i
           v-if="showIcon"
           class="pi pi-download pl-1"
@@ -24,7 +24,6 @@
           style="font-size: 12px; margin: auto"
         />
       </span>
-      <span> </span>
       <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
   </div>
@@ -66,9 +65,6 @@ const handleDocumentDownload = async (): Promise<void> => {
 <style scoped>
 div {
   white-space: nowrap;
-  max-width: calc(41vw - 175px);
-  @media only screen and (max-width: 768px) {
-    max-width: calc(100vw - 200px);
-  }
+  max-width: 100%;
 }
 </style>
