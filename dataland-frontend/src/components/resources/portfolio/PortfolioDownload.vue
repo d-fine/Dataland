@@ -47,6 +47,9 @@
         :data-test="'downloadButton'"
         title="Download the selected frameworks and reporting periods for current portfolio"
       />
+      <p v-if="showNoDataAvailableError" class="text-danger text-xs mt-2 text-center">
+        No data available for the selected framework and reporting period combination.
+      </p>
     </div>
   </div>
 </template>
@@ -69,8 +72,8 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 const dynamicReportingPeriods = ref<{ name: string; value: boolean }[]>([]);
 const availableFrameworks = [
   { value: 'sfdr', label: 'SFDR' },
-  { value: 'eutaxonomy-financials', label: 'EU Taxonomy Non-Financials' },
-  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Financials' },
+  { value: 'eutaxonomy-financials', label: 'EU Taxonomy Financials' },
+  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non Financials' },
   { value: 'nuclear-and-gas', label: 'Nuclear and Gas' },
 ];
 
@@ -83,6 +86,8 @@ const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
+const showNoDataAvailableError = ref(false);
+
 const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
 const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
@@ -95,8 +100,10 @@ onMounted(() => {
     const portfolio = data.portfolio as EnrichedPortfolio;
     portfolioId.value = portfolio.portfolioId;
     portfolioEntries.value = portfolio.entries;
+    portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   }
   setReportingPeriods();
+  getSelectedReportingPeriods();
 });
 
 watch(selectedFramework, () => {
@@ -112,17 +119,25 @@ function onFrameworkChange(): void {
 }
 
 /**
+ * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
+ */
+function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
+  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
+  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
+}
+
+/**
  * When the framework changes, update the available reporting periods based on the selected framework
  */
 function setReportingPeriods(): void {
-  dynamicReportingPeriods.value = [
-    { name: '2025', value: false },
-    { name: '2024', value: false },
-    { name: '2023', value: false },
-    { name: '2022', value: false },
-    { name: '2021', value: false },
-    { name: '2020', value: false },
-  ];
+  const previousSelections = new Set(getSelectedReportingPeriods());
+
+  const allYears = ['2025', '2024', '2023', '2022', '2021', '2020'];
+
+  dynamicReportingPeriods.value = allYears.map((year) => ({
+    name: year,
+    value: previousSelections.has(year),
+  }));
 }
 
 /**
@@ -157,7 +172,7 @@ function getCompanyIds(): string[] {
 function checkIfShowErrors(): void {
   showReportingPeriodsError.value = getSelectedReportingPeriods().length === 0;
   showFileTypeError.value = !selectedFileType.value;
-  showFrameworksError.value =!selectedFramework.value;
+  showFrameworksError.value = !selectedFramework.value;
 }
 
 /**
@@ -181,20 +196,31 @@ async function downloadPortfolio(): Promise<void> {
     const selectedPeriods = getSelectedReportingPeriods();
 
     const companyIds = getCompanyIds();
-    const filename = 'portfolio-download';
+
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       selectedPeriods,
       companyIds,
       selectedFileType.value
     );
 
+    const isEmptyData =
+      !dataResponse.data ||
+      (Array.isArray(dataResponse.data) && dataResponse.data.length === 0) ||
+      (typeof dataResponse.data === 'object' && Object.keys(dataResponse.data).length === 0);
+
+    if (isEmptyData) {
+      showNoDataAvailableError.value = true;
+      return;
+    }
+
     const dataContent =
       selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
 
+    const extension = selectedFileType.value === ExportFileType.Csv ? '.csv' : '.csv';
+    const filename = 'portfolio-download' + extension;
     forceFileDownload(dataContent, filename);
   } catch (error) {
     console.error('Download failed:', error);
-    alert('Download failed');
   }
 }
 </script>
