@@ -132,8 +132,8 @@ internal class DataControllerTest(
     @EnumSource(ExportFileType::class)
     fun `test that the export functionality does not throw an error`(exportFileType: ExportFileType) {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as List<*>
-            argument.map { Pair(it, someEuTaxoDataAsString) }
+            val argument = invocation.arguments[0] as Set<*>
+            argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(any(), any())
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
@@ -163,8 +163,8 @@ internal class DataControllerTest(
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as List<BasicDataDimensions>
-            argument.map { Pair(it, someEuTaxoDataAsString) }
+            val argument = invocation.arguments[0] as Set<BasicDataDimensions>
+            argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =
             dataController.getCompanyAssociatedDataByDimensions(
