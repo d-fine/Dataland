@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
-import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -25,7 +25,7 @@ import java.util.UUID
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
+    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageBuilder,
     @Autowired private val utils: DataRequestProcessingUtils,
     @Autowired private val metaDataController: MetaDataControllerApi,
     @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
@@ -41,18 +41,9 @@ class BulkDataRequestManager(
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
-        val rejectedIdentifiers = mutableListOf<String>()
-        val acceptedIdentifiersToCompanyIdAndName = mutableMapOf<String, CompanyIdAndName>()
 
-        for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyIdAndName =
-                utils.getDatalandCompanyIdAndNameForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
-            if (datalandCompanyIdAndName == null) {
-                rejectedIdentifiers.add(userProvidedIdentifier)
-                continue
-            }
-            acceptedIdentifiersToCompanyIdAndName[userProvidedIdentifier] = datalandCompanyIdAndName
-        }
+        val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
+            utils.performIdentifierValidation(bulkDataRequest.companyIdentifiers.toList())
 
         val validRequestCombinations =
             getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
@@ -73,6 +64,7 @@ class BulkDataRequestManager(
             acceptedIdentifiersToCompanyIdAndName = acceptedIdentifiersToCompanyIdAndName,
             existingDatasets = existingDatasets,
             rejectedIdentifiers = rejectedIdentifiers,
+            notifyMeImmediately = bulkDataRequest.notifyMeImmediately,
             correlationId = correlationId,
         )
     }
@@ -219,6 +211,7 @@ class BulkDataRequestManager(
     private fun storeDataRequests(
         dimensionsToProcess: List<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
+        notifyMeImmediately: Boolean,
     ): List<ResourceResponse> {
         val userId = DatalandAuthentication.fromContext().userId
         val acceptedDataRequests = mutableListOf<ResourceResponse>()
@@ -235,6 +228,7 @@ class BulkDataRequestManager(
                     userId = userId,
                     datalandCompanyId = it.companyId,
                     dataType = it.dataType,
+                    notifyMeImmediately = notifyMeImmediately,
                     reportingPeriod = it.reportingPeriod,
                 )
 
@@ -300,12 +294,13 @@ class BulkDataRequestManager(
         acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
         existingDatasets: List<DataMetaInformation>,
         rejectedIdentifiers: List<String>,
+        notifyMeImmediately: Boolean,
         correlationId: String,
     ): BulkDataRequestResponse {
         val requestsToProcess = acceptedRequestCombinations.toMutableList()
         val existingNonFinalRequests =
             processExistingDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
-        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
+        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName, notifyMeImmediately)
         val existingDatasetsResponse =
             getAlreadyExistingDatasetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
 
@@ -327,7 +322,7 @@ class BulkDataRequestManager(
         acceptedDatalandCompanyIdsAndNames: List<CompanyIdAndName>,
         correlationId: String,
     ) {
-        emailMessageSender.sendBulkDataRequestInternalMessage(
+        emailMessageSender.buildBulkDataRequestInternalMessageAndSendCEMessage(
             bulkDataRequest,
             acceptedDatalandCompanyIdsAndNames,
             correlationId,

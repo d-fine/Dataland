@@ -14,20 +14,20 @@
     "@zxcvbn-ts/core": "^3.0.4",
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-en": "^3.0.2",
-    "material-icons": "^1.13.13",
-    "primeflex": "^3.3.1",
+    "material-icons": "^1.13.14",
+    "primeflex": "^4.0.0",
     "primeicons": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.13.10",
-    "@typescript-eslint/parser": "8.26.0",
-    "@typescript-eslint/eslint-plugin": "8.26.0",
-    "eslint": "9.21.0",
-    "eslint-config-prettier": "10.0.3",
-    "eslint-plugin-prettier": "5.2.3",
-    "npm-check-updates": "17.1.15",
-    "sass": "1.85.1",
-    "typescript": "5.8.2",
-    "vite": "6.2.1"
+    "@types/node": "22.15.3",
+    "@typescript-eslint/parser": "8.31.1",
+    "@typescript-eslint/eslint-plugin": "8.31.1",
+    "eslint": "9.26.0",
+    "eslint-config-prettier": "10.1.2",
+    "eslint-plugin-prettier": "5.3.1",
+    "npm-check-updates": "18.0.1",
+    "sass": "1.87.0",
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
   }
 }

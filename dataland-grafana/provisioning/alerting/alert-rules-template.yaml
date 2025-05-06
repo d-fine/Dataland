@@ -15,7 +15,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 21600  # 6h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -23,7 +23,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({service_name=~".+"} |~ "500 Internal Server Error" != "query_hash=" [1m])
+              expr: count_over_time({service_name=~".+", level!="info"} |~ "(?i)(internal server error)" [1m])
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range
@@ -102,7 +102,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 60
+              from: 60 # time in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -192,7 +192,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 86400  # 24h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -200,7 +200,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({service_name=~".+"} |~ "(?i)Exception(\\(|:)?" != "query_hash=" [1m])
+              expr: count_over_time({service_name=~".+", level!="info"} |~ "(?i)Exception(\\(|:)?" [1m])
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range
@@ -279,7 +279,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 86400  # 24h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -287,7 +287,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({service_name=~".+", job!="health_check"} |~ "(?i)error" != "query_hash=" [1m])
+              expr: count_over_time({service_name=~".+", job!="health_check", level!="info"} |~ "(?i)error" [1m])
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range

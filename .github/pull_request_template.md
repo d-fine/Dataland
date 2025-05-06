@@ -5,6 +5,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [x] The GitHub Actions for the CI are green. This is enforced by GitHub. 
 - [ ] The PR has been peer-reviewed
   - [ ] The code has been manually inspected by someone who did not implement the feature
+  - [ ] The changes have been inspected for possible breaking API changes (changed data models, endpoints, response codes, exception handling, ...). If there are any discuss them with the team.
   - [ ] If this PR includes work on the frontend, at least one `@ts-nocheck` is removed. Additionally, there should not be any `@ts-nocheck` in files modified by this PR. If no `@ts-nocheck` are left: Celebrate :tada: :confetti_ball: type-safety and remove this entry. 
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one test exists testing the new feature

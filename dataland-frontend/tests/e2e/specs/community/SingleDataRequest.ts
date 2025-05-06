@@ -11,6 +11,7 @@ import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
 
 describeIf(
   'As a premium user, I want to be able to navigate to the single data request page and submit a request',
@@ -31,7 +32,7 @@ describeIf(
      * @param reportingPeriod the year for which the data is uploaded
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           testStoredCompany = storedCompany;
           return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
@@ -66,13 +67,13 @@ describeIf(
 
     it('Navigate to the single request page via the company cockpit', () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}`);
-      cy.get('[data-test="singleDataRequestButton"]').should('exist').click();
+      cy.get('[data-test="singleDataRequestButton"]').click();
       cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
     });
 
     it('Navigate to the single request page via the view page and verify that the viewed framework is preselected.', () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="singleDataRequestButton"]').should('exist').click();
+      cy.get('[data-test="singleDataRequestButton"]').click();
       cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
       cy.get('[data-test="datapoint-framework"]').find('span').should('have.text', 'LkSG');
     });
@@ -88,8 +89,9 @@ describeIf(
 
       cy.get('[data-test="contactEmail"]').type(testEmail);
       cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
-      cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible').click();
-      clickSubmitButton();
+      cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible');
+      cy.get('[data-test="acceptConditionsCheckbox"]').click();
+      cy.get("button[type='submit']").click();
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
@@ -98,7 +100,39 @@ describeIf(
       cy.get('[data-test=requestStatusText]').should('contain.text', 'Submitting your data request was successful.');
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should('contain', '/companies/');
+      checkCompanyInfoSheet();
+
+      checkThatRequestIsOnRequestPage();
+      withDrawRequestAndCheckThatItsWithdrawn();
     });
+
+    /**
+     * Verifies that the request appears on the overview and single request page
+     */
+    function checkThatRequestIsOnRequestPage(): void {
+      cy.visit('/requests');
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests');
+      cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().scrollIntoView();
+      cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().click();
+
+      verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
+      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+      cy.reload(); // Check if the data was persisted in the backend
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
+    }
+
+    /**
+     * Withdraw the request and check that it succeeded.
+     */
+    function withDrawRequestAndCheckThatItsWithdrawn(): void {
+      cy.get('a:contains("Withdraw request")').scrollIntoView();
+      cy.get('a:contains("Withdraw request")').click();
+      cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
+      cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
+      cy.get('[data-test="back-button"]').scrollIntoView();
+      cy.get('[data-test="back-button"]').click();
+      cy.get(`tr:contains("${testStoredCompany.companyInformation.companyName}")`).should('contain.text', 'Withdrawn');
+    }
 
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
@@ -117,22 +151,17 @@ describeIf(
           reportingPeriods: [testYear],
           contacts: [testEmail],
           message: testMessage,
+          notifyMeImmediately: false,
         };
         expect(requestBody).to.deep.equal(expectedRequest);
       }
-    }
-    /**
-     * Clicks submit button
-     */
-    function clickSubmitButton(): void {
-      cy.get("button[type='submit']").should('exist').click();
     }
 
     /**
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      cy.get("[data-test='datapoint-framework']").should('exist').click();
+      cy.get("[data-test='datapoint-framework']").click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         cy.get('.p-dropdown-item').contains(humanizeStringOrNumber(framework)).should('exist');
       });
@@ -143,8 +172,8 @@ describeIf(
      * Checks basic validation
      */
     function checkValidation(): void {
-      clickSubmitButton();
-      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
+      cy.get("button[type='submit']").click();
+      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage']")
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 

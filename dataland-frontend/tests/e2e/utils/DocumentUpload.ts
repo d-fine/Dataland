@@ -1,5 +1,10 @@
 import { Configuration } from '@clients/backend';
-import { DocumentControllerApi, type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import {
+  DocumentControllerApi,
+  type DocumentMetaInfo,
+  type DocumentMetaInfoPatch,
+  type DocumentMetaInfoResponse,
+} from '@clients/documentmanager';
 import { createHash } from 'crypto';
 import { type AxiosError } from 'axios';
 
@@ -34,12 +39,14 @@ function uploadAllDocumentsFromFolder(token: string, documentDirectory: string):
  * @param token the bearer token used to authorize the API requests
  * @param buffer the pdf document as an arrayBuffer to be uploaded as File
  * @param name the file name
+ * @param documentMetaInfo meta Information about the file to be uploaded
  * @returns a promise on the upload response
  */
 export async function uploadDocumentViaApi(
   token: string,
   buffer: ArrayBuffer,
-  name: string
+  name: string,
+  documentMetaInfo?: DocumentMetaInfo
 ): Promise<DocumentMetaInfoResponse> {
   const arr = new Uint8Array(buffer);
   const file = new File([arr], name, { type: 'application/pdf' });
@@ -50,13 +57,49 @@ export async function uploadDocumentViaApi(
   );
   const documentHash = createHash('sha256').update(arr).digest('hex');
   return await documentControllerApi
-    .postDocument(file)
+    .postDocument(file, documentMetaInfo)
     .then((response) => {
       return response.data;
     })
     .catch((error: AxiosError) => {
       if (error.status == 409) {
         console.log('Document already exists.');
+        return { documentId: documentHash } as DocumentMetaInfoResponse;
+      } else {
+        throw error;
+      }
+    });
+}
+
+/**
+ * Patch the company id list in the stored meta information of a given document by adding
+ * a single new company id.
+ * @param token the bearer token used to authorize the API requests
+ * @param documentId the id of the document whose meta info shall be patched.
+ * @param documentMetaInfoPatch meta data do patch
+ */
+export async function patchDocumentMetaInfo(
+  token: string,
+  documentId: string,
+  documentMetaInfoPatch: DocumentMetaInfoPatch
+): Promise<DocumentMetaInfoResponse> {
+  const documentControllerApi = new DocumentControllerApi(
+    new Configuration({
+      accessToken: token,
+    })
+  );
+  const documentHash = createHash('sha256').digest('hex');
+  return await documentControllerApi
+    .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error: AxiosError) => {
+      if (error.status == 403) {
+        console.log('You do not have the right to update the companyIds field.');
+        return { documentId: documentHash } as DocumentMetaInfoResponse;
+      } else if (error.status == 404) {
+        console.log('Document Id does not match any stored document.');
         return { documentId: documentHash } as DocumentMetaInfoResponse;
       } else {
         throw error;

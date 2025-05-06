@@ -14,6 +14,7 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -30,6 +31,7 @@ import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,6 +57,7 @@ class DocumentManagerTest(
     private val mockDocumentName = "sample.pdf"
     private val unknownDocumentId = "unknownDocumentId"
     private val knownCompanyId = "knownCompanyId"
+    private val knownDocumentId = "known-document-id"
     private val knownButNonRetrievableDocumentId = "knownButNonRetrievableDocumentId"
 
     private val dummyDocumentMetaInfo =
@@ -62,6 +65,17 @@ class DocumentManagerTest(
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(knownCompanyId),
+            publicationDate = LocalDate.parse("2023-01-01"),
+            reportingPeriod = "2023",
+        )
+
+    private val dummyDocumentUploadResponse =
+        DocumentMetaInfoResponse(
+            documentId = knownDocumentId,
+            documentName = mockDocumentName,
+            documentCategory = DocumentCategory.AnnualReport,
+            companyIds = mutableSetOf(knownCompanyId),
+            uploaderId = "dummy-uploader-id",
             publicationDate = LocalDate.parse("2023-01-01"),
             reportingPeriod = "2023",
         )
@@ -127,7 +141,7 @@ class DocumentManagerTest(
             companyIds = dummyDocumentMetaInfo.companyIds.toMutableSet(),
             publicationDate = dummyDocumentMetaInfo.publicationDate,
             reportingPeriod = dummyDocumentMetaInfo.reportingPeriod,
-            uploaderId = "",
+            uploaderId = "dummy-uploader-id",
             uploadTime = 0,
             qaStatus = qaStatus,
         )
@@ -155,6 +169,13 @@ class DocumentManagerTest(
 
     @Test
     fun `check that retrieving meta info of an existing but nonretrievable document throws the appropriate exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
+        }
+    }
+
+    @Test
+    fun `check that trying to retrieve the metainfo of an existing but nonretrievable document throws exception`() {
         assertThrows<ResourceNotFoundApiException> {
             documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
         }
@@ -318,5 +339,75 @@ class DocumentManagerTest(
         assertEquals(expectedListOfCompanyIds, dummyDocumentMetaInfoEntity.companyIds)
         assertEquals(dummyDocumentMetaInfo.publicationDate, dummyDocumentMetaInfoEntity.publicationDate)
         assertEquals(dummyDocumentMetaInfo.reportingPeriod, dummyDocumentMetaInfoEntity.reportingPeriod)
+    }
+
+    private fun setupDocumentIdToBeFound(documentId: String) {
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(documentId)
+        doReturn(buildDocumentMetaInfoEntityWithDocumentId(documentId))
+            .whenever(
+                mockDocumentMetaInfoRepository,
+            ).getByDocumentId(documentId)
+    }
+
+    @Test
+    fun `check that retrieval of document metainfo works for an existing document id`() {
+        val response1 = dummyDocumentUploadResponse
+        setupDocumentIdToBeFound(response1.documentId)
+        val response2 = documentManager.retrieveDocumentMetaInfo(response1.documentId).toDocumentMetaInfoResponse()
+        assertEquals(response1, response2)
+    }
+
+    @Test
+    fun `check that the search filter is built correctly in a search request with no specified chunkSize`() {
+        doReturn(listOf<DocumentMetaInfoEntity>())
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = any(),
+                documentCategories = any(),
+                reportingPeriod = any(),
+                limit = any(),
+                offset = any(),
+            )
+        val searchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = knownCompanyId,
+                documentCategories = null,
+                reportingPeriod = "2023",
+            )
+        documentManager.searchForDocumentMetaInformation(searchFilter)
+        verify(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = searchFilter.companyId,
+                documentCategories = null,
+                reportingPeriod = "2023",
+            )
+    }
+
+    @Test
+    fun `check that search filter and limit and offset are built correctly in a search request`() {
+        doReturn(listOf<DocumentMetaInfoEntity>())
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = any(),
+                documentCategories = any(),
+                reportingPeriod = any(),
+                limit = any(),
+                offset = any(),
+            )
+        val searchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = knownCompanyId,
+                documentCategories = null,
+                reportingPeriod = "2023",
+            )
+        documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = 50, chunkIndex = 3)
+        verify(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = knownCompanyId,
+                documentCategories = null,
+                reportingPeriod = "2023",
+                limit = 50,
+                offset = 150,
+            )
     }
 }

@@ -9,34 +9,28 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
-import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class BulkDataRequestManagerTest {
     private lateinit var bulkDataRequestManager: BulkDataRequestManager
-    private lateinit var mockBulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
+    private lateinit var mockBulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockMetaDataController: MetaDataControllerApi
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
 
     @Value("\${dataland.community-manager.proxy-primary-url}")
     private val proxyPrimaryUrl: String = "dataland.com"
@@ -50,42 +44,29 @@ class BulkDataRequestManagerTest {
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
-        mockBulkDataRequestEmailMessageSender = mock(BulkDataRequestEmailMessageSender::class.java)
+        mockBulkDataRequestEmailMessageBuilder = mock<BulkDataRequestEmailMessageBuilder>()
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
-        mockMetaDataController = mock(MetaDataControllerApi::class.java)
+        mockMetaDataController = mock<MetaDataControllerApi>()
 
         bulkDataRequestManager =
             BulkDataRequestManager(
-                mock(DataRequestLogger::class.java),
-                mockBulkDataRequestEmailMessageSender,
+                mock<DataRequestLogger>(),
+                mockBulkDataRequestEmailMessageBuilder,
                 mockDataRequestProcessingUtils,
                 mockMetaDataController,
                 proxyPrimaryUrl,
             )
-        val mockSecurityContext = createSecurityContextMock()
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun createSecurityContextMock(): SecurityContext {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "requester@bigplayer.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        return mockSecurityContext
+        TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
-        val utilsMock = mock(DataRequestProcessingUtils::class.java)
-        `when`(
+        val utilsMock = mock<DataRequestProcessingUtils>()
+        whenever(
             utilsMock.storeDataRequestEntityAsOpen(
                 userId = anyString(),
                 datalandCompanyId = anyString(),
                 dataType = any(),
+                notifyMeImmediately = any(),
                 reportingPeriod = anyString(),
                 contacts = anyOrNull(),
                 message = anyOrNull(),
@@ -94,7 +75,8 @@ class BulkDataRequestManagerTest {
             DataRequestEntity(
                 dataRequestId = dummyRequestId,
                 datalandCompanyId = it.arguments[1] as String,
-                reportingPeriod = it.arguments[3] as String,
+                notifyMeImmediately = it.arguments[3] as Boolean,
+                reportingPeriod = it.arguments[4] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
                 dataType = (it.arguments[2] as DataTypeEnum).value,
@@ -112,8 +94,8 @@ class BulkDataRequestManagerTest {
     fun `process bulk data request`() {
         val emptyList: List<DataMetaInformation> = listOf()
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
 
         val bulkDataRequest =
             BulkDataRequest(
@@ -145,9 +127,9 @@ class BulkDataRequestManagerTest {
     fun `process bulk data request with existing request`() {
         val emptyList: List<DataMetaInformation> = listOf()
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
-        `when`(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
+        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
             .thenReturn(dummyRequestId)
 
         val bulkDataRequest =
@@ -178,9 +160,9 @@ class BulkDataRequestManagerTest {
 
     @Test
     fun `process bulk data request with existing data`() {
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
-        `when`(mockMetaDataController.postListOfDataMetaInfoFilters(anyList())).thenAnswer {
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
+        whenever(mockMetaDataController.postListOfDataMetaInfoFilters(anyList())).thenAnswer {
             val dataMetaInformationList =
                 listOf(
                     DataMetaInformation(
@@ -228,8 +210,8 @@ class BulkDataRequestManagerTest {
         val emptyList: List<DataMetaInformation> = listOf()
 
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
-        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(null)
+        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+            .thenReturn(Pair(emptyMap(), listOf(dummyUserProvidedCompanyId)))
 
         val bulkDataRequest =
             BulkDataRequest(

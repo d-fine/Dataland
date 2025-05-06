@@ -320,7 +320,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
+                    "$ref": "#/components/schemas/SourceabilityInfoResponse"
                   }
                 }
               }
@@ -367,7 +367,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NonSourceableInfo"
+                "$ref": "#/components/schemas/SourceabilityInfo"
               }
             }
           },
@@ -1533,6 +1533,72 @@
         ]
       }
     },
+    "/companies/validation": {
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Validate if companies exist based on Identifiers.",
+        "description": "Checks if companies exists based on a list of provided identifiers. Duplicated results are removed.",
+        "operationId": "postCompanyValidation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved validation results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyIdentifierValidationResult"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/assembled-dataset-migration/upload-as-stored-dataset/{dataType}": {
       "post": {
         "tags": [
@@ -2290,6 +2356,94 @@
                   "type": "object",
                   "additionalProperties": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/available-data-dimensions": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if any data is available applying the provided filters.",
+        "description": "Checks if any data is available using the given filters and returns the corresponding data dimensions.",
+        "operationId": "getAvailableDataDimensions",
+        "parameters": [
+          {
+            "name": "companyIds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "frameworksOrDataPointTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked if data is available.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicDataDimensions"
                   }
                 }
               }
@@ -6163,7 +6317,7 @@
           }
         }
       },
-      "NonSourceableInfo": {
+      "SourceabilityInfo": {
         "required": [
           "companyId",
           "dataType",
@@ -7345,13 +7499,15 @@
         }
       },
       "SfdrData": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneral"
+              }
+            ]
           },
           "environmental": {
             "nullable": true,
@@ -8176,34 +8332,38 @@
         }
       },
       "SfdrGeneral": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneral"
+              }
+            ]
           }
         }
       },
       "SfdrGeneralGeneral": {
-        "required": [
-          "dataDate",
-          "fiscalYearDeviation",
-          "fiscalYearEnd"
-        ],
         "type": "object",
         "properties": {
           "dataDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "referencedReports": {
             "type": "object",
@@ -20030,6 +20190,56 @@
           }
         }
       },
+      "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CompanyIdentifierValidationResult": {
+        "required": [
+          "identifier"
+        ],
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "companyInformation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicCompanyInformation"
+              }
+            ]
+          }
+        }
+      },
       "CompanyAssociatedDataJsonNode": {
         "required": [
           "companyId",
@@ -20195,7 +20405,7 @@
           }
         }
       },
-      "NonSourceableInfoResponse": {
+      "SourceabilityInfoResponse": {
         "required": [
           "companyId",
           "creationTime",
@@ -20227,6 +20437,25 @@
             "format": "int64"
           },
           "userId": {
+            "type": "string"
+          }
+        }
+      },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }
@@ -20389,37 +20618,6 @@
           }
         }
       },
-      "BasicCompanyInformation": {
-        "required": [
-          "companyId",
-          "companyName",
-          "countryCode",
-          "headquarters"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "lei": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
@@ -20439,10 +20637,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -20497,16 +20695,16 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "sfdr",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "nuclear-and-gas",
-          "lksg",
           "p2p",
-          "sfdr",
+          "lksg",
+          "additional-company-information",
           "vsme",
           "esg-datenkatalog",
-          "heimathafen",
-          "additional-company-information"
+          "heimathafen"
         ]
       },
       "ErrorDetails": {

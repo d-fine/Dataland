@@ -3,14 +3,14 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
@@ -32,21 +32,19 @@ import java.util.UUID
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager
     @Suppress("LongParameterList")
+    @Autowired
     constructor(
-        @Autowired private val dataRequestLogger: DataRequestLogger,
-        @Autowired private val dataRequestRepository: DataRequestRepository,
-        @Autowired private val companyIdValidator: CompanyIdValidator,
-        @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
-        @Autowired private val utils: DataRequestProcessingUtils,
-        @Autowired private val dataAccessManager: DataAccessManager,
-        @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
-        @Autowired private val securityUtilsService: SecurityUtilsService,
-        @Autowired private val companyRolesManager: CompanyRolesManager,
-        @Autowired private val keycloakUserService: KeycloakUserService,
+        private val dataRequestLogger: DataRequestLogger,
+        private val dataRequestRepository: DataRequestRepository,
+        private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
+        private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+        private val dataAccessManager: DataAccessManager,
+        private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
+        private val securityUtilsService: SecurityUtilsService,
+        private val companyRolesManager: CompanyRolesManager,
+        private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
-        val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
-
         /**
          * Data structure holding the process request information
          */
@@ -54,6 +52,7 @@ class SingleDataRequestManager
             val companyId: String,
             val userId: String,
             val dataType: DataTypeEnum,
+            val notifyMeImmediately: Boolean,
             val contacts: Set<String>?,
             val message: String?,
             val correlationId: String,
@@ -114,9 +113,18 @@ class SingleDataRequestManager
             singleDataRequest: SingleDataRequest,
             userIdToUse: String,
         ): PreprocessedRequest {
-            val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
+            dataRequestProcessingUtils.throwExceptionIfNotJwtAuth()
 
-            utils.throwExceptionIfNotJwtAuth()
+            val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
+                dataRequestProcessingUtils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
+            if (rejectedIdentifiers.isNotEmpty()) {
+                throw ResourceNotFoundApiException(
+                    "The company identifier is unknown.",
+                    "No company is associated to the identifier ${rejectedIdentifiers.first()}.",
+                )
+            }
+            val companyId = acceptedIdentifiersToCompanyIdAndName.getValue(singleDataRequest.companyIdentifier).companyId
+
             validateSingleDataRequestContent(singleDataRequest)
             performQuotaCheckForNonPremiumUser(
                 userIdToUse,
@@ -128,6 +136,7 @@ class SingleDataRequestManager
                 companyId = companyId,
                 userId = userIdToUse,
                 dataType = singleDataRequest.dataType,
+                notifyMeImmediately = singleDataRequest.notifyMeImmediately,
                 contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 correlationId = UUID.randomUUID().toString(),
@@ -149,7 +158,7 @@ class SingleDataRequestManager
                     contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
-            } else if (utils.existsDataRequestWithNonFinalStatus(
+            } else if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
@@ -160,10 +169,14 @@ class SingleDataRequestManager
             ) {
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
-                utils.storeDataRequestEntityAsOpen(
-                    userId = preprocessedRequest.userId, datalandCompanyId = preprocessedRequest.companyId,
-                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
-                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
+                dataRequestProcessingUtils.storeDataRequestEntityAsOpen(
+                    userId = preprocessedRequest.userId,
+                    datalandCompanyId = preprocessedRequest.companyId,
+                    dataType = preprocessedRequest.dataType,
+                    notifyMeImmediately = preprocessedRequest.notifyMeImmediately,
+                    reportingPeriod = reportingPeriod,
+                    contacts = preprocessedRequest.contacts,
+                    message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }
@@ -175,7 +188,7 @@ class SingleDataRequestManager
             userId: String,
         ): Boolean {
             val matchingDatasetExists =
-                utils.matchingDatasetExists(
+                dataRequestProcessingUtils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,
                     dataType = dataType,
                 )
@@ -260,21 +273,6 @@ class SingleDataRequestManager
             }
         }
 
-        private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
-            val datalandCompanyId: String? =
-                if (companyIdRegex.matches(companyIdentifier)) {
-                    companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
-                    companyIdentifier
-                } else {
-                    utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
-                }
-
-            return datalandCompanyId ?: throw InvalidInputApiException(
-                "The specified company is unknown to Dataland.",
-                "The company with identifier: $companyIdentifier is unknown to Dataland.",
-            )
-        }
-
         private fun sendSingleDataRequestEmailMessage(
             preprocessedRequest: PreprocessedRequest,
             reportingPeriodsOfStoredDataRequests: List<String>?,
@@ -283,7 +281,7 @@ class SingleDataRequestManager
                 return
             } else {
                 val messageInformation =
-                    SingleDataRequestEmailMessageSender.MessageInformation(
+                    SingleDataRequestEmailMessageBuilder.MessageInformation(
                         userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
                         datalandCompanyId = preprocessedRequest.companyId,
                         dataType = preprocessedRequest.dataType,
@@ -291,11 +289,11 @@ class SingleDataRequestManager
                     )
 
                 if (preprocessedRequest.contacts.isNullOrEmpty()) {
-                    singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                    singleDataRequestEmailMessageBuilder.buildSingleDataRequestInternalMessageAndSendCEMessage(
                         messageInformation, preprocessedRequest.correlationId,
                     )
                 } else {
-                    singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                    singleDataRequestEmailMessageBuilder.buildSingleDataRequestExternalMessageAndSendCEMessage(
                         messageInformation = messageInformation,
                         receiverSet = preprocessedRequest.contacts,
                         contactMessage = preprocessedRequest.message,
@@ -314,8 +312,8 @@ class SingleDataRequestManager
             } else {
                 val dataTypeDescription =
                     readableFrameworkNameMapping[preprocessedRequest.dataType] ?: preprocessedRequest.dataType.toString()
-                accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                    AccessRequestEmailSender.RequestEmailInformation(
+                accessRequestEmailBuilder.notifyCompanyOwnerAboutNewRequest(
+                    AccessRequestEmailBuilder.RequestEmailInformation(
                         preprocessedRequest.userId, preprocessedRequest.message,
                         preprocessedRequest.companyId, dataTypeDescription,
                         reportingPeriodsOfStoredAccessRequests.toSet(),

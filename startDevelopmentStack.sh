@@ -83,10 +83,10 @@ docker compose --profile development --profile developmentContainerFrontend pull
 
 if [[ -s ./localContainer.conf ]]; then
   echo "Starting only configured services."
-  for service in $(cat ./localContainer.conf); do
+  while read -r service; do
     echo "Starting service $service"
     docker compose "${compose_profiles[@]}" up -d --build "$service"
-  done
+  done < ./localContainer.conf
 else
   echo "Starting stack in mode development."
   docker compose "${compose_profiles[@]}" up -d --build
@@ -94,6 +94,14 @@ fi
 
 mkdir -p "${LOKI_VOLUME}/health-check-log"
 ./health-check/healthCheck.sh &
+
+if [[ -s ./localContainer.conf ]]; then
+  until docker ps | grep admin-proxy | grep -q \(healthy\)
+  do
+    echo "Waiting for admin-proxy to be healthy as it is required for executing the backend."
+    sleep 5
+  done
+fi
 
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace

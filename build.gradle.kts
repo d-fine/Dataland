@@ -51,7 +51,6 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt(libs.detekt.cli)
-    detekt(libs.kotlin.compiler.embeddable)
 }
 
 java.sourceCompatibility = jvmVersion
@@ -72,6 +71,7 @@ plugins {
     alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
 sonar {
@@ -95,7 +95,8 @@ sonar {
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
-                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts",
+                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
+                "dataland-reduced-local-stack/**",
         )
         property(
             "sonar.sources",
@@ -213,6 +214,7 @@ detekt {
     val detektFileTree = fileTree("$projectDir")
     detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude(".gradle")
     detektFileTree.exclude("**/ReferencedReportsListValidator.kt")
+    detektFileTree.exclude("**/dataland-loki/data/**")
     source.setFrom(detektFileTree)
 }
 

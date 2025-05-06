@@ -47,7 +47,7 @@ class KnownErrorControllerAdvice(
     }
 
     /**
-     * Handles HttpMessageNotReadbleException errors. These occur i.e. when the request body cannot be parsed
+     * Handles HttpMessageNotReadableException errors. These occur i.e. when the request body cannot be parsed
      */
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> =
@@ -151,7 +151,7 @@ class KnownErrorControllerAdvice(
     @ExceptionHandler(HandlerMethodValidationException::class)
     fun handleMethodValidationException(ex: HandlerMethodValidationException): ResponseEntity<ErrorResponse> {
         val errorMessages =
-            ex.allValidationResults
+            ex.parameterValidationResults
                 .flatMap { it.resolvableErrors }
                 .joinToString(", ") { resolvable ->
                     resolvable.defaultMessage ?: "Invalid parameter"

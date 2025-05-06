@@ -1,6 +1,6 @@
 <template>
   <PrimeButton @click="onClick" class="uppercase p-button p-button-sm" data-test="singleDataRequestButton">
-    <span class="d-letters pl-2"> Request Data </span>
+    <span class="d-letters"> Request Data </span>
   </PrimeButton>
 </template>
 

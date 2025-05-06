@@ -10,25 +10,17 @@
     />
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
-        class="text-left surface-0 dataland-toolbar"
+        class="text-left"
+        bg-class="dataland-toolbar sticky"
         style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
-        :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-            <Dropdown
+            <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              id="chooseFrameworkDropdown"
-              v-model="chosenDataTypeInDropdown"
-              :options="dataTypesInDropdown"
-              optionLabel="label"
-              optionValue="value"
-              :placeholder="humanizeStringOrNumber(dataType)"
-              aria-label="Choose framework"
-              class="fill-dropdown always-fill"
-              dropdownIcon="pi pi-angle-down"
-              @change="handleChangeFrameworkEvent"
-              data-test="chooseFrameworkDropdown"
+              :data-meta-information="dataMetaInformation"
+              :data-type="dataType"
+              :company-id="companyID"
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
@@ -121,20 +113,16 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
-import { computed, defineComponent, inject, type PropType, ref } from 'vue';
+import { computed, defineComponent, inject, type PropType } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, ExportFileType } from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
 import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import InputSwitch from 'primevue/inputswitch';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
@@ -148,20 +136,19 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import { AxiosError } from 'axios';
 import { useRoute } from 'vue-router';
-
-type DropdownOption = { label: string; value: string };
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
+    ChangeFrameworkDropdown,
     DownloadDatasetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
     MarginWrapper,
-    Dropdown,
     TheFooter,
     PrimeButton,
     OverlayPanel,
@@ -194,21 +181,13 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
     };
   },
   data() {
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
-      dataTypesInDropdown: [] as Array<DropdownOption>,
-      humanizeStringOrNumber,
-      windowScrollHandler: (): void => {
-        this.handleScroll();
-      },
-      pageScrolled: false,
-      scrollEmittedByToolbar: false,
-      latestScrollPosition: 0,
+      dataMetaInformation: [] as Array<DataMetaInformation>,
       activeDataForCurrentCompanyAndFramework: [] as Array<DataAndMetaInformation<FrameworkData>>,
       isDataProcessedSuccessfully: false,
       hasUserUploaderRights: false,
@@ -263,18 +242,19 @@ export default defineComponent({
       return map;
     },
   },
+
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
     this.dataId = this.route.params.dataId;
-    void this.getDataTypesForDropdown();
     if (this.dataId) {
-      void this.getMetadataForDataset();
+      void this.getMetaData().then(() => {
+        this.setActiveDataForCurrentCompanyAndFramework();
+      });
     } else {
+      void this.getMetaData();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     }
     void this.setViewPageAttributesForUser();
-
-    window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
     getAllPrivateFrameworkIdentifiers,
@@ -327,54 +307,18 @@ export default defineComponent({
         `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
     },
-    /**
-     * Hides the dropdown of the Autocomplete-component
-     */
-    handleScroll() {
-      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
-      const windowScrollY = window.scrollY;
-      if (this.scrollEmittedByToolbar) {
-        this.scrollEmittedByToolbar = false;
-      } else if (this.latestScrollPosition > windowScrollY) {
-        //ScrollUP event
-        this.latestScrollPosition = windowScrollY;
-        this.pageScrolled = document.documentElement.scrollTop >= 195;
-      } else {
-        //ScrollDOWN event
-        this.latestScrollPosition = windowScrollY;
-        this.pageScrolled = document.documentElement.scrollTop > 195;
-      }
-    },
-    /**
-     * Visits the framework view page for the framework which was chosen in the dropdown
-     * @param dropDownChangeEvent the change event emitted by the dropdown component
-     */
-    handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
-      if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
-      }
-    },
 
     /**
-     * Retrieves all dataTypes available for current Company and populates dropdown menu
+     * Retrieves all data meta data available for current company
      */
-    async getDataTypesForDropdown() {
+    async getMetaData() {
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const metadata = apiResponse.data;
-        const availableDataTypes = new Set(metadata.map((metaInfo) => metaInfo.dataType));
-        availableDataTypes.forEach((dataType) => {
-          if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
-            this.dataTypesInDropdown.push({
-              label: humanizeStringOrNumber(dataType),
-              value: dataType,
-            });
-          }
-        });
-        this.dataTypesInDropdown.sort((a, b) => a.label.localeCompare(b.label));
+        this.dataMetaInformation = apiResponse.data;
       } catch (error) {
+        this.isDataProcessedSuccessfully = false;
         console.log(error);
       }
     },
@@ -383,8 +327,8 @@ export default defineComponent({
      * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
      * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
      * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
-     * Instead, the metadata endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
-     * filled with retrieved metadata and empty data object.
+     * Instead, the metaData endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
+     * filled with retrieved metaData and empty data object.
      */
     async getAllActiveDataForCurrentCompanyAndFramework() {
       try {
@@ -394,11 +338,13 @@ export default defineComponent({
           apiClientProvider
         ) as PublicFrameworkDataApi<FrameworkData>;
         const apiResponse = await frameworkDataApi.getAllCompanyData(this.companyID, true);
+        this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
         this.activeDataForCurrentCompanyAndFramework = Array.from(apiResponse.data);
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
-          await this.getMetadataForDataset();
+          await this.getMetaData();
+          this.setActiveDataForCurrentCompanyAndFramework();
         } else {
           this.isDataProcessedSuccessfully = false;
           console.error(error);
@@ -407,21 +353,16 @@ export default defineComponent({
     },
 
     /**
-     * Get available metadata in case of either insufficient rights.
+     * Get available metaData in case of either insufficient rights.
      */
-    async getMetadataForDataset() {
-      try {
-        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const metadataControllerApi = apiClientProvider.backendClients.metaDataController;
-        const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const metaInformation: DataMetaInformation[] = apiResponse.data;
-        this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
+    setActiveDataForCurrentCompanyAndFramework() {
+      if (this.dataMetaInformation) {
+        this.activeDataForCurrentCompanyAndFramework = this.dataMetaInformation.map((metaInfo) => {
           return { metaInfo: metaInfo, data: {} };
         });
         this.isDataProcessedSuccessfully = true;
-      } catch (error) {
+      } else {
         this.isDataProcessedSuccessfully = false;
-        console.log(error);
       }
     },
 
@@ -517,6 +458,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
+      void this.getMetaData();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     },
     isReviewableByCurrentUser() {
