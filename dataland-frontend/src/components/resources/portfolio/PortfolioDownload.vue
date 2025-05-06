@@ -7,12 +7,12 @@
       <FormKit
         v-model="selectedFramework"
         type="select"
-        name="fileTypeSelector"
-        data-test="fileTypeSelector"
+        name="frameworkSelector"
+        data-test="frameworkSelector"
         :options="availableFrameworks"
         placeholder="Select framework"
       />
-      <p v-show="showFrameworksError" class="text-danger text-xs" data-test="fileTypeError">Select Framework.</p>
+      <p v-show="showFrameworksError" class="text-danger text-xs" data-test="frameworkError">Select Framework.</p>
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
@@ -157,6 +157,7 @@ function getCompanyIds(): string[] {
 function checkIfShowErrors(): void {
   showReportingPeriodsError.value = getSelectedReportingPeriods().length === 0;
   showFileTypeError.value = !selectedFileType.value;
+  showFrameworksError.value =!selectedFramework.value;
 }
 
 /**
@@ -229,7 +230,7 @@ label {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  justify-content: flex-start;
+  justify-content: center;
 
   .chip {
     font-size: 0.75rem;
