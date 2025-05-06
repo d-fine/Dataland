@@ -308,47 +308,6 @@ class AssembledDataManager
         }
 
         /**
-         * Assembles a dataset by retrieving the data points from the internal storage
-         * and filling their content into the framework template
-         * @param dataIds a list of all required data points
-         * @param framework the type of dataset
-         * @param correlationId the correlation id for the operation
-         * @return the dataset in form of a JSON string
-         */
-        private fun assembleDatasetFromDataPoints(
-            dataIds: List<String>,
-            framework: String,
-            correlationId: String,
-        ): String {
-            val frameworkSpecification = dataPointUtils.getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
-            referencedReportsUtilities
-                .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
-
-            val referencedReports = mutableMapOf<String, CompanyReport>()
-            val allStoredDatapoints = dataPointManager.retrieveDataPoints(dataIds, correlationId)
-            val allDataPoints =
-                allStoredDatapoints.entries
-                    .associate {
-                        it.value.dataPointType to objectMapper.readTree(it.value.dataPoint)
-                    }.toMutableMap()
-
-            allStoredDatapoints.values.forEach {
-                val companyReports = mutableListOf<CompanyReport>()
-                referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
-                companyReports.forEach { companyReport ->
-                    referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
-                }
-            }
-            allDataPoints[REFERENCED_REPORTS_ID] =
-                objectMapper.valueToTree(referencedReports)
-
-            val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
-
-            return datasetAsJsonNode.toString()
-        }
-
-        /**
          * Return the template of a specific framework
          *
          * @param framework the framework for which the template shall be returned
@@ -402,8 +361,8 @@ class AssembledDataManager
          * This function processes multiple datasets at once. Each dataset in the input is identified by a
          * BasicDataDimensions object.
          *
-         * @param dataDimensionsToDataIdMap a map of all required data points grouped by data set
-         * @param correlationId the correlation id for the operation
+         * @param dataDimensionsToDataIdMap a map of all required data point IDs grouped by data set
+         * @param correlationId the correlation ID for the operation
          * @return the dataset in form of a JSON string
          */
         private fun assembleDatasetsFromDataIds(
@@ -411,10 +370,7 @@ class AssembledDataManager
             correlationId: String,
         ): List<Pair<BasicDataDimensions, String>> {
             val allStoredDatapoints =
-                dataPointManager.retrieveDataPoints(
-                    dataDimensionsToDataIdMap.flatMap { it.value },
-                    correlationId,
-                )
+                dataPointManager.retrieveDataPoints(dataDimensionsToDataIdMap.flatMap { it.value }, correlationId)
             val dataPointsPerDatasetGroupedByFramework = mutableMapOf<String, MutableMap<BasicDataDimensions, List<UploadedDataPoint>>>()
             dataDimensionsToDataIdMap.forEach { (dataDimensions, listOfDataIds) ->
                 val uploadedDataPoints = listOfDataIds.mapNotNull { allStoredDatapoints[it] }
@@ -446,7 +402,7 @@ class AssembledDataManager
                     message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
                 )
             }
-            return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
+            return assembleDatasetsFromDataIds(mapOf(dataDimensions to dataPointIds), correlationId).first().second
         }
 
         /**

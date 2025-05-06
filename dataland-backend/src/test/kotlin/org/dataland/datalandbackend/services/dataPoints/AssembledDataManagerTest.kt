@@ -30,6 +30,7 @@ import org.dataland.specificationservice.openApiClient.api.SpecificationControll
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -171,9 +172,12 @@ class AssembledDataManagerTest {
         `when`(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
 
-        val dynamicDataset = assembledDataManager.getDatasetData(listOf(dataDimensions), correlationId).first().second
+        val dynamicDataset =
+            assertDoesNotThrow {
+                assembledDataManager.getDatasetData(listOf(dataDimensions), correlationId).first().second
+            }
         assert(!dynamicDataset.isNullOrEmpty())
-        assert(dynamicDataset!!.contains(dataPoint))
+        assert(dynamicDataset.contains(dataPoint))
         assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 
