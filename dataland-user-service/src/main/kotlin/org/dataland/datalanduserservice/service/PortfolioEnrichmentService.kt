@@ -41,18 +41,19 @@ class PortfolioEnrichmentService
         )
 
         /**
-         * Return a mapping "(companyId, framework) --> latest available reporting period" for each combination of companies and frameworks
-         * @param companyIds the list of companies for which the latest available reporting period shall be returned
-         * @param dataTypes the list of frameworks for which the latest available reporting period shall be returned
+         * Return a mapping: (companyId) => ( mapping: (framework) => available reporting periods ) that has the
+         * passed companyIds as keys, and the inner mapping has the passed frameworks as keys.
+         * @param companyIds
+         * @param frameworks
          */
         private fun getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
             companyIds: List<String>,
-            dataTypes: List<String>,
+            frameworks: List<String>,
         ): Map<String, Map<String, List<String>>> {
             val availableDataDimensions =
                 metaDataControllerApi.getAvailableDataDimensions(
                     companyIds = companyIds,
-                    frameworksOrDataPointTypes = dataTypes,
+                    frameworksOrDataPointTypes = frameworks,
                 )
 
             val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
@@ -78,7 +79,8 @@ class PortfolioEnrichmentService
         }
 
         /**
-         * Return enriched portfolio entries for each combination of the passed companies and frameworks
+         * Return enriched portfolio entries for each passed company, using the passed frameworks as keys in the
+         * mapping fields frameworkHyphenatedNamesToDataRef and availableReportingPeriods of each entry.
          * @param companyIdList the list of companies for which entries shall be returned
          * @param frameworkList the list of frameworks for which entries shall be returned
          */
@@ -95,22 +97,20 @@ class PortfolioEnrichmentService
                 val companyInformation = validationResult.companyInformation ?: return@forEach
                 val mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
                     mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId] ?: mapOf()
-                frameworkList.forEach { framework ->
-                    enrichedEntries.add(
-                        getEnrichedEntry(
-                            companyInformation,
-                            mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly.mapValues {
-                                it.value.fold("") { concatenationSoFar, nextReportingPeriod ->
-                                    if (concatenationSoFar.isEmpty()) {
-                                        nextReportingPeriod
-                                    } else {
-                                        "$concatenationSoFar,$nextReportingPeriod"
-                                    }
+                enrichedEntries.add(
+                    getEnrichedEntry(
+                        companyInformation,
+                        mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly.mapValues {
+                            it.value.fold("") { concatenationSoFar, nextReportingPeriod ->
+                                if (concatenationSoFar.isEmpty()) {
+                                    nextReportingPeriod
+                                } else {
+                                    "$concatenationSoFar,$nextReportingPeriod"
                                 }
-                            },
-                        ),
-                    )
-                }
+                            }
+                        },
+                    ),
+                )
             }
             return enrichedEntries
         }
