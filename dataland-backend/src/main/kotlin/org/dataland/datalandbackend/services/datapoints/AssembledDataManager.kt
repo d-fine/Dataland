@@ -400,13 +400,15 @@ class AssembledDataManager
             val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
             val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
 
-            if (dataPointIds.isEmpty()) {
+            val resourceNotFoundExceptionThrower = {
                 throw ResourceNotFoundApiException(
                     summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
                     message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
                 )
             }
-            return assembleDatasetsFromDataIds(mapOf(dataDimensions to dataPointIds), correlationId).first().second
+            if (dataPointIds.isEmpty()) resourceNotFoundExceptionThrower()
+            return assembleDatasetsFromDataIds(mapOf(dataDimensions to dataPointIds), correlationId)[dataDimensions]
+                ?: resourceNotFoundExceptionThrower()
         }
 
         /**

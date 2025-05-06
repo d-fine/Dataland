@@ -165,7 +165,7 @@ internal class DataControllerTest(
         doAnswer { invocation ->
             val argument = invocation.arguments[0] as List<BasicDataDimensions>
             argument.map { Pair(it, someEuTaxoDataAsString) }
-        }.whenever(mockDataManager).getDatasetData(eq(listOf(testDataDimensions)), any())
+        }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =
             dataController.getCompanyAssociatedDataByDimensions(
                 reportingPeriod = testReportingPeriod,

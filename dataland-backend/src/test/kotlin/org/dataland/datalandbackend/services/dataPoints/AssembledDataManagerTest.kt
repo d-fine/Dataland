@@ -176,18 +176,18 @@ class AssembledDataManagerTest {
 
         val dynamicDataset =
             assertDoesNotThrow {
-                assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId).first().second
+                assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
             }
         assert(!dynamicDataset.isNullOrEmpty())
-        assert(dynamicDataset.contains(dataPoint))
-        assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assert(dynamicDataset!!.contains(dataPoint))
+        assert(dynamicDataset!!.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 
     @Test
     fun `check that exceptions are thrown only in the expected cases in the context of dynamic datasets`() {
         doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
 
-        assertThrows<ResourceNotFoundApiException> {
+        assertDoesNotThrow {
             assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)
         }
 
