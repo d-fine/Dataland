@@ -150,7 +150,7 @@ class PortfolioEntryPrepared {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
-          (portfolioEntry.availableReportingPeriods
+          (portfolioEntry.availableReportingPeriods[framework]
             ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
             : undefined)
       );
@@ -177,7 +177,10 @@ const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
   country: { value: null, matchMode: FilterMatchMode.CONTAINS },
   sector: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  latestReportingPeriod: { value: [], matchMode: FilterMatchMode.IN },
+  sfdrAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  eutaxonomyFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  nuclearAndGasAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
 });
 
 const props = defineProps<{
