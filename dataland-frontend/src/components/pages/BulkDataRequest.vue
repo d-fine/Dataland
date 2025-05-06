@@ -151,11 +151,11 @@
                       </span>
                     </BasicFormSection>
                   </div>
-                  <div class="col-12 flex align-items-end">
+                  <div class="col-12 flex justify-content-end">
                     <PrimeButton
                       type="submit"
                       label="Submit"
-                      class="p-button p-button-sm d-letters ml-auto"
+                      class="primary-button align-self-end"
                       name="submit_request_button"
                       @click="checkReportingPeriods()"
                     >

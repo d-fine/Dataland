@@ -73,6 +73,16 @@ class DataRequestUpdateManagerTestDataProvider {
             Arguments.of("sfdr", RequestStatus.Withdrawn, RequestStatus.Open),
         )
 
+    fun getStreamOfArgumentsToTestFlagResetBehavior(): Stream<Arguments> {
+        val argumentsList = mutableListOf<Arguments>()
+        RequestStatus.entries.forEach { entry1 ->
+            RequestStatus.entries.forEach { entry2 ->
+                argumentsList.add(Arguments.of(entry1, entry2))
+            }
+        }
+        return argumentsList.stream()
+    }
+
     fun getDummyDataRequestEntities() =
         listOf(
             DataRequestEntity(
