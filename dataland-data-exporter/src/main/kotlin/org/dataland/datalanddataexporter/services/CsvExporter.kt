@@ -94,7 +94,7 @@ class CsvExporter(
         dataId: String,
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
-    ): Pair<MutableMap<String, String>, List<Map<String, String>>> {
+    ): Pair<Map<String, String>, List<Map<String, String>>> {
         logger.info("Exporting data with ID: $dataId")
 
         val csvData = mutableMapOf<String, String>()

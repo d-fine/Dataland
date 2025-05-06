@@ -5,9 +5,8 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import java.math.BigDecimal
-import java.math.BigInteger
+import org.dataland.datalandbackend.utils.isGreaterOrEqual
+import org.dataland.datalandbackend.utils.validateMinimumValueConstraint
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
@@ -38,7 +37,7 @@ class FieldMinimumValidator : ConstraintValidator<MinimumValue, Number> {
     override fun isValid(
         value: Number?,
         context: ConstraintValidatorContext?,
-    ): Boolean = isValidNumber(value, minimumValue)
+    ): Boolean = isGreaterOrEqual(value, minimumValue)
 }
 
 /**
@@ -54,29 +53,5 @@ class DataPointMinimumValidator : ConstraintValidator<MinimumValue, BaseDataPoin
     override fun isValid(
         dataPoint: BaseDataPoint<*>?,
         context: ConstraintValidatorContext?,
-    ): Boolean =
-        if (dataPoint?.value == null) {
-            true
-        } else if (dataPoint.value !is Number) {
-            throw InvalidInputApiException(
-                "This validator is used for a wrong type",
-                "Type ${dataPoint.value!!::class.simpleName} as data point value is not handled by number validator",
-            )
-        } else {
-            isValidNumber(dataPoint.value as Number, minimumValue)
-        }
-}
-
-private fun isValidNumber(
-    value: Number?,
-    minimumValue: Long,
-) = when (value) {
-    null -> true
-    is BigDecimal -> value >= BigDecimal.valueOf(minimumValue)
-    is BigInteger -> value >= BigInteger.valueOf(minimumValue)
-    is Long -> value >= minimumValue
-    else -> throw InvalidInputApiException(
-        "This validator is used for a wrong type",
-        "Type ${value::class.simpleName} is not handled by number validator",
-    )
+    ): Boolean = validateMinimumValueConstraint(dataPoint, minimumValue)
 }

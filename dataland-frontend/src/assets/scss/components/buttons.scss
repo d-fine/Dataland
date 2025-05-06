@@ -3,24 +3,29 @@
 @use '../units';
 @use '../variables';
 
-.p-button {
-  color: colors.$btn-primary-color;
-  background: colors.$btn-primary-bg;
-  border: 1px solid colors.$btn-primary-bg;
-  padding: variables.$spacing-xxs variables.$spacing-sm;
-  font-size: units.$button-fs;
+.p-button,
+.primary-button,
+.tertiary-button {
+  white-space: nowrap;
+  cursor: pointer;
   font-weight: units.$button-fw;
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
   font-family: variables.$ibm-plex-sans;
-  transition:
-    background-color 0.2s,
-    color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: all 0.2s;
   border-radius: 0;
-  line-height: variables.$line-height-1;
-  margin: variables.$spacing-xxxs;
+  text-transform: uppercase;
+  font-size: 0.875rem;
 
   &:enabled:hover {
+    color: white;
     background: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
     border-color: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
   }
@@ -42,6 +47,15 @@
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem colors.$btn-focus-border-color;
   }
+}
+
+.p-button {
+  color: colors.$btn-primary-color;
+  background: colors.$btn-primary-bg;
+  border: 1px solid colors.$btn-primary-bg;
+  padding: variables.$spacing-xxs variables.$spacing-sm;
+  line-height: variables.$line-height-1;
+  margin: variables.$spacing-xxxs;
 
   &.p-button-danger {
     background: colors.$btn-danger-bg;
@@ -197,6 +211,23 @@
   .p-button-icon-left {
     margin-right: 0.5rem;
   }
+}
+
+.primary-button {
+  padding: 0 variables.$spacing-sm;
+  height: 2.25rem;
+  color: colors.$btn-primary-color;
+  background: colors.$btn-primary-bg;
+  border: 1px solid colors.$btn-primary-bg;
+  margin: 0;
+}
+
+.tertiary-button {
+  padding: 0 variables.$spacing-sm;
+  height: 2.25rem;
+  color: colors.$main-color;
+  background: none;
+  border: none;
 }
 
 .link {

@@ -1,5 +1,7 @@
 package org.dataland.datalandspecification.specifications
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import org.dataland.datalandspecification.database.SetOrderedJsonSerializer
 import org.dataland.datalandspecification.database.SpecificationDatabase
 
 /**
@@ -16,7 +18,9 @@ data class DataPointType(
     val name: String,
     val businessDefinition: String,
     val dataPointBaseTypeId: String,
-    val frameworkOwnership: String? = null,
+    @JsonSerialize(converter = SetOrderedJsonSerializer::class)
+    val frameworkOwnership: Set<String>,
+    val constraints: List<String>? = null,
 ) {
     /**
      * Validates the integrity of the data point specification.

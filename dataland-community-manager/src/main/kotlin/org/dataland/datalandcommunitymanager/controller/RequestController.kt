@@ -18,8 +18,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataAccessManager
-import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
+import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.UserAuthenticationTool
@@ -40,7 +40,7 @@ class RequestController(
     @Autowired private val bulkDataRequestManager: BulkDataRequestManager,
     @Autowired private val singleDataRequestManager: SingleDataRequestManager,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
-    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
+    @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : RequestApi {
@@ -101,7 +101,7 @@ class RequestController(
                 dataType,
                 userId,
                 emailAddress,
-                datalandCompanyId,
+                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                 reportingPeriod,
                 requestStatus,
                 accessStatus,
@@ -142,7 +142,7 @@ class RequestController(
                 dataType,
                 userId,
                 emailAddress,
-                datalandCompanyId,
+                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                 reportingPeriod,
                 requestStatus,
                 accessStatus,
@@ -167,16 +167,10 @@ class RequestController(
         dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
-            dataRequestAlterationManager.patchDataRequest(
-                dataRequestId.toString(),
-                dataRequestPatch.requestStatus,
-                dataRequestPatch.accessStatus,
-                dataRequestPatch.contacts,
-                dataRequestPatch.message,
-                correlationId = null,
-                dataRequestPatch.requestPriority,
-                dataRequestPatch.adminComment,
-                dataRequestPatch.requestStatusChangeReason,
+            dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+                dataRequestId = dataRequestId.toString(),
+                dataRequestPatch = dataRequestPatch,
+                correlationId = UUID.randomUUID().toString(),
             ),
         )
 }

@@ -68,7 +68,7 @@ class EurodatDataStore(
         logger.info("Data with $dataId stored in eurodat storage. CorrelationId: $correlationId")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
-            val eurodatId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
+            val eurodatId = documentHashesOfDocumentsToStore.getString(hashAsArrayElement)
             retryWrapperMethod("write blob into EuroDaT database") {
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, eurodatId, eurodatCredentials)
             }

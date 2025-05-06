@@ -3,6 +3,7 @@
     <PrimeButton
       data-test="contextMenuButton"
       class="p-button-icon p-button-textcolor p-button-rounded"
+      style="min-width: fit-content"
       type="button"
       icon="pi pi-ellipsis-v"
       @click="toggle"

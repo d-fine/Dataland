@@ -4,26 +4,33 @@
       <table class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
           <tr>
-            <th class="headers-bg">Value</th>
+            <th scope="row" class="headers-bg">Value</th>
             <td class="nowrap">{{ dataPointDisplay.value ?? '' }}</td>
           </tr>
           <tr v-if="dataPointDisplay.quality">
-            <th class="headers-bg">Quality</th>
+            <th scope="row" class="headers-bg">Quality</th>
             <td>{{ dataPointDisplay.quality }}</td>
           </tr>
           <tr v-if="dataPointDisplay.dataSource">
-            <th class="headers-bg">Data source</th>
+            <th scope="row" class="headers-bg">Data source</th>
             <td class="nowrap">
-              <DocumentLink
+              <DocumentDownloadLink
+                :document-download-info="{
+                  downloadName: dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference,
+                  fileReference: dataPointDisplay.dataSource.fileReference,
+                  page: dataSourceFirstPageInRange,
+                }"
                 :label="dataSourceLabel"
-                :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
-                :file-reference="dataPointDisplay.dataSource.fileReference"
                 show-icon
               />
             </td>
           </tr>
+          <tr v-if="dataSourcePageRange">
+            <th scope="row" class="headers-bg">{{ dataSourceHasMultiplePages ? 'Pages' : 'Page' }}</th>
+            <td>{{ dataSourcePageRange }}</td>
+          </tr>
           <tr v-if="dataPointDisplay.comment">
-            <th class="headers-bg">Comment</th>
+            <th scope="row" class="headers-bg">Comment</th>
             <td>{{ dataPointDisplay.comment }}</td>
           </tr>
         </tbody>
@@ -34,20 +41,22 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
+import { getPageInfo } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 
 export default defineComponent({
-  components: { DocumentLink },
+  components: { DocumentDownloadLink },
   name: 'DataPointDataTableInModal',
+
   props: {
     dataPointDisplay: {
       type: Object as () => DataPointDisplay,
       require: true,
     },
   },
+
   computed: {
     isDataCorrect() {
       return (
@@ -55,12 +64,23 @@ export default defineComponent({
         (!!this.dataPointDisplay?.comment && this.dataPointDisplay?.comment !== '')
       );
     },
-    dataSourceLabel() {
-      return this.dataPointDisplay?.dataSource?.page
-        ? `${this.dataPointDisplay?.dataSource.fileName ?? ''}, page ${
-            this.dataPointDisplay?.dataSource?.page as number
-          }`
-        : this.dataPointDisplay?.dataSource?.fileName;
+
+    dataSourceLabel(): string | undefined {
+      const dataSource = this.dataPointDisplay?.dataSource;
+      if (!dataSource || !dataSource.fileName) return undefined;
+      return dataSource.fileName;
+    },
+
+    dataSourceFirstPageInRange(): number | undefined {
+      return getPageInfo(this.dataPointDisplay?.dataSource).firstPageInRange;
+    },
+
+    dataSourcePageRange(): string {
+      return getPageInfo(this.dataPointDisplay?.dataSource).pageRange;
+    },
+
+    dataSourceHasMultiplePages(): boolean {
+      return getPageInfo(this.dataPointDisplay?.dataSource).hasMultiplePages;
     },
   },
 });

@@ -17,6 +17,10 @@ class CategoryBuilder(
     private val builder: FrameworkSpecificationBuilder,
     val childElements: MutableList<SpecificationElement> = mutableListOf(),
 ) : SpecificationElement {
+    companion object {
+        const val MAXIMUM_DATA_POINT_TYPE_ID_LENGTH = 255
+    }
+
     /**
      * Add a new category to the hierarchy
      */
@@ -45,26 +49,29 @@ class CategoryBuilder(
     fun addDefaultDatapointAndSpecification(
         component: ComponentBase,
         typeNameSuffix: String,
-        dataPointBaseTypeId: String,
+        dataPointBaseTypeId: String? = null,
+        dataPointTypeIdOverwrite: String? = null,
     ): Pair<DataPointType, DatapointBuilder> {
-        val specificationId =
-            SpecificationNamingConvention.generateDataPointSpecificationName(
-                component.documentSupport,
-                component.identifier,
-                typeNameSuffix,
-            )
+        val dataPointTypeId =
+            dataPointTypeIdOverwrite
+                ?: SpecificationNamingConvention.generateDataPointTypeId(
+                    component.documentSupport,
+                    component.dataPointTypeName ?: component.identifier,
+                    typeNameSuffix,
+                )
         val specification =
             addDatapointSpecification(
-                id = specificationId,
+                id = dataPointTypeId,
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
-                dataPointBaseTypeId = dataPointBaseTypeId,
+                dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}$typeNameSuffix",
+                constraints = component.getConstraints(),
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(
                 identifier = component.identifier,
-                dataPointId = specificationId,
+                dataPointId = dataPointTypeId,
             )
         return Pair(specification, datapoint)
     }
@@ -77,9 +84,14 @@ class CategoryBuilder(
         name: String,
         businessDefinition: String,
         dataPointBaseTypeId: String,
+        constraints: List<String>?,
     ): DataPointType {
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
             "Data point base type id $dataPointBaseTypeId does not exist in the database."
+        }
+        require(id.length < MAXIMUM_DATA_POINT_TYPE_ID_LENGTH) {
+            "The length of the data-point-id field in the databases (e.g., the QA database) is limited to 255 chars. " +
+                "Therefore, the id of the data point type must be shorter than 255 chars."
         }
         val newDatapointType =
             DataPointType(
@@ -87,13 +99,35 @@ class CategoryBuilder(
                 name = name,
                 businessDefinition = businessDefinition,
                 dataPointBaseTypeId = dataPointBaseTypeId,
-                frameworkOwnership = builder.framework.identifier,
+                frameworkOwnership = setOf(builder.framework.identifier),
+                constraints = constraints,
             )
-        require(!builder.database.dataPointTypes.containsKey(id)) {
-            "Data point specification with id $id already exists in the database."
+        val existingDataPointType = builder.database.dataPointTypes[id]
+        val combinedDataPointType =
+            if (existingDataPointType != null) {
+                assertDataPointTypeConsistency(existingDataPointType = existingDataPointType, newDataPointType = newDatapointType)
+                require(!existingDataPointType.frameworkOwnership.contains(builder.framework.identifier)) {
+                    "Trying to add two datapoints with the same id $id to the same framework ${builder.framework.identifier}"
+                }
+                newDatapointType.copy(frameworkOwnership = existingDataPointType.frameworkOwnership + newDatapointType.frameworkOwnership)
+            } else {
+                newDatapointType
+            }
+        builder.database.dataPointTypes[id] = combinedDataPointType
+        return combinedDataPointType
+    }
+
+    private fun assertDataPointTypeConsistency(
+        existingDataPointType: DataPointType?,
+        newDataPointType: DataPointType,
+    ) {
+        if (existingDataPointType == null) {
+            return
         }
-        builder.database.dataPointTypes[id] = newDatapointType
-        return newDatapointType
+        require(existingDataPointType.copy(frameworkOwnership = emptySet()) == newDataPointType.copy(frameworkOwnership = emptySet())) {
+            "Inconsistency detected for Data point type with id ${existingDataPointType.id}. " +
+                "Existing: $existingDataPointType, new: $newDataPointType"
+        }
     }
 
     /**

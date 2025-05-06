@@ -2,7 +2,6 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.general.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model
     .ExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions
@@ -19,7 +18,6 @@ data class EutaxonomyFinancialsGeneralGeneral(
     val fiscalYearDeviation: QaReportDataPoint<ExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
     @field:Valid()
     val areAllGroupEntitiesCovered: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

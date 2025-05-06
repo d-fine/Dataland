@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling",
+  "name" : "Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling",
+  "businessDefinition" : "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

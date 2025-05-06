@@ -2,7 +2,7 @@
   "id" : "extendedEnumFiscalYearDeviation",
   "name" : "General deviation data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source, signifying a deviation. Can only have values 'Deviation' and 'NoDeviation'.",
-  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.enums.FiscalYearDeviationDataPoint",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.enums.ExtendedFiscalYearDeviationDataPoint",
   "example" : {
     "value" : "NoDeviation",
     "quality" : "Reported",
@@ -12,7 +12,6 @@
       "tagName" : "date",
       "fileName" : "AnnualReport2020.pdf",
       "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    },
-    "applicable" : true
+    }
   }
 }

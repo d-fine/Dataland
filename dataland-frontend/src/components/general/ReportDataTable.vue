@@ -7,9 +7,10 @@
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
-                :download-name="companyReport.fileName ? companyReport.fileName : 'Unnamed_File'"
-                :fileReference="companyReport.fileReference"
-                data-type=""
+                :document-download-info="{
+                  downloadName: companyReport.fileName ? companyReport.fileName : 'Unnamed_File',
+                  fileReference: companyReport.fileReference,
+                }"
                 font-style="font-semibold"
                 show-icon
               />
@@ -27,11 +28,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import type { CompanyReport } from '@clients/backend';
 
 export default defineComponent({
-  components: { DocumentLink },
+  components: { DocumentLink: DocumentDownloadLink },
   inject: ['dialogRef'],
   name: 'ReportDataTable',
   data() {

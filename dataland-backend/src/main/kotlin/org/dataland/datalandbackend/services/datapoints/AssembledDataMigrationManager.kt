@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandmessagequeueutils.messages.data.CopyQaStatusFromDataset
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -33,7 +34,7 @@ class AssembledDataMigrationManager
         private val logger = LoggerFactory.getLogger(javaClass)
         private val migrationCheckJsonComparisonOptions =
             JsonComparator.JsonComparisonOptions(
-                ignoredKeys = setOf("referencedReports", "publicationDate"),
+                ignoredKeys = setOf("referencedReports", "publicationDate", "fileName"),
                 fullyNullObjectsAreEqualToNull = true,
             )
 
@@ -59,8 +60,11 @@ class AssembledDataMigrationManager
                 correlationId = correlationId,
                 dataContent = splitDataset.dataContent,
                 fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
-                initialQaStatus = dataMetaInfo.qaStatus,
-                initialQaComment = "Status copied from stored dataset during migration.",
+                fileReferenceToFileNameMapping = splitDataset.fileReferenceToFileNameMapping,
+                initialQa =
+                    CopyQaStatusFromDataset(
+                        datasetId = dataMetaInfo.dataId,
+                    ),
             )
         }
 

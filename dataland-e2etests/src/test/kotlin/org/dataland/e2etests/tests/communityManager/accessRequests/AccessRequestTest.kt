@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.communityManager.accessRequests
 
+import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
@@ -18,7 +19,7 @@ import org.dataland.e2etests.utils.VsmeTestUtils
 import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.io.File
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccessRequestTest {
@@ -101,10 +103,11 @@ class AccessRequestTest {
                 TechnicalUser.PremiumUser, companyId, "2022",
             )
 
-        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
-
-        assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
-        assertEquals(RequestStatus.Answered, newlyStoredRequests[0].requestStatus)
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+            val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+            assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
+            assertEquals(RequestStatus.Answered, newlyStoredRequests[0].requestStatus)
+        }
 
         assertTrue(dummyFileAlpha.delete())
     }
@@ -126,14 +129,16 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        Thread.sleep(1000)
-        val newlyStoredRequestsSecond =
-            requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
-                storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
-            }
-        assertEquals(AccessStatus.Pending, newlyStoredRequestsSecond[0].accessStatus)
-        assertEquals(RequestStatus.Answered, newlyStoredRequestsSecond[0].requestStatus)
 
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+            val newlyStoredRequestsSecond =
+                requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+                    storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+                }
+            assert(newlyStoredRequestsSecond.isNotEmpty())
+            assertEquals(AccessStatus.Pending, newlyStoredRequestsSecond[0].accessStatus)
+            assertEquals(RequestStatus.Answered, newlyStoredRequestsSecond[0].requestStatus)
+        }
         assertTrue(dummyFileAlpha.delete())
     }
 

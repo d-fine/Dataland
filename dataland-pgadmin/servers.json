@@ -79,6 +79,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "9": {
+      "Name": "UserServiceDb",
+      "Group": "UserServiceDb",
+      "Port": 5432,
+      "Username": "user_service",
+      "Host": "user-service-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

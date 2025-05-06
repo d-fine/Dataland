@@ -5,26 +5,42 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.time.Instant
 import java.util.UUID
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestEntityTest {
     private val testUserId = UUID.randomUUID().toString()
     private val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
     private val testReportingPeriod = "2024"
     private val testCompanyId = UUID.randomUUID().toString()
 
-    private val dataRequest =
-        DataRequestEntity(
-            userId = testUserId,
-            dataType = testDataType.value,
-            reportingPeriod = testReportingPeriod,
-            datalandCompanyId = testCompanyId,
-            creationTimestamp = Instant.now().toEpochMilli(),
-        )
+    private lateinit var dataRequest: DataRequestEntity
+
+    private fun setupDataRequestEntity() {
+        dataRequest =
+            DataRequestEntity(
+                userId = testUserId,
+                dataType = testDataType.value,
+                notifyMeImmediately = false,
+                reportingPeriod = testReportingPeriod,
+                datalandCompanyId = testCompanyId,
+                creationTimestamp = Instant.now().toEpochMilli(),
+            )
+    }
+
+    @BeforeAll
+    fun setup() {
+        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        setupDataRequestEntity()
+    }
 
     @Test
     fun `validate that a new request has priority initialized to normal`() {

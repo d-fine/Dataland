@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mode
  * The root data-model for the Additional-company-information Framework
  */
 @Suppress("MagicNumber")
-@DataType("additional-company-information", 10)
+@DataType("additional-company-information", 6)
 @ReferencedReportsListValidator()
 data class AdditionalCompanyInformationData(
     @field:Valid()

@@ -27,7 +27,8 @@ function animation(
  * @param target - target element
  */
 export function smoothScroll(target: string): void {
-  const targetElement = document.querySelector(target) as HTMLElement;
+  const targetElement = document.querySelector(target);
+  if (!targetElement) return;
   const positionOfTargetElementRelativeToViewport = targetElement.getBoundingClientRect().top;
   const startPosition = window.scrollY;
   const buffer = 100;

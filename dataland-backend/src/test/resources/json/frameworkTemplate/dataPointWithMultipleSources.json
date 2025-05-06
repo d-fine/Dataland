@@ -1,0 +1,32 @@
+{
+  "branch1": {
+    "subBranch1": {
+      "dataSource": {
+        "page": "1",
+        "fileName": "SubBranch1",
+        "fileReference": "1"
+      }
+    },
+    "subBranch2": {
+      "value": 1.0,
+      "dataSource": {
+        "fileName": "SubBranch2",
+        "fileReference": "2",
+        "publicationDate": "2023-11-04"
+      }
+    }
+  },
+  "branch2": {
+    "value": 0.5,
+    "currency": "USD",
+    "dataSource": {
+      "page": "3",
+      "fileName": "Branch2",
+      "fileReference": "3",
+      "tagName": "content",
+      "publicationDate": "2023-05-03"
+    },
+    "comment": "just a test",
+    "quality": "Reported"
+  }
+}

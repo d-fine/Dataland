@@ -6,6 +6,7 @@ import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum } from '@clients/backend';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -14,8 +15,7 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
  */
 export function convertKebabCaseToPascalCase(rawText: string): string {
   const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
-  const pascalCase = camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
-  return pascalCase;
+  return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 }
 
 /**
@@ -81,6 +81,8 @@ function humanizeViaMapping(rawText: string): string {
     productionanduseofpersistentorganicpollutants:
       'Production and use of persistent organic pollutants (POPs Convention)',
     exportimportofhazardouswaste: 'Export/import of hazardous waste (Basel Convention)',
+    policy: 'Policy',
+    other: 'Other Document',
   };
 
   const lowerCaseText = rawText.toLowerCase();
@@ -157,5 +159,50 @@ export function getFrameworkSubtitle(framework: string): string {
       return 'für Corporate Schuldscheindarlehen';
     default:
       return '';
+  }
+}
+
+/**
+ * Return the human readable plural of a report category
+ * @param category document category
+ * @returns title of category
+ */
+export function getPluralCategory(category: string): string {
+  switch (category) {
+    case DocumentMetaInfoDocumentCategoryEnum.Policy:
+      return 'Policies';
+    case DocumentMetaInfoDocumentCategoryEnum.AnnualReport:
+      return 'Annual Reports';
+    case DocumentMetaInfoDocumentCategoryEnum.SustainabilityReport:
+      return 'Sustainability Reports';
+    case DocumentMetaInfoDocumentCategoryEnum.Other:
+      return 'Other Reports';
+    default:
+      return humanizeStringOrNumber(category);
+  }
+}
+
+/**
+ * Returns the filename to a given document, i.e., its documentName unless it is undefined or null, in which case
+ * the documentId is returned.
+ * @param document The document of interest
+ * @return The filename as a string
+ */
+export function documentNameOrId(document: DocumentMetaInfoResponse): string {
+  return document.documentName ?? document.documentId;
+}
+
+/**
+ * If document has a publication date that is not undefined, returns its documentNameOrId with the
+ * publication date appended in parentheses. Otherwise, simply returns the documentNameOrId.
+ * @param document The document of interest
+ * @return A string consisting of the documentNameOrId and the publication date if existent
+ */
+export function documentPublicationDateOrEmpty(document: DocumentMetaInfoResponse): string {
+  const documentPublicationDate = document.publicationDate;
+  if (documentPublicationDate == undefined) {
+    return '';
+  } else {
+    return '(' + document.publicationDate + ')';
   }
 }

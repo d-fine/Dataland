@@ -21,6 +21,124 @@
   ],
   "paths": {
     "/": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Search for document meta information.",
+        "description": "Search for document meta information by company ID, document categories and reporting period. Results are returned sorted by publication date in reverse chronological order. Only resultswith QA status \u0027Accepted\u0027 are returned.",
+        "operationId": "searchForDocumentMetaInformation",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "documentCategories",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AnnualReport",
+                  "SustainabilityReport",
+                  "Policy",
+                  "Other"
+                ]
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully searched for document meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "document-controller"
@@ -214,11 +332,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Successfully checked that a document does not exist."
-          },
           "200": {
             "description": "Successfully checked document existence."
+          },
+          "404": {
+            "description": "Successfully checked that a document does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -278,8 +396,8 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Document Id does not match any stored document.",
+          "200": {
+            "description": "Successfully updated the document\u0027s meta information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -298,8 +416,8 @@
               }
             }
           },
-          "200": {
-            "description": "Successfully updated the document\u0027s meta information.",
+          "404": {
+            "description": "Document Id does not match any stored document.",
             "content": {
               "application/json": {
                 "schema": {
@@ -366,16 +484,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Document Id does not match any stored document.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Successfully updated the companyIds field in the document\u0027s meta information.",
             "content": {
@@ -392,6 +500,86 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document Id does not match any stored document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{documentId}/metadata": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Receive meta information for a document.",
+        "description": "Receive meta information for a document by its ID from internal storage.",
+        "operationId": "getDocumentMetaInformation",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully received document meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document meta information could not be retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoEntity"
                 }
               }
             }
@@ -692,7 +880,8 @@
       },
       "DocumentMetaInfoResponse": {
         "required": [
-          "documentId"
+          "documentId",
+          "uploaderId"
         ],
         "type": "object",
         "properties": {
@@ -717,6 +906,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "uploaderId": {
+            "type": "string"
           },
           "publicationDate": {
             "type": "string",
@@ -757,6 +949,82 @@
             "type": "string"
           }
         }
+      },
+      "DocumentMetaInfoEntity": {
+        "required": [
+          "companyIds",
+          "documentId",
+          "documentType",
+          "isViewableByUser",
+          "qaStatus",
+          "uploadTime",
+          "uploaderId"
+        ],
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          },
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "uploaderId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "isViewableByUser": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DocumentType": {
+        "type": "string",
+        "enum": [
+          "Pdf",
+          "Xls",
+          "Xlsx",
+          "Ods"
+        ]
+      },
+      "QaStatus": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ]
       },
       "Link": {
         "type": "object",

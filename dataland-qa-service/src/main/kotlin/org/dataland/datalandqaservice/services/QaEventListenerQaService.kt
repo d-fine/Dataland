@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -17,7 +16,9 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPay
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
+import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.getType
+import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
@@ -50,7 +51,6 @@ class QaEventListenerQaService
         private val qaReviewManager: QaReviewManager,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
         private val qaReportManager: QaReportManager,
-        private val dataPointControllerApi: DataPointControllerApi,
         private val assembledDataMigrationManager: AssembledDataMigrationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -278,9 +278,6 @@ class QaEventListenerQaService
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
-         * @param payload the message body as a json string
-         * @param correlationId the correlation ID of the current user process
-         * @param type the type of the message
          */
         @RabbitListener(
             bindings = [
@@ -298,48 +295,19 @@ class QaEventListenerQaService
                     key = [RoutingKeyNames.DATA_POINT_UPLOAD],
                 ),
             ],
+            containerFactory = "consumerBatchContainerFactory",
         )
-        fun addReviewEntityForUploadedDataPoint(
-            @Payload payload: String,
-            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-            @Header(MessageHeaderKey.TYPE) type: String,
-        ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
-
+        fun addReviewEntityForUploadedDataPoint(messages: List<Message>) {
+            logger.info("Processing ${messages.size} Data Point Received Messages.")
             MessageQueueUtils.rejectMessageOnException {
-                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper)
-                MessageQueueUtils.validateDataId(dataUploadedPayload.dataPointId)
-                logger.info(
-                    "Received QA required for datapoint dataId ${dataUploadedPayload.dataPointId} with " +
-                        "initial QA status ${dataUploadedPayload.initialQaStatus} and message " +
-                        "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
-                )
-
-                saveQaReviewEntityFromMessage(dataUploadedPayload, correlationId)
+                val allParsedMessages =
+                    messages.map {
+                        MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
+                        val payload = it.readMessagePayload<DataPointUploadedPayload>(objectMapper)
+                        val correlationId = it.getCorrelationId()
+                        DataPointQaReviewManager.DataPointUploadedMessageWithCorrelationId(payload, correlationId)
+                    }
+                dataPointQaReviewManager.reviewDataPointFromMessages(allParsedMessages)
             }
-        }
-
-        /**
-         * Method to save a DataPointQaReviewEntity from a QaPayload
-         * @param dataUploadedPayload the payload containing the dataId and bypassQa
-         * @param correlationId the correlation ID of the current user process
-         * @return the saved DataPointQaReviewEntity
-         */
-        fun saveQaReviewEntityFromMessage(
-            dataUploadedPayload: DataPointUploadedPayload,
-            correlationId: String,
-        ): DataPointQaReviewEntity {
-            val dataPointId = dataUploadedPayload.dataPointId
-            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataPointId).uploaderUserId)
-
-            val qaStatus = QaStatus.valueOf(dataUploadedPayload.initialQaStatus)
-
-            return dataPointQaReviewManager.reviewDataPoint(
-                dataPointId = dataPointId,
-                qaStatus = qaStatus,
-                triggeringUserId = triggeringUserId,
-                comment = dataUploadedPayload.initialQaComment,
-                correlationId = correlationId,
-            )
         }
     }

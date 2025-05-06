@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyId
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -16,7 +17,7 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.slf4j.LoggerFactory
@@ -39,7 +40,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val companyBaseManager: CompanyBaseManager,
-    @Autowired private val assembledDataManager: AssembledDataManager,
+    @Autowired private val dataPointUtils: DataPointUtils,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -198,7 +199,7 @@ class CompanyDataController(
                 AggregatedFrameworkDataSummary(
                     (
                         companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
-                            assembledDataManager.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
+                            dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
                     ).size.toLong(),
                 )
             },
@@ -212,6 +213,15 @@ class CompanyDataController(
         )
 
     override fun isCompanyIdValid(companyId: String) {
-        companyQueryManager.verifyCompanyIdExists(companyId)
+        companyQueryManager.assertCompanyIdExists(companyId)
     }
+
+    override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
+        ResponseEntity.ok(
+            companyQueryManager.getCompanySubsidiariesByParentId(companyId),
+        )
+
+    override fun postCompanyValidation(identifiers: List<String>): ResponseEntity<List<CompanyIdentifierValidationResult>> =
+        ResponseEntity
+            .ok(companyQueryManager.validateCompanyIdentifiers(identifiers))
 }

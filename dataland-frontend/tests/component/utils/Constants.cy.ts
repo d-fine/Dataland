@@ -1,14 +1,18 @@
-import { ALL_FRAMEWORKS_ORDERED, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 import { DataTypeEnum } from '@clients/backend';
 import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFrameworkRegistry';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
   it('Check framework order of esg datenkatalog, heimathafen, and additional company information', () => {
-    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 3]).to.equal(DataTypeEnum.EsgDatenkatalog);
-    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 2]).to.equal(DataTypeEnum.Heimathafen);
-    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 1]).to.equal(
-      DataTypeEnum.AdditionalCompanyInformation
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 3]).to.equal(
+      DataTypeEnum.Vsme
+    );
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 2]).to.equal(
+      DataTypeEnum.EsgDatenkatalog
+    );
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 1]).to.equal(
+      DataTypeEnum.Heimathafen
     );
   });
 
@@ -25,7 +29,9 @@ describe('Unit test for the data type sorting in the Constants', () => {
       );
     }
 
-    const allToolboxSupportedFrameworksConstant = removeFrameworksWithNoToolboxSupport(ALL_FRAMEWORKS_ORDERED);
+    const allToolboxSupportedFrameworksConstant = removeFrameworksWithNoToolboxSupport(
+      ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER
+    );
 
     const frameworkIdentifiersFromPrivateRegistry = getAllPrivateFrameworkIdentifiers();
     const frameworkIdentifiersFromPublicAndPrivateRegistries = [

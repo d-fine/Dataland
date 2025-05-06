@@ -8,6 +8,8 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Defines the restful internal storage API.
@@ -62,26 +64,26 @@ interface StorageAPI {
     ): ResponseEntity<InputStreamResource>
 
     /**
-     * A method to retrieve a single data point from the internal storage using the [dataId]
-     * @param dataId the ID of the data point stored in the internal storage which should be retrieved
+     * A method to retrieve multiple data points from the internal storage using the [dataIds]
+     * @param dataIds the IDs of the data points stored in the internal storage which should be retrieved
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
      */
     @Operation(
-        summary = "Request data point by ID.",
-        description = "Requests data point by ID.",
+        summary = "Request data points by IDs.",
+        description = "Requests data points by IDs.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved data point."),
         ],
     )
-    @GetMapping(
-        value = ["/data/data-points/{dataId}"],
+    @PostMapping(
+        value = ["/data/data-points/get-batch"],
         produces = ["application/json"],
     )
-    fun selectDataPointById(
-        @PathVariable("dataId") dataId: String,
+    fun selectBatchDataPointsByIds(
+        @RequestBody dataIds: List<String>,
         correlationId: String,
-    ): ResponseEntity<StorableDataPoint>
+    ): ResponseEntity<Map<String, StorableDataPoint>>
 }

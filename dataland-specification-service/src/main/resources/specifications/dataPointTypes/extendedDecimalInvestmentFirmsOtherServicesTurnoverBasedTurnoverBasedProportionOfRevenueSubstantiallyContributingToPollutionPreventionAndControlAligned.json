@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned",
+  "name" : "Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

@@ -5,13 +5,16 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.api.ApiAwait
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpStatus
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Sfdr {
@@ -47,7 +50,11 @@ class Sfdr {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+
+        assertDataEqualsIgnoringDates(
+            listOfOneSfdrDataset[0], downloadedAssociatedData.data,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @Test
@@ -58,14 +65,22 @@ class Sfdr {
                 listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
             )
+
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
+        Thread.sleep(2000)
         val downloadedAssociatedData =
-            apiAccessor.dataControllerApiForSfdrData
-                .getCompanyAssociatedSfdrDataByDimensions(
-                    reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
-                    companyId = receivedDataMetaInformation.companyId,
-                )
-        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+            ApiAwait.waitForData(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                apiAccessor.dataControllerApiForSfdrData
+                    .getCompanyAssociatedSfdrDataByDimensions(
+                        reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
+                        companyId = receivedDataMetaInformation.companyId,
+                    )
+            }
+
+        assertDataEqualsIgnoringDates(
+            listOfOneSfdrDataset[0], downloadedAssociatedData.data,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @Test
@@ -93,7 +108,7 @@ class Sfdr {
         val companyInformation =
             FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java).getByCompanyName(companyName)
 
-        val dataset = companyInformation!!.t
+        val dataset = companyInformation.t
 
         val uploadPair = Pair(dataset, "2022")
 

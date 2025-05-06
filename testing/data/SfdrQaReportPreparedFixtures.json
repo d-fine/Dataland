@@ -2,40 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Marianneside",
-			"headquartersPostalCode": "30690",
-			"sector": "initiatives",
+			"headquarters": "Lake Kaylinview",
+			"headquartersPostalCode": null,
+			"sector": "solutions",
 			"identifiers": {
-				"Lei": [
-					"9KT68Clm7WCWnsbkazW0"
-				],
+				"Lei": [],
 				"Isin": [
-					"ZhVQNcBY1QBY",
-					"PzwkpMXsHJZE"
+					"sbkazW0HZhVQ",
+					"KT68Clm7WCWn"
 				],
 				"PermId": [],
 				"Ticker": [
-					"E5pYc9N"
+					"MXsHJZE"
 				],
-				"Duns": [],
+				"Duns": [
+					"wUDAYlV7K"
+				],
 				"VatNumber": [
-					"vWlZBIggy"
+					"AcE5pYc9N"
 				],
 				"CompanyRegistrationNumber": [
-					"RtEoAguHlxzs1Uh"
+					"YSzD0togEqvWlZB"
 				]
 			},
-			"countryCode": "BY",
+			"countryCode": "EH",
 			"companyContactDetails": [
-				"Donny.Hoppe24@example.com"
+				"Kayleigh.Strosin@example.com"
 			],
 			"companyAlternativeNames": [
-				"Abernathy - Gulgowski",
-				"Fisher - Gulgowski",
-				"Hills and Sons"
+				"Powlowski Inc"
 			],
 			"companyLegalForm": "Sole Trader",
-			"website": "https://primary-pear.com",
+			"website": "https://ambitious-teriyaki.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {

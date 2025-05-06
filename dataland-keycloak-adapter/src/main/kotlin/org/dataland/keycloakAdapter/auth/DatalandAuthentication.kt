@@ -14,7 +14,7 @@ sealed class DatalandAuthentication : Authentication {
          */
         fun fromContext(): DatalandAuthentication {
             val auth = fromContextOrNull()
-            requireNotNull(auth)
+            requireNotNull(auth) { "DatalandAuthentication context is null" }
             return auth
         }
 

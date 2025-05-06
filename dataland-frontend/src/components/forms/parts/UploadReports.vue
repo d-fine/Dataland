@@ -71,7 +71,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import PrimeButton from 'primevue/button';
 import ReportFormElement from '@/components/forms/parts/ReportFormElement.vue';
@@ -218,9 +217,11 @@ export default defineComponent({
       const indexesOfInvalidFileNames = nameIndexAndReasonOfInvalidFiles.map(
         (fileNameWithIndexAndReason) => fileNameWithIndexAndReason.index
       );
-      (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(
-        indexesOfInvalidFileNames
-      );
+      (
+        (this.$refs.uploadDocumentsForm as typeof UploadDocumentsForm).removeDocumentsFromDocumentsToUpload as (
+          indexes: number[]
+        ) => void
+      )(indexesOfInvalidFileNames);
     },
     /**
      * When the X besides existing reports is clicked this function should be called and

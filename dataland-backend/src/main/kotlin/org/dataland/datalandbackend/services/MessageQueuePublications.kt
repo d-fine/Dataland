@@ -1,7 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -11,6 +12,8 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
+import org.dataland.datalandmessagequeueutils.messages.data.InitialQaStatus
+import org.dataland.datalandmessagequeueutils.messages.data.PresetQaStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -30,45 +33,62 @@ class MessageQueuePublications(
 
     /**
      * Method to publish a message that a data point has been uploaded
-     * @param dataPointId The ID of the uploaded data point
+     * @param dataPointMetaInformation Information about the uploaded datapoint
+     * @param companyInformation Information about the company the data point belongs to
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessageWithBypassQa(
-        dataPointId: String,
+        dataPointMetaInformation: DataPointMetaInformation,
+        companyInformation: StoredCompany,
         bypassQa: Boolean,
         correlationId: String,
     ) {
         val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
         publishDataPointUploadedMessage(
-            dataPointId = dataPointId,
-            initialQaStatus = qaStatus,
-            initialQaComment = comment,
+            dataPointMetaInformation = dataPointMetaInformation,
+            companyInformation = companyInformation,
+            initialQa =
+                PresetQaStatus(
+                    qaStatus = qaStatus,
+                    qaComment = comment,
+                ),
             correlationId = correlationId,
         )
     }
 
     /**
      * Method to publish a message that a data point has been uploaded
-     * @param dataPointId The ID of the uploaded data point
-     * @param initialQaStatus The initial QA status of the data point
-     * @param initialQaComment The initial QA status message of the data point
+     * @param dataPointMetaInformation The meta information of the uploaded data point
+     * @param companyInformation The company information of the company the data point belongs to
+     * @param initialQa The initial QA status of the data point
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessage(
-        dataPointId: String,
-        initialQaStatus: QaStatus,
-        initialQaComment: String?,
+        dataPointMetaInformation: DataPointMetaInformation,
+        companyInformation: StoredCompany,
+        initialQa: InitialQaStatus,
         correlationId: String,
     ) {
-        logger.info("Publish message that data point with ID '$dataPointId' has been uploaded. Correlation ID: '$correlationId'.")
+        logger
+            .info(
+                "Publish message that data point with ID '${dataPointMetaInformation.dataPointId}' " +
+                    "has been uploaded. Correlation ID: '$correlationId'.",
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body =
                 objectMapper.writeValueAsString(
                     DataPointUploadedPayload(
-                        dataPointId = dataPointId,
-                        initialQaStatus = initialQaStatus.toString(), initialQaComment = initialQaComment,
+                        dataPointId = dataPointMetaInformation.dataPointId,
+                        companyId = companyInformation.companyId,
+                        companyName = companyInformation.companyInformation.companyName,
+                        dataPointType = dataPointMetaInformation.dataPointType,
+                        reportingPeriod = dataPointMetaInformation.reportingPeriod,
+                        uploadTime = dataPointMetaInformation.uploadTime,
+                        uploaderUserId =
+                            dataPointMetaInformation.uploaderUserId,
+                        initialQa = initialQa,
                     ),
                 ),
             type = MessageType.PUBLIC_DATA_RECEIVED,

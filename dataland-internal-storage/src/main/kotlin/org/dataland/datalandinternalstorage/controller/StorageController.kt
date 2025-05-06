@@ -47,11 +47,11 @@ class StorageController(
             .body(InputStreamResource(stream))
     }
 
-    override fun selectDataPointById(
-        dataId: String,
+    override fun selectBatchDataPointsByIds(
+        dataIds: List<String>,
         correlationId: String,
-    ): ResponseEntity<StorableDataPoint> {
-        logger.info("Selecting data point from database with data ID: $dataId. Correlation ID: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataPoint(dataId, correlationId))
+    ): ResponseEntity<Map<String, StorableDataPoint>> {
+        logger.info("Selecting ${dataIds.size} data points from the database: $dataIds. Correlation id: $correlationId.")
+        return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
     }
 }

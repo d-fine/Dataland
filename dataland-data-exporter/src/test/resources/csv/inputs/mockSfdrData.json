@@ -54,7 +54,8 @@
           "page": 331,
           "fileName": "SustainabilityReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "metrics"
+          "tagName": "metrics",
+          "publicationDate": "2023-03-23"
         },
         "comment": "index bluetooth array",
         "quality": "Incomplete"

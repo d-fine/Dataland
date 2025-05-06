@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 /**
@@ -50,6 +52,7 @@ class DataPointManager
          * @param correlationId the correlation id for the operation
          * @return the meta information of the stored data point
          */
+        @Transactional
         fun processDataPoint(
             uploadedDataPoint: UploadedDataPoint,
             uploaderUserId: String,
@@ -64,6 +67,11 @@ class DataPointManager
                 throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
             }
 
+            val companyInformation =
+                companyQueryManager
+                    .getCompanyById(uploadedDataPoint.companyId)
+                    .toApiModel()
+
             val dataPointMetaInformation =
                 storeDataPoint(
                     uploadedDataPoint = uploadedDataPoint,
@@ -72,7 +80,12 @@ class DataPointManager
                     correlationId = correlationId,
                     uploadTime = Instant.now().toEpochMilli(),
                 )
-            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(dataPointId, bypassQa, correlationId)
+            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(
+                dataPointMetaInformation = dataPointMetaInformation,
+                companyInformation = companyInformation,
+                bypassQa = bypassQa,
+                correlationId = correlationId,
+            )
             return dataPointMetaInformation
         }
 
@@ -84,6 +97,7 @@ class DataPointManager
          * @param correlationId the correlation id for the operation
          * @return the id of the stored data point
          */
+        @Transactional
         fun storeDataPoint(
             uploadedDataPoint: UploadedDataPoint,
             dataPointId: String,
@@ -103,9 +117,65 @@ class DataPointManager
          * @param dataId the id of the data point
          * @return true if the company is associated with the data point, false otherwise
          */
+        @Transactional(readOnly = true)
         fun isCompanyAssociatedWithDataPointMarkedForPublicAccess(dataId: String): Boolean {
             val metaInfo = metaDataManager.getDataPointMetaInformationById(dataId)
             return companyQueryManager.isCompanyPublic(metaInfo.companyId)
+        }
+
+        /**
+         * Retrieve a batch of data points by their Ids
+         * Data is retrieved from the internal cache or the internal storage
+         */
+        @Transactional(readOnly = true)
+        fun retrieveDataPoints(
+            dataPointIds: List<String>,
+            correlationId: String,
+        ): Map<String, UploadedDataPoint> {
+            logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")
+            val dataPointMap = mutableMapOf<String, UploadedDataPoint>()
+            val dataIdsToRequestFromInternalStorage = mutableListOf<String>()
+            val allMetaInfo =
+                metaDataManager
+                    .getDataPointMetaInformationByIds(dataPointIds)
+                    .associateBy { it.dataPointId }
+
+            for (dataPointId in dataPointIds) {
+                val metaInfo =
+                    allMetaInfo[dataPointId] ?: throw ResourceNotFoundApiException(
+                        "Data point not found",
+                        "No data point with the id: $dataPointId could be found in the data store.",
+                    )
+                if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+                    throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+                }
+                val dataPointType = metaInfo.dataPointType
+                dataPointValidator.validateDataPointTypeExists(dataPointType)
+
+                val dataFromCache = dataManager.getDataFromCache(dataPointId)
+                if (dataFromCache != null) {
+                    dataPointMap[dataPointId] = objectMapper.readValue(dataFromCache)
+                } else {
+                    dataIdsToRequestFromInternalStorage.add(dataPointId)
+                }
+            }
+
+            if (dataIdsToRequestFromInternalStorage.isNotEmpty()) {
+                val dataPointsFromInternalStorage =
+                    storageClient
+                        .selectBatchDataPointsByIds(correlationId, dataIdsToRequestFromInternalStorage)
+                dataPointsFromInternalStorage.forEach { (dataPointId, storedDataPoint) ->
+                    dataPointMap[dataPointId] =
+                        UploadedDataPoint(
+                            dataPoint = storedDataPoint.dataPoint,
+                            dataPointType = storedDataPoint.dataPointType,
+                            companyId = storedDataPoint.companyId,
+                            reportingPeriod = storedDataPoint.reportingPeriod,
+                        )
+                }
+            }
+
+            return dataPointMap
         }
 
         /**
@@ -114,63 +184,18 @@ class DataPointManager
          * @param correlationId the correlation id for the operation
          * @return the data point in form of a StorableDataset
          */
+        @Transactional(readOnly = true)
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint {
-            val metaInfo = metaDataManager.getDataPointMetaInformationById(dataPointId)
-            if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-                throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
-            }
-            val dataPointType = metaInfo.dataPointType
-            logger.info("Retrieving $dataPointType data point with id $dataPointId (correlation ID: $correlationId).")
-            dataPointValidator.validateDataPointTypeExists(dataPointType)
-
-            val dataFromCache = dataManager.getDataFromCache(dataPointId)
-            if (dataFromCache != null) {
-                return objectMapper.readValue(dataFromCache)
-            }
-
-            val storedDataPoint = storageClient.selectDataPointById(dataPointId, correlationId)
-            return UploadedDataPoint(
-                dataPoint = storedDataPoint.dataPoint,
-                dataPointType = storedDataPoint.dataPointType,
-                companyId = storedDataPoint.companyId,
-                reportingPeriod = storedDataPoint.reportingPeriod,
-            )
-        }
-
-        /**
-         * Update the currently active data point for specific data point dimensions
-         * @param dataPointDimensions the data point dimension to update the currently active data point for
-         * @param newActiveDataId the id of the new active data point
-         * @param correlationId the correlation id for the operation
-         */
-        fun updateCurrentlyActiveDataPoint(
-            dataPointDimensions: BasicDataPointDimensions,
-            newActiveDataId: String?,
-            correlationId: String,
-        ) {
-            logger.info("Updating currently active data point for $dataPointDimensions (correlation ID: $correlationId).")
-            val currentlyActiveDataId = metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)
-            logger.info("Currently and newly active IDs are $currentlyActiveDataId and $newActiveDataId (correlation ID: $correlationId).")
-            if (newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
-                logger.info("Setting data point with dataId $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, null)
-            } else if (newActiveDataId != currentlyActiveDataId) {
-                logger.info("Setting $newActiveDataId to active and $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, null)
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
-            } else {
-                logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
-            }
-        }
+        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
 
         /**
          * Retrieves the currently active data points for a list of specific data point dimensions
          * @param dataPointDimensions the data dimensions to retrieve the data points for
          * @return the id of the currently active data point
          */
+        @Transactional(readOnly = true)
         fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): List<String> {
             val dataPointIds = mutableListOf<String>()
             dataPointDimensions.forEach {

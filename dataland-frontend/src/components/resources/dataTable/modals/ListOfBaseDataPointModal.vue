@@ -4,7 +4,7 @@ import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { type BaseDataPoint } from '@/utils/DataPoint';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { type DataMetaInformation } from '@clients/backend';
 
 interface ListOfBaseDataPointDialogData {
@@ -30,12 +30,14 @@ const tableData = computed(() => {
     <Column field="value" :header="dialogData.descriptionColumnHeader" headerStyle="width: 15vw;"> </Column>
     <Column :header="dialogData.documentColumnHeader" headerStyle="width: 15vw;">
       <template #body="{ data }">
-        <DocumentLink
+        <DocumentDownloadLink
+          :document-download-info="{
+            downloadName: data.dataSource?.fileName,
+            fileReference: data.dataSource?.fileReference,
+            dataId: dialogData.metaInfo?.dataId,
+            dataType: dialogData.metaInfo?.dataType,
+          }"
           :label="data.dataSource?.fileName"
-          :download-name="data.dataSource?.fileName"
-          :file-reference="data.dataSource?.fileReference"
-          :data-id="dialogData.metaInfo?.dataId"
-          :data-type="dialogData.metaInfo?.dataType"
           :show-icon="!(data.dataSource == undefined)"
         />
       </template>
