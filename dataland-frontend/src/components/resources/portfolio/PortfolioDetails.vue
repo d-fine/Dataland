@@ -76,8 +76,8 @@
       >
         <template #body="portfolioEntry">
           <a
-            v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef[framework]"
-            :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef[framework]"
+            v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+            :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
             >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
           >
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
@@ -147,6 +147,7 @@ class PortfolioEntryPrepared {
     majorFrameworks.forEach((framework) => {
       console.log(`Setting map value for framework ${framework}.`);
       console.log(`Map value: ${portfolioEntry.frameworkHyphenatedNamesToDataRef[framework]}`);
+      console.log(`Available reporting periods: ${portfolioEntry.availableReportingPeriods[framework]}`);
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -154,7 +155,7 @@ class PortfolioEntryPrepared {
             ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
             : undefined)
       );
-      console.log(`Set value: ${this.frameworkHyphenatedNamesToDataRef[framework]}`);
+      console.log(`Set value: ${this.frameworkHyphenatedNamesToDataRef.get(framework)}`);
     });
 
     this.sfdrAvailableReportingPeriods = portfolioEntry.availableReportingPeriods['sfdr'] || 'No data available';
