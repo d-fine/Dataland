@@ -145,9 +145,6 @@ class PortfolioEntryPrepared {
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
     majorFrameworks.forEach((framework) => {
-      console.log(`Setting map value for framework ${framework}.`);
-      console.log(`Map value: ${portfolioEntry.frameworkHyphenatedNamesToDataRef[framework]}`);
-      console.log(`Available reporting periods: ${portfolioEntry.availableReportingPeriods[framework]}`);
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -155,7 +152,6 @@ class PortfolioEntryPrepared {
             ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
             : undefined)
       );
-      console.log(`Set value: ${this.frameworkHyphenatedNamesToDataRef.get(framework)}`);
     });
 
     this.sfdrAvailableReportingPeriods = portfolioEntry.availableReportingPeriods['sfdr'] || 'No data available';
