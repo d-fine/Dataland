@@ -288,7 +288,10 @@ class AssembledDataManager
             correlationId: String,
         ): String {
             val dataPoints = getDataPointIdsForDataset(datasetId)
-            return assembleDatasetFromDataPoints(dataPoints.values.toList(), dataType, correlationId)
+            return assembleSingleDataSet(
+                dataPointManager.retrieveDataPoints(dataPoints.values, correlationId).values,
+                getFrameworkTemplate(dataType),
+            )
         }
 
         /**
@@ -327,7 +330,7 @@ class AssembledDataManager
          * @param frameworkTemplate the framework template to be used as a basis
          */
         private fun assembleSingleDataSet(
-            dataPoints: List<UploadedDataPoint>,
+            dataPoints: Collection<UploadedDataPoint>,
             frameworkTemplate: JsonNode,
         ): String {
             val referencedReports = mutableMapOf<String, CompanyReport>()
