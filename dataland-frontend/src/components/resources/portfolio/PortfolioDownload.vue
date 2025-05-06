@@ -10,34 +10,21 @@
         name="fileTypeSelector"
         data-test="fileTypeSelector"
         :options="availableFrameworks"
-        placeholder="Select a file type"
+        placeholder="Select framework"
       />
-      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Please select a file type.</p>
-
+      <p v-show="showFrameworksError" class="text-danger text-xs" data-test="fileTypeError">Select Framework.</p>
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
-      <div class="reporting-periods-selector">
-        <template v-if="selectedFramework">
-          <div v-if="dynamicReportingPeriods.length > 0" class="flex flex-wrap py-2">
-            <ToggleChipFormInputs
-              :name="'listOfReportingPeriods'"
-              :options="dynamicReportingPeriods"
-              @changed="showReportingPeriodsError = false"
-            />
-          </div>
-          <p v-else class="text-sm text-danger mt-2">
-            No reporting periods available for {{ getFrameworkLabel(selectedFramework) }} and selected Portfolio.
-          </p>
-        </template>
-        <template v-else>
-          <p class="gray-text font-italic text-xs m-0">
-            Selection of reporting periods is available upon framework selection.
-          </p>
-        </template>
+      <div class="reporting-periods-selector flex flex-wrap gap-2 py-2">
+        <ToggleChipFormInputs
+          :name="'listOfReportingPeriods'"
+          :options="dynamicReportingPeriods"
+          @changed="showReportingPeriodsError = false"
+          class="toggle-chip-group"
+        />
       </div>
       <p v-if="showReportingPeriodsError" class="text-danger text-xs mt-2">Select at least one reporting period.</p>
-
       <label for="fileTypeSelector">
         <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File Type</b>
       </label>
@@ -47,19 +34,20 @@
         name="fileTypeSelector"
         data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
-        placeholder="Select a file type"
+        placeholder="Select file type"
       />
-      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Please select a file type.</p>
+      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Select a file type.</p>
     </FormKit>
-    <PrimeButton
-      label="Download Portfolio"
-      icon="pi pi-download"
-      @click="onDownloadButtonClick"
-      class="primary-button downloadButton"
-      :data-test="'downloadButton'"
-      title="Download the selected frameworks and reporting periods for current portfolio"
-      style="width: max-content"
-    />
+    <div class="download-button-wrapper">
+      <PrimeButton
+        label="Download Portfolio"
+        icon="pi pi-download"
+        @click="onDownloadButtonClick"
+        class="primary-button"
+        :data-test="'downloadButton'"
+        title="Download the selected frameworks and reporting periods for current portfolio"
+      />
+    </div>
   </div>
 </template>
 
@@ -94,6 +82,7 @@ const selectedFramework = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
+const showFrameworksError = ref(false);
 const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
 const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
@@ -107,6 +96,7 @@ onMounted(() => {
     portfolioId.value = portfolio.portfolioId;
     portfolioEntries.value = portfolio.entries;
   }
+  setReportingPeriods();
 });
 
 watch(selectedFramework, () => {
@@ -114,39 +104,25 @@ watch(selectedFramework, () => {
 });
 
 /**
- * Retrieves currently selected framework
- */
-function getFrameworkLabel(value: string | undefined): string {
-  const framework = availableFrameworks.find((fw) => fw.value === value);
-  return framework?.label ?? value ?? 'selected framework';
-}
-
-/**
  * When the framework changes, update the available reporting periods based on the selected framework
+ * Currently this function does nothing until dynamic reporting periods can be fetched from
  */
 function onFrameworkChange(): void {
-  setReportingPeriods(portfolioEntries.value);
+  setReportingPeriods();
 }
 
 /**
  * When the framework changes, update the available reporting periods based on the selected framework
  */
-function setReportingPeriods(entries: EnrichedPortfolioEntry[]): void {
-  if (!selectedFramework.value) return;
-
-  const periodsSet = new Set<string>();
-  entries.forEach((entry) => {
-    if (entry.framework === selectedFramework.value && entry.latestReportingPeriod) {
-      periodsSet.add(entry.latestReportingPeriod);
-    }
-  });
-
-  dynamicReportingPeriods.value = Array.from(periodsSet)
-    .sort((a, b) => parseInt(b) - parseInt(a))
-    .map((period) => ({
-      name: period,
-      value: false,
-    }));
+function setReportingPeriods(): void {
+  dynamicReportingPeriods.value = [
+    { name: '2025', value: false },
+    { name: '2024', value: false },
+    { name: '2023', value: false },
+    { name: '2022', value: false },
+    { name: '2021', value: false },
+    { name: '2020', value: false },
+  ];
 }
 
 /**
@@ -189,13 +165,11 @@ function checkIfShowErrors(): void {
 async function downloadPortfolio(): Promise<void> {
   try {
     if (!selectedFramework.value) {
-      alert('Please select a framework.');
-      return;
+      throw new Error('Framework must be selected.');
     }
 
     if (!selectedFileType.value) {
-      alert('Please select a file type.');
-      return;
+      throw new Error('File type must be selected.');
     }
 
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -204,11 +178,6 @@ async function downloadPortfolio(): Promise<void> {
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
     const selectedPeriods = getSelectedReportingPeriods();
-
-    if (!selectedPeriods.values) {
-      alert('Please select at least one reporting period.');
-      return;
-    }
 
     const companyIds = getCompanyIds();
     const filename = 'portfolio-download';
@@ -230,6 +199,12 @@ async function downloadPortfolio(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
+.download-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
 .downloadButton {
   width: max-content;
   margin-left: auto;
@@ -249,6 +224,23 @@ label {
   margin-top: 10px;
   margin-bottom: 5px;
   font-weight: normal;
+}
+.toggle-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+
+  .chip {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    flex: 1 1 auto;
+    max-width: 5rem;
+    text-align: center;
+  }
 }
 
 .portfolio-download-content {
