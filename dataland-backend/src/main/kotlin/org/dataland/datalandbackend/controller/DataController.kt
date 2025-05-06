@@ -98,9 +98,20 @@ open class DataController<T>(
                 reportingPeriod = reportingPeriod,
             )
         val correlationId = IdUtils.generateCorrelationId(dataDimensions)
-        return ResponseEntity.ok(
-            this.buildCompanyAssociatedData(listOf(dataDimensions), correlationId).first(),
-        )
+
+        val companyAssociatedDataList =
+            this.buildCompanyAssociatedData(
+                listOf(Pair(companyId, reportingPeriod)),
+                dataType.toString(),
+                correlationId,
+            )
+        if (companyAssociatedDataList.isEmpty()) {
+            throw ResourceNotFoundApiException(
+                summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+            )
+        }
+        return ResponseEntity.ok(companyAssociatedDataList.first())
     }
 
     private fun getData(
@@ -143,16 +154,10 @@ open class DataController<T>(
         companyIds: List<String>,
         exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource> {
-        val dataDimensions = mutableListOf<BasicDataDimensions>()
+        val companyIdAndReportingPeriodPairs = mutableListOf<Pair<String, String>>()
         companyIds.forEach { companyId ->
             reportingPeriods.forEach { reportingPeriod ->
-                dataDimensions.add(
-                    BasicDataDimensions(
-                        companyId = companyId,
-                        dataType = dataType.toString(),
-                        reportingPeriod = reportingPeriod,
-                    ),
-                )
+                companyIdAndReportingPeriodPairs.add(Pair(companyId, reportingPeriod))
             }
         }
 
@@ -161,7 +166,7 @@ open class DataController<T>(
 
         val companyAssociatedDataForExport =
             dataExportService.buildStreamFromCompanyAssociatedData(
-                this.buildCompanyAssociatedData(dataDimensions, correlationId),
+                this.buildCompanyAssociatedData(companyIdAndReportingPeriodPairs, dataType.toString(), correlationId),
                 exportFileType,
             )
 
@@ -232,21 +237,16 @@ open class DataController<T>(
     }
 
     private fun buildCompanyAssociatedData(
-        dataDimensions: List<BasicDataDimensions>,
+        companyAndReportingPeriodPairs: List<Pair<String, String>>,
+        framework: String,
         correlationId: String,
     ): List<CompanyAssociatedData<T>> {
-        val dataDimensionsWithDataStrings = datasetStorageService.getDatasetData(dataDimensions, correlationId)
-        if (dataDimensionsWithDataStrings.isEmpty()) {
-            throw ResourceNotFoundApiException(
-                summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
-                message =
-                    if (dataDimensions.size == 1) {
-                        logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions.first())
-                    } else {
-                        "No dataset available for the given combinations of company, reporting period and framework."
-                    },
+        val dataDimensionsWithDataStrings =
+            datasetStorageService.getDatasetData(
+                companyAndReportingPeriodPairs.map { BasicDataDimensions(it.first, framework, it.second) },
+                correlationId,
             )
-        }
+
         return dataDimensionsWithDataStrings.map {
             CompanyAssociatedData(
                 companyId = it.first.companyId,
