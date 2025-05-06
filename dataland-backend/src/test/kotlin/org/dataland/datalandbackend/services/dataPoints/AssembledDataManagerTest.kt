@@ -215,7 +215,7 @@ class AssembledDataManagerTest {
         )
 
         `when`(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<List<String>>(0)
+            val dataPointId = invocation.getArgument<Collection<String>>(0)
             dataPointId.map { dataPointId ->
                 DataPointMetaInformationEntity(
                     dataPointId = dataPointId,
