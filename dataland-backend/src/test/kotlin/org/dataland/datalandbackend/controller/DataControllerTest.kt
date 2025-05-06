@@ -174,6 +174,14 @@ internal class DataControllerTest(
         Assertions.assertEquals(someEuTaxoData, response.body!!.data)
     }
 
+    @Test
+    fun `verify that polling data by company ID and reporting period throws an error if no data is available`() {
+        doReturn(emptyMap<BasicDataDimensions, String>()).whenever(mockDataManager).getDatasetData(any(), any())
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.getCompanyAssociatedDataByDimensions(testReportingPeriod, testCompanyId)
+        }
+    }
+
     private fun buildDataMetaInformationEntity(
         dataId: String,
         uploaderId: String,
