@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -28,15 +29,16 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
@@ -46,16 +48,16 @@ import java.time.Instant
 import java.util.Optional
 
 class AssembledDataManagerTest {
-    private val dataManager = mock(DataManager::class.java)
-    private val metaDataManager = mock(DataPointMetaInformationManager::class.java)
-    private val storageClient = mock(StorageControllerApi::class.java)
-    private val messageQueuePublications = mock(MessageQueuePublications::class.java)
-    private val dataPointValidator = mock(DataPointValidator::class.java)
-    private val companyQueryManager = mock(CompanyQueryManager::class.java)
-    private val companyRoleChecker = mock(CompanyRoleChecker::class.java)
-    private val logMessageBuilder = mock(LogMessageBuilder::class.java)
-    private val specificationClient = mock(SpecificationControllerApi::class.java)
-    private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
+    private val dataManager = mock<DataManager>()
+    private val metaDataManager = mock<DataPointMetaInformationManager>()
+    private val storageClient = mock<StorageControllerApi>()
+    private val messageQueuePublications = mock<MessageQueuePublications>()
+    private val dataPointValidator = mock<DataPointValidator>()
+    private val companyQueryManager = mock<CompanyQueryManager>()
+    private val companyRoleChecker = mock<CompanyRoleChecker>()
+    private val logMessageBuilder = mock<LogMessageBuilder>()
+    private val specificationClient = mock<SpecificationControllerApi>()
+    private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
 
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
@@ -108,7 +110,7 @@ class AssembledDataManagerTest {
         val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
-        `when`(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
+        whenever(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
 
         val uploadedDataset =
             StorableDataset(
@@ -169,12 +171,12 @@ class AssembledDataManagerTest {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
         val dataContentMap = mapOf(dataPointId to dataPoint)
         val dataPointDimensions = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
-        `when`(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
+        whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
 
         val dynamicDataset =
             assertDoesNotThrow {
-                assembledDataManager.getDatasetData(listOf(dataDimensions), correlationId).first().second
+                assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId).first().second
             }
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset.contains(dataPoint))
@@ -182,22 +184,44 @@ class AssembledDataManagerTest {
     }
 
     @Test
-    fun `check that an exception is thrown if no data exists for the dynamic dataset`() {
-        `when`(metaDataManager.getCurrentlyActiveDataId(any())).thenReturn(null)
+    fun `check that exceptions are thrown only in the expected cases in the context of dynamic datasets`() {
+        doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
 
         assertThrows<ResourceNotFoundApiException> {
-            assembledDataManager.getDatasetData(listOf(dataDimensions), correlationId)
+            assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)
         }
+
+        val invalidCompanyId = "invalid-company-id"
+        doThrow(ResourceNotFoundApiException("dummy", "dummy"))
+            .whenever(companyQueryManager)
+            .assertCompanyIdExists(invalidCompanyId)
 
         val searchFilter =
             DataMetaInformationSearchFilter(
                 companyId = companyId,
                 dataType = DataType(framework),
-                reportingPeriod = reportingPeriod,
                 onlyActive = true,
             )
+
         assertThrows<ResourceNotFoundApiException> {
-            assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId)
+            assembledDataManager.getAllDatasetsAndMetaInformation(
+                searchFilter = searchFilter.copy(companyId = invalidCompanyId),
+                correlationId = correlationId,
+            )
+        }
+
+        assertThrows<IllegalArgumentException> {
+            assembledDataManager.getAllDatasetsAndMetaInformation(
+                searchFilter = searchFilter.copy(companyId = null),
+                correlationId = correlationId,
+            )
+        }
+
+        assertDoesNotThrow {
+            assertEquals(
+                emptyList<PlainDataAndMetaInformation>(),
+                assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId),
+            )
         }
     }
 
@@ -205,7 +229,7 @@ class AssembledDataManagerTest {
         dataPoints: Map<String, String>,
         dataContent: Map<String, String>,
     ) {
-        `when`(datasetDatapointRepository.findById(datasetId)).thenReturn(
+        whenever(datasetDatapointRepository.findById(datasetId)).thenReturn(
             Optional.of(
                 DatasetDatapointEntity(
                     datasetId = datasetId,
@@ -214,7 +238,7 @@ class AssembledDataManagerTest {
             ),
         )
 
-        `when`(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
+        whenever(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
             val dataPointId = invocation.getArgument<Collection<String>>(0)
             dataPointId.map { dataPointId ->
                 DataPointMetaInformationEntity(
@@ -230,7 +254,7 @@ class AssembledDataManagerTest {
             }
         }
 
-        `when`(storageClient.selectBatchDataPointsByIds(any(), any())).thenAnswer { invocation ->
+        whenever(storageClient.selectBatchDataPointsByIds(any(), any())).thenAnswer { invocation ->
             val dataPointId = invocation.getArgument<List<String>>(1)
             dataPointId.associateWith { dataPointId ->
                 StorableDataPoint(
