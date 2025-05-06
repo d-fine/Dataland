@@ -720,10 +720,12 @@
       },
       "EnrichedPortfolioEntry": {
         "required": [
+          "availableReportingPeriods",
           "companyCockpitRef",
           "companyId",
           "companyName",
-          "countryCode"
+          "countryCode",
+          "frameworkHyphenatedNamesToDataRef"
         ],
         "type": "object",
         "properties": {
@@ -739,17 +741,20 @@
           "countryCode": {
             "type": "string"
           },
-          "framework": {
-            "type": "string"
-          },
           "companyCockpitRef": {
             "type": "string"
           },
-          "frameworkDataRef": {
-            "type": "string"
+          "frameworkHyphenatedNamesToDataRef": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
-          "latestReportingPeriod": {
-            "type": "string"
+          "availableReportingPeriods": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         }
       },

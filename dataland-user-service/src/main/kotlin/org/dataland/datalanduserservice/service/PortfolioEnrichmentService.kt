@@ -29,17 +29,15 @@ class PortfolioEnrichmentService
          */
         private fun getEnrichedEntry(
             companyInformation: BasicCompanyInformation,
-            framework: String,
-            mostRecentDataYear: String?,
+            availableDataYearsStringPerFramework: Map<String, String?>,
         ) = EnrichedPortfolioEntry(
             companyId = companyInformation.companyId,
             companyName = companyInformation.companyName,
             sector = companyInformation.sector,
             countryCode = companyInformation.countryCode,
-            framework = framework,
             "",
-            "",
-            mostRecentDataYear,
+            mapOf(),
+            availableDataYearsStringPerFramework,
         )
 
         /**
@@ -47,17 +45,35 @@ class PortfolioEnrichmentService
          * @param companyIds the list of companies for which the latest available reporting period shall be returned
          * @param dataTypes the list of frameworks for which the latest available reporting period shall be returned
          */
-        private fun getMostRecentReportingPeriodPerCompanyAndFramework(
+        private fun getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
             companyIds: List<String>,
             dataTypes: List<String>,
-        ): Map<Pair<String, String>, String> {
+        ): Map<String, Map<String, List<String>>> {
             val availableDataDimensions =
                 metaDataControllerApi.getAvailableDataDimensions(
                     companyIds = companyIds,
                     frameworksOrDataPointTypes = dataTypes,
                 )
-            return availableDataDimensions.groupBy { Pair(it.companyId, it.dataType) }.mapValues {
-                it.value.maxOf { it.reportingPeriod }
+
+            val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
+                availableDataDimensions
+                    .groupBy(
+                        { it.companyId },
+                        { Pair(it.dataType, it.reportingPeriod) },
+                    )
+
+            val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder =
+                mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod.mapValues {
+                    it.value.groupBy(
+                        { it.first },
+                        { it.second },
+                    )
+                }
+
+            return mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder.mapValues {
+                it.value.mapValues {
+                    it.value.sortedDescending()
+                }
             }
         }
 
@@ -71,17 +87,27 @@ class PortfolioEnrichmentService
             frameworkList: List<String>,
         ): List<EnrichedPortfolioEntry> {
             val companyValidationResults = companyDataControllerApi.postCompanyValidation(companyIdList)
-            val mostRecentData = getMostRecentReportingPeriodPerCompanyAndFramework(companyIdList, frameworkList)
+            val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
+                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(companyIdList, frameworkList)
             val enrichedEntries = mutableListOf<EnrichedPortfolioEntry>()
 
             companyValidationResults.forEach { validationResult ->
                 val companyInformation = validationResult.companyInformation ?: return@forEach
+                val mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
+                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId] ?: mapOf()
                 frameworkList.forEach { framework ->
                     enrichedEntries.add(
                         getEnrichedEntry(
                             companyInformation,
-                            framework,
-                            mostRecentData[Pair(companyInformation.companyId, framework)],
+                            mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly.mapValues {
+                                it.value.fold("") { concatenationSoFar, nextReportingPeriod ->
+                                    if (concatenationSoFar.isEmpty()) {
+                                        nextReportingPeriod
+                                    } else {
+                                        "$concatenationSoFar,$nextReportingPeriod"
+                                    }
+                                }
+                            },
                         ),
                     )
                 }
