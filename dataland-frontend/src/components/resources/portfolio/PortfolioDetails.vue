@@ -27,6 +27,9 @@
       <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
+      <PrimeButton class="primary-button" @click="downloadPortfolio()" data-test="download-portfolio">
+        <i class="pi pi-download pr-2" /> Download Portfolio
+      </PrimeButton>
       <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
     </span>
 
@@ -128,6 +131,7 @@ import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vu
 import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import Checkbox from 'primevue/checkbox';
+import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -268,6 +272,28 @@ function editPortfolio(): void {
     onClose() {
       loadPortfolio();
       emit('update:portfolio-overview');
+    },
+  });
+}
+
+/**
+ * Opens the PortfolioDownload with the current portfolio's data for downloading.
+ * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ */
+function downloadPortfolio(): void {
+  const fullName = enrichedPortfolio.value?.portfolioName ?? '';
+  const maxLength = 20;
+  const displayName = fullName.length > maxLength ? fullName.slice(0, maxLength) + '...' : fullName;
+
+  dialog.open(PortfolioDownload, {
+    props: {
+      header: 'Download ' + displayName,
+      modal: true,
+    },
+    data: {
+      portfolioName: fullName,
+      portfolio: enrichedPortfolio.value,
+      companies: selectedDetails.value,
     },
   });
 }

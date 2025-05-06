@@ -41,7 +41,6 @@ describeIf(
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
-      cy.closeCookieBannerIfItExists();
       searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
       cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
         alphaCompanyIdAndName.companyName
@@ -50,7 +49,6 @@ describeIf(
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
       visitCockpitForCompanyAlpha();
-      cy.closeCookieBannerIfItExists();
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
@@ -68,7 +66,6 @@ describeIf(
     it('From the company cockpit page visit a view page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.closeCookieBannerIfItExists();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
       cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
@@ -80,7 +77,6 @@ describeIf(
     it('From the company cockpit page visit an upload page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.closeCookieBannerIfItExists();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-summary-panel'] a`).click();
       cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
@@ -91,7 +87,6 @@ describeIf(
     it('From the company cockpit page claim company ownership via the panel and context menu', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.closeCookieBannerIfItExists();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
       cy.get("[data-test='contextMenuButton']").click();
@@ -120,7 +115,7 @@ describeIf(
      * Visit the company cockpit of a predefined company
      */
     function visitCockpitForCompanyAlpha(): void {
-      cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`);
+      cy.visitAndCheckAppMount(`/companies/${alphaCompanyIdAndName.companyId}`);
       cy.contains('[data-test="companyNameTitle"]', alphaCompanyIdAndName.companyName).should('exist');
     }
 
