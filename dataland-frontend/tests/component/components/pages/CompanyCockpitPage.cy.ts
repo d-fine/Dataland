@@ -427,7 +427,7 @@ describe('Component test for the company cockpit', () => {
   });
 
   KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
-    it('Check the Vsme summary panel behaviour if the user is not company owner', () => {
+    it(`Check the Vsme summary panel behaviour if the user is not company owner, Case: ${keycloakRole}`, () => {
       const hasCompanyAtLeastOneOwner = true;
       mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]);
