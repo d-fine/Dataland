@@ -58,7 +58,10 @@ class SfdrDataController(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
-    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType)
+        includeMetaData: Boolean,
+    ): ResponseEntity<InputStreamResource> =
+        super
+            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, includeMetaData)
 
     @Operation(operationId = "getAllCompanySfdrData")
     override fun getFrameworkDatasetsForCompany(

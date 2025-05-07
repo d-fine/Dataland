@@ -1,7 +1,9 @@
 package org.dataland.e2etests.utils
 
+import org.awaitility.Awaitility
 import org.junit.jupiter.api.TestInstance
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class BaseExportTest<T> {
@@ -21,6 +23,8 @@ abstract class BaseExportTest<T> {
 
     protected abstract fun getNullFieldName(): String
 
+    protected abstract fun retrieveData(companyId: String): Any
+
     protected abstract fun uploadData(
         companyId: String,
         data: T,
@@ -28,6 +32,11 @@ abstract class BaseExportTest<T> {
     )
 
     protected abstract fun exportDataAsCsv(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File
+
+    protected abstract fun exportDataAsCsvWithMetadata(
         companyIds: List<String>,
         reportingPeriods: List<String>,
     ): File
@@ -56,6 +65,8 @@ abstract class BaseExportTest<T> {
             data = getTestDataWithNonNullField(),
             reportingPeriod = reportingPeriod,
         )
+
+        waitForDataAvailability()
     }
 
     // Common test implementations that can be called from subclasses
@@ -136,6 +147,69 @@ abstract class BaseExportTest<T> {
         validateMultiCompanyExport(excelAsCsvFile, headers, "Excel")
     }
 
+    protected fun testCsvExportWithMetadataIncludesMetaInformationFields() {
+        // Export data with includeMetaData=true
+        val exportWithMetadata =
+            exportDataAsCsvWithMetadata(
+                companyIds = listOf(companyWithNonNullFieldId),
+                reportingPeriods = listOf(reportingPeriod),
+            )
+
+        // Export data with default includeMetaData=false
+        val exportWithoutMetadata =
+            exportDataAsCsv(
+                companyIds = listOf(companyWithNonNullFieldId),
+                reportingPeriods = listOf(reportingPeriod),
+            )
+
+        // Validate export files
+        ExportTestUtils.validateExportFile(exportWithMetadata, "CSV export with metadata")
+        ExportTestUtils.validateExportFile(exportWithoutMetadata, "CSV export without metadata")
+
+        // Read CSV headers from both exports
+        val headersWithMetadata =
+            ExportTestUtils.readCsvHeaders(
+                ExportTestUtils.getReadableCsvFile(exportWithMetadata),
+            )
+        val headersWithoutMetadata =
+            ExportTestUtils.readCsvHeaders(
+                ExportTestUtils.getReadableCsvFile(exportWithoutMetadata),
+            )
+
+        val metadataColumn = "companyId"
+        val dataColumn = "dataDate"
+
+        // Verify the presence/absence of metadata fields
+        ExportTestUtils.assertColumnExists(
+            headers = headersWithMetadata,
+            columnName = metadataColumn,
+            shouldExist = true,
+            contextMessage = "CSV export with includeMetaData=true",
+        )
+
+        ExportTestUtils.assertColumnExists(
+            headers = headersWithoutMetadata,
+            columnName = metadataColumn,
+            shouldExist = false,
+            contextMessage = "CSV export with includeMetaData=false",
+        )
+
+        // Verify that regular data fields are present in both exports
+        ExportTestUtils.assertColumnExists(
+            headers = headersWithMetadata,
+            columnName = dataColumn,
+            shouldExist = true,
+            contextMessage = "CSV export with includeMetaData=true",
+        )
+
+        ExportTestUtils.assertColumnExists(
+            headers = headersWithoutMetadata,
+            columnName = dataColumn,
+            shouldExist = true,
+            contextMessage = "CSV export with includeMetaData=false",
+        )
+    }
+
     // Helper method for validating multi-company exports
     private fun validateMultiCompanyExport(
         exportFile: File,
@@ -173,5 +247,21 @@ abstract class BaseExportTest<T> {
             companyWithNonNullFieldId,
             exportType,
         )
+    }
+
+    protected fun waitForDataAvailability() {
+        Awaitility
+            .await()
+            .atMost(10, TimeUnit.SECONDS)
+            .pollInterval(500, TimeUnit.MILLISECONDS)
+            .until {
+                try {
+                    val dataForNullFieldCompany = retrieveData(companyWithNullFieldId)
+                    val dataForNonNullFieldCompany = retrieveData(companyWithNonNullFieldId)
+                    true
+                } catch (exception: Exception) {
+                    false
+                }
+            }
     }
 }

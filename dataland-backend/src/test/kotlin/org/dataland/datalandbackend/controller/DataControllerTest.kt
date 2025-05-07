@@ -10,6 +10,8 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -31,7 +33,6 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
@@ -39,14 +40,15 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-internal class DataControllerTest(
-    @Autowired
-    private val dataExportService: DataExportService,
-) {
+internal class DataControllerTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
+    private val mockDataPointUtils = mock<DataPointUtils>()
+    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+
+    private val dataExportService = DataExportService(objectMapper, mockDataPointUtils, mockReferencedReportsUtils)
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
@@ -132,9 +134,10 @@ internal class DataControllerTest(
     @EnumSource(ExportFileType::class)
     fun `test that the export functionality does not throw an error`(exportFileType: ExportFileType) {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as List<*>
-            argument.map { Pair(it, someEuTaxoDataAsString) }
+            val argument = invocation.arguments[0] as Set<*>
+            argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(any(), any())
+        doReturn(null).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
@@ -163,8 +166,8 @@ internal class DataControllerTest(
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as List<BasicDataDimensions>
-            argument.map { Pair(it, someEuTaxoDataAsString) }
+            val argument = invocation.arguments[0] as Set<BasicDataDimensions>
+            argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =
             dataController.getCompanyAssociatedDataByDimensions(
@@ -172,6 +175,14 @@ internal class DataControllerTest(
                 companyId = testCompanyId,
             )
         Assertions.assertEquals(someEuTaxoData, response.body!!.data)
+    }
+
+    @Test
+    fun `verify that polling data by company ID and reporting period throws an error if no data is available`() {
+        doReturn(emptyMap<BasicDataDimensions, String>()).whenever(mockDataManager).getDatasetData(any(), any())
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.getCompanyAssociatedDataByDimensions(testReportingPeriod, testCompanyId)
+        }
     }
 
     private fun buildDataMetaInformationEntity(

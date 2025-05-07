@@ -15,7 +15,6 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
-import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
@@ -23,7 +22,6 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -58,7 +56,6 @@ class AssembledDataManager
         private val dataPointUtils: DataPointUtils,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
-        private val logMessageBuilder = LogMessageBuilder()
 
         /**
          * Processes a dataset by breaking it up and storing its data points in the internal storage
@@ -391,26 +388,6 @@ class AssembledDataManager
             return result
         }
 
-        private fun getDatasetData(
-            dataDimensions: BasicDataDimensions,
-            correlationId: String,
-        ): String {
-            val framework = dataDimensions.dataType
-            val relevantDataPointTypes = dataPointUtils.getRelevantDataPointTypes(framework)
-            val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
-            val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
-
-            val resourceNotFoundExceptionThrower = {
-                throw ResourceNotFoundApiException(
-                    summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
-                    message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
-                )
-            }
-            if (dataPointIds.isEmpty()) resourceNotFoundExceptionThrower()
-            return assembleDatasetsFromDataIds(mapOf(dataDimensions to dataPointIds), correlationId)[dataDimensions]
-                ?: resourceNotFoundExceptionThrower()
-        }
-
         /**
          * Obtain data point dimensions for all given data dimensions.
          *
@@ -466,21 +443,22 @@ class AssembledDataManager
                     .getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
-            return reportingPeriods.map { reportingPeriod ->
-                val dataPointDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
-                val data = getDatasetData(dataPointDimensions, correlationId)
+            return getDatasetData(
+                reportingPeriods.mapTo(mutableSetOf()) { BasicDataDimensions(companyId, framework, it) },
+                correlationId,
+            ).map { (dataDimensions, dataString) ->
                 PlainDataAndMetaInformation(
                     metaInfo =
                         DataMetaInformation(
                             dataId = "not available",
                             companyId = companyId,
                             dataType = searchFilter.dataType,
-                            reportingPeriod = reportingPeriod,
+                            reportingPeriod = dataDimensions.reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = dataPointUtils.getLatestUploadTime(dataPointDimensions),
+                            uploadTime = dataPointUtils.getLatestUploadTime(dataDimensions),
                             qaStatus = QaStatus.Accepted,
                         ),
-                    data = data,
+                    data = dataString,
                 )
             }
         }
