@@ -1,9 +1,9 @@
 <template>
-  <div class="text-primary">
+  <div>
     <a
       v-if="isUserLoggedIn"
       @click="handleDocumentDownload()"
-      class="cursor-pointer"
+      class="cursor-pointer text-primary"
       :class="fontStyle"
       :title="documentDownloadInfo.downloadName"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
@@ -35,12 +35,12 @@
       style="display: grid; grid-template-columns: fit-content(100%) max-content"
     >
       <span
-        class="underline pl-1"
+        class="pl-1"
         style="overflow: hidden; text-overflow: ellipsis"
         :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
-      <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
+      <span class="ml-1 pl-1">{{ suffix ?? '' }}</span>
     </span>
   </div>
 </template>
