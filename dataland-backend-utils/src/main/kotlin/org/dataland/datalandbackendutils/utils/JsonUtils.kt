@@ -57,13 +57,16 @@ object JsonUtils {
         currentPath: String = "",
         ignoreArrays: Boolean = false,
         keepEmptyFields: Boolean = false,
-    ): List<String> {
-        val leafNodeFieldNames = mutableListOf<String>()
+        dropLastFieldName: Boolean = false,
+    ): LinkedHashSet<String> {
+        val leafNodeFieldNames = linkedSetOf<String>()
 
         when {
             node.isValueNode -> {
                 if (!node.isNull || keepEmptyFields) {
-                    leafNodeFieldNames.add(currentPath)
+                    leafNodeFieldNames.add(
+                        if (dropLastFieldName) currentPath.substringBeforeLast(JSON_PATH_SEPARATOR) else currentPath,
+                    )
                 }
             }
 
@@ -94,7 +97,7 @@ object JsonUtils {
     fun getNonArrayLeafNodeFieldNames(
         node: JsonNode,
         currentPath: String = "",
-    ): List<String> = getLeafNodeFieldNames(node, currentPath, true)
+    ): LinkedHashSet<String> = getLeafNodeFieldNames(node, currentPath, true)
 
     /**
      * Get the string value of the JSON node identified by the JSON path.

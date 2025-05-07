@@ -89,10 +89,13 @@ class DataExportService
             dataType: DataType,
             excelCompatibility: Boolean,
         ): InputStreamResource {
+            val frameworkTemplate = getFrameworkTemplate(dataType.toString())
+            val isLegobrickFramework = (frameworkTemplate != null)
             val allHeaderFields =
                 JsonUtils.getLeafNodeFieldNames(
                     getFrameworkTemplate(dataType.toString()) ?: companyAssociatedData.first(),
                     keepEmptyFields = true,
+                    dropLastFieldName = isLegobrickFramework,
                 )
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(companyAssociatedData)
@@ -168,7 +171,7 @@ class DataExportService
          */
         private fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
-            allHeaderFields: List<String>,
+            allHeaderFields: Collection<String>,
         ): CsvSchema {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
 
