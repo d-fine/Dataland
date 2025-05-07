@@ -165,7 +165,7 @@ class CommunityManagerListenerUnitTest {
         communityManagerListener.processMessageForDataReportedAsNonSourceable(
             jacksonObjectMapper.writeValueAsString(sourceabilityMessageValid), typeNonSourceable, correlationId,
         )
-        verify(mockDataRequestUpdateManager).patchAllRequestsToStatusNonSourceable(
+        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfoValid,
             correlationId,
         )
