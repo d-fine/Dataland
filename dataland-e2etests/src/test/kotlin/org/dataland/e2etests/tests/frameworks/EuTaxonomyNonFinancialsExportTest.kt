@@ -87,6 +87,24 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 fileFormat = ExportFileType.EXCEL,
             )
 
+    override fun exportDataAsCsvWithMetadata(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File =
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                reportingPeriods = reportingPeriods,
+                companyIds = companyIds,
+                fileFormat = ExportFileType.CSV,
+            )
+
+    override fun retrieveData(companyId: String): Any =
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+            .getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                reportingPeriod = reportingPeriod,
+                companyId = companyId,
+            )
+
     @Test
     fun `test CSV export omits column for null field when only company with null value is exported`() {
         testCsvExportOmitsColumnForNullField()

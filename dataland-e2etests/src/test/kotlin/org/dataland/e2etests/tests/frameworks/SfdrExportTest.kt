@@ -12,7 +12,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     private lateinit var fullTestData: SfdrData
     private lateinit var testDataWithNullField: SfdrData
     private lateinit var testDataWithNonNullField: SfdrData
-    private val nullFieldName = "environmentalPolicy"
+    private val nullFieldName = "humanRightsLegalProceedings"
 
     @BeforeAll
     fun setup() {
@@ -28,7 +28,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                     fullTestData.social?.copy(
                         socialAndEmployeeMatters =
                             fullTestData.social?.socialAndEmployeeMatters?.copy(
-                                environmentalPolicy = null,
+                                humanRightsLegalProceedings = null,
                             ),
                     ),
             )
@@ -72,6 +72,18 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 fileFormat = ExportFileType.CSV,
             )
 
+    override fun exportDataAsCsvWithMetadata(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File =
+        apiAccessor.dataControllerApiForSfdrData
+            .exportCompanyAssociatedSfdrDataByDimensions(
+                reportingPeriods = reportingPeriods,
+                companyIds = companyIds,
+                fileFormat = ExportFileType.CSV,
+                includeMetaData = true,
+            )
+
     override fun exportDataAsExcel(
         companyIds: List<String>,
         reportingPeriods: List<String>,
@@ -81,6 +93,13 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.EXCEL,
+            )
+
+    override fun retrieveData(companyId: String): Any =
+        apiAccessor.dataControllerApiForSfdrData
+            .getCompanyAssociatedSfdrDataByDimensions(
+                reportingPeriod = reportingPeriod,
+                companyId = companyId,
             )
 
     @Test
@@ -101,5 +120,10 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     @Test
     fun `test Excel export for both companies has null field column with correct values`() {
         testExcelExportForBothCompanies()
+    }
+
+    @Test
+    fun `test CSV export with metadata includes metaInformation fields`() {
+        testCsvExportWithMetadataIncludesMetaInformationFields()
     }
 }

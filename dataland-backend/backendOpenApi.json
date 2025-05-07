@@ -2948,6 +2948,15 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -3230,6 +3239,15 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
+            }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -3514,6 +3532,15 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -3796,6 +3823,15 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
+            }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -4080,6 +4116,15 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -4362,6 +4407,15 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
+            }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -4646,6 +4700,15 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -4929,6 +4992,15 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -5211,6 +5283,15 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
+            }
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -20691,10 +20772,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

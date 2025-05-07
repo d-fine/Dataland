@@ -153,6 +153,7 @@ open class DataController<T>(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
+        includeMetaData: Boolean,
     ): ResponseEntity<InputStreamResource> {
         val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
         companyIds.forEach { companyId ->
@@ -166,8 +167,12 @@ open class DataController<T>(
 
         val companyAssociatedDataForExport =
             dataExportService.buildStreamFromCompanyAssociatedData(
-                this.buildCompanyAssociatedData(companyIdAndReportingPeriodPairs, dataType.toString(), correlationId),
+                this.buildCompanyAssociatedData(
+                    companyIdAndReportingPeriodPairs,
+                    dataType.toString(), correlationId,
+                ),
                 exportFileType,
+                includeMetaData,
             )
 
         logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")

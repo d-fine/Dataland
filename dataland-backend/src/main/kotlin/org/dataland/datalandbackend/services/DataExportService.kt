@@ -7,6 +7,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
@@ -27,6 +28,8 @@ class DataExportService
             objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
         }
 
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         /**
          * Create a ByteStream to be used for Export from CompanyAssociatedData.
          * @param companyAssociatedData passed companyAssociatedData to be exported
@@ -36,8 +39,16 @@ class DataExportService
         fun <T> buildStreamFromCompanyAssociatedData(
             companyAssociatedData: List<CompanyAssociatedData<T>>,
             exportFileType: ExportFileType,
+            includeMetaData: Boolean = false,
         ): InputStreamResource {
-            val jsonData = companyAssociatedData.map { convertDataToJson(it) }
+            val jsonData =
+                companyAssociatedData.map {
+                    if (includeMetaData) {
+                        convertDataToJson(it)
+                    } else {
+                        filterOutMetaData(convertDataToJson(it))
+                    }
+                }
             return when (exportFileType) {
                 ExportFileType.CSV -> buildCsvStreamFromCompanyAssociatedData(jsonData, false)
                 ExportFileType.EXCEL -> buildCsvStreamFromCompanyAssociatedData(jsonData, true)
@@ -106,7 +117,10 @@ class DataExportService
          */
         private fun <T> convertDataToJson(companyAssociatedData: CompanyAssociatedData<T>): JsonNode {
             val companyAssociatedDataJson = objectMapper.writeValueAsString(companyAssociatedData)
-            return objectMapper.readTree(companyAssociatedDataJson)
+            val jsonNode = objectMapper.readTree(companyAssociatedDataJson)
+            println("Before filtering: $jsonNode")
+            return jsonNode
+            //            return objectMapper.readTree(companyAssociatedDataJson)
         }
 
         /**
@@ -132,5 +146,23 @@ class DataExportService
                 }
             }
             return csvSchemaBuilder.build().withHeader()
+        }
+
+        /**
+         * Filters out all fields except the 'data' field from a JsonNode
+         * @param node The JsonNode to filter
+         * @return A new JsonNode containing only the 'data' field
+         */
+        private fun filterOutMetaData(node: JsonNode): JsonNode {
+            val objectNode = objectMapper.createObjectNode()
+
+            val dataNode = node.get("data")
+            if (dataNode != null) {
+                objectNode.set<JsonNode>("data", dataNode)
+            } else {
+                logger.warn("No 'data' field found in the JSON node during metadata filtering")
+            }
+            println("################## After filtering: $objectNode")
+            return objectNode
         }
     }
