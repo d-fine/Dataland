@@ -436,7 +436,6 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-
   it('Check for all expected elements for an uploader-user on a mobile device for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
