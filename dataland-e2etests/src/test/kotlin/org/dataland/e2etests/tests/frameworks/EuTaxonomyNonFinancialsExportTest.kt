@@ -24,7 +24,13 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
             fullTestData.copy(
                 general =
                     fullTestData.general?.copy(
-                        nfrdMandatory = null,
+                        nfrdMandatory =
+                            fullTestData.general?.nfrdMandatory?.copy(
+                                value = null,
+                                quality = null,
+                                comment = null,
+                                dataSource = null,
+                            ),
                     ),
                 revenue = null,
                 capex = null,

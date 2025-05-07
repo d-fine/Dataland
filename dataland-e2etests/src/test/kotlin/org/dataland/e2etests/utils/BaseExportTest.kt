@@ -2,6 +2,7 @@ package org.dataland.e2etests.utils
 
 import org.awaitility.Awaitility
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -254,13 +255,10 @@ abstract class BaseExportTest<T> {
             .await()
             .atMost(10, TimeUnit.SECONDS)
             .pollInterval(500, TimeUnit.MILLISECONDS)
-            .until {
-                try {
-                    val dataForNullFieldCompany = retrieveData(companyWithNullFieldId)
-                    val dataForNonNullFieldCompany = retrieveData(companyWithNonNullFieldId)
-                    true
-                } catch (exception: Exception) {
-                    false
+            .untilAsserted {
+                assertDoesNotThrow {
+                    retrieveData(companyWithNullFieldId)
+                    retrieveData(companyWithNonNullFieldId)
                 }
             }
     }
