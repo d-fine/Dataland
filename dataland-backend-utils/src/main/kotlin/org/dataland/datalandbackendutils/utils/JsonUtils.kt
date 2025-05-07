@@ -17,7 +17,7 @@ object JsonUtils {
     fun getNonEmptyNodesAsMapping(
         node: JsonNode,
         currentPath: String = "",
-    ): Map<String, String> {
+    ): MutableMap<String, String> {
         val result = mutableMapOf<String, String>()
 
         when {

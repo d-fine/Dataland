@@ -173,6 +173,7 @@ open class DataController<T>(
                 ),
                 exportFileType,
                 includeMetaData,
+                dataType,
             )
 
         logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
