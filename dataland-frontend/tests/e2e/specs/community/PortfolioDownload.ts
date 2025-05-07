@@ -9,6 +9,9 @@ import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFramewo
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 
 let storedCompany: StoredCompany;
+let secondCompany: StoredCompany;
+
+
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then(function (jsonContent) {
@@ -30,24 +33,44 @@ describeIf(
 
     before(() => {
       const uniqueCompanyMarkerWithDate = Date.now().toString();
-      const testCompanyName = 'Company-Created-In-Nuclear-and-Gas-Blanket-Test-' + uniqueCompanyMarkerWithDate;
+      const testCompanyName = 'Company-1-' + uniqueCompanyMarkerWithDate;
+      const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
+      const reportingYears = ['2021', '2022', '2023'];
 
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((company) => {
-          storedCompany = company;
-          return assignCompanyOwnershipToDatalandAdmin(token, company.companyId).then(() => {
-            const reportingYears = ['2021', '2022', '2023'];
-            const uploadPromises = reportingYears.map((year) =>
-              uploadGenericFrameworkData(
-                token,
-                company.companyId,
-                year,
-                euTaxonomyForNonFinancialsFixtureForTest.t,
-                (config) =>
-                  getBasePublicFrameworkDefinition(DataTypeEnum.NuclearAndGas)!.getPublicFrameworkApiClient(config)
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((company1) => {
+          storedCompany = company1;
+          return assignCompanyOwnershipToDatalandAdmin(token, company1.companyId).then(() => {
+            return Promise.all(
+              reportingYears.map((year) =>
+                uploadGenericFrameworkData(
+                  token,
+                  company1.companyId,
+                  year,
+                  euTaxonomyForNonFinancialsFixtureForTest.t,
+                  (config) =>
+                    getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
+                )
               )
             );
-            return Promise.all(uploadPromises);
+          });
+        }).then(() => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(secondCompanyName)).then((company2) => {
+            secondCompany = company2;
+            return assignCompanyOwnershipToDatalandAdmin(token, company2.companyId).then(() => {
+              return Promise.all(
+                reportingYears.map((year) =>
+                  uploadGenericFrameworkData(
+                    token,
+                    company2.companyId,
+                    year,
+                    euTaxonomyForNonFinancialsFixtureForTest.t,
+                    (config) =>
+                      getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
+                  )
+                )
+              );
+            });
           });
         });
       });
@@ -61,12 +84,12 @@ describeIf(
     it('Creates a portfolio and downloads a report using dynamically loaded reporting periods', () => {
       cy.get('[data-test="addNewPortfolio"]').click();
       cy.get('[name="portfolioName"]').type(portfolioName);
-      cy.get('[name="company-identifiers"]').type(storedCompany.companyId);
+      cy.get('[name="company-identifiers"]').type(`${storedCompany.companyId},${secondCompany.companyId}`);
       cy.get('[data-test="addCompanies"]').click();
       cy.get('[data-test="saveButton"]').click();
 
       cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
-      cy.get('[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]').click();
+      cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
 
       const frameworks = ['sfdr', 'eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'];
       frameworks.forEach((framework) => {
@@ -74,14 +97,14 @@ describeIf(
         cy.get('[data-test="frameworkSelector"]').should('have.value', framework);
       });
 
-      cy.get('[data-test="frameworkSelector"]').select('Nuclear and Gas');
+      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non Financials');
 
       const reportingYears = ['2025', '2024', '2023', '2022', '2021', '2020'];
       reportingYears.forEach((year) => {
         cy.contains('.toggle-chip-group', year).should('exist');
       });
 
-      ['2021'].forEach((year) => {
+      ['2023','2022','2021'].forEach((year) => {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
       });
 
