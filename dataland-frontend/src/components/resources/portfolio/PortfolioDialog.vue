@@ -74,7 +74,6 @@ import type {
   EnrichedPortfolio,
   EnrichedPortfolioEntry,
   PortfolioUpload,
-  PortfolioUploadFrameworksEnum,
 } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -182,7 +181,6 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      frameworks: portfolioFrameworks.value as unknown as Set<PortfolioUploadFrameworksEnum>,
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
