@@ -164,7 +164,7 @@ open class DataController<T>(
 
         val correlationId = IdUtils.generateUUID()
         logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
-        // TODO: remove
+
         val companyAssociatedDataForExport =
             dataExportService.buildStreamFromCompanyAssociatedData(
                 this.buildCompanyAssociatedData(
