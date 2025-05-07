@@ -599,7 +599,6 @@
       "PortfolioUpload": {
         "required": [
           "companyIds",
-          "frameworks",
           "portfolioName"
         ],
         "type": "object",
@@ -613,25 +612,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "frameworks": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "sfdr",
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "nuclear-and-gas",
-                "p2p",
-                "lksg",
-                "additional-company-information",
-                "vsme",
-                "esg-datenkatalog",
-                "heimathafen"
-              ]
-            }
           }
         }
       },
@@ -639,7 +619,6 @@
         "required": [
           "companyIds",
           "creationTimestamp",
-          "frameworks",
           "lastUpdateTimestamp",
           "portfolioId",
           "portfolioName",
@@ -669,25 +648,6 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
-          },
-          "frameworks": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "sfdr",
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "nuclear-and-gas",
-                "p2p",
-                "lksg",
-                "additional-company-information",
-                "vsme",
-                "esg-datenkatalog",
-                "heimathafen"
-              ]
             }
           }
         }

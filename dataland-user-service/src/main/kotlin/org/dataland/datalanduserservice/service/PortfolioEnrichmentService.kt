@@ -23,6 +23,8 @@ class PortfolioEnrichmentService
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioEnrichmentService::class.java)
+        private val majorFrameworks =
+            listOf("sfdr", "eutaxonomy-financials", "eutaxonomy-non-financials", "nuclear-and-gas")
 
         /**
          * Construct an enriched entry using the passed company information, framework and latest reporting period
@@ -132,7 +134,7 @@ class PortfolioEnrichmentService
                 entries =
                     getEnrichedEntries(
                         portfolio.companyIds.toList(),
-                        portfolio.frameworks.map { it.value }.toList(),
+                        majorFrameworks,
                     ),
             )
         }
