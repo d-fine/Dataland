@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-test="download-link-component">
     <a
       v-if="isUserLoggedIn"
       @click="handleDocumentDownload()"

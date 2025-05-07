@@ -328,7 +328,7 @@ describe('Component test for the company cockpit', () => {
       cy.get('[data-test="' + category + '"]')
         .should('exist')
         .and('contain', 'test_' + category)
-        .find('div[class=text-primary]')
+        .find('div[data-test=download-link-component]')
         .children('a')
         .then((children) => {
           expect(children[0]).to.contain('(2025-02-25)');
