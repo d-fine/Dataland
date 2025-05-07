@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +25,8 @@ class DataExportService
     @Autowired
     constructor(
         private val objectMapper: ObjectMapper,
+        private val dataPointUtils: DataPointUtils,
+        private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
         init {
             objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -36,12 +41,29 @@ class DataExportService
         fun <T> buildStreamFromCompanyAssociatedData(
             companyAssociatedData: List<CompanyAssociatedData<T>>,
             exportFileType: ExportFileType,
+            dataType: DataType,
         ): InputStreamResource {
             val jsonData = companyAssociatedData.map { convertDataToJson(it) }
             return when (exportFileType) {
-                ExportFileType.CSV -> buildCsvStreamFromCompanyAssociatedData(jsonData, false)
-                ExportFileType.EXCEL -> buildCsvStreamFromCompanyAssociatedData(jsonData, true)
+                ExportFileType.CSV -> buildCsvStreamFromCompanyAssociatedData(jsonData, dataType, false)
+                ExportFileType.EXCEL -> buildCsvStreamFromCompanyAssociatedData(jsonData, dataType, true)
                 ExportFileType.JSON -> buildJsonStreamFromCompanyAssociatedData(jsonData)
+            }
+        }
+
+        /**
+         * Return the template of a legobricks framework or null if the passed name refers to an old style framework
+         *
+         * @param framework the framework for which the template shall be returned
+         */
+        private fun getFrameworkTemplate(framework: String): JsonNode? {
+            return dataPointUtils.getFrameworkSpecificationOrNull(framework)?.let {
+                val frameworkTemplate = objectMapper.readTree(it.schema)
+                referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(
+                    frameworkTemplate,
+                    it.referencedReportJsonPath,
+                )
+                return frameworkTemplate
             }
         }
 
@@ -53,9 +75,14 @@ class DataExportService
          */
         private fun buildCsvStreamFromCompanyAssociatedData(
             companyAssociatedData: List<JsonNode>,
+            dataType: DataType,
             excelCompatibility: Boolean,
         ): InputStreamResource {
-            val allHeaderFields = JsonUtils.getLeafNodeFieldNames(companyAssociatedData.first(), keepEmptyFields = true)
+            val allHeaderFields =
+                JsonUtils.getLeafNodeFieldNames(
+                    getFrameworkTemplate(dataType.toString()) ?: companyAssociatedData.first(),
+                    keepEmptyFields = true,
+                )
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(companyAssociatedData)
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields)

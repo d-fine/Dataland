@@ -168,6 +168,7 @@ open class DataController<T>(
             dataExportService.buildStreamFromCompanyAssociatedData(
                 this.buildCompanyAssociatedData(companyIdAndReportingPeriodPairs, dataType.toString(), correlationId),
                 exportFileType,
+                dataType,
             )
 
         logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")

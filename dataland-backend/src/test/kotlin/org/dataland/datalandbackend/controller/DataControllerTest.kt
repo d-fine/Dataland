@@ -10,6 +10,8 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -31,7 +33,6 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
@@ -39,14 +40,15 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-internal class DataControllerTest(
-    @Autowired
-    private val dataExportService: DataExportService,
-) {
+internal class DataControllerTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
+    private val mockDataPointUtils = mock<DataPointUtils>()
+    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+
+    private val dataExportService = DataExportService(objectMapper, mockDataPointUtils, mockReferencedReportsUtils)
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
@@ -135,6 +137,7 @@ internal class DataControllerTest(
             val argument = invocation.arguments[0] as Set<*>
             argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(any(), any())
+        doReturn(null).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
