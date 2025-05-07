@@ -1,8 +1,12 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.RequestEmailManager
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
@@ -11,6 +15,8 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -19,6 +25,13 @@ import org.mockito.kotlin.verify
 import java.time.Instant
 
 class DataRequestUpdateUtilsTest {
+    companion object {
+        private val testDataProvider = DataRequestUpdateManagerTestDataProvider()
+
+        @JvmStatic
+        fun provideParametersToCheckNotificationFlagResetBehavior() = testDataProvider.getStreamOfArgumentsToTestFlagResetBehavior()
+    }
+
     private lateinit var dataRequestUpdateUtils: DataRequestUpdateUtils
     private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
     private val mockDataRequestLogger = mock<DataRequestLogger>()
@@ -188,5 +201,63 @@ class DataRequestUpdateUtilsTest {
             .sendSingleDataRequestEmail(
                 any(), any<Set<String>>(), any<String>(),
             )
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideParametersToCheckNotificationFlagResetBehavior")
+    fun `validate that the notification flag is set from true to false if and only if requestStatus changes`(
+        requestStatusBefore: RequestStatus,
+        requestStatusAfter: RequestStatus,
+    ) {
+        val dataRequestPatch = DataRequestPatch(requestStatus = requestStatusAfter)
+
+        dummyDataRequestEntity.dataRequestStatusHistory =
+            listOf(
+                RequestStatusEntity(
+                    StoredDataRequestStatusObject(
+                        status = requestStatusBefore,
+                        creationTimestamp = 1L,
+                        accessStatus = AccessStatus.Public,
+                        requestStatusChangeReason = null,
+                        answeringDataId = null,
+                    ),
+                    mock<DataRequestEntity>(),
+                ),
+            )
+
+        dataRequestUpdateUtils.updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dummyDataRequestEntity)
+
+        if (requestStatusBefore == requestStatusAfter) {
+            assertTrue(dummyDataRequestEntity.notifyMeImmediately)
+        } else {
+            assertFalse(dummyDataRequestEntity.notifyMeImmediately)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideParametersToCheckNotificationFlagResetBehavior")
+    fun `validate that the notification flag remains true under changes of requestStatus if set true by patch`(
+        requestStatusBefore: RequestStatus,
+        requestStatusAfter: RequestStatus,
+    ) {
+        val dataRequestPatch = DataRequestPatch(requestStatus = requestStatusAfter, notifyMeImmediately = true)
+
+        dummyDataRequestEntity.dataRequestStatusHistory =
+            listOf(
+                RequestStatusEntity(
+                    StoredDataRequestStatusObject(
+                        status = requestStatusBefore,
+                        creationTimestamp = 1L,
+                        accessStatus = AccessStatus.Public,
+                        requestStatusChangeReason = null,
+                        answeringDataId = null,
+                    ),
+                    mock<DataRequestEntity>(),
+                ),
+            )
+
+        dataRequestUpdateUtils.updateNotifyMeImmediatelyIfRequired(dataRequestPatch, dummyDataRequestEntity)
+
+        assertTrue(dummyDataRequestEntity.notifyMeImmediately)
     }
 }

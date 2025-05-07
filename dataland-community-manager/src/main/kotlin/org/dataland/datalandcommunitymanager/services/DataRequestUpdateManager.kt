@@ -227,8 +227,6 @@ class DataRequestUpdateManager
                         DataRequestPatch(
                             requestStatus = RequestStatus.Answered,
                             requestStatusChangeReason = requestStatusChangeReason,
-                            notifyMeImmediately =
-                                if (dataRequestEntity.requestStatus == RequestStatus.Open) false else null,
                         ),
                     correlationId = correlationId,
                     answeringDataId = answeringDataId,
