@@ -29,7 +29,7 @@ creation URL (or simply copy this md file into the description)
 
 ## Server maintenance
 
-Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
+Note: Before applying any update to any server make sure that one backup exists (Note: One backup for the dev servers is enough). In case of prod, create a fresh backup just
 before applying any changes and align with the team when to apply them.
 
 On all servers to the following:
