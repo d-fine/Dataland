@@ -88,7 +88,6 @@ class DataExportService
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields)
 
             val outputStream = ByteArrayOutputStream()
-
             val csvWriter = CsvMapper().writerFor(List::class.java).with(csvSchema)
             if (excelCompatibility) {
                 val csvDataAsString = "sep=,\n" + csvWriter.writeValueAsString(csvData)
@@ -123,6 +122,13 @@ class DataExportService
         private fun getCsvDataAndNonEmptyFields(nodes: List<JsonNode>): Pair<List<Map<String, String>>, Set<String>> {
             val csvData = nodes.map { JsonUtils.getNonEmptyNodesAsMapping(it) }
             val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
+
+            csvData.forEach { dataSet ->
+                nonEmptyFields.forEach { headerField ->
+                    dataSet.getOrPut(headerField) { "" }
+                }
+            }
+
             return Pair(csvData, nonEmptyFields)
         }
 
