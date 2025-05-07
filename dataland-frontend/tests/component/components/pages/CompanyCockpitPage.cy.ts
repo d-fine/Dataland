@@ -425,9 +425,10 @@ describe('Component test for the company cockpit', () => {
       validateVsmeFrameworkSummaryPanel(true);
     });
   });
-  it('Check the Vsme summary panel behaviour if the user is not company owner', () => {
-    const hasCompanyAtLeastOneOwner = true;
-    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+
+  KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+    it('Check the Vsme summary panel behaviour if the user is not company owner', () => {
+      const hasCompanyAtLeastOneOwner = true;
       mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]);
       cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
@@ -435,7 +436,7 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  // On the local stack, this test passes only when run in isolation.
+
   it('Check for all expected elements for an uploader-user on a mobile device for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
