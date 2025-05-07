@@ -65,6 +65,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
+        includeMetaData: Boolean,
     ): ResponseEntity<InputStreamResource> {
         return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType)
     }
