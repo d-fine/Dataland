@@ -19,6 +19,7 @@
       <div class="reporting-periods-selector flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
           :name="'listOfReportingPeriods'"
+          data-test="listOfReportingPeriods"
           :options="dynamicReportingPeriods"
           @changed="showReportingPeriodsError = false"
           class="toggle-chip-group"
