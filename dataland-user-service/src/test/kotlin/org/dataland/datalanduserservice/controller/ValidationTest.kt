@@ -16,7 +16,6 @@ class ValidationTest {
             PortfolioUpload(
                 portfolioName = "Invalid Portfolio",
                 companyIds = emptySet(),
-                frameworks = emptySet(),
             )
         val violations = validator.validate(portfolio)
         assertEquals(2, violations.size)
