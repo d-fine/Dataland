@@ -107,7 +107,7 @@ class PortfolioEnrichmentService
                                 if (concatenationSoFar.isEmpty()) {
                                     nextReportingPeriod
                                 } else {
-                                    "$concatenationSoFar,$nextReportingPeriod"
+                                    "$concatenationSoFar, $nextReportingPeriod"
                                 }
                             }
                         },
