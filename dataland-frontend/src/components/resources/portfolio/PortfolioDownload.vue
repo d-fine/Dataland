@@ -21,7 +21,7 @@
           :name="'listOfReportingPeriods'"
           data-test="listOfReportingPeriods"
           :options="dynamicReportingPeriods"
-          @changed="showReportingPeriodsError = false"
+          @changed="resetErrors"
           class="toggle-chip-group"
         />
       </div>
@@ -48,9 +48,9 @@
         :data-test="'downloadButton'"
         title="Download the selected frameworks and reporting periods for current portfolio"
       />
-      <p v-if="showNoDataAvailableError" class="text-danger text-xs mt-2 text-center">
-        No data available for the selected framework and reporting period combination.
-      </p>
+      <Message v-if="portfolioErrors" severity="error" class="m-0 error-message" :life="3000">
+        {{ portfolioErrors }}
+      </Message>
     </div>
   </div>
 </template>
@@ -69,7 +69,8 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import type Keycloak from 'keycloak-js';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
-
+import { AxiosError } from 'axios';
+import Message from 'primevue/message';
 const dynamicReportingPeriods = ref<{ name: string; value: boolean }[]>([]);
 const availableFrameworks = [
   { value: 'sfdr', label: 'SFDR' },
@@ -87,8 +88,7 @@ const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
-const showNoDataAvailableError = ref(false);
-
+const portfolioErrors = ref('');
 const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
 const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
@@ -107,9 +107,23 @@ onMounted(() => {
   getSelectedReportingPeriods();
 });
 
+watch(selectedFramework, resetErrors);
+watch(selectedFileType, resetErrors);
+watch(dynamicReportingPeriods, resetErrors);
+
 watch(selectedFramework, () => {
   onFrameworkChange();
 });
+
+/**
+ * Reset errors when either framework or file type changes
+ */
+function resetErrors(): void {
+  portfolioErrors.value = '';
+  showReportingPeriodsError.value = false;
+  showFileTypeError.value = false;
+  showFrameworksError.value = false;
+}
 
 /**
  * When the framework changes, update the available reporting periods based on the selected framework
@@ -132,9 +146,7 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  */
 function setReportingPeriods(): void {
   const previousSelections = new Set(getSelectedReportingPeriods());
-
   const allYears = ['2025', '2024', '2023', '2022', '2021', '2020'];
-
   dynamicReportingPeriods.value = allYears.map((year) => ({
     name: year,
     value: previousSelections.has(year),
@@ -182,11 +194,13 @@ function checkIfShowErrors(): void {
 async function downloadPortfolio(): Promise<void> {
   try {
     if (!selectedFramework.value) {
-      throw new Error('Framework must be selected.');
+      showFrameworksError.value = true;
+      return;
     }
 
     if (!selectedFileType.value) {
-      throw new Error('File type must be selected.');
+      showFileTypeError.value = true;
+      return;
     }
 
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -204,16 +218,6 @@ async function downloadPortfolio(): Promise<void> {
       selectedFileType.value
     );
 
-    const isEmptyData =
-      !dataResponse.data ||
-      (Array.isArray(dataResponse.data) && dataResponse.data.length === 0) ||
-      (typeof dataResponse.data === 'object' && Object.keys(dataResponse.data).length === 0);
-
-    if (isEmptyData) {
-      showNoDataAvailableError.value = true;
-      return;
-    }
-
     const dataContent =
       selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
 
@@ -221,6 +225,9 @@ async function downloadPortfolio(): Promise<void> {
     const filename = 'portfolio-download' + extension;
     forceFileDownload(dataContent, filename);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      portfolioErrors.value = error.status == 500 ? 'No data available' : error.message;
+    }
     console.error('Download failed:', error);
   }
 }
@@ -280,6 +287,19 @@ label {
 
 .errorMessage {
   gap: 10em;
+}
+
+.error-message {
+  position: absolute;
+  top: 443px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background-color: red;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
 }
 
 .text-danger {

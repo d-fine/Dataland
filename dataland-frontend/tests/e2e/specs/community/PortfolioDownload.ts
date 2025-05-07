@@ -11,7 +11,6 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
 
-
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then(function (jsonContent) {
@@ -35,44 +34,51 @@ describeIf(
       const uniqueCompanyMarkerWithDate = Date.now().toString();
       const testCompanyName = 'Company-1-' + uniqueCompanyMarkerWithDate;
       const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
-      const reportingYears = ['2021', '2022', '2023'];
+      const reportingYearsCompany1 = ['2022', '2023', '2024'];
+      const reportingYeatsCompan2 = ['2023', '2024'];
 
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((company1) => {
-          storedCompany = company1;
-          return assignCompanyOwnershipToDatalandAdmin(token, company1.companyId).then(() => {
-            return Promise.all(
-              reportingYears.map((year) =>
-                uploadGenericFrameworkData(
-                  token,
-                  company1.companyId,
-                  year,
-                  euTaxonomyForNonFinancialsFixtureForTest.t,
-                  (config) =>
-                    getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
-                )
-              )
-            );
-          });
-        }).then(() => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(secondCompanyName)).then((company2) => {
-            secondCompany = company2;
-            return assignCompanyOwnershipToDatalandAdmin(token, company2.companyId).then(() => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
+          .then((company1) => {
+            storedCompany = company1;
+            return assignCompanyOwnershipToDatalandAdmin(token, company1.companyId).then(() => {
               return Promise.all(
-                reportingYears.map((year) =>
+                reportingYearsCompany1.map((year) =>
                   uploadGenericFrameworkData(
                     token,
-                    company2.companyId,
+                    company1.companyId,
                     year,
                     euTaxonomyForNonFinancialsFixtureForTest.t,
                     (config) =>
-                      getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
+                      getBasePublicFrameworkDefinition(
+                        DataTypeEnum.EutaxonomyNonFinancials
+                      )!.getPublicFrameworkApiClient(config)
                   )
                 )
               );
             });
+          })
+          .then(() => {
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(secondCompanyName)).then((company2) => {
+              secondCompany = company2;
+              return assignCompanyOwnershipToDatalandAdmin(token, company2.companyId).then(() => {
+                return Promise.all(
+                  reportingYeatsCompan2.map((year) =>
+                    uploadGenericFrameworkData(
+                      token,
+                      company2.companyId,
+                      year,
+                      euTaxonomyForNonFinancialsFixtureForTest.t,
+                      (config) =>
+                        getBasePublicFrameworkDefinition(
+                          DataTypeEnum.EutaxonomyNonFinancials
+                        )!.getPublicFrameworkApiClient(config)
+                    )
+                  )
+                );
+              });
+            });
           });
-        });
       });
     });
 
@@ -104,7 +110,7 @@ describeIf(
         cy.contains('.toggle-chip-group', year).should('exist');
       });
 
-      ['2023','2022','2021'].forEach((year) => {
+      ['2023', '2022', '2021'].forEach((year) => {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
       });
 
