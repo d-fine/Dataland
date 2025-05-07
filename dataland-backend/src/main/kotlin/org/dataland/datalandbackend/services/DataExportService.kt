@@ -170,17 +170,24 @@ class DataExportService
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
 
             val csvSchemaBuilder = CsvSchema.builder()
-            allHeaderFields.forEach { allHeaderFieldsEntry ->
-                if (isLegobrickFramework) {
-                    usedHeaderFields
-                        .filter { usedHeaderField ->
-                            usedHeaderField.substringBeforeLast(JsonUtils.getPathSeparator()) == allHeaderFieldsEntry
-                        }.sorted()
-                        .forEach {
-                            csvSchemaBuilder.addColumn(it)
-                        }
-                } else if (usedHeaderFields.contains(allHeaderFieldsEntry)) {
-                    csvSchemaBuilder.addColumn(allHeaderFieldsEntry)
+
+            if (isLegobrickFramework) {
+                usedHeaderFields.filter {
+                    !it.startsWith("data" + JsonUtils.getPathSeparator())
+                }.forEach { csvSchemaBuilder.addColumn(it) }
+
+                allHeaderFields.forEach { allHeaderFieldsEntry ->
+                    usedHeaderFields.filter { usedHeaderField ->
+                        usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + allHeaderFieldsEntry)
+                    }.forEach {
+                        csvSchemaBuilder.addColumn(it)
+                    }
+                }
+            } else {
+                allHeaderFields.forEach {
+                    if (usedHeaderFields.contains(it)) {
+                        csvSchemaBuilder.addColumn(it)
+                    }
                 }
             }
             return csvSchemaBuilder.build().withHeader()
