@@ -1,6 +1,6 @@
 import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
-import {IdentifierType} from '@clients/backend';
+import { IdentifierType } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -51,10 +51,7 @@ describeIf(
       });
 
       ['2025', '2024', '2023'].forEach((year) => {
-        cy.get('.toggle-chip-group .chip')
-            .contains(year)
-            .should('be.visible')
-            .click({ force: true });
+        cy.get('.toggle-chip-group .chip').contains(year).should('be.visible').click({ force: true });
       });
 
       const fileTypes = [

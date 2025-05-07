@@ -282,7 +282,7 @@ function editPortfolio(): void {
  */
 function downloadPortfolio(): void {
   const fullName = enrichedPortfolio.value?.portfolioName ?? '';
-  const maxLength = 20;
+  const maxLength = 15;
   const displayName = fullName.length > maxLength ? fullName.slice(0, maxLength) + '...' : fullName;
 
   dialog.open(PortfolioDownload, {
