@@ -24,12 +24,6 @@ class UserServiceTest {
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
             companyIds = companyIds,
-            frameworks =
-                setOf(
-                    PortfolioUpload.Frameworks.sfdr,
-                    PortfolioUpload.Frameworks.additionalMinusCompanyMinusInformation,
-                    PortfolioUpload.Frameworks.lksg,
-                ),
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
