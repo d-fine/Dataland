@@ -172,6 +172,7 @@ open class DataController<T>(
                     dataType.toString(), correlationId,
                 ),
                 exportFileType,
+                dataType,
                 includeMetaData,
             )
 
