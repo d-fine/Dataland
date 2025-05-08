@@ -84,14 +84,19 @@ class DataExportService
         ): InputStreamResource {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
             val isLegobrickFramework = (frameworkTemplate != null)
-            val allHeaderFields =
-                JsonUtils.getLeafNodeFieldNames(
-                    getFrameworkTemplate(dataType.toString()) ?: companyAssociatedData.first(),
-                    keepEmptyFields = true,
-                    dropLastFieldName = isLegobrickFramework,
-                )
-
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(companyAssociatedData)
+
+            val allHeaderFields =
+                if (isLegobrickFramework) {
+                    JsonUtils.getLeafNodeFieldNames(
+                        getFrameworkTemplate(dataType.toString()) ?: companyAssociatedData.first(),
+                        keepEmptyFields = true,
+                        dropLastFieldName = true,
+                    )
+                } else {
+                    LinkedHashSet(nonEmptyHeaderFields.sorted())
+                }
+
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isLegobrickFramework)
 
             val outputStream = ByteArrayOutputStream()
@@ -187,9 +192,7 @@ class DataExportService
                 }
             } else {
                 allHeaderFields.forEach {
-                    if (usedHeaderFields.contains(it)) {
-                        csvSchemaBuilder.addColumn(it)
-                    }
+                    csvSchemaBuilder.addColumn(it)
                 }
             }
             return csvSchemaBuilder.build().withHeader()
