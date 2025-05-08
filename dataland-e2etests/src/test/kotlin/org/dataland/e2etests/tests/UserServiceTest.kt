@@ -85,7 +85,7 @@ class UserServiceTest {
                 )
 
             assertEquals(portfolioUpload.portfolioName, enrichedPortfolio.portfolioName)
-            assertEquals(9, enrichedPortfolio.propertyEntries.size) // 3 companies times 3 frameworks
+            assertEquals(3, enrichedPortfolio.propertyEntries.size) // 3 companies with 1 entry each
 
             val relevantPortfolioFrameworks = listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg)
             storedCompanies.map { it.companyId }.forEach {
@@ -112,8 +112,10 @@ class UserServiceTest {
                 null,
                 getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.lksg, enrichedPortfolio),
             )
+            // LkSG is not a major framework, so it does not appear in the enrichedPortfolio although the company has
+            // data for it.
             assertEquals(
-                "2022",
+                null,
                 getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
             )
         }
