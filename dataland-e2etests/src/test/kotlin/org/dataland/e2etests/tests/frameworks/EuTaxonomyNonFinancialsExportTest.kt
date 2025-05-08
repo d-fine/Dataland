@@ -24,19 +24,20 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
             fullTestData.copy(
                 general =
                     fullTestData.general?.copy(
-                        nfrdMandatory =
-                            fullTestData.general?.nfrdMandatory?.copy(
-                                value = null,
-                                quality = null,
-                                comment = null,
-                                dataSource = fullTestData.general?.nfrdMandatory?.dataSource?.copy(
-                                    fileReference = "",
-                                    page = null,
-                                    tagName = null,
-                                    fileName = null,
-                                    publicationDate = null,
-                                ),
-                            ),
+                        nfrdMandatory = null,
+//                            fullTestData.general?.nfrdMandatory?.copy(
+//                                value = null,
+//                                quality = null,
+//                                comment = null,
+//                                dataSource =
+//                                    fullTestData.general?.nfrdMandatory?.dataSource?.copy(
+//                                        fileReference = "",
+//                                        page = null,
+//                                        tagName = null,
+//                                        fileName = null,
+//                                        publicationDate = null,
+//                                    ),
+//                            ),
                     ),
                 revenue = null,
                 capex = null,
@@ -125,6 +126,11 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     @Test
     fun `test CSV export includes column for null field when company with non null value is exported`() {
         testCsvExportIncludesColumnForNonNullField()
+    }
+
+    @Test
+    fun `test CSV export with and without dataMetaInformation`() {
+        testCsvExportIncludeDataMetaInformationFlag("general.fiscalYearDeviation")
     }
 
     @Test

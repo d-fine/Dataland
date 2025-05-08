@@ -50,29 +50,37 @@ object ExportTestUtils {
     }
 
     /**
-     * Verify column existence in headers
+     * Verify column(s) existence in headers
+     * @param headers List of column headers to check
+     * @param columnNamePart Pattern to search for (can be the exact column name or partial match)
+     * @param shouldExist Whether the pattern should exist (true) or not (false)
+     * @param contextMessage Context information for the error message
+     * @return The index of the first matching column or -1 if none found
      */
-    fun assertColumnExists(
+    fun assertColumnPatternExists(
         headers: List<String>,
-        columnName: String,
+        columnNamePart: String,
         shouldExist: Boolean,
         contextMessage: String,
     ): Int {
-        val columnIndex = headers.indexOfFirst { it.contains(columnName) }
+        val matchingColumnIndexes =
+            headers.mapIndexedNotNull { index, header ->
+                if (header.contains(columnNamePart)) index else null
+            }
 
         if (shouldExist) {
-            Assertions.assertTrue(
-                columnIndex >= 0,
-                "$contextMessage: The export should include a column for $columnName",
+            Assertions.assertFalse(
+                matchingColumnIndexes.isEmpty(),
+                "$contextMessage: The export should include at least one column header containing '$columnNamePart'",
             )
         } else {
             Assertions.assertTrue(
-                columnIndex < 0,
-                "$contextMessage: The export should NOT include a column for $columnName",
+                matchingColumnIndexes.isEmpty(),
+                "$contextMessage: The export should NOT include any column headers containing '$columnNamePart'",
             )
         }
 
-        return columnIndex
+        return matchingColumnIndexes.firstOrNull() ?: -1
     }
 
     /**

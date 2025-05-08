@@ -85,7 +85,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column does NOT exist
-        ExportTestUtils.assertColumnExists(
+        ExportTestUtils.assertColumnPatternExists(
             headers,
             getNullFieldName(),
             shouldExist = false,
@@ -107,7 +107,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column DOES exist
-        ExportTestUtils.assertColumnExists(
+        ExportTestUtils.assertColumnPatternExists(
             headers,
             getNullFieldName(),
             shouldExist = true,
@@ -148,7 +148,7 @@ abstract class BaseExportTest<T> {
         validateMultiCompanyExport(excelAsCsvFile, headers, "Excel")
     }
 
-    protected fun testCsvExportWithMetadataIncludesMetaInformationFields() {
+    protected fun testCsvExportIncludeDataMetaInformationFlag(fieldName: String) {
         // Export data with includeDataMetaInformation=true
         val exportWithMetadata =
             exportDataAsCsvWithMetadata(
@@ -177,37 +177,34 @@ abstract class BaseExportTest<T> {
                 ExportTestUtils.getReadableCsvFile(exportWithoutMetadata),
             )
 
-        val metadataColumn = "companyId"
-        val dataColumn = "dataDate"
-
-        // Verify the presence/absence of metadata fields
-        ExportTestUtils.assertColumnExists(
+        // 1. Verify that the field with a value appears in both exports
+        val valuePattern = "$fieldName.value"
+        ExportTestUtils.assertColumnPatternExists(
             headers = headersWithMetadata,
-            columnName = metadataColumn,
+            columnNamePart = valuePattern,
             shouldExist = true,
-            contextMessage = "CSV export with includeDataMetaInformation=true",
+            contextMessage = "CSV export with includeDataMetaInformation=true should include value of test field",
+        )
+        ExportTestUtils.assertColumnPatternExists(
+            headers = headersWithoutMetadata,
+            columnNamePart = valuePattern,
+            shouldExist = true,
+            contextMessage = "CSV export with includeDataMetaInformation=false should include value of test field",
         )
 
-        ExportTestUtils.assertColumnExists(
+        // 2. Verify that for the export without DataMetaInformation NO dataSource headers exist for this field
+        val dataSourcePattern = "$fieldName.dataSource"
+        ExportTestUtils.assertColumnPatternExists(
+            headers = headersWithMetadata,
+            columnNamePart = dataSourcePattern,
+            shouldExist = true,
+            contextMessage = "CSV export with includeDataMetaInformation=true should include dataSource of test field",
+        )
+        ExportTestUtils.assertColumnPatternExists(
             headers = headersWithoutMetadata,
-            columnName = metadataColumn,
+            columnNamePart = dataSourcePattern,
             shouldExist = false,
-            contextMessage = "CSV export with includeDataMetaInformation=false",
-        )
-
-        // Verify that regular data fields are present in both exports
-        ExportTestUtils.assertColumnExists(
-            headers = headersWithMetadata,
-            columnName = dataColumn,
-            shouldExist = true,
-            contextMessage = "CSV export with includeDataMetaInformation=true",
-        )
-
-        ExportTestUtils.assertColumnExists(
-            headers = headersWithoutMetadata,
-            columnName = dataColumn,
-            shouldExist = true,
-            contextMessage = "CSV export with includeDataMetaInformation=false",
+            contextMessage = "CSV export with includeDataMetaInformation=false should NOT include dataSource of test field",
         )
     }
 
@@ -219,7 +216,7 @@ abstract class BaseExportTest<T> {
     ) {
         // Verify required columns exist
         val nullFieldColumnIndex =
-            ExportTestUtils.assertColumnExists(
+            ExportTestUtils.assertColumnPatternExists(
                 headers,
                 getNullFieldName(),
                 shouldExist = true,
@@ -227,7 +224,7 @@ abstract class BaseExportTest<T> {
             )
 
         val companyIdColumnIndex =
-            ExportTestUtils.assertColumnExists(
+            ExportTestUtils.assertColumnPatternExists(
                 headers,
                 "companyId",
                 shouldExist = true,
