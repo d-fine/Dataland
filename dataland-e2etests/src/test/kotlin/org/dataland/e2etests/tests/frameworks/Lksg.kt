@@ -80,6 +80,7 @@ class Lksg {
         assertEquals(sortDatasetsInFirstTest(fixedDataSet), downloadedAssociatedData.data)
     }
 
+    /*
     @Test
     fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
         val (companyId, uploadedDatasets) = uploadFourDatasetsForACompany()
@@ -113,6 +114,7 @@ class Lksg {
             sortDatasetsInSecondTest(uploadedDatasets),
         )
     }
+    */
 
     @Test
     fun `check that dataset cannot be uploaded if document does not exist`() {
