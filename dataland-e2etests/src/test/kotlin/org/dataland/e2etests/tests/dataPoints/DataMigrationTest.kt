@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.dataPoints
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
@@ -32,6 +33,7 @@ import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
@@ -277,33 +279,32 @@ class DataMigrationTest {
         uploadGenericDummyDataset(minimalDatasetEquity, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
         uploadGenericDummyDataset(minimalDatasetDebt, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
         Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
-        ApiAwait
-            .waitForData(timeoutInSeconds = 30, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
-                Backend.additionalCompanyInformationDataControllerApi
-                    .getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
-                        reportingPeriod = reportingPeriod, companyId = companyId,
+        Awaitility.await().atMost(30, TimeUnit.SECONDS).pollDelay(2, TimeUnit.SECONDS).untilAsserted {
+            Backend.additionalCompanyInformationDataControllerApi
+                .getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+                    reportingPeriod = reportingPeriod, companyId = companyId,
+                ).let {
+                    assertEquals(
+                        minimalDatasetEquity.general
+                            ?.financialInformation
+                            ?.equity
+                            ?.value,
+                        it.data.general
+                            ?.financialInformation
+                            ?.equity
+                            ?.value,
                     )
-            }.let {
-                assertEquals(
-                    it.data.general
-                        ?.financialInformation
-                        ?.equity
-                        ?.value,
-                    minimalDatasetEquity.general
-                        ?.financialInformation
-                        ?.equity
-                        ?.value,
-                )
-                assertEquals(
-                    it.data.general
-                        ?.financialInformation
-                        ?.debt
-                        ?.value,
-                    minimalDatasetDebt.general
-                        ?.financialInformation
-                        ?.debt
-                        ?.value,
-                )
-            }
+                    assertEquals(
+                        minimalDatasetDebt.general
+                            ?.financialInformation
+                            ?.debt
+                            ?.value,
+                        it.data.general
+                            ?.financialInformation
+                            ?.debt
+                            ?.value,
+                    )
+                }
+        }
     }
 }

@@ -155,7 +155,7 @@ class Lksg {
                 activeDownloadedDatasets.size == 2 &&
                 downloaded2023Datasets.size == 2 &&
                 downloadedActive2023Datasets.size == 1,
-            "At least of the retrieved meta data lists does not have the expected size.",
+            "At least one of the retrieved meta data lists does not have the expected size.",
         )
         assertEquals(
             sortDatasetsInSecondTest(listOf(downloadedActive2023Datasets[0].data))[0],
