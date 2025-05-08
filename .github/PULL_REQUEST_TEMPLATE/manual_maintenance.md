@@ -29,13 +29,13 @@ creation URL (or simply copy this md file into the description)
 
 ## Server maintenance
 
-Note: Before applying any update to any server make sure that one backup exists (One backup for the following dev servers, letsencrypt, clone and test together is enough). In case of prod, create a fresh backup just
+Note: Before applying any update to any server make sure that a backup exists for all dev servers, letsencrypt, clone and test. In case of prod, create a fresh backup just
 before applying any changes and align with the team when to apply them.
 
-For creating a backup please refer to: [How to create a backup on OTC](https://dfinegmbh.sharepoint.com/:v:/r/sites/TMDataland/Freigegebene%20Dokumente/General/OTC%20Documentation/BackupAndRestore.mkv?csf=1&web=1&e=blez3)
+For creating a backup please refer to the internal wiki.
 
 On all servers to the following:
-- Connect to the server, e.g. via `ssh ubuntu@dev1.dataland.com` in terminal or git bash.
+- Connect to the server (see internal wiki for details).
 - Execute `sudo apt-get update && sudo apt-get upgrade` to update the server (if updates require a reboot it works better to start it manually with `sudo reboot` than from the opened message window. If a reboot is needed can be seem by a server message in the corresponding bash or terminal window.)
 - Execute `sudo docker system prune -a` to clean up unused docker components and liberate disk space
 - Check for new ubuntu releases. If there are new releases check with your team. If approved install them with `sudo do-release-upgrade` (see internal documentation for details, you might need to run `sudo apt update && sudo apt upgrade` first if packages are missing)
@@ -62,22 +62,15 @@ Check the cloud provider's dashboard for manually created backups and images. De
 
 ## ssh-keys maintenance
 
-- [ ] See [ssh-keys in internalDataland](https://github.com/d-fine/DatalandInternal/tree/main/ssh-keys)
 - [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the
   internal wiki.
 
 ## Check RabbitMQ dead letter queue and disk space
 
-- [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
-  disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
-  with `sudo docker image prune --all`.
-- [ ] Only for production connect to RabbitMQ, via `ssh -L 6789:localhost:6789 ubuntu@dataland.com` (**Make sure your stack is not running**).
-- [ ] For the login info, see [RabbitMQ Wiki](https://github.com/d-fine/DatalandInternal/wiki/RabbitMQ)
-- [ ] No new messages should have been added to the dead letter queue since the last manual
-  maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
-  and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
-  accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues and Streams &rarr;
-  deadLetterQueue &rarr; Get message.
+- [ ] Clear up disk space on all servers by removing unused docker images.
+- [ ] Connect to RabbitMQ on production and test (see internal wiki for instructions).
+- [ ] No unexpected new messages should have been added to the dead letter queue since the last manual
+  maintenance.
 
 ## Check the alerts and critical alerts for prod in the grafana dashboard
 
