@@ -2,61 +2,79 @@
   <div class="portfolio-download-content">
     <FormKit type="form" class="formkit-wrapper" :actions="false">
       <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">Framework</b>
+        <b style="margin-bottom: 8px; font-weight: normal">Framework</b>
       </label>
       <FormKit
         v-model="selectedFramework"
+        data-test="frameworkSelector"
         type="select"
         name="frameworkSelector"
-        data-test="frameworkSelector"
         :options="availableFrameworks"
         placeholder="Select framework"
+        @input="resetErrors"
       />
-      <p v-show="showFrameworksError" class="text-danger text-xs" data-test="frameworkError">Select Framework.</p>
+      <p v-show="showFrameworksError" class="text-danger text-xs" data-test="frameworkError">
+        Please select Framework.
+      </p>
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
       <div class="reporting-periods-selector flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
-          :name="'listOfReportingPeriods'"
           data-test="listOfReportingPeriods"
-          :options="dynamicReportingPeriods"
-          @changed="resetErrors"
           class="toggle-chip-group"
+          :options="dynamicReportingPeriods"
+          :name="'listOfReportingPeriods'"
+          @changed="resetErrors"
         />
       </div>
-      <p v-if="showReportingPeriodsError" class="text-danger text-xs mt-2">Select at least one reporting period.</p>
+      <p v-if="showReportingPeriodsError" class="text-danger text-xs mt-2">
+        Please select at least one reporting period.
+      </p>
       <label for="fileTypeSelector">
         <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File Type</b>
       </label>
       <FormKit
         v-model="selectedFileType"
+        data-test="fileTypeSelector"
         type="select"
         name="fileTypeSelector"
-        data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
         placeholder="Select file type"
       />
-      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Select a file type.</p>
-    </FormKit>
-    <div class="download-button-wrapper">
-      <PrimeButton
-        label="Download Portfolio"
-        icon="pi pi-download"
-        @click="onDownloadButtonClick"
-        class="primary-button"
-        :data-test="'downloadButton'"
-        title="Download the selected frameworks and reporting periods for current portfolio"
+      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Please select a file type.</p>
+      <FormKit
+        v-model="valuesOnly"
+        data-test="valuesCheckbox"
+        class="valuesCheckbox"
+        type="checkbox"
+        name="valuesOnlyOption"
+        label="Values only"
+        help="Download only values without additional metadata"
       />
-      <Message v-if="portfolioErrors" severity="error" class="m-0 error-message" :life="3000">
-        {{ portfolioErrors }}
-      </Message>
+    </FormKit>
+    <div class="download-section">
+      <div class="error-message-container">
+        <Message v-if="portfolioErrors" severity="error" class="m-0 error-message" :life="3000">
+          {{ portfolioErrors }}
+        </Message>
+      </div>
+      <div class="download-button-wrapper">
+        <PrimeButton
+          label="Download Portfolio"
+          icon="pi pi-download"
+          @click="onDownloadButtonClick"
+          class="primary-button"
+          :data-test="'downloadButton'"
+          title="Download the selected frameworks and reporting periods for current portfolio"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, type Ref, ref, watch } from 'vue';
+import { inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
@@ -71,7 +89,6 @@ import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { AxiosError } from 'axios';
 import Message from 'primevue/message';
-const dynamicReportingPeriods = ref<{ name: string; value: boolean }[]>([]);
 const availableFrameworks = [
   { value: 'sfdr', label: 'SFDR' },
   { value: 'eutaxonomy-financials', label: 'EU Taxonomy Financials' },
@@ -85,6 +102,7 @@ const portfolioId = ref<string | undefined>(undefined);
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const valuesOnly = ref(true);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
@@ -94,6 +112,14 @@ const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
   { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
 ];
+const dynamicReportingPeriods = ref<{ name: string; value: boolean }[]>([
+  { name: '2025', value: false },
+  { name: '2024', value: false },
+  { name: '2023', value: false },
+  { name: '2022', value: false },
+  { name: '2021', value: false },
+  { name: '2020', value: false },
+]);
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -103,20 +129,10 @@ onMounted(() => {
     portfolioEntries.value = portfolio.entries;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   }
-  setReportingPeriods();
-  getSelectedReportingPeriods();
-});
-
-watch(selectedFramework, resetErrors);
-watch(selectedFileType, resetErrors);
-watch(dynamicReportingPeriods, resetErrors);
-
-watch(selectedFramework, () => {
-  onFrameworkChange();
 });
 
 /**
- * Reset errors when either framework or file type changes
+ * Reset errors when either framework, reporting period or file type changes
  */
 function resetErrors(): void {
   portfolioErrors.value = '';
@@ -126,31 +142,11 @@ function resetErrors(): void {
 }
 
 /**
- * When the framework changes, update the available reporting periods based on the selected framework
- * Currently this function does nothing until dynamic reporting periods can be fetched from
- */
-function onFrameworkChange(): void {
-  setReportingPeriods();
-}
-
-/**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
 function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
   const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
   return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
-}
-
-/**
- * When the framework changes, update the available reporting periods based on the selected framework
- */
-function setReportingPeriods(): void {
-  const previousSelections = new Set(getSelectedReportingPeriods());
-  const allYears = ['2025', '2024', '2023', '2022', '2021', '2020'];
-  dynamicReportingPeriods.value = allYears.map((year) => ({
-    name: year,
-    value: previousSelections.has(year),
-  }));
 }
 
 /**
@@ -208,13 +204,10 @@ async function downloadPortfolio(): Promise<void> {
       selectedFramework.value,
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
-    const selectedPeriods = getSelectedReportingPeriods();
-
-    const companyIds = getCompanyIds();
 
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      selectedPeriods,
-      companyIds,
+      getSelectedReportingPeriods(),
+      getCompanyIds(),
       selectedFileType.value
     );
 
@@ -234,17 +227,21 @@ async function downloadPortfolio(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
-.download-button-wrapper {
+.portfolio-download-content {
+  width: 20em;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 0.5rem 1.5rem;
   display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
+  flex-direction: column;
 }
 
-.downloadButton {
-  width: max-content;
-  margin-left: auto;
-  justify-content: end;
+.download-section {
+  height: 6rem;
+  position: relative;
+  margin-top: 1rem;
 }
+
 .reporting-periods-selector {
   margin-top: 0.5em;
   margin-bottom: 1em;
@@ -260,6 +257,7 @@ label {
   margin-bottom: 5px;
   font-weight: normal;
 }
+
 .toggle-chip-group {
   display: flex;
   flex-wrap: wrap;
@@ -278,31 +276,39 @@ label {
   }
 }
 
-.portfolio-download-content {
-  width: 20em;
-  border-radius: 0.25rem;
-  background-color: white;
-  padding: 1.5rem;
+.valuesCheckbox .formkit-input[type='checkbox']:checked {
+  background-color: #e67f3f;
+  border-color: #e67f3f;
 }
 
-.errorMessage {
-  gap: 10em;
+.formkit-wrapper {
+  flex-grow: 1;
+}
+
+.error-message-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .error-message {
-  position: absolute;
-  top: 443px;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  background-color: red;
-  color: white;
-  padding: 10px;
+  width: 100%;
+  padding: 1px;
   text-align: center;
-  border-radius: 5px;
+  font-size: 0.875rem;
 }
 
-.text-danger {
-  color: red;
+.download-button-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
 }
 </style>
