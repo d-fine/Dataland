@@ -81,7 +81,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
-                includeMetaData = true,
+                includeDataMetaInformation = true,
             )
 
     override fun exportDataAsExcel(

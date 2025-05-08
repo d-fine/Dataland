@@ -45,7 +45,7 @@ class DataExportService
             companyAssociatedData: List<CompanyAssociatedData<T>>,
             exportFileType: ExportFileType,
             dataType: DataType,
-            includeMetaData: Boolean = false,
+            includeDataMetaInformation: Boolean = false,
         ): InputStreamResource {
             val jsonData = companyAssociatedData.map { convertDataToJson(it) }
             return when (exportFileType) {
@@ -172,16 +172,18 @@ class DataExportService
             val csvSchemaBuilder = CsvSchema.builder()
 
             if (isLegobrickFramework) {
-                usedHeaderFields.filter {
-                    !it.startsWith("data" + JsonUtils.getPathSeparator())
-                }.forEach { csvSchemaBuilder.addColumn(it) }
+                usedHeaderFields
+                    .filter {
+                        !it.startsWith("data" + JsonUtils.getPathSeparator())
+                    }.forEach { csvSchemaBuilder.addColumn(it) }
 
                 allHeaderFields.forEach { allHeaderFieldsEntry ->
-                    usedHeaderFields.filter { usedHeaderField ->
-                        usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + allHeaderFieldsEntry)
-                    }.forEach {
-                        csvSchemaBuilder.addColumn(it)
-                    }
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + allHeaderFieldsEntry)
+                        }.forEach {
+                            csvSchemaBuilder.addColumn(it)
+                        }
                 }
             } else {
                 allHeaderFields.forEach {

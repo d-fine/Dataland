@@ -149,14 +149,14 @@ abstract class BaseExportTest<T> {
     }
 
     protected fun testCsvExportWithMetadataIncludesMetaInformationFields() {
-        // Export data with includeMetaData=true
+        // Export data with includeDataMetaInformation=true
         val exportWithMetadata =
             exportDataAsCsvWithMetadata(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
             )
 
-        // Export data with default includeMetaData=false
+        // Export data with default includeDataMetaInformation=false
         val exportWithoutMetadata =
             exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
@@ -185,14 +185,14 @@ abstract class BaseExportTest<T> {
             headers = headersWithMetadata,
             columnName = metadataColumn,
             shouldExist = true,
-            contextMessage = "CSV export with includeMetaData=true",
+            contextMessage = "CSV export with includeDataMetaInformation=true",
         )
 
         ExportTestUtils.assertColumnExists(
             headers = headersWithoutMetadata,
             columnName = metadataColumn,
             shouldExist = false,
-            contextMessage = "CSV export with includeMetaData=false",
+            contextMessage = "CSV export with includeDataMetaInformation=false",
         )
 
         // Verify that regular data fields are present in both exports
@@ -200,14 +200,14 @@ abstract class BaseExportTest<T> {
             headers = headersWithMetadata,
             columnName = dataColumn,
             shouldExist = true,
-            contextMessage = "CSV export with includeMetaData=true",
+            contextMessage = "CSV export with includeDataMetaInformation=true",
         )
 
         ExportTestUtils.assertColumnExists(
             headers = headersWithoutMetadata,
             columnName = dataColumn,
             shouldExist = true,
-            contextMessage = "CSV export with includeMetaData=false",
+            contextMessage = "CSV export with includeDataMetaInformation=false",
         )
     }
 
