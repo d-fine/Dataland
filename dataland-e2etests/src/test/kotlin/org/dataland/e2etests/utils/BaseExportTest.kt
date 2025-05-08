@@ -193,6 +193,7 @@ abstract class BaseExportTest<T> {
         )
 
         // 2. Verify that for the export without DataMetaInformation NO dataSource headers exist for this field
+        // TODO: loop for all meta information fields (comment ....)
         val dataSourcePattern = "$fieldName.dataSource"
         ExportTestUtils.assertColumnPatternExists(
             headers = headersWithMetadata,

@@ -25,19 +25,6 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 general =
                     fullTestData.general?.copy(
                         nfrdMandatory = null,
-//                            fullTestData.general?.nfrdMandatory?.copy(
-//                                value = null,
-//                                quality = null,
-//                                comment = null,
-//                                dataSource =
-//                                    fullTestData.general?.nfrdMandatory?.dataSource?.copy(
-//                                        fileReference = "",
-//                                        page = null,
-//                                        tagName = null,
-//                                        fileName = null,
-//                                        publicationDate = null,
-//                                    ),
-//                            ),
                     ),
                 revenue = null,
                 capex = null,
