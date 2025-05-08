@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
@@ -32,8 +31,6 @@ class DataExportService
         init {
             objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
         }
-
-        private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Create a ByteStream to be used for Export from CompanyAssociatedData.
@@ -74,16 +71,16 @@ class DataExportService
             }
         }
 
-    /**
-     * Return true if the provided field name (full path) specifies a meta data field.
-     */
-    private fun isMetaDataField(field: String): Boolean {
-        val separator = JsonUtils.getPathSeparator()
-        return field.endsWith(separator + "comment")
-                    || field.endsWith(separator + "quality")
-                    || field.contains(separator + "dataSource" + separator)
-                    || field.contains(separator + "referencedReports" + separator)
-    }
+        /**
+         * Return true if the provided field name (full path) specifies a meta data field.
+         */
+        private fun isMetaDataField(field: String): Boolean {
+            val separator = JsonUtils.getPathSeparator()
+            return field.endsWith(separator + "comment") ||
+                field.endsWith(separator + "quality") ||
+                field.contains(separator + "dataSource" + separator) ||
+                field.contains(separator + "referencedReports" + separator)
+        }
 
         /**
          * Create a ByteStream to be used for CSV Export from CompanyAssociatedData.
@@ -154,11 +151,15 @@ class DataExportService
             nodes: List<JsonNode>,
             includeDataMetaInformation: Boolean,
         ): Pair<List<Map<String, String>>, Set<String>> {
-            val csvData = nodes.map {
-                val nonEmptyNodes = JsonUtils.getNonEmptyNodesAsMapping(it)
-                if (includeDataMetaInformation) nonEmptyNodes
-                else nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) }
-            }
+            val csvData =
+                nodes.map {
+                    val nonEmptyNodes = JsonUtils.getNonEmptyNodesAsMapping(it)
+                    if (includeDataMetaInformation) {
+                        nonEmptyNodes
+                    } else {
+                        nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) }
+                    }
+                }
             val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
 
             csvData.forEach { dataSet ->

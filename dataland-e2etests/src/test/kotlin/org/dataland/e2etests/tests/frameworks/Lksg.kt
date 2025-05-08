@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentMechanism
 import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
@@ -145,6 +144,7 @@ class Lksg {
         assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
     }
 
+    /*
     private fun assertDownloadedDatasets(
         downLoadedDatasets: List<DataAndMetaInformationLksgData>,
         activeDownloadedDatasets: List<DataAndMetaInformationLksgData>,
@@ -165,6 +165,7 @@ class Lksg {
             "Active dataset in 2023 not equal to latest upload.",
         )
     }
+    */
 
     private fun sortComplaintRisksInDataset(dataset: LksgData): LksgData {
         val complaintRisksIdentifiedRisks =
@@ -293,6 +294,7 @@ class Lksg {
         return sortedUploadedDatasets
     }
 
+    /*
     private fun uploadFourDatasetsForACompany(): Pair<String, List<LksgData>> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
@@ -315,4 +317,5 @@ class Lksg {
         }
         return Pair(companyId, lksgData)
     }
+    */
 }
