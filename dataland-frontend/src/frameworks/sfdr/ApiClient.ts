@@ -43,6 +43,7 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
+    includeDataMetaInformation?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -50,6 +51,7 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
       reportingPeriods,
       companyIds,
       fileFormat,
+      includeDataMetaInformation,
       options
     );
   }

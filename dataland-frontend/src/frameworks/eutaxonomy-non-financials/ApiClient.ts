@@ -51,6 +51,7 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
+    includeDataMetaInformation?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -58,6 +59,7 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
       reportingPeriods,
       companyIds,
       fileFormat,
+      includeDataMetaInformation,
       options
     );
   }
