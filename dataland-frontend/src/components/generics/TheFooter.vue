@@ -170,18 +170,21 @@ onUnmounted(() => {
 <style scoped lang="scss">
 @use '@/assets/scss/newVariables';
 
+* {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .footer {
   background-color: var(--basic-dark);
   color: var(--default-neutral-white);
   padding: 6rem 4rem 3rem;
-  line-height: 1.25rem;
 
   &--title {
     color: var(--grey-tones-300);
     font-size: 0.875rem;
-    font-style: normal;
-    font-weight: 400;
-    margin: 0;
   }
 
   &--link {
@@ -213,8 +216,6 @@ onUnmounted(() => {
   }
 
   &__copyright {
-    font-weight: 400;
-    line-height: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: right;
@@ -246,10 +247,10 @@ onUnmounted(() => {
 
     &--columns {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-columns: 2fr 2fr 1fr;
       grid-template-rows: repeat(2, 1fr);
       justify-content: space-between;
-      justify-items: end;
+      justify-items: start;
       text-align: start;
       gap: 1rem 0;
     }
@@ -263,7 +264,6 @@ onUnmounted(() => {
         display: flex;
         list-style: none;
         padding-left: 0;
-        margin: 0;
         gap: 3rem;
       }
 
@@ -304,7 +304,6 @@ onUnmounted(() => {
 
     &--integration {
       grid-column: span 2;
-      justify-self: center;
     }
 
     &--follow {
@@ -384,9 +383,7 @@ onUnmounted(() => {
     padding: 4rem 1.5rem 2.5rem;
 
     &--title {
-      margin: 0;
       font-size: 1rem;
-      font-weight: 400;
       color: var(--default-neutral-white);
       width: 100%;
       display: flex;
@@ -446,7 +443,6 @@ onUnmounted(() => {
       justify-content: space-between;
       cursor: pointer;
       user-select: none;
-      margin: 0;
       border-bottom: 1px solid var(--grey-tones-900);
 
       .footer--title {
@@ -457,7 +453,6 @@ onUnmounted(() => {
         width: 100%;
         justify-content: start;
         justify-items: start;
-        margin: 0;
       }
 
       .footer__toggle-icon {
