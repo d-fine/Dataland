@@ -1,25 +1,23 @@
 <template>
-  <div class="portfolio-download-content">
-    <FormKit type="form" class="formkit-wrapper" :actions="false">
-      <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; font-weight: normal">Framework</b>
+  <div class="portfolio-download-content d-flex flex-column align-items-center">
+    <FormKit type="form" style="flex-grow: 1" :actions="false">
+      <label for="frameworkSelector">
+        <span>Framework</span>
       </label>
       <FormKit
         v-model="selectedFramework"
         data-test="frameworkSelector"
         type="select"
         name="frameworkSelector"
-        :options="availableFrameworks"
         placeholder="Select framework"
+        :options="availableFrameworks"
         @input="resetErrors"
       />
-      <p v-show="showFrameworksError" class="text-danger text-xs" data-test="frameworkError">
-        Please select Framework.
-      </p>
+      <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
       <label for="reportingYearSelector">
-        <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
+        <span>Reporting Year</span>
       </label>
-      <div class="reporting-periods-selector flex flex-wrap gap-2 py-2">
+      <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
@@ -28,21 +26,19 @@
           @changed="resetErrors"
         />
       </div>
-      <p v-if="showReportingPeriodsError" class="text-danger text-xs mt-2">
-        Please select at least one reporting period.
-      </p>
+      <p v-if="showReportingPeriodsError" class="text-danger mt-2">Please select at least one reporting period.</p>
       <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File Type</b>
+        <span>File Type</span>
       </label>
       <FormKit
         v-model="selectedFileType"
         data-test="fileTypeSelector"
         type="select"
         name="fileTypeSelector"
-        :options="fileTypeSelectionOptions"
         placeholder="Select file type"
+        :options="fileTypeSelectionOptions"
       />
-      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Please select a file type.</p>
+      <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
       <FormKit
         v-model="valuesOnly"
         data-test="valuesCheckbox"
@@ -50,26 +46,35 @@
         type="checkbox"
         name="valuesOnlyOption"
         label="Values only"
-        help="Download only values without additional metadata"
+        help="Download only values without additional metadata."
+        :outer-class="{
+          'yes-no-radio': true,
+        }"
+        :inner-class="{
+          'formkit-inner': false,
+        }"
+        :input-class="{
+          'formkit-input': false,
+          'p-radiobutton': true,
+        }"
       />
     </FormKit>
-    <div class="download-section">
-      <div class="error-message-container">
-        <Message v-if="portfolioErrors" severity="error" class="m-0 error-message" :life="3000">
-          {{ portfolioErrors }}
-        </Message>
-      </div>
-      <div class="download-button-wrapper">
-        <PrimeButton
-          label="Download Portfolio"
-          icon="pi pi-download"
-          @click="onDownloadButtonClick"
-          class="primary-button"
-          :data-test="'downloadButton'"
-          title="Download the selected frameworks and reporting periods for current portfolio"
-        />
-      </div>
-    </div>
+    <Message v-if="portfolioErrors" severity="error" class="my-1 text-xs" :life="3000">
+      {{ portfolioErrors }}
+    </Message>
+    <template v-if="!isDownloading">
+      <PrimeButton
+        data-test="downloadButton"
+        class="primary-button my-2"
+        label="Download Portfolio"
+        icon="pi pi-download"
+        title="Download the selected frameworks and reporting periods for current portfolio"
+        @click="onDownloadButtonClick"
+      />
+    </template>
+    <template v-else>
+      <DownloadProgressSpinner :percent-completed="downloadProgress" :white-spinner="true" />
+    </template>
   </div>
 </template>
 
@@ -78,7 +83,6 @@ import { inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
-import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
@@ -87,14 +91,8 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import type Keycloak from 'keycloak-js';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
-import { AxiosError } from 'axios';
 import Message from 'primevue/message';
-const availableFrameworks = [
-  { value: 'sfdr', label: 'SFDR' },
-  { value: 'eutaxonomy-financials', label: 'EU Taxonomy Financials' },
-  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non Financials' },
-  { value: 'nuclear-and-gas', label: 'Nuclear and Gas' },
-];
+import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -108,18 +106,24 @@ const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
 const portfolioErrors = ref('');
 const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
+const availableFrameworks = [
+  { value: 'sfdr', label: 'SFDR' },
+  { value: 'eutaxonomy-financials', label: 'EU Taxonomy Financials' },
+  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non Financials' },
+  { value: 'nuclear-and-gas', label: 'Nuclear and Gas' },
+];
+const dynamicReportingPeriods = ref(
+  [2025, 2024, 2023, 2022, 2021, 2020].map((year) => ({
+    name: year.toString(),
+    value: false,
+  }))
+);
 const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
   { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
 ];
-const dynamicReportingPeriods = ref<{ name: string; value: boolean }[]>([
-  { name: '2025', value: false },
-  { name: '2024', value: false },
-  { name: '2023', value: false },
-  { name: '2022', value: false },
-  { name: '2021', value: false },
-  { name: '2020', value: false },
-]);
+const downloadProgress = ref(0);
+const isDownloading = ref(false);
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -157,15 +161,24 @@ function getSelectedReportingPeriods(): string[] {
 }
 
 /**
+/**
  * Handle the clickEvent of the Download Button
  */
 async function onDownloadButtonClick(): Promise<void> {
   checkIfShowErrors();
-
-  if (showReportingPeriodsError.value || showFileTypeError.value) {
+  if (showReportingPeriodsError.value || showFileTypeError.value || showFrameworksError.value) {
     return;
   }
-  await downloadPortfolio();
+
+  isDownloading.value = true;
+  downloadProgress.value = 0;
+
+  try {
+    await downloadPortfolio();
+  } catch (error) {
+    console.error('Download error:', error);
+    portfolioErrors.value = 'Unexpected error during download.';
+  }
 }
 
 /**
@@ -188,74 +201,76 @@ function checkIfShowErrors(): void {
  * Handles download of portfolio
  */
 async function downloadPortfolio(): Promise<void> {
+  if (!selectedFramework.value || !selectedFileType.value) return;
+
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const frameworkDataApi = getFrameworkDataApiForIdentifier(
+    selectedFramework.value,
+    apiClientProvider
+  ) as PublicFrameworkDataApi<FrameworkData>;
+
+  const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
+    getSelectedReportingPeriods(),
+    getCompanyIds(),
+    selectedFileType.value
+  );
+
+  const dataContent =
+    selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
+
+  const url = window.URL.createObjectURL(new Blob([dataContent]));
+
   try {
-    if (!selectedFramework.value) {
-      showFrameworksError.value = true;
-      return;
-    }
+    isDownloading.value = true;
+    downloadProgress.value = 0;
 
-    if (!selectedFileType.value) {
-      showFileTypeError.value = true;
-      return;
-    }
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'blob';
 
-    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const frameworkDataApi = getFrameworkDataApiForIdentifier(
-      selectedFramework.value,
-      apiClientProvider
-    ) as PublicFrameworkDataApi<FrameworkData>;
+    xhr.onprogress = (event: ProgressEvent): void => {
+      if (event.lengthComputable) {
+        downloadProgress.value = Math.round((event.loaded / event.total) * 100);
+      }
+    };
 
-    const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      getSelectedReportingPeriods(),
-      getCompanyIds(),
-      selectedFileType.value
-    );
-
-    const dataContent =
-      selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
-
-    const extension = selectedFileType.value === ExportFileType.Csv ? '.csv' : '.csv';
-    const filename = 'portfolio-download' + extension;
-    forceFileDownload(dataContent, filename);
+    xhr.onload = (): void => {
+      if (xhr.status === 200) {
+        const blob = xhr.response;
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        const extension = selectedFileType.value === ExportFileType.Csv ? '.csv' : '.csv';
+        a.download = 'portfolio-download' + extension;
+        a.click();
+        URL.revokeObjectURL(blobUrl);
+        downloadProgress.value = null;
+      } else {
+        portfolioErrors.value = `Download failed: ${xhr.status}`;
+      }
+      isDownloading.value = false;
+    };
+    xhr.send();
   } catch (error) {
-    if (error instanceof AxiosError) {
-      portfolioErrors.value = error.status == 500 ? 'No data available' : error.message;
-    }
-    console.error('Download failed:', error);
+    console.error(error);
+    portfolioErrors.value = 'Unexpected error during download.';
+    isDownloading.value = false;
+    downloadProgress.value = null;
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@import '@/assets/scss/variables.scss';
+
 .portfolio-download-content {
   width: 20em;
+  height: 100%;
   border-radius: 0.25rem;
   background-color: white;
   padding: 0.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-}
-
-.download-section {
-  height: 6rem;
-  position: relative;
-  margin-top: 1rem;
-}
-
-.reporting-periods-selector {
-  margin-top: 0.5em;
-  margin-bottom: 1em;
-  min-height: 4em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-weight: normal;
 }
 
 .toggle-chip-group {
@@ -276,39 +291,9 @@ label {
   }
 }
 
-.valuesCheckbox .formkit-input[type='checkbox']:checked {
-  background-color: #e67f3f;
-  border-color: #e67f3f;
-}
-
-.formkit-wrapper {
-  flex-grow: 1;
-}
-
-.error-message-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.error-message {
-  width: 100%;
-  padding: 1px;
-  text-align: center;
-  font-size: 0.875rem;
-}
-
-.download-button-wrapper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
+.formkit-help {
+  color: $gray;
+  font-size: $fs-xs;
+  font-style: italic;
 }
 </style>
