@@ -45,16 +45,9 @@ class DataExportService
             companyAssociatedData: List<CompanyAssociatedData<T>>,
             exportFileType: ExportFileType,
             dataType: DataType,
-            includeMetaData: Boolean = false,
+            includeDataMetaInformation: Boolean = false,
         ): InputStreamResource {
-            val jsonData =
-                companyAssociatedData.map {
-                    if (includeMetaData) {
-                        convertDataToJson(it)
-                    } else {
-                        filterOutMetaData(convertDataToJson(it))
-                    }
-                }
+            val jsonData = companyAssociatedData.map { convertDataToJson(it) }
             return when (exportFileType) {
                 ExportFileType.CSV -> buildCsvStreamFromCompanyAssociatedData(jsonData, dataType, false)
                 ExportFileType.EXCEL -> buildCsvStreamFromCompanyAssociatedData(jsonData, dataType, true)
@@ -99,7 +92,7 @@ class DataExportService
                 )
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(companyAssociatedData)
-            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields)
+            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isLegobrickFramework)
 
             val outputStream = ByteArrayOutputStream()
             val csvWriter = CsvMapper().writerFor(List::class.java).with(csvSchema)
@@ -172,33 +165,33 @@ class DataExportService
         private fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
             allHeaderFields: Collection<String>,
+            isLegobrickFramework: Boolean,
         ): CsvSchema {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
 
             val csvSchemaBuilder = CsvSchema.builder()
-            allHeaderFields.forEach {
-                if (usedHeaderFields.contains(it)) {
-                    csvSchemaBuilder.addColumn(it)
+
+            if (isLegobrickFramework) {
+                usedHeaderFields
+                    .filter {
+                        !it.startsWith("data" + JsonUtils.getPathSeparator())
+                    }.forEach { csvSchemaBuilder.addColumn(it) }
+
+                allHeaderFields.forEach { allHeaderFieldsEntry ->
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + allHeaderFieldsEntry)
+                        }.forEach {
+                            csvSchemaBuilder.addColumn(it)
+                        }
+                }
+            } else {
+                allHeaderFields.forEach {
+                    if (usedHeaderFields.contains(it)) {
+                        csvSchemaBuilder.addColumn(it)
+                    }
                 }
             }
             return csvSchemaBuilder.build().withHeader()
-        }
-
-        /**
-         * Filters out all fields except the 'data' field from a JsonNode
-         * @param node The JsonNode to filter
-         * @return A new JsonNode containing only the 'data' field
-         */
-        private fun filterOutMetaData(node: JsonNode): JsonNode {
-            val objectNode = objectMapper.createObjectNode()
-
-            val dataNode = node.get("data")
-            if (dataNode != null) {
-                objectNode.set<JsonNode>("data", dataNode)
-            } else {
-                logger.warn("No 'data' field found in the JSON node during metadata filtering")
-            }
-            println("################## After filtering: $objectNode")
-            return objectNode
         }
     }

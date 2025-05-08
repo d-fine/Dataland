@@ -58,10 +58,10 @@ class EsgDatenkatalogDataController(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
-        includeMetaData: Boolean,
+        includeDataMetaInformation: Boolean,
     ): ResponseEntity<InputStreamResource> =
         super
-            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, includeMetaData)
+            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, includeDataMetaInformation)
 
     @Operation(operationId = "getAllCompanyEsgDatenkatalogData")
     override fun getFrameworkDatasetsForCompany(

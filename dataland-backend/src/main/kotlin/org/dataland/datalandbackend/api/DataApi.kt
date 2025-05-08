@@ -103,7 +103,7 @@ interface DataApi<T> {
      * @param reportingPeriods specifies the reporting periods
      * @param companyIds specifies the companies
      * @param exportFileType specifies the file type to export to
-     * @param includeMetaData specifies whether to include metadata in the export
+     * @param includeDataMetaInformation specifies whether to include metadata in the export
      * @return JSON of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
@@ -126,7 +126,7 @@ interface DataApi<T> {
         @RequestParam("reportingPeriods") reportingPeriods: List<String>,
         @RequestParam("companyIds") companyIds: List<String>,
         @RequestParam("fileFormat") exportFileType: ExportFileType,
-        @RequestParam(value = "includeMetaData", defaultValue = "false") includeMetaData: Boolean = false,
+        @RequestParam(value = "includeDataMetaInformation", defaultValue = "false") includeDataMetaInformation: Boolean = false,
     ): ResponseEntity<InputStreamResource>
 
     /**

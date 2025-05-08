@@ -2,6 +2,7 @@ package org.dataland.e2etests.utils
 
 import org.awaitility.Awaitility
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -84,7 +85,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column does NOT exist
-        ExportTestUtils.assertColumnExists(
+        ExportTestUtils.assertColumnPatternExists(
             headers,
             getNullFieldName(),
             shouldExist = false,
@@ -106,7 +107,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column DOES exist
-        ExportTestUtils.assertColumnExists(
+        ExportTestUtils.assertColumnPatternExists(
             headers,
             getNullFieldName(),
             shouldExist = true,
@@ -147,15 +148,15 @@ abstract class BaseExportTest<T> {
         validateMultiCompanyExport(excelAsCsvFile, headers, "Excel")
     }
 
-    protected fun testCsvExportWithMetadataIncludesMetaInformationFields() {
-        // Export data with includeMetaData=true
+    protected fun testCsvExportIncludeDataMetaInformationFlag(fieldName: String) {
+        // Export data with includeDataMetaInformation=true
         val exportWithMetadata =
             exportDataAsCsvWithMetadata(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
             )
 
-        // Export data with default includeMetaData=false
+        // Export data with default includeDataMetaInformation=false
         val exportWithoutMetadata =
             exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
@@ -176,37 +177,34 @@ abstract class BaseExportTest<T> {
                 ExportTestUtils.getReadableCsvFile(exportWithoutMetadata),
             )
 
-        val metadataColumn = "companyId"
-        val dataColumn = "dataDate"
-
-        // Verify the presence/absence of metadata fields
-        ExportTestUtils.assertColumnExists(
+        // 1. Verify that the field with a value appears in both exports
+        val valuePattern = "$fieldName.value"
+        ExportTestUtils.assertColumnPatternExists(
             headers = headersWithMetadata,
-            columnName = metadataColumn,
+            columnNamePart = valuePattern,
             shouldExist = true,
-            contextMessage = "CSV export with includeMetaData=true",
+            contextMessage = "CSV export with includeDataMetaInformation=true should include value of test field",
+        )
+        ExportTestUtils.assertColumnPatternExists(
+            headers = headersWithoutMetadata,
+            columnNamePart = valuePattern,
+            shouldExist = true,
+            contextMessage = "CSV export with includeDataMetaInformation=false should include value of test field",
         )
 
-        ExportTestUtils.assertColumnExists(
+        // 2. Verify that for the export without DataMetaInformation NO dataSource headers exist for this field
+        val dataSourcePattern = "$fieldName.dataSource"
+        ExportTestUtils.assertColumnPatternExists(
+            headers = headersWithMetadata,
+            columnNamePart = dataSourcePattern,
+            shouldExist = true,
+            contextMessage = "CSV export with includeDataMetaInformation=true should include dataSource of test field",
+        )
+        ExportTestUtils.assertColumnPatternExists(
             headers = headersWithoutMetadata,
-            columnName = metadataColumn,
+            columnNamePart = dataSourcePattern,
             shouldExist = false,
-            contextMessage = "CSV export with includeMetaData=false",
-        )
-
-        // Verify that regular data fields are present in both exports
-        ExportTestUtils.assertColumnExists(
-            headers = headersWithMetadata,
-            columnName = dataColumn,
-            shouldExist = true,
-            contextMessage = "CSV export with includeMetaData=true",
-        )
-
-        ExportTestUtils.assertColumnExists(
-            headers = headersWithoutMetadata,
-            columnName = dataColumn,
-            shouldExist = true,
-            contextMessage = "CSV export with includeMetaData=false",
+            contextMessage = "CSV export with includeDataMetaInformation=false should NOT include dataSource of test field",
         )
     }
 
@@ -218,7 +216,7 @@ abstract class BaseExportTest<T> {
     ) {
         // Verify required columns exist
         val nullFieldColumnIndex =
-            ExportTestUtils.assertColumnExists(
+            ExportTestUtils.assertColumnPatternExists(
                 headers,
                 getNullFieldName(),
                 shouldExist = true,
@@ -226,7 +224,7 @@ abstract class BaseExportTest<T> {
             )
 
         val companyIdColumnIndex =
-            ExportTestUtils.assertColumnExists(
+            ExportTestUtils.assertColumnPatternExists(
                 headers,
                 "companyId",
                 shouldExist = true,
@@ -254,13 +252,10 @@ abstract class BaseExportTest<T> {
             .await()
             .atMost(10, TimeUnit.SECONDS)
             .pollInterval(500, TimeUnit.MILLISECONDS)
-            .until {
-                try {
-                    val dataForNullFieldCompany = retrieveData(companyWithNullFieldId)
-                    val dataForNonNullFieldCompany = retrieveData(companyWithNonNullFieldId)
-                    true
-                } catch (exception: Exception) {
-                    false
+            .untilAsserted {
+                assertDoesNotThrow {
+                    retrieveData(companyWithNullFieldId)
+                    retrieveData(companyWithNonNullFieldId)
                 }
             }
     }

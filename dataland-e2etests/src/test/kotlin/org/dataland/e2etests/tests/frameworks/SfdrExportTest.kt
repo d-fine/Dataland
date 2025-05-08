@@ -81,7 +81,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
-                includeMetaData = true,
+                includeDataMetaInformation = true,
             )
 
     override fun exportDataAsExcel(
@@ -123,7 +123,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     }
 
     @Test
-    fun `test CSV export with metadata includes metaInformation fields`() {
-        testCsvExportWithMetadataIncludesMetaInformationFields()
+    fun `test CSV export with and without dataMetaInformation`() {
+        testCsvExportIncludeDataMetaInformationFlag("environmental.scope2GhgEmissionsInTonnes")
     }
 }
