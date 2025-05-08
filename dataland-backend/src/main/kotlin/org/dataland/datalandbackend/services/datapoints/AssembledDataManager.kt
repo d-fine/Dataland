@@ -422,7 +422,7 @@ class AssembledDataManager
             val dataPointIds =
                 dataPointDimensions.entries.associate { (dataDimension, dataPointDimensionList) ->
                     dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
-                }
+                }.filterNot { it.value.isEmpty() }
 
             return assembleDatasetsFromDataIds(dataPointIds, correlationId)
         }
