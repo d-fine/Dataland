@@ -11,46 +11,49 @@ creation URL (or simply copy this md file into the description)
 
 - See 'Problematic Updates' in the wiki (evaluate if issues persist or if newer versions are available that fix them)
 
-- [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
-consult the internal Dataland Wiki.
+- [ ] Take a look at the dependency dashboard and see which updates are to be applied. Never press the "Create all rate-limited PRs at once" box. For a detailed description of the process,
+  consult the internal Dataland Wiki.
 
 - [ ] Update the wiki page (should display current issues why specific updates were not done)
 
-### Dataland EuroDaT client
+### Dataland EuroDaT client (The EuroDaT section should be skipped)
 
 - [ ] Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
   then update the version number used in docker-compose.
-- [ ] If the version was changed: Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with 
-  the currently used version of the client. 
+- [ ] If the version was changed: Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with
+  the currently used version of the client.
   1. Edit the docker compose file by adding a `ports` section with the entry `"8080:8080"` to the "eurodat-client" and start it
-  2. Open a shell and navigate to the `dataland-eurodat-client` subproject 
+  2. Open a shell and navigate to the `dataland-eurodat-client` subproject
   3. Execute the following snippet of code (requires python): `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
   4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
 
 ## Server maintenance
 
-Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
+Note: Before applying any update to any server make sure that one backup exists (One backup for the following dev servers, letsencrypt, clone and test together is enough). In case of prod, create a fresh backup just
 before applying any changes and align with the team when to apply them.
 
+For creating a backup please refer to: [How to create a backup on OTC](https://dfinegmbh.sharepoint.com/:v:/r/sites/TMDataland/Freigegebene%20Dokumente/General/OTC%20Documentation/BackupAndRestore.mkv?csf=1&web=1&e=blez3)
+
 On all servers to the following:
-- Execute `sudo apt-get update && sudo apt-get upgrade` to update the server (if updates require a reboot it works better to start it manually with `sudo reboot` than from the opened message window)
+- Connect to the server, e.g. via `ssh ubuntu@dev1.dataland.com` in terminal or git bash.
+- Execute `sudo apt-get update && sudo apt-get upgrade` to update the server (if updates require a reboot it works better to start it manually with `sudo reboot` than from the opened message window. If a reboot is needed can be seem by a server message in the corresponding bash or terminal window.)
 - Execute `sudo docker system prune -a` to clean up unused docker components and liberate disk space
-- Check for new ubuntu releases and install them if available with `sudo do-release-upgrade` (see internal documentation for details, you might need to run `sudo apt update && sudo apt upgrade` first if packages are missing)  
+- Check for new ubuntu releases. If there are new releases check with your team. If approved install them with `sudo do-release-upgrade` (see internal documentation for details, you might need to run `sudo apt update && sudo apt upgrade` first if packages are missing)
 
-Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
-fine, proceed with other servers.
+Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards and check if everything is working as intended.
+Then update the remaining servers without deploying to them, since one deployment is enough for checking. If reboot is necessary, reboot after each update except for prod.
+**Rebooting production should occur right before next roll out.**
 
+List of all servers:
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
 - [ ] dev3.dataland.com
 - [ ] test.dataland.com
+- [ ] clone.dataland.com
 - [ ] letsencrypt.dataland.com
-- [ ] dataland.com (align beforehand)
+- [ ] dataland.com
 
-If the updates require a reboot (for e.g. a kernel update), you can restart the machine with `sudo reboot`.
-However, for dataland.com, you may want to avoid any interruption and schedule the reboot during the night with `sudo shutdown -r 02:00`.
-
-## Cloud maintenance
+## Cloud maintenance (OTC)
 
 Check the cloud provider's dashboard for manually created backups and images. Delete them if they are not needed anymore.
 
@@ -59,7 +62,8 @@ Check the cloud provider's dashboard for manually created backups and images. De
 
 ## ssh-keys maintenance
 
-- [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the 
+- [ ] See [ssh-keys in internalDataland](https://github.com/d-fine/DatalandInternal/tree/main/ssh-keys)
+- [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the
   internal wiki.
 
 ## Check RabbitMQ dead letter queue and disk space
@@ -67,17 +71,19 @@ Check the cloud provider's dashboard for manually created backups and images. De
 - [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
   disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
-- [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
+- [ ] Only for production connect to RabbitMQ, via `ssh -L 6789:localhost:6789 ubuntu@dataland.com` (**Make sure your stack is not running**).
+- [ ] For the login info, see [RabbitMQ Wiki](https://github.com/d-fine/DatalandInternal/wiki/RabbitMQ)
+- [ ] No new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
-  accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
+  accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues and Streams &rarr;
   deadLetterQueue &rarr; Get message.
 
 ## Check the alerts and critical alerts for prod in the grafana dashboard
 
-On the prod environment the grafana alerts should be investigated. 
-Go to the slack-alerts-channels and click on the link to the dashboard in one of the alerts (for instructions how to connect, consult the 
-internal wiki). Check the critical alerts and alerts on prod in the dashboard since the last manual maintenance 
+On the prod environment the grafana alerts should be investigated.
+Go to the slack-alerts-channels and click on the link to the dashboard in one of the alerts (for instructions how to connect, consult the
+internal wiki). Check the critical alerts and alerts on prod in the dashboard since the last manual maintenance
 Time-boxed investigation (2h-3h) of errors:
 - [ ] Are there any unresolved critical alerts for unhealthy containers? (That should not be the case and needs to be resolved immediately)
 - [ ] Are there any unresolved critical alerts for internal server errors? (Should resolve automatically after 6h when the problem doesn't persist)
@@ -88,14 +94,14 @@ Time-boxed investigation (2h-3h) of errors:
 Discuss findings with the team.
 
 ## Check that the main branch has no sonar issues
-- [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
+- [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar
   findings, either fix them directly or bring them up for discussion with the team.
 
 ## Conclusion
 
 - [ ] The new version is deployed to a dev server using this branch
-    - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
-    - [ ] It's verified that everything seems to be working fine by manually using the website
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
+  - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template and the internal wiki page have been updated to reflect the latest state of tasks required and known issues with upgrades
 
 # Review (to be completed by the reviewer)
@@ -118,5 +124,5 @@ Discuss findings with the team.
   - [ ] Verify that the CD run is green
   - [ ] Verify that everything seems to be working fine by manually using the website
 - [ ] Merge using Squash Commit. The Merge Commit Message needs to contain "Manual Maintenance"
-- [ ] After merge check SonarQube state of main branch at https://sonarcloud.io/summary/new_code?id=d-fine_Dataland. 
+- [ ] After merge check SonarQube state of main branch at https://sonarcloud.io/summary/new_code?id=d-fine_Dataland.
   The full scan might reveal new issues (e.g. deprecation) on old code which is generally not detected on the branch.
