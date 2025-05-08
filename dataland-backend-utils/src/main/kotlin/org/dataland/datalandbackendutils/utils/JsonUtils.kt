@@ -27,7 +27,8 @@ object JsonUtils {
 
         when {
             node.isValueNode && !node.isNull -> {
-                result[currentPath] = if (node.isTextual) node.textValue() else node.toString()
+                val nodeString = if (node.isTextual) node.textValue() else node.toString()
+                if (nodeString.isNotEmpty()) result[currentPath] = nodeString
             }
 
             node.isObject -> {

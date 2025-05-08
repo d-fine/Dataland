@@ -151,10 +151,7 @@ class DataExportService
          */
         private fun <T> convertDataToJson(companyAssociatedData: CompanyAssociatedData<T>): JsonNode {
             val companyAssociatedDataJson = objectMapper.writeValueAsString(companyAssociatedData)
-            val jsonNode = objectMapper.readTree(companyAssociatedDataJson)
-            println("Before filtering: $jsonNode")
-            return jsonNode
-            //            return objectMapper.readTree(companyAssociatedDataJson)
+            return objectMapper.readTree(companyAssociatedDataJson)
         }
 
         /**
