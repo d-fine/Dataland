@@ -47,7 +47,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: 'cell',
         label: 'Fiscal Year End',
-        explanation: 'The date at which the fiscal year ends.',
+        explanation: 'The date the fiscal year ends.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -95,7 +95,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: 'cell',
         label: 'Assurance',
-        explanation: 'Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)',
+        explanation: 'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),

@@ -4502,9 +4502,6 @@
           },
           "humanRightsDueDiligence": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           }
         }
       },

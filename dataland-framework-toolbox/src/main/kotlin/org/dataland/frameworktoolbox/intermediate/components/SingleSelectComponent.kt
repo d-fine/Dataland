@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -141,5 +142,13 @@ open class SingleSelectComponent(
             "$dataPointValueAccessor ? " +
             "getOriginalNameFromTechnicalName($dataPointValueAccessor, mappings) : \"\"\n" +
             ")\n"
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "Enum",
+        )
     }
 }
