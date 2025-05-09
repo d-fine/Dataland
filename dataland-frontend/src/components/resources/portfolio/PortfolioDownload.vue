@@ -40,13 +40,12 @@
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
       <FormKit
-        v-model="valuesOnly"
-        data-test="valuesCheckbox"
-        class="valuesCheckbox"
+        v-model="includeMetaData"
+        data-test="includeMetaData"
         type="checkbox"
-        name="valuesOnlyOption"
-        label="Values only"
-        help="Download only values without additional metadata."
+        name="includeMetaData"
+        label="Include Meta Data"
+        help="Download values with additional Meta data."
         :outer-class="{
           'yes-no-radio': true,
         }"
@@ -73,7 +72,9 @@
       />
     </template>
     <template v-else>
-      <DownloadProgressSpinner :percent-completed="downloadProgress" :white-spinner="true" />
+      <div class="my-4">
+        <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true" />
+      </div>
     </template>
   </div>
 </template>
@@ -97,10 +98,11 @@ import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const portfolioId = ref<string | undefined>(undefined);
+const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const valuesOnly = ref(true);
+const includeMetaData = ref(false);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
@@ -122,7 +124,7 @@ const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
   { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
 ];
-const downloadProgress = ref(0);
+const downloadProgress = ref<number | undefined>(undefined);
 const isDownloading = ref(false);
 
 onMounted(() => {
@@ -130,6 +132,7 @@ onMounted(() => {
   if (data?.portfolio) {
     const portfolio = data.portfolio as EnrichedPortfolio;
     portfolioId.value = portfolio.portfolioId;
+    portfolioName.value = portfolio.portfolioName;
     portfolioEntries.value = portfolio.entries;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   }
@@ -165,6 +168,7 @@ function getSelectedReportingPeriods(): string[] {
  * Handle the clickEvent of the Download Button
  */
 async function onDownloadButtonClick(): Promise<void> {
+  portfolioErrors.value = '';
   checkIfShowErrors();
   if (showReportingPeriodsError.value || showFileTypeError.value || showFrameworksError.value) {
     return;
@@ -177,7 +181,9 @@ async function onDownloadButtonClick(): Promise<void> {
     await downloadPortfolio();
   } catch (error) {
     console.error('Download error:', error);
-    portfolioErrors.value = 'Unexpected error during download.';
+    portfolioErrors.value = 'No data available';
+    isDownloading.value = false;
+    downloadProgress.value = undefined;
   }
 }
 
@@ -212,7 +218,8 @@ async function downloadPortfolio(): Promise<void> {
   const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
     getSelectedReportingPeriods(),
     getCompanyIds(),
-    selectedFileType.value
+    selectedFileType.value,
+    includeMetaData.value
   );
 
   const dataContent =
@@ -231,6 +238,7 @@ async function downloadPortfolio(): Promise<void> {
     xhr.onprogress = (event: ProgressEvent): void => {
       if (event.lengthComputable) {
         downloadProgress.value = Math.round((event.loaded / event.total) * 100);
+        console.log('Download progress:', downloadProgress.value);
       }
     };
 
@@ -241,21 +249,34 @@ async function downloadPortfolio(): Promise<void> {
         const a = document.createElement('a');
         a.href = blobUrl;
         const extension = selectedFileType.value === ExportFileType.Csv ? '.csv' : '.csv';
-        a.download = 'portfolio-download' + extension;
+        a.download = `Portfolio-${portfolioName.value}-${selectedFramework.value}${extension}`;
         a.click();
         URL.revokeObjectURL(blobUrl);
-        downloadProgress.value = null;
+        downloadProgress.value = undefined;
       } else {
         portfolioErrors.value = `Download failed: ${xhr.status}`;
       }
       isDownloading.value = false;
     };
+
+    xhr.onerror = (): void => {
+      portfolioErrors.value = 'Network error during download.';
+      isDownloading.value = false;
+      downloadProgress.value = undefined;
+    };
+
+    xhr.onabort = (): void => {
+      portfolioErrors.value = 'Download aborted.';
+      isDownloading.value = false;
+      downloadProgress.value = undefined;
+    };
+
     xhr.send();
   } catch (error) {
     console.error(error);
-    portfolioErrors.value = 'Unexpected error during download.';
+    portfolioErrors.value = 'No data available.';
     isDownloading.value = false;
-    downloadProgress.value = null;
+    downloadProgress.value = undefined;
   }
 }
 </script>

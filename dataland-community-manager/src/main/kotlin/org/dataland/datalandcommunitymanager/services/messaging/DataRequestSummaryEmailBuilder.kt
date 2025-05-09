@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -72,13 +73,13 @@ class DataRequestSummaryEmailBuilder
             eventType: NotificationEventType,
         ): List<DataRequestSummaryEmailContent.FrameworkData> {
             val filteredEventTypeEvents = events.filter { it.notificationEventType == eventType }
-            val groupedEvents = filteredEventTypeEvents.groupBy { Pair(it.framework.toString(), it.reportingPeriod) }
+            val groupedEvents = filteredEventTypeEvents.groupBy { Pair(it.framework, it.reportingPeriod) }
 
             return groupedEvents.map { (key, group) ->
-                val (dataTypeLabel, reportingPeriod) = key
+                val (dataType, reportingPeriod) = key
                 val companies = group.map { companyInfoService.getValidCompanyNameOrId(it.companyId.toString()) }.distinct()
                 DataRequestSummaryEmailContent.FrameworkData(
-                    dataTypeLabel = dataTypeLabel,
+                    dataTypeLabel = readableFrameworkNameMapping[dataType] ?: dataType.toString(),
                     reportingPeriod = reportingPeriod,
                     companies = companies,
                 )

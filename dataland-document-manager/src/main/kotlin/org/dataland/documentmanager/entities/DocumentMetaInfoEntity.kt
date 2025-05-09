@@ -61,14 +61,19 @@ data class DocumentMetaInfoEntity(
      * Check whether user has the right to view this document meta information.
      */
     fun isViewableByUser(): Boolean {
-        val viewingUser = DatalandAuthentication.fromContext()
+        val viewingUser =
+            try {
+                DatalandAuthentication.fromContext()
+            } catch (_: IllegalArgumentException) {
+                null
+            }
         return (
             qaStatus == QaStatus.Accepted ||
-                viewingUser.userId == uploaderId ||
-                viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
-                viewingUser.roles.contains(
+                viewingUser?.userId == uploaderId ||
+                viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
+                viewingUser?.roles?.contains(
                     DatalandRealmRole.ROLE_REVIEWER,
-                )
+                ) ?: false
         )
     }
 }

@@ -56,7 +56,6 @@ const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
-  isUserAllowedToView: boolean | undefined;
   isUserAllowedToUpload: boolean | undefined;
 }>();
 
@@ -92,16 +91,11 @@ const showProvideDataButton = computed(() => {
 });
 
 const showViewDataButton = computed(() => {
-  return !!hasAccessibleViewPage.value && props.isUserAllowedToView;
+  return !!hasAccessibleViewPage.value;
 });
 
-const authenticated = inject<{ value: boolean }>('authenticated');
 const hasAccessibleViewPage = computed(() => {
-  return (
-    authenticated?.value &&
-    FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
-    props.numberOfProvidedReportingPeriods
-  );
+  return FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) && props.numberOfProvidedReportingPeriods;
 });
 
 let provideDataButtonHovered: boolean = false;
@@ -111,7 +105,7 @@ let provideDataButtonHovered: boolean = false;
  * the view page is visited
  */
 function onClickPanel(): void {
-  if (!provideDataButtonHovered && hasAccessibleViewPage.value && props.isUserAllowedToView) {
+  if (!provideDataButtonHovered && hasAccessibleViewPage.value) {
     void router.push(`/companies/${props.companyId}/frameworks/${props.framework}`);
   }
 }
