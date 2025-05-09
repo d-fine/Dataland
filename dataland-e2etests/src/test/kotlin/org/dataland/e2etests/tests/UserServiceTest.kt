@@ -24,12 +24,6 @@ class UserServiceTest {
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
             companyIds = companyIds,
-            frameworks =
-                setOf(
-                    PortfolioUpload.Frameworks.sfdr,
-                    PortfolioUpload.Frameworks.additionalMinusCompanyMinusInformation,
-                    PortfolioUpload.Frameworks.lksg,
-                ),
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -46,17 +40,17 @@ class UserServiceTest {
         }
     }
 
-    private fun getLatestReportingPeriod(
+    private fun getAvailableReportingPeriods(
         companyId: String,
         framework: DataTypeEnum,
         enrichedPortfolio: EnrichedPortfolio,
     ): String? {
         val matchingEntries =
             enrichedPortfolio.propertyEntries.filter {
-                it.companyId == companyId && it.framework == framework.toString()
+                it.companyId == companyId
             }
         assertEquals(1, matchingEntries.size)
-        return matchingEntries.first().latestReportingPeriod
+        return matchingEntries.first().availableReportingPeriods[framework.toString()]
     }
 
     @Test
@@ -91,36 +85,38 @@ class UserServiceTest {
                 )
 
             assertEquals(portfolioUpload.portfolioName, enrichedPortfolio.portfolioName)
-            assertEquals(9, enrichedPortfolio.propertyEntries.size) // 3 companies times 3 frameworks
+            assertEquals(3, enrichedPortfolio.propertyEntries.size) // 3 companies with 1 entry each
 
             val relevantPortfolioFrameworks = listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg)
             storedCompanies.map { it.companyId }.forEach {
                 assertEquals(
                     null,
-                    getLatestReportingPeriod(it, DataTypeEnum.additionalMinusCompanyMinusInformation, enrichedPortfolio),
+                    getAvailableReportingPeriods(it, DataTypeEnum.additionalMinusCompanyMinusInformation, enrichedPortfolio),
                 )
             }
             relevantPortfolioFrameworks.forEach {
                 assertEquals(
                     null,
-                    getLatestReportingPeriod(storedCompanies[2].companyId, it, enrichedPortfolio),
+                    getAvailableReportingPeriods(storedCompanies[2].companyId, it, enrichedPortfolio),
                 )
             }
             assertEquals(
-                "2024",
-                getLatestReportingPeriod(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
+                "2024, 2023",
+                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
             )
             assertEquals(
                 "2023",
-                getLatestReportingPeriod(storedCompanies[1].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
+                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
             )
             assertEquals(
                 null,
-                getLatestReportingPeriod(storedCompanies[0].companyId, DataTypeEnum.lksg, enrichedPortfolio),
+                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.lksg, enrichedPortfolio),
             )
+            // LkSG is not a major framework, so it does not appear in the enrichedPortfolio although the company has
+            // data for it.
             assertEquals(
-                "2022",
-                getLatestReportingPeriod(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
+                null,
+                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
             )
         }
     }

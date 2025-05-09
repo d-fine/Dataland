@@ -18,21 +18,55 @@ describe('Check the portfolio details view', function (): void {
       keycloak: minimalKeycloakMock({}),
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
+      const expectedFirstRow = [
+        'Company Name',
+        'Country',
+        'Sector',
+        'SFDR',
+        'EU Taxonomy Financials',
+        'EU Taxonomy Non-Financials',
+        'EU Taxonomy Nuclear and Gas',
+      ];
+      const expectedSecondRow = [
+        'Apricot Inc.',
+        'Cayman Islands',
+        'ROI',
+        2024,
+        'No data available',
+        'No data available',
+        'No data available',
+      ];
+      const expectedThirdRow = [
+        'Banana LLC',
+        'Bouvet Island',
+        'channels',
+        'No data available',
+        2023,
+        'No data available',
+        'No data available',
+      ];
+      const expectedFourthRow = [
+        'Cherry Co',
+        'Germany',
+        'models',
+        2024,
+        'No data available',
+        'No data available',
+        2023,
+      ];
+      const checkHeadersRow = [
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+      ];
+      const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
       cy.wait('@downloadComplete').then(() => {
-        assertTable('table', [
-          ['Company Name', 'Country', 'Sector', 'Last Reporting Period'],
-          ['Apricot Inc.', 'Cayman Islands', 'ROI', 2024],
-          ['Banana LLC', 'Bouvet Island', 'channels', 'No data available'],
-          ['Cherry Co', 'Germany', 'models', 2024],
-        ]);
-        cy.get('[data-test="framework-dropdown"]').click();
-        cy.get('[data-pc-section="item"]:contains(SFDR)').click();
-        assertTable('table', [
-          [checkHeader, checkHeader, checkHeader, checkHeader],
-          ['Apricot Inc.', 'Cayman Islands', 'ROI', 'No data available'],
-          ['Banana LLC', 'Bouvet Island', 'channels', 'No data available'],
-          ['Cherry Co', 'Germany', 'models', 'No data available'],
-        ]);
+        assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
+        assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
       });
     });
   });
@@ -62,9 +96,17 @@ describe('Check the portfolio details view', function (): void {
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
         checkFilter('first-child', 'companyNameFilterValue', 'b', 2);
-        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'Germany', 2);
-        checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 3);
-        checkFilter('nth-child(4)', 'latestReportingPeriodeFilterValue', '2024', 3);
+        checkFilter('nth-child(2)', 'countryFilterValue', 'Germany', 2);
+        checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 2);
+        checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilterValue', '2024', 3);
+        checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilterValue', '2023', 2);
+        checkFilter(
+          'nth-child(6)',
+          'eutaxonomyNonFinancialsAvailableReportingPeriodsFilterValue',
+          'No data available',
+          4
+        );
+        checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilterValue', '2023', 2);
       });
     });
   });
@@ -113,10 +155,10 @@ function checkFilter(columnSelector: string, inputSelector: string, needle: stri
   cy.get(rowsSelector).should('have.length', 4);
   cy.get(filterButtonSelector).click();
 
-  if (inputSelector == 'latestReportingPeriodeFilterValue') {
-    cy.get(`[data-test="${inputSelector}"]`).first().click();
-  } else {
+  if (inputSelector == 'companyNameFilterValue') {
     cy.get(`[data-test="${inputSelector}"]`).type(needle);
+  } else {
+    cy.get(`[data-test="${inputSelector}"]`).first().click();
   }
   cy.get(filterButtonSelector).click();
   cy.get(rowsSelector).should('have.length', matches);
@@ -132,7 +174,7 @@ function checkFilter(columnSelector: string, inputSelector: string, needle: stri
  *  - A function: The function is evaluated within the table cell.
  *  - null: No check is performed on that cell
  */
-function assertTable(tableSelector: string, expected: (string | number | null | (() => void))[][]): void {
+function assertTable(tableSelector: string, expected: (string | number | undefined | (() => void))[][]): void {
   cy.get(tableSelector + ' tr').each((row, rowIndex) => {
     cy.wrap(row).within(() => {
       cy.get('th, td').each((cell, cellIndex) => {

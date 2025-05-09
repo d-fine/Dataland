@@ -1,6 +1,5 @@
 package org.dataland.datalanduserservice.service
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
@@ -176,7 +175,6 @@ class PortfolioServiceTest {
         portfolioName: String,
         userId: String,
         companyIds: MutableSet<String>? = null,
-        dataTypes: Set<DataTypeEnum>? = null,
     ) = BasePortfolio(
         portfolioId = portfolioId ?: UUID.randomUUID().toString(),
         portfolioName = portfolioName,
@@ -184,6 +182,5 @@ class PortfolioServiceTest {
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
-        frameworks = dataTypes ?: setOf(DataTypeEnum.sfdr),
     )
 }

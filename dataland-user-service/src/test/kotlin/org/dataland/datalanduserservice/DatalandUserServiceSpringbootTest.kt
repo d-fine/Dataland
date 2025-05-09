@@ -2,7 +2,6 @@ package org.dataland.datalanduserservice
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -67,14 +66,12 @@ class DatalandUserServiceSpringbootTest
             PortfolioUpload(
                 portfolioName = "Test Portfolio",
                 companyIds = setOf(validCompanyId1, validCompanyId2),
-                frameworks = setOf(DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.lksg),
             )
 
         private val dummyPortfolioUpload2 =
             PortfolioUpload(
                 portfolioName = "Second Test Portfolio",
                 companyIds = setOf(validCompanyId1),
-                frameworks = setOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials, DataTypeEnum.sfdr),
             )
 
         @BeforeEach
@@ -133,7 +130,6 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(originalPortfolioResponse.creationTimestamp, portfolioResponse.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < portfolioResponse.lastUpdateTimestamp)
                 assertEquals(dummyPortfolioUpload2.companyIds, portfolioResponse.companyIds)
-                assertEquals(dummyPortfolioUpload2.frameworks, portfolioResponse.frameworks)
             }
 
             @Test

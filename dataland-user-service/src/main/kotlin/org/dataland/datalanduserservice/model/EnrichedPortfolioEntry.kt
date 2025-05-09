@@ -15,12 +15,10 @@ data class EnrichedPortfolioEntry(
     val sector: String?,
     @field:JsonProperty(required = true)
     val countryCode: String,
-    @field:JsonProperty(required = false)
-    val framework: String?,
     @field:JsonProperty(required = true)
     val companyCockpitRef: String,
     @field:JsonProperty(required = false)
-    val frameworkDataRef: String?,
+    val frameworkHyphenatedNamesToDataRef: Map<String, String?>,
     @field:JsonProperty(required = false)
-    val latestReportingPeriod: String?,
+    val availableReportingPeriods: Map<String, String?>,
 )
