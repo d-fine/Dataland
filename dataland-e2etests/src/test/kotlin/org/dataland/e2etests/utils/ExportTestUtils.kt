@@ -86,9 +86,9 @@ object ExportTestUtils {
     /**
      * Read CSV data into a map by company ID
      */
-    fun readCsvDataByCompanyId(
+    fun readCsvDataByCompanyLei(
         file: File,
-        companyIdColumnIndex: Int,
+        companyLeiColumnIndex: Int,
         targetColumnIndex: Int,
     ): Map<String, String> {
         val reader = BufferedReader(FileReader(file))
@@ -100,10 +100,10 @@ object ExportTestUtils {
 
         while (line != null) {
             val values = line.split(",")
-            if (values.size > maxOf(companyIdColumnIndex, targetColumnIndex)) {
-                val companyId = values[companyIdColumnIndex].trim().replace("\"", "")
+            if (values.size > maxOf(companyLeiColumnIndex, targetColumnIndex)) {
+                val companyLei = values[companyLeiColumnIndex].trim().replace("\"", "")
                 val fieldValue = values[targetColumnIndex].trim().replace("\"", "")
-                result[companyId] = fieldValue
+                result[companyLei] = fieldValue
             }
             line = reader.readLine()
         }
@@ -134,27 +134,27 @@ object ExportTestUtils {
      */
     fun validateCompanyData(
         companyData: Map<String, String>,
-        companyWithNullFieldId: String,
-        companyWithNonNullFieldId: String,
+        companyWithNullFieldLei: String,
+        companyWithNonNullFieldLei: String,
         exportType: String,
     ) {
         // Verify company with null field has empty value
         Assertions.assertTrue(
-            companyData.containsKey(companyWithNullFieldId),
+            companyData.containsKey(companyWithNullFieldLei),
             "$exportType export should contain data for company with null field",
         )
         Assertions.assertTrue(
-            companyData[companyWithNullFieldId]?.isEmpty() ?: false,
+            companyData[companyWithNullFieldLei]?.isEmpty() ?: false,
             "Null field value should be empty for company with null field",
         )
 
         // Verify company with non-null field has a value
         Assertions.assertTrue(
-            companyData.containsKey(companyWithNonNullFieldId),
+            companyData.containsKey(companyWithNonNullFieldLei),
             "$exportType export should contain data for company with non-null field",
         )
         Assertions.assertFalse(
-            companyData[companyWithNonNullFieldId]?.isEmpty() ?: true,
+            companyData[companyWithNonNullFieldLei]?.isEmpty() ?: true,
             "Null field should have a value for company with non-null field",
         )
     }

@@ -4,6 +4,7 @@ import org.awaitility.Awaitility
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -12,7 +13,9 @@ abstract class BaseExportTest<T> {
 
     // Common properties that all export tests need
     protected lateinit var companyWithNullFieldId: String
+    protected lateinit var companyWithNullFieldLei: String
     protected lateinit var companyWithNonNullFieldId: String
+    protected lateinit var companyWithNonNullFieldLei: String
     protected val reportingPeriod = "1999"
 
     // Abstract methods that subclasses must implement
@@ -48,11 +51,24 @@ abstract class BaseExportTest<T> {
         reportingPeriods: List<String>,
     ): File
 
+    /**
+     * Upload a company with a random LEI and return a pair of the company ID and the generated LEI.
+     */
+    private fun uploadCompanyWithRandomLei(): Pair<String, String> {
+        val lei = UUID.randomUUID().toString()
+        return Pair(apiAccessor.uploadOneCompanyWithIdentifiers(lei = lei)!!.actualStoredCompany.companyId, lei)
+    }
+
     // Setup method template - subclasses can call this in their @BeforeAll method
     protected fun setupCompaniesAndData() {
         // Create test companies
-        companyWithNullFieldId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        companyWithNonNullFieldId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyWithNullFieldIdAndLei = uploadCompanyWithRandomLei()
+        val companyWithNonNullFieldIdAndLei = uploadCompanyWithRandomLei()
+
+        companyWithNullFieldId = companyWithNullFieldIdAndLei.first
+        companyWithNullFieldLei = companyWithNullFieldIdAndLei.second
+        companyWithNonNullFieldId = companyWithNonNullFieldIdAndLei.first
+        companyWithNonNullFieldLei = companyWithNonNullFieldIdAndLei.second
 
         // Upload test data with null field for first company
         uploadData(
@@ -224,26 +240,26 @@ abstract class BaseExportTest<T> {
                 "Multi-company $exportType export",
             )
 
-        val companyIdColumnIndex =
+        val companyLeiColumnIndex =
             ExportTestUtils.assertColumnPatternExists(
                 headers,
-                "companyId",
+                "companyLei",
                 shouldExist = true,
                 "Multi-company $exportType export",
             )
 
         // Read data and validate values
         val companyData =
-            ExportTestUtils.readCsvDataByCompanyId(
+            ExportTestUtils.readCsvDataByCompanyLei(
                 exportFile,
-                companyIdColumnIndex,
+                companyLeiColumnIndex,
                 nullFieldColumnIndex,
             )
 
         ExportTestUtils.validateCompanyData(
             companyData,
-            companyWithNullFieldId,
-            companyWithNonNullFieldId,
+            companyWithNullFieldLei,
+            companyWithNonNullFieldLei,
             exportType,
         )
     }
