@@ -35,7 +35,6 @@
           <FrameworkSummaryPanel
             v-for="framework of frameworksToDisplay"
             :key="framework"
-            :is-user-allowed-to-view="authenticated === true"
             :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
             :company-id="companyId"
             :framework="framework"
