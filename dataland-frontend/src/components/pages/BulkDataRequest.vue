@@ -79,7 +79,7 @@
                       </div>
                       <p
                         v-if="selectedReportingPeriodsError"
-                        class="text-danger text-xs mt-2"
+                        class="text-danger mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
                         Select at least one reporting period.

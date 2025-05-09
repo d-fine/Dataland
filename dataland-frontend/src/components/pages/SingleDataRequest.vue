@@ -37,7 +37,7 @@
                       </div>
                       <p
                         v-if="selectedReportingPeriodsError"
-                        class="text-danger text-xs mt-2"
+                        class="text-danger mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
                         Select at least one reporting period to submit your request
@@ -94,7 +94,7 @@
                       />
                       <p
                         v-show="displayContactsNotValidError"
-                        class="text-danger text-xs"
+                        class="text-danger"
                         data-test="contectsNotValidErrorMessage"
                       >
                         You have to provide valid contacts to add a message to the request
@@ -140,7 +140,7 @@
                         </div>
                         <p
                           v-show="displayConditionsNotAcceptedError"
-                          class="text-danger text-xs mt-2"
+                          class="text-danger mt-2"
                           data-test="conditionsNotAcceptedErrorMessage"
                         >
                           You have to declare that the recipient(s) consented in order to add a message
