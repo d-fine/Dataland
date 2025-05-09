@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * A utility class for company data associated services
+ * A utility class for company data associated functions
  */
 
-@Service("CompanyManagerUtils")
-class CompanyManagerUtils
+@Service("CompanyUtils")
+class CompanyUtils
     @Autowired
     constructor(
         private val companyRepository: StoredCompanyRepository,

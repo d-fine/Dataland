@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationR
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
-import org.dataland.datalandbackend.utils.CompanyManagerUtils
+import org.dataland.datalandbackend.utils.CompanyUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,7 +22,7 @@ class CompanyIdentifierManager
     constructor(
         private val companyIdentifierRepository: CompanyIdentifierRepository,
         private val companyRepository: StoredCompanyRepository,
-        private val companyManagerUtils: CompanyManagerUtils,
+        private val companyUtils: CompanyUtils,
     ) {
         /**
          * For a collection of company IDs return a map associating each ID with the corresponding BasicCompanyInformation.
@@ -80,8 +80,8 @@ class CompanyIdentifierManager
         private fun getCompanyIdentifierValidationResult(identifier: String): CompanyIdentifierValidationResult =
             if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
                 CompanyIdentifierValidationResult(identifier)
-            } else if (companyManagerUtils.checkCompanyIdExists(identifier)) {
-                buildCompanyIdentifierValidationResult(identifier, companyManagerUtils.getCompanyByIdAndAssertExistence(identifier))
+            } else if (companyUtils.checkCompanyIdExists(identifier)) {
+                buildCompanyIdentifierValidationResult(identifier, companyUtils.getCompanyByIdAndAssertExistence(identifier))
             } else {
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
                     buildCompanyIdentifierValidationResult(identifier, it)

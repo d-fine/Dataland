@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.dataland.datalandbackend.utils.CompanyManagerUtils
+import org.dataland.datalandbackend.utils.CompanyUtils
 import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap
 class CompanyQueryManager
     @Autowired
     constructor(
-        private val companyManagerUtils: CompanyManagerUtils,
+        private val companyUtils: CompanyUtils,
         private val companyRepository: StoredCompanyRepository,
         private val dataMetaInfoRepository: DataMetaInformationRepository,
     ) {
@@ -121,7 +121,7 @@ class CompanyQueryManager
          * @return the StoredCompanyEntity object of the retrieved company
          */
         @Transactional
-        fun getCompanyById(companyId: String): StoredCompanyEntity = companyManagerUtils.getCompanyByIdAndAssertExistence(companyId)
+        fun getCompanyById(companyId: String): StoredCompanyEntity = companyUtils.getCompanyByIdAndAssertExistence(companyId)
 
         /**
          * Method to retrieve information about a specific company that may be returned to the user (API model)
@@ -130,7 +130,7 @@ class CompanyQueryManager
          */
         @Transactional
         fun getCompanyApiModelById(companyId: String): StoredCompany {
-            val searchResult = companyManagerUtils.getCompanyByIdAndAssertExistence(companyId)
+            val searchResult = companyUtils.getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
         }
 
@@ -147,7 +147,7 @@ class CompanyQueryManager
          * @return a boolean signalling if the company is public or not
          */
         @Transactional
-        fun isCompanyPublic(companyId: String): Boolean = companyManagerUtils.getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
+        fun isCompanyPublic(companyId: String): Boolean = companyUtils.getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
 
         /**
          * Get all reporting periods for which at least one active dataset of the specified company and data type exists
@@ -174,7 +174,7 @@ class CompanyQueryManager
          */
         @Transactional
         fun getCompanySubsidiariesByParentId(companyId: String): List<BasicCompanyInformation> {
-            companyManagerUtils.assertCompanyIdExists(companyId)
+            companyUtils.assertCompanyIdExists(companyId)
             return companyRepository.getCompanySubsidiariesByParentId(companyId)
         }
     }
