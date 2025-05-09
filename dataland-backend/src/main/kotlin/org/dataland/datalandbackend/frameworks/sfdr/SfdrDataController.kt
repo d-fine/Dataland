@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
@@ -29,12 +30,14 @@ class SfdrDataController(
     @Autowired var myDataManager: AssembledDataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
+    @Autowired var myCompanyQueryManager: CompanyQueryManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<SfdrData>(
         myDataManager,
         myMetaDataManager,
         myDataExportService,
         myObjectMapper,
+        myCompanyQueryManager,
         SfdrData::class.java,
     ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")

@@ -1,15 +1,19 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.api.COMPANY_SEARCH_STRING_MIN_LENGTH
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.dataland.datalandbackend.utils.CompanyUtils
 import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,15 +23,35 @@ import java.util.concurrent.ConcurrentHashMap
  * Implementation of common read-only queries against company data
  * @param companyRepository  JPA for company data
  */
+@Suppress("TooManyFunctions")
 @Service("CompanyQueryManager")
 class CompanyQueryManager
     @Autowired
     constructor(
-        private val companyUtils: CompanyUtils,
         private val companyRepository: StoredCompanyRepository,
         private val dataMetaInfoRepository: DataMetaInformationRepository,
+        private val companyIdentifierRepository: CompanyIdentifierRepository,
     ) {
         private val highlightedCompanyIdsInMemoryStorage = ConcurrentHashMap<String, String>()
+
+        /**
+         * Method to verify if a company ID represents an actual company on Dataland or not
+         * @param companyId the ID of the to be verified company
+         * @return a boolean signaling if the company exists or not
+         */
+        private fun checkCompanyIdExists(companyId: String): Boolean = companyRepository.existsById(companyId)
+
+        /**
+         * Method to verify that a given company exists in the company store
+         * @param companyId the ID of the company to be verified
+         * @throws ResourceNotFoundApiException if the company does not exist
+         */
+        @Throws(ResourceNotFoundApiException::class)
+        fun assertCompanyIdExists(companyId: String) {
+            if (!checkCompanyIdExists(companyId)) {
+                throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
+            }
+        }
 
         /**
          * Return a chunk of all companies matching the given filter. Iterating over chunkIndex will yield all results, eventually.
@@ -115,13 +139,18 @@ class CompanyQueryManager
             return companiesWithFetchedFields
         }
 
+        private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {
+            assertCompanyIdExists(companyId)
+            return companyRepository.findById(companyId).get()
+        }
+
         /**
          * Method to retrieve information about a specific company as stored in the database (entity class)
          * @param companyId
          * @return the StoredCompanyEntity object of the retrieved company
          */
         @Transactional
-        fun getCompanyById(companyId: String): StoredCompanyEntity = companyUtils.getCompanyByIdAndAssertExistence(companyId)
+        fun getCompanyById(companyId: String): StoredCompanyEntity = getCompanyByIdAndAssertExistence(companyId)
 
         /**
          * Method to retrieve information about a specific company that may be returned to the user (API model)
@@ -130,7 +159,7 @@ class CompanyQueryManager
          */
         @Transactional
         fun getCompanyApiModelById(companyId: String): StoredCompany {
-            val searchResult = companyUtils.getCompanyByIdAndAssertExistence(companyId)
+            val searchResult = getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
         }
 
@@ -147,7 +176,7 @@ class CompanyQueryManager
          * @return a boolean signalling if the company is public or not
          */
         @Transactional
-        fun isCompanyPublic(companyId: String): Boolean = companyUtils.getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
+        fun isCompanyPublic(companyId: String): Boolean = getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
 
         /**
          * Get all reporting periods for which at least one active dataset of the specified company and data type exists
@@ -174,7 +203,82 @@ class CompanyQueryManager
          */
         @Transactional
         fun getCompanySubsidiariesByParentId(companyId: String): List<BasicCompanyInformation> {
-            companyUtils.assertCompanyIdExists(companyId)
+            assertCompanyIdExists(companyId)
             return companyRepository.getCompanySubsidiariesByParentId(companyId)
+        }
+
+        /**
+         * Build a validation result using an identifier and company information
+         * @param identifier the identifier used to obtain the company information
+         * @param storedCompanyEntity the entity containing the company information
+         */
+        private fun buildCompanyIdentifierValidationResult(
+            identifier: String,
+            storedCompanyEntity: StoredCompanyEntity,
+        ): CompanyIdentifierValidationResult =
+            CompanyIdentifierValidationResult(
+                identifier = identifier,
+                companyId = storedCompanyEntity.companyId,
+                companyName = storedCompanyEntity.companyName,
+                headquarters = storedCompanyEntity.headquarters,
+                countryCode = storedCompanyEntity.countryCode,
+                sector = storedCompanyEntity.sector,
+                lei =
+                    storedCompanyEntity.identifiers
+                        .firstOrNull { it.identifierType == IdentifierType.Lei }
+                        ?.identifierValue,
+            )
+
+        /**
+         * Retrieve a validation result for a single company identifier
+         * @param identifier a company identifier to validate
+         */
+        private fun getCompanyIdentifierValidationResult(identifier: String): CompanyIdentifierValidationResult =
+            if (identifier.length < COMPANY_SEARCH_STRING_MIN_LENGTH) {
+                CompanyIdentifierValidationResult(identifier)
+            } else if (checkCompanyIdExists(identifier)) {
+                buildCompanyIdentifierValidationResult(identifier, getCompanyByIdAndAssertExistence(identifier))
+            } else {
+                companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
+                    buildCompanyIdentifierValidationResult(identifier, it)
+                } ?: CompanyIdentifierValidationResult(identifier)
+            }
+
+        /**
+         * A method to validate if a given list of identifiers corresponds to a company in Dataland.
+         * @param identifiers list of identifiers to validate
+         * @return list of validation results
+         */
+        @Transactional(readOnly = true)
+        fun validateCompanyIdentifiers(identifiers: List<String>): List<CompanyIdentifierValidationResult> =
+            identifiers.map { getCompanyIdentifierValidationResult(it.trim()) }.distinctBy {
+                it.companyInformation?.companyId ?: it.identifier
+            }
+
+        /**
+         * For a collection of company IDs return a map associating each ID with the corresponding BasicCompanyInformation.
+         */
+        @Transactional(readOnly = true)
+        fun getBasicCompanyInformationByIds(companyIds: Collection<String>): Map<String, BasicCompanyInformation?> {
+            val storedCompanies = companyRepository.findAllById(companyIds).associateBy { it.companyId }
+            val companyLeis =
+                companyIdentifierRepository
+                    .findCompanyIdentifierEntitiesByCompanyInAndIdentifierTypeIs(
+                        storedCompanies.values,
+                        IdentifierType.Lei,
+                    ).associateBy { it.company?.companyId }
+
+            return companyIds.associateWith { companyId ->
+                storedCompanies[companyId]?.let {
+                    BasicCompanyInformation(
+                        companyId = companyId,
+                        companyName = it.companyName,
+                        headquarters = it.headquarters,
+                        countryCode = it.countryCode,
+                        sector = it.sector,
+                        lei = companyLeis[companyId]?.identifierValue,
+                    )
+                }
+            }
         }
     }

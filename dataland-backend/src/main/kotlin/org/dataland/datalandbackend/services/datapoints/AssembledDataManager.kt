@@ -16,7 +16,6 @@ import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
-import org.dataland.datalandbackend.utils.CompanyUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
@@ -55,9 +54,8 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
-        private val companyUtils: CompanyUtils,
     ) : DatasetStorageService {
-    private val logger = LoggerFactory.getLogger(javaClass)
+        private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Processes a dataset by breaking it up and storing its data points in the internal storage
@@ -438,7 +436,7 @@ class AssembledDataManager
             val companyId = searchFilter.companyId
             requireNotNull(searchFilter.dataType) { "Framework must be specified." }
             requireNotNull(companyId) { "Company ID must be specified." }
-            companyUtils.assertCompanyIdExists(companyId)
+            companyManager.assertCompanyIdExists(companyId)
 
             val framework = searchFilter.dataType.toString()
             val reportingPeriods =

@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -47,6 +48,7 @@ internal class DataControllerTest {
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+    private val mockCompanyQueryManager = mock<CompanyQueryManager>()
 
     private val dataExportService = DataExportService(objectMapper, mockDataPointUtils, mockReferencedReportsUtils)
 
@@ -111,6 +113,7 @@ internal class DataControllerTest {
                 mockDataManager,
                 mockDataMetaInformationManager,
                 dataExportService,
+                mockCompanyQueryManager,
                 objectMapper,
             )
     }

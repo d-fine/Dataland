@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.Eut
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -24,36 +25,37 @@ class DataExportServiceTest {
 
     private val testDataProvider = TestDataProvider(objectMapper)
     private val euTaxonomyNonFinancialsTestData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
-    private val companyAssociatedEuTaxonomyTestData =
-        CompanyAssociatedData(
-            companyId = UUID.randomUUID().toString(),
+    private val euTaxonomyCompanyExportTestData =
+        SingleCompanyExportData(
+            companyName = "test name",
+            companyLei = UUID.randomUUID().toString(),
             reportingPeriod = "2024",
             data = euTaxonomyNonFinancialsTestData,
         )
 
-    private val companyAssociatedLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
-    private val companyAssociatedLksgTestData =
+    private val companyExportDataLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
+    private val companyExportDataLksgTestData =
         objectMapper
-            .readValue<CompanyAssociatedData<LksgData>>(File(companyAssociatedLksgInputFile))
+            .readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
 
     @Test
     fun `check that exported json coincides with input object`() {
         val jsonStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(companyAssociatedEuTaxonomyTestData),
+                listOf(euTaxonomyCompanyExportTestData),
                 ExportFileType.JSON,
                 DataType.valueOf("eutaxonomy-non-financials"),
             )
         val exportedJsonObject = objectMapper.readValue<List<CompanyAssociatedData<EutaxonomyNonFinancialsData>>>(jsonStream.inputStream)
 
-        Assertions.assertEquals(listOf(companyAssociatedEuTaxonomyTestData), exportedJsonObject)
+        Assertions.assertEquals(listOf(euTaxonomyCompanyExportTestData), exportedJsonObject)
     }
 
     @Test
     fun `check that exported csv coincides with predefined output`() {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(companyAssociatedLksgTestData),
+                listOf(companyExportDataLksgTestData),
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
             )
@@ -67,7 +69,7 @@ class DataExportServiceTest {
     fun `check that exported Excel starts with declaration of separator`() {
         val excelStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(companyAssociatedLksgTestData),
+                listOf(companyExportDataLksgTestData),
                 ExportFileType.EXCEL,
                 DataType.valueOf("lksg"),
             )

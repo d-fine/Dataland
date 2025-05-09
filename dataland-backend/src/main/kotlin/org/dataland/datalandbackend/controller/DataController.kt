@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
-import org.dataland.datalandbackend.services.CompanyIdentifierManager
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
@@ -37,11 +37,11 @@ import java.time.Instant
  */
 
 open class DataController<T>(
-    private val companyIdentifierManager: CompanyIdentifierManager,
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService,
     private val objectMapper: ObjectMapper,
+    private val companyQueryManager: CompanyQueryManager,
     private val clazz: Class<T>,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
@@ -273,7 +273,7 @@ open class DataController<T>(
         val dataDimensionsWithDataStrings = getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
 
         val basicCompanyInformation =
-            companyIdentifierManager.getBasicCompanyInformationByIds(
+            companyQueryManager.getBasicCompanyInformationByIds(
                 dataDimensionsWithDataStrings.map { it.key.companyId },
             )
 
