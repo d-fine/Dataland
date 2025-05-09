@@ -6,15 +6,10 @@
       For now we invite you to use the desktop version.
     </h2>
   </div>
-  <TheFooter :sections="landingPage?.sections" />
+  <TheFooter />
 </template>
 
 <script setup lang="ts">
 import TheFooter from '@/components/generics/TheFooter.vue';
-import contentData from '@/assets/content.json';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import type { Content, Page } from '@/types/ContentTypes';
-
-const content: Content = contentData;
-const landingPage: Page | undefined = content.pages.find((page) => page.url === '/');
 </script>

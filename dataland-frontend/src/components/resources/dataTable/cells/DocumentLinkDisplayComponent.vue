@@ -1,5 +1,5 @@
 <template>
-  <DocumentLink
+  <DocumentDownloadLink
     :document-download-info="{
       downloadName: content.displayValue.dataSource.fileName ?? content.displayValue.dataSource.fileReference,
       fileReference: content.displayValue.dataSource.fileReference,
@@ -19,7 +19,7 @@ import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/Doc
 
 export default defineComponent({
   name: 'DocumentLinkDisplayComponent',
-  components: { DocumentLink: DocumentDownloadLink },
+  components: { DocumentDownloadLink },
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>,
