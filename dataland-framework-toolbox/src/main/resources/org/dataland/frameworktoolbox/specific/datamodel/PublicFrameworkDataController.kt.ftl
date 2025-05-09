@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.CompanyQueryManager
 <#list frameworkDataManager.imports as import>import ${import}
 </#list>
 import org.dataland.datalandbackendutils.model.ExportFileType
@@ -31,12 +32,14 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myDataManager: ${frameworkDataManager.shortenedQualifier},
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
+    @Autowired var myCompanyQueryManager: CompanyQueryManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,
     myDataExportService,
     myObjectMapper,
+    myCompanyQueryManager,
     ${frameworkDataType.shortenedQualifier}::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
