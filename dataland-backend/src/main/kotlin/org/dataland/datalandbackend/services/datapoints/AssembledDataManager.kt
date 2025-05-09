@@ -420,9 +420,10 @@ class AssembledDataManager
         ): Map<BasicDataDimensions, String> {
             val dataPointDimensions = getDataPointDimensions(dataDimensionList, correlationId)
             val dataPointIds =
-                dataPointDimensions.entries.associate { (dataDimension, dataPointDimensionList) ->
-                    dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
-                }.filterNot { it.value.isEmpty() }
+                dataPointDimensions.entries
+                    .associate { (dataDimension, dataPointDimensionList) ->
+                        dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
+                    }.filterNot { it.value.isEmpty() }
 
             return assembleDatasetsFromDataIds(dataPointIds, correlationId)
         }
