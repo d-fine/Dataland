@@ -46,9 +46,7 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (component: any, options: any) => {
-    if (!options) {
-      options = {};
-    }
+    options ??= {};
     options.global = options.global ?? {};
     options.global.stubs = options.global.stubs ?? {};
     options.global.plugins = options.global.plugins ?? [];

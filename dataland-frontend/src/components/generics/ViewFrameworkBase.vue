@@ -106,38 +106,38 @@
 </template>
 
 <script lang="ts">
-import TheContent from '@/components/generics/TheContent.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
-import PrimeButton from 'primevue/button';
-import { computed, defineComponent, inject, type PropType } from 'vue';
-
-import TheFooter from '@/components/generics/TheFooter.vue';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, ExportFileType } from '@clients/backend';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
-import OverlayPanel from 'primevue/overlaypanel';
-import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
-import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import InputSwitch from 'primevue/inputswitch';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
-import { CompanyRole } from '@clients/communitymanager';
-import router from '@/router';
-import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
-import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
-import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
-import { isFrameworkEditable } from '@/utils/Frameworks';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
+import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
+import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { isFrameworkEditable } from '@/utils/Frameworks';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, ExportFileType } from '@clients/backend';
+import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError } from 'axios';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import InputSwitch from 'primevue/inputswitch';
+import OverlayPanel from 'primevue/overlaypanel';
+import { computed, defineComponent, inject, type PropType } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
