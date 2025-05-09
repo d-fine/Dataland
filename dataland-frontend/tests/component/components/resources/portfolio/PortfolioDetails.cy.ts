@@ -96,9 +96,17 @@ describe('Check the portfolio details view', function (): void {
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
         checkFilter('first-child', 'companyNameFilterValue', 'b', 2);
-        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'Germany', 2);
-        checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 3);
-        checkFilter('nth-child(4)', 'latestReportingPeriodeFilterValue', '2024', 3);
+        checkFilter('nth-child(2)', 'countryFilterValue', 'Germany', 2);
+        checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 2);
+        checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilterValue', '2024', 3);
+        checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilterValue', '2023', 2);
+        checkFilter(
+          'nth-child(6)',
+          'eutaxonomyNonFinancialsAvailableReportingPeriodsFilterValue',
+          'No data available',
+          4
+        );
+        checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilterValue', '2023', 2);
       });
     });
   });
@@ -147,10 +155,10 @@ function checkFilter(columnSelector: string, inputSelector: string, needle: stri
   cy.get(rowsSelector).should('have.length', 4);
   cy.get(filterButtonSelector).click();
 
-  if (inputSelector == 'latestReportingPeriodeFilterValue') {
-    cy.get(`[data-test="${inputSelector}"]`).first().click();
-  } else {
+  if (inputSelector == 'companyNameFilterValue') {
     cy.get(`[data-test="${inputSelector}"]`).type(needle);
+  } else {
+    cy.get(`[data-test="${inputSelector}"]`).first().click();
   }
   cy.get(filterButtonSelector).click();
   cy.get(rowsSelector).should('have.length', matches);

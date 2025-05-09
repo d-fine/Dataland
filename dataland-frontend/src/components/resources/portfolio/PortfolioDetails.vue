@@ -58,7 +58,7 @@
               :inputId="country"
               name="country"
               :value="country"
-              data-test="countriesFilterValue"
+              data-test="countryFilterValue"
               @change="filterCallback"
             />
             <label :for="country">{{ country }}</label>
@@ -73,7 +73,7 @@
               :inputId="sector"
               name="sector"
               :value="sector"
-              data-test="sectorsFilterValue"
+              data-test="sectorFilterValue"
               @change="filterCallback"
             />
             <label :for="sector">{{ sector }}</label>
@@ -108,7 +108,7 @@
               :inputId="availableReportingPeriods"
               name="availableReportingPeriods"
               :value="availableReportingPeriods"
-              data-test="availableReportingPeriodsFilterValue"
+              :data-test="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
               @change="filterCallback"
             />
             <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
