@@ -4,7 +4,7 @@ import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 
-describe('check that the document link component works and is displayed correctly', function (): void {
+describe('check that the document link component works and is displayed correctly for a logged in user', function (): void {
   it('Check that there are no icons before and after triggering a download', function (): void {
     cy.intercept('**/documents/dummyFile**', {
       statusCode: 200,
@@ -28,8 +28,12 @@ describe('check that the document link component works and is displayed correctl
     });
   });
 
-  it('Check that Download Progress Spinner appears if the prop changes', function (): void {
+  it('Check that Download Progress Spinner appears for a logged in user if the prop changes', function (): void {
     cy.mountWithPlugins(DocumentDownloadLink, {
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+      }),
+
       props: {
         documentDownloadInfo: {
           downloadName: 'Test',
@@ -48,8 +52,12 @@ describe('check that the document link component works and is displayed correctl
     });
   });
 
-  it('Check that Download Progress Spinner disappears and the checkmark appears', function (): void {
+  it('Check that Download Progress Spinner disappears for a logged in user and the checkmark appears', function (): void {
     cy.mountWithPlugins(DocumentDownloadLink, {
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+      }),
+
       props: {
         documentDownloadInfo: {
           downloadName: 'Test',
@@ -67,8 +75,12 @@ describe('check that the document link component works and is displayed correctl
     });
   });
 
-  it('Check that Download Progress Checkmark disappears again', function (): void {
+  it('Check that Download Progress Checkmark disappears again for a logged in user', function (): void {
     cy.mountWithPlugins(DocumentDownloadLink, {
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+      }),
+
       props: {
         documentDownloadInfo: {
           downloadName: 'Test',
@@ -84,9 +96,30 @@ describe('check that the document link component works and is displayed correctl
     });
   });
 
+  it('Check that document download link behaves as expected for a non logged in user', function (): void {
+    cy.mountWithPlugins(DocumentDownloadLink, {
+      keycloak: minimalKeycloakMock({
+        authenticated: false,
+      }),
+
+      props: {
+        documentDownloadInfo: {
+          downloadName: 'Test',
+          fileReference: 'dummyFileReference',
+        },
+      },
+    }).then(() => {
+      cy.get('[data-test="download-icon"]').should('not.exist');
+      cy.get('[data-test="spinner-icon"]').should('not.exist');
+      cy.get('[data-test="download-text-Test"]').should('not.have.attr', '@click');
+    });
+  });
+
   it('Check that the label does not display "page" when page number is null', function (): void {
     cy.mountWithPlugins(DataPointDataTable, {
-      keycloak: minimalKeycloakMock({}),
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+      }),
 
       props: {},
       data() {
