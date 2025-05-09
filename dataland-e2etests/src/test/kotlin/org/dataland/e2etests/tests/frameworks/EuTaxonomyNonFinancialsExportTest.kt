@@ -68,12 +68,14 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     override fun exportDataAsCsv(
         companyIds: List<String>,
         reportingPeriods: List<String>,
+        includeDataMetaInformation: Boolean,
     ): File =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
             .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
+                includeDataMetaInformation = includeDataMetaInformation,
             )
 
     override fun exportDataAsExcel(
@@ -85,17 +87,6 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.EXCEL,
-            )
-
-    override fun exportDataAsCsvWithMetadata(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File =
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
             )
 
     override fun retrieveData(companyId: String): Any =

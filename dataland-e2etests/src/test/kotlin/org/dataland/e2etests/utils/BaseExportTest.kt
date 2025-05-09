@@ -35,12 +35,13 @@ abstract class BaseExportTest<T> {
     protected abstract fun exportDataAsCsv(
         companyIds: List<String>,
         reportingPeriods: List<String>,
+        includeDataMetaInformation: Boolean = false,
     ): File
 
-    protected abstract fun exportDataAsCsvWithMetadata(
+    private fun exportDataAsCsvWithMetadata(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-    ): File
+    ): File = exportDataAsCsv(companyIds, reportingPeriods, includeDataMetaInformation = true)
 
     protected abstract fun exportDataAsExcel(
         companyIds: List<String>,
@@ -192,20 +193,19 @@ abstract class BaseExportTest<T> {
             contextMessage = "CSV export with includeDataMetaInformation=false should include value of test field",
         )
 
-        // 2. Verify that for the export without DataMetaInformation NO dataSource headers exist for this field
-        // TODO: loop for all meta information fields (comment ....)
-        val dataSourcePattern = "$fieldName.dataSource"
+        // 2. Verify that for the export without DataMetaInformation NO quality headers exist for this field
+        val qualityPattern = "$fieldName.quality"
         ExportTestUtils.assertColumnPatternExists(
             headers = headersWithMetadata,
-            columnNamePart = dataSourcePattern,
+            columnNamePart = qualityPattern,
             shouldExist = true,
-            contextMessage = "CSV export with includeDataMetaInformation=true should include dataSource of test field",
+            contextMessage = "CSV export with includeDataMetaInformation=true should include quality of test field",
         )
         ExportTestUtils.assertColumnPatternExists(
             headers = headersWithoutMetadata,
-            columnNamePart = dataSourcePattern,
+            columnNamePart = qualityPattern,
             shouldExist = false,
-            contextMessage = "CSV export with includeDataMetaInformation=false should NOT include dataSource of test field",
+            contextMessage = "CSV export with includeDataMetaInformation=false should NOT include quality of test field",
         )
     }
 

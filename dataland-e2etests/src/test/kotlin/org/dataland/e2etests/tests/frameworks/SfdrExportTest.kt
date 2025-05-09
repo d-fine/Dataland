@@ -2,11 +2,16 @@
 package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
+import org.dataland.datalandbackend.openApiClient.model.QualityOptions
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.YesNo
 import org.dataland.e2etests.utils.BaseExportTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.math.BigDecimal
 
 class SfdrExportTest : BaseExportTest<SfdrData>() {
     private lateinit var fullTestData: SfdrData
@@ -34,7 +39,28 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
             )
 
         // Create test data with non-null fields
-        testDataWithNonNullField = fullTestData.copy()
+        testDataWithNonNullField =
+            fullTestData.copy(
+                environmental =
+                    fullTestData.environmental?.copy(
+                        greenhouseGasEmissions =
+                            fullTestData.environmental?.greenhouseGasEmissions?.copy(
+                                scope2GhgEmissionsInTonnes =
+                                    ExtendedDataPointBigDecimal(
+                                        value = BigDecimal("0.57721566490153286060"),
+                                        quality = QualityOptions.Estimated,
+                                        comment = "A001620",
+                                    ),
+                            ),
+                    ),
+                social =
+                    fullTestData.social?.copy(
+                        socialAndEmployeeMatters =
+                            fullTestData.social?.socialAndEmployeeMatters?.copy(
+                                humanRightsLegalProceedings = ExtendedDataPointYesNo(YesNo.Yes),
+                            ),
+                    ),
+            )
 
         // Setup companies and upload data using the base class method
         setupCompaniesAndData()
@@ -64,24 +90,14 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     override fun exportDataAsCsv(
         companyIds: List<String>,
         reportingPeriods: List<String>,
+        includeDataMetaInformation: Boolean,
     ): File =
         apiAccessor.dataControllerApiForSfdrData
             .exportCompanyAssociatedSfdrDataByDimensions(
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
-            )
-
-    override fun exportDataAsCsvWithMetadata(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File =
-        apiAccessor.dataControllerApiForSfdrData
-            .exportCompanyAssociatedSfdrDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
-                includeDataMetaInformation = true,
+                includeDataMetaInformation = includeDataMetaInformation,
             )
 
     override fun exportDataAsExcel(
@@ -124,6 +140,6 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
 
     @Test
     fun `test CSV export with and without dataMetaInformation`() {
-        testCsvExportIncludeDataMetaInformationFlag("environmental.scope2GhgEmissionsInTonnes")
+        testCsvExportIncludeDataMetaInformationFlag("environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes")
     }
 }

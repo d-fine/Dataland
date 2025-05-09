@@ -113,7 +113,7 @@ class Lksg {
             sortDatasetsInSecondTest(uploadedDatasets),
         )
     }
-    */
+     */
 
     @Test
     fun `check that dataset cannot be uploaded if document does not exist`() {
@@ -165,7 +165,7 @@ class Lksg {
             "Active dataset in 2023 not equal to latest upload.",
         )
     }
-    */
+     */
 
     private fun sortComplaintRisksInDataset(dataset: LksgData): LksgData {
         val complaintRisksIdentifiedRisks =
@@ -317,5 +317,5 @@ class Lksg {
         }
         return Pair(companyId, lksgData)
     }
-    */
+     */
 }
