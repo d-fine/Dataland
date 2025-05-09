@@ -27,4 +27,12 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
      * Retrieve an entry based on the identifier value
      */
     fun getFirstByIdentifierValueIs(identifierValue: String): CompanyIdentifierEntity?
+
+    /**
+     * Auto generated function to obtain all company identifiers of a certain type given a collection of companies.
+     */
+    fun findCompanyIdentifierEntitiesByCompanyInAndIdentifierTypeIs(
+        companies: Collection<StoredCompanyEntity>,
+        identifierType: IdentifierType,
+    ): MutableList<CompanyIdentifierEntity>
 }

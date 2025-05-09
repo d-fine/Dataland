@@ -421,8 +421,8 @@ export default defineComponent({
         const filename = `${selectedYear}-${this.dataType}-${this.companyID}.${fileExtension}`;
 
         const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-          selectedYear,
-          this.companyID,
+          [selectedYear],
+          [this.companyID],
           exportFileType
         );
         const dataContent =

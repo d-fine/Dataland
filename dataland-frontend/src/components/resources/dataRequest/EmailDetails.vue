@@ -10,7 +10,7 @@
       data-test="contactEmail"
       @input="handleContactsUpdate"
     />
-    <p v-show="displayContactsNotValidError" class="text-danger text-xs" data-test="contactsNotValidErrorMessage">
+    <p v-show="displayContactsNotValidError" class="text-danger" data-test="contactsNotValidErrorMessage">
       You have to provide valid contacts to add a message to the request
     </p>
     <p class="gray-text font-italic" style="text-align: left">
@@ -36,7 +36,7 @@
     />
     <p
       v-show="displayNoMessageError && allowAccessDataRequesterMessage"
-      class="text-danger text-xs"
+      class="text-danger"
       data-test="noMessageErrorMessage"
     >
       You have not provided a message yet.
@@ -61,7 +61,7 @@
       </div>
       <p
         v-show="displayConsentToMessageDateUsageNotGiven"
-        class="text-danger text-xs mt-2"
+        class="text-danger mt-2"
         data-test="conditionsNotAcceptedErrorMessage"
       >
         You have to declare that the recipient(s) consented in order to add a message

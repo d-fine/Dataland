@@ -169,7 +169,7 @@
             "description": "Successfully checked that the companyId is known by dataland."
           },
           "404": {
-            "description": "Check was successfull. CompanyId is not known by dataland."
+            "description": "Check was successful. CompanyId is not known by dataland."
           },
           "default": {
             "description": "An error occurred",
@@ -2920,19 +2920,25 @@
         "operationId": "exportCompanyAssociatedSfdrDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -2942,11 +2948,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -3197,19 +3212,25 @@
         "operationId": "exportCompanyAssociatedP2pDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -3219,11 +3240,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -3474,19 +3504,25 @@
         "operationId": "exportCompanyAssociatedNuclearAndGasDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -3496,11 +3532,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -3751,19 +3796,25 @@
         "operationId": "exportCompanyAssociatedLksgDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -3773,11 +3824,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4028,19 +4088,25 @@
         "operationId": "exportCompanyAssociatedHeimathafenDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4050,11 +4116,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4305,19 +4380,25 @@
         "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4327,11 +4408,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4582,19 +4672,25 @@
         "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4604,11 +4700,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4859,19 +4964,25 @@
         "operationId": "exportCompanyAssociatedEsgDatenkatalogDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4881,11 +4992,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -5136,19 +5256,25 @@
         "operationId": "exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -5158,11 +5284,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "includeDataMetaInformation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -20637,10 +20772,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

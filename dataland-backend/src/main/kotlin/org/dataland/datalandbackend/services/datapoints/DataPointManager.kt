@@ -129,7 +129,7 @@ class DataPointManager
          */
         @Transactional(readOnly = true)
         fun retrieveDataPoints(
-            dataPointIds: List<String>,
+            dataPointIds: Collection<String>,
             correlationId: String,
         ): Map<String, UploadedDataPoint> {
             logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")

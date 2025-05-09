@@ -36,15 +36,15 @@ interface DatasetStorageService {
     ): String
 
     /**
-     * Retrieves the content of a dataset from the backend storage engine given the data dimensions
-     * @param dataDimensions the dimensions of the dataset to be retrieved
-     * @param correlationId the correlation id for the operation
-     * @return the dataset in form of a JSON string
+     * Retrieve dataset contents from the backend storage engine given the list of data dimensions
+     * @param dataDimensionList list of dataset dimensions to be retrieved
+     * @param correlationId the corresponding correlation id
+     * @return a list of the found datasets where each dataset is stored in form of a JSON string
      */
     fun getDatasetData(
-        dataDimensions: BasicDataDimensions,
+        dataDimensionList: Set<BasicDataDimensions>,
         correlationId: String,
-    ): String?
+    ): Map<BasicDataDimensions, String>
 
     /**
      * Retrieves all datasets for a certain company and data type depending on the content of the [searchFilter]

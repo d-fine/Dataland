@@ -174,18 +174,21 @@ class AssembledDataManagerTest {
         whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
 
-        val dynamicDataset = assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        val dynamicDataset =
+            assertDoesNotThrow {
+                assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
+            }
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
-        assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assert(dynamicDataset!!.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 
     @Test
     fun `check that exceptions are thrown only in the expected cases in the context of dynamic datasets`() {
         doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
 
-        assertThrows<ResourceNotFoundApiException> {
-            assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        assertDoesNotThrow {
+            assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)
         }
 
         val invalidCompanyId = "invalid-company-id"
@@ -236,7 +239,7 @@ class AssembledDataManagerTest {
         )
 
         whenever(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<List<String>>(0)
+            val dataPointId = invocation.getArgument<Collection<String>>(0)
             dataPointId.map { dataPointId ->
                 DataPointMetaInformationEntity(
                     dataPointId = dataPointId,

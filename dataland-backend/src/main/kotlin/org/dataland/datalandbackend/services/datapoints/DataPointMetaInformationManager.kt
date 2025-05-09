@@ -42,7 +42,7 @@ class DataPointMetaInformationManager
          * @return meta info about data behind the dataId
          */
         @Transactional(readOnly = true)
-        fun getDataPointMetaInformationByIds(dataPointIds: List<String>): List<DataPointMetaInformationEntity> =
+        fun getDataPointMetaInformationByIds(dataPointIds: Collection<String>): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds)
 
         /**

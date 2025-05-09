@@ -99,21 +99,22 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData by its [reportingPeriod], [companyId] as a [fileFormat] file.
-     * @param reportingPeriod specifies the reporting period
-     * @param companyId specifies the company
+     * A method to export the CompanyAssociatedData by its [reportingPeriods], [companyIds] as a [exportFileType] file.
+     * @param reportingPeriods specifies the reporting periods
+     * @param companyIds specifies the companies
      * @param exportFileType specifies the file type to export to
+     * @param includeDataMetaInformation specifies whether to include metadata in the export
      * @return JSON of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
-        summary = "Export data for the reportingPeriod and companyId provided.",
+        summary = "Export data for the reportingPeriods and companyIds provided.",
         description =
-            "Export data for the reportingPeriod and companyId provided into a file of the specified format" +
-                "(CSV, Excel-compatible CSV, JSON).",
+            "Export data for the each combination of reportingPeriod and companyId provided into a file of the " +
+                "specified format (CSV, Excel-compatible CSV, JSON).",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset."),
+            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
         ],
     )
     @GetMapping(
@@ -122,9 +123,10 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataByDimensions(
-        @RequestParam("reportingPeriod") reportingPeriod: String,
-        @RequestParam("companyId") companyId: String,
+        @RequestParam("reportingPeriods") reportingPeriods: List<String>,
+        @RequestParam("companyIds") companyIds: List<String>,
         @RequestParam("fileFormat") exportFileType: ExportFileType,
+        @RequestParam(value = "includeDataMetaInformation", defaultValue = "false") includeDataMetaInformation: Boolean = false,
     ): ResponseEntity<InputStreamResource>
 
     /**

@@ -24,14 +24,14 @@ class JsonUtilsTest {
     fun `check that the retrieved JSON paths are as expected`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
         val result = JsonUtils.getLeafNodeFieldNames(jsonNode)
-        assertEquals(expectedJsonPaths, result)
+        assertEquals(expectedJsonPaths, result.toList())
     }
 
     @Test
     fun `check that arrays are ignored if ignoreArray is set to true`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
         val result = JsonUtils.getNonArrayLeafNodeFieldNames(jsonNode)
-        assertEquals(expectedJsonPathsWithoutArray, result)
+        assertEquals(expectedJsonPathsWithoutArray, result.toList())
     }
 
     @Test
