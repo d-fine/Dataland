@@ -5,7 +5,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
@@ -46,7 +45,7 @@ class DataExportServiceTest {
                 ExportFileType.JSON,
                 DataType.valueOf("eutaxonomy-non-financials"),
             )
-        val exportedJsonObject = objectMapper.readValue<List<CompanyAssociatedData<EutaxonomyNonFinancialsData>>>(jsonStream.inputStream)
+        val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<EutaxonomyNonFinancialsData>>>(jsonStream.inputStream)
 
         Assertions.assertEquals(listOf(euTaxonomyCompanyExportTestData), exportedJsonObject)
     }
