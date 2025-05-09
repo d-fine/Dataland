@@ -79,35 +79,33 @@
         />
       </TheContent>
     </DatasetsTabMenu>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import TheContent from '@/components/generics/TheContent.vue';
-import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
-import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
-import PrimeButton from 'primevue/button';
-import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { defineComponent, inject, ref } from 'vue';
-import { type DataTypeEnum, type BasicCompanyInformation } from '@clients/backend';
-import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
-import { parseQueryParamArray } from '@/utils/QueryParserUtils';
-import { arraySetEquals } from '@/utils/ArrayUtils';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import type Keycloak from 'keycloak-js';
-import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
+import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
+import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
+import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import router from '@/router';
+import { arraySetEquals } from '@/utils/ArrayUtils';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { parseQueryParamArray } from '@/utils/QueryParserUtils';
+import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject, ref } from 'vue';
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
 export default defineComponent({
   setup() {
@@ -143,14 +141,10 @@ export default defineComponent({
     this.scanQueryParams(this.route);
   },
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      footerContent,
       resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
       currentSearchBarInput: '',

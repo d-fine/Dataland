@@ -256,14 +256,9 @@ interface DocumentApi {
         ],
     )
     @GetMapping(
-        value = [
-            "/",
-        ],
-        produces = [
-            "application/json",
-        ],
+        value = ["/"],
+        produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun searchForDocumentMetaInformation(
         @RequestParam companyId: String? = null,
         @RequestParam documentCategories: Set<DocumentCategory>? = null,

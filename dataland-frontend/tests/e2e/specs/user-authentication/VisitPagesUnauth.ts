@@ -5,6 +5,7 @@ import { loginWithCredentials, logout } from '@e2e/utils/Auth';
 describe('As a user I expect to be redirected to the login page if I am unauthenticated', () => {
   const pages = [
     '/companies',
+    `/companies/:companyID/documents`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
