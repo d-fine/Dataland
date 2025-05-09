@@ -53,8 +53,9 @@ describeIf(
                     year,
                     euTaxonomyForNonFinancialsFixtureForTest.t,
                     (config) =>
-                      getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!
-                        .getPublicFrameworkApiClient(config)
+                      getBasePublicFrameworkDefinition(
+                        DataTypeEnum.EutaxonomyNonFinancials
+                      )!.getPublicFrameworkApiClient(config)
                   )
                 )
               );
@@ -72,8 +73,9 @@ describeIf(
                       year,
                       euTaxonomyForNonFinancialsFixtureForTest.t,
                       (config) =>
-                        getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!
-                          .getPublicFrameworkApiClient(config)
+                        getBasePublicFrameworkDefinition(
+                          DataTypeEnum.EutaxonomyNonFinancials
+                        )!.getPublicFrameworkApiClient(config)
                     )
                   )
                 );
@@ -113,10 +115,10 @@ describeIf(
      * @return {void} This function does not return a value.
      */
     function testDownloadPortfolio({
-                                     description,
-                                     fileType,
-                                     includeMetaData = false,
-                                   }: {
+      description,
+      fileType,
+      includeMetaData = false,
+    }: {
       description: string;
       fileType: 'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)';
       includeMetaData?: boolean;
@@ -167,18 +169,14 @@ describeIf(
     });
 
     it('Shows error message when no data is available for selected years', () => {
-      cy.intercept(
-        'GET',
-        '**/api/data/eutaxonomy-non-financials/export**',
-        (req) => {
-          req.reply((res) => {
-            res.send({
-              statusCode: 500,
-              body: {},
-            });
+      cy.intercept('GET', '**/api/data/eutaxonomy-non-financials/export**', (req) => {
+        req.reply((res) => {
+          res.send({
+            statusCode: 500,
+            body: {},
           });
-        }
-      ).as('downloadRequest');
+        });
+      }).as('downloadRequest');
 
       reportingYearsToSelect.forEach((year) => {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).click({ force: true });
