@@ -30,7 +30,13 @@
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
         companies or remove filter criteria.
       </template>
-      <Column :sortable="true" field="companyName" header="Company Name" :showFilterMatchModes="false">
+      <Column
+        :sortable="true"
+        field="companyName"
+        header="Company Name"
+        :showFilterMatchModes="false"
+        style="width: 15%"
+      >
         <template #body="portfolioEntry">
           <a :href="`/companies/${portfolioEntry.data.companyId}`">{{ portfolioEntry.data.companyName }}</a>
         </template>
@@ -44,31 +50,40 @@
           />
         </template>
       </Column>
-      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false">
+      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Filter by country"
-            :data-test="'countryCodeFilterValue'"
-          />
+          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="country"
+              name="country"
+              :value="country"
+              data-test="countriesFilterValue"
+              @change="filterCallback"
+            />
+            <label :for="country">{{ country }}</label>
+          </div>
         </template>
       </Column>
-      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false">
+      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Filter by sector"
-            :data-test="'sectorFilterValue'"
-          />
+          <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="sector"
+              name="sector"
+              :value="sector"
+              data-test="sectorsFilterValue"
+              @change="filterCallback"
+            />
+            <label :for="sector">{{ sector }}</label>
+          </div>
         </template>
       </Column>
       <Column
         v-for="framework of majorFrameworks"
         :key="framework"
+        :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
         :sortable="true"
         :field="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriods'"
         :header="humanizeStringOrNumber(framework)"
@@ -83,16 +98,20 @@
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="category of reportingPeriodOptions.get(framework)" :key="category" class="filter-checkbox">
+          <div
+            v-for="availableReportingPeriods of reportingPeriodOptions.get(framework)"
+            :key="availableReportingPeriods"
+            class="filter-checkbox"
+          >
             <Checkbox
               v-model="filterModel.value"
-              :inputId="category"
-              name="category"
-              :value="category"
-              :data-test="'latestReportingPeriodeFilterValue'"
+              :inputId="availableReportingPeriods"
+              name="availableReportingPeriods"
+              :value="availableReportingPeriods"
+              data-test="availableReportingPeriodsFilterValue"
               @change="filterCallback"
             />
-            <label :for="category">{{ category }}</label>
+            <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
           </div>
         </template>
       </Column>
@@ -168,12 +187,14 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
+const countryOptions = ref<string[]>(new Array<string>());
+const sectorOptions = ref<string[]>(new Array<string>());
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  country: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  sector: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  country: { value: [], matchMode: FilterMatchMode.IN },
+  sector: { value: [], matchMode: FilterMatchMode.IN },
   sfdrAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
   eutaxonomyFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
   eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
@@ -196,6 +217,14 @@ onMounted(() => {
 watch([enrichedPortfolio], () => {
   const entries = portfolioEntriesToDisplay.value || [];
 
+  countryOptions.value = Array.from(
+    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
+  );
+
+  sectorOptions.value = Array.from(
+    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
+  );
+
   majorFrameworks.forEach((framework) => {
     reportingPeriodOptions.value.set(
       framework,
@@ -209,6 +238,26 @@ watch([enrichedPortfolio], () => {
     );
   });
 });
+
+/**
+ * Returns the width (in percent of the total screen width) of a portfolio datatable column
+ * associated with a framework.
+ * @param framework the hyphenated name of the framework in question
+ */
+function widthOfFrameworkColumn(framework: string): string {
+  switch (framework) {
+    case 'sfdr':
+      return '10';
+    case 'eutaxonomy-financials':
+      return '15';
+    case 'eutaxonomy-non-financials':
+      return '17.5';
+    case 'nuclear-and-gas':
+      return '17.5';
+    default:
+      return '15';
+  }
+}
 
 /**
  * Convert the given hyphenated string to camel case by deleting each hyphen and capitalizing
