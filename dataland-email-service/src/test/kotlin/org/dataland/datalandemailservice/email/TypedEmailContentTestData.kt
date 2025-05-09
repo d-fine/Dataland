@@ -5,6 +5,8 @@ import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequ
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent.FrameworkData
 import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetAvailableClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
@@ -123,6 +125,21 @@ class TypedEmailContentTestData : ArgumentsProvider {
             companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B,
             MESSAGE, REQUESTER_EMAIL, FIRST_NAME, LAST_NAME, BASE_URL,
             "is requesting access to your data from",
+        )
+
+    val dataRequestSummaryEmailContent =
+        DataRequestSummaryEmailContent(
+            listOf(FrameworkData(DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, listOf(COMPANY_NAME))),
+            listOf(),
+            listOf(),
+        )
+
+    val dataRequestSummaryKeywords =
+        listOf(
+            "Data for your request(s) has been updated on Dataland this week,",
+            "New Data", "Framework", DATA_TYPE_LABEL_A,
+            "Reporting", REPORTING_PERIOD_A, // html has "Reporting Period", text has "Reporting period"
+            "Company", COMPANY_NAME,
         )
 
     private val accessToDatasetGrantedEmailContent =
