@@ -39,7 +39,7 @@ class DataExportServiceTest {
     @Test
     fun `check that exported json coincides with input object`() {
         val jsonStream =
-            dataExportService.buildStreamFromCompanyAssociatedData(
+            dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyAssociatedEuTaxonomyTestData),
                 ExportFileType.JSON,
                 DataType.valueOf("eutaxonomy-non-financials"),
@@ -52,7 +52,7 @@ class DataExportServiceTest {
     @Test
     fun `check that exported csv coincides with predefined output`() {
         val csvStream =
-            dataExportService.buildStreamFromCompanyAssociatedData(
+            dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyAssociatedLksgTestData),
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
@@ -66,7 +66,7 @@ class DataExportServiceTest {
     @Test
     fun `check that exported Excel starts with declaration of separator`() {
         val excelStream =
-            dataExportService.buildStreamFromCompanyAssociatedData(
+            dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyAssociatedLksgTestData),
                 ExportFileType.EXCEL,
                 DataType.valueOf("lksg"),

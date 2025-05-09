@@ -6,9 +6,11 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
@@ -35,6 +37,7 @@ import java.time.Instant
  */
 
 open class DataController<T>(
+    private val companyIdentifierManager: CompanyIdentifierManager,
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService,
@@ -99,19 +102,26 @@ open class DataController<T>(
             )
         val correlationId = IdUtils.generateCorrelationId(dataDimensions)
 
-        val companyAssociatedDataList =
-            this.buildCompanyAssociatedData(
+        val frameworkData =
+            this.getFrameworkDataStrings(
                 setOf(Pair(companyId, reportingPeriod)),
                 dataType.toString(),
                 correlationId,
             )
-        if (companyAssociatedDataList.isEmpty()) {
+        if (frameworkData.isEmpty()) {
             throw ResourceNotFoundApiException(
                 summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
                 message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
             )
         }
-        return ResponseEntity.ok(companyAssociatedDataList.first())
+
+        return ResponseEntity.ok(
+            CompanyAssociatedData(
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                data = objectMapper.readValue(frameworkData.values.first(), clazz),
+            ),
+        )
     }
 
     private fun getData(
@@ -166,8 +176,8 @@ open class DataController<T>(
         logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
 
         val companyAssociatedDataForExport =
-            dataExportService.buildStreamFromCompanyAssociatedData(
-                this.buildCompanyAssociatedData(
+            dataExportService.buildStreamFromPortfolioExportData(
+                this.buildCompanyExportData(
                     companyIdAndReportingPeriodPairs,
                     dataType.toString(), correlationId,
                 ),
@@ -242,20 +252,35 @@ open class DataController<T>(
         )
     }
 
-    private fun buildCompanyAssociatedData(
+    /**
+     * Retrieve the active data set as a string for a given framework and each combination of company ID and reporting period.
+     */
+    private fun getFrameworkDataStrings(
         companyAndReportingPeriodPairs: Set<Pair<String, String>>,
         framework: String,
         correlationId: String,
-    ): List<CompanyAssociatedData<T>> {
-        val dataDimensionsWithDataStrings =
-            datasetStorageService.getDatasetData(
-                companyAndReportingPeriodPairs.mapTo(mutableSetOf()) { BasicDataDimensions(it.first, framework, it.second) },
-                correlationId,
+    ): Map<BasicDataDimensions, String> =
+        datasetStorageService.getDatasetData(
+            companyAndReportingPeriodPairs.mapTo(mutableSetOf()) { BasicDataDimensions(it.first, framework, it.second) },
+            correlationId,
+        )
+
+    private fun buildCompanyExportData(
+        companyAndReportingPeriodPairs: Set<Pair<String, String>>,
+        framework: String,
+        correlationId: String,
+    ): List<SingleCompanyExportData<T>> {
+        val dataDimensionsWithDataStrings = getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
+
+        val basicCompanyInformation =
+            companyIdentifierManager.getBasicCompanyInformationByIds(
+                dataDimensionsWithDataStrings.map { it.key.companyId },
             )
 
         return dataDimensionsWithDataStrings.map {
-            CompanyAssociatedData(
-                companyId = it.key.companyId,
+            SingleCompanyExportData(
+                companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
+                companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
                 reportingPeriod = it.key.reportingPeriod,
                 data = objectMapper.readValue(it.value, clazz),
             )

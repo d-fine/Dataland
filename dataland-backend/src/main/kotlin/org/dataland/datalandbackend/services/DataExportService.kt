@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.ExportFileType
@@ -33,25 +33,25 @@ class DataExportService
         }
 
         /**
-         * Create a ByteStream to be used for Export from CompanyAssociatedData.
-         * @param companyAssociatedData passed companyAssociatedData to be exported
+         * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
+         * @param portfolioData passed list of SingleCompanyExportData to be exported
          * @param exportFileType the file type to be exported
          * @param dataType the datatype specifying the framework
          * @param includeDataMetaInformation if false, non value fields are stripped
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
-        fun <T> buildStreamFromCompanyAssociatedData(
-            companyAssociatedData: List<CompanyAssociatedData<T>>,
+        fun <T> buildStreamFromPortfolioExportData(
+            portfolioData: List<SingleCompanyExportData<T>>,
             exportFileType: ExportFileType,
             dataType: DataType,
             includeDataMetaInformation: Boolean = false,
         ): InputStreamResource {
-            val jsonData = companyAssociatedData.map { convertDataToJson(it) }
+            val jsonData = portfolioData.map { convertDataToJson(it) }
             return when (exportFileType) {
-                ExportFileType.CSV -> buildCsvStreamFromCompanyAssociatedData(jsonData, dataType, false, includeDataMetaInformation)
-                ExportFileType.EXCEL -> buildCsvStreamFromCompanyAssociatedData(jsonData, dataType, true, includeDataMetaInformation)
-                ExportFileType.JSON -> buildJsonStreamFromCompanyAssociatedData(jsonData)
+                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, false, includeDataMetaInformation)
+                ExportFileType.EXCEL -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, true, includeDataMetaInformation)
+                ExportFileType.JSON -> buildJsonStreamFromPortfolioAsJsonData(jsonData)
             }
         }
 
@@ -83,28 +83,28 @@ class DataExportService
         }
 
         /**
-         * Create a ByteStream to be used for CSV Export from CompanyAssociatedData.
-         * @param companyAssociatedData passed companyAssociatedData to be exported
+         * Create a ByteStream to be used for CSV export from SingleCompanyExportData as JSON objects.
+         * @param portfolioExportRows passed SingleCompanyExportData as JSON object to be exported
          * @param dataType the datatype specifying the framework
          * @param excelCompatibility whether a separator indicator should be prependet to the stream resource
          * @param includeDataMetaInformation if false, non value fields are stripped
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
-        private fun buildCsvStreamFromCompanyAssociatedData(
-            companyAssociatedData: List<JsonNode>,
+        private fun buildCsvStreamFromPortfolioAsJsonData(
+            portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             excelCompatibility: Boolean,
             includeDataMetaInformation: Boolean,
         ): InputStreamResource {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
             val isLegobrickFramework = (frameworkTemplate != null)
-            val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(companyAssociatedData, includeDataMetaInformation)
+            val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, includeDataMetaInformation)
 
             val allHeaderFields =
                 if (isLegobrickFramework) {
                     JsonUtils.getLeafNodeFieldNames(
-                        getFrameworkTemplate(dataType.toString()) ?: companyAssociatedData.first(),
+                        getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
                         keepEmptyFields = true,
                         dropLastFieldName = true,
                     )
@@ -126,17 +126,17 @@ class DataExportService
         }
 
         /**
-         * Create a ByteStream to be used for JSON Export from CompanyAssociatedData.
-         * @param companyAssociatedData passed companyAssociatedData to be exported
+         * Create a ByteStream to be used for JSON Export from a list of JSON objects representin SingleCompanyExportData.
+         * @param portfolioExportRows passed data sets to be exported
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
-        private fun buildJsonStreamFromCompanyAssociatedData(companyAssociatedData: List<JsonNode>): InputStreamResource {
+        private fun buildJsonStreamFromPortfolioAsJsonData(portfolioExportRows: List<JsonNode>): InputStreamResource {
             val outputStream = ByteArrayOutputStream()
 
             objectMapper
                 .writerFor(List::class.java)
-                .writeValue(outputStream, companyAssociatedData)
+                .writeValue(outputStream, portfolioExportRows)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -152,8 +152,8 @@ class DataExportService
             includeDataMetaInformation: Boolean,
         ): Pair<List<Map<String, String>>, Set<String>> {
             val csvData =
-                nodes.map {
-                    val nonEmptyNodes = JsonUtils.getNonEmptyNodesAsMapping(it)
+                nodes.map { node ->
+                    val nonEmptyNodes = JsonUtils.getNonEmptyNodesAsMapping(node)
                     if (includeDataMetaInformation) {
                         nonEmptyNodes
                     } else {
@@ -173,12 +173,12 @@ class DataExportService
 
         /**
          * Converts the data class into a JSON object.
-         * @param companyAssociatedData The company associated data
+         * @param singleCompanyExportData The company associated data
          * @return The JSON node representation of the data
          */
-        private fun <T> convertDataToJson(companyAssociatedData: CompanyAssociatedData<T>): JsonNode {
-            val companyAssociatedDataJson = objectMapper.writeValueAsString(companyAssociatedData)
-            return objectMapper.readTree(companyAssociatedDataJson)
+        private fun <T> convertDataToJson(singleCompanyExportData: SingleCompanyExportData<T>): JsonNode {
+            val singleCompanyExportDataJson = objectMapper.writeValueAsString(singleCompanyExportData)
+            return objectMapper.readTree(singleCompanyExportDataJson)
         }
 
         /**

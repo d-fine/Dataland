@@ -8,7 +8,7 @@ package org.dataland.datalandbackend.model.export
  * @param reportingPeriod the reporting period
  * @param data the corresponding dataset
  */
-data class SingleCompanyDataExport<T>(
+data class SingleCompanyExportData<T>(
     val companyName: String,
     val companyLei: String,
     val reportingPeriod: String,
