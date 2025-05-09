@@ -296,7 +296,7 @@ abstract class PavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-//        compileDataModel(datalandProject)
+        compileDataModel(datalandProject)
 //        compileQaModel(datalandProject)
 //        compileViewModel(datalandProject)
 //        compileUploadModel(datalandProject)

@@ -1,0 +1,46 @@
+{
+  "id": "extendedEuTaxonomyNonAlignedActivitiesComponent",
+  "name": "General non-aligned activities data point with an extended source",
+  "businessDefinition": "Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible.",
+  "validatedBy": "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDataPoint<MutableList<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity>?>",
+  "example": {
+    "value": [
+      {
+        "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+        "naceCodes": [],
+        "share": {
+          "relativeShareInPercent": 0,
+          "absoluteShare": {
+            "amount": 0,
+            "currency": "EUR"
+          }
+        }
+      },
+      {
+        "activityName": "InfrastructureForRailTransport",
+        "naceCodes": [],
+        "share": {
+          "relativeShareInPercent": 0,
+          "absoluteShare": {
+            "amount": 0,
+            "currency": "EUR"
+          }
+        }
+      },
+      {
+        "activityName": "LowCarbonAirportInfrastructure",
+        "naceCodes": [],
+        "share": {
+          "relativeShareInPercent": 0,
+          "absoluteShare": {
+            "amount": 0,
+            "currency": "EUR"
+          }
+        }
+      }
+    ],
+    "quality": null,
+    "comment": null,
+    "dataSource": null
+  }
+},
