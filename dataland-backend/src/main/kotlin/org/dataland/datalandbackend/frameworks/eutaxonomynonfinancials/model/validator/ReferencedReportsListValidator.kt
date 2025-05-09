@@ -71,6 +71,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.revenue?.eligibleShare?.absoluteShare?.dataSource?.fileReference,
             dataset.revenue?.nonAlignedShare?.relativeShareInPercent?.dataSource?.fileReference,
             dataset.revenue?.nonAlignedShare?.absoluteShare?.dataSource?.fileReference,
+            dataset.revenue?.nonAlignedActivities?.dataSource?.fileReference,
             dataset.revenue?.alignedShare?.relativeShareInPercent?.dataSource?.fileReference,
             dataset.revenue?.alignedShare?.absoluteShare?.dataSource?.fileReference,
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible?.dataSource?.fileReference,
