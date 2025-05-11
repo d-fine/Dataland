@@ -22,9 +22,7 @@ export function multiSelectValueGetterFactory(
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     let fieldValueFromFrameworkDataset = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
-    if (fieldValueFromFrameworkDataset == undefined) {
-      fieldValueFromFrameworkDataset = [];
-    }
+    fieldValueFromFrameworkDataset ??= [];
 
     const expectedDropDownOptions = field.options ?? [];
     const technicalNameToLabelMapping = new Map<string, string>();

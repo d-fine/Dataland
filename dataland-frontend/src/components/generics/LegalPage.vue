@@ -6,12 +6,12 @@
         <slot />
       </div>
     </main>
-    <TheFooter :sections="landingPage?.sections" :is-light-version="false" />
+    <TheFooter :is-light-version="false" />
   </div>
 </template>
 
 <script lang="ts">
-import TheFooter from '@/components/generics/TheNewFooter.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheNewHeader.vue';
 import contentData from '@/assets/content.json';
 import type { Content } from '@/types/ContentTypes';

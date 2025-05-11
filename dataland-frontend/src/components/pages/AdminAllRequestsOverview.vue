@@ -210,48 +210,46 @@
         </div>
       </TheContent>
     </DatasetsTabMenu>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import { defineComponent, inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import {
+  retrieveAvailableFrameworks,
+  retrieveAvailablePriority,
+  retrieveAvailableRequestStatus,
+} from '@/utils/RequestsOverviewPageUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel, priorityBadgeClass } from '@/utils/RequestUtils';
 import {
   convertCamelCaseToWordsWithSpaces,
   frameworkHasSubTitle,
   getFrameworkSubtitle,
   getFrameworkTitle,
 } from '@/utils/StringFormatter';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import type { DataTypeEnum } from '@clients/backend';
 import {
   type ExtendedStoredDataRequest,
   type GetDataRequestsDataTypeEnum,
-  type RequestStatus,
   type RequestPriority,
+  type RequestStatus,
 } from '@clients/communitymanager';
-import InputText from 'primevue/inputtext';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass, priorityBadgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
-import {
-  retrieveAvailableFrameworks,
-  retrieveAvailableRequestStatus,
-  retrieveAvailablePriority,
-} from '@/utils/RequestsOverviewPageUtils';
-import type { DataTypeEnum } from '@clients/backend';
-import router from '@/router';
+import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
+import Column from 'primevue/column';
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import InputText from 'primevue/inputtext';
+import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
@@ -277,9 +275,6 @@ export default defineComponent({
   },
 
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       waitingForData: true,
       currentChunkIndex: 0,
@@ -287,7 +282,6 @@ export default defineComponent({
       rowsPerPage: 100,
       firstRowIndex: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
-      footerContent,
       searchBarInputEmail: '',
       searchBarInputComment: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
