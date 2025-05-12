@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions
 import java.io.File
 
 object ExportTestUtils {
+    private val QUOTE_REGEX = "(^\")|(\"$)".toRegex()
+
     /**
      * Ensures a readable CSV file is provided by checking the given file's extension
      * and providing a valid CSV file if necessary.
@@ -51,7 +53,7 @@ object ExportTestUtils {
             .map { header ->
                 header
                     .trim()
-                    .replace("^\"|\"$".toRegex(), "")
+                    .replace(QUOTE_REGEX, "")
                     .replace("\\data.", "data.")
             }
     }
@@ -99,10 +101,10 @@ object ExportTestUtils {
             val values = parseCSVLine(cleanLine)
 
             if (values.size > maxOf(companyLeiColumnIndex, dataColumnIndex)) {
-                val companyLei = values[companyLeiColumnIndex].replace("^\"|\"$".toRegex(), "")
+                val companyLei = values[companyLeiColumnIndex].replace(QUOTE_REGEX, "")
                 val dataValue =
                     if (dataColumnIndex < values.size) {
-                        values[dataColumnIndex].replace("^\"|\"$".toRegex(), "")
+                        values[dataColumnIndex].replace(QUOTE_REGEX, "")
                     } else {
                         ""
                     }
@@ -216,8 +218,8 @@ object ExportTestUtils {
      * Validates the company data based on the presence and value conditions of specific keys.
      *
      * @param companyData a map containing company data with keys as identifiers and values as associated data
-     * @param companyWithNullFieldLei a string representing the key for the company that is expected to have a null or empty field
-     * @param companyWithNonNullFieldLei a string representing the key for the company that is expected to have a non-null field with a value
+     * @param companyWithNullFieldLei key for the company that is expected to have a null or empty field
+     * @param companyWithNonNullFieldLei key for the company that is expected to have a non-null field with a value
      * @param exportType a string indicating the type of export being validated
      */
     fun validateCompanyData(

@@ -164,7 +164,6 @@ function getSelectedReportingPeriods(): string[] {
 }
 
 /**
-/**
  * Handle the clickEvent of the Download Button
  */
 async function onDownloadButtonClick(): Promise<void> {
@@ -181,7 +180,6 @@ async function onDownloadButtonClick(): Promise<void> {
     await downloadPortfolio();
   } catch (error) {
     console.error('Download error:', error);
-    // Check the specific error type or message to determine if it's a "no data" situation
     if (error instanceof Error && error.message.includes('no data')) {
       portfolioErrors.value = 'No data available.';
     } else {
@@ -193,7 +191,7 @@ async function onDownloadButtonClick(): Promise<void> {
 }
 
 /**
- * Extracts company IDs from selected portfolio
+ * Extracts company IDs from the selected portfolio
  */
 function getCompanyIds(): string[] {
   return portfolioCompanies.value.map((company) => company.companyId);
@@ -253,8 +251,7 @@ async function downloadPortfolio(): Promise<void> {
         const blobUrl = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = blobUrl;
-        const extension = selectedFileType.value === ExportFileType.Csv ? '.csv' : '.csv';
-        a.download = `Portfolio-${portfolioName.value}-${selectedFramework.value}${extension}`;
+        a.download = `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`;
         a.click();
         URL.revokeObjectURL(blobUrl);
         downloadProgress.value = undefined;
