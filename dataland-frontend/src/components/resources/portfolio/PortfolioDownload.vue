@@ -181,7 +181,12 @@ async function onDownloadButtonClick(): Promise<void> {
     await downloadPortfolio();
   } catch (error) {
     console.error('Download error:', error);
-    portfolioErrors.value = 'No data available';
+    // Check the specific error type or message to determine if it's a "no data" situation
+    if (error instanceof Error && error.message.includes('no data')) {
+      portfolioErrors.value = 'No data available.';
+    } else {
+      portfolioErrors.value = 'An error occurred during download. Please try again.';
+    }
     isDownloading.value = false;
     downloadProgress.value = undefined;
   }

@@ -391,14 +391,14 @@ class AssembledDataManager
         /**
          * Obtain data point dimensions for all given data dimensions.
          *
-         * @param dataDimensionList a list of data dimensions
+         * @param dataDimensionsSet a set of data dimensions
          */
         private fun getDataPointDimensions(
-            dataDimensionList: Set<BasicDataDimensions>,
+            dataDimensionsSet: Set<BasicDataDimensions>,
             correlationId: String,
         ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
-            logger.info("Request data point dimensions for a list of data dimension objects. Correlation ID: $correlationId")
-            val dataDimensionsByFramework = dataDimensionList.groupBy { it.dataType }
+            logger.info("Request data point dimensions for a set of data dimension objects. Correlation ID: $correlationId")
+            val dataDimensionsByFramework = dataDimensionsSet.groupBy { it.dataType }
             val result = mutableMapOf<BasicDataDimensions, List<BasicDataPointDimensions>>()
 
             dataDimensionsByFramework.entries.forEach { (framework, frameworkSpecificDataDimensions) ->

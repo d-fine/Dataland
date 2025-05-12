@@ -396,7 +396,7 @@ interface CompanyApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Check was successful. CompanyId is not known by dataland.",
+                description = "Check was successful. CompanyId is not known by Dataland.",
             ),
         ],
     )
