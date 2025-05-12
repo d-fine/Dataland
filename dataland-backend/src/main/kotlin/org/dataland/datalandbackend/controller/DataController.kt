@@ -176,15 +176,23 @@ open class DataController<T>(
         logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
 
         val companyAssociatedDataForExport =
-            dataExportService.buildStreamFromPortfolioExportData(
-                this.buildCompanyExportData(
-                    companyIdAndReportingPeriodPairs,
-                    dataType.toString(), correlationId,
-                ),
-                exportFileType,
-                dataType,
-                includeDataMetaInformation,
-            )
+            try {
+                dataExportService.buildStreamFromPortfolioExportData(
+                    this.buildCompanyExportData(
+                        companyIdAndReportingPeriodPairs,
+                        dataType.toString(), correlationId,
+                    ),
+                    exportFileType,
+                    dataType,
+                    includeDataMetaInformation,
+                )
+            } catch (exception: IllegalArgumentException) {
+                if (exception.message != null && exception.message!!.contains("CSV data is empty")) {
+                    return ResponseEntity.noContent().build()
+                } else {
+                    throw exception
+                }
+            }
 
         logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
 

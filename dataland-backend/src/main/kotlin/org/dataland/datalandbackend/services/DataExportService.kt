@@ -144,8 +144,8 @@ class DataExportService
          * Parse a list of JSON nodes into a list of (fieldName --> fieldValue)-mappings
          *
          * @param nodes the list of nodes to process
-         * @param includeDataMetaInformation whether meta information fields should be kept or dropped
-         * @return a pair of the list containing (fieldName --> fieldValue)-mappings and a set of all used field names
+         * @param includeDataMetaInformation whether meta-information fields should be kept or dropped
+         * @return a pair of lists containing (fieldName --> fieldValue)-mappings and a set of all used field names
          */
         private fun getCsvDataAndNonEmptyFields(
             nodes: List<JsonNode>,
