@@ -171,7 +171,7 @@ function getSelectedReportingPeriods(): string[] {
   return dynamicReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
 }
 
- /**
+/**
  * Handle the clickEvent of the Download Button
  */
 async function onDownloadButtonClick(): Promise<void> {
@@ -234,7 +234,7 @@ async function downloadPortfolio(): Promise<void> {
       includeMetaData.value
     );
 
-    if(dataResponse.status === 204) {
+    if (dataResponse.status === 204) {
       portfolioErrors.value = 'No data available.';
       isDownloading.value = false;
       return;
