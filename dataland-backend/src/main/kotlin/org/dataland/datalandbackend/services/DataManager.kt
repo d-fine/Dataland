@@ -269,10 +269,10 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensionList: Set<BasicDataDimensions>,
+            dataDimensionsSet: Set<BasicDataDimensions>,
             correlationId: String,
         ): Map<BasicDataDimensions, String> =
-            dataDimensionList
+            dataDimensionsSet
                 .associateWith {
                     metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
                         getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data
