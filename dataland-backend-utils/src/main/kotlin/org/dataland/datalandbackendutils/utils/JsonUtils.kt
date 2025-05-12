@@ -15,8 +15,8 @@ object JsonUtils {
      * The field names are essentially the leaf JSON paths using the default JSON path child operator "."
      * Leaf null values are ignored.
      *
-     * @param node The JSON node
-     * @param currentPath The current path
+     * @param node the JSON node
+     * @param currentPath the current path
      * @return a mapping of the names of non-empty fields to their respective values
      */
     fun getNonEmptyLeafNodesAsMapping(

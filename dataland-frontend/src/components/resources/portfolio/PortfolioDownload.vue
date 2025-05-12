@@ -187,7 +187,7 @@ async function onDownloadButtonClick(): Promise<void> {
   try {
     await downloadPortfolio();
   } catch (error) {
-    console.error('Download error 1:', error);
+    console.error('Download error:', error);
     if (error instanceof Error && error.message.includes('CSV data is empty')) {
       portfolioErrors.value = 'No data available.';
     } else {

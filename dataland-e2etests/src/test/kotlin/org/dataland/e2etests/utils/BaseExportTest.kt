@@ -53,7 +53,7 @@ abstract class BaseExportTest<T> {
 
     /**
      * Uploads a company with a randomly generated Legal Entity Identifier (LEI) and associates it with the
-     * API accessor. This method creates a new company entity in the system and links it with a unique LEI.
+     * API accessor.
      *
      * @return A pair where the first element is the ID of the uploaded company and the second element is the generated LEI.
      */
@@ -64,16 +64,9 @@ abstract class BaseExportTest<T> {
 
     /**
      * Sets up test companies and their associated data for use in export tests.
-     *
-     * This method performs the following actions:
-     * - Creates two test companies with randomly generated Legal Entity Identifiers (LEIs).
-     * - Stores the IDs and LEIs of the created companies in the relevant class-level fields.
-     * - Uploads test data with a null field for one company.
-     * - Uploads test data with a non-null field for the second company.
-     * - Waits for the uploaded data to become available for further tests.
      */
     protected fun setupCompaniesAndData() {
-        // Create test companies
+        // Create two test companies with randomly generated LEIs
         val companyWithNullFieldIdAndLei = uploadCompanyWithRandomLei()
         val companyWithNonNullFieldIdAndLei = uploadCompanyWithRandomLei()
 
@@ -129,14 +122,6 @@ abstract class BaseExportTest<T> {
 
     /**
      * Verifies that the CSV export excludes a column corresponding to a null field in the test data.
-     *
-     * This test performs the following actions:
-     * - Generates a CSV export for a single company with a null field using the `exportDataAsCsv` method.
-     * - Validates that the generated export is not null and has content.
-     * - Extracts the headers from the generated CSV file.
-     * - Confirms that the column corresponding to the null field, as determined by the `getNullFieldName` method,
-     *   does not exist in the exported headers.
-     *
      * The test ensures that null fields in the source data are properly omitted from the exported CSV file.
      */
     protected fun testCsvExportOmitsColumnForNullField() {
@@ -183,17 +168,6 @@ abstract class BaseExportTest<T> {
 
     /**
      * Tests the CSV export functionality for multiple companies with differing data configurations.
-     *
-     * This method performs the following steps:
-     * 1. Generates a CSV export that includes data for two companies:
-     *    - One company with a null field in its data.
-     *    - Another company with a non-null field in its data.
-     * 2. Validates that the generated CSV file is correctly exported and is not empty.
-     * 3. Extracts and verifies the headers from the generated CSV file.
-     * 4. Performs additional validation on the multi-company CSV export to ensure:
-     *    - Required columns, including those for metadata like company LEI and null fields, are present.
-     *    - Data consistency and correctness across both companies in the export.
-     *
      * The purpose of this test is to ensure that the exported CSV file correctly represents
      * data for multiple companies, maintaining the integrity and accuracy of the data.
      */
@@ -213,18 +187,6 @@ abstract class BaseExportTest<T> {
 
     /**
      * Tests the Excel export functionality for two companies with differing data configurations.
-     *
-     * This method performs the following steps:
-     * 1. Exports data for two companies as an Excel file:
-     *    - One company with a null field in its data.
-     *    - Another company with a non-null field in its data.
-     * 2. Validates that the generated Excel file is successfully exported and contains content.
-     * 3. Converts the Excel file to a CSV format for easier validation and analysis.
-     * 4. Reads and extracts the header row from the CSV representation of the Excel file.
-     * 5. Performs additional validation to ensure:
-     *    - The exported data reflects the combined data of both companies.
-     *    - The headers and content align with the structured requirements, including the presence of metadata fields.
-     *
      * The purpose of this test is to ensure that the Excel export functionality correctly integrates
      * and represents data for multiple companies, while maintaining data validity and consistency.
      */

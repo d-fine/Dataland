@@ -86,7 +86,7 @@ class DataExportService
          * Create a ByteStream to be used for CSV export from SingleCompanyExportData as JSON objects.
          * @param portfolioExportRows passed SingleCompanyExportData as JSON object to be exported
          * @param dataType the datatype specifying the framework
-         * @param excelCompatibility whether a separator indicator should be prependet to the stream resource
+         * @param excelCompatibility whether a separator indicator should be prepended to the stream resource
          * @param includeDataMetaInformation if false, non value fields are stripped
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
@@ -126,7 +126,7 @@ class DataExportService
         }
 
         /**
-         * Create a ByteStream to be used for JSON Export from a list of JSON objects representin SingleCompanyExportData.
+         * Create a ByteStream to be used for JSON Export from a list of JSON objects representing SingleCompanyExportData.
          * @param portfolioExportRows passed data sets to be exported
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
