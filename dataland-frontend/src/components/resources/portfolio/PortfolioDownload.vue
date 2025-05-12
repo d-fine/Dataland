@@ -26,7 +26,9 @@
           @changed="resetErrors"
         />
       </div>
-      <p v-if="showReportingPeriodsError" class="text-danger mt-2">Please select at least one reporting period.</p>
+      <p v-if="showReportingPeriodsError" class="text-danger mt-2" data-test="reportingPeriodsError">
+        Please select at least one Reporting Period.
+      </p>
       <label for="fileTypeSelector">
         <span>File Type</span>
       </label>
@@ -38,7 +40,7 @@
         placeholder="Select file type"
         :options="fileTypeSelectionOptions"
       />
-      <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
+      <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a File Type.</p>
       <FormKit
         v-model="includeMetaData"
         data-test="includeMetaData"
@@ -72,7 +74,7 @@
       />
     </template>
     <template v-else>
-      <div class="my-4">
+      <div class="my-4" data-test="downloadSpinner">
         <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true" />
       </div>
     </template>
@@ -94,6 +96,7 @@ import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import Message from 'primevue/message';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
+import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -215,76 +218,26 @@ function checkIfShowErrors(): void {
  * Handles download of portfolio
  */
 async function downloadPortfolio(): Promise<void> {
-  if (!selectedFramework.value || !selectedFileType.value) return;
-
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  const frameworkDataApi = getFrameworkDataApiForIdentifier(
-    selectedFramework.value,
-    apiClientProvider
-  ) as PublicFrameworkDataApi<FrameworkData>;
-
-  const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-    getSelectedReportingPeriods(),
-    getCompanyIds(),
-    selectedFileType.value,
-    includeMetaData.value
-  );
-
-  const dataContent =
-    selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
-
-  const url = window.URL.createObjectURL(new Blob([dataContent]));
-
   try {
-    isDownloading.value = true;
-    downloadProgress.value = 0;
+    if (!selectedFramework.value || !selectedFileType.value) return;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'blob';
+    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+    const frameworkDataApi = getFrameworkDataApiForIdentifier(
+      selectedFramework.value,
+      apiClientProvider
+    ) as PublicFrameworkDataApi<FrameworkData>;
 
-    xhr.onprogress = (event: ProgressEvent): void => {
-      if (event.lengthComputable) {
-        downloadProgress.value = Math.round((event.loaded / event.total) * 100);
-        console.log('Download progress:', downloadProgress.value);
-      }
-    };
+    const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
+      getSelectedReportingPeriods(),
+      getCompanyIds(),
+      selectedFileType.value,
+      includeMetaData.value
+    );
 
-    xhr.onload = (): void => {
-      if (xhr.status === 200) {
-        const blob = xhr.response;
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`;
-        a.click();
-        URL.revokeObjectURL(blobUrl);
-        downloadProgress.value = undefined;
-        isDownloading.value = false;
-      } else {
-        if (xhr.status === 500) {
-          portfolioErrors.value = 'No data available.';
-        } else {
-          portfolioErrors.value = 'Network error. Please try again';
-        }
-        isDownloading.value = false;
-        downloadProgress.value = undefined;
-      }
-    };
+    const dataContent =
+      selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
 
-    xhr.onerror = (): void => {
-      portfolioErrors.value = 'Network error. Please try again';
-      isDownloading.value = false;
-      downloadProgress.value = undefined;
-    };
-
-    xhr.onabort = (): void => {
-      portfolioErrors.value = 'Network error. Please try again';
-      isDownloading.value = false;
-      downloadProgress.value = undefined;
-    };
-
-    xhr.send();
+    forceFileDownload(dataContent, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
   } catch (error) {
     console.error(error);
     portfolioErrors.value = 'Download failed due to an unexpected error.';
@@ -329,5 +282,12 @@ async function downloadPortfolio(): Promise<void> {
   color: $gray;
   font-size: $fs-xs;
   font-style: italic;
+}
+
+.p-dialog-title {
+  max-width: 15em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

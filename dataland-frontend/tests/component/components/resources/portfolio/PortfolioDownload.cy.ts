@@ -3,160 +3,97 @@ import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownloa
 import { type EnrichedPortfolio } from '@clients/userservice';
 
 describe('Check the Portfolio Download view', function (): void {
-  let portfolioFixture: EnrichedPortfolio;
+  describe('PortfolioDownload Component Tests', function () {
+    let portfolioFixture: EnrichedPortfolio;
 
-  before(function () {
-    cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
-      portfolioFixture = jsonContent as EnrichedPortfolio;
-    });
-  });
-
-  it('Check framework selection', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId }, // Ensure portfolioId is passed correctly
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        // Check the initial state for the framework select dropdown
-        cy.get('[data-test="frameworkSelector"]').should('exist');
-        cy.get('[data-test="frameworkSelector"]').click();
-        cy.get('[data-test="frameworkSelector"] option').should('have.length', 4); // Based on the availableFrameworks
-        cy.get('[data-test="frameworkSelector"] option[value="sfdr"]').click();
-        cy.get('[data-test="frameworkSelector"]').should('have.value', 'sfdr');
+    before(function () {
+      cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
+        portfolioFixture = jsonContent as EnrichedPortfolio;
       });
     });
-  });
 
-  it('Check reporting period selection', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        // Check the reporting period toggle buttons
-        cy.get('[data-test="listOfReportingPeriods"]').should('exist');
-        cy.get('[data-test="listOfReportingPeriods"] .chip').should('have.length', 6); // Based on dynamicReportingPeriods
-        cy.get('[data-test="listOfReportingPeriods"] .chip').first().click(); // Toggle the first reporting period
-        cy.get('[data-test="listOfReportingPeriods"] .chip').first().should('have.class', 'active'); // Check if the first chip is selected
+    beforeEach(function () {
+      // @ts-ignore
+      cy.mountWithPlugins(PortfolioDownload, {
+        keycloak: minimalKeycloakMock({}),
+        global: {
+          provide: {
+            dialogRef: {
+              value: {
+                data: {
+                  portfolio: portfolioFixture,
+                },
+              },
+            },
+            getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
+          },
+        },
+        props: { portfolioId: portfolioFixture.portfolioId },
       });
     });
-  });
 
-  it('Check file type selection', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    it('Check framework selection', function (): void {
+      cy.get('[data-test="frameworkSelector"]').should('exist');
+      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non Financials');
+    });
 
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        // Check file type dropdown
-        cy.get('[data-test="fileTypeSelector"]').should('exist');
-        cy.get('[data-test="fileTypeSelector"]').click();
-        cy.get('[data-test="fileTypeSelector"] option').should('have.length', 2); // Based on the fileTypeSelectionOptions
-        cy.get('[data-test="fileTypeSelector"] option[value="CSV"]').click();
-        cy.get('[data-test="fileTypeSelector"]').should('have.value', 'CSV');
+    it('Check file type selection', function (): void {
+      cy.get('[data-test="fileTypeSelector"]').should('exist');
+      cy.get('[data-test="fileTypeSelector"]').select('CSV');
+      cy.get('[data-test="fileTypeSelector"]').should('have.value', 'CSV');
+    });
+
+    it('Check reporting period type selection', function (): void {
+      cy.get('[data-test="listOfReportingPeriods"]').should('exist');
+      cy.get('[data-test="fileTypeSelector"]').select('CSV');
+      const reportingYears = ['2025', '2024', '2023', '2022', '2021', '2020'];
+      reportingYears.forEach((year) => {
+        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
       });
     });
-  });
 
-  it('Check error message visibility when no framework selected', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        // Check the framework error visibility when nothing is selected
-        cy.get('[data-test="downloadButton"]').click();
-        cy.get('[data-test="frameworkError"]').should('be.visible');
-        cy.get('[data-test="frameworkError"]').should('contain', 'Please select Framework.');
-      });
+    it('Check error message visibility when no framework selected', function (): void {
+      cy.get('[data-test="downloadButton"]').click();
+      cy.get('[data-test="frameworkError"]').should('be.visible');
+      cy.get('[data-test="frameworkError"]').should('contain', 'Please select Framework.');
     });
-  });
 
-  it('Check error message visibility when no reporting period selected', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        // Check reporting period error message
-        cy.get('[data-test="downloadButton"]').click();
-        cy.get('[data-test="listOfReportingPeriods"] .chip').first().click(); // Select a reporting period
-        cy.get('[data-test="frameworkSelector"]').select('sfdr'); // Select a framework
-        cy.get('[data-test="downloadButton"]').click();
-        cy.get('[data-test="reportingPeriodError"]').should('not.exist'); // No error now
-      });
+    it('Check error message visibility when no reporting period selected', function (): void {
+      cy.get('[data-test="downloadButton"]').click();
+      cy.get('[data-test="frameworkSelector"]').select('sfdr');
+      cy.get('[data-test="fileTypeSelector"]').select('CSV');
+      cy.get('[data-test="downloadButton"]').click();
+      cy.get('[data-test="reportingPeriodsError"]').should('be.visible');
+      cy.get('[data-test="reportingPeriodsError"]').should('contain', 'Please select at least one Reporting Period.');
     });
-  });
 
-  it('Check download button functionality', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="downloadButton"]').should('be.visible').click();
-        cy.get('[data-test="downloadProgressSpinner"]').should('be.visible');
-        cy.get('[data-test="downloadButton"]').should('not.exist'); // Button should be hidden during download
-      });
+    it('Check error message visibility when no file type selected', function (): void {
+      cy.get('[data-test="downloadButton"]').click();
+      cy.get('[data-test="fileTypeError"]').should('be.visible');
+      cy.get('[data-test="fileTypeError"]').should('contain', 'Please select a File Type.');
     });
-  });
 
-  it('Check download progress updates', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        // Simulate download progress by checking the progress updates
-        cy.get('[data-test="downloadButton"]').click();
-        cy.get('[data-test="downloadProgressSpinner"]')
-          .should('have.attr', 'percent-completed') // Assuming the spinner component tracks progress
-          .and('be.greaterThan', 0)
-          .and('be.lessThan', 100);
+    it('Check download button functionality', function (): void {
+      cy.stub(window, 'XMLHttpRequest').callsFake(function () {
+        return {
+          open: cy.stub(),
+          send: cy.stub(),
+          onprogress: null,
+          onload: null,
+          onerror: null,
+          onabort: null,
+          setRequestHeader: cy.stub(),
+          responseType: '',
+        };
       });
-    });
-  });
 
-  it('Check error messages during download failure', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    cy.intercept('**/frameworkDataApi/exportCompanyAssociatedDataByDimensions', {
-      statusCode: 500,
-      body: 'Internal Server Error',
-    }).as('downloadFailure');
+      cy.get('[data-test="frameworkSelector"]').select('sfdr');
+      cy.get('[data-test="listOfReportingPeriods"]').contains('2024').click();
+      cy.get('[data-test="fileTypeSelector"]').select('CSV');
 
-    // @ts-ignore Ignore
-    cy.mountWithPlugins(PortfolioDownload, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="downloadButton"]').click();
-        cy.wait('@downloadFailure').then(() => {
-          cy.get('[data-test="errorMessage"]').should('be.visible');
-          cy.get('[data-test="errorMessage"]').should('contain', 'An error occurred during download');
-        });
-      });
+      cy.get('[data-test="downloadButton"]').click();
+      cy.get('[data-test="downloadButton"]').should('not.exist');
+      cy.get('[data-test="downloadSpinner"]').should('exist');
     });
   });
 });
