@@ -52,7 +52,7 @@
       </Column>
       <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="country of countryOptions" :key="country" class="filter-checkbox" style="overflow-y: auto">
+          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
             <Checkbox
               v-model="filterModel.value"
               :inputId="country"
