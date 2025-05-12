@@ -70,7 +70,7 @@
         label="Download Portfolio"
         icon="pi pi-download"
         title="Download the selected frameworks and reporting periods for current portfolio"
-        @click="onDownloadButtonClick"
+        @click="handlePortfolioDownload"
       />
     </template>
     <template v-else>
@@ -97,7 +97,11 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import Message from 'primevue/message';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
-import { AxiosError } from 'axios';
+import { type AxiosError } from 'axios';
+import {
+  createNewPercentCompletedRef,
+  downloadIsInProgress,
+} from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -132,8 +136,8 @@ const isDownloading = ref(false);
 const props = defineProps<{
   portfolioId: string;
 }>();
-
 const portfolioId = ref<string | undefined>(props.portfolioId);
+const percentCompleted = createNewPercentCompletedRef();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -174,7 +178,7 @@ function getSelectedReportingPeriods(): string[] {
 /**
  * Handle the clickEvent of the Download Button
  */
-async function onDownloadButtonClick(): Promise<void> {
+async function handlePortfolioDownload(): Promise<void> {
   portfolioErrors.value = '';
   checkIfShowErrors();
   if (showReportingPeriodsError.value || showFileTypeError.value || showFrameworksError.value) {
@@ -185,6 +189,7 @@ async function onDownloadButtonClick(): Promise<void> {
   downloadProgress.value = 0;
 
   try {
+    if (downloadIsInProgress(percentCompleted.value)) return;
     await downloadPortfolio();
   } catch (error) {
     console.error('Download error:', error);

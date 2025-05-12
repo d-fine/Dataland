@@ -166,10 +166,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that the companyId is known by dataland."
+            "description": "Successfully checked that the companyId is known by Dataland."
           },
           "404": {
-            "description": "Check was successful. CompanyId is not known by dataland."
+            "description": "Check was successful. CompanyId is not known by Dataland."
           },
           "default": {
             "description": "An error occurred",

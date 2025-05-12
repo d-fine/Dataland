@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject, watch, h } from 'vue';
+import { ref, onMounted, inject, watch } from 'vue';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import PrimeButton from 'primevue/button';
@@ -364,7 +364,7 @@ function downloadPortfolio(): void {
     data: {
       portfolioName: fullName,
       portfolio: enrichedPortfolio.value,
-      companies: selectedDetails.value,
+      companies: portfolioEntriesToDisplay.value,
     },
   });
 }
