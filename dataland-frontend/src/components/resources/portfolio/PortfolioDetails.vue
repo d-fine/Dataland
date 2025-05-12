@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject, watch } from 'vue';
+import { ref, onMounted, inject, watch, h } from 'vue';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import Dropdown from 'primevue/dropdown';
@@ -281,15 +281,27 @@ function editPortfolio(): void {
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
 function downloadPortfolio(): void {
-  const fullName = enrichedPortfolio.value?.portfolioName ?? '';
-  const maxLength = 15;
-  const displayName = fullName.length > maxLength ? fullName.slice(0, maxLength) + '...' : fullName;
+  const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
   dialog.open(PortfolioDownload, {
     props: {
-      header: 'Download ' + displayName,
       modal: true,
     },
+    templates: {
+      header: () => {
+        return h('div', {
+          class: 'p-dialog-title',
+          style: {
+            maxWidth: '15em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          },
+          title: fullName
+        }, fullName);
+      }
+    },
+
     data: {
       portfolioName: fullName,
       portfolio: enrichedPortfolio.value,
