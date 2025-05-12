@@ -52,14 +52,26 @@ abstract class BaseExportTest<T> {
     ): File
 
     /**
-     * Upload a company with a random LEI and return a pair of the company ID and the generated LEI.
+     * Uploads a company with a randomly generated Legal Entity Identifier (LEI) and associates it with the
+     * API accessor. This method creates a new company entity in the system and links it with a unique LEI.
+     *
+     * @return A pair where the first element is the ID of the uploaded company and the second element is the generated LEI.
      */
     private fun uploadCompanyWithRandomLei(): Pair<String, String> {
         val lei = UUID.randomUUID().toString()
         return Pair(apiAccessor.uploadOneCompanyWithIdentifiers(lei = lei)!!.actualStoredCompany.companyId, lei)
     }
 
-    // Setup method template - subclasses can call this in their @BeforeAll method
+    /**
+     * Sets up test companies and their associated data for use in export tests.
+     *
+     * This method performs the following actions:
+     * - Creates two test companies with randomly generated Legal Entity Identifiers (LEIs).
+     * - Stores the IDs and LEIs of the created companies in the relevant class-level fields.
+     * - Uploads test data with a null field for one company.
+     * - Uploads test data with a non-null field for the second company.
+     * - Waits for the uploaded data to become available for further tests.
+     */
     protected fun setupCompaniesAndData() {
         // Create test companies
         val companyWithNullFieldIdAndLei = uploadCompanyWithRandomLei()
@@ -87,7 +99,46 @@ abstract class BaseExportTest<T> {
         waitForDataAvailability()
     }
 
+    /**
+     * Waits for the data associated with specific test companies to become available.
+     *
+     * This method uses polling to repeatedly check the availability of data for two test companies
+     * identified by their respective IDs (`companyWithNullFieldId` and `companyWithNonNullFieldId`).
+     * It ensures that data retrieval for both companies does not throw any exceptions.
+     *
+     * The method will attempt to verify data availability within a maximum time limit of 10 seconds.
+     * Each polling attempt is performed at intervals of 500 milliseconds until the conditions are met.
+     *
+     * The method is intended to be used as part of the data setup or verification process in export tests,
+     * ensuring that the required data is accessible before proceeding with further test operations.
+     */
+    protected fun waitForDataAvailability() {
+        Awaitility
+            .await()
+            .atMost(10, TimeUnit.SECONDS)
+            .pollInterval(500, TimeUnit.MILLISECONDS)
+            .untilAsserted {
+                assertDoesNotThrow {
+                    retrieveData(companyWithNullFieldId)
+                    retrieveData(companyWithNonNullFieldId)
+                }
+            }
+    }
+
     // Common test implementations that can be called from subclasses
+
+    /**
+     * Verifies that the CSV export excludes a column corresponding to a null field in the test data.
+     *
+     * This test performs the following actions:
+     * - Generates a CSV export for a single company with a null field using the `exportDataAsCsv` method.
+     * - Validates that the generated export is not null and has content.
+     * - Extracts the headers from the generated CSV file.
+     * - Confirms that the column corresponding to the null field, as determined by the `getNullFieldName` method,
+     *   does not exist in the exported headers.
+     *
+     * The test ensures that null fields in the source data are properly omitted from the exported CSV file.
+     */
     protected fun testCsvExportOmitsColumnForNullField() {
         // Export only the company with null field
         val singleCompanyCsvExport =
@@ -98,7 +149,6 @@ abstract class BaseExportTest<T> {
 
         ExportTestUtils.validateExportFile(singleCompanyCsvExport, "Single company CSV export")
 
-        // Read CSV file headers
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column does NOT exist
@@ -120,7 +170,6 @@ abstract class BaseExportTest<T> {
 
         ExportTestUtils.validateExportFile(singleCompanyCsvExport, "Single company CSV export")
 
-        // Read CSV file headers
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column DOES exist
@@ -132,6 +181,22 @@ abstract class BaseExportTest<T> {
         )
     }
 
+    /**
+     * Tests the CSV export functionality for multiple companies with differing data configurations.
+     *
+     * This method performs the following steps:
+     * 1. Generates a CSV export that includes data for two companies:
+     *    - One company with a null field in its data.
+     *    - Another company with a non-null field in its data.
+     * 2. Validates that the generated CSV file is correctly exported and is not empty.
+     * 3. Extracts and verifies the headers from the generated CSV file.
+     * 4. Performs additional validation on the multi-company CSV export to ensure:
+     *    - Required columns, including those for metadata like company LEI and null fields, are present.
+     *    - Data consistency and correctness across both companies in the export.
+     *
+     * The purpose of this test is to ensure that the exported CSV file correctly represents
+     * data for multiple companies, maintaining the integrity and accuracy of the data.
+     */
     protected fun testCsvExportForBothCompanies() {
         val multiCompanyCsvExport =
             exportDataAsCsv(
@@ -146,6 +211,23 @@ abstract class BaseExportTest<T> {
         validateMultiCompanyExport(multiCompanyCsvExport, headers, "CSV")
     }
 
+    /**
+     * Tests the Excel export functionality for two companies with differing data configurations.
+     *
+     * This method performs the following steps:
+     * 1. Exports data for two companies as an Excel file:
+     *    - One company with a null field in its data.
+     *    - Another company with a non-null field in its data.
+     * 2. Validates that the generated Excel file is successfully exported and contains content.
+     * 3. Converts the Excel file to a CSV format for easier validation and analysis.
+     * 4. Reads and extracts the header row from the CSV representation of the Excel file.
+     * 5. Performs additional validation to ensure:
+     *    - The exported data reflects the combined data of both companies.
+     *    - The headers and content align with the structured requirements, including the presence of metadata fields.
+     *
+     * The purpose of this test is to ensure that the Excel export functionality correctly integrates
+     * and represents data for multiple companies, while maintaining data validity and consistency.
+     */
     protected fun testExcelExportForBothCompanies() {
         // Export both companies as Excel
         val multiCompanyExcelExport =
@@ -165,6 +247,17 @@ abstract class BaseExportTest<T> {
         validateMultiCompanyExport(excelAsCsvFile, headers, "Excel")
     }
 
+    /**
+     * Tests the CSV export functionality with and without including data meta-information.
+     *
+     * This method verifies the behavior of the CSV export when the `includeDataMetaInformation`
+     * flag is set to `true` and `false`. Specifically, it ensures that:
+     * 1. The value of the specified field is present in both exports.
+     * 2. Quality-related headers for the specified field are included in the export when
+     *    `includeDataMetaInformation` is `true`, but omitted when it is `false`.
+     *
+     * @param fieldName the name of the field to be validated in the CSV export headers
+     */
     protected fun testCsvExportIncludeDataMetaInformationFlag(fieldName: String) {
         // Export data with includeDataMetaInformation=true
         val exportWithMetadata =
@@ -225,7 +318,14 @@ abstract class BaseExportTest<T> {
         )
     }
 
-    // Helper method for validating multi-company exports
+    /**
+     * Validates the content of a multi-company export file by ensuring that required columns
+     * are present and verifying the data consistency across companies.
+     *
+     * @param exportFile The file containing the exported data for multiple companies.
+     * @param headers The list of column headers extracted from the export file to validate against expected columns.
+     * @param exportType The type of export being validated, used for contextual messaging and validation.
+     */
     private fun validateMultiCompanyExport(
         exportFile: File,
         headers: List<String>,
@@ -262,18 +362,5 @@ abstract class BaseExportTest<T> {
             companyWithNonNullFieldLei,
             exportType,
         )
-    }
-
-    protected fun waitForDataAvailability() {
-        Awaitility
-            .await()
-            .atMost(10, TimeUnit.SECONDS)
-            .pollInterval(500, TimeUnit.MILLISECONDS)
-            .untilAsserted {
-                assertDoesNotThrow {
-                    retrieveData(companyWithNullFieldId)
-                    retrieveData(companyWithNonNullFieldId)
-                }
-            }
     }
 }

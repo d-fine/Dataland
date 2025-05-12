@@ -1,13 +1,174 @@
+
 package org.dataland.e2etests.utils
 
 import org.junit.jupiter.api.Assertions
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileReader
 
 object ExportTestUtils {
     /**
-     * Validates that an export file exists and has content
+     * Ensures a readable CSV file is provided by checking the given file's extension
+     * and providing a valid CSV file if necessary.
+     *
+     * @param exportFile The file to validate or convert to a CSV file.
+     * @return A file object with a CSV extension. If the provided file is not a CSV
+     *         but a corresponding CSV file exists, the existing CSV file is returned.
+     *         Otherwise, the original file is returned.
+     */
+    fun getReadableCsvFile(exportFile: File): File =
+        if (exportFile.extension.lowercase() == "csv") {
+            exportFile
+        } else {
+            val csvFile = File(exportFile.parent, "${exportFile.nameWithoutExtension}.csv")
+            if (!csvFile.exists()) {
+                // If the conversion file doesn't exist, just use the original
+                exportFile
+            } else {
+                csvFile
+            }
+        }
+
+    /**
+     * Reads the headers from a CSV file, identifying and extracting the first meaningful line of headers.
+     *
+     * @param csvFile The CSV file from which the header row is to be extracted.
+     * @return A list of strings representing the header column names. Returns an empty list if no valid header line is found.
+     */
+    fun readCsvHeaders(csvFile: File): List<String> {
+        val content = csvFile.readText()
+
+        // find the header line (ignore metadata like "sep=") and split it into individual columns
+        val lines = content.replace("\\n", "\n").split("\n")
+        val headerLine =
+            lines.find {
+                it.contains("companyLei") && !it.contains("sep=")
+            } ?: return emptyList()
+
+        // extract cleaned header values
+        return headerLine
+            .replace("\"\"", "\"")
+            .replace("\\\"", "\"")
+            .split(",")
+            .map { header ->
+                header
+                    .trim()
+                    .replace("^\"|\"$".toRegex(), "")
+                    .replace("\\data.", "data.")
+            }
+    }
+
+    /**
+     * Reads a CSV file and extracts data associated with specified companies identified by their LEIs (Legal Entity Identifiers).
+     * The method processes the CSV file assuming the presence of a header row containing column names, including "companyLei".
+     * It maps each company's LEI to its corresponding data value based on provided column indices.
+     *
+     * @param csvFile The CSV file to be read and processed.
+     * @param companyLeiColumnIndex The index of the column containing the company LEI in the CSV file.
+     * @param dataColumnIndex The index of the column containing the corresponding data value for each company LEI.
+     * @return A map where the keys are the company LEIs and the corresponding values are the associated data extracted from the CSV.
+     *         If no valid data is found, an empty map is returned.
+     */
+    fun readCsvDataByCompanyLei(
+        csvFile: File,
+        companyLeiColumnIndex: Int,
+        dataColumnIndex: Int,
+    ): Map<String, String> {
+        val result = mutableMapOf<String, String>()
+
+        val content = csvFile.readText()
+        val lines = content.replace("\\n", "\n").split("\n")
+
+        // find header line
+        val headerLineIndex =
+            lines.indexOfFirst {
+                it.contains("companyLei") && !it.contains("sep=")
+            }
+        if (headerLineIndex == -1 || headerLineIndex >= lines.size - 1) {
+            return result
+        }
+
+        // extract and clean data lines (after header)
+        for (i in (headerLineIndex + 1) until lines.size) {
+            val line = lines[i].trim()
+            if (line.isBlank()) continue
+
+            val cleanLine =
+                line
+                    .replace("\"\"", "\"")
+                    .replace("\\\"", "\"")
+
+            val values = parseCSVLine(cleanLine)
+
+            if (values.size > maxOf(companyLeiColumnIndex, dataColumnIndex)) {
+                val companyLei = values[companyLeiColumnIndex].replace("^\"|\"$".toRegex(), "")
+                val dataValue =
+                    if (dataColumnIndex < values.size) {
+                        values[dataColumnIndex].replace("^\"|\"$".toRegex(), "")
+                    } else {
+                        ""
+                    }
+
+                result[companyLei] = dataValue.takeIf { it.isNotBlank() } ?: ""
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Parses a single line of CSV formatted text into a list of string values.
+     *
+     * The method handles quoted values, including escaped quotes within quoted sections,
+     * and considers commas outside of quotes as delimiters. Each value is added to the
+     * list as a separate string.
+     *
+     * @param line The CSV formatted the input string to parse. It may contain quoted
+     *             sections and escaped characters.
+     * @return A list of string values parsed from the input line. Each element in
+     *         the list represents a single value from the CSV line.
+     */
+    private fun parseCSVLine(line: String): List<String> {
+        val result = ArrayList<String>()
+        var current = StringBuilder()
+        var inQuotes = false
+        var i = 0
+
+        while (i < line.length) {
+            val c = line[i]
+
+            when {
+                c == '"' -> {
+                    // if there are an even number of quotes, toggle the quote flag
+                    if (i + 1 < line.length && line[i + 1] == '"') {
+                        current.append('"')
+                        i++ // skip the next character since we already added it to the current
+                    } else {
+                        inQuotes = !inQuotes
+                    }
+                }
+                c == ',' && !inQuotes -> {
+                    // if we're not in quotes, then we have encountered a delimiter '
+                    result.add(current.toString())
+                    current = StringBuilder()
+                }
+                else -> {
+                    current.append(c)
+                }
+            }
+
+            i++
+        }
+
+        // add the last value to the result list
+        result.add(current.toString())
+
+        return result
+    }
+
+    /**
+     * Validates the provided export file to ensure it is not null and contains content.
+     *
+     * @param exportFile the file to be validated
+     * @param errorMessage the error message to be included in assertions if validation fails
      */
     fun validateExportFile(
         exportFile: File,
@@ -15,38 +176,6 @@ object ExportTestUtils {
     ) {
         Assertions.assertNotNull(exportFile, "$errorMessage: Export file should not be null")
         Assertions.assertTrue(exportFile.length() > 0, "$errorMessage: Export file should have content")
-    }
-
-    /**
-     * Assert that content contains a specific value
-     */
-    fun assertContentContains(
-        content: String,
-        value: String,
-        errorMessage: String,
-    ) {
-        Assertions.assertTrue(content.contains(value), errorMessage)
-    }
-
-    /**
-     * Assert that content does not contain a specific value
-     */
-    fun assertContentDoesNotContain(
-        content: String,
-        value: String,
-        errorMessage: String,
-    ) {
-        Assertions.assertFalse(content.contains(value), errorMessage)
-    }
-
-    /**
-     * Read headers from a CSV file
-     */
-    fun readCsvHeaders(file: File): List<String> {
-        val reader = BufferedReader(FileReader(file))
-        val headerLine = reader.readLine() ?: ""
-        reader.close()
-        return headerLine.split(",")
     }
 
     /**
@@ -84,53 +213,12 @@ object ExportTestUtils {
     }
 
     /**
-     * Read CSV data into a map by company ID
-     */
-    fun readCsvDataByCompanyLei(
-        file: File,
-        companyLeiColumnIndex: Int,
-        targetColumnIndex: Int,
-    ): Map<String, String> {
-        val reader = BufferedReader(FileReader(file))
-        // Skip header
-        reader.readLine()
-
-        val result = mutableMapOf<String, String>()
-        var line: String? = reader.readLine()
-
-        while (line != null) {
-            val values = line.split(",")
-            if (values.size > maxOf(companyLeiColumnIndex, targetColumnIndex)) {
-                val companyLei = values[companyLeiColumnIndex].trim().replace("\"", "")
-                val fieldValue = values[targetColumnIndex].trim().replace("\"", "")
-                result[companyLei] = fieldValue
-            }
-            line = reader.readLine()
-        }
-
-        reader.close()
-        return result
-    }
-
-    /**
-     * Gets a readable CSV file from the export file
-     */
-    fun getReadableCsvFile(exportFile: File): File =
-        if (exportFile.extension.lowercase() == "csv") {
-            exportFile
-        } else {
-            File(exportFile.parent, "${exportFile.nameWithoutExtension}.csv").also {
-                if (!it.exists()) {
-                    // If conversion file doesn't exist, just use the original
-                    exportFile
-                } else {
-                    it
-                }
-            }
-        }
-
-    /**
-     * Validates company data from an export
+     * Validates the company data based on the presence and value conditions of specific keys.
+     *
+     * @param companyData a map containing company data with keys as identifiers and values as associated data
+     * @param companyWithNullFieldLei a string representing the key for the company that is expected to have a null or empty field
+     * @param companyWithNonNullFieldLei a string representing the key for the company that is expected to have a non-null field with a value
+     * @param exportType a string indicating the type of export being validated
      */
     fun validateCompanyData(
         companyData: Map<String, String>,
