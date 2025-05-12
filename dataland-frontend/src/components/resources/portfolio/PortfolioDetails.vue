@@ -289,17 +289,21 @@ function downloadPortfolio(): void {
     },
     templates: {
       header: () => {
-        return h('div', {
-          class: 'p-dialog-title',
-          style: {
-            maxWidth: '15em',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap'
+        return h(
+          'div',
+          {
+            class: 'p-dialog-title',
+            style: {
+              maxWidth: '15em',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+            title: fullName,
           },
-          title: fullName
-        }, fullName);
-      }
+          fullName
+        );
+      },
     },
 
     data: {

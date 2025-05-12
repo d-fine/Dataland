@@ -97,7 +97,6 @@ import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
@@ -126,6 +125,11 @@ const fileTypeSelectionOptions = [
 ];
 const downloadProgress = ref<number | undefined>(undefined);
 const isDownloading = ref(false);
+const props = defineProps<{
+  portfolioId: string;
+}>();
+
+const portfolioId = ref<string | undefined>(props.portfolioId);
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -164,6 +168,7 @@ function getSelectedReportingPeriods(): string[] {
 }
 
 /**
+ /**
  * Handle the clickEvent of the Download Button
  */
 async function onDownloadButtonClick(): Promise<void> {
@@ -179,11 +184,11 @@ async function onDownloadButtonClick(): Promise<void> {
   try {
     await downloadPortfolio();
   } catch (error) {
-    console.error('Download error:', error);
-    if (error instanceof Error && error.message.includes('no data')) {
+    console.error('Download error 1:', error);
+    if (error instanceof Error && error.message.includes('CSV data is empty')) {
       portfolioErrors.value = 'No data available.';
     } else {
-      portfolioErrors.value = 'An error occurred during download. Please try again.';
+      portfolioErrors.value = 'Network error. Please try again';
     }
     isDownloading.value = false;
     downloadProgress.value = undefined;
@@ -255,20 +260,26 @@ async function downloadPortfolio(): Promise<void> {
         a.click();
         URL.revokeObjectURL(blobUrl);
         downloadProgress.value = undefined;
+        isDownloading.value = false;
       } else {
-        portfolioErrors.value = `Download failed: ${xhr.status}`;
+        if (xhr.status === 500) {
+          portfolioErrors.value = 'No data available.';
+        } else {
+          portfolioErrors.value = 'Network error. Please try again';
+        }
+        isDownloading.value = false;
+        downloadProgress.value = undefined;
       }
-      isDownloading.value = false;
     };
 
     xhr.onerror = (): void => {
-      portfolioErrors.value = 'Network error during download.';
+      portfolioErrors.value = 'Network error. Please try again';
       isDownloading.value = false;
       downloadProgress.value = undefined;
     };
 
     xhr.onabort = (): void => {
-      portfolioErrors.value = 'Download aborted.';
+      portfolioErrors.value = 'Network error. Please try again';
       isDownloading.value = false;
       downloadProgress.value = undefined;
     };
@@ -276,7 +287,7 @@ async function downloadPortfolio(): Promise<void> {
     xhr.send();
   } catch (error) {
     console.error(error);
-    portfolioErrors.value = 'No data available.';
+    portfolioErrors.value = 'Download failed due to an unexpected error.';
     isDownloading.value = false;
     downloadProgress.value = undefined;
   }

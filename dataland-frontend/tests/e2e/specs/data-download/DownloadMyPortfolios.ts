@@ -1,13 +1,13 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
-import { describeIf } from '@e2e/support/TestUtility';
+import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
+import { describeIf } from '@e2e/support/TestUtility.ts';
 import {
   type DataMetaInformation,
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
   type StoredCompany,
 } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
@@ -34,14 +34,8 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancial
 function uploadDataForCompany(token: string, company: StoredCompany, years: string[]): Promise<DataMetaInformation[]> {
   return Promise.all(
     years.map((year) =>
-      uploadGenericFrameworkData(
-        token,
-        company.companyId,
-        year,
-        euTaxonomyForNonFinancialsFixtureForTest.t,
-        (config) => getBasePublicFrameworkDefinition(
-          DataTypeEnum.EutaxonomyNonFinancials
-        )!.getPublicFrameworkApiClient(config)
+      uploadGenericFrameworkData(token, company.companyId, year, euTaxonomyForNonFinancialsFixtureForTest.t, (config) =>
+        getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
       )
     )
   );
@@ -57,12 +51,11 @@ function uploadDataForCompany(token: string, company: StoredCompany, years: stri
  * @return {Promise<Object>} A promise that resolves to the created company object.
  */
 function setupCompanyWithData(token: string, companyName: string, years: string[]): Promise<StoredCompany> {
-  return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName))
-    .then((company) => {
-      return assignCompanyOwnershipToDatalandAdmin(token, company.companyId)
-        .then(() => uploadDataForCompany(token, company, years))
-        .then(() => company);
-    });
+  return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((company) => {
+    return assignCompanyOwnershipToDatalandAdmin(token, company.companyId)
+      .then(() => uploadDataForCompany(token, company, years))
+      .then(() => company);
+  });
 }
 
 /**
@@ -93,10 +86,10 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
  * @return {void} This function does not return a value.
  */
 function testDownloadPortfolio({
-                                 description,
-                                 fileType,
-                                 includeMetaData = false,
-                               }: {
+  description,
+  fileType,
+  includeMetaData = false,
+}: {
   description: string;
   fileType: 'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)';
   includeMetaData?: boolean;
@@ -146,18 +139,17 @@ describeIf(
       const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
       portfolioName = `Download Portfolio ${Date.now()}`;
 
-      return getKeycloakToken(admin_name, admin_pw)
-        .then((token) => {
-          return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
-            .then((company1) => {
-              storedCompany = company1;
-              return setupCompanyWithData(token, secondCompanyName, ['2023', '2024']);
-            })
-            .then((company2) => {
-              secondCompany = company2;
-              createPortfolio(storedCompany, secondCompany, portfolioName);
-            });
-        });
+      return getKeycloakToken(admin_name, admin_pw).then((token) => {
+        return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
+          .then((company1) => {
+            storedCompany = company1;
+            return setupCompanyWithData(token, secondCompanyName, ['2023', '2024']);
+          })
+          .then((company2) => {
+            secondCompany = company2;
+            createPortfolio(storedCompany, secondCompany, portfolioName);
+          });
+      });
     });
 
     beforeEach(() => {
