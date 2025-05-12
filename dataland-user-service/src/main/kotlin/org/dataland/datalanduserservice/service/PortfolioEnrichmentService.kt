@@ -23,46 +23,66 @@ class PortfolioEnrichmentService
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioEnrichmentService::class.java)
+        private val majorFrameworks =
+            listOf("sfdr", "eutaxonomy-financials", "eutaxonomy-non-financials", "nuclear-and-gas")
 
         /**
          * Construct an enriched entry using the passed company information, framework and latest reporting period
          */
         private fun getEnrichedEntry(
             companyInformation: BasicCompanyInformation,
-            framework: String,
-            mostRecentDataYear: String?,
+            availableDataYearsStringPerFramework: Map<String, String?>,
         ) = EnrichedPortfolioEntry(
             companyId = companyInformation.companyId,
             companyName = companyInformation.companyName,
             sector = companyInformation.sector,
             countryCode = companyInformation.countryCode,
-            framework = framework,
             "",
-            "",
-            mostRecentDataYear,
+            mapOf(),
+            availableDataYearsStringPerFramework,
         )
 
         /**
-         * Return a mapping "(companyId, framework) --> latest available reporting period" for each combination of companies and frameworks
-         * @param companyIds the list of companies for which the latest available reporting period shall be returned
-         * @param dataTypes the list of frameworks for which the latest available reporting period shall be returned
+         * Return a mapping: (companyId) => ( mapping: (framework) => available reporting periods ) that has the
+         * passed companyIds as keys, and the inner mapping has the passed frameworks as keys.
+         * @param companyIds
+         * @param frameworks
          */
-        private fun getMostRecentReportingPeriodPerCompanyAndFramework(
+        private fun getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
             companyIds: List<String>,
-            dataTypes: List<String>,
-        ): Map<Pair<String, String>, String> {
+            frameworks: List<String>,
+        ): Map<String, Map<String, List<String>>> {
             val availableDataDimensions =
                 metaDataControllerApi.getAvailableDataDimensions(
                     companyIds = companyIds,
-                    frameworksOrDataPointTypes = dataTypes,
+                    frameworksOrDataPointTypes = frameworks,
                 )
-            return availableDataDimensions.groupBy { Pair(it.companyId, it.dataType) }.mapValues {
-                it.value.maxOf { it.reportingPeriod }
+
+            val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
+                availableDataDimensions
+                    .groupBy(
+                        { it.companyId },
+                        { Pair(it.dataType, it.reportingPeriod) },
+                    )
+
+            val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder =
+                mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod.mapValues {
+                    it.value.groupBy(
+                        { it.first },
+                        { it.second },
+                    )
+                }
+
+            return mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder.mapValues {
+                it.value.mapValues {
+                    it.value.sortedDescending()
+                }
             }
         }
 
         /**
-         * Return enriched portfolio entries for each combination of the passed companies and frameworks
+         * Return enriched portfolio entries for each passed company, using the passed frameworks as keys in the
+         * mapping fields frameworkHyphenatedNamesToDataRef and availableReportingPeriods of each entry.
          * @param companyIdList the list of companies for which entries shall be returned
          * @param frameworkList the list of frameworks for which entries shall be returned
          */
@@ -71,20 +91,28 @@ class PortfolioEnrichmentService
             frameworkList: List<String>,
         ): List<EnrichedPortfolioEntry> {
             val companyValidationResults = companyDataControllerApi.postCompanyValidation(companyIdList)
-            val mostRecentData = getMostRecentReportingPeriodPerCompanyAndFramework(companyIdList, frameworkList)
+            val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
+                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(companyIdList, frameworkList)
             val enrichedEntries = mutableListOf<EnrichedPortfolioEntry>()
 
             companyValidationResults.forEach { validationResult ->
                 val companyInformation = validationResult.companyInformation ?: return@forEach
-                frameworkList.forEach { framework ->
-                    enrichedEntries.add(
-                        getEnrichedEntry(
-                            companyInformation,
-                            framework,
-                            mostRecentData[Pair(companyInformation.companyId, framework)],
-                        ),
-                    )
-                }
+                val mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
+                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId] ?: mapOf()
+                enrichedEntries.add(
+                    getEnrichedEntry(
+                        companyInformation,
+                        mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly.mapValues {
+                            it.value.fold("") { concatenationSoFar, nextReportingPeriod ->
+                                if (concatenationSoFar.isEmpty()) {
+                                    nextReportingPeriod
+                                } else {
+                                    "$concatenationSoFar, $nextReportingPeriod"
+                                }
+                            }
+                        },
+                    ),
+                )
             }
             return enrichedEntries
         }
@@ -106,7 +134,7 @@ class PortfolioEnrichmentService
                 entries =
                     getEnrichedEntries(
                         portfolio.companyIds.toList(),
-                        portfolio.frameworks.map { it.value }.toList(),
+                        majorFrameworks,
                     ),
             )
         }

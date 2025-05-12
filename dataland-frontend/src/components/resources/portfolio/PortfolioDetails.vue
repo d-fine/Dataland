@@ -10,20 +10,6 @@
   </div>
   <div v-else>
     <span class="button_bar">
-      <Dropdown
-        v-model="selectedFramework"
-        :options="frameworks"
-        optionLabel="label"
-        class="selection-button flex flex-row align-items-center"
-        style="width: 16em; display: inline-flex !important"
-        :data-test="'framework-dropdown'"
-      >
-        <template #dropdownicon>
-          <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
-            <polygon points="0,0 5,5 10,0" fill="currentColor" />
-          </svg>
-        </template>
-      </Dropdown>
       <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
@@ -35,7 +21,7 @@
       removableSort
       v-model:filters="filters"
       filterDisplay="menu"
-      :value="selectedDetails"
+      :value="portfolioEntriesToDisplay"
       tableStyle="min-width: 50rem"
       sortField="companyName"
       :sortOrder="1"
@@ -44,7 +30,13 @@
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
         companies or remove filter criteria.
       </template>
-      <Column :sortable="true" field="companyName" header="Company Name" :showFilterMatchModes="false">
+      <Column
+        :sortable="true"
+        field="companyName"
+        header="Company Name"
+        :showFilterMatchModes="false"
+        style="width: 15%"
+      >
         <template #body="portfolioEntry">
           <a :href="`/companies/${portfolioEntry.data.companyId}`">{{ portfolioEntry.data.companyName }}</a>
         </template>
@@ -58,51 +50,68 @@
           />
         </template>
       </Column>
-      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false">
+      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Filter by country"
-            :data-test="'countryCodeFilterValue'"
-          />
+          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="country"
+              name="country"
+              :value="country"
+              data-test="countryFilterValue"
+              @change="filterCallback"
+            />
+            <label :for="country">{{ country }}</label>
+          </div>
         </template>
       </Column>
-      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false">
+      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Filter by sector"
-            :data-test="'sectorFilterValue'"
-          />
+          <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="sector"
+              name="sector"
+              :value="sector"
+              data-test="sectorFilterValue"
+              @change="filterCallback"
+            />
+            <label :for="sector">{{ sector }}</label>
+          </div>
         </template>
       </Column>
       <Column
+        v-for="framework of majorFrameworks"
+        :key="framework"
+        :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
         :sortable="true"
-        field="latestReportingPeriod"
-        header="Last Reporting Period"
+        :field="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriods'"
+        :header="humanizeStringOrNumber(framework)"
         :showFilterMatchModes="false"
       >
         <template #body="portfolioEntry">
-          <a v-if="portfolioEntry.data.frameworkDataRef" :href="portfolioEntry.data.frameworkDataRef">{{
-            portfolioEntry.data.latestReportingPeriod
-          }}</a>
-          <span v-else>{{ portfolioEntry.data.latestReportingPeriod }}</span>
+          <a
+            v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+            :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+            >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
+          >
+          <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="category of reportingPeriodOptions" :key="category" class="filter-checkbox">
+          <div
+            v-for="availableReportingPeriods of reportingPeriodOptions.get(framework)"
+            :key="availableReportingPeriods"
+            class="filter-checkbox"
+          >
             <Checkbox
               v-model="filterModel.value"
-              :inputId="category"
-              name="category"
-              :value="category"
-              :data-test="'latestReportingPeriodeFilterValue'"
+              :inputId="availableReportingPeriods"
+              name="availableReportingPeriods"
+              :value="availableReportingPeriods"
+              :data-test="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
               @change="filterCallback"
             />
-            <label :for="category">{{ category }}</label>
+            <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
           </div>
         </template>
       </Column>
@@ -114,7 +123,6 @@
 import { ref, onMounted, inject, watch } from 'vue';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import Dropdown from 'primevue/dropdown';
 import PrimeButton from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -123,11 +131,12 @@ import { FilterMatchMode } from 'primevue/api';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-import { groupBy } from '@/utils/ArrayUtils.ts';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import Checkbox from 'primevue/checkbox';
+
+const majorFrameworks = ['sfdr', 'eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'];
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -139,24 +148,38 @@ class PortfolioEntryPrepared {
   readonly companyName: string;
   readonly sector?: string;
   readonly country: string;
-  readonly framework: string;
   readonly companyCockpitRef: string;
-  readonly frameworkDataRef?: string;
-  readonly latestReportingPeriod?: string;
+  readonly frameworkHyphenatedNamesToDataRef: Map<string, string | undefined>;
+  readonly sfdrAvailableReportingPeriods: string | undefined;
+  readonly eutaxonomyFinancialsAvailableReportingPeriods: string | undefined;
+  readonly eutaxonomyNonFinancialsAvailableReportingPeriods: string | undefined;
+  readonly nuclearAndGasAvailableReportingPeriods: string | undefined;
 
   constructor(portfolioEntry: EnrichedPortfolioEntry) {
     this.companyId = portfolioEntry.companyId;
     this.companyName = portfolioEntry.companyName;
     this.sector = portfolioEntry.sector;
     this.country = getCountryNameFromCountryCode(portfolioEntry.countryCode) ?? 'unknown';
-    this.framework = portfolioEntry.framework ?? '';
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
-    this.frameworkDataRef =
-      portfolioEntry.frameworkDataRef ||
-      (portfolioEntry.latestReportingPeriod
-        ? `/companies/${portfolioEntry.companyId}/frameworks/${portfolioEntry.framework}`
-        : undefined);
-    this.latestReportingPeriod = portfolioEntry.latestReportingPeriod || 'No data available';
+    this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
+
+    majorFrameworks.forEach((framework) => {
+      this.frameworkHyphenatedNamesToDataRef.set(
+        framework,
+        portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
+          (portfolioEntry.availableReportingPeriods[framework]
+            ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
+            : undefined)
+      );
+    });
+
+    this.sfdrAvailableReportingPeriods = portfolioEntry.availableReportingPeriods['sfdr'] || 'No data available';
+    this.eutaxonomyFinancialsAvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods['eutaxonomy-financials'] || 'No data available';
+    this.eutaxonomyNonFinancialsAvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods['eutaxonomy-non-financials'] || 'No data available';
+    this.nuclearAndGasAvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods['nuclear-and-gas'] || 'No data available';
   }
 }
 
@@ -164,13 +187,18 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
-const reportingPeriodOptions = ref<string[]>([]);
+const countryOptions = ref<string[]>(new Array<string>());
+const sectorOptions = ref<string[]>(new Array<string>());
+const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  country: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  sector: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  latestReportingPeriod: { value: [], matchMode: FilterMatchMode.IN },
+  country: { value: [], matchMode: FilterMatchMode.IN },
+  sector: { value: [], matchMode: FilterMatchMode.IN },
+  sfdrAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  eutaxonomyFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  nuclearAndGasAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
 });
 
 const props = defineProps<{
@@ -178,10 +206,7 @@ const props = defineProps<{
 }>();
 
 const enrichedPortfolio = ref<EnrichedPortfolio>();
-let groupedEntries = {} as Map<string, PortfolioEntryPrepared[]>;
-const frameworks = ref<{ label: string; value: string }[]>([]);
-const selectedFramework = ref<{ label: string; value: string }>();
-const selectedDetails = ref([] as PortfolioEntryPrepared[]);
+const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const isLoading = ref(true);
 const isError = ref(false);
 
@@ -189,20 +214,87 @@ onMounted(() => {
   loadPortfolio();
 });
 
-watch([selectedFramework, enrichedPortfolio], () => {
-  const currentFramework = selectedFramework?.value?.value || '';
-  const entries = groupedEntries.get(currentFramework) || [];
+watch([enrichedPortfolio], () => {
+  const entries = portfolioEntriesToDisplay.value || [];
 
-  selectedDetails.value = entries;
-
-  reportingPeriodOptions.value = Array.from(
-    new Set(
-      entries
-        .map((entry) => entry.latestReportingPeriod)
-        .filter((period): period is string => typeof period === 'string')
-    )
+  countryOptions.value = Array.from(
+    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
   ).sort();
+
+  sectorOptions.value = Array.from(
+    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
+  ).sort();
+
+  majorFrameworks.forEach((framework) => {
+    reportingPeriodOptions.value.set(
+      framework,
+      Array.from(
+        new Set(
+          entries
+            .map((entry) => getAvailableReportingPeriods(entry, framework))
+            .filter((period): period is string => typeof period === 'string')
+        )
+      ).sort()
+    );
+  });
 });
+
+/**
+ * Returns the width (in percent of the total screen width) of a portfolio datatable column
+ * associated with a framework.
+ * @param framework the hyphenated name of the framework in question
+ */
+function widthOfFrameworkColumn(framework: string): string {
+  switch (framework) {
+    case 'sfdr':
+      return '10';
+    case 'eutaxonomy-financials':
+      return '15';
+    case 'eutaxonomy-non-financials':
+      return '17.5';
+    case 'nuclear-and-gas':
+      return '17.5';
+    default:
+      return '15';
+  }
+}
+
+/**
+ * Convert the given hyphenated string to camel case by deleting each hyphen and capitalizing
+ * each letter originally preceded by a hyphen.
+ * @param hyphenatedString
+ */
+function convertHyphenatedStringToCamelCase(hyphenatedString: string): string {
+  return hyphenatedString
+    .split('-')
+    .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+    .join('');
+}
+
+/**
+ * For a given prepared portfolio entry and (hyphenated) framework name, return the associated
+ * string of available reporting periods.
+ * @param portfolioEntryPrepared
+ * @param frameworkName
+ */
+function getAvailableReportingPeriods(
+  portfolioEntryPrepared: PortfolioEntryPrepared,
+  frameworkName: string
+): string | undefined {
+  switch (frameworkName) {
+    case 'sfdr':
+      return portfolioEntryPrepared.sfdrAvailableReportingPeriods;
+    case 'eutaxonomy-financials':
+      return portfolioEntryPrepared.eutaxonomyFinancialsAvailableReportingPeriods;
+    case 'eutaxonomy-non-financials':
+      return portfolioEntryPrepared.eutaxonomyNonFinancialsAvailableReportingPeriods;
+    case 'nuclear-and-gas':
+      return portfolioEntryPrepared.nuclearAndGasAvailableReportingPeriods;
+    default:
+      return undefined;
+  }
+}
+
 /**
  * (Re-)loads a portfolio
  */
@@ -213,11 +305,7 @@ function loadPortfolio(): void {
     .then((response) => {
       enrichedPortfolio.value = response.data;
 
-      const preparedPortfolioEntries = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-
-      groupedEntries = groupBy(preparedPortfolioEntries, (item) => item.framework);
-      frameworks.value = getFrameworkListSorted();
-      selectedFramework.value = frameworks.value[0];
+      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
     })
     .catch((reason) => {
       console.error(reason);
@@ -234,21 +322,6 @@ function resetFilters(): void {
   for (filterName in filters.value) {
     filters.value[filterName].value = null;
   }
-}
-
-/**
- * Extracts all distinct frameworks that are supported in the frontend from the metadata.
- * Then the resulting list is sorted alphabetically.
- */
-function getFrameworkListSorted(): { label: string; value: string }[] {
-  return Array.from(groupedEntries.keys())
-    .sort((a, b) => a.localeCompare(b))
-    .map((dataType) => {
-      return {
-        label: humanizeStringOrNumber(dataType),
-        value: dataType,
-      };
-    });
 }
 
 /**

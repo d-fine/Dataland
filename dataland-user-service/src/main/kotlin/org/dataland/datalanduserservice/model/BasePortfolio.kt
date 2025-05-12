@@ -1,7 +1,6 @@
 package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.time.Instant
@@ -24,8 +23,6 @@ data class BasePortfolio(
     val lastUpdateTimestamp: Long,
     @field:JsonProperty(required = true)
     override val companyIds: Set<String>,
-    @field:JsonProperty(required = true)
-    override val frameworks: Set<DataTypeEnum>,
 ) : Portfolio {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
@@ -34,7 +31,6 @@ data class BasePortfolio(
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = portfolioUpload.companyIds,
-        frameworks = portfolioUpload.frameworks,
     )
 
     /**
@@ -53,6 +49,5 @@ data class BasePortfolio(
             creationTimestamp = creationTimestamp ?: this.creationTimestamp,
             lastUpdateTimestamp = this.lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
-            frameworks = this.frameworks.toMutableSet(),
         )
 }
