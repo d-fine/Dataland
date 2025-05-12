@@ -42,7 +42,7 @@ const val COMPANY_SEARCH_STRING_DESCRIPTION =
 @SecurityRequirement(name = "default-oauth")
 interface CompanyApi {
     /**
-     * A method to create a new company entry in dataland
+     * A method to create a new company entry in Dataland
      * @param companyInformation includes the company information
      * @return information about the stored company, including the generated company ID
      */
@@ -239,7 +239,7 @@ interface CompanyApi {
 
     /**
      * A method to retrieve company information for one specific company identified by its company Id
-     * @param companyId identifier of the company in dataland
+     * @param companyId identifier of the company in Dataland
      * @return information about the company
      */
     @Operation(
@@ -262,7 +262,7 @@ interface CompanyApi {
 
     /**
      * A method to update company information for one specific company identified by its company Id
-     * @param companyId identifier of the company in dataland
+     * @param companyId identifier of the company in Dataland
      * @param companyInformationPatch includes the company information
      * @return updated information about the company
      */
@@ -291,8 +291,8 @@ interface CompanyApi {
     ): ResponseEntity<StoredCompany>
 
     /**
-     * A method to update company informtion entirely
-     * @param companyId identifier of the company in dataland
+     * A method to update company information entirely
+     * @param companyId identifier of the company in Dataland
      * @param companyInformation includes the company information
      * @return updated information about the company
      */
@@ -360,7 +360,7 @@ interface CompanyApi {
 
     /**
      * A method to retrieve company information for one specific company identified by its company ID
-     * @param companyId identifier of the company in dataland
+     * @param companyId identifier of the company in Dataland
      * @return information about the company without framework information
      */
     @Operation(
@@ -392,7 +392,7 @@ interface CompanyApi {
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully checked that the companyId is known by dataland.",
+                description = "Successfully checked that the companyId is known by Dataland.",
             ),
             ApiResponse(
                 responseCode = "404",
@@ -411,7 +411,7 @@ interface CompanyApi {
 
     /**
      * A method to retrieve a list of subsidiaries of an ultimate parent company.
-     * @param companyId identifier of the ultimate parent company in dataland
+     * @param companyId identifier of the ultimate parent company in Dataland
      * @return list of subsidiaries
      */
     @Operation(
