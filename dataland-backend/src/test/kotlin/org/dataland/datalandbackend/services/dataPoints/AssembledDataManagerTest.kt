@@ -180,7 +180,7 @@ class AssembledDataManagerTest {
             }
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
-        assert(dynamicDataset!!.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 
     @Test
