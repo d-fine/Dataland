@@ -52,7 +52,7 @@
       </Column>
       <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+          <div v-for="country of countryOptions" :key="country" class="filter-checkbox" style="overflow-y: auto">
             <Checkbox
               v-model="filterModel.value"
               :inputId="country"
@@ -219,11 +219,11 @@ watch([enrichedPortfolio], () => {
 
   countryOptions.value = Array.from(
     new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
-  );
+  ).sort();
 
   sectorOptions.value = Array.from(
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
-  );
+  ).sort();
 
   majorFrameworks.forEach((framework) => {
     reportingPeriodOptions.value.set(
