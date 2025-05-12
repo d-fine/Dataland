@@ -2,7 +2,6 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
@@ -47,7 +46,7 @@ class ValidatorTest {
     private val invalidCompanyId = "invalid-company-id"
 
     private val validPortfolioUpload =
-        PortfolioUpload(dummyPortfolioName, setOf(validCompanyId), setOf(DataTypeEnum.lksg))
+        PortfolioUpload(dummyPortfolioName, setOf(validCompanyId))
 
     @BeforeEach
     fun setup() {

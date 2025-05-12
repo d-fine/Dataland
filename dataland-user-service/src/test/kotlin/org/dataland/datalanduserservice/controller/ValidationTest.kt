@@ -11,14 +11,13 @@ class ValidationTest {
     private val validator = Validation.buildDefaultValidatorFactory().validator
 
     @Test
-    fun `test that validation of PortfolioUpload with empty companyIds and empty dataTypes works as expected`() {
+    fun `test that validation of PortfolioUpload with empty companyIds works as expected`() {
         val portfolio =
             PortfolioUpload(
                 portfolioName = "Invalid Portfolio",
                 companyIds = emptySet(),
-                frameworks = emptySet(),
             )
         val violations = validator.validate(portfolio)
-        assertEquals(2, violations.size)
+        assertEquals(1, violations.size)
     }
 }

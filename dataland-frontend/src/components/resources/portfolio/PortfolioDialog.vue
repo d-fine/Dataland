@@ -74,7 +74,6 @@ import type {
   EnrichedPortfolio,
   EnrichedPortfolioEntry,
   PortfolioUpload,
-  PortfolioUploadFrameworksEnum,
 } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -123,16 +122,7 @@ onMounted(() => {
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
-  portfolioFrameworks.value = getUniqueFrameworks(portfolio.entries);
 });
-
-/**
- * Retrieve array of frameworks from EnrichedPortfolioEntries
- */
-function getUniqueFrameworks(entries: EnrichedPortfolioEntry[]): string[] {
-  const frameworks = entries.map((entry) => entry.framework).filter(isFramework);
-  return Array.from(new Set(frameworks));
-}
 
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
@@ -191,7 +181,6 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      frameworks: portfolioFrameworks.value as unknown as Set<PortfolioUploadFrameworksEnum>,
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
@@ -240,14 +229,6 @@ async function deletePortfolio(): Promise<void> {
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }
-}
-
-/**
- * Type Guard to convince typescript that undefined is really filtered out.
- * @param framework
- */
-function isFramework(framework: string | undefined): framework is string {
-  return !!framework;
 }
 
 /**
