@@ -153,7 +153,7 @@ class DataExportService
         ): Pair<List<Map<String, String>>, Set<String>> {
             val csvData =
                 nodes.map { node ->
-                    val nonEmptyNodes = JsonUtils.getNonEmptyNodesAsMapping(node)
+                    val nonEmptyNodes = JsonUtils.getNonEmptyLeafNodesAsMapping(node)
                     if (includeDataMetaInformation) {
                         nonEmptyNodes
                     } else {

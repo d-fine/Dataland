@@ -12,14 +12,14 @@ object JsonUtils {
 
     /**
      * Get all leaf node field names mapped to their corresponding value from a JSON node.
-     * The field names are essentially the leafs JSON paths using the default JSON path child operator "."
+     * The field names are essentially the leaf JSON paths using the default JSON path child operator "."
      * Leaf null values are ignored.
      *
      * @param node The JSON node
      * @param currentPath The current path
      * @return a mapping of the names of non-empty fields to their respective values
      */
-    fun getNonEmptyNodesAsMapping(
+    fun getNonEmptyLeafNodesAsMapping(
         node: JsonNode,
         currentPath: String = "",
     ): MutableMap<String, String> {
@@ -34,14 +34,14 @@ object JsonUtils {
             node.isObject -> {
                 node.fields().forEachRemaining { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
-                    result.putAll(getNonEmptyNodesAsMapping(value, newPath))
+                    result.putAll(getNonEmptyLeafNodesAsMapping(value, newPath))
                 }
             }
 
             node.isArray -> {
                 node.elements().withIndex().forEachRemaining { (index, element) ->
                     val newPath = if (currentPath.isEmpty()) "$index" else "$currentPath$JSON_PATH_SEPARATOR$index"
-                    result.putAll(getNonEmptyNodesAsMapping(element, newPath))
+                    result.putAll(getNonEmptyLeafNodesAsMapping(element, newPath))
                 }
             }
         }
@@ -53,12 +53,12 @@ object JsonUtils {
      * Get all leaf node field names from a JSON node.
      * The field names are essentially the leafs JSON paths using the default JSON path child operator "."
      * Leaf null values are ignored.
-     * @param node The JSON node
-     * @param currentPath The current path
+     * @param node the JSON node
+     * @param currentPath the current path
      * @param ignoreArrays ignores Arrays if set to true
      * @param keepEmptyFields if set to true, nodes with value null will also be extracted
      * @param dropLastFieldName if set to true, the last part of the path is cut off
-     * @return A list of leaf node field names
+     * @return a list of leaf node field names
      */
     fun getLeafNodeFieldNames(
         node: JsonNode,
