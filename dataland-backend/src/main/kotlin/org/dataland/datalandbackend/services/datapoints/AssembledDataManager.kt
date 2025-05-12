@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
@@ -104,7 +105,10 @@ class AssembledDataManager
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 
             referencedReportsUtilities
-                .insertReferencedReportsIntoFrameworkSchema(frameworkSchema, frameworkSpecification.referencedReportJsonPath)
+                .insertReferencedReportsIntoFrameworkSchema(
+                    frameworkSchema,
+                    frameworkSpecification.referencedReportJsonPath,
+                )
 
             val dataContent =
                 JsonSpecificationUtils
@@ -137,7 +141,12 @@ class AssembledDataManager
                     ?.associate { it.fileReference to it.fileName!! }
                     ?: emptyMap()
 
-            return SplitDataset(dataContent, referencedReports, fileReferenceToPublicationDateMapping, fileReferenceToFileNameMapping)
+            return SplitDataset(
+                dataContent,
+                referencedReports,
+                fileReferenceToPublicationDateMapping,
+                fileReferenceToFileNameMapping,
+            )
         }
 
         /**
@@ -276,7 +285,7 @@ class AssembledDataManager
          * @param datasetId the id of the dataset
          * @param dataType the type of dataset
          * @param correlationId the correlation id for the operation
-         * @return the dataset in form of a JSON string
+         * @return the dataset in the form of a JSON string
          */
         @Transactional(readOnly = true)
         override fun getDatasetData(
@@ -316,7 +325,10 @@ class AssembledDataManager
             val frameworkSpecification = dataPointUtils.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
             referencedReportsUtilities
-                .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
+                .insertReferencedReportsIntoFrameworkSchema(
+                    frameworkTemplate,
+                    frameworkSpecification.referencedReportJsonPath,
+                )
             return frameworkTemplate
         }
 
@@ -361,36 +373,38 @@ class AssembledDataManager
          * This function processes multiple datasets at once. Each dataset in the input is identified by a
          * BasicDataDimensions object.
          *
-         * @param dataDimensionsToDataIdMap a map of all required data point IDs grouped by data set
+         * @param dataDimensionsToDataPointIdMap a map of all required data point IDs grouped by data set
          * @param correlationId the correlation ID for the operation
-         * @return the dataset in form of a JSON string
+         * @return the dataset in the form of a JSON string
          */
-        private fun assembleDatasetsFromDataIds(
-            dataDimensionsToDataIdMap: Map<BasicDataDimensions, List<String>>,
+        private fun assembleDatasetsFromDataPointIds(
+            dataDimensionsToDataPointIdMap: Map<BasicDataDimensions, List<String>>,
             correlationId: String,
         ): Map<BasicDataDimensions, String> {
             val allStoredDatapoints =
-                dataPointManager.retrieveDataPoints(dataDimensionsToDataIdMap.flatMap { it.value }, correlationId)
-            val dataPointsPerDatasetGroupedByFramework = mutableMapOf<String, MutableMap<BasicDataDimensions, List<UploadedDataPoint>>>()
-            dataDimensionsToDataIdMap.forEach { (dataDimensions, listOfDataIds) ->
-                val uploadedDataPoints = listOfDataIds.mapNotNull { allStoredDatapoints[it] }
-                dataPointsPerDatasetGroupedByFramework
-                    .getOrPut(dataDimensions.dataType) { mutableMapOf() }[dataDimensions] = uploadedDataPoints
-            }
+                dataPointManager.retrieveDataPoints(dataDimensionsToDataPointIdMap.flatMap { it.value }, correlationId)
 
-            val result = mutableMapOf<BasicDataDimensions, String>()
-            dataPointsPerDatasetGroupedByFramework.forEach { (framework, dataSetsPerFramework) ->
-                val frameworkTemplate = getFrameworkTemplate(framework)
-                dataSetsPerFramework.forEach { (dataDimensions, dataPoints) ->
-                    result[dataDimensions] = assembleSingleDataSet(dataPoints, frameworkTemplate)
-                }
+            val frameworkToTemplate =
+                dataDimensionsToDataPointIdMap.keys
+                    .map { it.dataType }
+                    .toSet()
+                    .associateWith { getFrameworkTemplate(it) }
+
+            val dataDimensionsToUploadedDataPoints =
+                dataDimensionsToDataPointIdMap
+                    .mapValues { (_, dataPointIds) -> dataPointIds.mapNotNull { allStoredDatapoints[it] } }
+
+            return dataDimensionsToUploadedDataPoints.mapValues { (dataDimensions, dataPoints) ->
+                assembleSingleDataSet(
+                    dataPoints,
+                    frameworkToTemplate[dataDimensions.dataType]
+                        ?: throw IllegalArgumentException("Framework not found for data dimensions: $dataDimensions"),
+                )
             }
-            return result
         }
 
         /**
          * Obtain data point dimensions for all given data dimensions.
-         *
          * @param dataDimensionsSet a set of data dimensions
          */
         private fun getDataPointDimensions(
@@ -425,7 +439,7 @@ class AssembledDataManager
                         dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
                     }.filterNot { it.value.isEmpty() }
 
-            return assembleDatasetsFromDataIds(dataPointIds, correlationId)
+            return assembleDatasetsFromDataPointIds(dataPointIds, correlationId)
         }
 
         @Transactional(readOnly = true)
