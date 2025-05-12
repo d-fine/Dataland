@@ -46,8 +46,8 @@
         data-test="includeMetaData"
         type="checkbox"
         name="includeMetaData"
-        label="Include Meta Data"
-        help="Download values with additional Meta data."
+        label="Include meta data"
+        help="Download values with additional meta data."
         :outer-class="{
           'yes-no-radio': true,
         }"
@@ -97,6 +97,7 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import Message from 'primevue/message';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
+import { AxiosError } from 'axios';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -113,8 +114,8 @@ const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
 const availableFrameworks = [
   { value: 'sfdr', label: 'SFDR' },
   { value: 'eutaxonomy-financials', label: 'EU Taxonomy Financials' },
-  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non Financials' },
-  { value: 'nuclear-and-gas', label: 'Nuclear and Gas' },
+  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non-Financials' },
+  { value: 'nuclear-and-gas', label: 'EU Taxonomy Nuclear and Gas' },
 ];
 const dynamicReportingPeriods = ref(
   [2025, 2024, 2023, 2022, 2021, 2020].map((year) => ({
@@ -170,7 +171,6 @@ function getSelectedReportingPeriods(): string[] {
   return dynamicReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
 }
 
-/**
  /**
  * Handle the clickEvent of the Download Button
  */
@@ -234,13 +234,20 @@ async function downloadPortfolio(): Promise<void> {
       includeMetaData.value
     );
 
+    if(dataResponse.status === 204) {
+      portfolioErrors.value = 'No data available.';
+      isDownloading.value = false;
+      return;
+    }
+
     const dataContent =
       selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
 
     forceFileDownload(dataContent, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
   } catch (error) {
     console.error(error);
-    portfolioErrors.value = 'Download failed due to an unexpected error.';
+    portfolioErrors.value = `${(error as AxiosError).message}`;
+  } finally {
     isDownloading.value = false;
     downloadProgress.value = undefined;
   }

@@ -34,7 +34,7 @@ describe('Check the Portfolio Download view', function (): void {
 
     it('Check framework selection', function (): void {
       cy.get('[data-test="frameworkSelector"]').should('exist');
-      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non Financials');
+      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
     });
 
     it('Check file type selection', function (): void {

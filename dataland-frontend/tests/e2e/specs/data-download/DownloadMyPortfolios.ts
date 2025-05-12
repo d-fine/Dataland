@@ -157,24 +157,24 @@ describeIf(
       cy.visitAndCheckAppMount('/portfolios');
       cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
-      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non Financials');
+      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
       reportingYearsToSelect.forEach((year) => {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
       });
     });
 
     testDownloadPortfolio({
-      description: 'Download the portfolio as a CSV file without Meta Data',
+      description: 'Download the portfolio as a CSV file without meta Data',
       fileType: 'Comma-separated Values (.csv)',
     });
 
     testDownloadPortfolio({
-      description: 'Download the portfolio as an Excel-compatible CSV file without Meta Data',
+      description: 'Download the portfolio as an Excel-compatible CSV file without meta Data',
       fileType: 'Excel-compatible CSV File (.csv)',
     });
 
     testDownloadPortfolio({
-      description: 'Download the portfolio as CSV file with Meta Data',
+      description: 'Download the portfolio as CSV file with meta Data',
       fileType: 'Comma-separated Values (.csv)',
       includeMetaData: true,
     });
@@ -189,7 +189,7 @@ describeIf(
       cy.intercept('GET', '**/api/data/eutaxonomy-non-financials/export**', (req) => {
         req.reply((res) => {
           res.send({
-            statusCode: 500,
+            statusCode: 204,
             body: {},
           });
         });

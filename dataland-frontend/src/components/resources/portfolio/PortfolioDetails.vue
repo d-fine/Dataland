@@ -286,26 +286,8 @@ function downloadPortfolio(): void {
   dialog.open(PortfolioDownload, {
     props: {
       modal: true,
+      header: fullName,
     },
-    templates: {
-      header: () => {
-        return h(
-          'div',
-          {
-            class: 'p-dialog-title',
-            style: {
-              maxWidth: '15em',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            },
-            title: fullName,
-          },
-          fullName
-        );
-      },
-    },
-
     data: {
       portfolioName: fullName,
       portfolio: enrichedPortfolio.value,
