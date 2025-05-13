@@ -29,7 +29,7 @@ export function getAvailableReportingPeriodsAsString(
     return 'No data available';
   }
 
-  return portfolioEntry.availableReportingPeriods[frameworkName] || 'No data available';
+  return portfolioEntry.availableReportingPeriods[frameworkName] ?? 'No data available';
 }
 
 /**
