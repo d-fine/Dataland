@@ -23,7 +23,6 @@ import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
@@ -296,7 +295,7 @@ class AssembledDataManager
             val dataPoints = getDataPointIdsForDataset(datasetId)
             return assembleSingleDataSet(
                 dataPointManager.retrieveDataPoints(dataPoints.values, correlationId).values,
-                getFrameworkTemplate(dataType),
+                dataPointUtils.getFrameworkTemplate(dataType),
             )
         }
 
@@ -314,22 +313,6 @@ class AssembledDataManager
                     ?.dataPoints
                     ?: emptyMap()
             return dataPoints
-        }
-
-        /**
-         * Return the template of a specific framework
-         *
-         * @param framework the framework for which the template shall be returned
-         */
-        private fun getFrameworkTemplate(framework: String): JsonNode {
-            val frameworkSpecification = dataPointUtils.getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
-            referencedReportsUtilities
-                .insertReferencedReportsIntoFrameworkSchema(
-                    frameworkTemplate,
-                    frameworkSpecification.referencedReportJsonPath,
-                )
-            return frameworkTemplate
         }
 
         /**
@@ -388,7 +371,7 @@ class AssembledDataManager
                 dataDimensionsToDataPointIdMap.keys
                     .map { it.dataType }
                     .toSet()
-                    .associateWith { getFrameworkTemplate(it) }
+                    .associateWith { dataPointUtils.getFrameworkTemplate(it) }
 
             val dataDimensionsToUploadedDataPoints =
                 dataDimensionsToDataPointIdMap
@@ -403,36 +386,12 @@ class AssembledDataManager
             }
         }
 
-        /**
-         * Obtain data point dimensions for all given data dimensions.
-         * @param dataDimensionsSet a set of data dimensions
-         */
-        private fun getDataPointDimensions(
-            dataDimensionsSet: Set<BasicDataDimensions>,
-            correlationId: String,
-        ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
-            logger.info("Request data point dimensions for a set of data dimension objects. Correlation ID: $correlationId")
-            val dataDimensionsByFramework = dataDimensionsSet.groupBy { it.dataType }
-            val result = mutableMapOf<BasicDataDimensions, List<BasicDataPointDimensions>>()
-
-            dataDimensionsByFramework.entries.forEach { (framework, frameworkSpecificDataDimensions) ->
-                val relevantDataPointTypes = dataPointUtils.getRelevantDataPointTypes(framework)
-                result.putAll(
-                    frameworkSpecificDataDimensions.associateWith { dataDimension ->
-                        relevantDataPointTypes.map { dataPointType -> dataDimension.toBasicDataPointDimensions(dataPointType) }
-                    },
-                )
-            }
-
-            return result
-        }
-
         @Transactional(readOnly = true)
         override fun getDatasetData(
             dataDimensionList: Set<BasicDataDimensions>,
             correlationId: String,
         ): Map<BasicDataDimensions, String> {
-            val dataPointDimensions = getDataPointDimensions(dataDimensionList, correlationId)
+            val dataPointDimensions = dataPointUtils.getBasicDataPointDimensionsForDataDimensions(dataDimensionList, correlationId)
             val dataPointIds =
                 dataPointDimensions.entries
                     .associate { (dataDimension, dataPointDimensionList) ->
