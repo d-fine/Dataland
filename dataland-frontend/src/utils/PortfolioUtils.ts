@@ -48,17 +48,15 @@ export function getAvailableReportingPeriodsAsArray(
     return [];
   }
 
-  // Collect all available reporting periods
   const availablePeriods = new Set<string>();
 
-  portfolioEntries.forEach(entry => {
+  portfolioEntries.forEach((entry) => {
     const periodsString = getAvailableReportingPeriodsAsString(entry, frameworkName);
 
-    // Skip "No data available" entries
     if (periodsString !== 'No data available') {
       // Split the string into individual years (typically comma-separated)
-      const periods = periodsString.split(',').map(p => p.trim());
-      periods.forEach(period => {
+      const periods = periodsString.split(',').map((p) => p.trim());
+      periods.forEach((period) => {
         if (period) {
           availablePeriods.add(period);
         }
@@ -66,9 +64,7 @@ export function getAvailableReportingPeriodsAsArray(
     }
   });
 
-  // Convert Set to Array and sort years
   return Array.from(availablePeriods).sort((a, b) => {
-    // Sort numerically in descending order (newest years first)
     return parseInt(b) - parseInt(a);
   });
 }
@@ -85,9 +81,9 @@ export function createReportingPeriodOptions(
   years: (string | number)[],
   initialValue: boolean = false
 ): ReportingPeriod[] {
-  return years.map(year => ({
+  return years.map((year) => ({
     name: year.toString(),
-    value: initialValue
+    value: initialValue,
   }));
 }
 

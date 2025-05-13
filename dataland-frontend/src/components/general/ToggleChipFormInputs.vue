@@ -2,9 +2,10 @@
   <div data-test="toggleChipsFormInput">
     <template v-for="option in options" :key="option.name">
       <ToggleChip
-          :label="option.name"
-          :disabled="isDisabled(option.name)"
-          @on-change="onToggleChange(option, $event)" />
+        :label="option.name"
+        :disabled="isDisabled(option.name)"
+        @on-change="onToggleChange(option, $event)"
+      />
     </template>
     <div class="hidden">
       <FormKit type="checkbox" v-model="value" :name="name" :options="checkboxOptions" />
@@ -35,7 +36,7 @@ export default defineComponent({
     },
     availableOptions: {
       type: Array as () => Array<ToggleChipInputType>,
-      default: () => []
+      default: () => [],
     },
   },
 
@@ -59,13 +60,13 @@ export default defineComponent({
      * @returns True if the option should be disabled, false otherwise
      */
     isDisabled(optionName: string): boolean {
-      if (this.availableOptions !== undefined) {
-        if (this.availableOptions.length === 0) {
-          return true;
-        }
-        return !this.availableOptions.some(option => option.name === optionName);
+      if (this.availableOptions === undefined) return false;
+
+      if (this.availableOptions.length === 0) {
+        return true;
       }
-      return false;
+
+      return !this.availableOptions.some((option) => option.name === optionName);
     },
 
     /**

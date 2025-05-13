@@ -2,8 +2,8 @@
   <span
     :title="disabled ? 'No data available' : ''"
     :class="{
-      'toggled': isToggled,
-      'disabled': disabled
+      toggled: isToggled,
+      disabled: disabled,
     }"
     class="toggle-chip mr-2 mb-2"
     data-test="toggle-chip"
@@ -29,8 +29,8 @@ export default defineComponent({
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
