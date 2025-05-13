@@ -90,14 +90,14 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     override fun exportDataAsCsv(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-        includeDataMetaInformation: Boolean,
+        keepValueFieldsOnly: Boolean,
     ): File =
         apiAccessor.dataControllerApiForSfdrData
             .exportCompanyAssociatedSfdrDataByDimensions(
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
-                includeDataMetaInformation = includeDataMetaInformation,
+                keepValueFieldsOnly = keepValueFieldsOnly,
             )
 
     override fun exportDataAsExcel(

@@ -38,13 +38,13 @@ abstract class BaseExportTest<T> {
     protected abstract fun exportDataAsCsv(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-        includeDataMetaInformation: Boolean = false,
+        keepValueFieldsOnly: Boolean = true,
     ): File
 
     private fun exportDataAsCsvWithMetadata(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-    ): File = exportDataAsCsv(companyIds, reportingPeriods, includeDataMetaInformation = true)
+    ): File = exportDataAsCsv(companyIds, reportingPeriods, keepValueFieldsOnly = false)
 
     protected abstract fun exportDataAsExcel(
         companyIds: List<String>,

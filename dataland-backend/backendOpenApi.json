@@ -2950,12 +2950,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -3242,12 +3242,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -3534,12 +3534,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -3826,12 +3826,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -4118,12 +4118,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -4410,12 +4410,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -4702,12 +4702,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -4994,12 +4994,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -5286,12 +5286,12 @@
             }
           },
           {
-            "name": "includeDataMetaInformation",
+            "name": "keepValueFieldsOnly",
             "in": "query",
             "required": false,
             "schema": {
               "type": "boolean",
-              "default": false
+              "default": true
             }
           }
         ],
@@ -20772,10 +20772,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

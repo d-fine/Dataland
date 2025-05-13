@@ -43,7 +43,7 @@ export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenD
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
-    includeDataMetaInformation?: boolean,
+    keepValueFieldsOnly?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -51,7 +51,7 @@ export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenD
       reportingPeriods,
       companyIds,
       fileFormat,
-      includeDataMetaInformation,
+      keepValueFieldsOnly,
       options
     );
   }

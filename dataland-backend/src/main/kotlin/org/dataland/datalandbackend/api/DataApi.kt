@@ -126,7 +126,7 @@ interface DataApi<T> {
         @RequestParam("reportingPeriods") reportingPeriods: List<String>,
         @RequestParam("companyIds") companyIds: List<String>,
         @RequestParam("fileFormat") exportFileType: ExportFileType,
-        @RequestParam(value = "includeDataMetaInformation", defaultValue = "false") includeDataMetaInformation: Boolean = false,
+        @RequestParam(value = "keepValueFieldsOnly", defaultValue = "true") keepValueFieldsOnly: Boolean = true,
     ): ResponseEntity<InputStreamResource>
 
     /**

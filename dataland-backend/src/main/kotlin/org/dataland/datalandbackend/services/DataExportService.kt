@@ -37,7 +37,7 @@ class DataExportService
          * @param portfolioData passed list of SingleCompanyExportData to be exported
          * @param exportFileType the file type to be exported
          * @param dataType the datatype specifying the framework
-         * @param includeDataMetaInformation if false, non value fields are stripped
+         * @param keepValueFieldsOnly if true, non value fields are stripped
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
@@ -45,12 +45,12 @@ class DataExportService
             portfolioData: List<SingleCompanyExportData<T>>,
             exportFileType: ExportFileType,
             dataType: DataType,
-            includeDataMetaInformation: Boolean = false,
+            keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
             val jsonData = portfolioData.map { convertDataToJson(it) }
             return when (exportFileType) {
-                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, false, includeDataMetaInformation)
-                ExportFileType.EXCEL -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, true, includeDataMetaInformation)
+                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, false, keepValueFieldsOnly)
+                ExportFileType.EXCEL -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, true, keepValueFieldsOnly)
                 ExportFileType.JSON -> buildJsonStreamFromPortfolioAsJsonData(jsonData)
             }
         }
@@ -87,7 +87,7 @@ class DataExportService
          * @param portfolioExportRows passed SingleCompanyExportData as JSON object to be exported
          * @param dataType the datatype specifying the framework
          * @param excelCompatibility whether a separator indicator should be prepended to the stream resource
-         * @param includeDataMetaInformation if false, non value fields are stripped
+         * @param keepValueFieldsOnly if true, non value fields are stripped
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
@@ -95,11 +95,11 @@ class DataExportService
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             excelCompatibility: Boolean,
-            includeDataMetaInformation: Boolean,
+            keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
             val isLegobrickFramework = (frameworkTemplate != null)
-            val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, includeDataMetaInformation)
+            val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
             val allHeaderFields =
                 if (isLegobrickFramework) {
@@ -144,20 +144,20 @@ class DataExportService
          * Parse a list of JSON nodes into a list of (fieldName --> fieldValue)-mappings
          *
          * @param nodes the list of nodes to process
-         * @param includeDataMetaInformation whether meta-information fields should be kept or dropped
+         * @param keepValueFieldsOnly whether meta-information fields should be dropped or kept
          * @return a pair of lists containing (fieldName --> fieldValue)-mappings and a set of all used field names
          */
         private fun getCsvDataAndNonEmptyFields(
             nodes: List<JsonNode>,
-            includeDataMetaInformation: Boolean,
+            keepValueFieldsOnly: Boolean,
         ): Pair<List<Map<String, String>>, Set<String>> {
             val csvData =
                 nodes.map { node ->
                     val nonEmptyNodes = JsonUtils.getNonEmptyLeafNodesAsMapping(node)
-                    if (includeDataMetaInformation) {
-                        nonEmptyNodes
-                    } else {
+                    if (keepValueFieldsOnly) {
                         nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) }
+                    } else {
+                        nonEmptyNodes
                     }
                 }
             val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }

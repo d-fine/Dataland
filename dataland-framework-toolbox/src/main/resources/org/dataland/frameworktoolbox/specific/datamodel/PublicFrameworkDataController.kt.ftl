@@ -68,9 +68,9 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
-        includeDataMetaInformation: Boolean,
+        keepValueFieldsOnly: Boolean,
     ): ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, includeDataMetaInformation)
+        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
     }
 
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")

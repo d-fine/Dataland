@@ -44,6 +44,7 @@ class DataExportServiceTest {
                 listOf(euTaxonomyCompanyExportTestData),
                 ExportFileType.JSON,
                 DataType.valueOf("eutaxonomy-non-financials"),
+                keepValueFieldsOnly = true,
             )
         val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<EutaxonomyNonFinancialsData>>>(jsonStream.inputStream)
 
@@ -57,6 +58,7 @@ class DataExportServiceTest {
                 listOf(companyExportDataLksgTestData),
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").inputStream().readAllBytes().toString(Charsets.UTF_8)
@@ -71,6 +73,7 @@ class DataExportServiceTest {
                 listOf(companyExportDataLksgTestData),
                 ExportFileType.EXCEL,
                 DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
             )
         val csvString = String(excelStream.inputStream.readAllBytes(), Charsets.UTF_8)
 

@@ -163,7 +163,7 @@ open class DataController<T>(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
-        includeDataMetaInformation: Boolean,
+        keepValueFieldsOnly: Boolean,
     ): ResponseEntity<InputStreamResource> {
         val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
         companyIds.forEach { companyId ->
@@ -184,7 +184,7 @@ open class DataController<T>(
                     ),
                     exportFileType,
                     dataType,
-                    includeDataMetaInformation,
+                    keepValueFieldsOnly,
                 )
             } catch (exception: IllegalArgumentException) {
                 if (exception.message != null && exception.message!!.contains("CSV data is empty")) {

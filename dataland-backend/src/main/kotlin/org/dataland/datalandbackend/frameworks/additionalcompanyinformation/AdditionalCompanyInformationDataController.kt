@@ -63,10 +63,10 @@ class AdditionalCompanyInformationDataController(
         reportingPeriods: List<String>,
         companyIds: List<String>,
         exportFileType: ExportFileType,
-        includeDataMetaInformation: Boolean,
+        keepValueFieldsOnly: Boolean,
     ): ResponseEntity<InputStreamResource> =
         super
-            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, includeDataMetaInformation)
+            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
     @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
     override fun getFrameworkDatasetsForCompany(
