@@ -81,10 +81,14 @@ import {
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { createReportingPeriodOptions, type ReportingPeriod } from '@/utils/PortfolioUtils.ts';
+import { type DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
@@ -108,23 +112,22 @@ const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
 const portfolioErrors = ref('');
 const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
-const availableFrameworks = [
-  { value: 'sfdr', label: 'SFDR' },
-  { value: 'eutaxonomy-financials', label: 'EU Taxonomy Financials' },
-  { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non-Financials' },
-  { value: 'nuclear-and-gas', label: 'EU Taxonomy Nuclear and Gas' },
-];
+const availableFrameworks: DropdownOption[] = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
+  value: framework,
+  label: humanizeStringOrNumber(framework),
+}));
 const allReportingPeriods = ref(createReportingPeriodOptions([2025, 2024, 2023, 2022, 2021, 2020]));
 const availableReportingPeriods = ref<Array<ReportingPeriod>>([]);
-const fileTypeSelectionOptions = [
-  { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
-  { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
-];
+const fileTypeSelectionOptions: DropdownOption[] = Object.entries([
+  ExportFileTypeInformation.CSV,
+  ExportFileTypeInformation.EXCEL,
+]).map(([type, information]) => ({
+  value: type.toString(),
+  label: `${information.description} (.${information.fileExtension})`,
+}));
 const downloadProgress = ref<number | undefined>(undefined);
 const isDownloading = ref(false);
-const props = defineProps<{
-  portfolioId: string;
-}>();
+const props = defineProps(['portfolioId']);
 const portfolioId = ref<string | undefined>(props.portfolioId);
 const percentCompleted = createNewPercentCompletedRef();
 
@@ -159,7 +162,6 @@ function onFrameworkChange(newFramework: string | undefined): void {
 /**
  * Updates the available reporting periods based on the selected framework
  * by extracting data from portfolio entries
- *
  * @param framework The framework to get available reporting periods for
  */
 function updateAvailableReportingPeriods(framework: string): void {
@@ -200,7 +202,7 @@ function resetErrors(): void {
 }
 
 /**
- * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
+ * Retrieve the array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
 function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
   const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
