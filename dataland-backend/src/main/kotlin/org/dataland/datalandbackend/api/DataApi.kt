@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -104,7 +105,7 @@ interface DataApi<T> {
      * @param companyIds specifies the companies
      * @param exportFileType specifies the file type to export to
      * @param includeDataMetaInformation specifies whether to include metadata in the export
-     * @return JSON of companyAssociatedData in form of InputStreamResource
+     * @return JSON of companyAssociatedData in the form of InputStreamResource
      */
     @Operation(
         summary = "Export data for the reportingPeriods and companyIds provided.",
@@ -115,6 +116,16 @@ interface DataApi<T> {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
+            ApiResponse(
+                responseCode = "204",
+                description = "No data for download available.",
+                content = [Content(mediaType = "")],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Company Id could not be found.",
+                content = [Content(mediaType = "")],
+            ),
         ],
     )
     @GetMapping(
@@ -126,7 +137,10 @@ interface DataApi<T> {
         @RequestParam("reportingPeriods") reportingPeriods: List<String>,
         @RequestParam("companyIds") companyIds: List<String>,
         @RequestParam("fileFormat") exportFileType: ExportFileType,
-        @RequestParam(value = "includeDataMetaInformation", defaultValue = "false") includeDataMetaInformation: Boolean = false,
+        @RequestParam(
+            value = "includeDataMetaInformation",
+            defaultValue = "false",
+        ) includeDataMetaInformation: Boolean = false,
     ): ResponseEntity<InputStreamResource>
 
     /**
