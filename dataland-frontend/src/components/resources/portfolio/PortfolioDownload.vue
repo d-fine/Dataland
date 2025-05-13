@@ -28,11 +28,7 @@
           @changed="resetErrors"
         />
       </div>
-      <p
-        v-if="showReportingPeriodsError"
-        class="text-danger mt-2"
-        data-test="reportingPeriodsError"
-      >
+      <p v-if="showReportingPeriodsError" class="text-danger mt-2" data-test="reportingPeriodsError">
         Please select at least one Reporting Period.
       </p>
       <label for="fileTypeSelector">

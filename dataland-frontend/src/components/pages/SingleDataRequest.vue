@@ -32,6 +32,7 @@
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
                           :options="reportingPeriodOptions"
+                          :available-options="reportingPeriodOptions"
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
