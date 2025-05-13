@@ -29,7 +29,7 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancial
  * @param {string} token - The authentication token to access the API.
  * @param {StoredCompany} company - The company information including the company ID.
  * @param {string[]} years - An array of years for which the data is to be uploaded.
- * @return {Promise<DataMetaInformation[]>} A promise resolving to an array of metadata information for the uploaded data.
+ * @return {Promise<DataMetaInformation[]>} A promise resolving to an array of additional information for the uploaded data.
  */
 function uploadDataForCompany(token: string, company: StoredCompany, years: string[]): Promise<DataMetaInformation[]> {
   return Promise.all(
@@ -82,17 +82,17 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
  * @param {Object} params - The parameters for the download operation.
  * @param {string} params.description - A description of the test scenario.
  * @param {'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)'} params.fileType - The format in which the portfolio file should be downloaded.
- * @param {boolean} [params.includeMetaData=false] - Specifies whether to include metadata in the downloaded file.
+ * @param {boolean} [params.keepValuesOnly=true] - Specifies whether to include additional information in the downloaded file.
  * @return {void} This function does not return a value.
  */
 function testDownloadPortfolio({
   description,
   fileType,
-  includeMetaData = false,
+  keepValuesOnly = true,
 }: {
   description: string;
   fileType: 'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)';
-  includeMetaData?: boolean;
+  keepValuesOnly?: boolean;
 }): void {
   it(description, () => {
     const downloadDir = Cypress.config('downloadsFolder');
@@ -101,8 +101,8 @@ function testDownloadPortfolio({
     const minimumFileSizeInByte = 5000;
 
     cy.get('[data-test="fileTypeSelector"]').select(fileType);
-    if (includeMetaData) {
-      cy.get('[data-test="includeMetaData"]').click();
+    if (keepValuesOnly) {
+      cy.get('[data-test="valuesOnlySwitch"]').click();
     }
     cy.get('[data-test="downloadButton"]').click();
 
@@ -176,13 +176,13 @@ describeIf(
     testDownloadPortfolio({
       description: 'Download the portfolio as CSV file with meta Data',
       fileType: 'Comma-separated Values (.csv)',
-      includeMetaData: true,
+      keepValuesOnly: false,
     });
 
     testDownloadPortfolio({
       description: 'Download the portfolio as an Excel-compatible CSV file with Meta Data',
       fileType: 'Excel-compatible CSV File (.csv)',
-      includeMetaData: true,
+      keepValuesOnly: false,
     });
 
     it('Shows error message when no data is available for selected years', () => {
