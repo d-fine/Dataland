@@ -28,7 +28,11 @@
           @changed="resetErrors"
         />
       </div>
-      <p v-if="showReportingPeriodsError" class="text-danger mt-2" data-test="reportingPeriodsError">
+      <p
+        v-if="showReportingPeriodsError && availableReportingPeriods.length > 0"
+        class="text-danger mt-2"
+        data-test="reportingPeriodsError"
+      >
         Please select at least one Reporting Period.
       </p>
       <label for="fileTypeSelector">
@@ -277,6 +281,7 @@ async function downloadPortfolio(): Promise<void> {
       selectedFileType.value,
       keepValuesOnly.value
     );
+    alert(keepValuesOnly.value);
 
     if (dataResponse.status === 204) {
       portfolioErrors.value = 'No data available.';
@@ -335,7 +340,7 @@ async function downloadPortfolio(): Promise<void> {
   font-style: italic;
 }
 
-.p-dialog-title {
+:deep(.p-dialog-title) {
   max-width: 15em;
   overflow: hidden;
   text-overflow: ellipsis;

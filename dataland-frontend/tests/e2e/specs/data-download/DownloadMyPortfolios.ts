@@ -164,52 +164,35 @@ describeIf(
     });
 
     testDownloadPortfolio({
-      description: 'Download the portfolio as a CSV file without meta Data',
-      fileType: 'Comma-separated Values (.csv)',
-    });
-
-    testDownloadPortfolio({
-      description: 'Download the portfolio as an Excel-compatible CSV file without meta Data',
-      fileType: 'Excel-compatible CSV File (.csv)',
-    });
-
-    testDownloadPortfolio({
-      description: 'Download the portfolio as CSV file with meta Data',
+      description: 'Download the portfolio as a CSV file without additional information',
       fileType: 'Comma-separated Values (.csv)',
       keepValuesOnly: false,
     });
 
     testDownloadPortfolio({
-      description: 'Download the portfolio as an Excel-compatible CSV file with Meta Data',
+      description: 'Download the portfolio as an Excel-compatible CSV file without additional information',
       fileType: 'Excel-compatible CSV File (.csv)',
       keepValuesOnly: false,
     });
 
-    it('Shows error message when no data is available for selected years', () => {
-      cy.intercept('GET', '**/api/data/eutaxonomy-non-financials/export**', (req) => {
-        req.reply((res) => {
-          res.send({
-            statusCode: 204,
-            body: {},
-          });
-        });
-      }).as('downloadRequest');
+    testDownloadPortfolio({
+      description: 'Download the portfolio as CSV file with additional information',
+      fileType: 'Comma-separated Values (.csv)',
+    });
 
-      reportingYearsToSelect.forEach((year) => {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).click({ force: true });
-      });
+    testDownloadPortfolio({
+      description: 'Download the portfolio as an Excel-compatible CSV file with additional information',
+      fileType: 'Excel-compatible CSV File (.csv)',
+    });
+
+    it('Shows that not all reporting periods are clickable when data is missing', () => {
+      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
+
+      cy.get('[data-test="listOfReportingPeriods"]').should('be.visible');
 
       unavailableYears.forEach((year) => {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).click({ force: true });
+        cy.get('[data-test="listOfReportingPeriods"]').contains(year).parent().should('have.class', 'disabled');
       });
-
-      cy.get('[data-test="fileTypeSelector"]').select('Excel-compatible CSV File (.csv)');
-      cy.get('[data-test="downloadButton"]').click();
-
-      cy.wait('@downloadRequest');
-      cy.get('.p-message-error, [data-test="portfolio-download-content"]')
-        .contains('No data available', { timeout: Cypress.env('short_timeout_in_ms') as number })
-        .should('be.visible');
     });
   }
 );
