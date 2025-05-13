@@ -28,11 +28,7 @@
           @changed="resetErrors"
         />
       </div>
-      <p
-        v-if="showReportingPeriodsError"
-        class="text-danger mt-2"
-        data-test="reportingPeriodsError"
-      >
+      <p v-if="showReportingPeriodsError" class="text-danger mt-2" data-test="reportingPeriodsError">
         Please select at least one Reporting Period.
       </p>
       <label for="fileTypeSelector">
@@ -77,28 +73,28 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, type Ref, ref } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
-import PrimeButton from 'primevue/button';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
-import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
-import type Keycloak from 'keycloak-js';
-import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
-import Message from 'primevue/message';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
-import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
-import { type AxiosError } from 'axios';
 import {
   createNewPercentCompletedRef,
   downloadIsInProgress,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
-import { type ReportingPeriod, createReportingPeriodOptions } from '@/utils/PortfolioUtils.ts';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { createReportingPeriodOptions, type ReportingPeriod } from '@/utils/PortfolioUtils.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
+import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
+import { type AxiosError } from 'axios';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import InputSwitch from 'primevue/inputswitch';
+import Message from 'primevue/message';
+import { inject, onMounted, type Ref, ref } from 'vue';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -281,7 +277,6 @@ async function downloadPortfolio(): Promise<void> {
       selectedFileType.value,
       keepValuesOnly.value
     );
-    alert(keepValuesOnly.value);
 
     if (dataResponse.status === 204) {
       portfolioErrors.value = 'No data available.';
@@ -304,7 +299,7 @@ async function downloadPortfolio(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/scss/variables.scss';
+@use '@/assets/scss/variables.scss';
 
 .portfolio-download-content {
   width: 20em;
@@ -335,15 +330,8 @@ async function downloadPortfolio(): Promise<void> {
 }
 
 .formkit-help {
-  color: $gray;
-  font-size: $fs-xs;
+  color: variables.$gray;
+  font-size: variables.$fs-xs;
   font-style: italic;
-}
-
-:deep(.p-dialog-title) {
-  max-width: 15em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>

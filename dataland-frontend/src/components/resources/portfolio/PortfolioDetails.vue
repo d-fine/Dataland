@@ -347,6 +347,16 @@ function downloadPortfolio(): void {
     props: {
       modal: true,
       header: fullName,
+      pt: {
+        title: {
+          style: {
+            maxWidth: '15em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
+      },
     },
     data: {
       portfolioName: fullName,
