@@ -19,10 +19,12 @@
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
+          :key="selectedFramework || 'no-framework'"
+          :name="'listOfReportingPeriods'"
+          :options="allReportingPeriods"
+          :availableOptions="availableReportingPeriods"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
-          :options="allReportingPeriods"
-          :name="'listOfReportingPeriods'"
           @changed="resetErrors"
         />
       </div>
@@ -41,24 +43,20 @@
         :options="fileTypeSelectionOptions"
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a File Type.</p>
-      <FormKit
-        v-model="includeMetaData"
-        data-test="includeMetaData"
-        type="checkbox"
-        name="includeMetaData"
-        label="Include meta data"
-        help="Download values with additional meta data."
-        :outer-class="{
-          'yes-no-radio': true,
-        }"
-        :inner-class="{
-          'formkit-inner': false,
-        }"
-        :input-class="{
-          'formkit-input': false,
-          'p-radiobutton': true,
-        }"
-      />
+      <div class="flex align-content-start align-items-center">
+        <InputSwitch
+          v-model="includeMetaData"
+          class="form-field vertical-middle"
+          data-test="includeMetaData"
+          inputId="includeMetaData"
+        />
+        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2">
+          Values only
+        </span>
+      </div>
+      <span class="gray-text font-italic text-xs ml-0 mb-3">
+        Download only data values. Turn off to include additional details, e.g. comment, data source, ...
+      </span>
     </FormKit>
     <Message v-if="portfolioErrors" severity="error" class="my-1 text-xs" :life="3000">
       {{ portfolioErrors }}
@@ -83,6 +81,7 @@
 
 <script setup lang="ts">
 import { inject, onMounted, type Ref, ref } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
 import PrimeButton from 'primevue/button';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
@@ -103,6 +102,7 @@ import {
   downloadIsInProgress,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 import {
+  type ReportingPeriod,
   createReportingPeriodOptions,
   getAvailableReportingPeriodsAsArray,
 } from '@/utils/PortfolioUtils.ts';
@@ -125,8 +125,10 @@ const availableFrameworks = [
   { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non-Financials' },
   { value: 'nuclear-and-gas', label: 'EU Taxonomy Nuclear and Gas' },
 ];
-
-const fileTypeSelectionOptions = [
+const allReportingPeriods = ref(
+  createReportingPeriodOptions([2025, 2024, 2023, 2022, 2021, 2020])
+);
+const availableReportingPeriods = ref<Array<ReportingPeriod>>([]);const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
   { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
 ];
@@ -137,11 +139,6 @@ const props = defineProps<{
 }>();
 const portfolioId = ref<string | undefined>(props.portfolioId);
 const percentCompleted = createNewPercentCompletedRef();
-const allReportingPeriods = ref(
-  createReportingPeriodOptions([2025, 2024, 2023, 2022, 2021, 2020])
-);
-const availableReportingPeriods = ref<string[]>([]);
-
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -157,13 +154,15 @@ onMounted(() => {
 /**
  * When the framework changes, update the available reporting periods based on the selected framework
  */
-function onFrameworkChange(): void {
+function onFrameworkChange(newFramework: string | undefined): void {
   resetErrors();
+  selectedFramework.value = newFramework;
   allReportingPeriods.value.forEach(period => {
     period.value = false;
   });
-  if (selectedFramework.value) {
-    updateAvailableReportingPeriods(selectedFramework.value);
+
+  if (newFramework) {
+    updateAvailableReportingPeriods(newFramework);
   } else {
     availableReportingPeriods.value = [];
   }
@@ -180,12 +179,33 @@ function updateAvailableReportingPeriods(framework: string): void {
     availableReportingPeriods.value = [];
     return;
   }
+  const availablePeriods = new Set<string>();
+  portfolioEntries.value.forEach(entry => {
+    if (entry.availableReportingPeriods && entry.availableReportingPeriods[framework]) {
+      const periods = entry.availableReportingPeriods[framework].split(',').map(p => p.trim());
+      periods.forEach((period: string) => {
+        if (period && period !== 'No data available') {
+          availablePeriods.add(period);
+        }
+      });
+    }
+  });
+  if (availablePeriods.size === 0) {
+    const periodsArray = getAvailableReportingPeriodsAsArray(portfolioEntries.value, framework);
 
-  availableReportingPeriods.value = getAvailableReportingPeriodsAsArray(
-    portfolioEntries.value,
-    framework
-  );
+    if (periodsArray.length > 0) {
+      periodsArray.forEach(period => availablePeriods.add(period));
+    }
+  }
+
+  availableReportingPeriods.value = Array.from(availablePeriods)
+    .sort((a, b) => parseInt(b) - parseInt(a)) // Sortiere absteigend
+    .map(period => ({
+      name: period,
+      value: false
+    }));
 }
+
 
 /**
  * Reset errors when either framework, reporting period or file type changes

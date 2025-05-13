@@ -17,7 +17,7 @@ export interface ReportingPeriod {
  * Extracts available reporting periods for a specific framework from a portfolio entry
  * and returns them as a formatted string
  *
- * @param portfolioEntry An EnrichedPortfolioEntry object or other object with available reporting periods
+ * @param portfolioEntry An EnrichedPortfolioEntry object or another object with available reporting periods
  * @param frameworkName The name of the framework for which to extract reporting periods
  * @returns A formatted string with available reporting periods or "No data available"
  */

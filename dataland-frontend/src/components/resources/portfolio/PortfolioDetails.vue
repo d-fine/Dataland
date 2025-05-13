@@ -139,11 +139,7 @@ import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import Checkbox from 'primevue/checkbox';
 import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
-import {
-  MAJOR_FRAMEWORKS,
-  convertHyphenatedStringToCamelCase,
-  getAvailableReportingPeriodsAsString
-} from '@/utils/FrameworkUtils.ts';
+import { MAJOR_FRAMEWORKS, convertHyphenatedStringToCamelCase } from '@/utils/PortfolioUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -264,18 +260,6 @@ function widthOfFrameworkColumn(framework: string): string {
     default:
       return '15';
   }
-}
-
-/**
- * Convert the given hyphenated string to camel case by deleting each hyphen and capitalizing
- * each letter originally preceded by a hyphen.
- * @param hyphenatedString
- */
-function convertHyphenatedStringToCamelCase(hyphenatedString: string): string {
-  return hyphenatedString
-    .split('-')
-    .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
-    .join('');
 }
 
 /**

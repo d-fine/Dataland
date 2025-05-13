@@ -1,9 +1,13 @@
 <template>
   <span
+    :title="disabled ? 'No data available' : ''"
+    :class="{
+      'toggled': isToggled,
+      'disabled': disabled
+    }"
     class="toggle-chip mr-2 mb-2"
-    :class="`${isToggled ? 'toggled' : ''}`"
     data-test="toggle-chip"
-    @click="toggle()"
+    @click="!disabled && toggle()"
   >
     <span class="label">
       {{ label }}
@@ -17,20 +21,28 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ToggleChip',
   emits: ['onChange'],
+
   props: {
     label: {
       type: String,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
+
   data() {
     return {
       isToggled: false,
     };
   },
+
   methods: {
     /**
-     * Toggles chip on and off
+     * Toggles chip on and off and emits the change event
+     * Does nothing if the chip is disabled
      */
     toggle(): void {
       this.isToggled = !this.isToggled;
@@ -59,6 +71,17 @@ export default defineComponent({
 
     .label {
       color: white;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: var(--text-color-third);
+
+    &:hover {
+      border-color: var(--text-color-third);
+      color: inherit;
     }
   }
 
