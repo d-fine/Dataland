@@ -84,7 +84,7 @@
         </template>
       </Column>
       <Column
-        v-for="framework of majorFrameworks"
+        v-for="framework of MAJOR_FRAMEWORKS"
         :key="framework"
         :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
         :sortable="true"
@@ -139,8 +139,11 @@ import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import Checkbox from 'primevue/checkbox';
 import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
-
-const majorFrameworks = ['sfdr', 'eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'];
+import {
+  MAJOR_FRAMEWORKS,
+  convertHyphenatedStringToCamelCase,
+  getAvailableReportingPeriodsAsString
+} from '@/utils/FrameworkUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -167,7 +170,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    majorFrameworks.forEach((framework) => {
+    MAJOR_FRAMEWORKS.forEach((framework) => {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -229,7 +232,7 @@ watch([enrichedPortfolio], () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  majorFrameworks.forEach((framework) => {
+  MAJOR_FRAMEWORKS.forEach((framework) => {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(

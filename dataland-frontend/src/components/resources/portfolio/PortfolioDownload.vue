@@ -11,7 +11,7 @@
         name="frameworkSelector"
         placeholder="Select framework"
         :options="availableFrameworks"
-        @input="resetErrors"
+        @input="onFrameworkChange"
       />
       <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
       <label for="reportingYearSelector">
@@ -21,7 +21,7 @@
         <ToggleChipFormInputs
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
-          :options="dynamicReportingPeriods"
+          :options="allReportingPeriods"
           :name="'listOfReportingPeriods'"
           @changed="resetErrors"
         />
@@ -102,6 +102,10 @@ import {
   createNewPercentCompletedRef,
   downloadIsInProgress,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
+import {
+  createReportingPeriodOptions,
+  getAvailableReportingPeriodsAsArray,
+} from '@/utils/PortfolioUtils.ts';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -121,12 +125,7 @@ const availableFrameworks = [
   { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non-Financials' },
   { value: 'nuclear-and-gas', label: 'EU Taxonomy Nuclear and Gas' },
 ];
-const dynamicReportingPeriods = ref(
-  [2025, 2024, 2023, 2022, 2021, 2020].map((year) => ({
-    name: year.toString(),
-    value: false,
-  }))
-);
+
 const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
   { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
@@ -138,6 +137,11 @@ const props = defineProps<{
 }>();
 const portfolioId = ref<string | undefined>(props.portfolioId);
 const percentCompleted = createNewPercentCompletedRef();
+const allReportingPeriods = ref(
+  createReportingPeriodOptions([2025, 2024, 2023, 2022, 2021, 2020])
+);
+const availableReportingPeriods = ref<string[]>([]);
+
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -149,6 +153,39 @@ onMounted(() => {
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   }
 });
+
+/**
+ * When the framework changes, update the available reporting periods based on the selected framework
+ */
+function onFrameworkChange(): void {
+  resetErrors();
+  allReportingPeriods.value.forEach(period => {
+    period.value = false;
+  });
+  if (selectedFramework.value) {
+    updateAvailableReportingPeriods(selectedFramework.value);
+  } else {
+    availableReportingPeriods.value = [];
+  }
+}
+
+/**
+ * Updates the available reporting periods based on the selected framework
+ * by extracting data from portfolio entries
+ *
+ * @param framework The framework to get available reporting periods for
+ */
+function updateAvailableReportingPeriods(framework: string): void {
+  if (!portfolioEntries.value || portfolioEntries.value.length === 0) {
+    availableReportingPeriods.value = [];
+    return;
+  }
+
+  availableReportingPeriods.value = getAvailableReportingPeriodsAsArray(
+    portfolioEntries.value,
+    framework
+  );
+}
 
 /**
  * Reset errors when either framework, reporting period or file type changes
@@ -172,7 +209,7 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts currently selected reporting periods
  */
 function getSelectedReportingPeriods(): string[] {
-  return dynamicReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
+  return allReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
 }
 
 /**
