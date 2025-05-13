@@ -29,7 +29,7 @@
         />
       </div>
       <p
-        v-if="showReportingPeriodsError && availableReportingPeriods.length > 0"
+        v-if="showReportingPeriodsError"
         class="text-danger mt-2"
         data-test="reportingPeriodsError"
       >
