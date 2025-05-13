@@ -298,7 +298,7 @@ async function downloadPortfolio(): Promise<void> {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import '@/assets/scss/variables.scss';
 
 .portfolio-download-content {
