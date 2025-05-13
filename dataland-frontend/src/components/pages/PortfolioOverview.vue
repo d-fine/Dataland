@@ -166,7 +166,7 @@ function addNewPortfolio(): void {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .p-tabview-header {
   max-width: 15em;
   overflow: hidden;
