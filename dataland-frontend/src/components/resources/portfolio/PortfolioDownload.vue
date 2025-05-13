@@ -5,13 +5,13 @@
         <span>Framework</span>
       </label>
       <FormKit
+        :options="availableFrameworks"
         v-model="selectedFramework"
         data-test="frameworkSelector"
         type="select"
         name="frameworkSelector"
         placeholder="Select framework"
-        :options="availableFrameworks"
-        @input="resetErrors"
+        @input="onFrameworkChange"
       />
       <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
       <label for="reportingYearSelector">
@@ -19,10 +19,12 @@
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
+          :key="selectedFramework || 'no-framework'"
+          :name="'listOfReportingPeriods'"
+          :options="allReportingPeriods"
+          :availableOptions="availableReportingPeriods"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
-          :options="dynamicReportingPeriods"
-          :name="'listOfReportingPeriods'"
           @changed="resetErrors"
         />
       </div>
@@ -41,24 +43,13 @@
         :options="fileTypeSelectionOptions"
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a File Type.</p>
-      <FormKit
-        v-model="includeMetaData"
-        data-test="includeMetaData"
-        type="checkbox"
-        name="includeMetaData"
-        label="Include meta data"
-        help="Download values with additional meta data."
-        :outer-class="{
-          'yes-no-radio': true,
-        }"
-        :inner-class="{
-          'formkit-inner': false,
-        }"
-        :input-class="{
-          'formkit-input': false,
-          'p-radiobutton': true,
-        }"
-      />
+      <div class="flex align-content-start align-items-center">
+        <InputSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch" />
+        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
+      </div>
+      <span class="gray-text font-italic text-xs ml-0 mb-3">
+        Download only data values. Turn off to include additional details, e.g. comment, data source, ...
+      </span>
     </FormKit>
     <Message v-if="portfolioErrors" severity="error" class="my-1 text-xs" :life="3000">
       {{ portfolioErrors }}
@@ -83,6 +74,7 @@
 
 <script setup lang="ts">
 import { inject, onMounted, type Ref, ref } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
 import PrimeButton from 'primevue/button';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
@@ -102,6 +94,7 @@ import {
   createNewPercentCompletedRef,
   downloadIsInProgress,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
+import { type ReportingPeriod, createReportingPeriodOptions } from '@/utils/PortfolioUtils.ts';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -109,7 +102,7 @@ const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const includeMetaData = ref(false);
+const keepValuesOnly = ref(true);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
@@ -121,12 +114,8 @@ const availableFrameworks = [
   { value: 'eutaxonomy-non-financials', label: 'EU Taxonomy Non-Financials' },
   { value: 'nuclear-and-gas', label: 'EU Taxonomy Nuclear and Gas' },
 ];
-const dynamicReportingPeriods = ref(
-  [2025, 2024, 2023, 2022, 2021, 2020].map((year) => ({
-    name: year.toString(),
-    value: false,
-  }))
-);
+const allReportingPeriods = ref(createReportingPeriodOptions([2025, 2024, 2023, 2022, 2021, 2020]));
+const availableReportingPeriods = ref<Array<ReportingPeriod>>([]);
 const fileTypeSelectionOptions = [
   { label: 'Comma-separated Values (.csv)', value: ExportFileType.Csv },
   { label: 'Excel-compatible CSV File (.csv)', value: ExportFileType.Excel },
@@ -151,6 +140,56 @@ onMounted(() => {
 });
 
 /**
+ * When the framework changes, update the available reporting periods based on the selected framework
+ */
+function onFrameworkChange(newFramework: string | undefined): void {
+  resetErrors();
+  selectedFramework.value = newFramework;
+  allReportingPeriods.value.forEach((period) => {
+    period.value = false;
+  });
+
+  if (newFramework) {
+    updateAvailableReportingPeriods(newFramework);
+  } else {
+    availableReportingPeriods.value = [];
+  }
+}
+
+/**
+ * Updates the available reporting periods based on the selected framework
+ * by extracting data from portfolio entries
+ *
+ * @param framework The framework to get available reporting periods for
+ */
+function updateAvailableReportingPeriods(framework: string): void {
+  if (!portfolioEntries.value || portfolioEntries.value.length === 0) {
+    availableReportingPeriods.value = [];
+    return;
+  }
+
+  const availablePeriods = new Set<string>();
+
+  portfolioEntries.value.forEach((entry) => {
+    if (entry.availableReportingPeriods && entry.availableReportingPeriods[framework]) {
+      const periods = entry.availableReportingPeriods[framework].split(',').map((p) => p.trim());
+      periods.forEach((period: string) => {
+        if (period && period !== 'No data available') {
+          availablePeriods.add(period);
+        }
+      });
+    }
+  });
+
+  availableReportingPeriods.value = Array.from(availablePeriods)
+    .sort((a, b) => parseInt(b) - parseInt(a))
+    .map((period) => ({
+      name: period,
+      value: false,
+    }));
+}
+
+/**
  * Reset errors when either framework, reporting period or file type changes
  */
 function resetErrors(): void {
@@ -172,7 +211,7 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts currently selected reporting periods
  */
 function getSelectedReportingPeriods(): string[] {
-  return dynamicReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
+  return allReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
 }
 
 /**
@@ -236,7 +275,7 @@ async function downloadPortfolio(): Promise<void> {
       getSelectedReportingPeriods(),
       getCompanyIds(),
       selectedFileType.value,
-      includeMetaData.value
+      keepValuesOnly.value
     );
 
     if (dataResponse.status === 204) {

@@ -61,8 +61,8 @@ function setupCompanyWithData(token: string, companyName: string, years: string[
 /**
  * Creates a new portfolio with the specified companies and name.
  *
- * @param {Object} company1 - The first company to be included in the portfolio. Must contain a `companyId` property.
- * @param {Object} company2 - The second company to be included in the portfolio. Must contain a `companyId` property.
+ * @param {StoredCompany} company1 - The first company to be included in the portfolio. Must contain a `companyId` property.
+ * @param {StoredCompany} company2 - The second company to be included in the portfolio. Must contain a `companyId` property.
  * @param {string} portfolioName - The name of the portfolio to be created.
  * @return {void} This function does not return a value.
  */

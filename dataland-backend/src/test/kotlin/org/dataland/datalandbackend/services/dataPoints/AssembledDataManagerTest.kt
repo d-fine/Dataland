@@ -69,7 +69,9 @@ class AssembledDataManagerTest {
             companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
         )
 
-    private val dataPointUtils = DataPointUtils(testObjectMapper, specificationClient, metaDataManager)
+    private val referencedReportsUtilities = ReferencedReportsUtilities(testObjectMapper)
+    private val dataPointUtils =
+        DataPointUtils(testObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
 
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(testObjectMapper)
@@ -78,7 +80,8 @@ class AssembledDataManagerTest {
         AssembledDataManager(
             dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
             datasetDatapointRepository, spyDataPointManager,
-            ReferencedReportsUtilities(testObjectMapper), companyQueryManager, dataPointUtils,
+            referencedReportsUtilities,
+            companyQueryManager, dataPointUtils,
         )
 
     private val correlationId = "test-correlation-id"
@@ -88,7 +91,8 @@ class AssembledDataManagerTest {
     private val datasetId = "test-dataset-id"
     private val dataPointType = "extendedEnumFiscalYearDeviation"
     private val dataPointId = "test-data-point-1"
-    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
+    private val frameworkSpecification =
+        TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
     private val framework = "sfdr"
     private val dataDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
 
@@ -107,7 +111,8 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that processing a dataset works as expected`() {
-        val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
+        val expectedDataPointTypes =
+            listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         whenever(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())

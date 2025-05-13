@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.utils
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
@@ -25,6 +27,7 @@ class DataPointUtils
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
+        private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -115,7 +118,8 @@ class DataPointUtils
         private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
-            val frameworks = dataDimensionFilter.dataTypesOrDataPointTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+            val frameworks =
+                dataDimensionFilter.dataTypesOrDataPointTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
                     metaDataManager.getActiveDataPointMetaInformationList(
@@ -128,5 +132,46 @@ class DataPointUtils
                 allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
             }
             return allRelevantDimensions.distinct()
+        }
+
+        /**
+         * Return the template of a specific framework
+         * @param framework the framework for which the template shall be returned
+         */
+        fun getFrameworkTemplate(framework: String): JsonNode {
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
+            referencedReportsUtilities
+                .insertReferencedReportsIntoFrameworkSchema(
+                    frameworkTemplate,
+                    frameworkSpecification.referencedReportJsonPath,
+                )
+            return frameworkTemplate
+        }
+
+        /**
+         * Get basic data point dimensions (companyId, dataPointType, reportingPeriod) for given
+         * data dimensions (companyId, framework, reportingPeriod).
+         * @param dataDimensionsSet a set of data dimensions
+         * @return
+         */
+        fun getBasicDataPointDimensionsForDataDimensions(
+            dataDimensionsSet: Set<BasicDataDimensions>,
+            correlationId: String,
+        ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
+            logger.info("Request data point dimensions for a set of data dimension objects. Correlation ID: $correlationId")
+            val dataDimensionsByFramework = dataDimensionsSet.groupBy { it.dataType }
+            val result = mutableMapOf<BasicDataDimensions, List<BasicDataPointDimensions>>()
+
+            dataDimensionsByFramework.entries.forEach { (framework, frameworkSpecificDataDimensions) ->
+                val relevantDataPointTypes = getRelevantDataPointTypes(framework)
+                result.putAll(
+                    frameworkSpecificDataDimensions.associateWith { dataDimension ->
+                        relevantDataPointTypes.map { dataPointType -> dataDimension.toBasicDataPointDimensions(dataPointType) }
+                    },
+                )
+            }
+
+            return result
         }
     }

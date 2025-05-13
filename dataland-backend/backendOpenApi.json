@@ -2971,6 +2971,12 @@
               }
             }
           },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -3262,6 +3268,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -3555,6 +3567,12 @@
               }
             }
           },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -3846,6 +3864,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4139,6 +4163,12 @@
               }
             }
           },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -4430,6 +4460,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4723,6 +4759,12 @@
               }
             }
           },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -5015,6 +5057,12 @@
               }
             }
           },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -5306,6 +5354,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",

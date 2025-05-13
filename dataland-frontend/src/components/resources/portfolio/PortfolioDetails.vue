@@ -84,7 +84,7 @@
         </template>
       </Column>
       <Column
-        v-for="framework of majorFrameworks"
+        v-for="framework of MAJOR_FRAMEWORKS"
         :key="framework"
         :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
         :sortable="true"
@@ -139,8 +139,7 @@ import { useDialog } from 'primevue/usedialog';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import Checkbox from 'primevue/checkbox';
 import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
-
-const majorFrameworks = ['sfdr', 'eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'];
+import { MAJOR_FRAMEWORKS, convertHyphenatedStringToCamelCase } from '@/utils/PortfolioUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -167,7 +166,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    majorFrameworks.forEach((framework) => {
+    MAJOR_FRAMEWORKS.forEach((framework) => {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -229,7 +228,7 @@ watch([enrichedPortfolio], () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  majorFrameworks.forEach((framework) => {
+  MAJOR_FRAMEWORKS.forEach((framework) => {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(
@@ -261,18 +260,6 @@ function widthOfFrameworkColumn(framework: string): string {
     default:
       return '15';
   }
-}
-
-/**
- * Convert the given hyphenated string to camel case by deleting each hyphen and capitalizing
- * each letter originally preceded by a hyphen.
- * @param hyphenatedString
- */
-function convertHyphenatedStringToCamelCase(hyphenatedString: string): string {
-  return hyphenatedString
-    .split('-')
-    .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
-    .join('');
 }
 
 /**

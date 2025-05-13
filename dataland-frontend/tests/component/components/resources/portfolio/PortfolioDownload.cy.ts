@@ -92,8 +92,12 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="fileTypeSelector"]').select('CSV');
 
       cy.get('[data-test="downloadButton"]').click();
-      cy.get('[data-test="downloadButton"]').should('not.exist');
-      cy.get('[data-test="downloadSpinner"]').should('exist');
+      cy.get('[data-test="downloadButton"]', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
+        'not.exist'
+      );
+      cy.get('[data-test="downloadSpinner"]', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
+        'exist'
+      );
     });
   });
 });

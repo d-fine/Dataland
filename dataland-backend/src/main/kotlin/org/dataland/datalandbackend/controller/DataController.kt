@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
@@ -28,6 +29,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
+import java.time.LocalDateTime
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
@@ -186,49 +188,26 @@ open class DataController<T>(
                     dataType,
                     keepValueFieldsOnly,
                 )
-            } catch (exception: IllegalArgumentException) {
-                if (exception.message != null && exception.message!!.contains("CSV data is empty")) {
-                    return ResponseEntity.noContent().build()
-                } else {
-                    throw exception
-                }
+            } catch (_: DownloadDataNotFoundApiException) {
+                return ResponseEntity.noContent().build()
             }
-
         logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
 
         return ResponseEntity
             .ok()
-            .headers(buildHttpHeadersForExport("portfolio", exportFileType))
+            .headers(buildHttpHeadersForExport(exportFileType))
             .body(companyAssociatedDataForExport)
     }
 
-    private fun buildHttpHeadersForExport(
-        dataId: String,
-        exportFileType: ExportFileType,
-    ): HttpHeaders {
+    private fun buildHttpHeadersForExport(exportFileType: ExportFileType): HttpHeaders {
         val headers = HttpHeaders()
+        val timestamp = LocalDateTime.now().toString()
         headers.contentType = exportFileType.mediaType
         headers.contentDisposition =
             ContentDisposition
                 .attachment()
-                .filename("$dataId.${exportFileType.fileExtension}")
+                .filename("data-export-$timestamp.${exportFileType.fileExtension}")
                 .build()
-        return headers
-    }
-
-    private fun buildHttpHeadersForExport(
-        dataDimensions: BasicDataDimensions,
-        exportFileType: ExportFileType,
-    ): HttpHeaders {
-        val headers = HttpHeaders()
-        headers.contentType = exportFileType.mediaType
-        headers.contentDisposition =
-            ContentDisposition
-                .attachment()
-                .filename(
-                    "${dataDimensions.reportingPeriod}-${dataDimensions.dataType}-${dataDimensions.companyId}" +
-                        ".${exportFileType.fileExtension}",
-                ).build()
         return headers
     }
 
@@ -269,7 +248,13 @@ open class DataController<T>(
         correlationId: String,
     ): Map<BasicDataDimensions, String> =
         datasetStorageService.getDatasetData(
-            companyAndReportingPeriodPairs.mapTo(mutableSetOf()) { BasicDataDimensions(it.first, framework, it.second) },
+            companyAndReportingPeriodPairs.mapTo(mutableSetOf()) {
+                BasicDataDimensions(
+                    it.first,
+                    framework,
+                    it.second,
+                )
+            },
             correlationId,
         )
 
@@ -278,7 +263,8 @@ open class DataController<T>(
         framework: String,
         correlationId: String,
     ): List<SingleCompanyExportData<T>> {
-        val dataDimensionsWithDataStrings = getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
+        val dataDimensionsWithDataStrings =
+            getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
 
         val basicCompanyInformation =
             companyQueryManager.getBasicCompanyInformationByIds(

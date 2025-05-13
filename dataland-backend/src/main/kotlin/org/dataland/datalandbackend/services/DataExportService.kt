@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataPointUtils
@@ -48,6 +49,9 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
             val jsonData = portfolioData.map { convertDataToJson(it) }
+            if (jsonData.isEmpty()) {
+                throw DownloadDataNotFoundApiException()
+            }
             return when (exportFileType) {
                 ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, false, keepValueFieldsOnly)
                 ExportFileType.EXCEL -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, true, keepValueFieldsOnly)
