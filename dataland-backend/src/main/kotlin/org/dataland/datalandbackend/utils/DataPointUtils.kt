@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
@@ -173,5 +176,38 @@ class DataPointUtils
             }
 
             return result
+        }
+
+        /**
+         * Assemble a single data set using the provided list of uploaded data points and the framework template
+         * @param dataPoints the data points of the data set as retrieved from the internal storage
+         * @param frameworkTemplate the framework template to be used as a basis
+         */
+        fun assembleSingleDataSet(
+            dataPoints: Collection<UploadedDataPoint>,
+            frameworkTemplate: JsonNode,
+        ): String {
+            val referencedReports = mutableMapOf<String, CompanyReport>()
+            val allDataPoints =
+                dataPoints
+                    .associate {
+                        it.dataPointType to objectMapper.readTree(it.dataPoint)
+                    }.toMutableMap()
+
+            dataPoints.forEach {
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
+                    referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
+                }
+            }
+            allDataPoints[REFERENCED_REPORTS_ID] = objectMapper.valueToTree(referencedReports)
+
+            val datasetAsJsonNode =
+                JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) {
+                    allDataPoints[it]
+                }
+
+            return datasetAsJsonNode.toString()
         }
     }
