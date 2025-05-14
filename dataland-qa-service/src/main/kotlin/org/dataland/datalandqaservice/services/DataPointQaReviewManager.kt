@@ -16,7 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
