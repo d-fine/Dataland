@@ -6,7 +6,6 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -31,7 +30,7 @@ class EuTaxonomyAlignedActivitiesComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(" +
-                    "${getTypescriptFieldAccessor(true)}, \"${
+                    "${getTypescriptFieldAccessor()}, \"${
                         StringEscapeUtils.escapeEcmaScript(
                             label,
                         )
@@ -88,7 +87,7 @@ class EuTaxonomyAlignedActivitiesComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val fixtureExpression =
             if (isNullable) {
                 "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +

@@ -1,65 +1,62 @@
 {
-  "id": "extendedEuTaxonomyAlignedActivitiesComponent",
-  "name": "General aligned activities data point with an extended source",
-  "businessDefinition": "Absolute value and share of the revenue per activity that is taxonomy-aligned..",
-  "validatedBy": "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDataPoint<MutableList<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>?>",
-  "example": {
-    "value": [
-      {
-        "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-        "naceCodes": [],
-        "share": {
-          "relativeShareInPercent": 0,
-          "absoluteShare": {
-            "amount": 0,
-            "currency": "EUR"
-          }
-        },
-        "substantialContributionToClimateChangeMitigationInPercent": 10,
-        "substantialContributionToClimateChangeAdaptationInPercent": 5,
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
-         "substantialContributionToTransitionToACircularEconomyInPercent": 70,
-         "substantialContributionToPollutionPreventionAndControlInPercent": 2,
-         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
-         "dnshToClimateChangeMitigation": "Yes",
-         "dnshToClimateChangeAdaptation": "Yes",
-         "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
-         "dnshToTransitionToACircularEconomy": "Yes",
-         "dnshToPollutionPreventionAndControl": "Yes",
-         "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
-         "minimumSafeguards": "Yes",
-         "enablingActivity": "No",
-         "transitionalActivity": "Yes"
+  "id" : "extendedEuTaxonomyAlignedActivitiesComponent",
+  "name" : "General aligned activities data point with an extended source",
+  "businessDefinition" : "Absolute value and share of the revenue per activity that is taxonomy-aligned..",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDataPoint<MutableList<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>?>",
+  "example" : {
+    "value" : [ {
+      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+      "naceCodes" : [ ],
+      "share" : {
+        "relativeShareInPercent" : 0,
+        "absoluteShare" : {
+          "amount" : 0,
+          "currency" : "EUR"
+        }
       },
-      {
-        "activityName": "InfrastructureForRailTransport",
-        "naceCodes": [],
-        "share": {
-          "relativeShareInPercent": 0,
-          "absoluteShare": {
-            "amount": 0,
-            "currency": "EUR"
-          }
-        },
-        "substantialContributionToClimateChangeMitigationInPercent": 7,
-        "substantialContributionToClimateChangeAdaptationInPercent": 5,
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
-        "substantialContributionToTransitionToACircularEconomyInPercent": 70,
-        "substantialContributionToPollutionPreventionAndControlInPercent": 2,
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
-        "dnshToClimateChangeMitigation": "Yes",
-        "dnshToClimateChangeAdaptation": "Yes",
-        "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
-        "dnshToTransitionToACircularEconomy": "Yes",
-        "dnshToPollutionPreventionAndControl": "Yes",
-        "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
-        "minimumSafeguards": "Yes",
-        "enablingActivity": "No",
-        "transitionalActivity": "Yes"
-      }
-    ],
-    "quality": null,
-    "comment": null,
-    "dataSource": null
+      "substantialContributionToClimateChangeMitigationInPercent" : 10,
+      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
+      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
+      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
+      "dnshToClimateChangeMitigation" : "Yes",
+      "dnshToClimateChangeAdaptation" : "Yes",
+      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
+      "dnshToTransitionToACircularEconomy" : "Yes",
+      "dnshToPollutionPreventionAndControl" : "Yes",
+      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "Yes",
+      "minimumSafeguards" : "Yes",
+      "enablingActivity" : "No",
+      "transitionalActivity" : "Yes"
+    }, {
+      "activityName" : "InfrastructureForRailTransport",
+      "naceCodes" : [ ],
+      "share" : {
+        "relativeShareInPercent" : 0,
+        "absoluteShare" : {
+          "amount" : 0,
+          "currency" : "EUR"
+        }
+      },
+      "substantialContributionToClimateChangeMitigationInPercent" : 7,
+      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
+      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
+      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
+      "dnshToClimateChangeMitigation" : "Yes",
+      "dnshToClimateChangeAdaptation" : "Yes",
+      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
+      "dnshToTransitionToACircularEconomy" : "Yes",
+      "dnshToPollutionPreventionAndControl" : "Yes",
+      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "No",
+      "minimumSafeguards" : "Yes",
+      "enablingActivity" : "No",
+      "transitionalActivity" : "Yes"
+    } ],
+    "quality" : null,
+    "comment" : null,
+    "dataSource" : null
   }
 }

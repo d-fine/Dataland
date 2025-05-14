@@ -110,20 +110,22 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Number Of Employees',
-        explanation: 'Total number of employees (including temporary workers with assignment duration >6 months)',
+        label: 'Number of Employees',
+        explanation:
+          'Total Number of Employees (including temporary workers with assignment duration longer than 6 months)',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatNumberForDatatable(dataset.general?.numberOfEmployees?.value, ''),
-            'Number Of Employees',
+            'Number of Employees',
             dataset.general?.numberOfEmployees
           ),
       },
       {
         type: 'cell',
         label: 'UN Global Compact Principles Compliance Policy',
-        explanation: 'Existence of a policy to monitor compliance with the UNGC principles.',
+        explanation:
+          'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -136,7 +138,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         type: 'cell',
         label: 'OECD Guidelines for Multinational Enterprises Compliance Policy',
         explanation:
-          'Existence of a policy to monitor compliance with the OECD Guidelines for Multinational Enterprises.',
+          'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -163,7 +165,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         type: 'cell',
         label: 'Human Rights Due Diligence',
         explanation:
-          'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.',
+          'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -198,7 +200,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           {
             type: 'cell',
             label: 'Relative Share in Percent',
-
+            explanation:
+              'Relative share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -211,7 +214,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             type: 'cell',
             label: 'Absolute Share',
             explanation:
-              'Absolute value and share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+              'Absolute value of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
