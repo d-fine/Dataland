@@ -80,21 +80,7 @@ class QaControllerTest(
             ),
         )
         `when`(specificationControllerApi.doesFrameworkSpecificationExist(anyString())).thenThrow(ClientException("Simulated failure"))
-        /**
-         dataPointQaReviewRepository.save(
-         DataPointQaReviewEntity(
-         dataPointId = "dummy5",
-         companyId = "adidas",
-         companyName = "ADIDAS",
-         dataPointType = "scope1",
-         reportingPeriod = "2023",
-         qaStatus = QaStatus.Accepted,
-         timestamp = 5,
-         triggeringUserId = "me",
-         comment = "comment",
-         ),
-         )
-         */
+
         for (dataId in listOf(dataId, originalActiveDataId)) {
             dataPointQaReviewRepository.save(
                 DataPointQaReviewEntity(
