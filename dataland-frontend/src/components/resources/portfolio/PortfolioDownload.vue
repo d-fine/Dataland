@@ -282,10 +282,7 @@ async function downloadPortfolio(): Promise<void> {
       return;
     }
 
-    const dataContent =
-      selectedFileType.value === ExportFileType.Csv ? JSON.stringify(dataResponse.data) : dataResponse.data;
-
-    forceFileDownload(dataContent, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
+    forceFileDownload(dataResponse.data, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
   } catch (error) {
     console.error(error);
     portfolioErrors.value = `${(error as AxiosError).message}`;
