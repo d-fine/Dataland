@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
 class ${frameworkDataType.shortenedQualifier}Controller(
-    @Autowired constructor (var myDataManager: ${frameworkDataManager.shortenedQualifier},
-    var myMetaDataManager: DataMetaInformationManager,
-    var myDataExportService: DataExportService,
-    var myCompanyQueryManager: CompanyQueryManager,
-    var myObjectMapper: ObjectMapper,
+    @Autowired var myDataManager: ${frameworkDataManager.shortenedQualifier},
+    @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
+    @Autowired var myCompanyQueryManager: CompanyQueryManager,
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,

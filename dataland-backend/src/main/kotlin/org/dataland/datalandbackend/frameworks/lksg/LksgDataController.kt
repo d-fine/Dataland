@@ -21,23 +21,23 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the lksg framework endpoints
- * @param dataManager data manager to be used
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param myDataManager data manager to be used
+ * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/lksg")
 @RestController
 class LksgDataController(
-    @Autowired var dataManager: DataManager,
-    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired var dataExportService: DataExportService,
-    @Autowired var companyQueryManager: CompanyQueryManager,
-    @Autowired var objectMapper: ObjectMapper,
+    @Autowired var myDataManager: DataManager,
+    @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
+    @Autowired var myCompanyQueryManager: CompanyQueryManager,
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<LksgData>(
-        dataManager,
-        dataMetaInformationManager,
-        dataExportService,
-        objectMapper,
-        companyQueryManager,
+        myDataManager,
+        myMetaDataManager,
+        myDataExportService,
+        myObjectMapper,
+        myCompanyQueryManager,
         LksgData::class.java,
     ) {
     @Operation(operationId = "getCompanyAssociatedLksgData")

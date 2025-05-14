@@ -19,28 +19,28 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the P2P framework endpoints
- * @param dataManager data manager to be used
- * @param dataMetaInformationManager metadata manager
- * @param dataExportService export service
- * @param companyQueryManager company query manager
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param myDataManager data manager to be used
+ * @param myMetaDataManager metadata manager
+ * @param myDataExportService export service
+ * @param myCompanyQueryManager company query manager
+ * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/p2p")
 @RestController
 class P2pDataController
     @Autowired
     constructor(
-        dataManager: DataManager,
-        dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
-        companyQueryManager: CompanyQueryManager,
-        objectMapper: ObjectMapper,
+        myDataManager: DataManager,
+        myMetaDataManager: DataMetaInformationManager,
+        myDataExportService: DataExportService,
+        myCompanyQueryManager: CompanyQueryManager,
+        myObjectMapper: ObjectMapper,
     ) : DataController<PathwaysToParisData>(
-            dataManager,
-            dataMetaInformationManager,
-            dataExportService,
-            objectMapper,
-            companyQueryManager,
+            myDataManager,
+            myMetaDataManager,
+            myDataExportService,
+            myObjectMapper,
+            myCompanyQueryManager,
             PathwaysToParisData::class.java,
         ) {
         @Operation(operationId = "getCompanyAssociatedP2pData")

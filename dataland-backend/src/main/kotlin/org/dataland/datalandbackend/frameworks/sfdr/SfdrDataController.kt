@@ -21,23 +21,23 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the sfdr framework endpoints
- * @param dataManager data manager to be used
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param myDataManager data manager to be used
+ * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/sfdr")
 @RestController
 class SfdrDataController(
-    @Autowired var dataManager: AssembledDataManager,
-    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired var dataExportService: DataExportService,
-    @Autowired var companyQueryManager: CompanyQueryManager,
-    @Autowired var objectMapper: ObjectMapper,
+    @Autowired var myDataManager: AssembledDataManager,
+    @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
+    @Autowired var myCompanyQueryManager: CompanyQueryManager,
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<SfdrData>(
-        dataManager,
-        dataMetaInformationManager,
-        dataExportService,
-        objectMapper,
-        companyQueryManager,
+        myDataManager,
+        myMetaDataManager,
+        myDataExportService,
+        myObjectMapper,
+        myCompanyQueryManager,
         SfdrData::class.java,
     ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")
