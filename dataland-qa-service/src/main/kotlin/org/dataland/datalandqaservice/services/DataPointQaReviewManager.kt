@@ -37,7 +37,6 @@ class DataPointQaReviewManager
         private val compositionService: DataPointCompositionService,
         private val qaReviewManager: QaReviewManager,
         private val specificationControllerApi: SpecificationControllerApi,
-        private val dataPointUtils: DataPointUtils,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -323,7 +322,7 @@ class DataPointQaReviewManager
                 require(searchFilter.dataType != null)
                 specificationControllerApi.doesFrameworkSpecificationExist(searchFilter.dataType)
                 val schema = specificationControllerApi.getFrameworkSpecification(searchFilter.dataType).schema
-                val frameworkSpecificDatapointTypes = dataPointUtils.getDataPointTypes(schema)
+                val frameworkSpecificDatapointTypes = DataPointUtils.getDataPointTypes(schema)
                 return frameworkSpecificDatapointTypes.flatMap { type ->
                     val modifiedSearchFilter = searchFilter.copy(dataType = type)
                     getFilteredDataPointQaReviewInformation(modifiedSearchFilter, showOnlyActive, chunkSize, chunkIndex)
