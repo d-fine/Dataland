@@ -268,14 +268,14 @@ async function downloadPortfolio(): Promise<void> {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const frameworkDataApi = getFrameworkDataApiForIdentifier(
       selectedFramework.value,
-      apiClientProvider
+      apiClientProvider,
     ) as PublicFrameworkDataApi<FrameworkData>;
 
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       getSelectedReportingPeriods(),
       getCompanyIds(),
       selectedFileType.value,
-      keepValuesOnly.value
+      keepValuesOnly.value,
     );
 
     if (dataResponse.status === 204) {
