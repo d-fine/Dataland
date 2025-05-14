@@ -61,11 +61,6 @@ export default defineComponent({
      */
     isDisabled(optionName: string): boolean {
       if (this.availableOptions === undefined) return false;
-
-      if (this.availableOptions.length === 0) {
-        return true;
-      }
-
       return !this.availableOptions.some((option) => option.name === optionName);
     },
 

@@ -21,7 +21,7 @@
         <ToggleChipFormInputs
           :key="selectedFramework || 'no-framework'"
           :name="'listOfReportingPeriods'"
-          :options="allReportingPeriodsOptions"
+          :options="allReportingPeriodOptions"
           :availableOptions="availableReportingPeriods"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
@@ -120,7 +120,7 @@ const availableFrameworks: DropdownOption[] = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDE
 const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 const ALL_EXPORT_FILE_TYPES = [ExportFileType.Csv, ExportFileType.Excel];
 
-const allReportingPeriodsOptions = ref<ToggleChipInputType[]>();
+const allReportingPeriodOptions = ref<ToggleChipInputType[]>();
 const availableReportingPeriods = ref<Array<ToggleChipInputType>>([]);
 
 const fileTypeSelectionOptions: DropdownOption[] = ALL_EXPORT_FILE_TYPES.map((type) => {
@@ -143,7 +143,7 @@ onMounted(() => {
     portfolioEntries.value = portfolio.entries;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   }
-  allReportingPeriodsOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
     value: false,
   }));
@@ -159,7 +159,7 @@ function onFrameworkChange(newFramework: string | undefined): void {
     return;
   }
   selectedFramework.value = newFramework;
-  allReportingPeriodsOptions.value?.forEach((option) => {
+  allReportingPeriodOptions.value?.forEach((option) => {
     option.value = false;
   });
   updateAvailableReportingPeriods(newFramework);
@@ -219,8 +219,8 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts currently selected reporting periods
  */
 function getSelectedReportingPeriods(): string[] {
-  if (!allReportingPeriodsOptions.value) return [];
-  return allReportingPeriodsOptions.value.filter((period) => period.value).map((period) => period.name);
+  if (!allReportingPeriodOptions.value) return [];
+  return allReportingPeriodOptions.value.filter((period) => period.value).map((period) => period.name);
 }
 
 /**
@@ -268,14 +268,14 @@ async function downloadPortfolio(): Promise<void> {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const frameworkDataApi = getFrameworkDataApiForIdentifier(
       selectedFramework.value,
-      apiClientProvider,
+      apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       getSelectedReportingPeriods(),
       getCompanyIds(),
       selectedFileType.value,
-      keepValuesOnly.value,
+      keepValuesOnly.value
     );
 
     if (dataResponse.status === 204) {

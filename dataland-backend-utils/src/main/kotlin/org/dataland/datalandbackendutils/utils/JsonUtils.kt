@@ -51,7 +51,7 @@ object JsonUtils {
 
     /**
      * Get all leaf node field names from a JSON node.
-     * The field names are essentially the leafs JSON paths using the default JSON path child operator "."
+     * The field names are essentially the leaf JSON paths using the default JSON path child operator "."
      * Leaf null values are ignored.
      * @param node the JSON node
      * @param currentPath the current path

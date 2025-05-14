@@ -8,13 +8,11 @@ object ExportTestUtils {
     private val QUOTE_REGEX = "(^\")|(\"$)".toRegex()
 
     /**
-     * Ensures a readable CSV file is provided by checking the given file's extension
-     * and providing a valid CSV file if necessary.
+     * Provides a readable CSV file with the same name (without extension) as the given file,
+     * if such a file exists. Otherwise, returns the given file.
      *
-     * @param exportFile The file to validate or convert to a CSV file.
-     * @return A file object with a CSV extension. If the provided file is not a CSV
-     *         but a corresponding CSV file exists, the existing CSV file is returned.
-     *         Otherwise, the original file is returned.
+     * @param exportFile The file to check for a corresponding CSV version.
+     * @return A readable CSV file if it exists, otherwise the originally provided file.
      */
     fun getReadableCsvFile(exportFile: File): File =
         if (exportFile.extension.lowercase() == "csv") {
