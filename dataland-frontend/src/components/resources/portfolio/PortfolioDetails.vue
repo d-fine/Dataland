@@ -218,11 +218,11 @@ watch([enrichedPortfolio], () => {
   const entries = portfolioEntriesToDisplay.value || [];
 
   countryOptions.value = Array.from(
-      new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
+    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
   ).sort();
 
   sectorOptions.value = Array.from(
-      new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
+    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
   majorFrameworks.forEach((framework) => {
