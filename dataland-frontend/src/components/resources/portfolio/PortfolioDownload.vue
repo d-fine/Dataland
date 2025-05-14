@@ -118,16 +118,18 @@ const availableFrameworks: DropdownOption[] = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDE
   label: humanizeStringOrNumber(framework),
 }));
 const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
+const ALL_EXPORT_FILE_TYPES = [ExportFileType.Csv, ExportFileType.Excel];
+
 const allReportingPeriodsOptions = ref<ToggleChipInputType[]>();
 const availableReportingPeriods = ref<Array<ToggleChipInputType>>([]);
 
-const fileTypeSelectionOptions: DropdownOption[] = Object.entries([
-  ExportFileTypeInformation.CSV,
-  ExportFileTypeInformation.EXCEL,
-]).map(([type, information]) => ({
-  value: type.toString(),
-  label: `${information.description} (.${information.fileExtension})`,
-}));
+const fileTypeSelectionOptions: DropdownOption[] = ALL_EXPORT_FILE_TYPES.map((type) => {
+  const information = ExportFileTypeInformation[type];
+  return {
+    value: type,
+    label: `${information.description} (.${information.fileExtension})`,
+  };
+});
 
 const downloadProgress = ref<number | undefined>(undefined);
 const isDownloading = ref(false);
@@ -234,19 +236,8 @@ async function handlePortfolioDownload(): Promise<void> {
   isDownloading.value = true;
   downloadProgress.value = 0;
 
-  try {
-    if (downloadIsInProgress(percentCompleted.value)) return;
-    await downloadPortfolio();
-  } catch (error) {
-    console.error('Download error:', error);
-    if (error instanceof Error && error.message.includes('CSV data is empty')) {
-      portfolioErrors.value = 'No data available.';
-    } else {
-      portfolioErrors.value = 'Network error. Please try again';
-    }
-    isDownloading.value = false;
-    downloadProgress.value = undefined;
-  }
+  if (downloadIsInProgress(percentCompleted.value)) return;
+  await downloadPortfolio();
 }
 
 /**
@@ -271,6 +262,8 @@ function checkIfShowErrors(): void {
 async function downloadPortfolio(): Promise<void> {
   try {
     if (!selectedFramework.value || !selectedFileType.value) return;
+
+    console.log(selectedFileType);
 
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const frameworkDataApi = getFrameworkDataApiForIdentifier(
