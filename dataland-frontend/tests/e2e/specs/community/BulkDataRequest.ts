@@ -81,8 +81,7 @@ Cypress._.times(10, () => {
       function createRequest(
         frameworkIndex: number,
         companyIdentifiers: string = permIdOfExistingCompany,
-        additionalTodos: () => void = (): void => {
-        }
+        additionalTodos: () => void = (): void => {}
       ): void {
         cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
         checksBasicValidation();

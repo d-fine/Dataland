@@ -1,29 +1,27 @@
 import { getStringCypressEnv } from '@e2e/utils/Cypress';
 
 const ignoredExceptions = [
-  'Cannot read properties of undefined (reading \'keys\')',
+  "Cannot read properties of undefined (reading 'keys')",
   'Datasource grafanacloud-logs was not found',
   'Error: Datasource grafanacloud-logs was not found',
-  'An unknown error has occurred: [object Object]'
+  'An unknown error has occurred: [object Object]',
 ];
 
 Cypress.on('uncaught:exception', (err) => {
-  const shouldIgnore = ignoredExceptions.some(message => err.message.includes(message));
+  const shouldIgnore = ignoredExceptions.some((message) => err.message.includes(message));
   if (shouldIgnore) {
     return false; // Prevent Cypress from failing the test, due to grafana uncaught exceptions
   }
   // We still want to fail on other exceptions
   return true;
-
 });
 
 Cypress._.times(20, () => {
   describe('As a developer, I expect Grafana to be available to me', () => {
-
     beforeEach(() => {
       // Login before each test
       cy.visit('http://dataland-admin:6789/grafana');
-      cy.url().then(url => {
+      cy.url().then((url) => {
         if (url.includes('/grafana/login')) {
           cy.get('input[name=user]').should('exist').type(getStringCypressEnv('GRAFANA_ADMIN'));
           cy.get('input[name=password]').should('exist').type(getStringCypressEnv('GRAFANA_PASSWORD'));
@@ -76,21 +74,21 @@ Cypress._.times(20, () => {
   });
 });
 
-  /**
-   * Function to test the provisioned contact points.
-   * @param contactPointName - The name of the contact point to test.
-   */
-  function testProvisionedContactPoint(contactPointName: string): void {
-    // View details of contactPointName
-    cy.get('[data-testid="contact-point"]')
-      .contains(contactPointName)
-      .parents('[data-testid="contact-point"]')
-      .within(() => {
-        cy.contains('Provisioned').should('exist');
-        cy.get('[data-testid="view-action"]').click();
-      });
-    cy.contains('This contact point cannot be edited through the UI').should('exist');
-    // go back to contact points overview
-    cy.get('a[href="/grafana/alerting/notifications"]').click();
-    cy.url().should('include', '/grafana/alerting/notifications');
-  }
+/**
+ * Function to test the provisioned contact points.
+ * @param contactPointName - The name of the contact point to test.
+ */
+function testProvisionedContactPoint(contactPointName: string): void {
+  // View details of contactPointName
+  cy.get('[data-testid="contact-point"]')
+    .contains(contactPointName)
+    .parents('[data-testid="contact-point"]')
+    .within(() => {
+      cy.contains('Provisioned').should('exist');
+      cy.get('[data-testid="view-action"]').click();
+    });
+  cy.contains('This contact point cannot be edited through the UI').should('exist');
+  // go back to contact points overview
+  cy.get('a[href="/grafana/alerting/notifications"]').click();
+  cy.url().should('include', '/grafana/alerting/notifications');
+}
