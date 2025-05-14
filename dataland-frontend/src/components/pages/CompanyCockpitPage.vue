@@ -337,7 +337,7 @@ export default defineComponent({
 
   &__subtitle {
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 21px;
 
     margin-top: 8px;

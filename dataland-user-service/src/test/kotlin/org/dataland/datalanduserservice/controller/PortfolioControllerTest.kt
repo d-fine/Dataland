@@ -2,7 +2,6 @@
 
 package org.dataland.datalanduserservice.controller
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
@@ -45,7 +44,7 @@ class PortfolioControllerTest {
     private val validCompanyId = "valid-company-id"
 
     private val validPortfolioUpload =
-        PortfolioUpload(dummyPortfolioName, setOf(validCompanyId), setOf(DataTypeEnum.lksg))
+        PortfolioUpload(dummyPortfolioName, setOf(validCompanyId))
 
     @BeforeEach
     fun setup() {

@@ -35,7 +35,7 @@ private val serviceNames =
     mapOf(
         "proxy" to "proxy",
         "adminProxy" to "admin-proxy",
-        "apiKeyManager" to "apiKey-manager",
+        "apiKeyManager" to "api-key-manager",
         "documentManager" to "document-manager",
         "backendDb" to "backend-db",
         "internalStorage" to "internal-storage",
