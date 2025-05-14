@@ -56,7 +56,7 @@ class DataPointQaReviewRepositoryTest {
     private val emptyFilter =
         DataPointQaReviewItemFilter(
             companyId = null,
-            dataPointType = null,
+            dataType = null,
             reportingPeriod = null,
             qaStatus = null,
         )

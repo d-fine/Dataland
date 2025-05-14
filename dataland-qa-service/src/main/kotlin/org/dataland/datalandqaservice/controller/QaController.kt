@@ -153,10 +153,10 @@ class QaController(
 
     override fun getDataPointQaReviewInformation(
         companyId: String?,
-        dataPointType: String?,
+        dataType: String?,
         reportingPeriod: String?,
         qaStatus: QaStatus?,
-        onlyLatest: Boolean?,
+        showOnlyActive: Boolean?,
         chunkSize: Int?,
         chunkIndex: Int?,
     ): ResponseEntity<List<DataPointQaReviewInformation>> {
@@ -164,14 +164,14 @@ class QaController(
         val searchFilter =
             DataPointQaReviewItemFilter(
                 companyId = companyId,
-                dataPointType = dataPointType,
+                dataType = dataType,
                 reportingPeriod = reportingPeriod,
                 qaStatus = qaStatus,
             )
         return ResponseEntity.ok(
             dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
                 searchFilter = searchFilter,
-                onlyLatest = onlyLatest,
+                showOnlyActive = showOnlyActive,
                 chunkSize = chunkSize,
                 chunkIndex = chunkIndex,
             ),

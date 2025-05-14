@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  */
 data class DataPointQaReviewItemFilter(
     val companyId: String?,
-    val dataPointType: String?,
+    val dataType: String?,
     val reportingPeriod: String?,
     val qaStatus: QaStatus?,
 )

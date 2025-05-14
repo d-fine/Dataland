@@ -154,7 +154,7 @@ interface QaApi {
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getDataPointQaReviewInformation(
         @RequestParam companyId: String?,
-        @RequestParam dataPointType: String?,
+        @RequestParam dataType: String?,
         @RequestParam reportingPeriod: String?,
         @RequestParam qaStatus: QaStatus?,
         @Parameter(
@@ -162,7 +162,7 @@ interface QaApi {
                 "If set, only show the most recent QA review information for each data point " +
                     "(independent of whether the data point is active or not).",
         )
-        @RequestParam(defaultValue = true.toString()) onlyLatest: Boolean?,
+        @RequestParam(defaultValue = true.toString()) showOnlyActive: Boolean?,
         @RequestParam(defaultValue = "10") chunkSize: Int?,
         @RequestParam(defaultValue = "0") chunkIndex: Int?,
     ): ResponseEntity<List<DataPointQaReviewInformation>>

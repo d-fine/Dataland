@@ -2345,7 +2345,7 @@
             }
           },
           {
-            "name": "dataPointType",
+            "name": "dataType",
             "in": "query",
             "required": false,
             "schema": {

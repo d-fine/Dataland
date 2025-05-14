@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.DataPointUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -15,6 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -34,6 +36,8 @@ class DataPointQaReviewManager
         private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
         private val qaReviewManager: QaReviewManager,
+        private val specificationControllerApi: SpecificationControllerApi,
+        private val dataPointUtils: DataPointUtils,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -304,24 +308,37 @@ class DataPointQaReviewManager
          * Retrieve all QA review information items matching the provided filters in descending order by timestamp.
          * Results are paginated using [chunkSize] and [chunkIndex].
          * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
-         * @param onlyLatest if true, only the latest entry for each dataId is returned
+         * @param showOnlyActive if true, only the active Datapoint is returned
          * @param chunkSize the number of results to return
          * @param chunkIndex the index to start the result set from
          *
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
-            onlyLatest: Boolean? = true,
+            showOnlyActive: Boolean? = true,
             chunkSize: Int? = 10,
             chunkIndex: Int? = 0,
-        ): List<DataPointQaReviewInformation> =
-            if (onlyLatest == true) {
+        ): List<DataPointQaReviewInformation> {
+            try {
+                require(searchFilter.dataType != null)
+                specificationControllerApi.doesFrameworkSpecificationExist(searchFilter.dataType)
+                val schema = specificationControllerApi.getFrameworkSpecification(searchFilter.dataType).schema
+                val frameworkSpecificDatapointTypes = dataPointUtils.getDataPointTypes(schema)
+                return frameworkSpecificDatapointTypes.flatMap { type ->
+                    val modifiedSearchFilter = searchFilter.copy(dataType = type)
+                    getFilteredDataPointQaReviewInformation(modifiedSearchFilter, showOnlyActive, chunkSize, chunkIndex)
+                }
+            } catch (_: IllegalArgumentException) {
+            } catch (_: ResourceNotFoundApiException) {
+            }
+            return if (showOnlyActive == true) {
                 dataPointQaReviewRepository
-                    .findByFilterLatestOnly(searchFilter, chunkSize, chunkIndex)
+                    .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
                     .map { it.toDataPointQaReviewInformation() }
             } else {
                 dataPointQaReviewRepository
                     .findByFilter(searchFilter, chunkSize, chunkIndex)
                     .map { it.toDataPointQaReviewInformation() }
             }
+        }
     }

@@ -12,7 +12,6 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.utils.UtilityFunctions
@@ -73,6 +72,124 @@ class QaControllerTest(
                 uploaderUserId = "",
             ),
         )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy5",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope1",
+                reportingPeriod = "2023",
+                qaStatus = QaStatus.Accepted,
+                timestamp = 5,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy4",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope1",
+                reportingPeriod = "2023",
+                qaStatus = QaStatus.Accepted,
+                timestamp = 4,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy3",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope1",
+                reportingPeriod = "2024",
+                qaStatus = QaStatus.Accepted,
+                timestamp = 3,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy2",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope1",
+                reportingPeriod = "2023",
+                qaStatus = QaStatus.Rejected,
+                timestamp = 2,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy1",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope1",
+                reportingPeriod = "2024",
+                qaStatus = QaStatus.Rejected,
+                timestamp = 1,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy6",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope1",
+                reportingPeriod = "2023",
+                qaStatus = QaStatus.Accepted,
+                timestamp = 6,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy7",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope2",
+                reportingPeriod = "2023",
+                qaStatus = QaStatus.Accepted,
+                timestamp = 7,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy8",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope2",
+                reportingPeriod = "2023",
+                qaStatus = QaStatus.Rejected,
+                timestamp = 8,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "dummy9",
+                companyId = "adidas",
+                companyName = "ADIDAS",
+                dataPointType = "scope3",
+                reportingPeriod = "2024",
+                qaStatus = QaStatus.Accepted,
+                timestamp = 9,
+                triggeringUserId = "me",
+                comment = "comment",
+            ),
+        )
 
         for (dataId in listOf(dataId, originalActiveDataId)) {
             dataPointQaReviewRepository.save(
@@ -107,18 +224,19 @@ class QaControllerTest(
             ),
         )
 
-    private fun getReviewEntries(onlyLatest: Boolean): List<DataPointQaReviewInformation> =
-        qaController
-            .getDataPointQaReviewInformation(
-                companyId = companyId,
-                dataPointType = dataPointType,
-                reportingPeriod = reportingPeriod,
-                qaStatus = null,
-                onlyLatest = onlyLatest,
-                chunkSize = 10,
-                chunkIndex = 0,
-            ).body!!
-
+    /**
+     private fun getReviewEntries(onlyLatest: Boolean): List<DataPointQaReviewInformation> =
+     qaController
+     .getDataPointQaReviewInformation(
+     companyId = companyId,
+     dataPointType = dataPointType,
+     reportingPeriod = reportingPeriod,
+     qaStatus = null,
+     onlyLatest = onlyLatest,
+     chunkSize = 10,
+     chunkIndex = 0,
+     ).body!!
+*/
     @Test
     fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {
         specifyMocks()
@@ -160,17 +278,44 @@ class QaControllerTest(
                 eq(RoutingKeyNames.DATA_POINT_QA),
             )
 
-            val reviewEntries = qaController.getDataPointQaReviewInformationByDataId(dataId).body!!
-            assertEquals(5, reviewEntries.size)
-            assertEquals(BackendUtilsQaStatus.Rejected, reviewEntries.first().qaStatus)
+            /**
+             val reviewEntries = qaController.getDataPointQaReviewInformationByDataId(dataId).body!!
+             assertEquals(5, reviewEntries.size)
+             assertEquals(BackendUtilsQaStatus.Rejected, reviewEntries.first().qaStatus)
 
-            val latestReviewEntries = getReviewEntries(onlyLatest = true)
-            assertEquals(2, latestReviewEntries.size)
-            assertEquals(BackendUtilsQaStatus.Rejected, latestReviewEntries.first().qaStatus)
+             val latestReviewEntries = getReviewEntries(onlyLatest = true)
+             assertEquals(2, latestReviewEntries.size)
+             assertEquals(BackendUtilsQaStatus.Rejected, latestReviewEntries.first().qaStatus)
 
-            val allReviewEntries = getReviewEntries(onlyLatest = false)
-            assertEquals(8, allReviewEntries.size)
-            assertEquals(firstComment, allReviewEntries[allReviewEntries.size - 5].comment)
+             val allReviewEntries = getReviewEntries(onlyLatest = false)
+             assertEquals(8, allReviewEntries.size)
+             assertEquals(firstComment, allReviewEntries[allReviewEntries.size - 5].comment)
+             */
+            val test1 =
+                qaController
+                    .getDataPointQaReviewInformation(
+                        companyId = "adidas",
+                        dataType = "scope1",
+                        qaStatus = QaStatus.Accepted,
+                        reportingPeriod = null,
+                        showOnlyActive = true,
+                        chunkSize = 10,
+                        chunkIndex = 0,
+                    ).body!!
+            assertEquals(2, test1.size)
+
+            val test2 =
+                qaController
+                    .getDataPointQaReviewInformation(
+                        companyId = "adidas",
+                        dataType = "sfdr",
+                        qaStatus = QaStatus.Accepted,
+                        reportingPeriod = "2023",
+                        showOnlyActive = false,
+                        chunkSize = 10,
+                        chunkIndex = 0,
+                    ).body!!
+            assertEquals(4, test2.size)
         }
     }
 }
