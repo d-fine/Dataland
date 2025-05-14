@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AdditionalCompanyInformationDataController(
     @Autowired var dataManager: AssembledDataManager,
-    @Autowired var dataMetaManager: DataMetaInformationManager,
+    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired var dataExportService: DataExportService,
     @Autowired var companyQueryManager: CompanyQueryManager,
     @Autowired var objectMapper: ObjectMapper,
 ) : DataController<AdditionalCompanyInformationData>(
         dataManager,
-        dataMetaManager,
+        dataMetaInformationManager,
         dataExportService,
         objectMapper,
         companyQueryManager,

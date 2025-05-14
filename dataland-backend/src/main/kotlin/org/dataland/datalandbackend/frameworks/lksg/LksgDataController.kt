@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class LksgDataController(
     @Autowired var dataManager: DataManager,
-    @Autowired var dataMetaManager: DataMetaInformationManager,
+    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired var dataExportService: DataExportService,
     @Autowired var companyQueryManager: CompanyQueryManager,
     @Autowired var objectMapper: ObjectMapper,
 ) : DataController<LksgData>(
         dataManager,
-        dataMetaManager,
+        dataMetaInformationManager,
         dataExportService,
         objectMapper,
         companyQueryManager,
