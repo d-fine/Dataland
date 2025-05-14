@@ -17,36 +17,36 @@
     </span>
 
     <DataTable
-        stripedRows
-        removableSort
-        v-model:filters="filters"
-        filterDisplay="menu"
-        :value="portfolioEntriesToDisplay"
-        tableStyle="min-width: 50rem"
-        sortField="companyName"
-        :sortOrder="1"
+      stripedRows
+      removableSort
+      v-model:filters="filters"
+      filterDisplay="menu"
+      :value="portfolioEntriesToDisplay"
+      tableStyle="min-width: 50rem"
+      sortField="companyName"
+      :sortOrder="1"
     >
       <template #empty>
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
         companies or remove filter criteria.
       </template>
       <Column
-          :sortable="true"
-          field="companyName"
-          header="Company Name"
-          :showFilterMatchModes="false"
-          style="width: 15%"
+        :sortable="true"
+        field="companyName"
+        header="Company Name"
+        :showFilterMatchModes="false"
+        style="width: 15%"
       >
         <template #body="portfolioEntry">
           <a :href="`/companies/${portfolioEntry.data.companyId}`">{{ portfolioEntry.data.companyName }}</a>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
-              v-model="filterModel.value"
-              type="text"
-              @input="filterCallback()"
-              placeholder="Filter by company name"
-              :data-test="'companyNameFilterValue'"
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Filter by company name"
+            :data-test="'companyNameFilterValue'"
           />
         </template>
       </Column>
@@ -54,12 +54,12 @@
         <template #filter="{ filterModel, filterCallback }">
           <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
             <Checkbox
-                v-model="filterModel.value"
-                :inputId="country"
-                name="country"
-                :value="country"
-                data-test="countryFilterValue"
-                @change="filterCallback"
+              v-model="filterModel.value"
+              :inputId="country"
+              name="country"
+              :value="country"
+              data-test="countryFilterValue"
+              @change="filterCallback"
             />
             <label :for="country">{{ country }}</label>
           </div>
@@ -69,47 +69,47 @@
         <template #filter="{ filterModel, filterCallback }">
           <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
             <Checkbox
-                v-model="filterModel.value"
-                :inputId="sector"
-                name="sector"
-                :value="sector"
-                data-test="sectorFilterValue"
-                @change="filterCallback"
+              v-model="filterModel.value"
+              :inputId="sector"
+              name="sector"
+              :value="sector"
+              data-test="sectorFilterValue"
+              @change="filterCallback"
             />
             <label :for="sector">{{ sector }}</label>
           </div>
         </template>
       </Column>
       <Column
-          v-for="framework of majorFrameworks"
-          :key="framework"
-          :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
-          :sortable="true"
-          :field="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriods'"
-          :header="humanizeStringOrNumber(framework)"
-          :showFilterMatchModes="false"
+        v-for="framework of majorFrameworks"
+        :key="framework"
+        :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
+        :sortable="true"
+        :field="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriods'"
+        :header="humanizeStringOrNumber(framework)"
+        :showFilterMatchModes="false"
       >
         <template #body="portfolioEntry">
           <a
-              v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-              :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-          >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
+            v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+            :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+            >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
           >
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <div
-              v-for="availableReportingPeriods of reportingPeriodOptions.get(framework)"
-              :key="availableReportingPeriods"
-              class="filter-checkbox"
+            v-for="availableReportingPeriods of reportingPeriodOptions.get(framework)"
+            :key="availableReportingPeriods"
+            class="filter-checkbox"
           >
             <Checkbox
-                v-model="filterModel.value"
-                :inputId="availableReportingPeriods"
-                name="availableReportingPeriods"
-                :value="availableReportingPeriods"
-                :data-test="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
-                @change="filterCallback"
+              v-model="filterModel.value"
+              :inputId="availableReportingPeriods"
+              name="availableReportingPeriods"
+              :value="availableReportingPeriods"
+              :data-test="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+              @change="filterCallback"
             />
             <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
           </div>
@@ -165,21 +165,21 @@ class PortfolioEntryPrepared {
 
     majorFrameworks.forEach((framework) => {
       this.frameworkHyphenatedNamesToDataRef.set(
-          framework,
-          portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
+        framework,
+        portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
           (portfolioEntry.availableReportingPeriods[framework]
-              ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
-              : undefined)
+            ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
+            : undefined)
       );
     });
 
     this.sfdrAvailableReportingPeriods = portfolioEntry.availableReportingPeriods['sfdr'] || 'No data available';
     this.eutaxonomyFinancialsAvailableReportingPeriods =
-        portfolioEntry.availableReportingPeriods['eutaxonomy-financials'] || 'No data available';
+      portfolioEntry.availableReportingPeriods['eutaxonomy-financials'] || 'No data available';
     this.eutaxonomyNonFinancialsAvailableReportingPeriods =
-        portfolioEntry.availableReportingPeriods['eutaxonomy-non-financials'] || 'No data available';
+      portfolioEntry.availableReportingPeriods['eutaxonomy-non-financials'] || 'No data available';
     this.nuclearAndGasAvailableReportingPeriods =
-        portfolioEntry.availableReportingPeriods['nuclear-and-gas'] || 'No data available';
+      portfolioEntry.availableReportingPeriods['nuclear-and-gas'] || 'No data available';
   }
 }
 
@@ -227,14 +227,14 @@ watch([enrichedPortfolio], () => {
 
   majorFrameworks.forEach((framework) => {
     reportingPeriodOptions.value.set(
-        framework,
-        Array.from(
-            new Set(
-                entries
-                    .map((entry) => getAvailableReportingPeriods(entry, framework))
-                    .filter((period): period is string => typeof period === 'string')
-            )
-        ).sort()
+      framework,
+      Array.from(
+        new Set(
+          entries
+            .map((entry) => getAvailableReportingPeriods(entry, framework))
+            .filter((period): period is string => typeof period === 'string')
+        )
+      ).sort()
     );
   });
 });
@@ -266,9 +266,9 @@ function widthOfFrameworkColumn(framework: string): string {
  */
 function convertHyphenatedStringToCamelCase(hyphenatedString: string): string {
   return hyphenatedString
-      .split('-')
-      .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
-      .join('');
+    .split('-')
+    .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+    .join('');
 }
 
 /**
@@ -278,8 +278,8 @@ function convertHyphenatedStringToCamelCase(hyphenatedString: string): string {
  * @param frameworkName
  */
 function getAvailableReportingPeriods(
-    portfolioEntryPrepared: PortfolioEntryPrepared,
-    frameworkName: string
+  portfolioEntryPrepared: PortfolioEntryPrepared,
+  frameworkName: string
 ): string | undefined {
   switch (frameworkName) {
     case 'sfdr':
@@ -301,17 +301,17 @@ function getAvailableReportingPeriods(
 function loadPortfolio(): void {
   isLoading.value = true;
   apiClientProvider.apiClients.portfolioController
-      .getEnrichedPortfolio(props.portfolioId)
-      .then((response) => {
-        enrichedPortfolio.value = response.data;
+    .getEnrichedPortfolio(props.portfolioId)
+    .then((response) => {
+      enrichedPortfolio.value = response.data;
 
-        portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-      })
-      .catch((reason) => {
-        console.error(reason);
-        isError.value = true;
-      })
-      .finally(() => (isLoading.value = false));
+      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+    })
+    .catch((reason) => {
+      console.error(reason);
+      isError.value = true;
+    })
+    .finally(() => (isLoading.value = false));
 }
 
 /**
