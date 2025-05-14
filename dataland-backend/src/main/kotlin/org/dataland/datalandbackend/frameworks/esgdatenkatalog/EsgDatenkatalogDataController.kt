@@ -21,23 +21,23 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the esg-datenkatalog framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param dataManager data manager to be used
+ * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/esg-datenkatalog")
 @RestController
 class EsgDatenkatalogDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
+    @Autowired var dataManager: DataManager,
+    @Autowired var metaDataManager: DataMetaInformationManager,
+    @Autowired var dataExportService: DataExportService,
+    @Autowired var companyQueryManager: CompanyQueryManager,
+    @Autowired var objectMapper: ObjectMapper,
 ) : DataController<EsgDatenkatalogData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        myCompanyQueryManager,
+        dataManager,
+        metaDataManager,
+        dataExportService,
+        objectMapper,
+        companyQueryManager,
         EsgDatenkatalogData::class.java,
     ) {
     @Operation(operationId = "getCompanyAssociatedEsgDatenkatalogData")

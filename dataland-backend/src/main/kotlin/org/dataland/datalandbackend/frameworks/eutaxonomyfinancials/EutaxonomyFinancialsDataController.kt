@@ -21,23 +21,23 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the eutaxonomy-financials framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param dataManager data manager to be used
+ * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/eutaxonomy-financials")
 @RestController
 class EutaxonomyFinancialsDataController(
-    @Autowired var myDataManager: AssembledDataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
+    @Autowired var dataManager: AssembledDataManager,
+    @Autowired var metaDataManager: DataMetaInformationManager,
+    @Autowired var dataExportService: DataExportService,
+    @Autowired var companyQueryManager: CompanyQueryManager,
+    @Autowired var objectMapper: ObjectMapper,
 ) : DataController<EutaxonomyFinancialsData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        myCompanyQueryManager,
+        dataManager,
+        metaDataManager,
+        dataExportService,
+        objectMapper,
+        companyQueryManager,
         EutaxonomyFinancialsData::class.java,
     ) {
     @Operation(operationId = "getCompanyAssociatedEutaxonomyFinancialsData")
