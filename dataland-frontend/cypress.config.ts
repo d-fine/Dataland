@@ -37,6 +37,7 @@ export default defineConfig({
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
   defaultCommandTimeout: 10000,
+  pageLoadTimeout: 120000,
   viewportHeight: 684,
   viewportWidth: 1536,
   video: false,
