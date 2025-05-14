@@ -1,62 +1,73 @@
 {
-  "id" : "extendedEuTaxonomyAlignedActivitiesComponent",
-  "name" : "General aligned activities data point with an extended source",
-  "businessDefinition" : "Absolute value and share of the revenue per activity that is taxonomy-aligned..",
-  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDataPoint<MutableList<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>?>",
-  "example" : {
-    "value" : [ {
-      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-      "naceCodes" : [ ],
-      "share" : {
-        "relativeShareInPercent" : 0,
-        "absoluteShare" : {
-          "amount" : 0,
-          "currency" : "EUR"
-        }
+  "id": "extendedEuTaxonomyAlignedActivitiesComponent",
+  "name": "General aligned activities data point with an extended source",
+  "businessDefinition": "Absolute value and share of the revenue per activity that is taxonomy-aligned..",
+  "validatedBy": "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDataPoint<MutableList<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>?>",
+  "example": {
+    "value": [
+      {
+        "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+        "naceCodes": [ "E.38.11" ],
+        "share": {
+          "relativeShareInPercent": 25,
+          "absoluteShare": {
+            "amount": 100.5,
+            "currency": "EUR"
+          }
+        },
+        "substantialContributionToClimateChangeMitigationInPercent": 10,
+        "substantialContributionToClimateChangeAdaptationInPercent": 5,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 70,
+        "substantialContributionToPollutionPreventionAndControlInPercent": 2,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
+        "dnshToClimateChangeMitigation": "Yes",
+        "dnshToClimateChangeAdaptation": "Yes",
+        "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+        "dnshToTransitionToACircularEconomy": "Yes",
+        "dnshToPollutionPreventionAndControl": "Yes",
+        "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+        "minimumSafeguards": "Yes",
+        "enablingActivity": "No",
+        "transitionalActivity": "Yes"
       },
-      "substantialContributionToClimateChangeMitigationInPercent" : 10,
-      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
-      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
-      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
-      "dnshToClimateChangeMitigation" : "Yes",
-      "dnshToClimateChangeAdaptation" : "Yes",
-      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
-      "dnshToTransitionToACircularEconomy" : "Yes",
-      "dnshToPollutionPreventionAndControl" : "Yes",
-      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "Yes",
-      "minimumSafeguards" : "Yes",
-      "enablingActivity" : "No",
-      "transitionalActivity" : "Yes"
-    }, {
-      "activityName" : "InfrastructureForRailTransport",
-      "naceCodes" : [ ],
-      "share" : {
-        "relativeShareInPercent" : 0,
-        "absoluteShare" : {
-          "amount" : 0,
-          "currency" : "EUR"
-        }
-      },
-      "substantialContributionToClimateChangeMitigationInPercent" : 7,
-      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
-      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
-      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
-      "dnshToClimateChangeMitigation" : "Yes",
-      "dnshToClimateChangeAdaptation" : "Yes",
-      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
-      "dnshToTransitionToACircularEconomy" : "Yes",
-      "dnshToPollutionPreventionAndControl" : "Yes",
-      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "No",
-      "minimumSafeguards" : "Yes",
-      "enablingActivity" : "No",
-      "transitionalActivity" : "Yes"
-    } ],
-    "quality" : null,
-    "comment" : null,
-    "dataSource" : null
+      {
+        "activityName": "InfrastructureForRailTransport",
+        "naceCodes": [
+          "C27.9",
+          "C30.20"
+        ],
+        "share": {
+          "relativeShareInPercent": 25,
+          "absoluteShare": {
+            "amount": 100.5,
+            "currency": "EUR"
+          }
+        },
+        "substantialContributionToClimateChangeMitigationInPercent": 7,
+        "substantialContributionToClimateChangeAdaptationInPercent": 5,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 70,
+        "substantialContributionToPollutionPreventionAndControlInPercent": 2,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
+        "dnshToClimateChangeMitigation": "Yes",
+        "dnshToClimateChangeAdaptation": "Yes",
+        "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+        "dnshToTransitionToACircularEconomy": "Yes",
+        "dnshToPollutionPreventionAndControl": "Yes",
+        "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
+        "minimumSafeguards": "Yes",
+        "enablingActivity": "No",
+        "transitionalActivity": "Yes"
+      }
+    ],
+    "quality": "Reported",
+    "comment": "The value is reported by the company.",
+    "dataSource": {
+      "page": "5-7",
+      "tagName": "date",
+      "fileName": "AnnualReport2020.pdf",
+      "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    }
   }
 }
