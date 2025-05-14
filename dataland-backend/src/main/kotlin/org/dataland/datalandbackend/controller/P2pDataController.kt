@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * Controller for the P2P framework endpoints
  * @param dataManager data manager to be used
- * @param metaDataManager metadata manager
+ * @param dataMetaManager metadata manager
  * @param dataExportService export service
  * @param companyQueryManager company query manager
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
@@ -31,13 +31,13 @@ class P2pDataController
     @Autowired
     constructor(
         dataManager: DataManager,
-        metaDataManager: DataMetaInformationManager,
+        dataMetaManager: DataMetaInformationManager,
         dataExportService: DataExportService,
         companyQueryManager: CompanyQueryManager,
         objectMapper: ObjectMapper,
     ) : DataController<PathwaysToParisData>(
             dataManager,
-            metaDataManager,
+            dataMetaManager,
             dataExportService,
             objectMapper,
             companyQueryManager,

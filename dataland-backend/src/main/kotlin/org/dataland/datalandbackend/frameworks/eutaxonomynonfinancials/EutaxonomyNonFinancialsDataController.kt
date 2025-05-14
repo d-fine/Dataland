@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class EutaxonomyNonFinancialsDataController(
     @Autowired var dataManager: DataManager,
-    @Autowired var metaDataManager: DataMetaInformationManager,
+    @Autowired var dataMetaManager: DataMetaInformationManager,
     @Autowired var dataExportService: DataExportService,
     @Autowired var companyQueryManager: CompanyQueryManager,
     @Autowired var objectMapper: ObjectMapper,
 ) : DataController<EutaxonomyNonFinancialsData>(
         dataManager,
-        metaDataManager,
+        dataMetaManager,
         dataExportService,
         objectMapper,
         companyQueryManager,

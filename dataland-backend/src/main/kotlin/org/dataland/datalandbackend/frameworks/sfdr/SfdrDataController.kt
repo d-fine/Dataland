@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SfdrDataController(
     @Autowired var dataManager: AssembledDataManager,
-    @Autowired var metaDataManager: DataMetaInformationManager,
+    @Autowired var dataMetaManager: DataMetaInformationManager,
     @Autowired var dataExportService: DataExportService,
     @Autowired var companyQueryManager: CompanyQueryManager,
     @Autowired var objectMapper: ObjectMapper,
 ) : DataController<SfdrData>(
         dataManager,
-        metaDataManager,
+        dataMetaManager,
         dataExportService,
         objectMapper,
         companyQueryManager,
