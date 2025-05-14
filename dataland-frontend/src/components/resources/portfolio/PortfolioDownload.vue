@@ -263,8 +263,6 @@ async function downloadPortfolio(): Promise<void> {
   try {
     if (!selectedFramework.value || !selectedFileType.value) return;
 
-    console.log(selectedFileType);
-
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const frameworkDataApi = getFrameworkDataApiForIdentifier(
       selectedFramework.value,
