@@ -300,11 +300,9 @@ class DataRequestUpdateManager
 
         /**
          * Method to patch the request status to answered for a list of data request entities and relevant data request entities
-         * of subsidiaries. At the moment, only entities with status open or non-sourceable are processed by this function.
-         * Moreover, the entities stem from a common QA approval event (same company, framework and reporting period).
+         * of subsidiaries. Only entities with status open or non-sourceable from a common QA-approval event are processed by the function.
          * @param dataMetaInformation the meta info of the QA-approved dataset
          * @param answeringDataId the id of the uploaded dataset
-         * @param correlationId correlationId
          * @return the list of request ids of the processed requests of the parent company
          */
         fun patchRequestStatusToAnsweredForParentAndSubsidiaries(
@@ -338,8 +336,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method to deal with data requests for which no patching is required. At the moment, those are answered,
-         * closed or resolved requests for which some new data was QA-approved.
+         * Method to deal with data requests for which no patching is required (i.e., answered/closed/resolved requests with QA-approval).
          */
         private fun processWithoutPatching(
             dataMetaInformation: DataMetaInformation,
@@ -388,12 +385,11 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method to patch all data requests corresponding to a dataset to status non-sourceable.
+         * Method to patch all non-withdrawn data requests corresponding to a dataset to status non-sourceable.
          * @param sourceabilityInfo the info on the non-sourceable dataset
-         * @param correlationId correlationId
          */
         @Transactional
-        fun patchAllRequestsToStatusNonSourceable(
+        fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfo: SourceabilityInfo,
             correlationId: String,
         ) {
@@ -403,13 +399,16 @@ class DataRequestUpdateManager
             }
 
             val dataRequestEntities =
-                dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                    datalandCompanyId = sourceabilityInfo.companyId,
-                    dataType = sourceabilityInfo.dataType.toString(),
-                    reportingPeriod = sourceabilityInfo.reportingPeriod,
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(sourceabilityInfo.dataType),
+                        datalandCompanyIds = setOf(sourceabilityInfo.companyId),
+                        reportingPeriod = sourceabilityInfo.reportingPeriod,
+                        requestStatus = RequestStatus.entries.filter { it != RequestStatus.Withdrawn }.toSet(),
+                    ),
                 )
 
-            dataRequestEntities?.forEach {
+            dataRequestEntities.forEach {
                 patchDataRequest(
                     dataRequestId = it.dataRequestId,
                     dataRequestPatch =

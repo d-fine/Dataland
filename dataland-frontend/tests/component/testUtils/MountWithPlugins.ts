@@ -85,12 +85,10 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   options.global.plugins.push(DialogService);
   options.global.provide = options.global.provide ?? {};
 
-  if (!options.router) {
-    options.router = createRouter({
-      routes: routes,
-      history: createMemoryHistory(),
-    });
-  }
+  options.router ??= createRouter({
+    routes: routes,
+    history: createMemoryHistory(),
+  });
 
   if (options.keycloak) {
     options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));

@@ -131,35 +131,33 @@
       </TheContent>
     </DatasetsTabMenu>
 
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import TheContent from '@/components/generics/TheContent.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { defineComponent, inject } from 'vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import Column from 'primevue/column';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
-import InputText from 'primevue/inputtext';
-import Calendar from 'primevue/calendar';
-import type Keycloak from 'keycloak-js';
-import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
-import router from '@/router';
-import { type DataTypeEnum } from '@clients/backend';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { type DataTypeEnum } from '@clients/backend';
+import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
+import type Keycloak from 'keycloak-js';
+import Calendar from 'primevue/calendar';
+import Column from 'primevue/column';
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import InputText from 'primevue/inputtext';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -183,9 +181,6 @@ export default defineComponent({
     };
   },
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       apiClientProvider: new ApiClientProvider(this.getKeycloakPromise()),
       displayDataOfPage: [] as QaReviewResponse[],
@@ -194,7 +189,6 @@ export default defineComponent({
       currentChunkIndex: 0,
       firstRowIndex: 0,
       totalRecords: 0,
-      footerContent,
       debounceInMs: 300,
       timerId: 0,
       searchBarInput: '',
