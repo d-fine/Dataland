@@ -17,6 +17,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataP
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -319,24 +320,34 @@ class DataPointQaReviewManager
             chunkIndex: Int? = 0,
         ): List<DataPointQaReviewInformation> {
             try {
+                logger.info("STARTED TRY BLOCK WITH ${searchFilter.dataType}")
                 require(searchFilter.dataType != null)
+                logger.info("Passed require assertion!!!!!!!!!!!!!!!!!!!!")
                 specificationControllerApi.doesFrameworkSpecificationExist(searchFilter.dataType)
+                logger.info("Passed doesFrameworkSpecificationExist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 val schema = specificationControllerApi.getFrameworkSpecification(searchFilter.dataType).schema
+                logger.info("Processing the following schema: $schema")
                 val frameworkSpecificDatapointTypes = DataPointUtils.getDataPointTypes(schema)
+                logger.info("Passed getDataPointTypes for the schema!!!!!!!!!!!!!!!!!!!!!!!")
                 return frameworkSpecificDatapointTypes.flatMap { type ->
                     val modifiedSearchFilter = searchFilter.copy(dataType = type)
                     getFilteredDataPointQaReviewInformation(modifiedSearchFilter, showOnlyActive, chunkSize, chunkIndex)
                 }
             } catch (_: IllegalArgumentException) {
-            } catch (_: ResourceNotFoundApiException) {
+                logger.info("HUHU")
+            } catch (_: ClientException) {
+                logger.info("HAHA")
             }
-            return if (showOnlyActive == true) {
-                dataPointQaReviewRepository
-                    .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
-                    .map { it.toDataPointQaReviewInformation() }
-            } else {
+            logger.info("dataType is null or framework specification does not exist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return if (showOnlyActive == false) {
                 dataPointQaReviewRepository
                     .findByFilter(searchFilter, chunkSize, chunkIndex)
+                    .map { it.toDataPointQaReviewInformation() }
+            } else if (searchFilter.qaStatus in listOf(QaStatus.Pending, QaStatus.Rejected)) {
+                listOf()
+            } else {
+                dataPointQaReviewRepository
+                    .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
                     .map { it.toDataPointQaReviewInformation() }
             }
         }
