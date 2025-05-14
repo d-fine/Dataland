@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -47,22 +48,17 @@ class EuTaxonomyAlignedActivitiesComponent(
     }
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
             TypeReference(
-                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
-                isNullable,
+                "kotlin.collections.MutableList",
+                true,
                 listOf(
                     TypeReference(
-                        "kotlin.collections.MutableList",
-                        isNullable,
-                        listOf(
-                            TypeReference(
-                                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
-                                    ".custom.EuTaxonomyAlignedActivity",
-                                false,
-                            ),
-                        ),
+                        "org.dataland.datalandbackend.frameworks" +
+                            ".eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity",
+                        false,
                     ),
                 ),
             ),
