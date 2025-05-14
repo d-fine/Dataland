@@ -10,7 +10,6 @@ const queues = [
   'documentReceivedDatabaseDataStore',
   'itemStoredDocumentQaService',
   'privateRequestReceivedCommunityManager',
-  'privateRequestReceivedEurodatDataStore',
   'sendEmailService',
   'internal-storage.storeDatasets',
   'internal-storage.storeDatapoints',
