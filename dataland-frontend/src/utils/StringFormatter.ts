@@ -9,12 +9,21 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
+ * Convert kebab case string to camelCase
+ * @param rawText is the string to be converted
+ * @returns the converted string in camel case
+ */
+export function convertKebabCaseToCamelCase(rawText: string): string {
+  return rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+}
+
+/**
  * convert kebab case string to pascal case string using regex
  * @param rawText is the string to be converted
  * @returns the converted string in pascal case
  */
 export function convertKebabCaseToPascalCase(rawText: string): string {
-  const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+  const camelCase = convertKebabCaseToCamelCase(rawText);
   return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 }
 

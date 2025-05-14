@@ -21,7 +21,7 @@
         <ToggleChipFormInputs
           :key="selectedFramework || 'no-framework'"
           :name="'listOfReportingPeriods'"
-          :options="allReportingPeriods"
+          :options="allReportingPeriodsOptions"
           :availableOptions="availableReportingPeriods"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
+import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import {
   createNewPercentCompletedRef,
@@ -86,7 +86,6 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { createReportingPeriodOptions, type ReportingPeriod } from '@/utils/PortfolioUtils.ts';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -105,19 +104,23 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
+const selectedFileType = ref(undefined);
+
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const keepValuesOnly = ref(true);
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
 const portfolioErrors = ref('');
-const selectedFileType = ref<'CSV' | 'EXCEL' | undefined>(undefined);
+
 const availableFrameworks: DropdownOption[] = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
   value: framework,
   label: humanizeStringOrNumber(framework),
 }));
-const allReportingPeriods = ref(createReportingPeriodOptions([2025, 2024, 2023, 2022, 2021, 2020]));
-const availableReportingPeriods = ref<Array<ReportingPeriod>>([]);
+const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
+const allReportingPeriodsOptions = ref<ToggleChipInputType[]>();
+const availableReportingPeriods = ref<Array<ToggleChipInputType>>([]);
+
 const fileTypeSelectionOptions: DropdownOption[] = Object.entries([
   ExportFileTypeInformation.CSV,
   ExportFileTypeInformation.EXCEL,
@@ -125,21 +128,23 @@ const fileTypeSelectionOptions: DropdownOption[] = Object.entries([
   value: type.toString(),
   label: `${information.description} (.${information.fileExtension})`,
 }));
+
 const downloadProgress = ref<number | undefined>(undefined);
 const isDownloading = ref(false);
-const props = defineProps(['portfolioId']);
-const portfolioId = ref<string | undefined>(props.portfolioId);
 const percentCompleted = createNewPercentCompletedRef();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
     const portfolio = data.portfolio as EnrichedPortfolio;
-    portfolioId.value = portfolio.portfolioId;
     portfolioName.value = portfolio.portfolioName;
     portfolioEntries.value = portfolio.entries;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
   }
+  allReportingPeriodsOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+    name: period.toString(),
+    value: false,
+  }));
 });
 
 /**
@@ -147,16 +152,15 @@ onMounted(() => {
  */
 function onFrameworkChange(newFramework: string | undefined): void {
   resetErrors();
-  selectedFramework.value = newFramework;
-  allReportingPeriods.value.forEach((period) => {
-    period.value = false;
-  });
-
-  if (newFramework) {
-    updateAvailableReportingPeriods(newFramework);
-  } else {
+  if (!newFramework) {
     availableReportingPeriods.value = [];
+    return;
   }
+  selectedFramework.value = newFramework;
+  allReportingPeriodsOptions.value?.forEach((option) => {
+    option.value = false;
+  });
+  updateAvailableReportingPeriods(newFramework);
 }
 
 /**
@@ -213,7 +217,8 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts currently selected reporting periods
  */
 function getSelectedReportingPeriods(): string[] {
-  return allReportingPeriods.value.filter((period) => period.value).map((period) => period.name);
+  if (!allReportingPeriodsOptions.value) return [];
+  return allReportingPeriodsOptions.value.filter((period) => period.value).map((period) => period.name);
 }
 
 /**

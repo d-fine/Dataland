@@ -28,7 +28,6 @@ describe('Check the Portfolio Download view', function (): void {
             getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
           },
         },
-        props: { portfolioId: portfolioFixture.portfolioId },
       });
     });
 
@@ -39,13 +38,12 @@ describe('Check the Portfolio Download view', function (): void {
 
     it('Check file type selection', function (): void {
       cy.get('[data-test="fileTypeSelector"]').should('exist');
-      cy.get('[data-test="fileTypeSelector"]').select('CSV');
-      cy.get('[data-test="fileTypeSelector"]').should('have.value', 'CSV');
+      cy.get('[data-test="fileTypeSelector"]').select(1);
+      cy.get('[data-test="fileTypeSelector"]').should('contain.text', 'Comma-separated Values');
     });
 
     it('Check reporting period type selection', function (): void {
       cy.get('[data-test="listOfReportingPeriods"]').should('exist');
-      cy.get('[data-test="fileTypeSelector"]').select('CSV');
       const reportingYears = ['2025', '2024', '2023', '2022', '2021', '2020'];
       reportingYears.forEach((year) => {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
@@ -61,7 +59,7 @@ describe('Check the Portfolio Download view', function (): void {
     it('Check error message visibility when no reporting period selected', function (): void {
       cy.get('[data-test="downloadButton"]').click();
       cy.get('[data-test="frameworkSelector"]').select('sfdr');
-      cy.get('[data-test="fileTypeSelector"]').select('CSV');
+      cy.get('[data-test="fileTypeSelector"]').select(1);
       cy.get('[data-test="downloadButton"]').click();
       cy.get('[data-test="reportingPeriodsError"]').should('be.visible');
       cy.get('[data-test="reportingPeriodsError"]').should('contain', 'Please select at least one Reporting Period.');
@@ -89,7 +87,7 @@ describe('Check the Portfolio Download view', function (): void {
 
       cy.get('[data-test="frameworkSelector"]').select('sfdr');
       cy.get('[data-test="listOfReportingPeriods"]').contains('2024').click();
-      cy.get('[data-test="fileTypeSelector"]').select('CSV');
+      cy.get('[data-test="fileTypeSelector"]').select(1);
 
       cy.get('[data-test="downloadButton"]').click();
       cy.get('[data-test="downloadButton"]', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(

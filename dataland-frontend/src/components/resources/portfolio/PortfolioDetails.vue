@@ -84,11 +84,11 @@
         </template>
       </Column>
       <Column
-        v-for="framework of MAJOR_FRAMEWORKS"
+        v-for="framework in MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER"
         :key="framework"
         :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
         :sortable="true"
-        :field="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriods'"
+        :field="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriods'"
         :header="humanizeStringOrNumber(framework)"
         :showFilterMatchModes="false"
       >
@@ -102,7 +102,7 @@
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <div
-            v-for="availableReportingPeriods of reportingPeriodOptions.get(framework)"
+            v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
             :key="availableReportingPeriods"
             class="filter-checkbox"
           >
@@ -111,7 +111,7 @@
               :inputId="availableReportingPeriods"
               name="availableReportingPeriods"
               :value="availableReportingPeriods"
-              :data-test="convertHyphenatedStringToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+              :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
               @change="filterCallback"
             />
             <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
@@ -123,23 +123,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject, watch } from 'vue';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import PrimeButton from 'primevue/button';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
-import { FilterMatchMode } from 'primevue/api';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type Keycloak from 'keycloak-js';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
-import { useDialog } from 'primevue/usedialog';
-import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
-import Checkbox from 'primevue/checkbox';
 import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
-import { MAJOR_FRAMEWORKS, convertHyphenatedStringToCamelCase } from '@/utils/PortfolioUtils.ts';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
+import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { DataTypeEnum } from '@clients/backend';
+import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import type Keycloak from 'keycloak-js';
+import { FilterMatchMode } from 'primevue/api';
+import PrimeButton from 'primevue/button';
+import Checkbox from 'primevue/checkbox';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import InputText from 'primevue/inputtext';
+import { useDialog } from 'primevue/usedialog';
+import { inject, onMounted, ref, watch } from 'vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -166,7 +167,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    MAJOR_FRAMEWORKS.forEach((framework) => {
+    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -176,13 +177,14 @@ class PortfolioEntryPrepared {
       );
     });
 
-    this.sfdrAvailableReportingPeriods = portfolioEntry.availableReportingPeriods['sfdr'] || 'No data available';
+    this.sfdrAvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr] || 'No data available';
     this.eutaxonomyFinancialsAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods['eutaxonomy-financials'] || 'No data available';
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyFinancials] || 'No data available';
     this.eutaxonomyNonFinancialsAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods['eutaxonomy-non-financials'] || 'No data available';
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials] || 'No data available';
     this.nuclearAndGasAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods['nuclear-and-gas'] || 'No data available';
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
   }
 }
 
@@ -228,7 +230,7 @@ watch([enrichedPortfolio], () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  MAJOR_FRAMEWORKS.forEach((framework) => {
+  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(
@@ -273,13 +275,13 @@ function getAvailableReportingPeriods(
   frameworkName: string
 ): string | undefined {
   switch (frameworkName) {
-    case 'sfdr':
+    case DataTypeEnum.Sfdr:
       return portfolioEntryPrepared.sfdrAvailableReportingPeriods;
-    case 'eutaxonomy-financials':
+    case DataTypeEnum.EutaxonomyFinancials:
       return portfolioEntryPrepared.eutaxonomyFinancialsAvailableReportingPeriods;
-    case 'eutaxonomy-non-financials':
+    case DataTypeEnum.EutaxonomyNonFinancials:
       return portfolioEntryPrepared.eutaxonomyNonFinancialsAvailableReportingPeriods;
-    case 'nuclear-and-gas':
+    case DataTypeEnum.NuclearAndGas:
       return portfolioEntryPrepared.nuclearAndGasAvailableReportingPeriods;
     default:
       return undefined;
