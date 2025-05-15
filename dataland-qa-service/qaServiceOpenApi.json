@@ -6269,7 +6269,7 @@
           "companyId",
           "companyName",
           "dataPointId",
-          "dataType",
+          "dataPointType",
           "qaStatus",
           "reportingPeriod",
           "timestamp"
@@ -6285,7 +6285,7 @@
           "companyName": {
             "type": "string"
           },
-          "dataType": {
+          "dataPointType": {
             "type": "string"
           },
           "reportingPeriod": {
