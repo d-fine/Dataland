@@ -102,11 +102,11 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-            val isAssembledDatatset = (frameworkTemplate != null)
+            val isAssembledDataset = (frameworkTemplate != null)
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
             val allHeaderFields =
-                if (isAssembledDatatset) {
+                if (isAssembledDataset) {
                     JsonUtils.getLeafNodeFieldNames(
                         getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
                         keepEmptyFields = true,
@@ -128,7 +128,7 @@ class DataExportService
                     )
                 }
 
-            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isAssembledDatatset)
+            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isAssembledDataset)
 
             val outputStream = ByteArrayOutputStream()
             val csvWriter = CsvMapper().writerFor(List::class.java).with(csvSchema)
