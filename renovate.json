@@ -12,6 +12,7 @@
   "separateMultipleMajor": true,
   "minimumReleaseAge": "5 days",
   "updateNotScheduled": false,
+  "timezone": "Europe/Berlin",
   "schedule": [
     "after 11pm every weekday",
     "before 6am every weekday",
@@ -65,5 +66,6 @@
       ],
       "automerge": true
     }
-  ]
+  ],
+  
 }
