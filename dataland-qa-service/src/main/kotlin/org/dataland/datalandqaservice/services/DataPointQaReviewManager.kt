@@ -329,7 +329,9 @@ class DataPointQaReviewManager
                     getFilteredDataPointQaReviewInformation(modifiedSearchFilter, showOnlyActive, chunkSize, chunkIndex)
                 }
             } catch (_: IllegalArgumentException) {
+                logger.info("DataType is null. Thus proceed since the dataType is also not a framework.")
             } catch (_: ClientException) {
+                logger.info("DataType is not null, but also not an existing framework. Thus proceed by treating it as a dataPointType.")
             }
             return if (showOnlyActive == false) {
                 dataPointQaReviewRepository
