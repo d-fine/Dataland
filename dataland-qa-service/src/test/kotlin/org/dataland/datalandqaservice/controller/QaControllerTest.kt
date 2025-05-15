@@ -167,13 +167,14 @@ class QaControllerTest(
     private fun getReviewEntries(
         showOnlyActive: Boolean,
         dataType: String,
+        qaStatus: QaStatus? = null,
     ): List<DataPointQaReviewInformation> =
         qaController
             .getDataPointQaReviewInformation(
                 companyId = companyId,
                 dataType = dataType,
                 reportingPeriod = reportingPeriod,
-                qaStatus = null,
+                qaStatus = qaStatus,
                 showOnlyActive = showOnlyActive,
                 chunkSize = 10,
                 chunkIndex = 0,
@@ -237,6 +238,9 @@ class QaControllerTest(
             assertEquals(9, allTestFrameworkDataPoints.size)
             val onlyActiveTestFrameworkDataPoints = getReviewEntries(showOnlyActive = true, dataType = "test framework")
             assertEquals(2, onlyActiveTestFrameworkDataPoints.size)
+            val onlyActiveButRejectedFrameworkDataPoints =
+                getReviewEntries(showOnlyActive = true, dataType = "test framework", qaStatus = BackendUtilsQaStatus.Rejected)
+            assertEquals(0, onlyActiveButRejectedFrameworkDataPoints.size)
         }
     }
 }
