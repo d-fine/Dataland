@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.Eutaxo
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
@@ -29,12 +30,14 @@ class EutaxonomyFinancialsDataController(
     @Autowired var myDataManager: AssembledDataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
+    @Autowired var myCompanyQueryManager: CompanyQueryManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EutaxonomyFinancialsData>(
         myDataManager,
         myMetaDataManager,
         myDataExportService,
         myObjectMapper,
+        myCompanyQueryManager,
         EutaxonomyFinancialsData::class.java,
     ) {
     @Operation(operationId = "getCompanyAssociatedEutaxonomyFinancialsData")
@@ -57,10 +60,13 @@ class EutaxonomyFinancialsDataController(
 
     @Operation(operationId = "exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions")
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
+        reportingPeriods: List<String>,
+        companyIds: List<String>,
         exportFileType: ExportFileType,
-    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
+        keepValueFieldsOnly: Boolean,
+    ): ResponseEntity<InputStreamResource> =
+        super
+            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
     @Operation(operationId = "getAllCompanyEutaxonomyFinancialsData")
     override fun getFrameworkDatasetsForCompany(
