@@ -18,6 +18,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.datalandspecificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
@@ -26,6 +28,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -65,6 +68,28 @@ class QaControllerTest(
     val companyId = UUID.randomUUID().toString()
     val companyName = "some-company"
     val firstComment = "OriginalActive"
+    val testFrameworkSpecification =
+        FrameworkSpecification(
+            framework = IdWithRef(id = "testID", ref = "testFrameworkRef"),
+            name = "Test Framework",
+            businessDefinition = "Defines the business rules for the test framework.",
+            schema =
+                """
+                {
+                  "general": {
+                    "key1": {
+                      "id": "some-type",
+                      "ref": "ref1"
+                    },
+                    "key2": {
+                      "id": "another-data-Point-type",
+                      "ref": "ref2"
+                    }
+                  }
+                }
+                """.trimIndent(),
+            referencedReportJsonPath = "/reports/testReport.json",
+        )
 
     private fun specifyMocks() {
         `when`(dataPointControllerApi.getDataPointMetaInfo(any())).thenReturn(
@@ -79,7 +104,17 @@ class QaControllerTest(
                 uploaderUserId = "",
             ),
         )
-        `when`(specificationControllerApi.doesFrameworkSpecificationExist(anyString())).thenThrow(ClientException("Simulated failure"))
+        whenever(specificationControllerApi.doesFrameworkSpecificationExist(anyString())).thenAnswer { invocation ->
+            val frameworkName = invocation.arguments[0] as String
+            if (frameworkName == "test framework") {
+                true
+            } else {
+                throw ClientException("Simulated failure for framework: $frameworkName")
+            }
+        }
+        `when`(specificationControllerApi.getFrameworkSpecification("test framework")).thenReturn(
+            testFrameworkSpecification,
+        )
 
         for (dataId in listOf(dataId, originalActiveDataId)) {
             dataPointQaReviewRepository.save(
@@ -96,9 +131,24 @@ class QaControllerTest(
                 ),
             )
         }
+        dataPointQaReviewRepository.save(
+            DataPointQaReviewEntity(
+                dataPointId = "another-data-point-ID",
+                companyId = companyId,
+                companyName = companyName,
+                dataPointType = "another-data-Point-type",
+                reportingPeriod = reportingPeriod,
+                timestamp = 0,
+                qaStatus = QaStatus.Accepted,
+                triggeringUserId = "some-reviewer",
+                comment = "comment",
+            ),
+        )
 
-        `when`(cloudEventMessageHandler.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()))
-            .thenAnswer { println("Sending message to queue") }
+        `when`(
+            cloudEventMessageHandler
+                .buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
+        ).thenAnswer { println("Sending message to queue") }
     }
 
     private fun createMessageBody(
@@ -114,11 +164,14 @@ class QaControllerTest(
             ),
         )
 
-    private fun getReviewEntries(showOnlyActive: Boolean): List<DataPointQaReviewInformation> =
+    private fun getReviewEntries(
+        showOnlyActive: Boolean,
+        dataType: String,
+    ): List<DataPointQaReviewInformation> =
         qaController
             .getDataPointQaReviewInformation(
                 companyId = companyId,
-                dataType = dataPointType,
+                dataType = dataType,
                 reportingPeriod = reportingPeriod,
                 qaStatus = null,
                 showOnlyActive = showOnlyActive,
@@ -130,7 +183,8 @@ class QaControllerTest(
     fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {
         specifyMocks()
         val expectedBodyForNewSetToActive = createMessageBody(dataId, BackendUtilsQaStatus.Accepted, dataId)
-        val expectedBodyForOriginalSetToActive: String = createMessageBody(dataId, BackendUtilsQaStatus.Rejected, originalActiveDataId)
+        val expectedBodyForOriginalSetToActive: String =
+            createMessageBody(dataId, BackendUtilsQaStatus.Rejected, originalActiveDataId)
         for (mockDataId in listOf(dataId, originalActiveDataId)) {
             dataPointQaReviewManager.reviewDataPoints(
                 listOf(
@@ -171,13 +225,18 @@ class QaControllerTest(
             assertEquals(5, reviewEntries.size)
             assertEquals(BackendUtilsQaStatus.Rejected, reviewEntries.first().qaStatus)
 
-            val latestReviewEntries = getReviewEntries(showOnlyActive = true)
+            val latestReviewEntries = getReviewEntries(showOnlyActive = true, dataType = dataPointType)
             assertEquals(1, latestReviewEntries.size)
             assertEquals(BackendUtilsQaStatus.Accepted, latestReviewEntries.first().qaStatus)
 
-            val allReviewEntries = getReviewEntries(showOnlyActive = false)
+            val allReviewEntries = getReviewEntries(showOnlyActive = false, dataType = dataPointType)
             assertEquals(8, allReviewEntries.size)
             assertEquals(firstComment, allReviewEntries[allReviewEntries.size - 5].comment)
+
+            val allTestFrameworkDataPoints = getReviewEntries(showOnlyActive = false, dataType = "test framework")
+            assertEquals(9, allTestFrameworkDataPoints.size)
+            val onlyActiveTestFrameworkDataPoints = getReviewEntries(showOnlyActive = true, dataType = "test framework")
+            assertEquals(2, onlyActiveTestFrameworkDataPoints.size)
         }
     }
 }

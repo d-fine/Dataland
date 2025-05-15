@@ -320,25 +320,17 @@ class DataPointQaReviewManager
             chunkIndex: Int? = 0,
         ): List<DataPointQaReviewInformation> {
             try {
-                logger.info("STARTED TRY BLOCK WITH ${searchFilter.dataType}")
-                require(searchFilter.dataType != null)
-                logger.info("Passed require assertion!!!!!!!!!!!!!!!!!!!!")
+                requireNotNull(searchFilter.dataType)
                 specificationControllerApi.doesFrameworkSpecificationExist(searchFilter.dataType)
-                logger.info("Passed doesFrameworkSpecificationExist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 val schema = specificationControllerApi.getFrameworkSpecification(searchFilter.dataType).schema
-                logger.info("Processing the following schema: $schema")
                 val frameworkSpecificDatapointTypes = DataPointUtils.getDataPointTypes(schema)
-                logger.info("Passed getDataPointTypes for the schema!!!!!!!!!!!!!!!!!!!!!!!")
                 return frameworkSpecificDatapointTypes.flatMap { type ->
                     val modifiedSearchFilter = searchFilter.copy(dataType = type)
                     getFilteredDataPointQaReviewInformation(modifiedSearchFilter, showOnlyActive, chunkSize, chunkIndex)
                 }
             } catch (_: IllegalArgumentException) {
-                logger.info("HUHU")
             } catch (_: ClientException) {
-                logger.info("HAHA")
             }
-            logger.info("dataType is null or framework specification does not exist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             return if (showOnlyActive == false) {
                 dataPointQaReviewRepository
                     .findByFilter(searchFilter, chunkSize, chunkIndex)
