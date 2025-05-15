@@ -139,8 +139,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "WHERE sub.qaStatus = 'Accepted' AND " +
             "sub.companyId = dataPointQaReview.companyId AND " +
             "sub.dataPointType = dataPointQaReview.dataPointType AND " +
-            "sub.reportingPeriod = dataPointQaReview.reportingPeriod" +
-            ") " +
+            "sub.reportingPeriod = dataPointQaReview.reportingPeriod) " +
             "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
             "AND (:#{#filter.dataType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataType}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
