@@ -35,7 +35,7 @@ class DataExportService
 
         /**
          * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
-         * @param portfolioData passed list of SingleCompanyExportData to be exported
+         * @param portfolioData the passed list of SingleCompanyExportData to be exported
          * @param exportFileType the file type to be exported
          * @param dataType the datatype specifying the framework
          * @param keepValueFieldsOnly if true, non value fields are stripped
@@ -60,7 +60,7 @@ class DataExportService
         }
 
         /**
-         * Return the template of a legobricks framework or null if the passed name refers to an old style framework
+         * Return the template of an assembled framework or null if the passed name refers to an old style framework
          *
          * @param framework the framework for which the template shall be returned
          */
@@ -87,8 +87,8 @@ class DataExportService
         }
 
         /**
-         * Create a ByteStream to be used for CSV export from SingleCompanyExportData as JSON objects.
-         * @param portfolioExportRows passed SingleCompanyExportData as JSON object to be exported
+         * Create a ByteStream to be used for CSV export from a list of JSON objects.
+         * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework
          * @param excelCompatibility whether a separator indicator should be prepended to the stream resource
          * @param keepValueFieldsOnly if true, non value fields are stripped
@@ -102,21 +102,33 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-            val isLegobrickFramework = (frameworkTemplate != null)
+            val isAssembledDatatset = (frameworkTemplate != null)
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
             val allHeaderFields =
-                if (isLegobrickFramework) {
+                if (isAssembledDatatset) {
                     JsonUtils.getLeafNodeFieldNames(
                         getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
                         keepEmptyFields = true,
                         dropLastFieldName = true,
                     )
                 } else {
-                    LinkedHashSet(nonEmptyHeaderFields.sorted())
+                    LinkedHashSet(
+                        nonEmptyHeaderFields.sortedWith(
+                            compareBy<String> {
+                                @Suppress("MagicNumber")
+                                when {
+                                    it.startsWith("companyName") -> -3
+                                    it.startsWith("companyLei") -> -2
+                                    it.startsWith("reportingPeriod") -> -1
+                                    else -> 0
+                                }
+                            }.then(naturalOrder()),
+                        ),
+                    )
                 }
 
-            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isLegobrickFramework)
+            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isAssembledDatatset)
 
             val outputStream = ByteArrayOutputStream()
             val csvWriter = CsvMapper().writerFor(List::class.java).with(csvSchema)
@@ -130,7 +142,7 @@ class DataExportService
         }
 
         /**
-         * Create a ByteStream to be used for JSON Export from a list of JSON objects representing SingleCompanyExportData.
+         * Create a ByteStream to be used for JSON Export from a list of JSON objects.
          * @param portfolioExportRows passed data sets to be exported
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
@@ -198,13 +210,13 @@ class DataExportService
         private fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
             allHeaderFields: Collection<String>,
-            isLegobrickFramework: Boolean,
+            isAssembledDataset: Boolean,
         ): CsvSchema {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
 
             val csvSchemaBuilder = CsvSchema.builder()
 
-            if (isLegobrickFramework) {
+            if (isAssembledDataset) {
                 usedHeaderFields
                     .filter {
                         !it.startsWith("data" + JsonUtils.getPathSeparator())

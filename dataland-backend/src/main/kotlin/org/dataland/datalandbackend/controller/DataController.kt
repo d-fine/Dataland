@@ -167,6 +167,16 @@ open class DataController<T>(
         exportFileType: ExportFileType,
         keepValueFieldsOnly: Boolean,
     ): ResponseEntity<InputStreamResource> {
+        if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
+                it.companyInformation == null
+            }
+        ) {
+            throw ResourceNotFoundApiException(
+                summary = "CompanyIds $companyIds not found.",
+                message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
+            )
+        }
+
         val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
         companyIds.forEach { companyId ->
             reportingPeriods.forEach { reportingPeriod ->

@@ -3,9 +3,11 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
@@ -136,6 +138,11 @@ internal class DataControllerTest {
     @ParameterizedTest
     @EnumSource(ExportFileType::class)
     fun `test that the export functionality does not throw an error`(exportFileType: ExportFileType) {
+        val mockCompanyValidationResult =
+            mock<CompanyIdentifierValidationResult> {
+                on { companyInformation } doReturn mock<BasicCompanyInformation>()
+            }
+        doReturn(listOf(mockCompanyValidationResult)).whenever(mockCompanyQueryManager).validateCompanyIdentifiers(any())
         doAnswer { invocation ->
             val argument = invocation.arguments[0] as Set<*>
             argument.associateWith { someEuTaxoDataAsString }
@@ -144,6 +151,21 @@ internal class DataControllerTest {
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
+            dataController.exportCompanyAssociatedDataByDimensions(
+                reportingPeriods = listOf(testReportingPeriod),
+                companyIds = listOf(testCompanyId),
+                exportFileType = exportFileType,
+            )
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(ExportFileType::class)
+    fun `test that the export functionality returns 404 if all input companyIds are invalid`(exportFileType: ExportFileType) {
+        val mockCompanyValidationResult = mock<CompanyIdentifierValidationResult> { on { companyInformation } doReturn null }
+        doReturn(listOf(mockCompanyValidationResult)).whenever(mockCompanyQueryManager).validateCompanyIdentifiers(any())
+        this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+        assertThrows<ResourceNotFoundApiException> {
             dataController.exportCompanyAssociatedDataByDimensions(
                 reportingPeriods = listOf(testReportingPeriod),
                 companyIds = listOf(testCompanyId),
