@@ -1,59 +1,47 @@
 {
-  "id": "extendedEuTaxonomyNonAlignedActivitiesComponent",
-  "name": "General non-aligned activities data point with an extended source",
-  "businessDefinition": "Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible.",
-  "validatedBy": "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity>>",
-  "example": {
-    "value": [
-      {
-        "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-        "naceCodes": [
-          "E.38.11"
-        ],
-        "share": {
-          "relativeShareInPercent": 25,
-          "absoluteShare": {
-            "amount": 100.5,
-            "currency": "EUR"
-          }
-        }
-      },
-      {
-        "activityName": "InfrastructureForRailTransport",
-        "naceCodes": [
-          "C27.9",
-          "C30.20"
-        ],
-        "share": {
-          "relativeShareInPercent": 25,
-          "absoluteShare": {
-            "amount": 100.5,
-            "currency": "EUR"
-          }
-        }
-      },
-      {
-        "activityName": "LowCarbonAirportInfrastructure",
-        "naceCodes": [
-          "F41.20",
-          "F42.99"
-        ],
-        "share": {
-          "relativeShareInPercent": 25,
-          "absoluteShare": {
-            "amount": 100.5,
-            "currency": "EUR"
-          }
+  "id" : "extendedEuTaxonomyNonAlignedActivitiesComponent",
+  "name" : "General non-aligned activities data point with an extended source",
+  "businessDefinition" : "Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity>>",
+  "example" : {
+    "value" : [ {
+      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+      "naceCodes" : [ "E.38.11" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
         }
       }
-    ],
-    "quality": "Reported",
-    "comment": "The value is reported by the company.",
-    "dataSource": {
-      "page": "5-7",
-      "tagName": "date",
-      "fileName": "AnnualReport2020.pdf",
-      "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    }, {
+      "activityName" : "InfrastructureForRailTransport",
+      "naceCodes" : [ "C27.9", "C30.20" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    }, {
+      "activityName" : "LowCarbonAirportInfrastructure",
+      "naceCodes" : [ "F41.20", "F42.99" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    } ],
+    "quality" : "Reported",
+    "comment" : "The value is reported by the company.",
+    "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "date",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
     }
   }
 }
