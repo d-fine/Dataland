@@ -77,7 +77,7 @@
           <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
           <p
             v-show="reopenMessageError && reopenMessage.length < 10"
-            class="text-danger text-xs"
+            class="text-danger"
             data-test="noMessageErrorMessage"
           >
             You have not provided a sufficient reason yet. Please provide a reason.

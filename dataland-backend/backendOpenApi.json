@@ -166,10 +166,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that the companyId is known by dataland."
+            "description": "Successfully checked that the companyId is known by Dataland."
           },
           "404": {
-            "description": "Check was successfull. CompanyId is not known by dataland."
+            "description": "Check was successful. CompanyId is not known by Dataland."
           },
           "default": {
             "description": "An error occurred",
@@ -2920,19 +2920,25 @@
         "operationId": "exportCompanyAssociatedSfdrDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -2942,11 +2948,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -2955,6 +2970,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -3197,19 +3218,25 @@
         "operationId": "exportCompanyAssociatedP2pDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -3219,11 +3246,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -3232,6 +3268,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -3474,19 +3516,25 @@
         "operationId": "exportCompanyAssociatedNuclearAndGasDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -3496,11 +3544,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -3509,6 +3566,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -3751,19 +3814,25 @@
         "operationId": "exportCompanyAssociatedLksgDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -3773,11 +3842,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -3786,6 +3864,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4028,19 +4112,25 @@
         "operationId": "exportCompanyAssociatedHeimathafenDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4050,11 +4140,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4063,6 +4162,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4305,19 +4410,25 @@
         "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4327,11 +4438,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4340,6 +4460,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4582,19 +4708,25 @@
         "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4604,11 +4736,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4617,6 +4758,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4859,19 +5006,25 @@
         "operationId": "exportCompanyAssociatedEsgDatenkatalogDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -4881,11 +5034,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -4894,6 +5056,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -5136,19 +5304,25 @@
         "operationId": "exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions",
         "parameters": [
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "companyId",
+            "name": "companyIds",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -5158,11 +5332,20 @@
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
             }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset.",
+            "description": "Successfully exported datasets.",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -5171,6 +5354,12 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -20637,10 +20826,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
