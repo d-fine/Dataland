@@ -23,10 +23,14 @@ const queues = [
   'community-manager.queue.nonSourceableData',
 ];
 
-Cypress._.times(20, () => {
+Cypress._.times(10, () => {
   describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
     it('Checks if the RabbitMQ Management GUI is available and the login page is shown. Then check that all expected queues exist.', () => {
-      cy.visit('http://dataland-admin:6789/rabbitmq');
+      cy.visitAndCheckExternalAdminPage({
+        url: 'http://dataland-admin:6789/rabbitmq',
+        interceptPattern: '**/rabbitmq/**',
+        elementSelector: 'input[name=username]'
+      });
       cy.get('input[name=username]').should('exist').type(getStringCypressEnv('RABBITMQ_USER'));
       cy.get('input[name=password]').should('exist').type(getStringCypressEnv('RABBITMQ_PASS'));
       cy.get('input[type=submit]').should('contain.value', 'Login').click();

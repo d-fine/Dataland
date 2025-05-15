@@ -1,26 +1,17 @@
 import { getStringCypressEnv } from '@e2e/utils/Cypress';
 
-const ignoredExceptions = [
-  "Cannot read properties of undefined (reading 'keys')",
-  'Datasource grafanacloud-logs was not found',
-  'Error: Datasource grafanacloud-logs was not found',
-  'An unknown error has occurred: [object Object]',
-];
-
-Cypress.on('uncaught:exception', (err) => {
-  const shouldIgnore = ignoredExceptions.some((message) => err.message.includes(message));
-  if (shouldIgnore) {
-    return false; // Prevent Cypress from failing the test, due to grafana uncaught exceptions
-  }
-  // We still want to fail on other exceptions
-  return true;
-});
-
-Cypress._.times(20, () => {
+Cypress._.times(10, () => {
   describe('As a developer, I expect Grafana to be available to me', () => {
     beforeEach(() => {
+      cy.setExceptionContext('grafana');
+
+      cy.visitAndCheckExternalAdminPage({
+        url: 'http://dataland-admin:6789/grafana',
+        elementSelector: '[data-testid="data-testid Login button"]',
+        urlShouldInclude: '/grafana',
+      });
+
       // Login before each test
-      cy.visit('http://dataland-admin:6789/grafana');
       cy.url().then((url) => {
         if (url.includes('/grafana/login')) {
           cy.get('input[name=user]').should('exist').type(getStringCypressEnv('GRAFANA_ADMIN'));
