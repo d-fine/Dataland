@@ -3,6 +3,7 @@
  */
 describe('Admin tool test', () => {
   require('./AdminConsoleSecurity');
+  require('./Grafana.ts');
   require('./PGAdmin');
   require('./RabbitMQAdmin');
 });

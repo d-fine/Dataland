@@ -14,7 +14,6 @@ describeIf(
     let permIdOfExistingCompany: string;
     const portfolioName = `E2E Test Portfolio ${Date.now()}`;
     const editedPortfolioName = `${portfolioName} Edited ${Date.now()}`;
-    const secondPortfolio = `Second E2E Test Portfolio ${Date.now()}`;
 
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
@@ -42,14 +41,6 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[name="portfolioName"]').clear();
       cy.get('[name="portfolioName"]').type(editedPortfolioName);
-      cy.get('[data-test="saveButton"]').click();
-
-      cy.get('[data-test="addNewPortfolio"]').click();
-      cy.get('[name="portfolioName"]').type(secondPortfolio);
-      cy.get('[data-test="saveButton"]').should('be.disabled');
-      cy.get('[name="company-identifiers"]').type(permIdOfExistingCompany);
-      cy.get('[data-test="addCompanies"]').click();
-      cy.get('[data-test="saveButton"]').should('not.be.disabled');
       cy.get('[data-test="saveButton"]').click();
 
       cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click();

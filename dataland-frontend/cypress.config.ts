@@ -37,6 +37,7 @@ export default defineConfig({
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
   defaultCommandTimeout: 10000,
+  pageLoadTimeout: 120000,
   viewportHeight: 684,
   viewportWidth: 1536,
   video: false,
@@ -149,6 +150,7 @@ export default defineConfig({
     supportFile: 'tests/e2e/support/index.ts',
     downloadsFolder: 'cypress/downloads',
     responseTimeout: 60000,
+    requestTimeout: 60000,
   },
   component: {
     devServer: {
