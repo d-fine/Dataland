@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -17,12 +16,12 @@ class DataExportServiceTest {
     private val dataExportService = DataExportService(objectMapper)
 
     private val testDataProvider = TestDataProvider(objectMapper)
-    private val euTaxonomyNonFinancialsTestData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
+    private val lksgTestData = testDataProvider.getLksgDataset()
     private val companyAssociatedEuTaxonomyTestData =
         CompanyAssociatedData(
             companyId = UUID.randomUUID().toString(),
             reportingPeriod = "2024",
-            data = euTaxonomyNonFinancialsTestData,
+            data = lksgTestData,
         )
 
     private val companyAssociatedLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
@@ -33,7 +32,7 @@ class DataExportServiceTest {
     @Test
     fun `check that exported json coincides with input object`() {
         val jsonStream = dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedEuTaxonomyTestData, ExportFileType.JSON)
-        val exportedJsonObject = objectMapper.readValue<CompanyAssociatedData<EutaxonomyNonFinancialsData>>(jsonStream.inputStream)
+        val exportedJsonObject = objectMapper.readValue<CompanyAssociatedData<LksgData>>(jsonStream.inputStream)
 
         Assertions.assertEquals(companyAssociatedEuTaxonomyTestData, exportedJsonObject)
     }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
+import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataExportService
@@ -49,9 +49,9 @@ internal class DataControllerTest(
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
-    private final val testDataType = DataType.valueOf("eutaxonomy-non-financials")
+    private final val testDataType = DataType.valueOf("lksg")
     private final val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
-    private final val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
+    private final val someEuTaxoData = testDataProvider.getLksgDataset()
     private val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
 
     private final val testUserId = "testuser"
@@ -69,7 +69,7 @@ internal class DataControllerTest(
     private final val otherUserAcceptedDataMetaInformationEntity =
         buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
 
-    lateinit var dataController: EutaxonomyNonFinancialsDataController
+    lateinit var dataController: LksgDataController
 
     private val testDataDimensions = BasicDataDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
 
@@ -104,7 +104,7 @@ internal class DataControllerTest(
             .getDatasetData(any(), any(), any())
 
         dataController =
-            EutaxonomyNonFinancialsDataController(
+            LksgDataController(
                 mockDataManager,
                 mockDataMetaInformationManager,
                 dataExportService,
