@@ -89,7 +89,6 @@ tasks.register<Copy>("getTestData") {
     description = "Task to copy required testing data."
     group = "verification"
     from(
-        "$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json",
         "$rootDir/testing/data/CompanyInformationWithLksgData.json",
     )
     into(
