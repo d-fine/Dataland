@@ -141,30 +141,28 @@
         />
       </template>
     </PrimeDialog>
-    <TheFooter :is-light-version="true" :sections="footerContent?.sections" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
-import PrimeButton from 'primevue/button';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import TheContent from '@/components/generics/TheContent.vue';
-import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
 import BackButton from '@/components/general/BackButton.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import MessageComponent from '@/components/messages/MessageComponent.vue';
 import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
 import CreateApiKeyCard from '@/components/resources/apiKey/CreateApiKeyCard.vue';
-import MessageComponent from '@/components/messages/MessageComponent.vue';
-import PrimeDialog from 'primevue/dialog';
-import PrimeTextarea from 'primevue/textarea';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
 import { type ApiKeyControllerApiInterface } from '@clients/apikeymanager';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import PrimeDialog from 'primevue/dialog';
+import PrimeTextarea from 'primevue/textarea';
+import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'ApiKeysPage',
@@ -198,8 +196,6 @@ export default defineComponent({
       expiryDate: undefined as undefined | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
-      content: {} as Content,
-      footerContent: undefined as Page | undefined,
     };
   },
   computed: {
@@ -227,8 +223,6 @@ export default defineComponent({
      * Updates the UI according to the retrieved meta-information.
      */
     async getApiKeyMetaInfoForUser() {
-      this.content = contentData;
-      this.footerContent = this.content.pages.find((page) => page.url === '/');
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();

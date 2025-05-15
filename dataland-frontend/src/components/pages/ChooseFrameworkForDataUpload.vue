@@ -72,31 +72,29 @@
         </Card>
       </TheContent>
     </AuthorizationWrapper>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from '@/services/ApiClients';
-import { defineComponent, inject } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import TheContent from '@/components/generics/TheContent.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import BackButton from '@/components/general/BackButton.vue';
-import Card from 'primevue/card';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 import CompanyInformation from '@/components/pages/CompanyInformation.vue';
-import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import MetaInfoPerCompanyAndFramework from '@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
 import { FRONTEND_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import Card from 'primevue/card';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'ChooseFramework',
@@ -123,9 +121,6 @@ export default defineComponent({
   },
 
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       allFrameworksExceptEuTaxonomy: FRONTEND_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
@@ -138,7 +133,6 @@ export default defineComponent({
       humanizeString: humanizeStringOrNumber,
       mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
       KEYCLOAK_ROLE_UPLOADER,
-      footerContent,
     };
   },
   props: {
