@@ -2,7 +2,7 @@
   "id": "extendedEuTaxonomyNonAlignedActivitiesComponent",
   "name": "General non-aligned activities data point with an extended source",
   "businessDefinition": "Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible.",
-  "validatedBy": "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDataPoint<MutableList<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity>?>",
+  "validatedBy": "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity>>",
   "example": {
     "value": [
       {
