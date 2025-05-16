@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalOpexNonEligibleShareRelativeShareInPercent",
+  "name" : "Relative Share in Percent",
+  "businessDefinition" : "Relative share of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

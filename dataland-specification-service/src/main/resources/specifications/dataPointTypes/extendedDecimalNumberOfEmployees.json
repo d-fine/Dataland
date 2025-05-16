@@ -3,6 +3,6 @@
   "name" : "Number of Employees",
   "businessDefinition" : "Total Number of Employees (including temporary workers with assignment duration longer than 6 months)",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-non-financials" ],
   "constraints" : [ "min:0" ]
 }

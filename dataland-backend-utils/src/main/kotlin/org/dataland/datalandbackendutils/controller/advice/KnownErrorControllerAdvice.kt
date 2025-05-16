@@ -62,7 +62,7 @@ class KnownErrorControllerAdvice(
         )
 
     /**
-     * Handles AccessDeniedException errors. These occur i.e. if the user does not have permissions to perform an action
+     * Handles AccessDeniedException errors. These occur e.g., if the user does not have permissions to perform an action
      */
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException::class)
     fun handleAccessDeniedException(ex: org.springframework.security.access.AccessDeniedException): ResponseEntity<ErrorResponse> =

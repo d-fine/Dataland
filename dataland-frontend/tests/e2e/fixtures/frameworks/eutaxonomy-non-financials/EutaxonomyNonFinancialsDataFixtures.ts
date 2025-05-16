@@ -48,7 +48,7 @@ export function generateEutaxonomyNonFinancialsData(
       nfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       euTaxonomyActivityLevelReporting: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
-      numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+      numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       oecdGuidelinesForMultinationalEnterprisesCompliancePolicy: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomYesNo()

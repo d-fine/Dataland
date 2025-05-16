@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentAligned",
+  "name" : "Substantial Contribution to Climate Change Mitigation In Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

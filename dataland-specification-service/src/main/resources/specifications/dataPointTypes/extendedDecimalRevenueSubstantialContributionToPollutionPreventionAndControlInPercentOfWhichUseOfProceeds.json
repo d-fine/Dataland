@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds",
+  "name" : "Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds",
+  "businessDefinition" : "Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

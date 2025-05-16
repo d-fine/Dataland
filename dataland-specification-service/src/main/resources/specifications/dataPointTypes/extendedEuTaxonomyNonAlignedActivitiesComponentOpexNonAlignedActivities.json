@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEuTaxonomyNonAlignedActivitiesComponentOpexNonAlignedActivities",
+  "name" : "Non-Aligned Activities",
+  "businessDefinition" : "Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible",
+  "dataPointBaseTypeId" : "extendedEuTaxonomyNonAlignedActivitiesComponent",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}

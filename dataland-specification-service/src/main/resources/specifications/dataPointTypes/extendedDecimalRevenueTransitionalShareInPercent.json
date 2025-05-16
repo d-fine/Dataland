@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueTransitionalShareInPercent",
+  "name" : "Transitional Share In Percent",
+  "businessDefinition" : "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

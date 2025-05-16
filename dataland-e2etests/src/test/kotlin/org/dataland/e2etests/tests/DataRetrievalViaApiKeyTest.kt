@@ -11,6 +11,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -152,13 +153,13 @@ class DataRetrievalViaApiKeyTest {
         val downloadedCompanyAssociatedEuTaxoDataNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
-        assertEquals(
+        assertDataEqualsIgnoringDates(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = mapOfIds.getValue("companyId"),
                 reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
             ),
             downloadedCompanyAssociatedEuTaxoDataNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+            { it.data.general?.referencedReports },
         )
     }
 

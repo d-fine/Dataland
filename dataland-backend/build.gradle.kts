@@ -88,7 +88,9 @@ jacoco {
 tasks.register<Copy>("getTestData") {
     description = "Task to copy required testing data."
     group = "verification"
-    from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
+    from(
+        "$rootDir/testing/data/CompanyInformationWithLksgData.json",
+    )
     into(
         layout.buildDirectory
             .dir("resources/test")

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare",
+  "name" : "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share",
+  "businessDefinition" : "Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

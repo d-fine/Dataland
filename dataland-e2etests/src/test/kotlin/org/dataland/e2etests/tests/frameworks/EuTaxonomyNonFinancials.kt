@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsD
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
@@ -78,7 +79,11 @@ class EuTaxonomyNonFinancials {
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        Assertions.assertEquals(listOfOneEuTaxonomyNonFinancialsDataset[0], downloadedAssociatedData.data)
+        assertDataEqualsIgnoringDates(
+            listOfOneEuTaxonomyNonFinancialsDataset[0],
+            downloadedAssociatedData.data,
+            { it.general?.referencedReports },
+        )
     }
 
     @Test

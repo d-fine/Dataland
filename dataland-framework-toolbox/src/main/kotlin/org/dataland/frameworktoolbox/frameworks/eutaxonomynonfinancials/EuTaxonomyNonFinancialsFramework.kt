@@ -3,6 +3,8 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
+import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -25,7 +27,7 @@ class EuTaxonomyNonFinancialsFramework :
         order = 3,
         enabledFeatures =
             FrameworkGenerationFeatures
-                .allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.DataPointSpecifications),
+                .allExcept(FrameworkGenerationFeatures.UploadPage),
     ) {
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
@@ -51,6 +53,20 @@ class EuTaxonomyNonFinancialsFramework :
     }
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ReportPreuploadComponent>("referencedReports") {
+                isPartOfQaReport = false
+            }
+            edit<SingleSelectComponent>("fiscalYearDeviation") {
+                specificationGenerator = { categoryBuilder ->
+                    categoryBuilder.addDefaultDatapointAndSpecification(
+                        this,
+                        "Enum",
+                        "extendedEnumFiscalYearDeviation",
+                    )
+                }
+            }
+        }
         configureComponentGroupColorsAndExpansion(framework.root)
     }
 }

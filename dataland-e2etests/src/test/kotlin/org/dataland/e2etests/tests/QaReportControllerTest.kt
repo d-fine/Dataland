@@ -43,6 +43,8 @@ class QaReportControllerTest {
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1)
     private val sfdrQaReportTestDataProvider = QaReportTestDataProvider(SfdrQaReport::class.java, "sfdr")
+    private val euTaxonomyNonFinancialsQaReportTestDataProvider =
+        QaReportTestDataProvider(EuTaxonomyNonFinancialsQaReport::class.java, "eutaxonomy-non-financials")
 
     @BeforeAll
     fun postTestDocuments() {
@@ -200,7 +202,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post an eu taxonomy non financials qa report and check retrieval permissions`() {
-        val euTaxonomyNonFinancialsQaReport = EuTaxonomyNonFinancialsQaReport()
+        val euTaxonomyNonFinancialsQaReport = euTaxonomyNonFinancialsQaReportTestDataProvider.getTData(1).first()
         val reportMetaInfo =
             postQaReportForNewDataId(euTaxonomyNonFinancialsQaReport, bypassQa = false)
 
@@ -232,7 +234,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post an eu taxonomy non financials qa report and check that it is deleted with the dataset`() {
-        val euTaxonomyNonFinancialsQaReport = EuTaxonomyNonFinancialsQaReport()
+        val euTaxonomyNonFinancialsQaReport = euTaxonomyNonFinancialsQaReportTestDataProvider.getTData(1).first()
         val reportMetaInfo =
             postQaReportForNewDataId(euTaxonomyNonFinancialsQaReport, bypassQa = true)
         withTechnicalUser(TechnicalUser.Admin) {

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueNonAlignedShareRelativeShareInPercent",
+  "name" : "Relative Share in Percent",
+  "businessDefinition" : "Relative share of the revenue that is associated with non taxonomy-aligned but eligible activities",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

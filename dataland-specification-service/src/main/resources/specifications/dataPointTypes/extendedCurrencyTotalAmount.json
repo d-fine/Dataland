@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyTotalAmount",
+  "name" : "Total Amount",
+  "businessDefinition" : "Total revenue per annum",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueEnablingShareInPercent",
+  "name" : "Enabling Share In Percent",
+  "businessDefinition" : "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

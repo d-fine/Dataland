@@ -29,6 +29,7 @@ data class EutaxonomyNonFinancialsCapex(
     val eligibleShare: EutaxonomyNonFinancialsCapexEligibleShare? = null,
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsCapexNonAlignedShare? = null,
+    @field:Valid()
     val nonAlignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyActivity>?>? = null,
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsCapexAlignedShare? = null,
@@ -90,6 +91,7 @@ data class EutaxonomyNonFinancialsCapex(
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
         ExtendedDataPoint<BigDecimal?>? = null,
+    @field:Valid()
     val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
     @field:Valid()
     val enablingShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,

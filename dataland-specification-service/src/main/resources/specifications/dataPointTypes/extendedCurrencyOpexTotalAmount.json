@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyOpexTotalAmount",
+  "name" : "Total Amount",
+  "businessDefinition" : "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}

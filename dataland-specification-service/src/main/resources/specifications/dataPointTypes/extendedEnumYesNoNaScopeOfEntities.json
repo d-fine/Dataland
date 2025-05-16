@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoNaScopeOfEntities",
+  "name" : "Scope Of Entities",
+  "businessDefinition" : "Are all Group legal entities covered in the reports?",
+  "dataPointBaseTypeId" : "extendedEnumYesNoNa",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}
