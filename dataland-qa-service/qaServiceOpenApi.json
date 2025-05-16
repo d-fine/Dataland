@@ -2345,7 +2345,7 @@
             }
           },
           {
-            "name": "dataPointType",
+            "name": "dataType",
             "in": "query",
             "required": false,
             "schema": {
@@ -2369,9 +2369,9 @@
             }
           },
           {
-            "name": "onlyLatest",
+            "name": "showOnlyActive",
             "in": "query",
-            "description": "If set, only show the most recent QA review information for each data point (independent of whether the data point is active or not).",
+            "description": "If set, only show the active QA review information for each data point.",
             "required": false,
             "schema": {
               "type": "boolean",
