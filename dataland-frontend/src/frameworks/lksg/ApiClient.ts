@@ -40,16 +40,18 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
   }
 
   exportCompanyAssociatedDataByDimensions(
-    reportingPeriod: string,
-    companyId: string,
+    reportingPeriods: string[],
+    companyIds: string[],
     fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedLksgDataByDimensions(
-      reportingPeriod,
-      companyId,
+      reportingPeriods,
+      companyIds,
       fileFormat,
+      keepValueFieldsOnly,
       options
     );
   }
