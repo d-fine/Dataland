@@ -2371,7 +2371,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
-            "description": "If set, only show active datapoints.",
+            "description": "If set, only show the active QA review information for each data point.",
             "required": false,
             "schema": {
               "type": "boolean",
