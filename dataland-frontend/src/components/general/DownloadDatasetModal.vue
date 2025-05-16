@@ -23,7 +23,7 @@
         :options="reportingPeriods"
         placeholder="Select a reporting year"
       />
-      <p v-show="showReportingPeriodError" class="text-danger text-xs" data-test="reportingYearError">
+      <p v-show="showReportingPeriodError" class="text-danger" data-test="reportingYearError">
         Please select a reporting period.
       </p>
       <label for="fileTypeSelector">
@@ -37,7 +37,7 @@
         :options="fileTypeSelectionOptions"
         placeholder="Select a file type"
       />
-      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Please select a file type.</p>
+      <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
     </FormKit>
 
     <div>

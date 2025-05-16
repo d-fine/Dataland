@@ -4,4 +4,5 @@
 describe('Data Export Tests', () => {
   require('./DataDownload');
   require('./CompanyReportDownload');
+  require('./DownloadMyPortfolios');
 });

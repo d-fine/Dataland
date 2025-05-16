@@ -26,17 +26,10 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
   ): AxiosPromise<DataMetaInformation>;
 
   exportCompanyAssociatedDataByDimensions(
-    reportingPeriod: string,
-    companyId: string,
+    reportingPeriods: string[],
+    companyIds: string[],
     fileFormat: ExportFileType,
-    options?: AxiosRequestConfig
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): AxiosPromise<any>;
-
-  exportCompanyAssociatedDataByDimensions(
-    reportingPeriod: string,
-    companyId: string,
-    fileFormat: ExportFileType,
+    includeDataMetaInformation?: boolean,
     options?: AxiosRequestConfig
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): AxiosPromise<any>;
@@ -78,9 +71,10 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
   ) => AxiosPromise<DataMetaInformation>;
 } & {
   [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ByDimensions`]: (
-    reportingPeriod: string,
-    companyId: string,
+    reportingPeriods: string[],
+    companyIds: string[],
     fileFormat: ExportFileType,
+    includeDataMetaInformation?: boolean,
     options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 } & {
@@ -141,16 +135,18 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
   }
 
   exportCompanyAssociatedDataByDimensions(
-    reportingPeriod: string,
-    companyId: string,
+    reportingPeriods: string[],
+    companyIds: string[],
     fileFormat: ExportFileType,
+    includeMetaData?: boolean,
     options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController[`exportCompanyAssociated${this.apiSuffix}ByDimensions`](
-      reportingPeriod,
-      companyId,
+      reportingPeriods,
+      companyIds,
       fileFormat,
+      includeMetaData,
       options
     );
   }
