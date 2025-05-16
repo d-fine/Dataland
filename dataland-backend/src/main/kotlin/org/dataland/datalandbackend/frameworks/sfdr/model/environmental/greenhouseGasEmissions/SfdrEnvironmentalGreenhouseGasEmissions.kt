@@ -2,7 +2,6 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.greenhouseGasEmissions
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -40,11 +39,11 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
     val scope4GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val enterpriseValue: CurrencyDataPoint? = null,
+    val enterpriseValueInEUR: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val totalRevenue: CurrencyDataPoint? = null,
+    val totalRevenueInEUR: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+    val carbonFootprintInTonnesPerMillionEUREnterpriseValue: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
