@@ -22,13 +22,13 @@ let currentExceptionContext: string | null = null;
 Cypress.on('uncaught:exception', (err: Error): boolean => {
   if (currentExceptionContext && globalExceptionPatterns[currentExceptionContext]) {
     const patterns = globalExceptionPatterns[currentExceptionContext];
-    const shouldIgnore = patterns.some(pattern => err.message.includes(pattern));
+    const shouldIgnore = patterns.some((pattern) => err.message.includes(pattern));
     if (shouldIgnore) {
       console.log(`Ignoring exception in context ${currentExceptionContext}: ${err.message}`);
       return false;
     }
   }
-  return true;  // all other exceptions are not ignored
+  return true; // all other exceptions are not ignored
 });
 
 Cypress.Commands.add('setExceptionContext', (context: string | null) => {

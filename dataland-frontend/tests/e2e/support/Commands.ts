@@ -21,7 +21,7 @@ declare global {
         urlShouldInclude?: string;
         method?: string;
         timeoutInMs?: number;
-        ignoreExceptions?: string[]
+        ignoreExceptions?: string[];
       }): Chainable<JQuery<HTMLElement>>;
 
       waitForPageLoad(options: {
@@ -33,7 +33,6 @@ declare global {
         interval?: number;
         errorMsg?: string;
       }): Cypress.Chainable<boolean>;
-
     }
   }
 }
@@ -83,7 +82,7 @@ export function visitAndCheckExternalAdminPage(options: {
     urlShouldInclude,
     method = 'GET',
     timeoutInMs = Cypress.env('long_timeout_in_ms'),
-    ignoreExceptions = []
+    ignoreExceptions = [],
   } = options;
 
   // Setup exception handler if needed
@@ -159,7 +158,7 @@ export function waitForPageLoad(options: {
     customCheck,
     timeout = Cypress.env('long_timeout_in_ms'),
     interval = 1000,
-    errorMsg = 'Page did not load expected elements within the timeout period'
+    errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
 
   // Check URL if needed
@@ -168,24 +167,21 @@ export function waitForPageLoad(options: {
   }
 
   // Wait until any of the specified conditions are met
-  return cy.waitUntil(() => {
-    return cy.get('body').then($body => {
-      const hasElements = elementSelectors.some(selector =>
-        $body.find(selector).length > 0
-      );
-      const hasText = containsText ?
-        $body.text().includes(containsText) :
-        false;
-      const customCheckResult = customCheck ?
-        customCheck($body) :
-        false;
-      return hasElements || hasText || customCheckResult;
-    });
-  }, {
-    timeout,
-    interval,
-    errorMsg
-  });
+  return cy.waitUntil(
+    () => {
+      return cy.get('body').then(($body) => {
+        const hasElements = elementSelectors.some((selector) => $body.find(selector).length > 0);
+        const hasText = containsText ? $body.text().includes(containsText) : false;
+        const customCheckResult = customCheck ? customCheck($body) : false;
+        return hasElements || hasText || customCheckResult;
+      });
+    },
+    {
+      timeout,
+      interval,
+      errorMsg,
+    }
+  );
 }
 
 /**

@@ -1,26 +1,24 @@
 import { getStringCypressEnv } from '@e2e/utils/Cypress';
 
-Cypress._.times(10, () => {
-  describe('As a developer, I expect the PGAdmin console to be available to me', () => {
-    it('Checks if the PGAdmin console is available and the login page is shown', () => {
-      cy.visitAndCheckExternalAdminPage({
-        url: 'http://dataland-admin:6789/pgadmin',
-        interceptPattern: '**/pgadmin/**',
-        elementSelector: 'input[name=email]',
-        urlShouldInclude: '/pgadmin'
-      });
-
-      cy.get('input[name=email]').should('exist').type('admin@dataland.com');
-      cy.get('input[name=password]').should('exist').type(getStringCypressEnv('PGADMIN_PASSWORD'));
-      cy.get('button[name=internal_button]').should('contain.text', 'Login').click();
-
-      cy.waitForPageLoad({
-        urlShouldInclude: '/pgadmin/browser',
-        elementSelectors: ['span[class=file-name]:contains("BackendDb")', '.aciTreeText:contains("BackendDb")'],
-        errorMsg: 'PGAdmin interface did not load within the timeout period'
-      });
-
-      cy.log('✅ PGAdmin successfully loaded');
+describe('As a developer, I expect the PGAdmin console to be available to me', () => {
+  it('Checks if the PGAdmin console is available and the login page is shown', () => {
+    cy.visitAndCheckExternalAdminPage({
+      url: 'http://dataland-admin:6789/pgadmin',
+      interceptPattern: '**/pgadmin/**',
+      elementSelector: 'input[name=email]',
+      urlShouldInclude: '/pgadmin',
     });
+
+    cy.get('input[name=email]').should('exist').type('admin@dataland.com');
+    cy.get('input[name=password]').should('exist').type(getStringCypressEnv('PGADMIN_PASSWORD'));
+    cy.get('button[name=internal_button]').should('contain.text', 'Login').click();
+
+    cy.waitForPageLoad({
+      urlShouldInclude: '/pgadmin/browser',
+      elementSelectors: ['span[class=file-name]:contains("BackendDb")', '.aciTreeText:contains("BackendDb")'],
+      errorMsg: 'PGAdmin interface did not load within the timeout period',
+    });
+
+    cy.log('✅ PGAdmin successfully loaded');
   });
 });
