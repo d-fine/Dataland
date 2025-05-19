@@ -12,19 +12,17 @@ import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInform
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
-import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.QaBypass
@@ -32,7 +30,6 @@ import org.dataland.datalandmessagequeueutils.messages.data.InitialQaStatus
 import org.dataland.datalandmessagequeueutils.messages.data.PresetQaStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -55,10 +52,8 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
-        private val companyRoleChecker: CompanyRoleChecker,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
-        private val logMessageBuilder = LogMessageBuilder()
 
         /**
          * Processes a dataset by breaking it up and storing its data points in the internal storage
@@ -73,10 +68,6 @@ class AssembledDataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataset.companyId)) {
-                logger.warn("Throwing a bypassQaDeneitException Message")
-                throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
-            }
             val (dataContent, referencedReports, fileReferenceToPublicationDateMapping, fileReferenceToFileNameMapping) =
                 splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
             dataPointValidator.validateDataset(dataContent, referencedReports, correlationId)

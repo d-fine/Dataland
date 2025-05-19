@@ -44,7 +44,10 @@ interface DataApi<T> {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId)")
+    @PreAuthorize(
+        "@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId) and" +
+            "@CompanyRoleChecker.canUserBypassQa(#bypassQa)",
+    )
     fun postCompanyAssociatedData(
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,

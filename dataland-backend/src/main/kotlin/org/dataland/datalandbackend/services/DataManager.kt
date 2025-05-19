@@ -14,7 +14,6 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
@@ -40,11 +39,9 @@ class DataManager
         private val metaDataManager: DataMetaInformationManager,
         private val storageClient: StorageControllerApi,
         private val dataManagerUtils: DataManagerUtils,
-        private val companyRoleChecker: CompanyRoleChecker,
         private val messageQueuePublications: MessageQueuePublications,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
-        private val logMessageBuilder = LogMessageBuilder()
         private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
 
         /**
@@ -60,9 +57,6 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataset.companyId)) {
-                throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
-            }
             val dataId = IdUtils.generateUUID()
             storeMetaDataFrom(dataId, uploadedDataset, correlationId)
             storeDatasetInTemporaryStoreAndSendUploadMessage(dataId, uploadedDataset, bypassQa, correlationId)

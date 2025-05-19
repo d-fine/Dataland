@@ -21,59 +21,64 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the additional-company-information framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param datasetStorageService service to handle data storage
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
 @RequestMapping("/data/additional-company-information")
 @RestController
-class AdditionalCompanyInformationDataController(
-    @Autowired var myDataManager: AssembledDataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<AdditionalCompanyInformationData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        myCompanyQueryManager,
-        AdditionalCompanyInformationData::class.java,
-    ) {
-    @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
-        super.getCompanyAssociatedData(dataId)
+class AdditionalCompanyInformationDataController
+    @Autowired
+    constructor(
+        datasetStorageService: AssembledDataManager,
+        dataMetaInformationManager: DataMetaInformationManager,
+        dataExportService: DataExportService,
+        companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+    ) : DataController<AdditionalCompanyInformationData>(
+            datasetStorageService,
+            dataMetaInformationManager,
+            dataExportService,
+            objectMapper,
+            companyQueryManager,
+            AdditionalCompanyInformationData::class.java,
+        ) {
+        @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationData")
+        override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
+            super.getCompanyAssociatedData(dataId)
 
-    @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
-    override fun getCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
-    ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
-        super
-            .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+        @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
+        override fun getCompanyAssociatedDataByDimensions(
+            reportingPeriod: String,
+            companyId: String,
+        ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
+            super
+                .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-    @Operation(operationId = "postCompanyAssociatedAdditionalCompanyInformationData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<AdditionalCompanyInformationData>,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+        @Operation(operationId = "postCompanyAssociatedAdditionalCompanyInformationData")
+        override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<AdditionalCompanyInformationData>,
+            bypassQa: Boolean,
+        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
-        keepValueFieldsOnly: Boolean,
-    ): ResponseEntity<InputStreamResource> =
-        super
-            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+        @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
+        override fun exportCompanyAssociatedDataByDimensions(
+            reportingPeriods: List<String>,
+            companyIds: List<String>,
+            exportFileType: ExportFileType,
+            keepValueFieldsOnly: Boolean,
+        ): ResponseEntity<InputStreamResource> =
+            super
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
-    @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<AdditionalCompanyInformationData>>> =
-        super
-            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-}
+        @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
+        override fun getFrameworkDatasetsForCompany(
+            companyId: String,
+            showOnlyActive: Boolean,
+            reportingPeriod: String?,
+        ): ResponseEntity<List<DataAndMetaInformation<AdditionalCompanyInformationData>>> =
+            super
+                .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }

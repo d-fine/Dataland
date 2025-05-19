@@ -66,7 +66,10 @@ interface DataPointApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#uploadedDataPoint.companyId)")
+    @PreAuthorize(
+        "@CompanyRoleChecker.canUserUploadDataForCompany(#uploadedDataPoint.companyId) and" +
+            "@CompanyRoleChecker.canUserBypassQa(#bypassQa)",
+    )
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadedDataPoint,

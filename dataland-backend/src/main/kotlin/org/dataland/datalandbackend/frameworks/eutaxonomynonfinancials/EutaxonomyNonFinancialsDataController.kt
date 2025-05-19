@@ -21,59 +21,64 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the eutaxonomy-non-financials framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param datasetStorageService service to handle data storage
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
 @RequestMapping("/data/eutaxonomy-non-financials")
 @RestController
-class EutaxonomyNonFinancialsDataController(
-    @Autowired var myDataManager: AssembledDataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<EutaxonomyNonFinancialsData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        myCompanyQueryManager,
-        EutaxonomyNonFinancialsData::class.java,
-    ) {
-    @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
-        super.getCompanyAssociatedData(dataId)
+class EutaxonomyNonFinancialsDataController
+    @Autowired
+    constructor(
+        datasetStorageService: AssembledDataManager,
+        dataMetaInformationManager: DataMetaInformationManager,
+        dataExportService: DataExportService,
+        companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+    ) : DataController<EutaxonomyNonFinancialsData>(
+            datasetStorageService,
+            dataMetaInformationManager,
+            dataExportService,
+            objectMapper,
+            companyQueryManager,
+            EutaxonomyNonFinancialsData::class.java,
+        ) {
+        @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsData")
+        override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
+            super.getCompanyAssociatedData(dataId)
 
-    @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
-    override fun getCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
-    ): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
-        super
-            .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+        @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
+        override fun getCompanyAssociatedDataByDimensions(
+            reportingPeriod: String,
+            companyId: String,
+        ): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
+            super
+                .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-    @Operation(operationId = "postCompanyAssociatedEutaxonomyNonFinancialsData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<EutaxonomyNonFinancialsData>,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+        @Operation(operationId = "postCompanyAssociatedEutaxonomyNonFinancialsData")
+        override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<EutaxonomyNonFinancialsData>,
+            bypassQa: Boolean,
+        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
-        keepValueFieldsOnly: Boolean,
-    ): ResponseEntity<InputStreamResource> =
-        super
-            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+        @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
+        override fun exportCompanyAssociatedDataByDimensions(
+            reportingPeriods: List<String>,
+            companyIds: List<String>,
+            exportFileType: ExportFileType,
+            keepValueFieldsOnly: Boolean,
+        ): ResponseEntity<InputStreamResource> =
+            super
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
-    @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<EutaxonomyNonFinancialsData>>> =
-        super
-            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-}
+        @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
+        override fun getFrameworkDatasetsForCompany(
+            companyId: String,
+            showOnlyActive: Boolean,
+            reportingPeriod: String?,
+        ): ResponseEntity<List<DataAndMetaInformation<EutaxonomyNonFinancialsData>>> =
+            super
+                .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }

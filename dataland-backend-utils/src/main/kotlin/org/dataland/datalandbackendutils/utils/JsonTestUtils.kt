@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandbackendutils.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
