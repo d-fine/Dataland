@@ -3,7 +3,7 @@ import { getStringCypressEnv } from '@e2e/utils/Cypress';
 describe('As a developer, I expect the PGAdmin console to be available to me', () => {
   it('Checks if the PGAdmin console is available and the login page is shown', () => {
     cy.visitAndCheckExternalAdminPage({
-      url: 'http://dataland-admin:6789/pgadmin',
+      url: 'https://dataland-admin:6789/pgadmin',
       interceptPattern: '**/pgadmin/**',
       elementSelector: 'input[name=email]',
       urlShouldInclude: '/pgadmin',

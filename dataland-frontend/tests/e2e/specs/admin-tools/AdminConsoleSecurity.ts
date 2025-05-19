@@ -24,7 +24,7 @@ describe('As a user I expect the admin console only to be reachable using admin-
 
   it(`Test Admin Console is reachable via dataland-admin`, () => {
     cy.visitAndCheckExternalAdminPage({
-      url: 'http://dataland-admin:6789/keycloak/admin',
+      url: 'https://dataland-admin:6789/keycloak/admin',
       interceptPattern: '**/keycloak/**',
       elementSelector: 'h1',
       containsText: 'Sign in to your account',
