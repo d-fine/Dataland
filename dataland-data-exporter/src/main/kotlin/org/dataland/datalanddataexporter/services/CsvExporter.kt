@@ -52,7 +52,7 @@ class CsvExporter(
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 0 1 * * *")
     private fun triggerExport() {
         val outputDirectory = "/var/export/csv/sql_server"
         exportSfdrData(outputDirectory)
@@ -101,7 +101,7 @@ class CsvExporter(
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
     ): Pair<Map<String, String>, List<Map<String, String>>> {
-        logger.info("Exporting data with ID: $dataDimension")
+        logger.info("Exporting data dimension: $dataDimension")
 
         val csvData = mutableMapOf<String, String>()
 
