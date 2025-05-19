@@ -2,19 +2,19 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-09-21",
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-03-10",
+				"dataDate": "2024-09-28",
+				"fiscalYearDeviation": "Deviation",
+				"fiscalYearEnd": "2024-08-19",
 				"referencedReports": {
-					"AnnualReport": {
+					"SustainabilityReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "AnnualReport",
-						"publicationDate": "2023-11-23"
+						"fileName": "SustainabilityReport",
+						"publicationDate": "2023-04-22"
 					},
-					"IntegratedReport": {
+					"AnnualReport": {
 						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"fileName": "IntegratedReport",
-						"publicationDate": "2023-04-26"
+						"fileName": "AnnualReport",
+						"publicationDate": "2024-01-01"
 					}
 				}
 			}
@@ -22,16 +22,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 7610,
+					"value": 3701,
 					"dataSource": {
-						"page": "400-419",
-						"fileName": "AnnualReport",
+						"page": "1167-1211",
+						"fileName": "SustainabilityReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "models",
+						"tagName": "applications",
 						"publicationDate": null
 					},
-					"comment": "transmit bluetooth capacitor",
-					"quality": "Incomplete"
+					"comment": "copy mobile microchip",
+					"quality": "Reported"
 				}
 			}
 		},
@@ -40,26 +40,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "324",
+						"page": "10",
 						"fileName": "AnnualReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "ROI",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "schemas",
 						"publicationDate": null
 					},
-					"comment": "hack optical microchip",
-					"quality": "Reported"
+					"comment": "reboot multi-byte firewall",
+					"quality": "Estimated"
 				},
 				"biodiversityProtectionPolicy": {
-					"value": "No",
+					"value": "Yes",
 					"dataSource": {
-						"page": "642-1241",
-						"fileName": "IntegratedReport",
+						"page": "515-1276",
+						"fileName": "AnnualReport",
 						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "convergence",
+						"tagName": "supply-chains",
 						"publicationDate": null
 					},
-					"comment": "bypass cross-platform port",
-					"quality": "Audited"
+					"comment": "synthesize mobile interface",
+					"quality": "Incomplete"
 				}
 			}
 		}

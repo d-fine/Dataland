@@ -163,7 +163,7 @@ export class Generator {
    * @returns a random non-empty set of reports
    */
   generateReferencedReports(): ReferencedDocuments {
-    const availableReportNames = pickSubsetOfElements(possibleReports);
+    const availableReportNames = pickSubsetOfElements(possibleReports, 1, 2);
     const fixtureDocumentIds = getAllFakeFixtureDocumentIds();
 
     const referencedReports: ReferencedDocuments = {};
