@@ -37,7 +37,7 @@ class DataPointQaReviewManager
         private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
         private val qaReviewManager: QaReviewManager,
-        private val specificationControllerApi: SpecificationControllerApi,
+        private val specificationClient: SpecificationControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -311,38 +311,79 @@ class DataPointQaReviewManager
          * @param showOnlyActive if true, only the active Datapoint is returned
          * @param chunkSize the number of results to return
          * @param chunkIndex the index to start the result set from
-         *
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
             showOnlyActive: Boolean? = true,
             chunkSize: Int? = 10,
             chunkIndex: Int? = 0,
-        ): List<DataPointQaReviewInformation> {
-            try {
-                requireNotNull(searchFilter.dataType)
-                specificationControllerApi.doesFrameworkSpecificationExist(searchFilter.dataType)
-                val schema = specificationControllerApi.getFrameworkSpecification(searchFilter.dataType).schema
-                val frameworkSpecificDatapointTypes = DataPointUtils.getDataPointTypes(schema)
-                return frameworkSpecificDatapointTypes.flatMap { type ->
-                    val modifiedSearchFilter = searchFilter.copy(dataType = type)
-                    getFilteredDataPointQaReviewInformation(modifiedSearchFilter, showOnlyActive, chunkSize, chunkIndex)
-                }
-            } catch (_: IllegalArgumentException) {
-                logger.info("DataType is null. Thus proceed since the dataType is also not a framework.")
-            } catch (_: ClientException) {
-                logger.info("DataType is not null, but also not an existing framework. Thus proceed by treating it as a dataPointType.")
+        ): List<DataPointQaReviewInformation> =
+            if (isExistingFramework(searchFilter.dataType)) {
+                val frameworkSpecificDatapointTypes =
+                    DataPointUtils.getDataPointTypes(specificationClient.getFrameworkSpecification(searchFilter.dataType!!).schema)
+                getFilteredDataPointQaReviewInformationForDataPointTypes(
+                    frameworkSpecificDatapointTypes,
+                    searchFilter,
+                    showOnlyActive,
+                    chunkSize,
+                    chunkIndex,
+                )
+            } else {
+                queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
             }
-            return if (showOnlyActive == false) {
+
+        /**
+         * Retrieve all QA review information items matching the provided filters in descending order by timestamp.
+         * Results are paginated using [chunkSize] and [chunkIndex].
+         * @param dataTypes Set of dataPointTypes for which the QA review information should be gathered.
+         * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
+         * @param showOnlyActive if true, only the active Datapoint is returned
+         * @param chunkSize the number of results to return
+         * @param chunkIndex the index to start the result set from
+         */
+        private fun getFilteredDataPointQaReviewInformationForDataPointTypes(
+            dataTypes: Set<String>,
+            searchFilter: DataPointQaReviewItemFilter,
+            showOnlyActive: Boolean?,
+            chunkSize: Int?,
+            chunkIndex: Int?,
+        ): List<DataPointQaReviewInformation> =
+            dataTypes.flatMap { type ->
+                val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
+                queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
+            }
+
+        private fun queryReviewItems(
+            searchFilter: DataPointQaReviewItemFilter,
+            showOnlyActive: Boolean?,
+            chunkSize: Int?,
+            chunkIndex: Int?,
+        ): List<DataPointQaReviewInformation> =
+            if (showOnlyActive == false) {
                 dataPointQaReviewRepository
                     .findByFilter(searchFilter, chunkSize, chunkIndex)
                     .map { it.toDataPointQaReviewInformation() }
             } else if (searchFilter.qaStatus in listOf(QaStatus.Pending, QaStatus.Rejected)) {
-                listOf()
+                emptyList()
             } else {
                 dataPointQaReviewRepository
                     .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
                     .map { it.toDataPointQaReviewInformation() }
             }
-        }
+
+        /**
+         * Determines if the given string represents a valid Lego Bricks framework.
+         * @param dataType the name to check
+         * @return 'true' if the name corresponds to an existing framework, 'false' otherwise
+         */
+        fun isExistingFramework(dataType: String?): Boolean =
+            try {
+                requireNotNull(dataType)
+                specificationClient.doesFrameworkSpecificationExist(dataType)
+                true
+            } catch (_: IllegalArgumentException) {
+                false
+            } catch (_: ClientException) {
+                false
+            }
     }

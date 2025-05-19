@@ -161,7 +161,7 @@ interface QaApi {
             description =
                 "If set, only show the active QA review information for each data point.",
         )
-        @RequestParam(defaultValue = true.toString()) showOnlyActive: Boolean?,
+        @RequestParam(defaultValue = "true") showOnlyActive: Boolean?,
         @RequestParam(defaultValue = "10") chunkSize: Int?,
         @RequestParam(defaultValue = "0") chunkIndex: Int?,
     ): ResponseEntity<List<DataPointQaReviewInformation>>

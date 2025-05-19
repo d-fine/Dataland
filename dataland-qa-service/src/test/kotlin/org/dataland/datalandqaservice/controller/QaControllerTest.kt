@@ -59,7 +59,7 @@ class QaControllerTest(
     private lateinit var cloudEventMessageHandler: CloudEventMessageHandler
 
     @MockitoBean
-    lateinit var specificationControllerApi: SpecificationControllerApi
+    lateinit var specificationClient: SpecificationControllerApi
 
     val dataId = UUID.randomUUID().toString()
     val originalActiveDataId = UUID.randomUUID().toString()
@@ -105,7 +105,7 @@ class QaControllerTest(
                 uploaderUserId = "",
             ),
         )
-        whenever(specificationControllerApi.doesFrameworkSpecificationExist(anyString())).thenAnswer { invocation ->
+        whenever(specificationClient.doesFrameworkSpecificationExist(anyString())).thenAnswer { invocation ->
             val frameworkName = invocation.arguments[0] as String
             if (frameworkName == dataTypeTestFramework) {
                 true
@@ -113,7 +113,7 @@ class QaControllerTest(
                 throw ClientException("Simulated failure for framework: $frameworkName")
             }
         }
-        `when`(specificationControllerApi.getFrameworkSpecification(dataTypeTestFramework)).thenReturn(
+        `when`(specificationClient.getFrameworkSpecification(dataTypeTestFramework)).thenReturn(
             testFrameworkSpecification,
         )
         `when`(
