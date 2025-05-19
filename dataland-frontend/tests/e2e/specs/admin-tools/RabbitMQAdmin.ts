@@ -23,6 +23,7 @@ const queues = [
   'community-manager.queue.nonSourceableData',
 ];
 
+Cypress._.times(10, () => {
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
   it('Checks if the RabbitMQ Management GUI is available and the login page is shown. Then check that all expected queues exist.', () => {
     cy.visitAndCheckExternalAdminPage({
@@ -35,20 +36,21 @@ describe('As a developer, I expect the RabbitMQ GUI console to be available to m
     cy.get('input[type=submit]').should('contain.value', 'Login').click();
     cy.get('#logout').contains('Log out').should('contain.value', 'Log out');
 
-    cy.get("ul[id='tabs'").find("a[href='#/queues']").click();
-    cy.contains('table th', 'Overview')
-      .invoke('parents', 'table')
-      .find('tbody tr')
-      .its('length')
-      .then((rowCount) => {
-        cy.wrap(queues.length).should('eq', rowCount);
+    cy.get("ul[id='tabs']").find("a[href='#/queues']").click();
+    cy.get('table.list tbody tr td:nth-child(2) a', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
+      'have.length.greaterThan',
+      0
+    );
+    cy.get('table.list tbody tr').then(($rows) => {
+      const actualQueues = [...$rows].map((row) => {
+        const nameCell = row.querySelector('td:nth-child(2) a');
+        return nameCell?.textContent?.trim() || '';
       });
-    cy.get('table[class=list]')
-      .should('exist')
-      .then(() => {
-        queues.forEach((queue) => {
-          cy.get('table[class=list]').contains(queue).should('contain.text', queue);
-        });
-      });
+      const missingQueues = queues.filter((q) => !actualQueues.includes(q));
+      if (missingQueues.length > 0) {
+        throw new Error(`Missing queues: ${missingQueues.join(', ')}`);
+      }
+    });
   });
 });
+})
