@@ -308,7 +308,7 @@ class DataPointQaReviewManager
          * Retrieve all QA review information items matching the provided filters in descending order by timestamp.
          * Results are paginated using [chunkSize] and [chunkIndex].
          * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
-         * @param showOnlyActive if true, only the active Datapoint is returned
+         * @param showOnlyActive if true, only active data points are returned
          * @param chunkSize the number of results to return
          * @param chunkIndex the index to start the result set from
          */
@@ -337,7 +337,7 @@ class DataPointQaReviewManager
          * Results are paginated using [chunkSize] and [chunkIndex].
          * @param dataTypes Set of dataPointTypes for which the QA review information should be gathered.
          * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
-         * @param showOnlyActive if true, only the active Datapoint is returned
+         * @param showOnlyActive if true, only active data points are returned
          * @param chunkSize the number of results to return
          * @param chunkIndex the index to start the result set from
          */
@@ -353,6 +353,15 @@ class DataPointQaReviewManager
                 queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
             }
 
+        /**
+         * forwards the queries of the QaReviewItems to different filters depending on the showOnlyActive flag
+         * @param searchFilter filter containing information on the companyID, dataType, reportingPeriod and qaStatus
+         * @param showOnlyActive if true, only active Data points are returned
+         * @param chunkSize the number of results to return
+         * @param chunkIndex the index to start the result set from
+         * @return A list of all datapoint of the type 'DataPointQaReviewInformation' containing als data points,
+         *         which suffice the given filter.
+         */
         private fun queryReviewItems(
             searchFilter: DataPointQaReviewItemFilter,
             showOnlyActive: Boolean?,
