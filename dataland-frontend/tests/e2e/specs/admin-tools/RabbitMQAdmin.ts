@@ -42,7 +42,7 @@ function checkQueuesExist($rows: JQuery<HTMLElement>, expectedQueues: string[]):
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
   it('Checks if the RabbitMQ Management GUI is available and the login page is shown. Then check that all expected queues exist.', () => {
     cy.visitAndCheckExternalAdminPage({
-      url: 'https://dataland-admin:6789/rabbitmq',
+      url: 'http://dataland-admin:6789/rabbitmq',
       interceptPattern: '**/rabbitmq/**',
       elementSelector: 'input[name=username]',
     });

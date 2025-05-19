@@ -6,7 +6,7 @@ Cypress._.times(10, () => {
       cy.setExceptionContext('grafana');
 
       cy.visitAndCheckExternalAdminPage({
-        url: 'https://dataland-admin:6789/grafana',
+        url: 'http://dataland-admin:6789/grafana',
         elementSelector: '[data-testid="data-testid Login button"]',
         urlShouldInclude: '/grafana',
       });
