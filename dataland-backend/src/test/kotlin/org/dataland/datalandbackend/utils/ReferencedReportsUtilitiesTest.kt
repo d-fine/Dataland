@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.JsonTestUtils.testObjectMapper
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
