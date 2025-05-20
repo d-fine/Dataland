@@ -301,44 +301,55 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Enterprise Value',
             explanation:
-              'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
+              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.enterpriseValue,
-                'Enterprise Value'
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR?.value,
+                  'EUR'
+                ),
+                'Enterprise Value',
+                dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR
               ),
           },
           {
             type: 'cell',
             label: 'Total Revenue',
             explanation:
-              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(dataset.environmental?.greenhouseGasEmissions?.totalRevenue, 'Total Revenue'),
-          },
-          {
-            type: 'cell',
-            label: 'Carbon footprint',
-            explanation:
-              'Tonnes of GHG emissions per million units of the enterprise value (in the same currency as total revenue).',
+              "Total revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.value,
-                  'Tonnes \/ \u20ACM Revenue'
+                  dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR?.value,
+                  'EUR'
+                ),
+                'Total Revenue',
+                dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Carbon footprint',
+            explanation: 'Tonnes of GHG emissions per million EUR enterprise value.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEUREnterpriseValue
+                    ?.value,
+                  'Tonnes \/ \u20ACM Enterprise Value'
                 ),
                 'Carbon footprint',
-                dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue
+                dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEUREnterpriseValue
               ),
           },
           {
             type: 'cell',
             label: 'GHG intensity',
             explanation:
-              'Tonnes of GHG emissions per million units of revenue (in the same currency as total revenue), preferably calculated using the location-based method and the equity share approach for emissions.',
+              'Tonnes of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -354,7 +365,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 1',
             explanation:
-              'Tonnes of scope 1 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
+              'Tonnes of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -370,7 +381,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 2',
             explanation:
-              'Tonnes of scope 2 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
+              'Tonnes of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -386,7 +397,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 3',
             explanation:
-              'Tonnes of scope 3 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
+              'Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -402,7 +413,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 4',
             explanation:
-              'Tonnes of scope 4 GHG emissions per million units of revenue (in the same currency as total revenue). As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
+              'Tonnes of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -771,7 +782,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Manufacture Of Agrochemical Pesticides Products',
             explanation:
-              'Involvement in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
+              'Involvements in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -918,7 +929,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Relative Water Usage',
             explanation:
-              'Amount in cubic meters of fresh water used per million units of revenue (in the same currency as the total revenue). See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
+              'Amount in cubic meters of fresh water used per million EUR revenue. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -947,7 +958,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'High Water Stress Area Exposure',
             explanation:
-              'Sites (partly) located in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
+              'Sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1135,7 +1146,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Transparency Disclosure Policy',
             explanation:
-              'Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
+              'Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1150,7 +1161,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Human Rights Due Diligence Policy',
             explanation:
-              'Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.',
+              'Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1164,8 +1175,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Child Labour',
-            explanation:
-              'Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.',
+            explanation: 'Existence of policies in place to abolish all forms of child labour.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1177,8 +1187,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Forced Labour',
-            explanation:
-              'Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.',
+            explanation: 'Existence of policies in place to abolish all forms of forced labour.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1192,8 +1201,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Discrimination in the Workplace',
-            explanation:
-              'Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.',
+            explanation: 'Existence of policies in place to eliminate discrimination in the workplace.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1235,7 +1243,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Fair Business Marketing Advertising Policy',
             explanation:
-              'Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.',
+              'Existence of policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1250,7 +1258,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Technologies Expertise Transfer Policy',
             explanation:
-              'Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.',
+              'Existence of policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1265,7 +1273,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Fair Competition Policy',
             explanation:
-              'Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.',
+              'Existence of policies and procedures in place related to fair competition and anti-competitive cartels.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1278,7 +1286,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Violation Of Tax Rules And Regulation',
             explanation:
-              'Are you involved in violations of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
+              'Involvement in a violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1607,7 +1615,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Securities Not Certified As Green',
             explanation:
-              'Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?',
+              'Possession of securities in investments that are not certified as green under a future EU legal act setting up an EU Green Bond Standard.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1667,7 +1675,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Reported Child Labour Incidents',
             explanation:
-              'Number of reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
+              'Reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1680,7 +1688,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Reported Forced Or Compulsory Labour Incidents',
             explanation:
-              'Number of reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
+              'Reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
