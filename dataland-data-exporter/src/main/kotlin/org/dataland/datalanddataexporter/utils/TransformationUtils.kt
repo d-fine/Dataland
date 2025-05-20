@@ -122,16 +122,19 @@ object TransformationUtils {
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
     ) {
-        val nonLiteralLegacyValues = legacyRules.values.filter { !it.startsWith("\"") || !it.endsWith("\"") }
+        val nonLiteralLegacyValues = legacyRules.values.filter { !it.startsWith("\"") && !it.endsWith("\"") }
 
         val legacyValuesNotCovered = nonLiteralLegacyValues.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
             "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"
         }
 
-        val legacyKeysInTransformationValues = legacyRules.keys.filter { transformationRules.values.contains(it) }
-        require(legacyKeysInTransformationValues.isEmpty()) {
-            "Csv headers are not unique as legacy headers contain duplicates: $legacyKeysInTransformationValues"
+        val transformationHeaders = transformationRules.values.filter { it.isNotEmpty() }.toSet()
+        val legacyHeaders = legacyRules.keys.filter { it.isNotEmpty() }.toSet()
+
+        val duplicateHeaders = transformationHeaders.intersect(legacyHeaders)
+        require(duplicateHeaders.isEmpty()) {
+            "Csv headers are not unique as legacy headers contain duplicates: $duplicateHeaders"
         }
     }
 
