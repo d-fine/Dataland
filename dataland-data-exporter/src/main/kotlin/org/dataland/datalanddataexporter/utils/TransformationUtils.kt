@@ -122,9 +122,9 @@ object TransformationUtils {
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
     ) {
-        val legacyPathValues = legacyRules.values.filter { it.startsWith("\"") && it.endsWith("\"") }
+        val nonLiteralLegacyValues = legacyRules.values.filter { !it.startsWith("\"") || !it.endsWith("\"") }
 
-        val legacyValuesNotCovered = legacyRules.values.filter { !transformationRules.keys.contains(it) }
+        val legacyValuesNotCovered = nonLiteralLegacyValues.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
             "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"
         }
