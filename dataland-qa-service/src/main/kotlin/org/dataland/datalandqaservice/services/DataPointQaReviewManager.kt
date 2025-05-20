@@ -325,7 +325,8 @@ class DataPointQaReviewManager
                         val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
                         queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
                     }
-                } catch (_: Exception) {
+                } catch (_: NullPointerException) {
+                    logger.debug("Ignoring exception during framework-specific data retrieval, falling back to default.")
                 }
             }
             return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
