@@ -46,7 +46,7 @@ interface DataApi<T> {
     )
     @PreAuthorize(
         "@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId) and" +
-            "@CompanyRoleChecker.canUserBypassQa(#bypassQa)",
+            "@CompanyRoleChecker.canUserBypassQa(#companyAssociatedData.companyId)",
     )
     fun postCompanyAssociatedData(
         @Valid @RequestBody

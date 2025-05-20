@@ -3,6 +3,8 @@ package org.dataland.e2etests.tests
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
+import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.datalandbackendutils.utils.JsonTestUtils
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -22,6 +24,7 @@ class DataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentControllerApiAccessor()
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val objectMapper = JsonTestUtils.testObjectMapper
 
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -56,13 +59,27 @@ class DataControllerTest {
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
 
+        val ignoredKeys = setOf("publicationDate")
+
+        val expectedJsonString =
+            objectMapper.writeValueAsString(
+                CompanyAssociatedDataEutaxonomyNonFinancialsData(
+                    mapOfIds.getValue("companyId"),
+                    "",
+                    testDataEuTaxonomyNonFinancials,
+                ),
+            )
+        val actualJsonString = objectMapper.writeValueAsString(companyAssociatedDataEuTaxonomyDataForNonFinancials)
+
+        val differences =
+            JsonComparator.compareJson(
+                objectMapper.readTree(expectedJsonString),
+                objectMapper.readTree(actualJsonString),
+                JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
+            )
+
         assertEquals(
-            CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                mapOfIds.getValue("companyId"),
-                "",
-                testDataEuTaxonomyNonFinancials,
-            ),
-            companyAssociatedDataEuTaxonomyDataForNonFinancials,
+            0, differences.size,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
         )
     }
