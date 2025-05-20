@@ -122,6 +122,8 @@ object TransformationUtils {
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
     ) {
+        val legacyPathValues = legacyRules.values.filter { it.startsWith("\"") && it.endsWith("\"") }
+
         val legacyValuesNotCovered = legacyRules.values.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
             "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"
@@ -164,7 +166,11 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         legacyRules.forEach { (csvHeader, jsonPath) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
+            if (jsonPath.startsWith("\"") && jsonPath.endsWith("\"")) {
+                csvData[csvHeader] = jsonPath.substring(1, jsonPath.length - 1)
+            } else {
+                csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
+            }
         }
         return csvData
     }
