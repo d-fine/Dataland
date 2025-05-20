@@ -17,7 +17,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataP
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -314,47 +313,26 @@ class DataPointQaReviewManager
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
-            showOnlyActive: Boolean? = true,
+            showOnlyActive: Boolean = true,
             chunkSize: Int? = 10,
             chunkIndex: Int? = 0,
-        ): List<DataPointQaReviewInformation> =
-            if (isExistingFramework(searchFilter.dataType)) {
-                val frameworkSpecificDatapointTypes =
-                    DataPointUtils.getDataPointTypes(specificationClient.getFrameworkSpecification(searchFilter.dataType!!).schema)
-                getFilteredDataPointQaReviewInformationForDataPointTypes(
-                    frameworkSpecificDatapointTypes,
-                    searchFilter,
-                    showOnlyActive,
-                    chunkSize,
-                    chunkIndex,
-                )
-            } else {
-                queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
+        ): List<DataPointQaReviewInformation> {
+            if (searchFilter.dataType != null) {
+                try {
+                    val frameworkSpecificDatapointTypes =
+                        DataPointUtils.getDataPointTypes(specificationClient.getFrameworkSpecification(searchFilter.dataType).schema)
+                    return frameworkSpecificDatapointTypes.flatMap { type ->
+                        val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
+                        queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
+                    }
+                } catch (_: Exception) {
+                }
             }
+            return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
+        }
 
         /**
-         * Retrieve all QA review information items matching the provided filters in descending order by timestamp.
-         * Results are paginated using [chunkSize] and [chunkIndex].
-         * @param dataTypes Set of dataPointTypes for which the QA review information should be gathered.
-         * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
-         * @param showOnlyActive if true, only active data points are returned
-         * @param chunkSize the number of results to return
-         * @param chunkIndex the index to start the result set from
-         */
-        private fun getFilteredDataPointQaReviewInformationForDataPointTypes(
-            dataTypes: Set<String>,
-            searchFilter: DataPointQaReviewItemFilter,
-            showOnlyActive: Boolean?,
-            chunkSize: Int?,
-            chunkIndex: Int?,
-        ): List<DataPointQaReviewInformation> =
-            dataTypes.flatMap { type ->
-                val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
-                queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
-            }
-
-        /**
-         * forwards the queries of the QaReviewItems to different filters depending on the showOnlyActive flag
+         * Searches for QA review information based on a search filter. Inactive data points may be excluded.
          * @param searchFilter filter containing information on the companyID, dataType, reportingPeriod and qaStatus
          * @param showOnlyActive if true, only active Data points are returned
          * @param chunkSize the number of results to return
@@ -364,35 +342,20 @@ class DataPointQaReviewManager
          */
         private fun queryReviewItems(
             searchFilter: DataPointQaReviewItemFilter,
-            showOnlyActive: Boolean?,
+            showOnlyActive: Boolean,
             chunkSize: Int?,
             chunkIndex: Int?,
-        ): List<DataPointQaReviewInformation> =
-            if (showOnlyActive == false) {
-                dataPointQaReviewRepository
-                    .findByFilter(searchFilter, chunkSize, chunkIndex)
-                    .map { it.toDataPointQaReviewInformation() }
-            } else if (searchFilter.qaStatus in listOf(QaStatus.Pending, QaStatus.Rejected)) {
-                emptyList()
-            } else {
-                dataPointQaReviewRepository
-                    .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
-                    .map { it.toDataPointQaReviewInformation() }
-            }
-
-        /**
-         * Determines if the given string represents a valid Lego Bricks framework.
-         * @param dataType the name to check
-         * @return 'true' if the name corresponds to an existing framework, 'false' otherwise
-         */
-        fun isExistingFramework(dataType: String?): Boolean =
-            try {
-                requireNotNull(dataType)
-                specificationClient.doesFrameworkSpecificationExist(dataType)
-                true
-            } catch (_: IllegalArgumentException) {
-                false
-            } catch (_: ClientException) {
-                false
-            }
+        ): List<DataPointQaReviewInformation> {
+            val filteredQaDataPoints =
+                if (!showOnlyActive) {
+                    dataPointQaReviewRepository
+                        .findByFilter(searchFilter, chunkSize, chunkIndex)
+                } else if (searchFilter.qaStatus in listOf(QaStatus.Pending, QaStatus.Rejected)) {
+                    emptyList()
+                } else {
+                    dataPointQaReviewRepository
+                        .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
+                }
+            return filteredQaDataPoints.map { it.toDataPointQaReviewInformation() }
+        }
     }

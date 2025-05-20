@@ -1,6 +1,5 @@
 package org.dataland.datalandbackendutils.utils
 
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 object DataPointUtils {
@@ -10,7 +9,7 @@ object DataPointUtils {
      * @return a set of all data point types
      */
     fun getDataPointTypes(schema: String): Set<String> {
-        val frameworkTemplate = jacksonObjectMapper().readTree(schema) as ObjectNode
+        val frameworkTemplate = jacksonObjectMapper().readTree(schema)
         return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
     }
 }

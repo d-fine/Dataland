@@ -168,10 +168,11 @@ class QaController(
                 reportingPeriod = reportingPeriod,
                 qaStatus = qaStatus,
             )
+
         return ResponseEntity.ok(
             dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
                 searchFilter = searchFilter,
-                showOnlyActive = showOnlyActive,
+                showOnlyActive = showOnlyActive ?: true,
                 chunkSize = chunkSize,
                 chunkIndex = chunkIndex,
             ),

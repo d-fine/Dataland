@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
@@ -93,7 +92,7 @@ class QaControllerTest(
         )
 
     private fun specifyMocks() {
-        `when`(dataPointControllerApi.getDataPointMetaInfo(any())).thenReturn(
+        whenever(dataPointControllerApi.getDataPointMetaInfo(any())).thenReturn(
             DataPointMetaInformation(
                 dataPointId = "dummy",
                 dataPointType = dataPointType,
@@ -113,10 +112,10 @@ class QaControllerTest(
                 throw ClientException("Simulated failure for framework: $frameworkName")
             }
         }
-        `when`(specificationClient.getFrameworkSpecification(dataTypeTestFramework)).thenReturn(
+        whenever(specificationClient.getFrameworkSpecification(dataTypeTestFramework)).thenReturn(
             testFrameworkSpecification,
         )
-        `when`(
+        whenever(
             cloudEventMessageHandler
                 .buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
         ).thenAnswer { println("Sending message to queue") }
