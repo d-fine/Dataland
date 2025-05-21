@@ -80,14 +80,14 @@ class EuTaxonomyNonFinancials {
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        val ignoreKeys = setOf("referencedReports")
+        val ignoreKeys = setOf("publicationDate")
         val differences =
             JsonComparator.compareClasses(
                 listOfOneEuTaxonomyNonFinancialsDataset[0],
                 downloadedAssociatedData.data,
                 JsonComparator.JsonComparisonOptions(ignoreKeys),
             )
-        Assertions.assertEquals(0, differences.size)
+        Assertions.assertEquals(0, differences.size, "There are differences: $differences")
     }
 
     @Test
