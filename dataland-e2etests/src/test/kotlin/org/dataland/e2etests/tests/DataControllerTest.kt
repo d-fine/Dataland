@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
@@ -108,12 +109,15 @@ class DataControllerTest {
                 testCompanyInformationNonTeaser,
                 testDataEuTaxonomyNonFinancials,
             )
+        // The API call is made using a timeout and a retry on 403 errors. Thus, if access is consistently denied,
+        // a timeout exception will be thrown.
         val exception =
-            assertThrows<IllegalArgumentException> {
+            assertThrows<ConditionTimeoutException> {
                 apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                     .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
             }
-        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+
+        assertTrue(exception.message!!.contains("code=403"))
     }
 
     @ParameterizedTest
