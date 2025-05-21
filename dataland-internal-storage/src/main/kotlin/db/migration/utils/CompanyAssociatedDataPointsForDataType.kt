@@ -20,7 +20,7 @@ fun getCompanyAssociatedDatapointsForDataType(
         context!!.connection.prepareStatement(
             "SELECT * from data_point_items WHERE data_point_type = ?",
         )
-    preparedStatement.setString(1, "%dataPointType%")
+    preparedStatement.setString(1, "dataPointType")
     val getQueryResultSet = preparedStatement.executeQuery()
 
     val companyAssociatedDatapoints = mutableListOf<DataPointTableEntity>()
