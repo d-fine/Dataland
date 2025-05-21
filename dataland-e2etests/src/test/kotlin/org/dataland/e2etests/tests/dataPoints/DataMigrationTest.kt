@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.tests.dataPoints.AssembledDatasetTest.LinkedQaReportTestData
 import org.dataland.e2etests.utils.ApiAccessor
@@ -18,8 +19,8 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -191,10 +192,14 @@ class DataMigrationTest {
         val dataMetaInfo = uploadGenericDummyDataset(data = originalData, dataType = DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
-        assertDataEqualsIgnoringDates(
-            originalData, migratedData.data,
-            { it.general?.general?.referencedReports },
-        )
+        val ignoreKeys = setOf("publicationDate")
+        val differences =
+            JsonComparator.compareClasses(
+                originalData,
+                migratedData.data,
+                JsonComparator.JsonComparisonOptions(ignoreKeys),
+            )
+        Assertions.assertEquals(0, differences.size, "There are differences: $differences")
     }
 
     @ParameterizedTest
