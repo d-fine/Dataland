@@ -17,6 +17,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataP
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -318,20 +319,16 @@ class DataPointQaReviewManager
             chunkIndex: Int,
         ): List<DataPointQaReviewInformation> {
             val showOnlyActive = showOnlyActive ?: true
-            logger
-                .info("in getFilteredDataPointQaReviewInformationByDataId: $searchFilter ___________________________")
             if (searchFilter.dataType != null) {
-                logger.info("Passed null check ____________________________________________")
                 try {
                     val frameworkSpecificDatapointTypes =
                         DataPointUtils.getDataPointTypes(specificationClient.getFrameworkSpecification(searchFilter.dataType).schema)
-                    logger.info("Passed get Framework ___________________________________________________________")
                     return frameworkSpecificDatapointTypes.flatMap { type ->
                         val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
                         queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
                     }
-                } catch (e: Exception) {
-                    logger.info("HUUHUUUUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHU I caught an ${e::class.simpleName} exception")
+                } catch (_: ClientException) {
+                    logger.debug("Ignoring exception during framework-specific data retrieval, falling back to default.")
                 }
             }
             return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
