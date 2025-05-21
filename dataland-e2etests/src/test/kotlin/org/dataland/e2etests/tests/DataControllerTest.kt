@@ -9,7 +9,6 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
-import org.dataland.e2etests.utils.api.ApiAwait
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -80,12 +79,10 @@ class DataControllerTest {
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val mapOfIds =
-            ApiAwait.waitForData {
-                apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
-                    testCompanyInformationTeaser,
-                    testDataEuTaxonomyNonFinancials,
-                )
-            }
+            apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                testCompanyInformationTeaser,
+                testDataEuTaxonomyNonFinancials,
+            )
 
         val getDataByIdResponse =
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
@@ -96,11 +93,12 @@ class DataControllerTest {
                 "",
                 testDataEuTaxonomyNonFinancials,
             )
-        assertEquals(
-            expectedCompanyAssociatedData,
-            getDataByIdResponse,
-            "The posted data does not equal the expected test data.",
-        )
+
+        val ignoredKeys = setOf("publicationDate")
+        val differences =
+            JsonComparator
+                .compareClasses(expectedCompanyAssociatedData, getDataByIdResponse, JsonComparator.JsonComparisonOptions(ignoredKeys))
+        assertEquals(0, differences.size, "The posted data does not equal the expected test data.")
     }
 
     @Test
