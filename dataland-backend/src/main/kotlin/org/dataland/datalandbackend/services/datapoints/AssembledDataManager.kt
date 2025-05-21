@@ -355,8 +355,7 @@ class AssembledDataManager
             dataDimensionList: Set<BasicDataDimensions>,
             correlationId: String,
         ): Map<BasicDataDimensions, String> {
-            val dataPointDimensions =
-                dataPointUtils.getBasicDataPointDimensionsForDataDimensions(dataDimensionList, correlationId)
+            val dataPointDimensions = dataPointUtils.getBasicDataPointDimensionsForDataDimensions(dataDimensionList, correlationId)
             val dataPointIds =
                 dataPointDimensions.entries
                     .associate { (dataDimension, dataPointDimensionList) ->

@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.utils.JsonTestUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.testObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

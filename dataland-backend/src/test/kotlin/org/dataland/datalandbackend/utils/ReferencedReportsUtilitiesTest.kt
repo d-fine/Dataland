@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
-import org.dataland.datalandbackendutils.utils.JsonTestUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.testObjectMapper
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

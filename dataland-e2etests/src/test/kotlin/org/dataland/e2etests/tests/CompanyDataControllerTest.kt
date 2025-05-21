@@ -94,11 +94,7 @@ class CompanyDataControllerTest {
             CompanyInformationPatch(
                 identifiers =
                     mapOf(
-                        IdentifierType.Lei.value to
-                            listOf(
-                                "Test-Lei1${UUID.randomUUID()}",
-                                "Test-Lei2${UUID.randomUUID()}",
-                            ),
+                        IdentifierType.Lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
                         IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
                     ),
             )
@@ -183,11 +179,7 @@ class CompanyDataControllerTest {
                 headquarters = "HQ",
                 identifiers =
                     mapOf(
-                        IdentifierType.Duns.value to
-                            listOf(
-                                "Test-Duns${UUID.randomUUID()}",
-                                "Test-Duns2${UUID.randomUUID()}",
-                            ),
+                        IdentifierType.Duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
                     ),
                 countryCode = "DE",
             )
@@ -384,12 +376,7 @@ class CompanyDataControllerTest {
                 companyDataControllerTestUtils.checkOtherCompanyTrue,
                 companyDataControllerTestUtils.checkOtherCompanyFalse,
             ),
-            sortedCompanyNames.filter {
-                it.contains(companyDataControllerTestUtils.checkOtherCompanyFalse) ||
-                    it.contains(
-                        "true",
-                    )
-            },
+            sortedCompanyNames.filter { it.contains(companyDataControllerTestUtils.checkOtherCompanyFalse) || it.contains("true") },
         )
     }
 
@@ -415,7 +402,7 @@ class CompanyDataControllerTest {
                             numberOfProvidedReportingPeriods = numOfReportingPeriods,
                         )
                 }.toSortedMap()
-        ApiAwait.waitForCondition(5000, emptySet()) condition@{
+        ApiAwait.waitForCondition condition@{
             val aggregatedFrameworkDataSummary =
                 apiAccessor.companyDataControllerApi
                     .getAggregatedFrameworkDataSummary(

@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
-import org.dataland.datalandbackendutils.utils.JsonTestUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
@@ -22,7 +22,7 @@ import org.mockito.kotlin.whenever
 import java.time.LocalDate
 
 class DataPointValidatorTest {
-    private val objectMapper = JsonTestUtils.testObjectMapper
+    private val objectMapper = JsonUtils.testObjectMapper
     private val specificationClient = mock<SpecificationControllerApi>()
     private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
     private val dataPointValidator =

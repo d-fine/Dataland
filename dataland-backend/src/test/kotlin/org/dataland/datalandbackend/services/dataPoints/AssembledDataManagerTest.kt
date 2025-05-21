@@ -24,7 +24,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.JsonTestUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.testObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi

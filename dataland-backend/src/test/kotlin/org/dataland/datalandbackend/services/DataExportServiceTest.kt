@@ -42,7 +42,7 @@ class DataExportServiceTest {
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(lksgCompanyExportTestData),
                 ExportFileType.JSON,
-                DataType.valueOf("eutaxonomy-non-financials"),
+                DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
             )
         val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)

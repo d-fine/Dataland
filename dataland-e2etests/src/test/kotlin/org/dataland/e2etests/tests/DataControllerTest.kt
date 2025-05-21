@@ -4,12 +4,12 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
 import org.dataland.datalandbackendutils.utils.JsonComparator
-import org.dataland.datalandbackendutils.utils.JsonTestUtils
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -24,7 +26,6 @@ class DataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentControllerApiAccessor()
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
-    private val objectMapper = JsonTestUtils.testObjectMapper
 
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -61,23 +62,15 @@ class DataControllerTest {
 
         val ignoredKeys = setOf("publicationDate")
 
-        val expectedJsonString =
-            objectMapper.writeValueAsString(
+        val differences =
+            JsonComparator.compareClasses(
                 CompanyAssociatedDataEutaxonomyNonFinancialsData(
                     mapOfIds.getValue("companyId"),
                     "",
                     testDataEuTaxonomyNonFinancials,
                 ),
+                companyAssociatedDataEuTaxonomyDataForNonFinancials, JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
             )
-        val actualJsonString = objectMapper.writeValueAsString(companyAssociatedDataEuTaxonomyDataForNonFinancials)
-
-        val differences =
-            JsonComparator.compareJson(
-                objectMapper.readTree(expectedJsonString),
-                objectMapper.readTree(actualJsonString),
-                JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
-            )
-
         assertEquals(
             0, differences.size,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
@@ -87,10 +80,13 @@ class DataControllerTest {
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val mapOfIds =
-            apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
-                testCompanyInformationTeaser,
-                testDataEuTaxonomyNonFinancials,
-            )
+            ApiAwait.waitForData {
+                apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                    testCompanyInformationTeaser,
+                    testDataEuTaxonomyNonFinancials,
+                )
+            }
+
         val getDataByIdResponse =
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                 .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
@@ -122,30 +118,26 @@ class DataControllerTest {
         assertTrue(exception.message!!.contains("Unauthorized access failed"))
     }
 
-    @Test
-    fun `check that keycloak reader role can only upload data as company owner or company data uploader`() {
-        val companyId =
-            UUID.fromString(
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-            )
+    @ParameterizedTest
+    @EnumSource(CompanyRole::class)
+    fun `check that keycloak reader role can only upload data as company owner or company data uploader`(role: CompanyRole) {
+        val companyId = UUID.fromString(apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId)
         val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
 
-        for (role in CompanyRole.values()) {
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            apiAccessor.companyRolesControllerApi.assignCompanyRole(role, companyId = companyId, dataReaderUserId)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(role, companyId = companyId, dataReaderUserId)
 
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-            if (rolesThatCanUploadPublicData.contains(role)) {
-                assertDoesNotThrow {
-                    apiAccessor.companyRolesControllerApi.hasUserCompanyRole(role, companyId, dataReaderUserId)
-                }
-                assertDoesNotThrow { uploadEuTaxoDataset(companyId) }
-            } else {
-                assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        if (rolesThatCanUploadPublicData.contains(role)) {
+            assertDoesNotThrow {
+                apiAccessor.companyRolesControllerApi.hasUserCompanyRole(role, companyId, dataReaderUserId)
             }
+            assertDoesNotThrow { uploadEuTaxoDataset(companyId) }
+        } else {
+            assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
         }
     }
 

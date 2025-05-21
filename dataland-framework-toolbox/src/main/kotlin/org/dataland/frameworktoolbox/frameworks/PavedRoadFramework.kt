@@ -101,7 +101,7 @@ abstract class PavedRoadFramework(
 
     /**
      * Can be overwritten to programmatically customize the framework representation
-     * (to e.g., add new fields)
+     * (e.g., to add new fields)
      */
     open fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         // Empty as it's just a customization endpoint
