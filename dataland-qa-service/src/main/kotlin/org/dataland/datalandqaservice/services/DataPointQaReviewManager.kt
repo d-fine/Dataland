@@ -313,20 +313,25 @@ class DataPointQaReviewManager
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
-            showOnlyActive: Boolean = true,
-            chunkSize: Int? = 10,
-            chunkIndex: Int? = 0,
+            showOnlyActive: Boolean?,
+            chunkSize: Int,
+            chunkIndex: Int,
         ): List<DataPointQaReviewInformation> {
+            val showOnlyActive = showOnlyActive ?: true
+            logger
+                .info("in getFilteredDataPointQaReviewInformationByDataId: $searchFilter ___________________________")
             if (searchFilter.dataType != null) {
+                logger.info("Passed null check ____________________________________________")
                 try {
                     val frameworkSpecificDatapointTypes =
                         DataPointUtils.getDataPointTypes(specificationClient.getFrameworkSpecification(searchFilter.dataType).schema)
+                    logger.info("Passed get Framework ___________________________________________________________")
                     return frameworkSpecificDatapointTypes.flatMap { type ->
                         val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
                         queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
                     }
-                } catch (_: NullPointerException) {
-                    logger.debug("Ignoring exception during framework-specific data retrieval, falling back to default.")
+                } catch (e: Exception) {
+                    logger.info("HUUHUUUUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHU I caught an ... exception")
                 }
             }
             return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)

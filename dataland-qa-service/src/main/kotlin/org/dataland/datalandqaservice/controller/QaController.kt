@@ -156,9 +156,9 @@ class QaController(
         dataType: String?,
         reportingPeriod: String?,
         qaStatus: QaStatus?,
-        showOnlyActive: Boolean?,
-        chunkSize: Int?,
-        chunkIndex: Int?,
+        showOnlyActive: Boolean,
+        chunkSize: Int,
+        chunkIndex: Int,
     ): ResponseEntity<List<DataPointQaReviewInformation>> {
         logger.info("Received request to retrieve the review information of the data point with identifier $companyId")
         val searchFilter =
@@ -172,7 +172,7 @@ class QaController(
         return ResponseEntity.ok(
             dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
                 searchFilter = searchFilter,
-                showOnlyActive = showOnlyActive ?: true,
+                showOnlyActive = showOnlyActive,
                 chunkSize = chunkSize,
                 chunkIndex = chunkIndex,
             ),

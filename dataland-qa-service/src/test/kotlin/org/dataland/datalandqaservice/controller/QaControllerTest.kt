@@ -17,12 +17,10 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandspecificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -104,14 +102,6 @@ class QaControllerTest(
                 uploaderUserId = "",
             ),
         )
-        whenever(specificationClient.doesFrameworkSpecificationExist(anyString())).thenAnswer { invocation ->
-            val frameworkName = invocation.arguments[0] as String
-            if (frameworkName == dataTypeTestFramework) {
-                true
-            } else {
-                throw ClientException("Simulated failure for framework: $frameworkName")
-            }
-        }
         whenever(specificationClient.getFrameworkSpecification(dataTypeTestFramework)).thenReturn(
             testFrameworkSpecification,
         )
@@ -166,7 +156,7 @@ class QaControllerTest(
         )
 
     private fun getReviewEntries(
-        showOnlyActive: Boolean? = true,
+        showOnlyActive: Boolean = true,
         dataType: String?,
         qaStatus: QaStatus? = null,
     ): List<DataPointQaReviewInformation> =

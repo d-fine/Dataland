@@ -160,10 +160,24 @@ interface QaApi {
         @Parameter(
             description =
                 "If set, only show the active QA review information for each data point.",
+            example = "true",
+            schema =
+                Schema(
+                    type = "boolean",
+                    allowableValues = ["true", "false"],
+                ),
         )
-        @RequestParam(defaultValue = "true") showOnlyActive: Boolean?,
-        @RequestParam(defaultValue = "10") chunkSize: Int?,
-        @RequestParam(defaultValue = "0") chunkIndex: Int?,
+        @RequestParam(required = true) showOnlyActive: Boolean,
+        @Parameter(
+            required = true,
+            example = "10",
+        )
+        @RequestParam(required = true) chunkSize: Int,
+        @Parameter(
+            required = true,
+            example = "0",
+        )
+        @RequestParam(required = true) chunkIndex: Int,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**

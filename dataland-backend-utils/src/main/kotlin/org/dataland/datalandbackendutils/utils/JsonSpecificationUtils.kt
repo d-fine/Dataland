@@ -94,7 +94,7 @@ object JsonSpecificationUtils {
                 )
             }
             for ((fieldName, jsonNode) in currentDataNode.fields()) {
-                dataMap.putAll(processNode(fieldName, jsonNode, currentPath, currentSpecificationNode as ObjectNode))
+                dataMap.putAll(processNode(fieldName, jsonNode, currentPath, currentSpecificationNode))
             }
         }
         return dataMap
@@ -104,7 +104,7 @@ object JsonSpecificationUtils {
         fieldName: String,
         jsonNode: JsonNode,
         currentPath: String,
-        currentSpecificationNode: ObjectNode,
+        currentSpecificationNode: JsonNode,
     ): Map<String, JsonSpecificationLeaf> {
         val dataMap = mutableMapOf<String, JsonSpecificationLeaf>()
         if (!jsonNode.isNull) {
