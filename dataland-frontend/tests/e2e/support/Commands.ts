@@ -38,9 +38,9 @@ declare global {
 }
 
 /**
- * Visits the provided endpoint and verifies that the Vue #app component exists
- * @param endpoint the endpoint to navigate to
- * @returns the cypress chainable
+ * Visits a given external admin page URL and verifies that it has loaded successfully, e. g. the Vue #app component exists
+ * @param endpoint the endpoint to navigate to via URL
+ * @returns Cypress chainable object pointing to the `<body>` element after successful page load and checks
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
   cy.visit(endpoint);
@@ -71,8 +71,6 @@ export function visitAndCheckExternalAdminPage(options: {
   timeoutInMs?: number;
   /** Optional array of error message patterns to ignore during page load */
   ignoreExceptions?: string[];
-  /** Optional flag to skip waiting for intercept, defaults to false */
-  skipIntercept?: boolean;
 }): Cypress.Chainable<JQuery<HTMLElement>> {
   const {
     url,
@@ -89,12 +87,12 @@ export function visitAndCheckExternalAdminPage(options: {
   if (ignoreExceptions.length > 0) {
     const exceptionHandler = (err: Error): boolean => {
       const shouldIgnore = ignoreExceptions.some((pattern) => err.message.includes(pattern));
-      if (shouldIgnore) {
-        return false;
-      }
-      return true;
+      return !shouldIgnore;
     };
     Cypress.on('uncaught:exception', exceptionHandler);
+    cy.once('window:load', () => {
+      Cypress.off('uncaught:exception', exceptionHandler);
+    });
   }
 
   // Set up intercept only if a pattern is provided
@@ -131,9 +129,9 @@ export function visitAndCheckExternalAdminPage(options: {
 }
 
 /**
- * Waits for page elements to be loaded based on provided selectors
- * @param options Configuration options for waiting
- * @returns the cypress chainable
+ * Waits until specified page elements, text, or custom conditions are met, optionally checking the URL.
+ * @param options configuration options to define what to wait for
+ * @returns Cypress chainable resolving to true when conditions are fulfilled
  */
 export function waitForPageLoad(options: {
   /** URL path that should be included in the current URL */
@@ -160,6 +158,14 @@ export function waitForPageLoad(options: {
     interval = 1000,
     errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
+
+  if (
+    elementSelectors.length === 0 &&
+    !containsText &&
+    !customCheck
+  ) {
+    throw new Error('waitForPageLoad: At least one of elementSelectors, containsText, or customCheck must be provided');
+  }
 
   // Check URL if needed
   if (urlShouldInclude) {

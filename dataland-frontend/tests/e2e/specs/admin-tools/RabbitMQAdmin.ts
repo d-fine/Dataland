@@ -29,9 +29,10 @@ const queues = [
  * @param expectedQueues - expected queues.
  */
 function checkQueuesExist($rows: JQuery<HTMLElement>, expectedQueues: string[]): void {
-  const actualQueues = [...$rows].map((row) => {
+  const actualQueues = [...$rows].flatMap((row) => {
     const nameCell = row.querySelector('td:nth-child(2) a');
-    return nameCell?.textContent?.trim() ?? '';
+    const name = nameCell?.textContent?.trim();
+    return name ? [name] : [];
   });
   const missingQueues = expectedQueues.filter((q) => !actualQueues.includes(q));
   if (missingQueues.length > 0) {
