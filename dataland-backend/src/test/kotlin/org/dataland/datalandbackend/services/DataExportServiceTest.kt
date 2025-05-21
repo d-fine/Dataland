@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.UUID
 
@@ -36,6 +37,20 @@ class DataExportServiceTest {
     private val companyExportDataLksgTestData =
         objectMapper
             .readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
+
+    @Test
+    fun `minimal test for writing excel file`() {
+        val header = listOf("Header 1", "Header 2", "Header 3")
+        val data =
+            listOf(
+                mapOf("Header 1" to "Row 1 Col 1", "Header 2" to "Row 1 Col 2", "Header 3" to "Row 1 Col 3"),
+                mapOf("Header 1" to "Row 2 Col 1", "Header 2" to "Row 2 Col 2", "Header 3" to "Row 2 Col 3"),
+            )
+
+        Assertions.assertDoesNotThrow {
+            dataExportService.transformDataToExcel(header, data, ByteArrayOutputStream())
+        }
+    }
 
     @Test
     fun `check that exported json coincides with input object`() {
