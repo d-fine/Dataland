@@ -331,7 +331,7 @@ class DataPointQaReviewManager
                         queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
                     }
                 } catch (e: Exception) {
-                    logger.info("HUUHUUUUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHU I caught an ... exception")
+                    logger.info("HUUHUUUUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHUHU I caught an ${e::class.simpleName} exception")
                 }
             }
             return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
