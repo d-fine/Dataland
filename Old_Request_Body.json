@@ -1,0 +1,1563 @@
+{
+  "companyId": "string",
+  "reportingPeriod": "string",
+  "data": {
+    "general": {
+      "general": {
+        "dataDate": "2025-05-21",
+        "fiscalYearDeviation": "Deviation",
+        "fiscalYearEnd": "2025-05-21",
+        "referencedReports": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "publicationDate": "2023-10-12"
+          }
+        }
+      }
+    },
+    "environmental": {
+      "greenhouseGasEmissions": {
+        "scope1GhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope2GhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope2GhgEmissionsLocationBasedInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope2GhgEmissionsMarketBasedInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope1And2GhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope1And2GhgEmissionsLocationBasedInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope1And2GhgEmissionsMarketBasedInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope3GhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope3UpstreamGhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope3DownstreamGhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope1And2And3GhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "scope4GhgEmissionsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "enterpriseValue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          },
+          "currency": "string"
+        },
+        "totalRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          },
+          "currency": "string"
+        },
+        "carbonFootprintInTonnesPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "ghgIntensityInTonnesPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "fossilFuelSectorExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "financedScope1AndScope2Emissions": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "financedScope3Emissions": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "energyPerformance": {
+        "renewableEnergyProductionInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "renewableEnergyConsumptionInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyProductionInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "relativeNonRenewableEnergyProductionInPercent": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "relativeNonRenewableEnergyConsumptionInPercent": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "applicableHighImpactClimateSectors": {
+          "NaceCodeA": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeB": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeC": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeD": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeE": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeF": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeG": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeH": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeL": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          }
+        },
+        "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionLigniteInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionCoalInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRenewableEnergyConsumptionOtherInGWh": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "biodiversity": {
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "protectedAreasExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "rareOrEndangeredEcosystemsExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "highlyBiodiverseGrasslandExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "manufactureOfAgrochemicalPesticidesProducts": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "landDegradationDesertificationSoilSealingExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "sustainableAgriculturePolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "sustainableOceansAndSeasPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "threatenedSpeciesExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "biodiversityProtectionPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "deforestationPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "water": {
+        "emissionsToWaterInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "waterConsumptionInCubicMeters": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "waterReusedInCubicMeters": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "waterManagementPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "highWaterStressAreaExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "waste": {
+        "hazardousAndRadioactiveWasteInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "nonRecycledWasteInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "emissions": {
+        "emissionsOfInorganicPollutantsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "emissionsOfAirPollutantsInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "emissionsOfOzoneDepletionSubstancesInTonnes": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "carbonReductionInitiatives": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      }
+    },
+    "social": {
+      "socialAndEmployeeMatters": {
+        "humanRightsLegalProceedings": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "iloCoreLabourStandards": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "environmentalPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "corruptionLegalProceedings": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "transparencyDisclosurePolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "humanRightsDueDiligencePolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "policyAgainstChildLabour": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "policyAgainstForcedLabour": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "policyAgainstDiscriminationInTheWorkplace": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "iso14001Certificate": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "policyAgainstBriberyAndCorruption": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "fairBusinessMarketingAdvertisingPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "technologiesExpertiseTransferPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "fairCompetitionPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "violationOfTaxRulesAndRegulation": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "unGlobalCompactPrinciplesCompliancePolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "averageGrossHourlyEarningsMaleEmployees": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          },
+          "currency": "string"
+        },
+        "averageGrossHourlyEarningsFemaleEmployees": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          },
+          "currency": "string"
+        },
+        "unadjustedGenderPayGapInPercent": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "femaleBoardMembersSupervisoryBoard": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "femaleBoardMembersBoardOfDirectors": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "maleBoardMembersSupervisoryBoard": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "maleBoardMembersBoardOfDirectors": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "boardGenderDiversitySupervisoryBoardInPercent": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "boardGenderDiversityBoardOfDirectorsInPercent": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "controversialWeaponsExposure": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "workplaceAccidentPreventionPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "rateOfAccidents": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "workdaysLostInDays": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "supplierCodeOfConduct": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "grievanceHandlingMechanism": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "whistleblowerProtectionPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "reportedIncidentsOfDiscrimination": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "sanctionedIncidentsOfDiscrimination": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "excessiveCeoPayRatio": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "greenSecurities": {
+        "securitiesNotCertifiedAsGreen": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "humanRights": {
+        "humanRightsPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "humanRightsDueDiligence": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "traffickingInHumanBeingsPolicy": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "reportedChildLabourIncidents": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "reportedForcedOrCompulsoryLabourIncidents": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "numberOfReportedIncidentsOfHumanRightsViolations": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        }
+      },
+      "antiCorruptionAndAntiBribery": {
+        "casesOfInsufficientActionAgainstBriberyAndCorruption": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "reportedConvictionsOfBriberyAndCorruption": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          }
+        },
+        "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+          "value": 0,
+          "quality": "Audited",
+          "comment": "string",
+          "dataSource": {
+            "page": "string",
+            "tagName": "string",
+            "fileName": "string",
+            "fileReference": "string",
+            "publicationDate": "2025-05-21"
+          },
+          "currency": "string"
+        }
+      }
+    }
+  }
+}
