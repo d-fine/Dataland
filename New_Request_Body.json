@@ -186,7 +186,7 @@
             "publicationDate": "2025-05-21"
           }
         },
-        "enterpriseValue": {
+        "enterpriseValueInEUR": {
           "value": 0,
           "quality": "Audited",
           "comment": "string",
@@ -196,10 +196,9 @@
             "fileName": "string",
             "fileReference": "string",
             "publicationDate": "2025-05-21"
-          },
-          "currency": "string"
+          }
         },
-        "totalRevenue": {
+        "totalRevenueInEUR": {
           "value": 0,
           "quality": "Audited",
           "comment": "string",
@@ -209,10 +208,9 @@
             "fileName": "string",
             "fileReference": "string",
             "publicationDate": "2025-05-21"
-          },
-          "currency": "string"
+          }
         },
-        "carbonFootprintInTonnesPerMillionEURRevenue": {
+        "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
           "value": 0,
           "quality": "Audited",
           "comment": "string",
