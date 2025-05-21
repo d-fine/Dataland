@@ -159,11 +159,7 @@ export function waitForPageLoad(options: {
     errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
 
-  if (
-    elementSelectors.length === 0 &&
-    !containsText &&
-    !customCheck
-  ) {
+  if (elementSelectors.length === 0 && !containsText && !customCheck) {
     throw new Error('waitForPageLoad: At least one of elementSelectors, containsText, or customCheck must be provided');
   }
 
