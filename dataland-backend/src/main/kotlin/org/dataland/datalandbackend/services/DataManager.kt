@@ -254,7 +254,7 @@ class DataManager
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             logger.info(
                 "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company.companyId} " +
-                    "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
+                    "and of the reporting period ${metaInformation.reportingPeriod}. Correlation Id: $correlationId",
             )
             metaDataManager.deleteDataMetaInfo(dataId)
             messageQueuePublications.publishDatasetDeletionMessage(dataId, correlationId)
@@ -269,42 +269,51 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensions: BasicDataDimensions,
+            dataDimensionsSet: Set<BasicDataDimensions>,
             correlationId: String,
-        ): String? {
-            val dataId =
-                metaDataManager.getActiveDatasetIdByDataDimensions(dataDimensions)
-                    ?: throw ResourceNotFoundApiException(
-                        summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
-                        message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
-                    )
-            return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
-        }
+        ): Map<BasicDataDimensions, String> =
+            dataDimensionsSet
+                .associateWith {
+                    metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
+                        getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data
+                    } ?: ""
+                }.filterNot { it.value.isEmpty() }
 
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
         ): List<PlainDataAndMetaInformation> {
+            logger.info("Received request to get all datasets matching a search filter. Correlation Id: $correlationId")
             requireNotNull(searchFilter.companyId) { "Company ID must be provided" }
-            val metaInfos = metaDataManager.searchDataMetaInfo(searchFilter)
+            val metaInfos =
+                metaDataManager.searchDataMetaInfo(searchFilter).associateBy {
+                    BasicDataDimensions(companyId = it.company.companyId, dataType = it.dataType, reportingPeriod = it.reportingPeriod)
+                }
             val authentication = DatalandAuthentication.fromContextOrNull()
-            val listOfFrameworkDataAndMetaInfo = mutableListOf<PlainDataAndMetaInformation>()
-            metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-                val data =
-                    getDatasetData(
+
+            val mapOfDataDimensionsWithDataAsString =
+                getDatasetData(
+                    metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
                         BasicDataDimensions(
-                            companyId = searchFilter.companyId, dataType = it.dataType, reportingPeriod = it.reportingPeriod,
-                        ),
-                        correlationId,
-                    )
-                requireNotNull(data) { "Data not found for dataId: ${it.dataId}" }
-                listOfFrameworkDataAndMetaInfo.add(
-                    PlainDataAndMetaInformation(
-                        metaInfo = it.toApiModel(),
-                        data = data,
-                    ),
+                            companyId = searchFilter.companyId,
+                            dataType = it.dataType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    },
+                    correlationId,
                 )
+            if (mapOfDataDimensionsWithDataAsString.isEmpty()) {
+                logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
+                throw IllegalArgumentException("Data not found for given search filter.")
             }
-            return listOfFrameworkDataAndMetaInfo
+
+            return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->
+                metaInfos[dataDimension]?.let { metaInfo ->
+                    PlainDataAndMetaInformation(
+                        metaInfo = metaInfo.toApiModel(),
+                        data = dataString,
+                    )
+                }
+            }
         }
     }
