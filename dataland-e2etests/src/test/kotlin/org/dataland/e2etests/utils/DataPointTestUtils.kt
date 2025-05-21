@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.BigIntegerAdapt
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
@@ -79,7 +78,7 @@ object DataPointTestUtils {
             return assertEquals(actual, expected)
         }
 
-        assertTrue(expected.keys == actual.keys)
+        assertEquals(expected.keys, actual.keys)
         expected.keys.forEach {
             assertCompanyReportEquals(expected[it]!!, actual[it]!!)
         }

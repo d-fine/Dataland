@@ -108,7 +108,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
 
     @Test
     fun `test CSV export with and without dataMetaInformation`() {
-        testCsvExportIncludeDataMetaInformationFlag("general.fiscalYearDeviation")
+        testCsvExportIncludeDataMetaInformationFlag("general.scopeOfEntities")
     }
 
     @Test
