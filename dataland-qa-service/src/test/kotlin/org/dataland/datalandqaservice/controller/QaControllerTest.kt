@@ -17,6 +17,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandspecificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -25,6 +26,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.not
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -102,9 +104,11 @@ class QaControllerTest(
                 uploaderUserId = "",
             ),
         )
-        whenever(specificationClient.getFrameworkSpecification(dataTypeTestFramework)).thenReturn(
-            testFrameworkSpecification,
-        )
+        whenever(specificationClient.getFrameworkSpecification(eq(dataTypeTestFramework)))
+            .thenReturn(testFrameworkSpecification)
+        whenever(specificationClient.getFrameworkSpecification(not(eq(dataTypeTestFramework))))
+            .thenThrow(ClientException("Not a framework."))
+
         whenever(
             cloudEventMessageHandler
                 .buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
