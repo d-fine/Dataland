@@ -26,4 +26,31 @@ class TestUtils {
         migration(originalDataEntity)
         Assertions.assertEquals(expectedDataEntity, originalDataEntity)
     }
+
+    fun testMigrationOfSingleDatapoint(
+        oldDataPointType: String,
+        expectedDataPointType: String,
+        oldDataFileLocation: String,
+        migratedDataFileLocation: String,
+        migration: (input: DataPointTableEntity) -> Unit,
+    ) {
+        val originalDataPointEntity =
+            DataPointTableEntity(
+                "123",
+                companyID = "abc",
+                JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
+                oldDataPointType,
+                reportingPeriod = "2023",
+            )
+        val expectedDataEntity =
+            DataPointTableEntity(
+                "123",
+                companyID = "abc",
+                JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
+                expectedDataPointType,
+                reportingPeriod = "2023",
+            )
+        migration(originalDataPointEntity)
+        Assertions.assertEquals(expectedDataEntity, originalDataPointEntity)
+    }
 }
