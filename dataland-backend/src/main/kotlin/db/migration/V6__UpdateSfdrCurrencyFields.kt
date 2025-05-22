@@ -29,7 +29,7 @@ class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
 
         migrateDataPointIdsAndDataPointTypes(
             context,
-            "extendedCurrencyEnterpriseValue",
+            "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
             this::updateRespectiveDataType,
         )
     }

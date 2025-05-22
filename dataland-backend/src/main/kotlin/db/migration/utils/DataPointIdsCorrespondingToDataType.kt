@@ -24,7 +24,7 @@ fun getDataPointIdsCorrespondingToDataType(
         dataIdsAssociatedToDataPoint.add(
             DataPointIdAndDataPointTypeEntity(
                 getQueryResultSet.getString("data_point_id"),
-                getQueryResultSet.getString("data_point_id"),
+                getQueryResultSet.getString("data_point_type"),
             ),
         )
     }
