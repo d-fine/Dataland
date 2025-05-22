@@ -79,8 +79,9 @@ class CsvExporterTest {
     private fun setupMockSfdrDataControllerApi(): SfdrDataControllerApi {
         val mockSfdrDataControllerApi = mock(SfdrDataControllerApi::class.java)
         `when`(
-            mockSfdrDataControllerApi.getCompanyAssociatedSfdrData(
-                dataId = any(),
+            mockSfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(
+                reportingPeriod = any(),
+                companyId = any(),
             ),
         ).thenReturn(mockCompanyAssociatedSfdrData)
         return mockSfdrDataControllerApi
@@ -143,8 +144,9 @@ class CsvExporterTest {
                 dataType = DataTypeEnum.sfdr,
             )
         verify(mockSfdrDataControllerApi, times(1))
-            .getCompanyAssociatedSfdrData(
-                dataId = any(),
+            .getCompanyAssociatedSfdrDataByDimensions(
+                reportingPeriod = any(),
+                companyId = any(),
             )
         verify(mockCompanyDataControllerApi, times(1))
             .getCompanyById(
