@@ -159,7 +159,7 @@ interface QaApi {
         @RequestParam qaStatus: QaStatus?,
         @Parameter(
             description =
-                "If set, only show the active QA review information for each data point. Default value: true.",
+                "If set, only show the active QA review information for each data point.",
         )
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam(defaultValue = "10") chunkSize: Int,
