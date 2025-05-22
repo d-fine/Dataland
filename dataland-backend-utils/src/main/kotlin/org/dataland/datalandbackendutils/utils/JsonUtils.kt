@@ -11,7 +11,7 @@ object JsonUtils {
     /**
      * The object mapper used for testing.
      */
-    val testObjectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+    val defaultObjectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
     /**
      * Return the path separator used in constructing node paths

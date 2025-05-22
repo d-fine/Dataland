@@ -2,7 +2,7 @@ package org.dataland.datalandbackendutils.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
-import org.dataland.datalandbackendutils.utils.JsonUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import java.math.BigDecimal
 
 /**
@@ -47,8 +47,8 @@ object JsonComparator {
         actual: String,
         options: JsonComparisonOptions = JsonComparisonOptions(),
     ): List<JsonDiff> {
-        val expectedJson = testObjectMapper.readTree(expected)
-        val actualJson = testObjectMapper.readTree(actual)
+        val expectedJson = defaultObjectMapper.readTree(expected)
+        val actualJson = defaultObjectMapper.readTree(actual)
         return compareJson(expectedJson, actualJson, options)
     }
 
@@ -60,8 +60,8 @@ object JsonComparator {
         actual: T,
         options: JsonComparisonOptions = JsonComparisonOptions(),
     ): List<JsonDiff> {
-        val expectedJsonString = testObjectMapper.writeValueAsString(expected)
-        val actualJsonString = testObjectMapper.writeValueAsString(actual)
+        val expectedJsonString = defaultObjectMapper.writeValueAsString(expected)
+        val actualJsonString = defaultObjectMapper.writeValueAsString(actual)
         return compareJsonStrings(expectedJsonString, actualJsonString, options)
     }
 

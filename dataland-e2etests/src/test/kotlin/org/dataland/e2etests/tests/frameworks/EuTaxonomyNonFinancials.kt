@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
@@ -80,14 +81,12 @@ class EuTaxonomyNonFinancials {
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        val ignoreKeys = setOf("publicationDate")
-        val differences =
-            JsonComparator.compareClasses(
-                listOfOneEuTaxonomyNonFinancialsDataset[0],
-                downloadedAssociatedData.data,
-                JsonComparator.JsonComparisonOptions(ignoreKeys),
-            )
-        Assertions.assertEquals(0, differences.size, "There are differences: $differences")
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            listOfOneEuTaxonomyNonFinancialsDataset[0],
+            downloadedAssociatedData.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
+        )
     }
 
     @Test

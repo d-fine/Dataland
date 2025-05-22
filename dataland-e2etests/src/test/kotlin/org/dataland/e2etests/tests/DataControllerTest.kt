@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
@@ -9,7 +10,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
-import org.dataland.e2etests.utils.api.ApiAwait
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -61,31 +62,24 @@ class DataControllerTest {
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
 
         val ignoredKeys = setOf("publicationDate")
-
-        val differences =
-            JsonComparator.compareClasses(
-                CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                    mapOfIds.getValue("companyId"),
-                    "",
-                    testDataEuTaxonomyNonFinancials,
-                ),
-                companyAssociatedDataEuTaxonomyDataForNonFinancials, JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
-            )
-        assertEquals(
-            0, differences.size,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+        assertEqualsByJsonComparator(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
+                mapOfIds.getValue("companyId"),
+                "",
+                testDataEuTaxonomyNonFinancials,
+            ),
+            companyAssociatedDataEuTaxonomyDataForNonFinancials,
+            JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
         )
     }
 
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val mapOfIds =
-            ApiAwait.waitForData {
-                apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
-                    testCompanyInformationTeaser,
-                    testDataEuTaxonomyNonFinancials,
-                )
-            }
+            apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                testCompanyInformationTeaser,
+                testDataEuTaxonomyNonFinancials,
+            )
 
         val getDataByIdResponse =
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
@@ -96,10 +90,12 @@ class DataControllerTest {
                 "",
                 testDataEuTaxonomyNonFinancials,
             )
-        assertEquals(
-            expectedCompanyAssociatedData,
-            getDataByIdResponse,
-            "The posted data does not equal the expected test data.",
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            expectedCompanyAssociatedData, getDataByIdResponse,
+            JsonComparator
+                .JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -110,12 +106,15 @@ class DataControllerTest {
                 testCompanyInformationNonTeaser,
                 testDataEuTaxonomyNonFinancials,
             )
+        // The API call is made using a timeout and a retry on 403 errors. Thus, if access is consistently denied,
+        // a timeout exception will be thrown.
         val exception =
-            assertThrows<IllegalArgumentException> {
+            assertThrows<ConditionTimeoutException> {
                 apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                     .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
             }
-        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+
+        assertTrue(exception.message!!.contains("code=403"))
     }
 
     @ParameterizedTest

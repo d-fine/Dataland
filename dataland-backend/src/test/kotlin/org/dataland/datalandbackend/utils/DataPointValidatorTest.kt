@@ -22,7 +22,7 @@ import org.mockito.kotlin.whenever
 import java.time.LocalDate
 
 class DataPointValidatorTest {
-    private val objectMapper = JsonUtils.testObjectMapper
+    private val objectMapper = JsonUtils.defaultObjectMapper
     private val specificationClient = mock<SpecificationControllerApi>()
     private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
     private val dataPointValidator =
