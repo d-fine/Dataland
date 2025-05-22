@@ -15,7 +15,7 @@ data class DataPointIdAndDataPointTypeEntity(
     fun executeUpdateQuery(context: Context) {
         val queryStatement =
             context.connection.prepareStatement(
-                "UPDATE data_point_items SET data_point_type= ? WHERE data_point_id = ?",
+                "UPDATE public.data_point_meta_information SET data_point_type= ? WHERE data_point_id = ?",
             )
         queryStatement.setString(1, dataPointType)
         queryStatement.setString(2, dataPointId)
