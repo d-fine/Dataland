@@ -314,24 +314,34 @@ class DataPointQaReviewManager
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
-            showOnlyActive: Boolean?,
+            showOnlyActive: Boolean,
             chunkSize: Int,
             chunkIndex: Int,
         ): List<DataPointQaReviewInformation> {
-            val showOnlyActive = showOnlyActive ?: true
-            if (searchFilter.dataType != null) {
-                try {
-                    val frameworkSpecificDatapointTypes =
-                        DataPointUtils.getDataPointTypes(specificationClient.getFrameworkSpecification(searchFilter.dataType).schema)
-                    return frameworkSpecificDatapointTypes.flatMap { type ->
-                        val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
-                        queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
-                    }
-                } catch (_: ClientException) {
-                    logger.debug("Ignoring exception during framework-specific data retrieval, falling back to default.")
-                }
+            val schemaOfFramework = getFrameworkSpecificationOrNull(searchFilter.dataType)
+            if (schemaOfFramework == null) {
+                return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
             }
-            return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
+            return DataPointUtils.getDataPointTypes(schemaOfFramework).flatMap { type ->
+                val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
+                queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
+            }
+        }
+
+        /**
+         * Retrieves the framework specification schema for a given data type or null if dataType is not a framework
+         * @param dataType the type of framework for which to retrieve the specification
+         * @return the framework specification schema as string or null if dataType is null or specification cannot be retrieved
+         */
+        fun getFrameworkSpecificationOrNull(dataType: String?): String? {
+            if (dataType == null) {
+                return null
+            }
+            return try {
+                specificationClient.getFrameworkSpecification(dataType).schema
+            } catch (_: ClientException) {
+                null
+            }
         }
 
         /**

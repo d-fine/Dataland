@@ -2372,7 +2372,7 @@
             "name": "showOnlyActive",
             "in": "query",
             "description": "If set, only show the active QA review information for each data point.",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "boolean",
               "enum": [
@@ -2385,22 +2385,22 @@
           {
             "name": "chunkSize",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
-            },
-            "example": 10
+              "format": "int32",
+              "default": 10
+            }
           },
           {
             "name": "chunkIndex",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
-            },
-            "example": 0
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {

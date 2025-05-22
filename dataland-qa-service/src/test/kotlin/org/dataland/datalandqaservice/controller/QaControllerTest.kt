@@ -25,6 +25,9 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.not
 import org.mockito.kotlin.whenever
@@ -104,15 +107,16 @@ class QaControllerTest(
                 uploaderUserId = "",
             ),
         )
-        whenever(specificationClient.getFrameworkSpecification(eq(dataTypeTestFramework)))
-            .thenReturn(testFrameworkSpecification)
-        whenever(specificationClient.getFrameworkSpecification(not(eq(dataTypeTestFramework))))
-            .thenThrow(ClientException("Not a framework."))
+        doReturn(testFrameworkSpecification)
+            .whenever(specificationClient)
+            .getFrameworkSpecification(eq(dataTypeTestFramework))
+        doThrow(ClientException("Not a framework"))
+            .whenever(specificationClient)
+            .getFrameworkSpecification(not(eq(dataTypeTestFramework)))
 
-        whenever(
-            cloudEventMessageHandler
-                .buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
-        ).thenAnswer { println("Sending message to queue") }
+        doAnswer { println("Sending message to queue") }
+            .whenever(cloudEventMessageHandler)
+            .buildCEMessageAndSendToQueue(any(), any(), any(), any(), any())
     }
 
     private fun createMockDataPoints() {

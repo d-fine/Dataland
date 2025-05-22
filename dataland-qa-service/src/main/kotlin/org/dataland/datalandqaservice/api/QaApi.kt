@@ -168,17 +168,9 @@ interface QaApi {
                     allowableValues = ["true", "false"],
                 ),
         )
-        @RequestParam(required = true) showOnlyActive: Boolean,
-        @Parameter(
-            required = true,
-            example = "10",
-        )
-        @RequestParam(required = true) chunkSize: Int,
-        @Parameter(
-            required = true,
-            example = "0",
-        )
-        @RequestParam(required = true) chunkIndex: Int,
+        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
+        @RequestParam(defaultValue = "10") chunkSize: Int,
+        @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
