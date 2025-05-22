@@ -9,13 +9,13 @@ import org.json.JSONObject
  */
 data class DataPointTableEntity(
     val dataPointId: String,
-    val companyID: String,
-    val companyAssociatedData: JSONObject,
+    val companyId: String,
+    val dataPoint: JSONObject,
     var dataPointType: String,
     val reportingPeriod: String,
 ) {
     /**
-     * Method to get a query that writes the company associated data to the corresponding table entry
+     * Method to get a query that writes the company associated data and data point type to the corresponding table entry
      */
     fun executeUpdateQuery(context: Context) {
         val queryStatement =
@@ -24,7 +24,7 @@ data class DataPointTableEntity(
             )
         queryStatement.setString(
             1,
-            ObjectMapper().writeValueAsString(companyAssociatedData.toString()),
+            ObjectMapper().writeValueAsString(dataPoint.toString()),
         )
         queryStatement.setString(2, dataPointType)
         queryStatement.setString(3, dataPointId)
@@ -35,15 +35,15 @@ data class DataPointTableEntity(
         if (this === other) return true
         if (other !is DataPointTableEntity) return false
         return dataPointId == other.dataPointId &&
-            companyID == other.companyID &&
+            companyId == other.companyId &&
             dataPointType == other.dataPointType &&
             reportingPeriod == other.reportingPeriod &&
-            companyAssociatedData.similar(other.companyAssociatedData)
+            dataPoint.similar(other.dataPoint)
     }
 
     override fun hashCode(): Int {
         var result = dataPointId.hashCode()
-        result = 31 * result + companyAssociatedData.toString().hashCode()
+        result = 31 * result + dataPoint.toString().hashCode()
         return result
     }
 }
