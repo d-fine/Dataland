@@ -1,5 +1,7 @@
 import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
 import { browserThen } from '@e2e/utils/Cypress';
+import 'cypress-wait-until';
+
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -52,7 +54,7 @@ export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuer
 /**
  * Visits an external admin page and ensures it's fully loaded before proceeding
  * @param options Configuration options for visiting the external admin page
- * @returns the cypress chainable
+ * @returns Cypress chainable containing the `<body>` element of the visited page
  */
 export function visitAndCheckExternalAdminPage(options: {
   /** URL of the external admin page to visit */
@@ -159,7 +161,11 @@ export function waitForPageLoad(options: {
     errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
 
-  if (elementSelectors.length === 0 && !containsText && !customCheck) {
+  if (
+    elementSelectors.length === 0 &&
+    !containsText &&
+    !customCheck
+  ) {
     throw new Error('waitForPageLoad: At least one of elementSelectors, containsText, or customCheck must be provided');
   }
 
