@@ -161,11 +161,10 @@ interface QaApi {
         @Parameter(
             description =
                 "If set, only show the active QA review information for each data point.",
-            example = "true",
             schema =
                 Schema(
                     type = "boolean",
-                    allowableValues = ["true", "false"],
+                    defaultValue = "true",
                 ),
         )
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
