@@ -6,9 +6,12 @@ describe('As a user I expect the admin console only to be reachable using admin-
    * @param url the url to navigate to expecting an error
    */
   function checkThatUrlResolvesToErrorPage(url: string): void {
-    cy.visit(url);
-    cy.get('h2').should('exist').should('contain', 'Sorry an error occurred!');
-    cy.url().should('contain', 'nocontent');
+    cy.visitAndCheckExternalAdminPage({
+      url: url,
+      elementSelector: 'h2',
+      containsText: 'Sorry an error occurred!',
+      urlShouldInclude: 'nocontent',
+    });
   }
 
   it(`Test Admin Console not reachable from remote`, () => {
@@ -20,9 +23,13 @@ describe('As a user I expect the admin console only to be reachable using admin-
   });
 
   it(`Test Admin Console is reachable via dataland-admin`, () => {
-    cy.visit('http://dataland-admin:6789/keycloak/admin');
-    cy.get('h1').should('exist').should('contain', 'Sign in to your account');
-    cy.url().should('contain', 'realms/master');
+    cy.visitAndCheckExternalAdminPage({
+      url: 'http://dataland-admin:6789/keycloak/admin',
+      interceptPattern: '**/keycloak/**',
+      elementSelector: 'h1',
+      containsText: 'Sign in to your account',
+      urlShouldInclude: 'realms/master',
+    });
     cy.get('#username').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN'), { force: true });
     cy.get('#password').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN_PASSWORD'), { force: true });
     cy.get('#kc-login').should('exist').click();
