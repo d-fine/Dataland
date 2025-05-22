@@ -2,7 +2,10 @@
 package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
+import org.dataland.datalandbackend.openApiClient.model.QualityOptions
 import org.dataland.e2etests.utils.BaseExportTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -13,9 +16,11 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     private lateinit var testDataWithNullField: EutaxonomyNonFinancialsData
     private lateinit var testDataWithNonNullField: EutaxonomyNonFinancialsData
     private val nullFieldName = "nfrdMandatory"
+    private val nonNullFieldName = "fiscalYearDeviation"
 
     @BeforeAll
     fun setup() {
+        val numberOfDataSets = 10
         // Get the full test data
         fullTestData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
 
@@ -31,10 +36,18 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 opex = null,
             )
 
-        // Create test data with non-null general fields
+        // Create test data with null and non-null general fields
         testDataWithNonNullField =
             fullTestData.copy(
-                general = fullTestData.general?.copy(),
+                general =
+                    fullTestData.general?.copy(
+                        fiscalYearDeviation =
+                            ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions(
+                                value = EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions.Deviation,
+                                quality = QualityOptions.Reported,
+                                comment = "test",
+                            ),
+                    ),
                 revenue = null,
                 capex = null,
                 opex = null,
@@ -108,7 +121,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
 
     @Test
     fun `test CSV export with and without dataMetaInformation`() {
-        testCsvExportIncludeDataMetaInformationFlag("general.scopeOfEntities")
+        testCsvExportIncludeDataMetaInformationFlag("general.$nonNullFieldName")
     }
 
     @Test
