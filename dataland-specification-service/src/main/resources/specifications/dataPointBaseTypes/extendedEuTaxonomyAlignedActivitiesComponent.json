@@ -1,7 +1,7 @@
 {
   "id" : "extendedEuTaxonomyAlignedActivitiesComponent",
   "name" : "General aligned activities data point with an extended source",
-  "businessDefinition" : "Absolute value and share of the revenue per activity that is taxonomy-aligned..",
+  "businessDefinition" : "Absolute value and share of the revenue per activity that is taxonomy-aligned.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>>",
   "example" : {
     "value" : [ {
