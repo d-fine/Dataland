@@ -333,7 +333,7 @@ class DataPointQaReviewManager
          * @param dataType the type of framework for which to retrieve the specification
          * @return the framework specification schema as string or null if dataType is null or specification cannot be retrieved
          */
-        fun getFrameworkSpecificationOrNull(dataType: String?): String? {
+        private fun getFrameworkSpecificationOrNull(dataType: String?): String? {
             if (dataType == null) {
                 return null
             }
