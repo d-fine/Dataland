@@ -83,9 +83,13 @@ class CsvExporter(
                 csvData.add(deltaCsvData)
                 isinData.addAll(deltaIsinData)
             } catch (e: ApiRetryException) {
-                logger.error("Common API error occurred for data ID: $dataDimension. Error: ${e.message}. Skipping this ID.")
+                logger.error(
+                    "Common API error occurred for data dimension: $dataDimension. Error: ${e.message}. Skipping this data dimension.",
+                )
             } catch (e: IllegalArgumentException) {
-                logger.error("IllegalArgumentException for data ID: $dataDimension. Error: ${e.message}. Skipping this ID.")
+                logger.error(
+                    "IllegalArgumentException for data dimension: $dataDimension. Error: ${e.message}. Skipping this data dimension.",
+                )
             }
         }
 
@@ -94,7 +98,7 @@ class CsvExporter(
 
     /**
      * Gets the SFDR data for a single data dimension and its associated LEI to ISIN mapping
-     * @return A list of SFDR data IDs
+     * @return A pair containing the csvData and the isinData
      */
     fun getSfdrDataForSingleDataDimension(
         dataDimension: BasicDataDimensions,
@@ -130,9 +134,9 @@ class CsvExporter(
     /**
      * Checks the consistency of the JSON data with the transformation rules.
      * @param data The JSON node
-     * @param transformationRules The transformation rules
-     * @param legacyRules The transformation rules
-     * @param dataDimension The data dimension
+     * @param transformationRules The transformation rules for the current data
+     * @param legacyRules The rules for providing legacy data
+     * @param dataDimension The data dimension associated with the given data
      */
     private fun validateConsistency(
         data: JsonNode,
@@ -176,8 +180,8 @@ class CsvExporter(
     }
 
     /**
-     * Gets all SFDR data IDs from the metadata endpoint in the backend.
-     * @return A list of SFDR data IDs
+     * Gets all SFDR data dimensions from the metadata endpoint in the backend.
+     * @return A list of data dimensions
      */
     fun getAllAvailableSfdrDataDimensions(): List<BasicDataDimensions> {
         val dataDimensions = mutableListOf<BasicDataDimensions>()
