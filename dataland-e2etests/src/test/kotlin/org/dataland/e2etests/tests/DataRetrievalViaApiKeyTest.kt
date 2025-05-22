@@ -4,6 +4,7 @@ import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
 import org.dataland.e2etests.auth.GlobalAuth
@@ -11,7 +12,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -153,13 +154,15 @@ class DataRetrievalViaApiKeyTest {
         val downloadedCompanyAssociatedEuTaxoDataNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
-        assertDataEqualsIgnoringDates(
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = mapOfIds.getValue("companyId"),
                 reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
             ),
             downloadedCompanyAssociatedEuTaxoDataNonFinancials,
-            { it.data.general?.referencedReports },
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 

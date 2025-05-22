@@ -2,14 +2,13 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -27,17 +26,6 @@ class Sfdr {
     private val listOfOneCompanyInformation =
         apiAccessor.testDataProviderForSfdrData
             .getCompanyInformationWithoutIdentifiers(1)
-
-    private fun assertEqualsExpectedDataSetIgnoringDates(downloadedAssociatedData: CompanyAssociatedDataSfdrData) {
-        val ignoreKeys = setOf("publicationDate")
-        val differences =
-            JsonComparator.compareClasses(
-                listOfOneSfdrDataset[0],
-                downloadedAssociatedData.data,
-                JsonComparator.JsonComparisonOptions(ignoreKeys),
-            )
-        Assertions.assertEquals(0, differences.size, "There are differences: $differences")
-    }
 
     @BeforeAll
     fun postTestDocuments() {
@@ -64,7 +52,12 @@ class Sfdr {
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        assertEqualsExpectedDataSetIgnoringDates(downloadedAssociatedData)
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            listOfOneSfdrDataset[0],
+            downloadedAssociatedData.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
+        )
     }
 
     @Test
@@ -87,7 +80,12 @@ class Sfdr {
                     )
             }
 
-        assertEqualsExpectedDataSetIgnoringDates(downloadedAssociatedData)
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            listOfOneSfdrDataset[0],
+            downloadedAssociatedData.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
+        )
     }
 
     @Test

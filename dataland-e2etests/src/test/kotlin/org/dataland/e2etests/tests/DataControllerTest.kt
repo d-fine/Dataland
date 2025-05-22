@@ -10,6 +10,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -61,19 +62,14 @@ class DataControllerTest {
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
 
         val ignoredKeys = setOf("publicationDate")
-
-        val differences =
-            JsonComparator.compareClasses(
-                CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                    mapOfIds.getValue("companyId"),
-                    "",
-                    testDataEuTaxonomyNonFinancials,
-                ),
-                companyAssociatedDataEuTaxonomyDataForNonFinancials, JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
-            )
-        assertEquals(
-            0, differences.size,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+        assertEqualsByJsonComparator(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
+                mapOfIds.getValue("companyId"),
+                "",
+                testDataEuTaxonomyNonFinancials,
+            ),
+            companyAssociatedDataEuTaxonomyDataForNonFinancials,
+            JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
         )
     }
 
@@ -96,10 +92,11 @@ class DataControllerTest {
             )
 
         val ignoredKeys = setOf("publicationDate")
-        val differences =
+        assertEqualsByJsonComparator(
+            expectedCompanyAssociatedData, getDataByIdResponse,
             JsonComparator
-                .compareClasses(expectedCompanyAssociatedData, getDataByIdResponse, JsonComparator.JsonComparisonOptions(ignoredKeys))
-        assertEquals(0, differences.size, "The posted data does not equal the expected test data.")
+                .JsonComparisonOptions(ignoredKeys),
+        )
     }
 
     @Test
