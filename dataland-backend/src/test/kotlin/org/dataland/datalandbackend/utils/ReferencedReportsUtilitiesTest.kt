@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
-import org.dataland.datalandbackendutils.utils.JsonUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -33,11 +33,11 @@ class ReferencedReportsUtilitiesTest {
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities(testObjectMapper)
+    private val referencedReportsUtilities = ReferencedReportsUtilities(defaultObjectMapper)
 
     private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
         val schema =
-            testObjectMapper
+            defaultObjectMapper
                 .readTree(TestResourceFileReader.getKotlinObject<FrameworkSpecification>(frameworkSpecification).schema)
         referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(schema, "general.general.referencedReports")
         return JsonSpecificationUtils.dehydrateJsonSpecification(
@@ -49,7 +49,7 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that extraction of the referenced report works as expected`() {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val dataSource = testObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
+        val dataSource = defaultObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
                 fileReference = dataSource?.fileReference ?: "dummy",
@@ -100,7 +100,7 @@ class ReferencedReportsUtilitiesTest {
             JsonSpecificationLeaf(
                 dataPointId = "id",
                 jsonPath = "path",
-                content = testObjectMapper.readTree(duplicateRefReferenceReport),
+                content = defaultObjectMapper.readTree(duplicateRefReferenceReport),
             )
         assertThrows<InvalidInputApiException> {
             val referencedReports = referencedReportsUtilities.parseReferencedReportsFromJsonLeaf(jsonSpecificationNode)
@@ -147,8 +147,8 @@ class ReferencedReportsUtilitiesTest {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
         val newName = "NewFileName"
 
-        val dataSource = testObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
-        val contentNode = testObjectMapper.readTree(dataPoint)
+        val dataSource = defaultObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
+        val contentNode = defaultObjectMapper.readTree(dataPoint)
 
         requireNotNull(dataSource) { "Data point does not contain a proper data source" }
 
@@ -172,7 +172,7 @@ class ReferencedReportsUtilitiesTest {
             )
         val actual =
             contentNode.get("dataSource").let {
-                testObjectMapper.readValue(it.toString(), ExtendedDocumentReference::class.java)
+                defaultObjectMapper.readValue(it.toString(), ExtendedDocumentReference::class.java)
             }
         assertEquals(expected, actual)
     }

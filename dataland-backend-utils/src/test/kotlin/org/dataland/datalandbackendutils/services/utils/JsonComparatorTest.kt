@@ -1,7 +1,7 @@
 package org.dataland.datalandbackendutils.services.utils
 
 import org.dataland.datalandbackendutils.utils.JsonComparator
-import org.dataland.datalandbackendutils.utils.JsonUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -157,6 +157,6 @@ class JsonComparatorTest {
         ],
     )
     fun `nested objects with partially null values should not be equal to null`(jsonString: String) {
-        assertEquals(JsonComparator.isFullyNullObject(testObjectMapper.readTree(jsonString)), false)
+        assertEquals(JsonComparator.isFullyNullObject(defaultObjectMapper.readTree(jsonString)), false)
     }
 }
