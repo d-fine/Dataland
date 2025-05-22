@@ -18,9 +18,9 @@ fun getCompanyAssociatedDatapointsForDataType(
     val objectMapper = ObjectMapper()
     val preparedStatement =
         context!!.connection.prepareStatement(
-            "SELECT * from data_point_items WHERE data_point_type = ?",
+            "SELECT * from public.data_point_items WHERE data_point_type = ?",
         )
-    preparedStatement.setString(1, "dataPointType")
+    preparedStatement.setString(1, dataPointType)
     val getQueryResultSet = preparedStatement.executeQuery()
 
     val companyAssociatedDatapoints = mutableListOf<DataPointTableEntity>()
@@ -28,16 +28,19 @@ fun getCompanyAssociatedDatapointsForDataType(
         companyAssociatedDatapoints.add(
             DataPointTableEntity(
                 getQueryResultSet.getString("data_point_id"),
-                JSONObject(getQueryResultSet.getString("data")),
+                getQueryResultSet.getString("company_id"),
+                JSONObject(
+                    objectMapper.readValue(
+                        getQueryResultSet.getString("data"), String::class.java,
+                    ),
+                ),
                 dataPointType,
                 getQueryResultSet.getString("reporting_period"),
             ),
         )
     }
 
-    return companyAssociatedDatapoints.filter { dataPointTableEntity ->
-        dataPointTableEntity.dataPointType == dataPointType
-    }
+    return companyAssociatedDatapoints
 }
 
 private val logger = LoggerFactory.getLogger("Migration Iterator")

@@ -14,29 +14,39 @@ class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals : BaseJavaMig
     /**
      * Migrates an old eu taxonomy non financials dataset to the new format
      */
-    fun migrateCurrencyToDecimal(dataPointTableEntity: DataPointTableEntity) {
+    fun updateDatapointTypesAndRemoveCurrencyIfApplicable(dataPointTableEntity: DataPointTableEntity) {
+        if (dataPointTableEntity.dataPointType == "extendedCurrencyTotalRevenue" ||
+            dataPointTableEntity.dataPointType == "extendedCurrencyEnterpriseValue"
+        ) {
+            dataPointTableEntity.companyAssociatedData.remove("currency")
+        }
         val renameMap =
             mapOf(
                 "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
                 "extendedCurrencyEnterpriseValue" to "extendedDecimalEnterpriseValueInEUR",
+                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+                    to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
             )
-
         dataPointTableEntity.dataPointType = renameMap[dataPointTableEntity.dataPointType]
             ?: return
-
-        dataPointTableEntity.companyAssociatedData.remove("currency")
     }
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDatapointOfDatatype(
             context,
             "extendedCurrencyTotalRevenue",
-        ) { this.migrateCurrencyToDecimal(it) }
+        ) { this.updateDatapointTypesAndRemoveCurrencyIfApplicable(it) }
 
         migrateCompanyAssociatedDatapointOfDatatype(
             context,
             "extendedCurrencyEnterpriseValue",
-            this::migrateCurrencyToDecimal,
+            this::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+        )
+
+        migrateCompanyAssociatedDatapointOfDatatype(
+            context,
+            "extendedCurrencyCarbonFootprintInTonnesPerMillionEURRevenue",
+            this::updateDatapointTypesAndRemoveCurrencyIfApplicable,
         )
     }
 }

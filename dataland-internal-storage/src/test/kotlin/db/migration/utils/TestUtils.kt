@@ -36,14 +36,16 @@ class TestUtils {
     ) {
         val originalDataPointEntity =
             DataPointTableEntity(
-                mockDataId,
+                "123",
+                companyID = "abc",
                 JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
                 oldDataPointType,
                 reportingPeriod = "2023",
             )
         val expectedDataEntity =
             DataPointTableEntity(
-                mockDataId,
+                "123",
+                companyID = "abc",
                 JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
                 expectedDataPointType,
                 reportingPeriod = "2023",

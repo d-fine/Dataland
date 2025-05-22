@@ -1,5 +1,6 @@
 package db.migration.utils
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
@@ -8,6 +9,7 @@ import org.json.JSONObject
  */
 data class DataPointTableEntity(
     val dataPointId: String,
+    val companyID: String,
     val companyAssociatedData: JSONObject,
     var dataPointType: String,
     val reportingPeriod: String,
@@ -30,12 +32,14 @@ data class DataPointTableEntity(
     fun executeUpdateQuery(context: Context) {
         val queryStatement =
             context.connection.prepareStatement(
-                "UPDATE data_point_items " +
-                    "SET data = ? " +
-                    "WHERE data_point_type = ?",
+                "UPDATE data_point_items SET data = ?, data_point_type=? WHERE data_point_id = ?",
             )
-        queryStatement.setString(1, companyAssociatedData.toString())
+        queryStatement.setString(
+            1,
+            ObjectMapper().writeValueAsString(companyAssociatedData.toString()),
+        )
         queryStatement.setString(2, dataPointType)
+        queryStatement.setString(3, dataPointId)
         queryStatement.executeUpdate()
     }
 
@@ -65,6 +69,7 @@ data class DataPointTableEntity(
         if (this === other) return true
         if (other !is DataPointTableEntity) return false
         return dataPointId == other.dataPointId &&
+            companyID == other.companyID &&
             dataPointType == other.dataPointType &&
             reportingPeriod == other.reportingPeriod &&
             companyAssociatedData.similar(other.companyAssociatedData)
