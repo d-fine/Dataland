@@ -2,7 +2,6 @@ import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
 import { browserThen } from '@e2e/utils/Cypress';
 import 'cypress-wait-until';
 
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -161,11 +160,7 @@ export function waitForPageLoad(options: {
     errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
 
-  if (
-    elementSelectors.length === 0 &&
-    !containsText &&
-    !customCheck
-  ) {
+  if (elementSelectors.length === 0 && !containsText && !customCheck) {
     throw new Error('waitForPageLoad: At least one of elementSelectors, containsText, or customCheck must be provided');
   }
 
