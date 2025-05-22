@@ -161,7 +161,6 @@ interface QaApi {
         @Parameter(
             description =
                 "If set, only show the active QA review information for each data point.",
-            required = true,
             schema =
                 Schema(
                     type = "boolean",
