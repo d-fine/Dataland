@@ -45,7 +45,7 @@ class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals : BaseJavaMig
 
         migrateCompanyAssociatedDatapointOfDatatype(
             context,
-            "extendedCurrencyCarbonFootprintInTonnesPerMillionEURRevenue",
+            "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
             this::updateDatapointTypesAndRemoveCurrencyIfApplicable,
         )
     }

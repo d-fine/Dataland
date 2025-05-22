@@ -14,18 +14,6 @@ data class DataPointTableEntity(
     var dataPointType: String,
     val reportingPeriod: String,
 ) {
-//    companion object {
-//        /**
-//         * Constructs a DataPointTableEntity from a dataPointId, dataPointType and dataPoint object
-//         */
-//        fun pointFromJsonObject(
-//            dataPointId: String,
-//            companyAssociatedData: JSONObject,
-//            dataPointType: String,
-//            reportingPeriod: String,
-//        ): DataPointTableEntity = DataPointTableEntity(dataPointId, companyAssociatedData, dataPointType, reportingPeriod)
-//    }
-
     /**
      * Method to get a query that writes the company associated data to the corresponding table entry
      */
@@ -42,28 +30,6 @@ data class DataPointTableEntity(
         queryStatement.setString(3, dataPointId)
         queryStatement.executeUpdate()
     }
-
-//    val dataPointJsonObject: JSONObject
-//        get() = JSONObject(companyAssociatedData)
-//
-//    val jsonObjectWithoutData: JSONObject
-//        get() {
-//            val companyAssociatedDataWithoutData = JSONObject(companyAssociatedData)
-//            companyAssociatedDataWithoutData.remove()
-//            return companyAssociatedDataWithoutData
-//        }
-//
-//    override fun equals(other: Any?): Boolean {
-//        if (this === other) return true
-//        if (javaClass != other?.javaClass) return false
-//
-//        other as DataPointTableEntity
-//
-//        if (dataPointId != other.dataPointId) return false
-//
-//        return dataPointJsonObject.similar(other.dataPointJsonObject) &&
-//            jsonObjectWithoutData.similar(other.jsonObjectWithoutData)
-//    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
