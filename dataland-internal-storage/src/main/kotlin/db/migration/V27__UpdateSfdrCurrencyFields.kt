@@ -1,7 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataPointTableEntity
-import db.migration.utils.migrateCompanyAssociatedDatapointOfDatatype
+import db.migration.utils.migrateDatePointTableEntities
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
@@ -41,18 +41,18 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        migrateCompanyAssociatedDatapointOfDatatype(
+        migrateDatePointTableEntities(
             context,
             "extendedCurrencyTotalRevenue",
         ) { this.updateCurrencyFieldsToDecimals(it) }
 
-        migrateCompanyAssociatedDatapointOfDatatype(
+        migrateDatePointTableEntities(
             context,
             "extendedCurrencyEnterpriseValue",
             this::updateCurrencyFieldsToDecimals,
         )
 
-        migrateCompanyAssociatedDatapointOfDatatype(
+        migrateDatePointTableEntities(
             context,
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
             this::updateCarbonFootprint,

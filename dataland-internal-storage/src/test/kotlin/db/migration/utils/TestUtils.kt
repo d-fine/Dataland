@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions
 
 class TestUtils {
     private val mockDataId = "mock-data-id"
+    private val dummyCompanyId = "123"
+    private val dummyReportingPeriod = "2023"
 
     fun testMigrationOfSingleDataset(
         dataType: String,
@@ -36,19 +38,19 @@ class TestUtils {
     ) {
         val originalDataPointEntity =
             DataPointTableEntity(
-                "123",
-                companyId = "abc",
+                mockDataId,
+                companyId = dummyCompanyId,
                 JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
                 oldDataPointType,
-                reportingPeriod = "2023",
+                reportingPeriod = dummyReportingPeriod,
             )
         val expectedDataEntity =
             DataPointTableEntity(
-                "123",
-                companyId = "abc",
+                mockDataId,
+                companyId = dummyCompanyId,
                 JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
                 expectedDataPointType,
-                reportingPeriod = "2023",
+                reportingPeriod = dummyReportingPeriod,
             )
         migration(originalDataPointEntity)
         Assertions.assertEquals(expectedDataEntity, originalDataPointEntity)

@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory
 typealias CompanyAssociatedDataPointMigration = (dataPointTableEntity: DataPointTableEntity) -> Unit
 
 /**
- * Method to get the company associated data point for a given data point type
+ * Function that provides a list of all DataPointTableEntities with respect to a certain data type
  */
 
-fun getCompanyAssociatedDataPointsForDataType(
+fun getDataPointTableEntitiesWithRespectToDataType(
     context: Context?,
     dataPointType: String,
 ): List<DataPointTableEntity> {
@@ -23,9 +23,9 @@ fun getCompanyAssociatedDataPointsForDataType(
     preparedStatement.setString(1, dataPointType)
     val getQueryResultSet = preparedStatement.executeQuery()
 
-    val companyAssociatedDatapoints = mutableListOf<DataPointTableEntity>()
+    val listOfDataPointTableEntities = mutableListOf<DataPointTableEntity>()
     while (getQueryResultSet.next()) {
-        companyAssociatedDatapoints.add(
+        listOfDataPointTableEntities.add(
             DataPointTableEntity(
                 getQueryResultSet.getString("data_point_id"),
                 getQueryResultSet.getString("company_id"),
@@ -40,7 +40,7 @@ fun getCompanyAssociatedDataPointsForDataType(
         )
     }
 
-    return companyAssociatedDatapoints
+    return listOfDataPointTableEntities
 }
 
 private val logger = LoggerFactory.getLogger("Migration Iterator")
@@ -51,12 +51,12 @@ private val logger = LoggerFactory.getLogger("Migration Iterator")
  * @dataType the data type string for the data to modify
  * @migrate migration script for a single DataTableEntity
  */
-fun migrateCompanyAssociatedDatapointOfDatatype(
+fun migrateDatePointTableEntities(
     context: Context?,
     dataPointType: String,
     migrate: CompanyAssociatedDataPointMigration,
 ) {
-    val dataPointTableEntities = getCompanyAssociatedDataPointsForDataType(context, dataPointType)
+    val dataPointTableEntities = getDataPointTableEntitiesWithRespectToDataType(context, dataPointType)
     dataPointTableEntities.forEach {
         logger.info("Migrating $dataPointType datapoint with id: ${it.dataPointId}")
         migrate(it)
