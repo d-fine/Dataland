@@ -79,6 +79,7 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.wait('@savedUserProfileSettings');
     });
   });
+
   it('Checks that one can login to the newly registered account', () => {
     cy.visit('/');
     cy.task('getEmail').then((returnEmail) => {
@@ -129,6 +130,7 @@ describe('As a user I want to be able to register for an account and be able to 
         });
       });
     });
+
     it('Should be possible to login to the account with 2FA enabled', () => {
       cy.task('getEmail').then((returnEmail) => {
         cy.task('getPassword').then((returnPassword) => {
@@ -136,6 +138,8 @@ describe('As a user I want to be able to register for an account and be able to 
             if (!isString(returnEmail) || !isString(returnPassword) || !isString(key)) {
               throw new Error('Email or password or TOTP key retrieved by task is not a string. Cannot proceed.');
             }
+
+            cy.wait(Cypress.env('medium_timeout_in_ms') as number);
 
             login(returnEmail, returnPassword, () => {
               return authenticator.generate(key);
