@@ -11,7 +11,7 @@ typealias CompanyAssociatedDataPointMigration = (dataPointTableEntity: DataPoint
  * Method to get the company associated data point for a given data point type
  */
 
-fun getCompanyAssociatedDatapointsForDataType(
+fun getCompanyAssociatedDataPointsForDataType(
     context: Context?,
     dataPointType: String,
 ): List<DataPointTableEntity> {
@@ -56,7 +56,7 @@ fun migrateCompanyAssociatedDatapointOfDatatype(
     dataPointType: String,
     migrate: CompanyAssociatedDataPointMigration,
 ) {
-    val dataPointTableEntities = getCompanyAssociatedDatapointsForDataType(context, dataPointType)
+    val dataPointTableEntities = getCompanyAssociatedDataPointsForDataType(context, dataPointType)
     dataPointTableEntities.forEach {
         logger.info("Migrating $dataPointType datapoint with id: ${it.dataPointId}")
         migrate(it)

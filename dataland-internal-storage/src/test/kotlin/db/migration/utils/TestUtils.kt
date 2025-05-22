@@ -37,7 +37,7 @@ class TestUtils {
         val originalDataPointEntity =
             DataPointTableEntity(
                 "123",
-                companyID = "abc",
+                companyId = "abc",
                 JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
                 oldDataPointType,
                 reportingPeriod = "2023",
@@ -45,7 +45,7 @@ class TestUtils {
         val expectedDataEntity =
             DataPointTableEntity(
                 "123",
-                companyID = "abc",
+                companyId = "abc",
                 JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
                 expectedDataPointType,
                 reportingPeriod = "2023",

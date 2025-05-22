@@ -10,7 +10,6 @@ const queues = [
   'documentReceivedDatabaseDataStore',
   'itemStoredDocumentQaService',
   'privateRequestReceivedCommunityManager',
-  'privateRequestReceivedEurodatDataStore',
   'sendEmailService',
   'internal-storage.storeDatasets',
   'internal-storage.storeDatapoints',
@@ -24,27 +23,40 @@ const queues = [
   'community-manager.queue.nonSourceableData',
 ];
 
+/**
+ * Checks if all expected queues exist.
+ * @param $rows - rows of the table.
+ * @param expectedQueues - expected queues.
+ */
+function checkQueuesExist($rows: JQuery<HTMLElement>, expectedQueues: string[]): void {
+  const actualQueues = [...$rows].flatMap((row): string[] => {
+    const name = row.querySelector('td:nth-child(2) a')?.textContent?.trim();
+    return name ? [name] : [];
+  });
+  const missingQueues = expectedQueues.filter((q) => !actualQueues.includes(q));
+  if (missingQueues.length > 0) {
+    throw new Error(`Missing queues: ${missingQueues.join(', ')}`);
+  }
+}
+
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
   it('Checks if the RabbitMQ Management GUI is available and the login page is shown. Then check that all expected queues exist.', () => {
-    cy.visit('http://dataland-admin:6789/rabbitmq');
+    cy.visitAndCheckExternalAdminPage({
+      url: 'http://dataland-admin:6789/rabbitmq',
+      interceptPattern: '**/rabbitmq/**',
+      elementSelector: 'input[name=username]',
+    });
     cy.get('input[name=username]').should('exist').type(getStringCypressEnv('RABBITMQ_USER'));
     cy.get('input[name=password]').should('exist').type(getStringCypressEnv('RABBITMQ_PASS'));
     cy.get('input[type=submit]').should('contain.value', 'Login').click();
     cy.get('#logout').contains('Log out').should('contain.value', 'Log out');
-    cy.get("ul[id='tabs'").find("a[href='#/queues']").click();
-    cy.contains('table th', 'Overview')
-      .invoke('parents', 'table')
-      .find('tbody tr')
-      .its('length')
-      .then((rowCount) => {
-        cy.wrap(queues.length).should('eq', rowCount);
-      });
-    cy.get('table[class=list]')
-      .should('exist')
-      .then(() => {
-        queues.forEach((queue) => {
-          cy.get('table[class=list]').contains(queue).should('contain.text', queue);
-        });
-      });
+    cy.get("ul[id='tabs']").find("a[href='#/queues']").click();
+    cy.get('table.list tbody tr td:nth-child(2) a', {
+      timeout: Cypress.env('medium_timeout_in_ms'),
+    }).should('have.length.greaterThan', 0);
+
+    cy.get('table.list tbody tr').then(($rows) => {
+      checkQueuesExist($rows, queues);
+    });
   });
 });

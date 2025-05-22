@@ -10,43 +10,52 @@ import org.flywaydb.core.api.migration.Context
  * from a field called value for percentages only to a structure holding the absolute value of a cash flow type as well
  */
 @Suppress("ClassName")
-class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals : BaseJavaMigration() {
+class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     /**
      * Migrates an old eu taxonomy non financials dataset to the new format
      */
-    fun updateDatapointTypesAndRemoveCurrencyIfApplicable(dataPointTableEntity: DataPointTableEntity) {
+
+    val renameMap =
+        mapOf(
+            "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
+            "extendedCurrencyEnterpriseValue" to "extendedDecimalEnterpriseValueInEUR",
+            "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+                to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
+        )
+
+    fun updateCurrencyFieldsToDecimals(dataPointTableEntity: DataPointTableEntity) {
         if (dataPointTableEntity.dataPointType == "extendedCurrencyTotalRevenue" ||
             dataPointTableEntity.dataPointType == "extendedCurrencyEnterpriseValue"
         ) {
-            dataPointTableEntity.companyAssociatedData.remove("currency")
+            dataPointTableEntity.dataPoint.remove("currency")
+            dataPointTableEntity.dataPointType = renameMap[dataPointTableEntity.dataPointType]
+                ?: return
         }
-        val renameMap =
-            mapOf(
-                "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
-                "extendedCurrencyEnterpriseValue" to "extendedDecimalEnterpriseValueInEUR",
-                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
-                    to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
-            )
-        dataPointTableEntity.dataPointType = renameMap[dataPointTableEntity.dataPointType]
-            ?: return
+    }
+
+    fun updateCarbonFootprint(dataPointTableEntity: DataPointTableEntity) {
+        if (dataPointTableEntity.dataPointType == "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue") {
+            dataPointTableEntity.dataPointType = renameMap[dataPointTableEntity.dataPointType]
+                ?: return
+        }
     }
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDatapointOfDatatype(
             context,
             "extendedCurrencyTotalRevenue",
-        ) { this.updateDatapointTypesAndRemoveCurrencyIfApplicable(it) }
+        ) { this.updateCurrencyFieldsToDecimals(it) }
 
         migrateCompanyAssociatedDatapointOfDatatype(
             context,
             "extendedCurrencyEnterpriseValue",
-            this::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+            this::updateCurrencyFieldsToDecimals,
         )
 
         migrateCompanyAssociatedDatapointOfDatatype(
             context,
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
-            this::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+            this::updateCarbonFootprint,
         )
     }
 }

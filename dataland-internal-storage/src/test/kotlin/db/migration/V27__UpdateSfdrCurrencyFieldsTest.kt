@@ -4,7 +4,7 @@ import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
-class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimalsTest {
+class V27__UpdateSfdrCurrencyFieldsTest {
     @Test
     fun `check deletion of currency field and renaming of extendedCurrencyTotalRevenue`() {
         TestUtils().testMigrationOfSingleDatapoint(
@@ -12,8 +12,8 @@ class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimalsTest {
             "extendedDecimalTotalRevenueInEUR",
             "V27/original.json",
             "V27/expected.json",
-            V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals()
-                ::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+            V27__UpdateSfdrCurrencyFields()
+                ::updateCurrencyFieldsToDecimals,
         )
     }
 
@@ -24,8 +24,8 @@ class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimalsTest {
             "extendedDecimalEnterpriseValueInEUR",
             "V27/original.json",
             "V27/expected.json",
-            V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals()
-                ::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+            V27__UpdateSfdrCurrencyFields()
+                ::updateCurrencyFieldsToDecimals,
         )
     }
 
@@ -36,8 +36,8 @@ class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimalsTest {
             "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
             "V27/original.json",
             "V27/original.json",
-            V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals()
-                ::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+            V27__UpdateSfdrCurrencyFields()
+                ::updateCarbonFootprint,
         )
     }
 
@@ -48,8 +48,8 @@ class V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimalsTest {
             "typeThatDoesntExist",
             "V27/original.json",
             "V27/original.json",
-            V27__MigrateTotalRevenueAndEnterpriseValueToExtendedDecimals()
-                ::updateDatapointTypesAndRemoveCurrencyIfApplicable,
+            V27__UpdateSfdrCurrencyFields()
+                ::updateCurrencyFieldsToDecimals,
         )
     }
 }
