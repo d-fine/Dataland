@@ -20,7 +20,6 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
 
     @BeforeAll
     fun setup() {
-        val numberOfDataSets = 10
         // Get the full test data
         fullTestData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
 
