@@ -2371,16 +2371,12 @@
           {
             "name": "showOnlyActive",
             "in": "query",
-            "description": "If set, only show the active QA review information for each data point.",
+            "description": "If set, only show the active QA review information for each data point. Default value: true.",
             "required": false,
             "schema": {
               "type": "boolean",
-              "enum": [
-                "true",
-                "false"
-              ]
-            },
-            "example": true
+              "default": true
+            }
           },
           {
             "name": "chunkSize",
