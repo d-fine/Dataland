@@ -306,25 +306,25 @@ class DataPointQaReviewManager
 
         /**
          * Retrieve all QA review information items matching the provided filters in descending order by timestamp.
-         * Results are paginated using [chunkSize] and [chunkIndex].
+         * Results are paginated using [chunkSize] and [offset].
          * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
          * @param showOnlyActive if true, only active data points are returned
          * @param chunkSize the number of results to return
-         * @param chunkIndex the index to start the result set from
+         * @param offset the index to start the result set from
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
             showOnlyActive: Boolean,
             chunkSize: Int,
-            chunkIndex: Int,
+            offset: Int,
         ): List<DataPointQaReviewInformation> {
             val schemaOfFramework =
                 getFrameworkSpecificationOrNull(searchFilter.dataTypeList?.singleOrNull())
-                    ?: return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
+                    ?: return queryReviewItems(searchFilter, showOnlyActive, chunkSize, offset)
             return queryReviewItems(
                 searchFilter
                     .copy(dataTypeList = DataPointUtils.getDataPointTypes(schemaOfFramework).toList()),
-                showOnlyActive, chunkSize, chunkIndex,
+                showOnlyActive, chunkSize, offset,
             )
         }
 
@@ -349,7 +349,7 @@ class DataPointQaReviewManager
          * @param searchFilter filter containing information on the companyID, dataType, reportingPeriod and qaStatus
          * @param showOnlyActive if true, only active Data points are returned
          * @param chunkSize the number of results to return
-         * @param chunkIndex the index to start the result set from
+         * @param offset the index to start the result set from
          * @return A list of all datapoint of the type 'DataPointQaReviewInformation' containing als data points,
          *         which suffice the given filter.
          */
@@ -357,9 +357,8 @@ class DataPointQaReviewManager
             searchFilter: DataPointQaReviewItemFilter,
             showOnlyActive: Boolean,
             chunkSize: Int,
-            chunkIndex: Int,
+            offset: Int,
         ): List<DataPointQaReviewInformation> {
-            val offset = chunkSize * chunkIndex
             val filteredQaDataPoints =
                 if (!showOnlyActive) {
                     dataPointQaReviewRepository

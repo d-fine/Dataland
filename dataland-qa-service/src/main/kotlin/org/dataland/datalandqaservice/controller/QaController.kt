@@ -161,6 +161,7 @@ class QaController(
         chunkIndex: Int,
     ): ResponseEntity<List<DataPointQaReviewInformation>> {
         logger.info("Received request to retrieve the review information of the data point with identifier $companyId")
+        val offset = chunkSize * chunkIndex
         val searchFilter =
             DataPointQaReviewItemFilter(
                 companyId = companyId,
@@ -174,7 +175,7 @@ class QaController(
                 searchFilter = searchFilter,
                 showOnlyActive = showOnlyActive,
                 chunkSize = chunkSize,
-                chunkIndex = chunkIndex,
+                offset = offset,
             ),
         )
     }
