@@ -34,10 +34,11 @@ import java.time.LocalDateTime
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
  * @param datasetStorageService service to handle data storage
- * @param dataMetaInformationManager service for handling data meta information
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
  * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
-
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,

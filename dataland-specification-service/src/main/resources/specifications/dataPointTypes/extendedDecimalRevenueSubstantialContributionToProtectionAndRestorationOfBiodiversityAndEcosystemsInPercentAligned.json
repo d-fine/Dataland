@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+  "name" : "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

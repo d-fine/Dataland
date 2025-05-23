@@ -2,6 +2,135 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
+			"headquarters": "Balistrerifort",
+			"headquartersPostalCode": "67185",
+			"sector": "mindshare",
+			"identifiers": {
+				"Lei": [
+					"0Q2Lu81HzmGyKGbEj7Xj"
+				],
+				"Isin": [
+					"tZy43frqWVyc",
+					"03oulwBQ1g8w"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"ItWB7Ftuo"
+				],
+				"VatNumber": [
+					"IJGsEIz22"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "DZ",
+			"companyContactDetails": [
+				"Robbie.OKon@example.com",
+				"Jammie.Rowe-King4@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bayer Group"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://nimble-roundabout.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "210-349",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "index virtual circuit",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-04-21",
+						"dataSource": {
+							"page": "715-865",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "calculate solid state bus",
+						"quality": "Estimated"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-12-20"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 9280015841.62,
+						"dataSource": {
+							"page": "338",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "reboot optical program",
+						"quality": "Reported",
+						"currency": "KZT"
+					},
+					"debt": {
+						"value": 4869251395.67,
+						"dataSource": {
+							"page": "177-391",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "input mobile panel",
+						"quality": "Audited",
+						"currency": "PYG"
+					},
+					"balanceSheetTotal": {
+						"value": 2215140069.02,
+						"dataSource": {
+							"page": "497-819",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
+							"publicationDate": null
+						},
+						"comment": "quantify multi-byte sensor",
+						"quality": "Incomplete",
+						"currency": "FJD"
+					},
+					"evic": {
+						"value": 8809481469.83,
+						"dataSource": {
+							"page": "200-387",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "platforms",
+							"publicationDate": null
+						},
+						"comment": "calculate virtual driver",
+						"quality": "Estimated",
+						"currency": "TOP"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "additional-company-information-dataset-with-nullish-fields",
 			"headquarters": "Toystead",
 			"headquartersPostalCode": null,
 			"sector": "lifetime value",
@@ -40,132 +169,6 @@
 				"general": {
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
-						"dataSource": {
-							"page": "1188",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "transmit multi-byte protocol",
-						"quality": "Reported"
-					},
-					"fiscalYearEnd": {
-						"value": "2024-11-09",
-						"dataSource": {
-							"page": "254",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "override solid state monitor",
-						"quality": "NoDataFound"
-					},
-					"referencedReports": {
-						"SustainabilityReport": {
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-10-23"
-						}
-					}
-				},
-				"financialInformation": {
-					"equity": {
-						"value": 1371402224.13,
-						"dataSource": {
-							"page": "284-733",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": "bypass haptic bus",
-						"quality": "Reported",
-						"currency": "MWK"
-					},
-					"debt": {
-						"value": 4081221785.44,
-						"dataSource": {
-							"page": "671",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "input cross-platform firewall",
-						"quality": "Incomplete",
-						"currency": "GIP"
-					},
-					"balanceSheetTotal": {
-						"value": 3396198318.78,
-						"dataSource": {
-							"page": "609",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "infrastructures",
-							"publicationDate": null
-						},
-						"comment": "navigate 1080p protocol",
-						"quality": "Incomplete",
-						"currency": "UGX"
-					},
-					"evic": {
-						"value": 4004570079.45,
-						"dataSource": {
-							"page": "1175",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "reboot multi-byte driver",
-						"quality": "Audited",
-						"currency": "COP"
-					}
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "additional-company-information-dataset-with-nullish-fields",
-			"headquarters": "Santa Monica",
-			"headquartersPostalCode": "24874-7765",
-			"sector": "architectures",
-			"identifiers": {
-				"Lei": [
-					"fObQRs66XVrci4Ek4xcX"
-				],
-				"Isin": [
-					"V4KusqRjvD2V",
-					"GFoj3pYKkBRB"
-				],
-				"PermId": [],
-				"Ticker": [
-					"kXRn7jz"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "HM",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Beahan - Stoltenberg",
-				"Marquardt, Ferry and Mayer",
-				"Wisoky LLC"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://oily-wriggler.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"general": {
-					"fiscalYearDeviation": {
-						"value": "NoDeviation",
 						"quality": null,
 						"comment": "",
 						"dataSource": {
@@ -192,6 +195,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	}
 ]

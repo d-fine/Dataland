@@ -34,10 +34,15 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 
 class ApiAccessor {
+    companion object {
+        private const val UPLOAD_TIMEOUT_IN_S = 10L
+    }
+
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
@@ -143,8 +148,7 @@ class ApiAccessor {
 
     /**
      * Uploads each of the datasets provided in [frameworkDatasets] for each of the companies provided in
-     * [companyInfo] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
-     * times for the same company a wait of at least 1ms is necessary to avoid an error 500.
+     * [companyInfo] via [frameworkDataUploadFunction].
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         companyInfo: List<CompanyInformation>,
@@ -159,20 +163,20 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
-        val waitTimeBeforeNextUpload = if (frameworkDatasets.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val storedCompanyInfos = companyInfo.map { companyDataControllerApi.postCompany(it) }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
         frameworkDatasets.forEach { frameworkDataset ->
             companyInfo.zip(storedCompanyInfos).forEach { pair ->
-                val receivedDataMetaInformation =
-                    frameworkDataUploadFunction(
-                        pair.second.companyId, frameworkDataset, reportingPeriod, uploadConfig.bypassQa,
-                    )
-                listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
+                ApiAwait.waitForSuccess(UPLOAD_TIMEOUT_IN_S) {
+                    val receivedDataMetaInformation =
+                        frameworkDataUploadFunction(
+                            pair.second.companyId, frameworkDataset, reportingPeriod, uploadConfig.bypassQa,
+                        )
+                    listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
+                }
             }
-            Thread.sleep(waitTimeBeforeNextUpload)
         }
         if (ensureQaPassed) qaApiAccessor.ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo, metaDataControllerApi)
         return listOfUploadInfo

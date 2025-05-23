@@ -8,8 +8,8 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandmessagequeueutils.messages.data.CopyQaStatusFromDataset
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

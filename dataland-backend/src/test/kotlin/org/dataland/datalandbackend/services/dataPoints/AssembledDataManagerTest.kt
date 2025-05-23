@@ -17,7 +17,6 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
-import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
@@ -25,6 +24,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -66,19 +66,19 @@ class AssembledDataManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
+            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities(testObjectMapper)
+    private val referencedReportsUtilities = ReferencedReportsUtilities(defaultObjectMapper)
     private val dataPointUtils =
-        DataPointUtils(testObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
+        DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
 
     private val spyDataPointManager = spy(dataPointManager)
-    private val testDataProvider = TestDataProvider(testObjectMapper)
+    private val testDataProvider = TestDataProvider(defaultObjectMapper)
 
     private val assembledDataManager =
         AssembledDataManager(
-            dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
+            dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
             datasetDatapointRepository, spyDataPointManager,
             referencedReportsUtilities,
             companyQueryManager, dataPointUtils,

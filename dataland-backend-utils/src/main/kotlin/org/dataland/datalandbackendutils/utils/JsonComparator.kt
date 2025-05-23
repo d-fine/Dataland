@@ -1,7 +1,8 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandbackendutils.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import java.math.BigDecimal
 
 /**
@@ -36,6 +37,32 @@ object JsonComparator {
         val differences = mutableListOf<JsonDiff>()
         findNodeDifferences(expected, actual, options, differenceList = differences)
         return differences
+    }
+
+    /**
+     * Compares two JSON strings and returns a list of differences.
+     */
+    fun compareJsonStrings(
+        expected: String,
+        actual: String,
+        options: JsonComparisonOptions = JsonComparisonOptions(),
+    ): List<JsonDiff> {
+        val expectedJson = defaultObjectMapper.readTree(expected)
+        val actualJson = defaultObjectMapper.readTree(actual)
+        return compareJson(expectedJson, actualJson, options)
+    }
+
+    /**
+     * Compares two JSON strings and returns a list of differences.
+     */
+    inline fun <reified T> compareClasses(
+        expected: T,
+        actual: T,
+        options: JsonComparisonOptions = JsonComparisonOptions(),
+    ): List<JsonDiff> {
+        val expectedJsonString = defaultObjectMapper.writeValueAsString(expected)
+        val actualJsonString = defaultObjectMapper.writeValueAsString(actual)
+        return compareJsonStrings(expectedJsonString, actualJsonString, options)
     }
 
     /**
