@@ -1,13 +1,13 @@
 package db.migration
 
-import db.migration.utils.TestUtils
+import db.migration.utils.TestUtilsBackendMigration
 import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFieldsTest {
     @Test
     fun `check renaming of extendedCurrencyTotalRevenue`() {
-        TestUtils().testMigrationOfDataPointIdAndDataPointTypeEntity(
+        TestUtilsBackendMigration().testMigrationOfDataPointIdAndDataPointTypeEntity(
             "extendedCurrencyTotalRevenue",
             "extendedDecimalTotalRevenueInEUR",
             V6__UpdateSfdrCurrencyFields()
@@ -17,7 +17,7 @@ class V6__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `check renaming of extendedCurrencyEnterpriseValue`() {
-        TestUtils().testMigrationOfDataPointIdAndDataPointTypeEntity(
+        TestUtilsBackendMigration().testMigrationOfDataPointIdAndDataPointTypeEntity(
             "extendedCurrencyEnterpriseValue",
             "extendedDecimalEnterpriseValueInEUR",
             V6__UpdateSfdrCurrencyFields()
@@ -27,7 +27,7 @@ class V6__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `check renaming of extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue`() {
-        TestUtils().testMigrationOfDataPointIdAndDataPointTypeEntity(
+        TestUtilsBackendMigration().testMigrationOfDataPointIdAndDataPointTypeEntity(
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
             "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
             V6__UpdateSfdrCurrencyFields()
@@ -36,8 +36,8 @@ class V6__UpdateSfdrCurrencyFieldsTest {
     }
 
     @Test
-    fun `check that non-matching data points remain unchanged`() {
-        TestUtils().testMigrationOfDataPointIdAndDataPointTypeEntity(
+    fun `check that non matching data points remain unchanged`() {
+        TestUtilsBackendMigration().testMigrationOfDataPointIdAndDataPointTypeEntity(
             "typeThatDoesntExist",
             "typeThatDoesntExist",
             V6__UpdateSfdrCurrencyFields()

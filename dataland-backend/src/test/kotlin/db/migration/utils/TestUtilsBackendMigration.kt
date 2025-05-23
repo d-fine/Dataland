@@ -2,7 +2,7 @@ package db.migration.utils
 
 import org.junit.jupiter.api.Assertions
 
-class TestUtils {
+class TestUtilsBackendMigration {
     private val dummyDataId = "abc"
 
     fun testMigrationOfDataPointIdAndDataPointTypeEntity(

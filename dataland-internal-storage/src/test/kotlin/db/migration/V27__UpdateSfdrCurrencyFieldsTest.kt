@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
 class V27__UpdateSfdrCurrencyFieldsTest {
+    val original = "V27/original.json"
+
     @Test
     fun `check deletion of currency field and renaming of extendedCurrencyTotalRevenue`() {
         TestUtils().testMigrationOfSingleDatapoint(
@@ -22,7 +24,7 @@ class V27__UpdateSfdrCurrencyFieldsTest {
         TestUtils().testMigrationOfSingleDatapoint(
             "extendedCurrencyEnterpriseValue",
             "extendedDecimalEnterpriseValueInEUR",
-            "V27/original.json",
+            original,
             "V27/expected.json",
             V27__UpdateSfdrCurrencyFields()
                 ::updateCurrencyFieldsToDecimals,
@@ -34,20 +36,20 @@ class V27__UpdateSfdrCurrencyFieldsTest {
         TestUtils().testMigrationOfSingleDatapoint(
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
             "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
-            "V27/original.json",
-            "V27/original.json",
+            original,
+            original,
             V27__UpdateSfdrCurrencyFields()
                 ::updateCarbonFootprint,
         )
     }
 
     @Test
-    fun `check that non-matching data points remain unchanged`() {
+    fun `check that non matching data points remain unchanged`() {
         TestUtils().testMigrationOfSingleDatapoint(
             "typeThatDoesntExist",
             "typeThatDoesntExist",
-            "V27/original.json",
-            "V27/original.json",
+            original,
+            original,
             V27__UpdateSfdrCurrencyFields()
                 ::updateCurrencyFieldsToDecimals,
         )

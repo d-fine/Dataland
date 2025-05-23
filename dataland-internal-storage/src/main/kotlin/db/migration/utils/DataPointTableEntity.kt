@@ -36,11 +36,14 @@ data class DataPointTableEntity(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is DataPointTableEntity) return false
-        return dataPointId == other.dataPointId &&
-            companyId == other.companyId &&
-            dataPointType == other.dataPointType &&
-            reportingPeriod == other.reportingPeriod &&
-            dataPoint.similar(other.dataPoint)
+
+        return listOf(
+            dataPointId == other.dataPointId,
+            companyId == other.companyId,
+            dataPointType == other.dataPointType,
+            reportingPeriod == other.reportingPeriod,
+            dataPoint.similar(other.dataPoint),
+        ).all { it }
     }
 
     override fun hashCode(): Int {
