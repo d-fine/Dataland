@@ -167,6 +167,7 @@ class QaControllerTest(
         showOnlyActive: Boolean = true,
         dataType: String?,
         qaStatus: QaStatus? = null,
+        chunkSize: Int = 10,
     ): List<DataPointQaReviewInformation> =
         qaController
             .getDataPointQaReviewInformation(
@@ -175,7 +176,7 @@ class QaControllerTest(
                 reportingPeriod = reportingPeriod,
                 qaStatus = qaStatus,
                 showOnlyActive = showOnlyActive,
-                chunkSize = 10,
+                chunkSize = chunkSize,
                 chunkIndex = 0,
             ).body!!
 
@@ -239,8 +240,8 @@ class QaControllerTest(
             assertEquals(8, allReviewEntries.size)
             assertEquals(firstComment, allReviewEntries[allReviewEntries.size - 5].comment)
 
-            val allTestFrameworkDataPoints = getReviewEntries(showOnlyActive = false, dataType = dataTypeTestFramework)
-            assertEquals(9, allTestFrameworkDataPoints.size)
+            val allTestFrameworkDataPoints = getReviewEntries(showOnlyActive = false, dataType = dataTypeTestFramework, chunkSize = 5)
+            assertEquals(5, allTestFrameworkDataPoints.size)
 
             val onlyActiveTestFrameworkDataPoints = getReviewEntries(dataType = dataTypeTestFramework)
             assertEquals(2, onlyActiveTestFrameworkDataPoints.size)
