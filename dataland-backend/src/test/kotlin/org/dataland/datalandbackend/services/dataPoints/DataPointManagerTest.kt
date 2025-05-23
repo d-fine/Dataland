@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,7 +20,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 class DataPointManagerTest {
@@ -36,7 +35,7 @@ class DataPointManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
+            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
     private val correlationId = "test-correlation-id"
@@ -61,7 +60,7 @@ class DataPointManagerTest {
                 companyId = IdUtils.generateUUID(),
                 reportingPeriod = reportingPeriod,
             )
-        val expectedString = testObjectMapper.writeValueAsString(uploadedDataPoint)
+        val expectedString = defaultObjectMapper.writeValueAsString(uploadedDataPoint)
 
         `when`(metaDataManager.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
             val argument = invocation.getArgument<DataPointMetaInformationEntity>(0)

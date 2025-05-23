@@ -3,62 +3,57 @@
 		"general": {
 			"general": {
 				"referencedReports": {
-					"AnnualReport": {
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "AnnualReport",
-						"publicationDate": "2023-10-22"
-					},
 					"ESEFReport": {
-						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 						"fileName": "ESEFReport",
-						"publicationDate": "2024-01-04"
+						"publicationDate": "2023-05-25"
 					},
-					"IntegratedReport": {
-						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
-						"fileName": "IntegratedReport",
-						"publicationDate": "2023-09-16"
+					"AnnualReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": "AnnualReport",
+						"publicationDate": "2024-01-11"
 					}
 				}
 			},
 			"financialInformation": {
 				"equity": {
-					"value": 7451409111.95,
+					"value": 8525619035.1,
 					"dataSource": {
-						"page": "445",
+						"page": "973",
 						"fileName": "ESEFReport",
-						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
-						"tagName": "communities",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "synergies",
 						"publicationDate": null
 					},
-					"comment": "override auxiliary monitor",
-					"quality": "Incomplete",
-					"currency": "UYU"
+					"comment": "input primary card",
+					"quality": "Estimated",
+					"currency": "JOD"
 				},
 				"debt": {
-					"value": 8942640892.53,
+					"value": 1014226825.96,
 					"dataSource": {
-						"page": "372-1084",
+						"page": "360",
 						"fileName": "AnnualReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "models",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "interfaces",
 						"publicationDate": null
 					},
-					"comment": "generate digital matrix",
-					"quality": "NoDataFound",
-					"currency": "MKD"
+					"comment": "copy online system",
+					"quality": "Incomplete",
+					"currency": "KZT"
 				},
 				"evic": {
-					"value": 7117288694.36,
+					"value": 2854213973.69,
 					"dataSource": {
-						"page": "498",
-						"fileName": "IntegratedReport",
-						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
-						"tagName": "paradigms",
+						"page": "996-1087",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "experiences",
 						"publicationDate": null
 					},
-					"comment": "index redundant sensor",
+					"comment": "connect bluetooth array",
 					"quality": "Reported",
-					"currency": "QAR"
+					"currency": "CHF"
 				}
 			}
 		}
@@ -80,17 +75,17 @@
 					"verdict": "QaRejected",
 					"comment": "EVIC is not correct",
 					"correctedData": {
-						"value": 9801827824,
+						"value": 9916165867.42,
 						"dataSource": {
-							"page": "566-1239",
+							"page": "549",
 							"fileName": "ESEFReport",
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
-							"tagName": "markets",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
 							"publicationDate": null
 						},
-						"comment": "calculate optical firewall",
-						"quality": "Audited",
-						"currency": "UZS"
+						"comment": "parse virtual capacitor",
+						"quality": "Incomplete",
+						"currency": "BDT"
 					}
 				}
 			}

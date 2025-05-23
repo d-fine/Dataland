@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyRevenueNonAlignedShareAbsoluteShare",
+  "name" : "Absolute Share",
+  "businessDefinition" : "Absolute value of the revenue that is associated with non taxonomy-aligned but eligible activities",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}

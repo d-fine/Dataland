@@ -21,57 +21,63 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the esg-datenkatalog framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param datasetStorageService service to handle data storage
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
 @RequestMapping("/data/esg-datenkatalog")
 @RestController
-class EsgDatenkatalogDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<EsgDatenkatalogData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        myCompanyQueryManager,
-        EsgDatenkatalogData::class.java,
-    ) {
-    @Operation(operationId = "getCompanyAssociatedEsgDatenkatalogData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EsgDatenkatalogData>> =
-        super.getCompanyAssociatedData(dataId)
+class EsgDatenkatalogDataController
+    @Autowired
+    constructor(
+        datasetStorageService: DataManager,
+        dataMetaInformationManager: DataMetaInformationManager,
+        dataExportService: DataExportService,
+        companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+    ) : DataController<EsgDatenkatalogData>(
+            datasetStorageService,
+            dataMetaInformationManager,
+            dataExportService,
+            objectMapper,
+            companyQueryManager,
+            EsgDatenkatalogData::class.java,
+        ) {
+        @Operation(operationId = "getCompanyAssociatedEsgDatenkatalogData")
+        override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EsgDatenkatalogData>> =
+            super.getCompanyAssociatedData(dataId)
 
-    @Operation(operationId = "getCompanyAssociatedEsgDatenkatalogDataByDimensions")
-    override fun getCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
-    ): ResponseEntity<CompanyAssociatedData<EsgDatenkatalogData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+        @Operation(operationId = "getCompanyAssociatedEsgDatenkatalogDataByDimensions")
+        override fun getCompanyAssociatedDataByDimensions(
+            reportingPeriod: String,
+            companyId: String,
+        ): ResponseEntity<CompanyAssociatedData<EsgDatenkatalogData>> =
+            super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-    @Operation(operationId = "postCompanyAssociatedEsgDatenkatalogData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<EsgDatenkatalogData>,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+        @Operation(operationId = "postCompanyAssociatedEsgDatenkatalogData")
+        override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<EsgDatenkatalogData>,
+            bypassQa: Boolean,
+        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedEsgDatenkatalogDataByDimensions")
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
-        keepValueFieldsOnly: Boolean,
-    ): ResponseEntity<InputStreamResource> =
-        super
-            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+        @Operation(operationId = "exportCompanyAssociatedEsgDatenkatalogDataByDimensions")
+        override fun exportCompanyAssociatedDataByDimensions(
+            reportingPeriods: List<String>,
+            companyIds: List<String>,
+            exportFileType: ExportFileType,
+            keepValueFieldsOnly: Boolean,
+        ): ResponseEntity<InputStreamResource> =
+            super
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
-    @Operation(operationId = "getAllCompanyEsgDatenkatalogData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<EsgDatenkatalogData>>> =
-        super
-            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-}
+        @Operation(operationId = "getAllCompanyEsgDatenkatalogData")
+        override fun getFrameworkDatasetsForCompany(
+            companyId: String,
+            showOnlyActive: Boolean,
+            reportingPeriod: String?,
+        ): ResponseEntity<List<DataAndMetaInformation<EsgDatenkatalogData>>> =
+            super
+                .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }

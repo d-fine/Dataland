@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentEnablingShare",
+  "name" : "Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share",
+  "businessDefinition" : "Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

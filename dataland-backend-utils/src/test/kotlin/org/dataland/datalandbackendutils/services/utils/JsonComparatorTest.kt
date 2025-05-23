@@ -1,21 +1,13 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandbackendutils.services.utils
 
+import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 class JsonComparatorTest {
-    private fun compareJsonStrings(
-        expected: String,
-        actual: String,
-        options: JsonComparator.JsonComparisonOptions = JsonComparator.JsonComparisonOptions(),
-    ): List<JsonComparator.JsonDiff> {
-        val expectedJson = JsonTestUtils.testObjectMapper.readTree(expected)
-        val actualJson = JsonTestUtils.testObjectMapper.readTree(actual)
-        return JsonComparator.compareJson(expectedJson, actualJson, options)
-    }
-
     @ParameterizedTest
     @CsvSource(
         delimiter = ';',
@@ -33,7 +25,7 @@ class JsonComparatorTest {
     ) {
         for (fullyNullObjectsAreEqualToNull in listOf(true, false)) {
             val differences =
-                compareJsonStrings(
+                JsonComparator.compareJsonStrings(
                     expected, actual,
                     JsonComparator.JsonComparisonOptions(
                         fullyNullObjectsAreEqualToNull = fullyNullObjectsAreEqualToNull,
@@ -49,7 +41,7 @@ class JsonComparatorTest {
         val expected = """{"equal": "hello", "diff": 30}"""
         val actual = """{"equal": "hello", "diff": 31}"""
 
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
 
         assertEquals(1, differences.size)
         assertEquals("diff", differences[0].path)
@@ -62,7 +54,7 @@ class JsonComparatorTest {
         val expected = """{"equal": "hello", "nested": {"equal": "a", "delta": "3"}}"""
         val actual = """{"equal": "hello", "nested": {"equal": "a", "delta": "5"}}"""
 
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
 
         assertEquals(1, differences.size)
         assertEquals("nested.delta", differences[0].path)
@@ -77,7 +69,7 @@ class JsonComparatorTest {
         val ignoredKeys = setOf("delta")
 
         val differences =
-            compareJsonStrings(
+            JsonComparator.compareJsonStrings(
                 expected, actual,
                 JsonComparator.JsonComparisonOptions(
                     ignoredKeys = ignoredKeys,
@@ -92,7 +84,7 @@ class JsonComparatorTest {
         val expected = """{"array": ["A", "B"]}"""
         val actual = """{"array": ["A", "C"]}"""
 
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
 
         assertEquals(1, differences.size)
         assertEquals("array[1]", differences[0].path)
@@ -105,7 +97,7 @@ class JsonComparatorTest {
         val expected = """{"array": ["A", "B"]}"""
         val actual = """{"array": ["A"]}"""
 
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
 
         assertEquals(1, differences.size)
         assertEquals("array[1]", differences[0].path)
@@ -118,7 +110,7 @@ class JsonComparatorTest {
         val expected = """{"A": "B"}"""
         val actual = """{}"""
 
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
 
         assertEquals(1, differences.size)
         assertEquals("A", differences[0].path)
@@ -131,7 +123,7 @@ class JsonComparatorTest {
         val expected = """{}"""
         val actual = """{"field1": "value1", "field2": 1}"""
 
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
 
         assertEquals(2, differences.size)
         assertEquals("field1", differences[0].path)
@@ -151,7 +143,7 @@ class JsonComparatorTest {
         expected: String,
         actual: String,
     ) {
-        val differences = compareJsonStrings(expected, actual)
+        val differences = JsonComparator.compareJsonStrings(expected, actual)
         assertEquals(0, differences.size)
     }
 
@@ -165,6 +157,6 @@ class JsonComparatorTest {
         ],
     )
     fun `nested objects with partially null values should not be equal to null`(jsonString: String) {
-        assertEquals(JsonComparator.isFullyNullObject(JsonTestUtils.testObjectMapper.readTree(jsonString)), false)
+        assertEquals(JsonComparator.isFullyNullObject(defaultObjectMapper.readTree(jsonString)), false)
     }
 }

@@ -23,23 +23,28 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the ${frameworkIdentifier} framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param datasetStorageService service to handle data storage
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
-class ${frameworkDataType.shortenedQualifier}Controller(
-    @Autowired var myDataManager: ${frameworkDataManager.shortenedQualifier},
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
+class ${frameworkDataType.shortenedQualifier}Controller
+    @Autowired
+    constructor(
+    datasetStorageService: ${frameworkDataManager.shortenedQualifier},
+    dataMetaInformationManager: DataMetaInformationManager,
+    dataExportService: DataExportService,
+    companyQueryManager: CompanyQueryManager,
+    objectMapper: ObjectMapper,
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
-    myDataManager,
-    myMetaDataManager,
-    myDataExportService,
-    myObjectMapper,
-    myCompanyQueryManager,
+    datasetStorageService,
+    dataMetaInformationManager,
+    dataExportService,
+    objectMapper,
+    companyQueryManager,
     ${frameworkDataType.shortenedQualifier}::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")

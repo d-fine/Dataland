@@ -13,6 +13,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.CompanyDataControllerTestUtils
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -385,26 +386,30 @@ class CompanyDataControllerTest {
         val companyId = companyDataControllerTestUtils.uploadModifiedBaseCompany("AggregatedInformation", null)
         companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
-        sleep(100)
-        val exceptionMap: Map<DataTypeEnum, Long> = mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2)
+        val expectedNumberForFramework: Map<DataTypeEnum, Long> =
+            mapOf(
+                DataTypeEnum.additionalMinusCompanyMinusInformation to 2,
+                DataTypeEnum.eutaxonomyMinusFinancials to 2,
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2,
+                DataTypeEnum.sfdr to 2,
+            )
         val expectedMap =
-            DataTypeEnum.entries.associate { framework ->
-                val numOfReportingPeriods = exceptionMap[framework] ?: 0
-                framework.toString() to
-                    AggregatedFrameworkDataSummary(
-                        numberOfProvidedReportingPeriods = numOfReportingPeriods,
-                    )
-            }
-        val aggregatedFrameworkDataSummary =
-            apiAccessor.companyDataControllerApi
-                .getAggregatedFrameworkDataSummary(
-                    companyId = companyId,
-                ).toSortedMap()
-
-        assertEquals(
-            expectedMap,
-            aggregatedFrameworkDataSummary,
-        )
+            DataTypeEnum.entries
+                .associate { framework ->
+                    val numOfReportingPeriods = expectedNumberForFramework[framework] ?: 0
+                    framework.toString() to
+                        AggregatedFrameworkDataSummary(
+                            numberOfProvidedReportingPeriods = numOfReportingPeriods,
+                        )
+                }.toSortedMap()
+        ApiAwait.waitForCondition condition@{
+            val aggregatedFrameworkDataSummary =
+                apiAccessor.companyDataControllerApi
+                    .getAggregatedFrameworkDataSummary(
+                        companyId = companyId,
+                    ).toSortedMap()
+            return@condition expectedMap == aggregatedFrameworkDataSummary
+        }
     }
 
     @Test

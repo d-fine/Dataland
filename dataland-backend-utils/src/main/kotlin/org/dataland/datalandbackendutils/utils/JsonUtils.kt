@@ -1,9 +1,17 @@
 package org.dataland.datalandbackendutils.utils
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import java.text.SimpleDateFormat
 
 object JsonUtils {
     private const val JSON_PATH_SEPARATOR = "."
+
+    /**
+     * The object mapper used for testing.
+     */
+    val defaultObjectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
     /**
      * Return the path separator used in constructing node paths
