@@ -1,11 +1,12 @@
 package db.migration.utils
+
 import org.flywaydb.core.api.migration.Context
 import org.slf4j.LoggerFactory
 
-typealias CompanyAssociatedDataPointMigration = (entity: DataPointIdAndDataPointTypeEntity) -> Unit
+typealias DataPointIdAndDataPointTypeMigration = (entity: DataPointIdAndDataPointTypeEntity) -> Unit
 
 /**
- * Method to get the company associated data point for a given data point type
+ * Method to get the all tuples of a data point id and data point type for a fixed data point type
  */
 
 fun getDataPointIdsCorrespondingToDataType(
@@ -35,16 +36,16 @@ fun getDataPointIdsCorrespondingToDataType(
 private val logger = LoggerFactory.getLogger("Migration Iterator")
 
 /**
- * Gets all data entries for a specific datatype, modifies them and writes them back to the table
+ * Migrates all tuples of data point ids and data point types for a fixed data point type
  * @context the context of the migration script
- * @dataType the data type string for the data to modify
- * @migrate migration script for a single DataTableEntity
+ * @dataPointType the data point type for the tuples to modify
+ * @migrate migration script for a tuple of data point id and data point type
  */
 
 fun migrateDataPointIdsAndDataPointTypes(
     context: Context?,
     dataPointType: String,
-    migrate: CompanyAssociatedDataPointMigration,
+    migrate: DataPointIdAndDataPointTypeMigration,
 ) {
     val dataPointTableEntities = getDataPointIdsCorrespondingToDataType(context, dataPointType)
     dataPointTableEntities.forEach {

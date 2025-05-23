@@ -9,12 +9,9 @@ import org.flywaydb.core.api.migration.Context
  * This migration script updates the meta information of currency related Sfdr data points, and corrects a suffix in the
  * carbon footprint.
  */
+
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
-    /**
-     * Migrates an old eu taxonomy non financials dataset to the new format
-     */
-
     override fun migrate(context: Context?) {
         val connection = context!!.connection
         val resultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
@@ -46,6 +43,10 @@ class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
                 to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
         )
+
+    /**
+     * Updates the meta information of currency-related Sfdr data points, and corrects a suffix in the carbon footprint.
+     */
 
     fun updateRespectiveDataType(entity: DataPointIdAndDataPointTypeEntity) {
         if (entity.dataPointType == "extendedCurrencyTotalRevenue" ||

@@ -1,20 +1,17 @@
 package db.migration
 
 import db.migration.utils.DataPointTableEntity
-import db.migration.utils.migrateDatePointTableEntities
+import db.migration.utils.migrateDataPointTableEntities
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script updates the EU Taxonomy for non-financials data model switching
- * from a field called value for percentages only to a structure holding the absolute value of a cash flow type as well
+ * This migration script updates currency-related Sfdr data points to the extendedDecimal data point type.
+ * It also changes the suffix of the suffix of the CarbonFootprintInTonnesPerMillionEURRevenue date point type.
  */
+
 @Suppress("ClassName")
 class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
-    /**
-     * Migrates an old eu taxonomy non financials dataset to the new format
-     */
-
     val renameMap =
         mapOf(
             "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
@@ -22,6 +19,10 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
                 to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
         )
+
+    /**
+     * Updates currency-related Sfdr data points to the extendedDecimal data point type.
+     */
 
     fun updateCurrencyFieldsToDecimals(dataPointTableEntity: DataPointTableEntity) {
         if (dataPointTableEntity.dataPointType == "extendedCurrencyTotalRevenue" ||
@@ -33,6 +34,10 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Updates the suffix of the suffix of the CarbonFootprintInTonnesPerMillionEURRevenue date point type.
+     */
+
     fun updateCarbonFootprint(dataPointTableEntity: DataPointTableEntity) {
         if (dataPointTableEntity.dataPointType == "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue") {
             dataPointTableEntity.dataPointType = renameMap[dataPointTableEntity.dataPointType]
@@ -41,18 +46,18 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        migrateDatePointTableEntities(
+        migrateDataPointTableEntities(
             context,
             "extendedCurrencyTotalRevenue",
         ) { this.updateCurrencyFieldsToDecimals(it) }
 
-        migrateDatePointTableEntities(
+        migrateDataPointTableEntities(
             context,
             "extendedCurrencyEnterpriseValue",
             this::updateCurrencyFieldsToDecimals,
         )
 
-        migrateDatePointTableEntities(
+        migrateDataPointTableEntities(
             context,
             "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
             this::updateCarbonFootprint,

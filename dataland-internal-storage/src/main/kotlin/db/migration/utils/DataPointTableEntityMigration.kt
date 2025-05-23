@@ -51,7 +51,7 @@ private val logger = LoggerFactory.getLogger("Migration Iterator")
  * @dataType the data type string for the data to modify
  * @migrate migration script for a single DataTableEntity
  */
-fun migrateDatePointTableEntities(
+fun migrateDataPointTableEntities(
     context: Context?,
     dataPointType: String,
     migrate: CompanyAssociatedDataPointMigration,

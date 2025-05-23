@@ -17,6 +17,7 @@ data class DataPointTableEntity(
     /**
      * Method to get a query that writes the company associated data and data point type to the corresponding table entry
      */
+
     fun executeUpdateQuery(context: Context) {
         val queryStatement =
             context.connection.prepareStatement(
@@ -26,7 +27,9 @@ data class DataPointTableEntity(
             1,
             ObjectMapper().writeValueAsString(dataPoint.toString()),
         )
+
         queryStatement.setString(2, dataPointType)
+        @Suppress("MagicNumber")
         queryStatement.setString(3, dataPointId)
         queryStatement.executeUpdate()
     }
