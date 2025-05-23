@@ -43,21 +43,25 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        migrateDataPointTableEntities(
-            context,
-            "extendedCurrencyTotalRevenue",
-        ) { this.updateCurrencyFieldsToDecimals(it) }
+        val connection = context!!.connection
+        val resultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
+        if (resultSet.next()) {
+            migrateDataPointTableEntities(
+                context,
+                "extendedCurrencyTotalRevenue",
+            ) { this.updateCurrencyFieldsToDecimals(it) }
 
-        migrateDataPointTableEntities(
-            context,
-            "extendedCurrencyEnterpriseValue",
-            this::updateCurrencyFieldsToDecimals,
-        )
+            migrateDataPointTableEntities(
+                context,
+                "extendedCurrencyEnterpriseValue",
+                this::updateCurrencyFieldsToDecimals,
+            )
 
-        migrateDataPointTableEntities(
-            context,
-            "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
-            this::updateCarbonFootprint,
-        )
+            migrateDataPointTableEntities(
+                context,
+                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
+                this::updateCarbonFootprint,
+            )
+        }
     }
 }
