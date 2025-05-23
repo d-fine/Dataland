@@ -60,7 +60,6 @@ class DataManagerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val dataManagerUtils: DataManagerUtils,
-    @Autowired val companyRoleChecker: CompanyRoleChecker,
     @Autowired val sourceabilityDataManager: SourceabilityDataManager,
     @Autowired val cloudEventsMessageHandler: CloudEventMessageHandler,
 ) {
@@ -79,7 +78,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
-                mockStorageClient, dataManagerUtils, companyRoleChecker, mockMessageQueuePublications,
+                mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
@@ -259,7 +258,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
-                mockStorageClient, dataManagerUtils, companyRoleChecker, mockMessageQueuePublications,
+                mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
             )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataset(mockMetaInfo.dataId, DataType("lksg"), "")

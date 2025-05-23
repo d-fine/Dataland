@@ -1,13 +1,16 @@
 package org.dataland.e2etests.tests
 
+import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -15,6 +18,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -56,14 +61,15 @@ class DataControllerTest {
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
 
-        assertEquals(
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds.getValue("companyId"),
                 "",
                 testDataEuTaxonomyNonFinancials,
             ),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+            JsonComparator.JsonComparisonOptions(ignoredKeys = ignoredKeys),
         )
     }
 
@@ -74,6 +80,7 @@ class DataControllerTest {
                 testCompanyInformationTeaser,
                 testDataEuTaxonomyNonFinancials,
             )
+
         val getDataByIdResponse =
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                 .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
@@ -83,10 +90,12 @@ class DataControllerTest {
                 "",
                 testDataEuTaxonomyNonFinancials,
             )
-        assertEquals(
-            expectedCompanyAssociatedData,
-            getDataByIdResponse,
-            "The posted data does not equal the expected test data.",
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            expectedCompanyAssociatedData, getDataByIdResponse,
+            JsonComparator
+                .JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -97,38 +106,37 @@ class DataControllerTest {
                 testCompanyInformationNonTeaser,
                 testDataEuTaxonomyNonFinancials,
             )
+        // The API call is made using a timeout and a retry on 403 errors. Thus, if access is consistently denied,
+        // a timeout exception will be thrown.
         val exception =
-            assertThrows<IllegalArgumentException> {
+            assertThrows<ConditionTimeoutException> {
                 apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
                     .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
             }
-        assertTrue(exception.message!!.contains("Unauthorized access failed"))
+
+        assertTrue(exception.message!!.contains("code=403"))
     }
 
-    @Test
-    fun `check that keycloak reader role can only upload data as company owner or company data uploader`() {
-        val companyId =
-            UUID.fromString(
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-            )
+    @ParameterizedTest
+    @EnumSource(CompanyRole::class)
+    fun `check that keycloak reader role can only upload data as company owner or company data uploader`(role: CompanyRole) {
+        val companyId = UUID.fromString(apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId)
         val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
 
-        for (role in CompanyRole.values()) {
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            apiAccessor.companyRolesControllerApi.assignCompanyRole(role, companyId = companyId, dataReaderUserId)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(role, companyId = companyId, dataReaderUserId)
 
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-            if (rolesThatCanUploadPublicData.contains(role)) {
-                assertDoesNotThrow {
-                    apiAccessor.companyRolesControllerApi.hasUserCompanyRole(role, companyId, dataReaderUserId)
-                }
-                assertDoesNotThrow { uploadEuTaxoDataset(companyId) }
-            } else {
-                assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        if (rolesThatCanUploadPublicData.contains(role)) {
+            assertDoesNotThrow {
+                apiAccessor.companyRolesControllerApi.hasUserCompanyRole(role, companyId, dataReaderUserId)
             }
+            assertDoesNotThrow { uploadEuTaxoDataset(companyId) }
+        } else {
+            assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
         }
     }
 

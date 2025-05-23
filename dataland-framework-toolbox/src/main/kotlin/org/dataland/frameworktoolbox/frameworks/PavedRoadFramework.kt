@@ -58,7 +58,7 @@ abstract class PavedRoadFramework(
     }
 
     /**
-     * Can be overwritten to programmatically customize the excelTemplate (to e.g, add a prefix to all fields)
+     * Can be overwritten to programmatically customize the excelTemplate (e.g., to add a prefix to all fields)
      */
     open fun customizeExcelTemplate(excelTemplate: ExcelTemplate) {
         // Empty as it's just a customization endpoint
@@ -66,7 +66,7 @@ abstract class PavedRoadFramework(
 
     /**
      * Retrieve the ComponentGenerationUtils instance for this framework.
-     * Can be overwritten to supply a custom, framework-specific instance (to e.g., customize the field-name generation)
+     * Can be overwritten to supply a custom, framework-specific instance (e.g., to customize the field-name generation)
      */
     open fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtils()
 
@@ -101,7 +101,7 @@ abstract class PavedRoadFramework(
 
     /**
      * Can be overwritten to programmatically customize the framework representation
-     * (to e.g, add new fields)
+     * (e.g., to add new fields)
      */
     open fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         // Empty as it's just a customization endpoint

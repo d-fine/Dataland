@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+  "name" : "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

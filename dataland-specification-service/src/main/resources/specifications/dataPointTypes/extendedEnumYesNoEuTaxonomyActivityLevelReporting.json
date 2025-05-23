@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoEuTaxonomyActivityLevelReporting",
+  "name" : "EU Taxonomy Activity Level Reporting",
+  "businessDefinition" : "Activity level disclosure",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}

@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.tests.dataPoints.AssembledDatasetTest.LinkedQaReportTestData
 import org.dataland.e2etests.utils.ApiAccessor
@@ -18,7 +19,7 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -191,9 +192,12 @@ class DataMigrationTest {
         val dataMetaInfo = uploadGenericDummyDataset(data = originalData, dataType = DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
-        assertDataEqualsIgnoringDates(
-            originalData, migratedData.data,
-            { it.general?.general?.referencedReports },
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            originalData,
+            migratedData.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -247,7 +251,13 @@ class DataMigrationTest {
 
         val downloadedData =
             Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
-        DataPointTestUtils.assertSfdrDataEquals(downloadedData.data, secondDataset)
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            downloadedData.data,
+            secondDataset,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
+        )
     }
 
     private val minimalDatasetDebt =
