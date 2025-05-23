@@ -4,15 +4,12 @@ import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFramewo
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
-  it('Check framework order of esg datenkatalog, heimathafen, and additional company information', () => {
+  it('Check framework order of esg datenkatalog, and additional company information', () => {
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 3]).to.equal(
       DataTypeEnum.Vsme
     );
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 2]).to.equal(
       DataTypeEnum.EsgDatenkatalog
-    );
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 1]).to.equal(
-      DataTypeEnum.Heimathafen
     );
   });
 

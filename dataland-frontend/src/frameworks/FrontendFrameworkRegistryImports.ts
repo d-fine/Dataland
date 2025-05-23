@@ -3,7 +3,6 @@ import additionalCompanyInformationFrontendFrameworkDefinition from '@/framework
 import esgDatenkatalogFrontendFrameworkDefinition from '@/frameworks/esg-datenkatalog/FrontendFrameworkDefinition';
 import eutaxonomyFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxonomy-financials/FrontendFrameworkDefinition';
 import eutaxonomyNonFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition';
-import heimathafenFrontendFrameworkDefinition from '@/frameworks/heimathafen/FrontendFrameworkDefinition';
 import lksgFrontendFrameworkDefinition from '@/frameworks/lksg/FrontendFrameworkDefinition';
 import nuclearAndGasFrontendFrameworkDefinition from '@/frameworks/nuclear-and-gas/FrontendFrameworkDefinition';
 import sfdrFrontendFrameworkDefinition from '@/frameworks/sfdr/FrontendFrameworkDefinition';
@@ -16,7 +15,6 @@ export const FrontendFrameworkDefinitions: Record<string, FrontendFrameworkDefin
   esgDatenkatalog: esgDatenkatalogFrontendFrameworkDefinition,
   eutaxonomyFinancials: eutaxonomyFinancialsFrontendFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
-  heimathafen: heimathafenFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,
   nuclearAndGas: nuclearAndGasFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,

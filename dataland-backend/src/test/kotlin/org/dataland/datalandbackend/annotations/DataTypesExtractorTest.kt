@@ -15,7 +15,6 @@ class DataTypesExtractorTest {
                 "vsme",
                 "p2p",
                 "esg-datenkatalog",
-                "heimathafen",
                 "additional-company-information",
                 "nuclear-and-gas",
             )

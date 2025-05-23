@@ -63,7 +63,6 @@ class DataRequestSummaryEmailBuilderTest {
             "additional-company-information;Additional Company Information",
             "vsme;VSME",
             "esg-datenkatalog;ESG Datenkatalog",
-            "heimathafen;Heimathafen",
         ],
     )
     fun `check that data request summary emails contain the human readable names of frameworks`(

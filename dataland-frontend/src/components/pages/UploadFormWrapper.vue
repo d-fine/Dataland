@@ -20,7 +20,6 @@ import CreateAdditionalCompanyInformationDataset from '@/components/forms/Create
 import CreateEsgDatenkatalogDataset from '@/components/forms/CreateEsgDatenkatalogDataset.vue';
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
-import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
 import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
@@ -56,8 +55,6 @@ const frameworkToUploadComponent = computed(() => {
       return CreateLksgDataset;
     case `${DataTypeEnum.Sfdr}`:
       return CreateSfdrDataset;
-    case `${DataTypeEnum.Heimathafen}`:
-      return CreateHeimathafenDataset;
     case `${DataTypeEnum.EsgDatenkatalog}`:
       return CreateEsgDatenkatalogDataset;
     case `${DataTypeEnum.Vsme}`:

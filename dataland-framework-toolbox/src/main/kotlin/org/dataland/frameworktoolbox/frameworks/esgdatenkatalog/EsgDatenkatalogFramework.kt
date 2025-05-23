@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import java.io.File
 
 /**
- * Definition of the Heimathafen framework
+ * Definition of the ESG Datenkatalog framework
  */
 @Component
 class EsgDatenkatalogFramework :

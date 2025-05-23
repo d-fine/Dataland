@@ -4,7 +4,6 @@ import additionalCompanyInformationBaseFrameworkDefinition from '@/frameworks/ad
 import esgDatenkatalogBaseFrameworkDefinition from '@/frameworks/esg-datenkatalog/BaseFrameworkDefinition';
 import eutaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
-import heimathafenBaseFrameworkDefinition from '@/frameworks/heimathafen/BaseFrameworkDefinition';
 import lksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import nuclearAndGasBaseFrameworkDefinition from '@/frameworks/nuclear-and-gas/BaseFrameworkDefinition';
 import sfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
@@ -14,7 +13,6 @@ export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefin
   esgDatenkatalog: esgDatenkatalogBaseFrameworkDefinition,
   eutaxonomyFinancials: eutaxonomyFinancialsBaseFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
-  heimathafen: heimathafenBaseFrameworkDefinition,
   lksg: lksgBaseFrameworkDefinition,
   nuclearAndGas: nuclearAndGasBaseFrameworkDefinition,
   sfdr: sfdrBaseFrameworkDefinition,

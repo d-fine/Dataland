@@ -123,7 +123,6 @@ sonar {
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-datenkatalog/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
@@ -162,10 +161,8 @@ sonar {
                 "dataland-frontend/src/components/generics/TheNewFooter.vue," +
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
-                "dataland-frontend/src/components/forms/CreateHeimathafenDataset.vue," +
 
                 // frontend configs
-                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +
                 // -> no need to cover these two ViewConfigs because there are no custom fields
 

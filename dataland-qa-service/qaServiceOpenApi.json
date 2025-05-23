@@ -1684,8 +1684,7 @@
                   "lksg",
                   "additional-company-information",
                   "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "esg-datenkatalog"
                 ]
               }
             }
@@ -1781,8 +1780,7 @@
                   "lksg",
                   "additional-company-information",
                   "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "esg-datenkatalog"
                 ]
               }
             }
@@ -6171,8 +6169,7 @@
               "lksg",
               "additional-company-information",
               "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "esg-datenkatalog"
             ]
           },
           "uploadTime": {

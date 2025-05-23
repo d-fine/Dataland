@@ -16,7 +16,7 @@ describe('check that the document link component works and is displayed correctl
         documentDownloadInfo: {
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
-          dataType: DataTypeEnum.Heimathafen,
+          dataType: DataTypeEnum.Lksg,
         },
       },
     }).then(() => {
@@ -38,7 +38,7 @@ describe('check that the document link component works and is displayed correctl
         documentDownloadInfo: {
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
-          dataType: DataTypeEnum.Heimathafen,
+          dataType: DataTypeEnum.Lksg,
         },
       },
     }).then((mounted) => {
@@ -62,7 +62,7 @@ describe('check that the document link component works and is displayed correctl
         documentDownloadInfo: {
           downloadName: 'Test',
           fileReference: 'dummyFileReference',
-          dataType: DataTypeEnum.Heimathafen,
+          dataType: DataTypeEnum.Lksg,
         },
       },
     }).then((mounted) => {

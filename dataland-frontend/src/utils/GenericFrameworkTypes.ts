@@ -3,7 +3,6 @@ import {
   type EsgDatenkatalogData,
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
-  type HeimathafenData,
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
@@ -52,5 +51,4 @@ export type FrameworkData =
   | SfdrData
   | VsmeData
   | EsgDatenkatalogData
-  | PathwaysToParisData
-  | HeimathafenData;
+  | PathwaysToParisData;
