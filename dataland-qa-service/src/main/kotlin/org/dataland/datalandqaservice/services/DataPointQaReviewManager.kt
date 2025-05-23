@@ -318,14 +318,13 @@ class DataPointQaReviewManager
             chunkSize: Int,
             chunkIndex: Int,
         ): List<DataPointQaReviewInformation> {
-            val schemaOfFramework = getFrameworkSpecificationOrNull(searchFilter.dataType)
-            if (schemaOfFramework == null) {
-                return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
-            }
-            return DataPointUtils.getDataPointTypes(schemaOfFramework).flatMap { type ->
-                val searchFilterWithReplacedDataType = searchFilter.copy(dataType = type)
-                queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
-            }
+            val schemaOfFramework =
+                getFrameworkSpecificationOrNull(searchFilter.dataTypeList?.singleOrNull())
+                    ?: return queryReviewItems(searchFilter, showOnlyActive, chunkSize, chunkIndex)
+            val searchFilterWithReplacedDataType =
+                searchFilter
+                    .copy(dataTypeList = DataPointUtils.getDataPointTypes(schemaOfFramework).toList())
+            return queryReviewItems(searchFilterWithReplacedDataType, showOnlyActive, chunkSize, chunkIndex)
         }
 
         /**

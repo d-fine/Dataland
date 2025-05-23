@@ -164,7 +164,7 @@ class QaController(
         val searchFilter =
             DataPointQaReviewItemFilter(
                 companyId = companyId,
-                dataType = dataType,
+                dataTypeList = dataType?.let { listOf(it) },
                 reportingPeriod = reportingPeriod,
                 qaStatus = qaStatus,
             )

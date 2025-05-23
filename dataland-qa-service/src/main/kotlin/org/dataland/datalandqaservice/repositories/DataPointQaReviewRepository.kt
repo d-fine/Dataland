@@ -87,7 +87,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
     @Query(
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
-            "AND (:#{#filter.dataType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataType}) " +
+            "AND (:#{#filter.dataTypeList} IS NULL OR dataPointQaReview.dataPointType IN :#{#filter.dataTypeList}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
             "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
             "ORDER BY dataPointQaReview.timestamp DESC " +
@@ -112,7 +112,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
             "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
-            "AND (:#{#filter.dataType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataType}) " +
+            "AND (:#{#filter.dataTypeList} IS NULL OR dataPointQaReview.dataPointType IN :#{#filter.dataTypeList}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
             "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
             "ORDER BY dataPointQaReview.timestamp DESC " +
@@ -141,7 +141,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "sub.dataPointType = dataPointQaReview.dataPointType AND " +
             "sub.reportingPeriod = dataPointQaReview.reportingPeriod) " +
             "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
-            "AND (:#{#filter.dataType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataType}) " +
+            "AND (:#{#filter.dataTypeList} IS NULL OR dataPointQaReview.dataPointType IN :#{#filter.dataTypeList}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
