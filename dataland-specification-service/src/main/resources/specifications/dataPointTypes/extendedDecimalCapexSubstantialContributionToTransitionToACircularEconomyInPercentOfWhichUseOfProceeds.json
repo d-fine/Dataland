@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds",
+  "name" : "Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds",
+  "businessDefinition" : "Taxonomy-aligned use of proceeds share substantially contributing to circular economy",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

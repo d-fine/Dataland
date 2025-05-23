@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -30,6 +31,7 @@ data class EutaxonomyNonFinancialsGeneral(
     val euTaxonomyActivityLevelReporting: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()
     val assurance: AssuranceDataPoint? = null,
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
