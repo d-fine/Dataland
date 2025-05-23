@@ -9,7 +9,6 @@ import org.flywaydb.core.api.migration.Context
  * This migration script updates the meta information of currency related Sfdr data points, and corrects a suffix in the
  * carbon footprint.
  */
-
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     override fun migrate(context: Context?) {

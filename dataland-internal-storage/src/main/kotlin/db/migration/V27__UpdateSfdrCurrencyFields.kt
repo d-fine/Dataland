@@ -9,7 +9,6 @@ import org.flywaydb.core.api.migration.Context
  * This migration script updates currency-related Sfdr data points to the extendedDecimal data point type.
  * It also changes the suffix of the suffix of the CarbonFootprintInTonnesPerMillionEURRevenue date point type.
  */
-
 @Suppress("ClassName")
 class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     val renameMap =
@@ -23,7 +22,6 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     /**
      * Updates currency-related Sfdr data points to the extendedDecimal data point type.
      */
-
     fun updateCurrencyFieldsToDecimals(dataPointTableEntity: DataPointTableEntity) {
         if (dataPointTableEntity.dataPointType == "extendedCurrencyTotalRevenue" ||
             dataPointTableEntity.dataPointType == "extendedCurrencyEnterpriseValue"
@@ -37,7 +35,6 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     /**
      * Updates the suffix of the suffix of the CarbonFootprintInTonnesPerMillionEURRevenue date point type.
      */
-
     fun updateCarbonFootprint(dataPointTableEntity: DataPointTableEntity) {
         if (dataPointTableEntity.dataPointType == "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue") {
             dataPointTableEntity.dataPointType = renameMap[dataPointTableEntity.dataPointType]
