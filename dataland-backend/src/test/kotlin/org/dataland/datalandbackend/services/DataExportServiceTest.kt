@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
@@ -24,13 +23,13 @@ class DataExportServiceTest {
     private val dataExportService = DataExportService(objectMapper, mockDataPointUtils, mockReferencedReportsUtils)
 
     private val testDataProvider = TestDataProvider(objectMapper)
-    private val euTaxonomyNonFinancialsTestData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
-    private val euTaxonomyCompanyExportTestData =
+    private val lksgTestData = testDataProvider.getLksgDataset()
+    private val lksgCompanyExportTestData =
         SingleCompanyExportData(
             companyName = "test name",
             companyLei = UUID.randomUUID().toString(),
             reportingPeriod = "2024",
-            data = euTaxonomyNonFinancialsTestData,
+            data = lksgTestData,
         )
 
     private val companyExportDataLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
@@ -56,14 +55,14 @@ class DataExportServiceTest {
     fun `check that exported json coincides with input object`() {
         val jsonStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(euTaxonomyCompanyExportTestData),
+                listOf(lksgCompanyExportTestData),
                 ExportFileType.JSON,
-                DataType.valueOf("eutaxonomy-non-financials"),
+                DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
             )
-        val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<EutaxonomyNonFinancialsData>>>(jsonStream.inputStream)
+        val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
 
-        Assertions.assertEquals(listOf(euTaxonomyCompanyExportTestData), exportedJsonObject)
+        Assertions.assertEquals(listOf(lksgCompanyExportTestData), exportedJsonObject)
     }
 
     @Test

@@ -2,7 +2,6 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model
     .ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
@@ -35,5 +34,4 @@ data class EutaxonomyNonFinancialsGeneral(
     val iloCoreLabourStandards: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
 )

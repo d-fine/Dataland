@@ -3,10 +3,11 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -51,9 +52,11 @@ class Sfdr {
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        assertDataEqualsIgnoringDates(
-            listOfOneSfdrDataset[0], downloadedAssociatedData.data,
-            { it.general?.general?.referencedReports },
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            listOfOneSfdrDataset[0],
+            downloadedAssociatedData.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -77,9 +80,11 @@ class Sfdr {
                     )
             }
 
-        assertDataEqualsIgnoringDates(
-            listOfOneSfdrDataset[0], downloadedAssociatedData.data,
-            { it.general?.general?.referencedReports },
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            listOfOneSfdrDataset[0],
+            downloadedAssociatedData.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 

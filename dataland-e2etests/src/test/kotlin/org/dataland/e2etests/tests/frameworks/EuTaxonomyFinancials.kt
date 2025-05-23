@@ -3,9 +3,10 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
-import org.dataland.e2etests.utils.assertDataEqualsIgnoringDates
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -39,10 +40,12 @@ class EuTaxonomyFinancials {
             apiAccessor.dataControllerApiForEuTaxonomyFinancials
                 .getCompanyAssociatedEutaxonomyFinancialsData(dataId)
                 .data
-        assertDataEqualsIgnoringDates(
-            euTaxoFinancialsDataset,
-            downloadedData,
-            { it.general?.general?.referencedReports },
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
+            euTaxoFinancialsDataset, downloadedData,
+            JsonComparator
+                .JsonComparisonOptions(ignoredKeys),
         )
     }
 

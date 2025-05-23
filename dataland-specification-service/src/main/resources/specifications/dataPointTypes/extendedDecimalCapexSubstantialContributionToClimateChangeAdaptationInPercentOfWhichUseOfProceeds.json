@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds",
+  "name" : "Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds",
+  "businessDefinition" : "Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}
