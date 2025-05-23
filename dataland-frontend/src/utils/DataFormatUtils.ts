@@ -65,3 +65,19 @@ export function getHyphenatedDate(date: Date): string {
   const dateInEpochMsMinusTimezoneOffset = date.getTime() - timeZoneOffsetBetweenLocalAndUtcInMs;
   return new Date(dateInEpochMsMinusTimezoneOffset).toISOString().substring(0, 10);
 }
+
+/**
+ * Returns a string in the format of "yyyy-MM-dd-HHmmss" that is used in the filename for data exports.
+ * @param date
+ */
+export function getDateStringForDataExport(date: Date): string {
+  return `${getHyphenatedDate(date)}-${padStart(date.getHours())}${padStart(date.getMinutes())}${padStart(date.getSeconds())}`;
+}
+
+/**
+ * Prepends numbers with '0' if they have fewer than 2 digits.
+ * @param num
+ */
+function padStart(num: number): string {
+  return num.toString().padStart(2, '0');
+}

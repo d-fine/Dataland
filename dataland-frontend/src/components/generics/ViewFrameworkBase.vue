@@ -125,6 +125,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
@@ -417,8 +418,9 @@ export default defineComponent({
           throw new ReferenceError('ExportFileType undefined.');
         }
 
+        const formatted_timestamp = getDateStringForDataExport(new Date());
         const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-        const filename = `${selectedYear}-${this.dataType}-${this.companyID}.${fileExtension}`;
+        const filename = `data-export-${formatted_timestamp}.${fileExtension}`;
 
         const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
           [selectedYear],
@@ -443,7 +445,7 @@ export default defineComponent({
      * In order to download a file via frontend, it is necessary to create a link, attach the file to it, and click
      * the link to trigger the file download. Afterward, the created element is deleted from the DOM.
      * @param content dataContent string to be downloaded to file
-     * @param filename name of file to be downloaded
+     * @param filename name of the file to be downloaded
      */
     forceFileDownload(content: string, filename: string) {
       const url = window.URL.createObjectURL(new Blob([content]));

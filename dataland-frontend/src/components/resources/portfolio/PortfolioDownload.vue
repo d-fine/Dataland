@@ -84,6 +84,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
@@ -104,8 +105,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
-const selectedFileType = ref(undefined);
-
+const selectedFileType = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const keepValuesOnly = ref(true);
 const showFileTypeError = ref(false);
@@ -269,10 +269,12 @@ async function downloadPortfolio(): Promise<void> {
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
+    const selectedExportFileType = ALL_EXPORT_FILE_TYPES.find((type) => type === selectedFileType.value)!;
+
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       getSelectedReportingPeriods(),
       getCompanyIds(),
-      selectedFileType.value,
+      selectedExportFileType,
       keepValuesOnly.value
     );
 
@@ -282,7 +284,11 @@ async function downloadPortfolio(): Promise<void> {
       return;
     }
 
-    forceFileDownload(dataResponse.data, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
+    const formatted_timestamp = getDateStringForDataExport(new Date());
+    const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
+    const filename = `data-export-${formatted_timestamp}.${fileExtension}`;
+
+    forceFileDownload(dataResponse.data, filename);
   } catch (error) {
     console.error(error);
     portfolioErrors.value = `${(error as AxiosError).message}`;
