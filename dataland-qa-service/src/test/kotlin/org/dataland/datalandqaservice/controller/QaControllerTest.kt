@@ -168,6 +168,7 @@ class QaControllerTest(
         dataType: String?,
         qaStatus: QaStatus? = null,
         chunkSize: Int = 10,
+        chunkIndex: Int = 0,
     ): List<DataPointQaReviewInformation> =
         qaController
             .getDataPointQaReviewInformation(
@@ -177,7 +178,7 @@ class QaControllerTest(
                 qaStatus = qaStatus,
                 showOnlyActive = showOnlyActive,
                 chunkSize = chunkSize,
-                chunkIndex = 0,
+                chunkIndex = chunkIndex,
             ).body!!
 
     private fun verifyQaStatusChangeEmitsCorrectCloudEvents() {
@@ -239,6 +240,8 @@ class QaControllerTest(
             val allReviewEntries = getReviewEntries(showOnlyActive = false, dataType = dataPointType)
             assertEquals(8, allReviewEntries.size)
             assertEquals(firstComment, allReviewEntries[allReviewEntries.size - 5].comment)
+            val allReviewEntriesChunked = getReviewEntries(showOnlyActive = false, dataType = dataPointType, chunkSize = 2, chunkIndex = 1)
+            assertEquals(allReviewEntries[2].timestamp, allReviewEntriesChunked[0].timestamp)
 
             val allTestFrameworkDataPoints = getReviewEntries(showOnlyActive = false, dataType = dataTypeTestFramework, chunkSize = 5)
             assertEquals(5, allTestFrameworkDataPoints.size)

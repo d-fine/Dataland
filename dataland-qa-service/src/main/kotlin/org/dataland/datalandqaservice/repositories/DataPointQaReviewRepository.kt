@@ -101,31 +101,6 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
 
     /**
      * Find all QA information items filtering by company ID, data point identifier, reporting period and QA status provided via [filter].
-     * Results are paginated using [resultLimit] and [resultOffset] and only contain the most recent entry per dataPointId.
-     * @param filter the filter to apply to the search containing the company ID, data point identifier, reporting period and the QA status
-     * @param resultLimit the maximum number of results to return
-     * @param resultOffset the offset to start the result set from
-     */
-    @Query(
-        "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
-            "WHERE dataPointQaReview.timestamp = " +
-            "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
-            "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
-            "AND (:#{#filter.dataTypeList} IS NULL OR dataPointQaReview.dataPointType IN :#{#filter.dataTypeList}) " +
-            "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
-            "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
-            "ORDER BY dataPointQaReview.timestamp DESC " +
-            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
-    )
-    fun findByFilterLatestOnly(
-        @Param("filter") filter: DataPointQaReviewItemFilter,
-        @Param("resultLimit") resultLimit: Int? = 100,
-        @Param("resultOffset") resultOffset: Int? = 0,
-    ): List<DataPointQaReviewEntity>
-
-    /**
-     * Find all QA information items filtering by company ID, data point identifier, reporting period and QA status provided via [filter].
      * Results are paginated using [resultLimit] and [resultOffset] and only contain the active datapoint if one exists.
      * @param filter the filter to apply to the search containing the company ID, data point identifier, reporting period and the QA status
      * @param resultLimit the maximum number of results to return

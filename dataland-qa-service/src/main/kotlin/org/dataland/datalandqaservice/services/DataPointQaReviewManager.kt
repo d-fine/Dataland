@@ -356,18 +356,19 @@ class DataPointQaReviewManager
         private fun queryReviewItems(
             searchFilter: DataPointQaReviewItemFilter,
             showOnlyActive: Boolean,
-            chunkSize: Int?,
-            chunkIndex: Int?,
+            chunkSize: Int,
+            chunkIndex: Int,
         ): List<DataPointQaReviewInformation> {
+            val offset = chunkSize * chunkIndex
             val filteredQaDataPoints =
                 if (!showOnlyActive) {
                     dataPointQaReviewRepository
-                        .findByFilter(searchFilter, chunkSize, chunkIndex)
+                        .findByFilter(searchFilter, chunkSize, offset)
                 } else if (searchFilter.qaStatus in listOf(QaStatus.Pending, QaStatus.Rejected)) {
                     emptyList()
                 } else {
                     dataPointQaReviewRepository
-                        .findByFilterShowOnlyActive(searchFilter, chunkSize, chunkIndex)
+                        .findByFilterShowOnlyActive(searchFilter, chunkSize, offset)
                 }
             return filteredQaDataPoints.map { it.toDataPointQaReviewInformation() }
         }
