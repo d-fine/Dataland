@@ -29,6 +29,7 @@ data class EutaxonomyNonFinancialsRevenue(
     val eligibleShare: EutaxonomyNonFinancialsRevenueEligibleShare? = null,
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsRevenueNonAlignedShare? = null,
+    @field:Valid()
     val nonAlignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyActivity>?>? = null,
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,
@@ -90,6 +91,7 @@ data class EutaxonomyNonFinancialsRevenue(
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
         ExtendedDataPoint<BigDecimal?>? = null,
+    @field:Valid()
     val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
     @field:Valid()
     val enablingShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,

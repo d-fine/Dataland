@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -163,20 +165,19 @@ class CompanyRolesControllerTest {
         )
     }
 
-    @Test
-    fun `assure bypassQa is only allowed for user with keycloak uploader and keycloak reviewer rights`() {
+    @ParameterizedTest
+    @EnumSource(value = TechnicalUser::class)
+    fun `assure bypassQa is only allowed for user with keycloak uploader and keycloak reviewer rights`(user: TechnicalUser) {
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
         assertTrue(REVIEWER_EXTENDED_ROLES.size == 1 || UPLOADER_EXTENDED_ROLES.size == 1)
 
-        for (technicalUser in TechnicalUser.entries) {
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-            val isUserKeycloakReviewer = technicalUser.roles.contains(REVIEWER_EXTENDED_ROLES.first())
-            val isUserKeycloakUploader = technicalUser.roles.contains(UPLOADER_EXTENDED_ROLES.first())
-            if (isUserKeycloakReviewer && isUserKeycloakUploader) {
-                assertDoesNotThrow { companyRolesTestUtils.uploadEuTaxoDataWithBypassQa(companyId) }
-            } else {
-                companyRolesTestUtils.assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
-            }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+        val isUserKeycloakReviewer = user.roles.contains(REVIEWER_EXTENDED_ROLES.first())
+        val isUserKeycloakUploader = user.roles.contains(UPLOADER_EXTENDED_ROLES.first())
+        if (isUserKeycloakReviewer && isUserKeycloakUploader) {
+            assertDoesNotThrow { companyRolesTestUtils.uploadEuTaxoDataWithBypassQa(companyId) }
+        } else {
+            companyRolesTestUtils.assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
         }
     }
 

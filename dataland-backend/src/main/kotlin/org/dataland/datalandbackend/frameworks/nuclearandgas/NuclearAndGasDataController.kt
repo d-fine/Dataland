@@ -21,57 +21,62 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the nuclear-and-gas framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param datasetStorageService service to handle data storage
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
 @RequestMapping("/data/nuclear-and-gas")
 @RestController
-class NuclearAndGasDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myCompanyQueryManager: CompanyQueryManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<NuclearAndGasData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        myCompanyQueryManager,
-        NuclearAndGasData::class.java,
-    ) {
-    @Operation(operationId = "getCompanyAssociatedNuclearAndGasData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
-        super.getCompanyAssociatedData(dataId)
+class NuclearAndGasDataController
+    @Autowired
+    constructor(
+        datasetStorageService: DataManager,
+        dataMetaInformationManager: DataMetaInformationManager,
+        dataExportService: DataExportService,
+        companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+    ) : DataController<NuclearAndGasData>(
+            datasetStorageService,
+            dataMetaInformationManager,
+            dataExportService,
+            objectMapper,
+            companyQueryManager,
+            NuclearAndGasData::class.java,
+        ) {
+        @Operation(operationId = "getCompanyAssociatedNuclearAndGasData")
+        override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
+            super.getCompanyAssociatedData(dataId)
 
-    @Operation(operationId = "getCompanyAssociatedNuclearAndGasDataByDimensions")
-    override fun getCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
-    ): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+        @Operation(operationId = "getCompanyAssociatedNuclearAndGasDataByDimensions")
+        override fun getCompanyAssociatedDataByDimensions(
+            reportingPeriod: String,
+            companyId: String,
+        ): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-    @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+        @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
+        override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,
+            bypassQa: Boolean,
+        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataByDimensions")
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
-        keepValueFieldsOnly: Boolean,
-    ): ResponseEntity<InputStreamResource> =
-        super
-            .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+        @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataByDimensions")
+        override fun exportCompanyAssociatedDataByDimensions(
+            reportingPeriods: List<String>,
+            companyIds: List<String>,
+            exportFileType: ExportFileType,
+            keepValueFieldsOnly: Boolean,
+        ): ResponseEntity<InputStreamResource> =
+            super
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
-    @Operation(operationId = "getAllCompanyNuclearAndGasData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<NuclearAndGasData>>> =
-        super
-            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-}
+        @Operation(operationId = "getAllCompanyNuclearAndGasData")
+        override fun getFrameworkDatasetsForCompany(
+            companyId: String,
+            showOnlyActive: Boolean,
+            reportingPeriod: String?,
+        ): ResponseEntity<List<DataAndMetaInformation<NuclearAndGasData>>> =
+            super
+                .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }

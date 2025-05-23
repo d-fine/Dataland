@@ -30,14 +30,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
  * @param datasetStorageService service to handle data storage
- * @param dataMetaInformationManager service for handling data meta information
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
  * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
-
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
@@ -211,7 +213,7 @@ open class DataController<T>(
 
     private fun buildHttpHeadersForExport(exportFileType: ExportFileType): HttpHeaders {
         val headers = HttpHeaders()
-        val timestamp = LocalDateTime.now().toString()
+        val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHmmss"))
         headers.contentType = exportFileType.mediaType
         headers.contentDisposition =
             ContentDisposition

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyCapexTotalAmount",
+  "name" : "Total Amount",
+  "businessDefinition" : "Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : null
+}
