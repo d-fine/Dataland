@@ -176,11 +176,28 @@ class DataExportService
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isAssembledDataset)
 
             val outputStream = ByteArrayOutputStream()
-            val csvWriter = CsvMapper().writerFor(List::class.java).with(csvSchema)
             if (excelCompatibility) {
                 transformDataToExcel(allHeaderFields.toList(), csvData, outputStream)
             } else {
-                csvWriter.writeValue(outputStream, csvData)
+                val csvMapper = CsvMapper()
+                val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
+                val rawCsv = csvWriter.writeValueAsString(csvData)
+
+                // Get original header names
+                val originalHeaders = csvSchema.columnNames
+                val readableHeaders = createHumanReadableFieldNames(originalHeaders)
+                val humanHeaderLine = originalHeaders.joinToString(",") { readableHeaders[it] ?: it }
+
+                // Replace only the header line
+                val csvWithReadableHeaders =
+                    rawCsv
+                        .lineSequence()
+                        .toList()
+                        .let {
+                            listOf(humanHeaderLine) + it.drop(1)
+                        }.joinToString("\n")
+
+                outputStream.write(csvWithReadableHeaders.toByteArray())
             }
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
@@ -281,4 +298,19 @@ class DataExportService
             }
             return csvSchemaBuilder.build().withHeader()
         }
+
+        private fun createHumanReadableFieldNames(fields: Collection<String>): Map<String, String> =
+            fields.associateWith { original ->
+                val parts = original.split('.')
+                val relevantParts = if (parts.firstOrNull() == "data") parts.drop(1) else parts
+
+                val formattedString =
+                    relevantParts.joinToString(" ") { part ->
+                        part
+                            .replace(Regex("([a-z])([A-Z])"), "$1 $2")
+                            .replaceFirstChar { it.uppercaseChar() }
+                    }
+
+                formattedString.replace("General General", "General")
+            }
     }
