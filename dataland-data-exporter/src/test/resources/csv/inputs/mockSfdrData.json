@@ -159,7 +159,7 @@
         "comment": "back up mobile protocol",
         "quality": "Reported"
       },
-      "enterpriseValue": {
+      "enterpriseValueInEUR": {
         "value": 7862174462.06,
         "dataSource": {
           "page": 673,
@@ -168,10 +168,9 @@
           "tagName": "channels"
         },
         "comment": "override back-end program",
-        "quality": "Reported",
-        "currency": "SRD"
+        "quality": "Reported"
       },
-      "totalRevenue": {
+      "totalRevenueInEUR": {
         "value": 4011820680.46,
         "dataSource": {
           "page": 548,
@@ -180,10 +179,9 @@
           "tagName": "supply-chains"
         },
         "comment": "override wireless alarm",
-        "quality": "Audited",
-        "currency": "LRD"
+        "quality": "Audited"
       },
-      "carbonFootprintInTonnesPerMillionEURRevenue": {
+      "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
         "value": 81868.4,
         "dataSource": {
           "page": 731,

@@ -8356,23 +8356,23 @@
               }
             ]
           },
-          "enterpriseValue": {
+          "enterpriseValueInEUR": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "totalRevenue": {
+          "totalRevenueInEUR": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "carbonFootprintInTonnesPerMillionEURRevenue": {
+          "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
             "nullable": true,
             "allOf": [
               {
@@ -20826,10 +20826,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

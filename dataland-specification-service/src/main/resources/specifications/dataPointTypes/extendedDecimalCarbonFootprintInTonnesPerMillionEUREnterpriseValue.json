@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
+  "name" : "Carbon footprint",
+  "businessDefinition" : "Tonnes of GHG emissions per million EUR enterprise value.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : null
+}

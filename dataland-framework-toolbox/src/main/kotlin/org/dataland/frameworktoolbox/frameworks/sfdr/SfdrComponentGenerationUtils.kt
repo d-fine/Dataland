@@ -12,6 +12,8 @@ class SfdrComponentGenerationUtils : ComponentGenerationUtils() {
             in setOf("Tonnes", "GWh", "Percent", "Cubic Meters", "Days") -> "In${unit.replace(" ", "")}"
             "Tonnes / €M Revenue" -> "InTonnesPerMillionEURRevenue"
             "Cubic Meters / €M Revenue" -> "InCubicMetersPerMillionEURRevenue"
+            "EUR" -> "InEUR"
+            "Tonnes / €M Enterprise Value" -> "InTonnesPerMillionEUREnterpriseValue"
             else -> ""
         }
 

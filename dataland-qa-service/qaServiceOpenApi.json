@@ -3143,13 +3143,13 @@
           "scope4GhgEmissionsInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "enterpriseValue": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          "enterpriseValueInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          "totalRevenueInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "carbonFootprintInTonnesPerMillionEURRevenue": {
+          "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "ghgIntensityInTonnesPerMillionEURRevenue": {
