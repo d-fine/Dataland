@@ -1,9 +1,7 @@
 package db.migration
-
-import db.migration.utils.DataPointIdAndDataPointTypeEntity
-import db.migration.utils.migrateBackendTable
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import org.slf4j.LoggerFactory
 
 /**
  * This migration script updates the meta information of currency related Sfdr data points, and corrects a suffix in the
@@ -11,63 +9,68 @@ import org.flywaydb.core.api.migration.Context
  */
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
-    override fun migrate(context: Context?) {
-        val connection = context!!.connection
-        val metaResultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
-        val uuidResultSet = connection.metaData.getTables(null, null, "data_point_uuid_map", null)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
-        if (metaResultSet.next() && uuidResultSet.next()) {
-            migrateMetaInformationTable(context, "extendedCurrencyTotalRevenue")
-            migrateMetaInformationTable(context, "extendedCurrencyRevenue")
-            migrateMetaInformationTable(context, "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue")
-            migrateUuidInformationTable(context, "extendedCurrencyTotalRevenue")
-            migrateMetaInformationTable(context, "extendedCurrencyRevenue")
-            migrateMetaInformationTable(context, "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue")
+    override fun migrate(context: Context?) {
+        val metaResultSet =
+            context!!.connection.metaData.getTables(
+                null,
+                null,
+                "data_point_meta_information",
+                null,
+            )
+
+        val revenue = "extendedCurrencyTotalRevenue"
+        val value = "extendedCurrencyEnterpriseValue"
+        val carbon = "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+        val meta = "data_point_meta_information"
+        val uuid = "data_point_uuid_map"
+        val type = "data_point_type"
+        val identifier = "data_point_identifier"
+
+        if (metaResultSet.next()) {
+            migrateBackendTable(context, meta, type, revenue)
+            migrateBackendTable(context, meta, type, value)
+            migrateBackendTable(context, meta, type, carbon)
+            migrateBackendTable(context, uuid, identifier, revenue)
+            migrateBackendTable(context, uuid, identifier, value)
+            migrateBackendTable(context, uuid, identifier, carbon)
         }
     }
-
-    fun migrateMetaInformationTable(
-        context: Context?,
-        dataPointType: String,
-    ) {
-        migrateBackendTable(
-            context,
-            dataPointType,
-            "data_point_meta_information",
-            "data_point_type",
-        ) { this.updateRespectiveDataType(it) }
-    }
-
-    fun migrateUuidInformationTable(
-        context: Context?,
-        dataPointType: String,
-    ) {
-        migrateBackendTable(
-            context,
-            dataPointType,
-            "data_point_uuid_map",
-            "data_point_type",
-        ) { this.updateRespectiveDataType(it) }
-    }
-
-    val renameMap =
-        mapOf(
-            "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
-            "extendedCurrencyEnterpriseValue" to "extendedDecimalEnterpriseValueInEUR",
-            "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
-                to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
-        )
 
     /**
-     * Updates the meta information of currency-related Sfdr data points, and corrects a suffix in the carbon footprint.
+     * Migrates all tuples of data point ids and data point types for a fixed data point type
+     * @context the context of the migration script
+     * @dataPointType the data point type for the tuples to modify
+     * @migrate migration script for a tuple of data point id and data point type
      */
-    fun updateRespectiveDataType(entity: DataPointIdAndDataPointTypeEntity) {
-        if (entity.dataPointType == "extendedCurrencyTotalRevenue" ||
-            entity.dataPointType == "extendedCurrencyEnterpriseValue" ||
-            entity.dataPointType == "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
-        ) {
-            entity.dataPointType = renameMap[entity.dataPointType]
-                ?: return
-        }
+    fun migrateBackendTable(
+        context: Context,
+        tableName: String,
+        columnName: String,
+        dataPointType: String,
+    ) {
+        val renameMap =
+            mapOf(
+                "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
+                "extendedCurrencyEnterpriseValue" to "extendedDecimalEnterpriseValueInEUR",
+                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+                    to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
+            )
+
+        val newType =
+            renameMap[dataPointType]
+                ?: throw IllegalArgumentException("No renaming defined for $dataPointType")
+
+        val updateStatement =
+            context.connection.prepareStatement(
+                "UPDATE $tableName SET $columnName = ? WHERE $columnName = ?",
+            )
+        updateStatement.setString(1, newType)
+        updateStatement.setString(2, dataPointType)
+        val count = updateStatement.executeUpdate()
+        logger.info("Updated $count rows in $tableName from $dataPointType to $newType")
+
+        updateStatement?.close()
     }
 }

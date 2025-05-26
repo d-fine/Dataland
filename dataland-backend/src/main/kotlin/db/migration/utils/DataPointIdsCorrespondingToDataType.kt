@@ -36,25 +36,3 @@ fun getDataPointIdsCorrespondingToDataType(
 }
 
 private val logger = LoggerFactory.getLogger("Migration Iterator")
-
-/**
- * Migrates all tuples of data point ids and data point types for a fixed data point type
- * @context the context of the migration script
- * @dataPointType the data point type for the tuples to modify
- * @migrate migration script for a tuple of data point id and data point type
- */
-
-fun migrateBackendTable(
-    context: Context?,
-    dataPointType: String,
-    tableName: String,
-    columnName: String,
-    migrate: DataPointIdAndDataPointTypeMigration,
-) {
-    val dataPointTableEntities = getDataPointIdsCorrespondingToDataType(context, dataPointType, tableName, columnName)
-    dataPointTableEntities.forEach {
-        logger.info("Migrating $dataPointType data point with id: ${it.dataPointId} in $tableName")
-        migrate(it)
-        it.executeUpdateQuery(context!!)
-    }
-}
