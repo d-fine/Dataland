@@ -63,6 +63,7 @@ class CategoryBuilder(
             addDatapointSpecification(
                 id = dataPointTypeId,
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
+                aliasExport = component.aliasExport ?: throw IllegalArgumentException("Component must have an aliasExport"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
                 dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}$typeNameSuffix",
@@ -82,6 +83,7 @@ class CategoryBuilder(
     private fun addDatapointSpecification(
         id: String,
         name: String,
+        aliasExport: String,
         businessDefinition: String,
         dataPointBaseTypeId: String,
         constraints: List<String>?,
@@ -97,6 +99,7 @@ class CategoryBuilder(
             DataPointType(
                 id = id,
                 name = name,
+                aliasExport = aliasExport,
                 businessDefinition = businessDefinition,
                 dataPointBaseTypeId = dataPointBaseTypeId,
                 frameworkOwnership = setOf(builder.framework.identifier),
