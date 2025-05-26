@@ -72,7 +72,7 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
 
         val selectStmt =
             context.connection.prepareStatement(
-                "SELECT id, corrected_data FROM $tableName WHERE $columnName = ?",
+                "SELECT data_point_id, corrected_data FROM $tableName WHERE $columnName = ?",
             )
         selectStmt.setString(1, dataPointType)
         val resultSet = selectStmt.executeQuery()
@@ -88,7 +88,7 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
 
         var count = 0
         while (resultSet.next()) {
-            val id = resultSet.getString("data_point_id")
+            val dataPointId = resultSet.getString("data_point_id")
 
             updateStmt.setString(1, newType)
 
@@ -97,9 +97,9 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
                 correctedJson.remove("currency")
                 updateStmt.setString(2, correctedJson.toString())
                 @Suppress("MagicNumber")
-                updateStmt.setString(3, id)
+                updateStmt.setString(3, dataPointId)
             } else {
-                updateStmt.setString(2, id)
+                updateStmt.setString(2, dataPointId)
             }
 
             count += updateStmt.executeUpdate()
