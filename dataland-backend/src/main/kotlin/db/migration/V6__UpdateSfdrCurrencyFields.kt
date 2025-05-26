@@ -12,27 +12,22 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        val connection = context!!.connection
-        val resultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
+        migrateDataPointIdsAndDataPointTypes(
+            context,
+            "extendedCurrencyTotalRevenue",
+        ) { this.updateRespectiveDataType(it) }
 
-        if (resultSet.next()) {
-            migrateDataPointIdsAndDataPointTypes(
-                context,
-                "extendedCurrencyTotalRevenue",
-            ) { this.updateRespectiveDataType(it) }
+        migrateDataPointIdsAndDataPointTypes(
+            context,
+            "extendedCurrencyEnterpriseValue",
+            this::updateRespectiveDataType,
+        )
 
-            migrateDataPointIdsAndDataPointTypes(
-                context,
-                "extendedCurrencyEnterpriseValue",
-                this::updateRespectiveDataType,
-            )
-
-            migrateDataPointIdsAndDataPointTypes(
-                context,
-                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
-                this::updateRespectiveDataType,
-            )
-        }
+        migrateDataPointIdsAndDataPointTypes(
+            context,
+            "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
+            this::updateRespectiveDataType,
+        )
     }
 
     val renameMap =
