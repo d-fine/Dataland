@@ -79,16 +79,16 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
 
         val updateSql =
             if (cancellation) {
-                "UPDATE $tableName SET $columnName = ?, corrected_data = ? WHERE id = ?"
+                "UPDATE $tableName SET $columnName = ?, corrected_data = ? WHERE data_point_id = ?"
             } else {
-                "UPDATE $tableName SET $columnName = ? WHERE id = ?"
+                "UPDATE $tableName SET $columnName = ? WHERE data_point_id = ?"
             }
 
         val updateStmt = context.connection.prepareStatement(updateSql)
 
         var count = 0
         while (resultSet.next()) {
-            val id = resultSet.getString("id")
+            val id = resultSet.getString("data_point_id")
 
             updateStmt.setString(1, newType)
 
@@ -96,6 +96,7 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
                 val correctedJson = JSONObject(resultSet.getString("corrected_data"))
                 correctedJson.remove("currency")
                 updateStmt.setString(2, correctedJson.toString())
+                @Suppress("MagicNumber")
                 updateStmt.setString(3, id)
             } else {
                 updateStmt.setString(2, id)
