@@ -12,10 +12,12 @@ typealias DataPointIdAndDataPointTypeMigration = (entity: DataPointIdAndDataPoin
 fun getDataPointIdsCorrespondingToDataType(
     context: Context?,
     dataPointType: String,
+    tableName: String,
+    columnName: String,
 ): List<DataPointIdAndDataPointTypeEntity> {
     val preparedStatement =
         context!!.connection.prepareStatement(
-            "SELECT * from public.data_point_meta_information WHERE data_point_type = ?",
+            "SELECT * from $tableName WHERE $columnName = ?",
         )
     preparedStatement.setString(1, dataPointType)
     val getQueryResultSet = preparedStatement.executeQuery()
@@ -42,14 +44,16 @@ private val logger = LoggerFactory.getLogger("Migration Iterator")
  * @migrate migration script for a tuple of data point id and data point type
  */
 
-fun migrateDataPointIdsAndDataPointTypes(
+fun migrateBackendTable(
     context: Context?,
     dataPointType: String,
+    tableName: String,
+    columnName: String,
     migrate: DataPointIdAndDataPointTypeMigration,
 ) {
-    val dataPointTableEntities = getDataPointIdsCorrespondingToDataType(context, dataPointType)
+    val dataPointTableEntities = getDataPointIdsCorrespondingToDataType(context, dataPointType, tableName, columnName)
     dataPointTableEntities.forEach {
-        logger.info("Migrating $dataPointType datapoint with id: ${it.dataPointId}")
+        logger.info("Migrating $dataPointType data point with id: ${it.dataPointId} in $tableName")
         migrate(it)
         it.executeUpdateQuery(context!!)
     }
