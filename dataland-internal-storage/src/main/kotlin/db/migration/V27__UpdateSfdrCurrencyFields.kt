@@ -1,7 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataPointTableEntity
-import db.migration.utils.migrateDataPointTableEntities
+import db.migration.utils.DataPointTableEntityMigration
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
@@ -10,7 +10,9 @@ import org.flywaydb.core.api.migration.Context
  * It also changes the suffix of the suffix of the CarbonFootprintInTonnesPerMillionEURRevenue date point type.
  */
 @Suppress("ClassName")
-class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
+class V27__UpdateSfdrCurrencyFields(
+    private val migration: DataPointTableEntityMigration = DataPointTableEntityMigration(),
+) : BaseJavaMigration() {
     val renameMap =
         mapOf(
             "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
@@ -46,18 +48,18 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
         val connection = context!!.connection
         val resultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
         if (resultSet.next()) {
-            migrateDataPointTableEntities(
+            migration.migrateDataPointTableEntities(
                 context,
                 "extendedCurrencyTotalRevenue",
             ) { this.updateCurrencyFieldsToDecimals(it) }
 
-            migrateDataPointTableEntities(
+            migration.migrateDataPointTableEntities(
                 context,
                 "extendedCurrencyEnterpriseValue",
                 this::updateCurrencyFieldsToDecimals,
             )
 
-            migrateDataPointTableEntities(
+            migration.migrateDataPointTableEntities(
                 context,
                 "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
                 this::updateCarbonFootprint,
