@@ -13,11 +13,18 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
-        val metaResultSet =
+        val reportsResultSet =
             context!!.connection.metaData.getTables(
                 null,
                 null,
                 "data_point_qa_reports",
+                null,
+            )
+        val reviewResultSet =
+            context!!.connection.metaData.getTables(
+                null,
+                null,
+                "data_point_qa_review",
                 null,
             )
 
@@ -28,7 +35,7 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
         val review = "data_point_qa_review"
         val type = "data_point_type"
 
-        if (metaResultSet.next()) {
+        if (reviewResultSet.next() && reportsResultSet.next()) {
             migrateQaTable(context, reports, type, revenue, true)
             migrateQaTable(context, reports, type, value, true)
             migrateQaTable(context, reports, type, carbon, false)
