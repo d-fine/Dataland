@@ -173,6 +173,10 @@ sonar {
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/" +
                 "Activity.kt," +
+                "dataland-backend/src/main/kotlin/db.migration/utils/**," +
+
+                // internal-storage
+                "dataland-internal-storage/src/main/kotlin/db.migration/utils/**" +
 
                 // qa-service
                 "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
