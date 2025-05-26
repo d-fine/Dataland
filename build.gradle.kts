@@ -96,7 +96,9 @@ sonar {
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
                 "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
-                "dataland-reduced-local-stack/**",
+                "dataland-reduced-local-stack/**," +
+                "dataland-backend/src/main/kotlin/db.migration/utils/**," +
+                "dataland-internal-storage/src/main/kotlin/db.migration/utils/**",
         )
         property(
             "sonar.sources",
@@ -136,10 +138,6 @@ sonar {
                 "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
-                "dataland-backend/src/main/kotlin/db.migration/utils/**," +
-
-                // internal-storage
-                "dataland-internal-storage/src/main/kotlin/db.migration/utils/**," +
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
@@ -177,10 +175,6 @@ sonar {
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/" +
                 "Activity.kt," +
-                "dataland-backend/src/main/kotlin/db.migration/utils/**," +
-
-                // internal-storage
-                "dataland-internal-storage/src/main/kotlin/db.migration/utils/**," +
 
                 // qa-service
                 "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
