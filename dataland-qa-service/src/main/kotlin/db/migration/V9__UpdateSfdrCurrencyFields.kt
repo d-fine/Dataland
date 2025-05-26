@@ -31,18 +31,48 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
         val revenue = "extendedCurrencyTotalRevenue"
         val value = "extendedCurrencyEnterpriseValue"
         val carbon = "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
-        val reports = "data_point_qa_reports"
         val review = "data_point_qa_review"
-        val type = "data_point_type"
+        val reports = "data_point_qa_reports"
 
-        if (reviewResultSet.next() && reportsResultSet.next()) {
-            migrateQaTable(context, reports, type, revenue, true)
-            migrateQaTable(context, reports, type, value, true)
-            migrateQaTable(context, reports, type, carbon, false)
-            migrateQaTable(context, review, type, revenue, true)
-            migrateQaTable(context, review, type, value, true)
-            migrateQaTable(context, review, type, carbon, false)
+        if (reportsResultSet.next() && reviewResultSet.next()) {
+            currencyDeletion(context, reports, revenue)
+            migrateBackendTable(context, reports, revenue)
+            currencyDeletion(context, reports, value)
+            migrateBackendTable(context, reports, value)
+            currencyDeletion(context, reports, carbon)
+            migrateBackendTable(context, reports, carbon)
+            migrateBackendTable(context, review, revenue)
+            migrateBackendTable(context, review, value)
+            migrateBackendTable(context, review, carbon)
         }
+    }
+
+    fun currencyDeletion(
+        context: Context,
+        tableName: String,
+        dataPointType: String,
+    ) {
+        val queueResultSet =
+            context!!.connection.createStatement().executeQuery(
+                "SELECT data_point_id, corrected_data FROM $tableName WHERE data_point_type='$dataPointType'",
+            )
+        val updateStatement =
+            context.connection.prepareStatement(
+                "UPDATE $tableName SET corrected_data = ? WHERE data_point_id = ?",
+            )
+
+        while (queueResultSet.next()) {
+            val dataPointId = queueResultSet.getString("data_point_id")
+
+            logger.info("Purging curring from data point with id $dataPointId")
+            val correctedData = JSONObject(queueResultSet.getString("corrected_data"))
+            correctedData.remove("currency")
+            updateStatement.setString(1, correctedData.toString())
+            updateStatement.setString(2, dataPointId)
+            updateStatement.executeUpdate()
+        }
+        updateStatement.close()
+        queueResultSet.close()
     }
 
     /**
@@ -51,63 +81,32 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
      * @dataPointType the data point type for the tuples to modify
      * @migrate migration script for a tuple of data point id and data point type
      */
-    fun migrateQaTable(
+    fun migrateBackendTable(
         context: Context,
         tableName: String,
-        columnName: String,
         dataPointType: String,
-        cancellation: Boolean,
     ) {
         val renameMap =
             mapOf(
                 "extendedCurrencyTotalRevenue" to "extendedDecimalTotalRevenueInEUR",
                 "extendedCurrencyEnterpriseValue" to "extendedDecimalEnterpriseValueInEUR",
-                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue" to
-                    "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
+                "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+                    to "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
             )
 
         val newType =
             renameMap[dataPointType]
                 ?: throw IllegalArgumentException("No renaming defined for $dataPointType")
 
-        val selectStmt =
+        val updateStatement =
             context.connection.prepareStatement(
-                "SELECT data_point_id, corrected_data FROM $tableName WHERE $columnName = ?",
+                "UPDATE $tableName SET data_point_type = ? WHERE data_point_type = ?",
             )
-        selectStmt.setString(1, dataPointType)
-        val resultSet = selectStmt.executeQuery()
-
-        val updateSql =
-            if (cancellation) {
-                "UPDATE $tableName SET $columnName = ?, corrected_data = ? WHERE data_point_id = ?"
-            } else {
-                "UPDATE $tableName SET $columnName = ? WHERE data_point_id = ?"
-            }
-
-        val updateStmt = context.connection.prepareStatement(updateSql)
-
-        var count = 0
-        while (resultSet.next()) {
-            val dataPointId = resultSet.getString("data_point_id")
-
-            updateStmt.setString(1, newType)
-
-            if (cancellation) {
-                val correctedJson = JSONObject(resultSet.getString("corrected_data"))
-                correctedJson.remove("currency")
-                updateStmt.setString(2, correctedJson.toString())
-                @Suppress("MagicNumber")
-                updateStmt.setString(3, dataPointId)
-            } else {
-                updateStmt.setString(2, dataPointId)
-            }
-
-            count += updateStmt.executeUpdate()
-        }
-
+        updateStatement.setString(1, newType)
+        updateStatement.setString(2, dataPointType)
+        val count = updateStatement.executeUpdate()
         logger.info("Updated $count rows in $tableName from $dataPointType to $newType")
-        resultSet.close()
-        selectStmt.close()
-        updateStmt.close()
+
+        updateStatement?.close()
     }
 }
