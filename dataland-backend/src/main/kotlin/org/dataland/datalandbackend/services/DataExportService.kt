@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
-import java.text.SimpleDateFormat
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -27,13 +25,10 @@ import java.text.SimpleDateFormat
 class DataExportService
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
-        init {
-            objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        }
+        private val objectMapper = JsonUtils.defaultObjectMapper
 
         /**
          * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
@@ -121,8 +116,25 @@ class DataExportService
         }
 
         /**
+         * Return true if the field contains REFERENCED_REPORTS_ID
+         */
+        private fun isReferencedReportsField(field: String): Boolean =
+            field.contains(JsonUtils.getPathSeparator() + ReferencedReportsUtilities.REFERENCED_REPORTS_ID + JsonUtils.getPathSeparator())
+
+        /**
+         * Return true if the provided field name (full path) specifies a meta data field.
+         */
+        private fun isMetaDataField(field: String): Boolean {
+            val separator = JsonUtils.getPathSeparator()
+            return field.endsWith(separator + "comment") ||
+                field.endsWith(separator + "quality") ||
+                field.contains(separator + "dataSource" + separator) ||
+                isReferencedReportsField(field)
+        }
+
+        /**
          * Prepares data for export - extracts headers and formats data
-         * @param portfolioExportRows JSON data to be exported
+         * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework
          * @param keepValueFieldsOnly if true, non value fields are stripped
          * @return Triple of prepared data maps, all header fields in order, and whether this is an assembled dataset
@@ -159,17 +171,6 @@ class DataExportService
                 }
 
             return Triple(csvData, allHeaderFields, isAssembledDataset)
-        }
-
-        /**
-         * Return true if the provided field name (full path) specifies a meta data field.
-         */
-        private fun isMetaDataField(field: String): Boolean {
-            val separator = JsonUtils.getPathSeparator()
-            return field.endsWith(separator + "comment") ||
-                field.endsWith(separator + "quality") ||
-                field.contains(separator + "dataSource" + separator) ||
-                field.contains(separator + "referencedReports" + separator)
         }
 
         /**
@@ -254,7 +255,6 @@ class DataExportService
 
         /**
          * Parse a list of JSON nodes into a list of (fieldName --> fieldValue)-mappings
-         *
          * @param nodes the list of nodes to process
          * @param keepValueFieldsOnly whether meta-information fields should be dropped or kept
          * @return a pair of lists containing (fieldName --> fieldValue)-mappings and a set of all used field names
@@ -265,7 +265,11 @@ class DataExportService
         ): Pair<List<Map<String, String>>, Set<String>> {
             val csvData =
                 nodes.map { node ->
-                    val nonEmptyNodes = JsonUtils.getNonEmptyLeafNodesAsMapping(node)
+                    val nonEmptyNodes =
+                        JsonUtils
+                            .getNonEmptyLeafNodesAsMapping(node)
+                            .filterKeys { !isReferencedReportsField(it) }
+                            .toMutableMap()
                     if (keepValueFieldsOnly) {
                         nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) }
                     } else {
@@ -295,17 +299,15 @@ class DataExportService
 
         /**
          * Creates the CSV schema based on the provided headers
-         *
          * The first parameter determines which fields are used to create columns; the second parameter determines the
          * order of the columns.
-         *
          * @param usedHeaderFields a set of column names used as the headers in the CSV
-         * @param allHeaderFields a list of all existing header fields in the correct order
+         * @param orderedHeaderFields a list of all existing header fields in the correct order
          * @return the csv schema builder
          */
         private fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
-            allHeaderFields: Collection<String>,
+            orderedHeaderFields: Collection<String>,
             isAssembledDataset: Boolean,
         ): CsvSchema {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
@@ -318,16 +320,16 @@ class DataExportService
                         !it.startsWith("data" + JsonUtils.getPathSeparator())
                     }.forEach { csvSchemaBuilder.addColumn(it) }
 
-                allHeaderFields.forEach { allHeaderFieldsEntry ->
+                orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
                     usedHeaderFields
                         .filter { usedHeaderField ->
-                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + allHeaderFieldsEntry)
+                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
                         }.forEach {
                             csvSchemaBuilder.addColumn(it)
                         }
                 }
             } else {
-                allHeaderFields.forEach {
+                orderedHeaderFields.forEach {
                     csvSchemaBuilder.addColumn(it)
                 }
             }

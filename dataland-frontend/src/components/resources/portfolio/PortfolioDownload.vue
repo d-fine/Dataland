@@ -271,8 +271,6 @@ async function downloadPortfolio(): Promise<void> {
 
     const selectedExportFileType = ALL_EXPORT_FILE_TYPES.find((type) => type === selectedFileType.value)!;
     const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
-
-    // for Excel files, we need to set the response type to arraybuffer, otherwise the file will be empty/weired
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
