@@ -44,7 +44,7 @@ class V27__UpdateSfdrCurrencyFields : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
         val connection = context!!.connection
-        val resultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
+        val resultSet = connection.metaData.getTables(null, null, "data_point_items", null)
 
         if (resultSet.next()) {
             migrateDataPointTableEntities(
