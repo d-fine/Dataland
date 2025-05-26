@@ -1,7 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataPointIdAndDataPointTypeEntity
-import db.migration.utils.DataPointIdAndDataPointTypeMigration
+import db.migration.utils.migrateDataPointIdsAndDataPointTypes
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
@@ -10,26 +10,24 @@ import org.flywaydb.core.api.migration.Context
  * carbon footprint.
  */
 @Suppress("ClassName")
-class V6__UpdateSfdrCurrencyFields(
-    private val migration: DataPointIdAndDataPointTypeMigration = DataPointIdAndDataPointTypeMigration(),
-) : BaseJavaMigration() {
+class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val connection = context!!.connection
         val resultSet = connection.metaData.getTables(null, null, "data_point_meta_information", null)
 
         if (resultSet.next()) {
-            migration.migrateDataPointIdsAndDataPointTypes(
+            migrateDataPointIdsAndDataPointTypes(
                 context,
                 "extendedCurrencyTotalRevenue",
             ) { this.updateRespectiveDataType(it) }
 
-            migration.migrateDataPointIdsAndDataPointTypes(
+            migrateDataPointIdsAndDataPointTypes(
                 context,
                 "extendedCurrencyEnterpriseValue",
                 this::updateRespectiveDataType,
             )
 
-            migration.migrateDataPointIdsAndDataPointTypes(
+            migrateDataPointIdsAndDataPointTypes(
                 context,
                 "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
                 this::updateRespectiveDataType,

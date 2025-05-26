@@ -51,8 +51,6 @@ dependencies {
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(Testing.mockito.core)
 }
 
 openApi {
