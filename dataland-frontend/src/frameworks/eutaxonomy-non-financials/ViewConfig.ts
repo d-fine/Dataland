@@ -125,7 +125,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         type: 'cell',
         label: 'UN Global Compact Principles Compliance Policy',
         explanation:
-          'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
+          'Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -152,7 +152,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: 'cell',
         label: 'ILO Core Labour Standards',
-        explanation: 'Abidance by the ILO Core Labour Standards.',
+        explanation: 'Does the company abide by the ILO Core Labour Standards?',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -165,7 +165,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         type: 'cell',
         label: 'Human Rights Due Diligence',
         explanation:
-          'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
+          'Does the company have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
