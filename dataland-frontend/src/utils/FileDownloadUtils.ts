@@ -2,10 +2,10 @@
 
 /**
  * Trigger a file download in the browser with proper handling for different file types
- * @param content - File content as a string or Blob-compatible data
+ * @param content - File content as a string, ArrayBuffer, Blob or other Blob-compatible data
  * @param filename - Name of the file to be downloaded
  */
-export function forceFileDownload(content: any, filename: string): void {
+export function forceFileDownload(content: string | ArrayBuffer | Blob | BlobPart, filename: string): void {
   // Determine and set the MIME type of the file
   const fileExtension = filename.split('.').pop()?.toLowerCase();
   let mimeType = 'text/plain';
@@ -21,16 +21,10 @@ export function forceFileDownload(content: any, filename: string): void {
       break;
   }
 
-  // Handle excels files correctly as binary data and all other files as text
   let blob;
-  if (content instanceof ArrayBuffer) {
-    blob = new Blob([content], { type: mimeType });
-  }
-  else if (typeof content === 'string') {
-    blob = new Blob([content], { type: mimeType });
-  }
-  else {
-    console.warn('Unknown content type, attempt as standard handling: ', typeof content);
+  if (content instanceof Blob) {
+    blob = content;
+  } else {
     blob = new Blob([content], { type: mimeType });
   }
 

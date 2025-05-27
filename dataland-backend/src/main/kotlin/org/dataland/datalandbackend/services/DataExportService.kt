@@ -73,15 +73,17 @@ class DataExportService
         }
 
         /**
-         * Transform the data to an Excel file.
+         * Transform the data to an Excel file with human-readable headers.
          * @param headerFields the header fields to be used (has to be consistent with the keys in the data map)
          * @param data the data to be transformed (each entry in the list represents a row in the Excel file)
          * @param outputStream the output stream to write the data to
+         * @param readableHeaders a map of original header names to readable header names
          */
-        fun transformDataToExcel(
+        fun transformDataToExcelWithReadableHeaders(
             headerFields: List<String>,
             data: List<Map<String, String>>,
             outputStream: OutputStream,
+            readableHeaders: Map<String, String>,
         ) {
             val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
             val workbook = XSSFWorkbook()
@@ -89,7 +91,7 @@ class DataExportService
             val headerRow = sheet.createRow(0)
             headerToBeUsed.forEachIndexed { index, headerField ->
                 val cell = headerRow.createCell(index)
-                cell.setCellValue(headerField)
+                cell.setCellValue(readableHeaders[headerField] ?: headerField)
             }
 
             var rowIndex = 1
@@ -133,74 +135,79 @@ class DataExportService
         }
 
         /**
-         * Prepares data for export - extracts headers and formats data
+         * Prepares the data structure for export formats (CSV and Excel)
          * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework
          * @param keepValueFieldsOnly if true, non value fields are stripped
-         * @return Triple of prepared data maps, all header fields in order, and whether this is an assembled dataset
+         * @return PreparedExportData containing:
+         *   - the CSV data as a list of maps
+         *   - the CSV schema
+         *   - header fields with human-readable names
          */
         private fun prepareExportData(
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
-        ): Triple<List<Map<String, String>>, List<String>, Boolean> {
+        ): PreparedExportData {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
             val isAssembledDataset = (frameworkTemplate != null)
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
-            val allHeaderFields =
+            val orderedHeaderFields =
                 if (isAssembledDataset) {
-                    JsonUtils
-                        .getLeafNodeFieldNames(
-                            getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
-                            keepEmptyFields = true,
-                            dropLastFieldName = true,
-                        ).toList()
+                    JsonUtils.getLeafNodeFieldNames(
+                        getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
+                        keepEmptyFields = true,
+                        dropLastFieldName = true,
+                    )
                 } else {
-                    nonEmptyHeaderFields.sortedWith(
-                        compareBy<String> {
-                            @Suppress("MagicNumber")
-                            when {
-                                it.startsWith("companyName") -> -3
-                                it.startsWith("companyLei") -> -2
-                                it.startsWith("reportingPeriod") -> -1
-                                else -> 0
-                            }
-                        }.then(naturalOrder()),
+                    LinkedHashSet(
+                        nonEmptyHeaderFields.sortedWith(
+                            compareBy<String> {
+                                @Suppress("MagicNumber")
+                                when {
+                                    it.startsWith("companyName") -> -3
+                                    it.startsWith("companyLei") -> -2
+                                    it.startsWith("reportingPeriod") -> -1
+                                    else -> 0
+                                }
+                            }.then(naturalOrder()),
+                        ),
                     )
                 }
-
-            return Triple(csvData, allHeaderFields, isAssembledDataset)
+            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
+            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames)
+            return PreparedExportData(csvData, csvSchema, readableHeaders)
         }
+
+        private data class PreparedExportData(
+            val csvData: List<Map<String, String>>,
+            val csvSchema: CsvSchema,
+            val readableHeaders: Map<String, String>,
+        )
 
         /**
          * Create a ByteStream to be used for CSV export from a list of JSON objects.
          * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework
          * @param keepValueFieldsOnly if true, non value fields are stripped
-         * @return InputStreamResource byteStream for CSV export.
+         * @return InputStreamResource byteStream for export.
+         * Note that swagger only supports InputStreamResources and not OutputStreams
          */
         private fun buildCsvStreamFromPortfolioAsJsonData(
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
-            val (csvData, allHeaderFields, isAssembledDataset) =
-                prepareExportData(
-                    portfolioExportRows, dataType, keepValueFieldsOnly,
-                )
-
-            val nonEmptyHeaderFields = csvData.flatMap { it.keys }.toSet()
-            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isAssembledDataset)
+            val (csvData, csvSchema, readableHeaders) = prepareExportData(portfolioExportRows, dataType, keepValueFieldsOnly)
 
             val outputStream = ByteArrayOutputStream()
             val csvMapper = CsvMapper()
             val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
             val rawCsv = csvWriter.writeValueAsString(csvData)
 
-            // Get original header names and create human-readable versions
+            // Get original header names
             val originalHeaders = csvSchema.columnNames
-            val readableHeaders = createHumanReadableFieldNames(originalHeaders)
             val humanHeaderLine = originalHeaders.joinToString(",") { readableHeaders[it] ?: it }
 
             // Replace only the header line
@@ -221,20 +228,21 @@ class DataExportService
          * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework
          * @param keepValueFieldsOnly if true, non value fields are stripped
-         * @return InputStreamResource byteStream for Excel export.
+         * @return InputStreamResource byteStream for export.
+         * Note that swagger only supports InputStreamResources and not OutputStreams
          */
         private fun buildExcelStreamFromPortfolioAsJsonData(
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
-            val (csvData, allHeaderFields, _) =
-                prepareExportData(
-                    portfolioExportRows, dataType, keepValueFieldsOnly,
-                )
-
+            val (csvData, csvSchema, readableHeaders) = prepareExportData(portfolioExportRows, dataType, keepValueFieldsOnly)
+            val excelHeaderFields =
+                csvSchema.columnNames
+                    .filter { it.startsWith("data.") }
+                    .map { it.substringAfter("data.") }
             val outputStream = ByteArrayOutputStream()
-            transformDataToExcel(allHeaderFields, csvData, outputStream)
+            transformDataToExcelWithReadableHeaders(excelHeaderFields, csvData, outputStream, readableHeaders)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -270,11 +278,7 @@ class DataExportService
                             .getNonEmptyLeafNodesAsMapping(node)
                             .filterKeys { !isReferencedReportsField(it) }
                             .toMutableMap()
-                    if (keepValueFieldsOnly) {
-                        nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) }
-                    } else {
-                        nonEmptyNodes
-                    }
+                    if (keepValueFieldsOnly) nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) } else nonEmptyNodes
                 }
             val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
 
