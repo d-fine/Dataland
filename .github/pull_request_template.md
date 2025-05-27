@@ -26,3 +26,9 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on dev server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
 - [ ] Confirm that the latest version (use the /gitinfo endpoint) of the feature branch is deployed to one of the dev servers (no longer enforced by GitHub)
+- [ ] An independent functional review has been completed. This review must ensure the following:
+  - [ ] All newly added features behave exactly as intended.
+  - [ ] Everything that was expected to change has actually changed.
+  - [ ] Nothing that should have remained unchanged has been unintentionally affected.
+  - [ ] No outdated or old artifacts (e.g. obsolete UI elements, deprecated logic, old framework components or unused code paths) remain.
+  - [ ] A direct comparison with the current live version on dataland.com has been made to confirm no unintentional differences or regressions are present.
