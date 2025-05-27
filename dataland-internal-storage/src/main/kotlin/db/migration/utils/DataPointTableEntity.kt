@@ -5,7 +5,7 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * Class that holds the data ID and the company associated data
+ * Class that holds models a row in the data_point_items internal storage table
  */
 data class DataPointTableEntity(
     val dataPointId: String,
@@ -15,7 +15,7 @@ data class DataPointTableEntity(
     val reportingPeriod: String,
 ) {
     /**
-     * Method to get a query that writes the company associated data and data point type to the corresponding table entry
+     * Method to get a query that writes data to the corresponding table entry
      */
     fun executeUpdateQuery(context: Context) {
         val queryStatement =
