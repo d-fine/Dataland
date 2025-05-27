@@ -62,11 +62,32 @@ class FrameworkSpecificationBuilder(
         database.frameworks[this.framework.identifier] = frameworkSpecification
     }
 
+    private fun buildFrameworkTranslation() {
+        database.frameworks.remove(framework.identifier)
+
+        val referencedReportPath =
+            framework.root.nestedChildren.find { it is ReportPreuploadComponent }?.let {
+                it.getJsonPath()
+            }
+
+        val frameworkSpecification =
+            FrameworkSpecification(
+                id = framework.identifier,
+                name = framework.label,
+                businessDefinition = framework.explanation,
+                schema = rootCategoryBuilder.toJsonNode(),
+                referencedReportJsonPath = referencedReportPath,
+            )
+
+        database.translations[this.framework.identifier] = frameworkSpecification
+    }
+
     /**
      * Build the framework specification and save it to the repository
      */
     fun build() {
         buildFrameworkSpecification()
+        buildFrameworkTranslation()
         database.saveToDisk()
     }
 }

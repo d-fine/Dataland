@@ -11,4 +11,5 @@ abstract class SpecificationDatabase {
     val dataPointBaseTypes: MutableMap<String, DataPointBaseType> = mutableMapOf()
     val dataPointTypes: MutableMap<String, DataPointType> = mutableMapOf()
     val frameworks: MutableMap<String, Framework> = mutableMapOf()
+    val translations: MutableMap<String, Framework> = mutableMapOf()
 }
