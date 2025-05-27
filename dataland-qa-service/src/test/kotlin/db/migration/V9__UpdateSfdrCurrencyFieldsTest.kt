@@ -44,9 +44,22 @@ class V9__UpdateSfdrCurrencyFieldsTest {
     }
 
     @Test
-    fun `migrate does nothing if tables are missing`() {
-        `when`(metaData.getTables(null, null, "data_point_qa_reports", null)).thenReturn(resultSet)
-        `when`(metaData.getTables(null, null, "data_point_qa_review", null)).thenReturn(resultSet)
+    fun `check that migration does not start if tables are missing`() {
+        `when`(
+            metaData.getTables(
+                null, null,
+                "data_point_qa_reports",
+                null,
+            ),
+        ).thenReturn(resultSet)
+        `when`(
+            metaData.getTables(
+                null,
+                null,
+                "data_point_qa_review",
+                null,
+            ),
+        ).thenReturn(resultSet)
         `when`(resultSet.next()).thenReturn(false)
 
         migration.migrate(context)
@@ -55,7 +68,7 @@ class V9__UpdateSfdrCurrencyFieldsTest {
     }
 
     @Test
-    fun `currencyDeletion removes currency from JSON and updates DB`() {
+    fun `check that currencyDeletion purges currency from JSON and updates Data Bank`() {
         val dataPointId = "dp123"
         val correctedDataJson = JSONObject(mapOf("currency" to "EUR", "value" to 100))
 
@@ -64,26 +77,40 @@ class V9__UpdateSfdrCurrencyFieldsTest {
         `when`(statement.executeQuery(anyString())).thenReturn(queueResultSet)
 
         `when`(queueResultSet.next()).thenReturn(true, false)
-        `when`(queueResultSet.getString("data_point_id")).thenReturn(dataPointId)
-        `when`(queueResultSet.getString("corrected_data")).thenReturn(correctedDataJson.toString())
+        `when`(queueResultSet.getString("data_point_id"))
+            .thenReturn(dataPointId)
+        `when`(queueResultSet.getString("corrected_data"))
+            .thenReturn(correctedDataJson.toString())
 
         `when`(connection.prepareStatement(anyString())).thenReturn(preparedStatement)
 
-        migration.currencyDeletion(context, "data_point_qa_reports", "extendedCurrencyTotalRevenue")
+        migration.currencyDeletion(
+            context, "data_point_qa_reports",
+            "extendedCurrencyTotalRevenue",
+        )
 
-        verify(preparedStatement).setString(eq(1), eq(JSONObject(mapOf("value" to 100)).toString()))
-        verify(preparedStatement).setString(eq(2), eq(dataPointId))
+        verify(preparedStatement).setString(
+            eq(1),
+            eq(JSONObject(mapOf("value" to 100)).toString()),
+        )
+        verify(preparedStatement).setString(
+            eq(2),
+            eq(dataPointId),
+        )
         verify(preparedStatement).executeUpdate()
         verify(preparedStatement).close()
         verify(queueResultSet).close()
     }
 
     @Test
-    fun `migrateBackendTable updates data_point_type correctly`() {
+    fun `sample check that migrateBackendTable updates extendedCurrencyEnterpriseValue correctly`() {
         `when`(connection.prepareStatement(anyString())).thenReturn(preparedStatement)
         `when`(preparedStatement.executeUpdate()).thenReturn(2)
 
-        migration.migrateBackendTable(context, "data_point_qa_review", "extendedCurrencyEnterpriseValue")
+        migration.migrateBackendTable(
+            context, "data_point_qa_review",
+            "extendedCurrencyEnterpriseValue",
+        )
 
         verify(preparedStatement).setString(1, "extendedDecimalEnterpriseValueInEUR")
         verify(preparedStatement).setString(2, "extendedCurrencyEnterpriseValue")
@@ -92,23 +119,36 @@ class V9__UpdateSfdrCurrencyFieldsTest {
     }
 
     @Test
-    fun `migrateBackendTable throws on unknown dataPointType`() {
+    fun `check that migrateBackendTable throws on unknown dataPointType`() {
         assertThrows<IllegalArgumentException> {
             migration.migrateBackendTable(context, "some_table", "unknown_type")
         }
     }
 
     @Test
-    fun `migrate executes all updates when tables exist`() {
+    fun `check that migrate executes all updates when tables exist`() {
         val reviewResultSet = mock(ResultSet::class.java)
         val reportsResultSet = mock(ResultSet::class.java)
 
-        `when`(metaData.getTables(null, null, "data_point_qa_reports", null)).thenReturn(reportsResultSet)
-        `when`(metaData.getTables(null, null, "data_point_qa_review", null)).thenReturn(reviewResultSet)
+        `when`(
+            metaData.getTables(
+                null,
+                null,
+                "data_point_qa_reports",
+                null,
+            ),
+        ).thenReturn(reportsResultSet)
+        `when`(
+            metaData.getTables(
+                null,
+                null,
+                "data_point_qa_review",
+                null,
+            ),
+        ).thenReturn(reviewResultSet)
         `when`(reportsResultSet.next()).thenReturn(true)
         `when`(reviewResultSet.next()).thenReturn(true)
 
-        // Stub statement calls to avoid actual logic
         `when`(connection.createStatement()).thenReturn(statement)
         val rs = mock(ResultSet::class.java)
         `when`(statement.executeQuery(anyString())).thenReturn(rs)
@@ -118,7 +158,9 @@ class V9__UpdateSfdrCurrencyFieldsTest {
 
         migration.migrate(context)
 
-        // Should call update 9 times (3 deletions + 6 renames)
-        verify(connection, times(9)).prepareStatement(startsWith("UPDATE"))
+        verify(
+            connection,
+            times(9),
+        ).prepareStatement(startsWith("UPDATE"))
     }
 }

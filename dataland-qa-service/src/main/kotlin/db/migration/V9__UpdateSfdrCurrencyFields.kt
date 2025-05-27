@@ -20,7 +20,7 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
                 null,
             )
         val reviewResultSet =
-            context!!.connection.metaData.getTables(
+            context.connection.metaData.getTables(
                 null,
                 null,
                 "data_point_qa_review",
@@ -58,7 +58,7 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
         dataPointType: String,
     ) {
         val queueResultSet =
-            context!!.connection.createStatement().executeQuery(
+            context.connection.createStatement().executeQuery(
                 "SELECT data_point_id, corrected_data FROM $tableName WHERE data_point_type='$dataPointType'",
             )
         val updateStatement =
