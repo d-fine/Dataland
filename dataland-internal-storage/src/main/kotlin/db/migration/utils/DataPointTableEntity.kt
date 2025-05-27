@@ -5,7 +5,7 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * Class that holds models a row in the data_point_items internal storage table
+ * Class that models a row in the data_point_items internal storage table
  */
 data class DataPointTableEntity(
     val dataPointId: String,

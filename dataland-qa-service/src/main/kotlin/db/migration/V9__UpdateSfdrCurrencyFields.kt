@@ -5,7 +5,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 
 /**
- * This migration updates the currency related Sfdr data points in the QA Service Data Base
+ * This migration updates the currency-related Sfdr data points in the QA Service Data Base
  */
 @Suppress("ClassName")
 class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {

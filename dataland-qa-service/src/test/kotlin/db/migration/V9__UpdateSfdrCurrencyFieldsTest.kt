@@ -10,6 +10,7 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -22,41 +23,42 @@ import java.sql.Statement
 @Suppress("ClassName")
 class V9__UpdateSfdrCurrencyFieldsTest {
     private val migration = V9__UpdateSfdrCurrencyFields()
-    private val context = mock<Context>()
-    private val connection = mock<Connection>()
-    private val statement = mock<Statement>()
-    private val metaData = mock<DatabaseMetaData>()
-    private val resultSet = mock<ResultSet>()
-    private val preparedStatement = mock<PreparedStatement>()
+    private val mockContext = mock<Context>()
+    private val mockConnection = mock<Connection>()
+    private val mockStatement = mock<Statement>()
+    private val mockMetaData = mock<DatabaseMetaData>()
+    private val mockResultSet = mock<ResultSet>()
+    private val mockPreparedStatement = mock<PreparedStatement>()
 
     @BeforeEach
     fun setup() {
-        whenever(context.connection).thenReturn(connection)
-        whenever(connection.metaData).thenReturn(metaData)
+        reset(mockContext, mockConnection, mockStatement, mockMetaData, mockResultSet, mockPreparedStatement)
+        whenever(mockContext.connection).thenReturn(mockConnection)
+        whenever(mockConnection.metaData).thenReturn(mockMetaData)
     }
 
     @Test
     fun `check that migration does not start if tables are missing`() {
         whenever(
-            metaData.getTables(
+            mockMetaData.getTables(
                 null, null,
                 "data_point_qa_reports",
                 null,
             ),
-        ).thenReturn(resultSet)
+        ).thenReturn(mockResultSet)
         whenever(
-            metaData.getTables(
+            mockMetaData.getTables(
                 null,
                 null,
                 "data_point_qa_review",
                 null,
             ),
-        ).thenReturn(resultSet)
-        whenever(resultSet.next()).thenReturn(false)
+        ).thenReturn(mockResultSet)
+        whenever(mockResultSet.next()).thenReturn(false)
 
-        migration.migrate(context)
+        migration.migrate(mockContext)
 
-        verify(connection, never()).prepareStatement(any<String>())
+        verify(mockConnection, never()).prepareStatement(any<String>())
     }
 
     @Test
@@ -65,8 +67,8 @@ class V9__UpdateSfdrCurrencyFieldsTest {
         val correctedDataJson = JSONObject(mapOf("currency" to "EUR", "value" to 100))
 
         val queueResultSet = mock<ResultSet>()
-        whenever(connection.createStatement()).thenReturn(statement)
-        whenever(statement.executeQuery(any<String>())).thenReturn(queueResultSet)
+        whenever(mockConnection.createStatement()).thenReturn(mockStatement)
+        whenever(mockStatement.executeQuery(any<String>())).thenReturn(queueResultSet)
 
         whenever(queueResultSet.next()).thenReturn(true, false)
         whenever(queueResultSet.getString("data_point_id"))
@@ -74,46 +76,46 @@ class V9__UpdateSfdrCurrencyFieldsTest {
         whenever(queueResultSet.getString("corrected_data"))
             .thenReturn(correctedDataJson.toString())
 
-        whenever(connection.prepareStatement(any<String>())).thenReturn(preparedStatement)
+        whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
 
         migration.currencyDeletion(
-            context, "data_point_qa_reports",
+            mockContext, "data_point_qa_reports",
             "extendedCurrencyTotalRevenue",
         )
 
-        verify(preparedStatement).setString(
+        verify(mockPreparedStatement).setString(
             eq(1),
             eq(JSONObject(mapOf("value" to 100)).toString()),
         )
-        verify(preparedStatement).setString(
+        verify(mockPreparedStatement).setString(
             eq(2),
             eq(dataPointId),
         )
-        verify(preparedStatement).executeUpdate()
-        verify(preparedStatement).close()
+        verify(mockPreparedStatement).executeUpdate()
+        verify(mockPreparedStatement).close()
         verify(queueResultSet).close()
     }
 
     @Test
     fun `sample check that migrateBackendTable updates extendedCurrencyEnterpriseValue correctly`() {
-        whenever(connection.prepareStatement(any<String>())).thenReturn(preparedStatement)
-        whenever(preparedStatement.executeUpdate()).thenReturn(2)
+        whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
+        whenever(mockPreparedStatement.executeUpdate()).thenReturn(2)
 
         migration.migrateBackendTable(
-            context, "data_point_qa_review",
+            mockContext, "data_point_qa_review",
             "extendedCurrencyEnterpriseValue",
         )
 
-        verify(preparedStatement).setString(1, "extendedDecimalEnterpriseValueInEUR")
-        verify(preparedStatement).setString(2, "extendedCurrencyEnterpriseValue")
-        verify(preparedStatement).executeUpdate()
-        verify(preparedStatement).close()
+        verify(mockPreparedStatement).setString(1, "extendedDecimalEnterpriseValueInEUR")
+        verify(mockPreparedStatement).setString(2, "extendedCurrencyEnterpriseValue")
+        verify(mockPreparedStatement).executeUpdate()
+        verify(mockPreparedStatement).close()
     }
 
     @Test
     fun `check that migrateBackendTable throws on unknown dataPointType`() {
         assertThrows<IllegalArgumentException> {
-            migration.migrateBackendTable(context, "some_table", "unknown_type")
+            migration.migrateBackendTable(mockContext, "some_table", "unknown_type")
         }
     }
 
@@ -123,7 +125,7 @@ class V9__UpdateSfdrCurrencyFieldsTest {
         val reportsResultSet = mock<ResultSet>()
 
         whenever(
-            metaData.getTables(
+            mockMetaData.getTables(
                 null,
                 null,
                 "data_point_qa_reports",
@@ -131,7 +133,7 @@ class V9__UpdateSfdrCurrencyFieldsTest {
             ),
         ).thenReturn(reportsResultSet)
         whenever(
-            metaData.getTables(
+            mockMetaData.getTables(
                 null,
                 null,
                 "data_point_qa_review",
@@ -141,17 +143,17 @@ class V9__UpdateSfdrCurrencyFieldsTest {
         whenever(reportsResultSet.next()).thenReturn(true)
         whenever(reviewResultSet.next()).thenReturn(true)
 
-        whenever(connection.createStatement()).thenReturn(statement)
+        whenever(mockConnection.createStatement()).thenReturn(mockStatement)
         val rs = mock<ResultSet>()
-        whenever(statement.executeQuery(any<String>())).thenReturn(rs)
+        whenever(mockStatement.executeQuery(any<String>())).thenReturn(rs)
         whenever(rs.next()).thenReturn(false) // skip loop
-        whenever(connection.prepareStatement(any<String>())).thenReturn(preparedStatement)
-        whenever(preparedStatement.executeUpdate()).thenReturn(1)
+        whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
+        whenever(mockPreparedStatement.executeUpdate()).thenReturn(1)
 
-        migration.migrate(context)
+        migration.migrate(mockContext)
 
         verify(
-            connection,
+            mockConnection,
             times(9),
         ).prepareStatement(argThat { input -> input.startsWith("UPDATE") })
     }
