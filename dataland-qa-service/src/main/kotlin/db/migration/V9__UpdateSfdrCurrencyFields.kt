@@ -5,8 +5,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 
 /**
- * This migration script updates the meta information of currency related Sfdr data points, and corrects a suffix in the
- * carbon footprint.
+ * This migration updates the currency related Sfdr data points in the QA Service Data Bank
  */
 @Suppress("ClassName")
 class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
@@ -47,6 +46,12 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Deletes the currency field from corrected_data
+     * @context the context of the migration script
+     * @tableName the name of the table
+     * @dataPointType the data point type
+     */
     fun currencyDeletion(
         context: Context,
         tableName: String,
@@ -76,10 +81,10 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     }
 
     /**
-     * Migrates all tuples of data point ids and data point types for a fixed data point type
+     * Migrates all rows of backend tables corresponding to a certain data point type
      * @context the context of the migration script
-     * @dataPointType the data point type for the tuples to modify
-     * @migrate migration script for a tuple of data point id and data point type
+     * @tableName the name of the table
+     * @dataPointType the data point type
      */
     fun migrateBackendTable(
         context: Context,

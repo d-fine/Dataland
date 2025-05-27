@@ -4,8 +4,7 @@ import org.flywaydb.core.api.migration.Context
 import org.slf4j.LoggerFactory
 
 /**
- * This migration script updates the meta information of currency related Sfdr data points, and corrects a suffix in the
- * carbon footprint.
+ * This migration script updates the meta information and uuid mapping of currency related Sfdr data points.
  */
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
@@ -39,10 +38,10 @@ class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
     }
 
     /**
-     * Migrates all tuples of data point ids and data point types for a fixed data point type
+     * Updates a row in the backend tables.
      * @context the context of the migration script
-     * @dataPointType the data point type for the tuples to modify
-     * @migrate migration script for a tuple of data point id and data point type
+     * @tableName the name of the table
+     * @dataPointType the data point type
      */
     fun migrateBackendTable(
         context: Context,
