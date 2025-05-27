@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
@@ -16,6 +17,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 
 /**
@@ -76,6 +78,49 @@ class DataExportService
         }
 
         /**
+         * Transform the data to an Excel file.
+         * @param headerFields the header fields to be used (has to be consistent with the keys in the data map)
+         * @param data the data to be transformed (each entry in the list represents a row in the Excel file)
+         * @param outputStream the output stream to write the data to
+         */
+        fun transformDataToExcel(
+            headerFields: List<String>,
+            data: List<Map<String, String>>,
+            outputStream: OutputStream,
+        ) {
+            val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
+            val workbook = XSSFWorkbook()
+            val sheet = workbook.createSheet("Data")
+            val headerRow = sheet.createRow(0)
+            headerToBeUsed.forEachIndexed { index, headerField ->
+                val cell = headerRow.createCell(index)
+                cell.setCellValue(headerField)
+            }
+
+            var rowIndex = 1
+            data.forEach { entry ->
+                val row = sheet.createRow(rowIndex++)
+                headerToBeUsed.forEachIndexed { index, headerField ->
+                    val cell = row.createCell(index)
+                    if (headerField in entry.keys) {
+                        cell.setCellValue(entry[headerField] ?: "")
+                    } else if ("$headerField.value" in entry.keys) {
+                        cell.setCellValue(entry["$headerField.value"] ?: "")
+                    } else {
+                        cell.setCellValue("")
+                    }
+                }
+            }
+
+            headerToBeUsed.forEachIndexed { index, headerField ->
+                sheet.autoSizeColumn(index)
+            }
+
+            workbook.write(outputStream)
+            workbook.close()
+        }
+
+        /**
          * Return true if the provided field name (full path) specifies a meta data field.
          */
         private fun isMetaDataField(field: String): Boolean {
@@ -131,12 +176,28 @@ class DataExportService
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, allHeaderFields, isAssembledDataset)
 
             val outputStream = ByteArrayOutputStream()
-            val csvWriter = CsvMapper().writerFor(List::class.java).with(csvSchema)
             if (excelCompatibility) {
-                val csvDataAsString = "sep=,\n" + csvWriter.writeValueAsString(csvData)
-                objectMapper.writeValue(outputStream, csvDataAsString)
+                transformDataToExcel(allHeaderFields.toList(), csvData, outputStream)
             } else {
-                csvWriter.writeValue(outputStream, csvData)
+                val csvMapper = CsvMapper()
+                val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
+                val rawCsv = csvWriter.writeValueAsString(csvData)
+
+                // Get original header names
+                val originalHeaders = csvSchema.columnNames
+                val readableHeaders = createHumanReadableFieldNames(originalHeaders)
+                val humanHeaderLine = originalHeaders.joinToString(",") { readableHeaders[it] ?: it }
+
+                // Replace only the header line
+                val csvWithReadableHeaders =
+                    rawCsv
+                        .lineSequence()
+                        .toList()
+                        .let {
+                            listOf(humanHeaderLine) + it.drop(1)
+                        }.joinToString("\n")
+
+                outputStream.write(csvWithReadableHeaders.toByteArray())
             }
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
@@ -237,4 +298,19 @@ class DataExportService
             }
             return csvSchemaBuilder.build().withHeader()
         }
+
+        private fun createHumanReadableFieldNames(fields: Collection<String>): Map<String, String> =
+            fields.associateWith { original ->
+                val parts = original.split('.')
+                val relevantParts = if (parts.firstOrNull() == "data") parts.drop(1) else parts
+
+                val formattedString =
+                    relevantParts.joinToString(" ") { part ->
+                        part
+                            .replace(Regex("([a-z])([A-Z])"), "$1 $2")
+                            .replaceFirstChar { it.uppercaseChar() }
+                    }
+
+                formattedString.replace("General General", "General")
+            }
     }

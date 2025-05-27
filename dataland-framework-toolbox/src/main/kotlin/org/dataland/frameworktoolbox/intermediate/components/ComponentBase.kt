@@ -41,6 +41,11 @@ open class ComponentBase(
     var dataPointTypeName: String? = null
 
     /**
+     * Shorter version of a human-readable name describing the component
+     */
+    var aliasExport: String? = null
+
+    /**
      * The explanation of a component is a longer description of the component. This variant will be displayed on the
      * upload page.
      */

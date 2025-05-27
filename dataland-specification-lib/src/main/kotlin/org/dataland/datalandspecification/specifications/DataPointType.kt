@@ -16,6 +16,7 @@ import org.dataland.datalandspecification.database.SpecificationDatabase
 data class DataPointType(
     val id: String,
     val name: String,
+    val aliasExport: String,
     val businessDefinition: String,
     val dataPointBaseTypeId: String,
     @JsonSerialize(converter = SetOrderedJsonSerializer::class)
