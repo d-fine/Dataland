@@ -140,6 +140,9 @@ import InputSwitch from 'primevue/inputswitch';
 import OverlayPanel from 'primevue/overlaypanel';
 import { computed, defineComponent, inject, type PropType } from 'vue';
 import { useRoute } from 'vue-router';
+import type { DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -420,7 +423,14 @@ export default defineComponent({
 
         const formatted_timestamp = getDateStringForDataExport(new Date());
         const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-        const filename = `data-export-${formatted_timestamp}.${fileExtension}`;
+
+        const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
+          value: framework,
+          label: humanizeStringOrNumber(framework),
+        }));
+
+        const frameworkLabel = availableFrameworks.find(framework => framework.value === this.dataType)?.label || this.dataType;
+        const filename = `data-export-${frameworkLabel}-${formatted_timestamp}.${fileExtension}`;
 
         const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
           [selectedYear],
