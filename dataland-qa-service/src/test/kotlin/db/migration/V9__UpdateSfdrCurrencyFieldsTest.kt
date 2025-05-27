@@ -5,14 +5,14 @@ import org.json.JSONObject
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.startsWith
-import org.mockito.Mockito.anyString
-import org.mockito.Mockito.eq
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.sql.Connection
 import java.sql.DatabaseMetaData
 import java.sql.PreparedStatement
@@ -21,38 +21,30 @@ import java.sql.Statement
 
 @Suppress("ClassName")
 class V9__UpdateSfdrCurrencyFieldsTest {
-    private lateinit var migration: V9__UpdateSfdrCurrencyFields
-    private lateinit var context: Context
-    private lateinit var connection: Connection
-    private lateinit var statement: Statement
-    private lateinit var metaData: DatabaseMetaData
-    private lateinit var resultSet: ResultSet
-    private lateinit var preparedStatement: PreparedStatement
+    private val migration = V9__UpdateSfdrCurrencyFields()
+    private val context = mock<Context>()
+    private val connection = mock<Connection>()
+    private val statement = mock<Statement>()
+    private val metaData = mock<DatabaseMetaData>()
+    private val resultSet = mock<ResultSet>()
+    private val preparedStatement = mock<PreparedStatement>()
 
     @BeforeEach
     fun setup() {
-        migration = V9__UpdateSfdrCurrencyFields()
-        context = mock(Context::class.java)
-        connection = mock(Connection::class.java)
-        statement = mock(Statement::class.java)
-        metaData = mock(DatabaseMetaData::class.java)
-        resultSet = mock(ResultSet::class.java)
-        preparedStatement = mock(PreparedStatement::class.java)
-
-        `when`(context.connection).thenReturn(connection)
-        `when`(connection.metaData).thenReturn(metaData)
+        whenever(context.connection).thenReturn(connection)
+        whenever(connection.metaData).thenReturn(metaData)
     }
 
     @Test
     fun `check that migration does not start if tables are missing`() {
-        `when`(
+        whenever(
             metaData.getTables(
                 null, null,
                 "data_point_qa_reports",
                 null,
             ),
         ).thenReturn(resultSet)
-        `when`(
+        whenever(
             metaData.getTables(
                 null,
                 null,
@@ -60,11 +52,11 @@ class V9__UpdateSfdrCurrencyFieldsTest {
                 null,
             ),
         ).thenReturn(resultSet)
-        `when`(resultSet.next()).thenReturn(false)
+        whenever(resultSet.next()).thenReturn(false)
 
         migration.migrate(context)
 
-        verify(connection, never()).prepareStatement(anyString())
+        verify(connection, never()).prepareStatement(any<String>())
     }
 
     @Test
@@ -72,17 +64,17 @@ class V9__UpdateSfdrCurrencyFieldsTest {
         val dataPointId = "dp123"
         val correctedDataJson = JSONObject(mapOf("currency" to "EUR", "value" to 100))
 
-        val queueResultSet = mock(ResultSet::class.java)
-        `when`(connection.createStatement()).thenReturn(statement)
-        `when`(statement.executeQuery(anyString())).thenReturn(queueResultSet)
+        val queueResultSet = mock<ResultSet>()
+        whenever(connection.createStatement()).thenReturn(statement)
+        whenever(statement.executeQuery(any<String>())).thenReturn(queueResultSet)
 
-        `when`(queueResultSet.next()).thenReturn(true, false)
-        `when`(queueResultSet.getString("data_point_id"))
+        whenever(queueResultSet.next()).thenReturn(true, false)
+        whenever(queueResultSet.getString("data_point_id"))
             .thenReturn(dataPointId)
-        `when`(queueResultSet.getString("corrected_data"))
+        whenever(queueResultSet.getString("corrected_data"))
             .thenReturn(correctedDataJson.toString())
 
-        `when`(connection.prepareStatement(anyString())).thenReturn(preparedStatement)
+        whenever(connection.prepareStatement(any<String>())).thenReturn(preparedStatement)
 
         migration.currencyDeletion(
             context, "data_point_qa_reports",
@@ -104,8 +96,8 @@ class V9__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `sample check that migrateBackendTable updates extendedCurrencyEnterpriseValue correctly`() {
-        `when`(connection.prepareStatement(anyString())).thenReturn(preparedStatement)
-        `when`(preparedStatement.executeUpdate()).thenReturn(2)
+        whenever(connection.prepareStatement(any<String>())).thenReturn(preparedStatement)
+        whenever(preparedStatement.executeUpdate()).thenReturn(2)
 
         migration.migrateBackendTable(
             context, "data_point_qa_review",
@@ -127,10 +119,10 @@ class V9__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `check that migrate executes all updates when tables exist`() {
-        val reviewResultSet = mock(ResultSet::class.java)
-        val reportsResultSet = mock(ResultSet::class.java)
+        val reviewResultSet = mock<ResultSet>()
+        val reportsResultSet = mock<ResultSet>()
 
-        `when`(
+        whenever(
             metaData.getTables(
                 null,
                 null,
@@ -138,7 +130,7 @@ class V9__UpdateSfdrCurrencyFieldsTest {
                 null,
             ),
         ).thenReturn(reportsResultSet)
-        `when`(
+        whenever(
             metaData.getTables(
                 null,
                 null,
@@ -146,21 +138,21 @@ class V9__UpdateSfdrCurrencyFieldsTest {
                 null,
             ),
         ).thenReturn(reviewResultSet)
-        `when`(reportsResultSet.next()).thenReturn(true)
-        `when`(reviewResultSet.next()).thenReturn(true)
+        whenever(reportsResultSet.next()).thenReturn(true)
+        whenever(reviewResultSet.next()).thenReturn(true)
 
-        `when`(connection.createStatement()).thenReturn(statement)
-        val rs = mock(ResultSet::class.java)
-        `when`(statement.executeQuery(anyString())).thenReturn(rs)
-        `when`(rs.next()).thenReturn(false) // skip loop
-        `when`(connection.prepareStatement(anyString())).thenReturn(preparedStatement)
-        `when`(preparedStatement.executeUpdate()).thenReturn(1)
+        whenever(connection.createStatement()).thenReturn(statement)
+        val rs = mock<ResultSet>()
+        whenever(statement.executeQuery(any<String>())).thenReturn(rs)
+        whenever(rs.next()).thenReturn(false) // skip loop
+        whenever(connection.prepareStatement(any<String>())).thenReturn(preparedStatement)
+        whenever(preparedStatement.executeUpdate()).thenReturn(1)
 
         migration.migrate(context)
 
         verify(
             connection,
             times(9),
-        ).prepareStatement(startsWith("UPDATE"))
+        ).prepareStatement(argThat { input -> input.startsWith("UPDATE") })
     }
 }

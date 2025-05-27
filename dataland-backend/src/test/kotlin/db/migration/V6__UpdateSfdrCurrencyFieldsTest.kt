@@ -1,58 +1,50 @@
-@file:Suppress("ktlint:standard:no-wildcard-imports")
-
 package db.migration
 
 import org.flywaydb.core.api.migration.Context
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.anyString
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.startsWith
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
 @Suppress("ClassName")
 class V6__UpdateSfdrCurrencyFieldsTest {
-    private lateinit var migration: V6__UpdateSfdrCurrencyFields
-    private lateinit var context: Context
-    private lateinit var connection: Connection
-    private lateinit var resultSet: ResultSet
-    private lateinit var statement: PreparedStatement
+    private val migration = V6__UpdateSfdrCurrencyFields()
+    private val context = mock<Context>()
+    private val connection = mock<Connection>()
+    private val resultSet = mock<ResultSet>()
+    private val statement = mock<PreparedStatement>()
 
     @BeforeEach
     fun setup() {
-        migration = V6__UpdateSfdrCurrencyFields()
-        context = mock(Context::class.java)
-        connection = mock(Connection::class.java)
-        resultSet = mock(ResultSet::class.java)
-        statement = mock(PreparedStatement::class.java)
-
-        `when`(context.connection).thenReturn(connection)
-        `when`(connection.metaData).thenReturn(mock(java.sql.DatabaseMetaData::class.java))
-        `when`(connection.metaData.getTables(null, null, "data_point_meta_information", null)).thenReturn(resultSet)
+        whenever(context.connection).thenReturn(connection)
+        whenever(connection.metaData).thenReturn(mock<java.sql.DatabaseMetaData>())
+        whenever(connection.metaData.getTables(null, null, "data_point_meta_information", null)).thenReturn(resultSet)
     }
 
     @Test
     fun `check that no migration starts if table does not exist`() {
-        `when`(resultSet.next()).thenReturn(false)
+        whenever(resultSet.next()).thenReturn(false)
         migration.migrate(context)
-        verify(connection, never()).prepareStatement(anyString())
+        verify(connection, never()).prepareStatement(any<String>())
     }
 
     @Test
     fun `check that migrate calls update for all six types if table exists`() {
-        `when`(resultSet.next()).thenReturn(true)
-        `when`(connection.prepareStatement(anyString())).thenReturn(statement)
-        `when`(statement.executeUpdate()).thenReturn(1)
+        whenever(resultSet.next()).thenReturn(true)
+        whenever(connection.prepareStatement(any<String>())).thenReturn(statement)
+        whenever(statement.executeUpdate()).thenReturn(1)
 
         migration.migrate(context)
         verify(connection, times(6)).prepareStatement(
-            startsWith("UPDATE "),
+            argThat { input -> input.startsWith("UPDATE") },
         )
         verify(statement, times(6)).executeUpdate()
         verify(statement, times(6)).close()
@@ -60,8 +52,8 @@ class V6__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `check that extendedCurrencyTotalRevenue is updated correctly`() {
-        `when`(connection.prepareStatement(anyString())).thenReturn(statement)
-        `when`(statement.executeUpdate()).thenReturn(2)
+        whenever(connection.prepareStatement(any<String>())).thenReturn(statement)
+        whenever(statement.executeUpdate()).thenReturn(2)
 
         migration.migrateBackendTable(
             context = context,
@@ -78,8 +70,8 @@ class V6__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `check that extendedCurrencyEnterpriseValue is updated correctly`() {
-        `when`(connection.prepareStatement(anyString())).thenReturn(statement)
-        `when`(statement.executeUpdate()).thenReturn(2)
+        whenever(connection.prepareStatement(any<String>())).thenReturn(statement)
+        whenever(statement.executeUpdate()).thenReturn(2)
 
         migration.migrateBackendTable(
             context = context,
@@ -96,8 +88,8 @@ class V6__UpdateSfdrCurrencyFieldsTest {
 
     @Test
     fun `check that extendedDecimalCarbonFootprint is updated correctly`() {
-        `when`(connection.prepareStatement(anyString())).thenReturn(statement)
-        `when`(statement.executeUpdate()).thenReturn(2)
+        whenever(connection.prepareStatement(any<String>())).thenReturn(statement)
+        whenever(statement.executeUpdate()).thenReturn(2)
 
         migration.migrateBackendTable(
             context = context,

@@ -27,22 +27,22 @@ class V9__UpdateSfdrCurrencyFields : BaseJavaMigration() {
                 null,
             )
 
-        val revenue = "extendedCurrencyTotalRevenue"
-        val value = "extendedCurrencyEnterpriseValue"
-        val carbon = "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
-        val review = "data_point_qa_review"
-        val reports = "data_point_qa_reports"
+        val revenueDataPointType = "extendedCurrencyTotalRevenue"
+        val valueDataPointType = "extendedCurrencyEnterpriseValue"
+        val carbonDataPointType = "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+        val reviewTable = "data_point_qa_review"
+        val reportsTable = "data_point_qa_reports"
 
         if (reportsResultSet.next() && reviewResultSet.next()) {
-            currencyDeletion(context, reports, revenue)
-            migrateBackendTable(context, reports, revenue)
-            currencyDeletion(context, reports, value)
-            migrateBackendTable(context, reports, value)
-            currencyDeletion(context, reports, carbon)
-            migrateBackendTable(context, reports, carbon)
-            migrateBackendTable(context, review, revenue)
-            migrateBackendTable(context, review, value)
-            migrateBackendTable(context, review, carbon)
+            currencyDeletion(context, reportsTable, revenueDataPointType)
+            migrateBackendTable(context, reportsTable, revenueDataPointType)
+            currencyDeletion(context, reportsTable, valueDataPointType)
+            migrateBackendTable(context, reportsTable, valueDataPointType)
+            currencyDeletion(context, reportsTable, carbonDataPointType)
+            migrateBackendTable(context, reportsTable, carbonDataPointType)
+            migrateBackendTable(context, reviewTable, revenueDataPointType)
+            migrateBackendTable(context, reviewTable, valueDataPointType)
+            migrateBackendTable(context, reviewTable, carbonDataPointType)
         }
     }
 

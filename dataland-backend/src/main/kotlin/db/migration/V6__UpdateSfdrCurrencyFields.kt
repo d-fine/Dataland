@@ -19,21 +19,21 @@ class V6__UpdateSfdrCurrencyFields : BaseJavaMigration() {
                 null,
             )
 
-        val revenue = "extendedCurrencyTotalRevenue"
-        val value = "extendedCurrencyEnterpriseValue"
-        val carbon = "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
-        val meta = "data_point_meta_information"
-        val uuid = "data_point_uuid_map"
-        val type = "data_point_type"
-        val identifier = "data_point_identifier"
+        val revenueDataPointType = "extendedCurrencyTotalRevenue"
+        val valueDataPointType = "extendedCurrencyEnterpriseValue"
+        val carbonDataPointType = "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue"
+        val metaTable = "data_point_meta_information"
+        val uuidTable = "data_point_uuid_map"
+        val typeColumn = "data_point_type"
+        val identifierColumn = "data_point_identifier"
 
         if (metaResultSet.next()) {
-            migrateBackendTable(context, meta, type, revenue)
-            migrateBackendTable(context, meta, type, value)
-            migrateBackendTable(context, meta, type, carbon)
-            migrateBackendTable(context, uuid, identifier, revenue)
-            migrateBackendTable(context, uuid, identifier, value)
-            migrateBackendTable(context, uuid, identifier, carbon)
+            migrateBackendTable(context, metaTable, typeColumn, revenueDataPointType)
+            migrateBackendTable(context, metaTable, typeColumn, valueDataPointType)
+            migrateBackendTable(context, metaTable, typeColumn, carbonDataPointType)
+            migrateBackendTable(context, uuidTable, identifierColumn, revenueDataPointType)
+            migrateBackendTable(context, uuidTable, identifierColumn, valueDataPointType)
+            migrateBackendTable(context, uuidTable, identifierColumn, carbonDataPointType)
         }
     }
 
