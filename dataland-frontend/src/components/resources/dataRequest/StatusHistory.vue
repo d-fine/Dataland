@@ -64,8 +64,8 @@ import { defineComponent } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronUpIcon from 'primevue/icons/chevronup';
+import ChevronDownIcon from '@primevue/icons/chevrondown';
+import ChevronUpIcon from '@primevue/icons/chevronup';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 export default defineComponent({

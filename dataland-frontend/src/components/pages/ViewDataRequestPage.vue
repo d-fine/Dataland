@@ -610,7 +610,7 @@ export default defineComponent({
   margin-top: 1rem;
 }
 
-:deep {
+:deep(*) {
   .card {
     width: 100%;
     background-color: var(--surface-card);
