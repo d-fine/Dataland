@@ -257,6 +257,15 @@ function checkIfShowErrors(): void {
 }
 
 /**
+ * Get framework label from framework value for download
+ * @param frameworkValue
+ */
+function getFrameworkLabel(frameworkValue: string): string {
+  const frameworkOption = availableFrameworks.find((f) => f.value === frameworkValue);
+  return frameworkOption ? frameworkOption.label : frameworkValue;
+}
+
+/**
  * Handles download of portfolio
  */
 async function downloadPortfolio(): Promise<void> {
@@ -289,7 +298,7 @@ async function downloadPortfolio(): Promise<void> {
     }
 
     const formatted_timestamp = getDateStringForDataExport(new Date());
-    const filename = `data-export-${formatted_timestamp}.${fileExtension}`;
+    const filename = `data-export-${getFrameworkLabel(selectedFramework.value)}-${formatted_timestamp}.${fileExtension}`;
 
     forceFileDownload(dataResponse.data, filename);
   } catch (error) {
