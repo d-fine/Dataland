@@ -63,7 +63,6 @@ class CategoryBuilder(
             addDatapointSpecification(
                 id = dataPointTypeId,
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
-                aliasExport = component.aliasExport ?: throw IllegalArgumentException("Component must have an aliasExport"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
                 dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}$typeNameSuffix",
@@ -78,14 +77,14 @@ class CategoryBuilder(
     }
 
     /**
-     * Add a new data point specification to the framework and include it in the hierarchy
+     *  Include a new translation in the hierarchy
      */
-    fun addDefaultTranslation(component: ComponentBase): DatapointBuilder {
-        val translation = component.aliasExport
+    fun addDefaultTranslation(component: ComponentBase): TranslationBuilder {
+        val aliasExport = component.aliasExport
         val datapoint =
-            addDatapointToFrameworkHierarchy(
+            addTranslationToFrameworkHierarchy(
                 identifier = component.identifier,
-                dataPointId = translation,
+                aliasExport = aliasExport,
             )
         return datapoint
     }
@@ -96,7 +95,6 @@ class CategoryBuilder(
     private fun addDatapointSpecification(
         id: String,
         name: String,
-        aliasExport: String,
         businessDefinition: String,
         dataPointBaseTypeId: String,
         constraints: List<String>?,
@@ -112,7 +110,6 @@ class CategoryBuilder(
             DataPointType(
                 id = id,
                 name = name,
-                aliasExport = aliasExport,
                 businessDefinition = businessDefinition,
                 dataPointBaseTypeId = dataPointBaseTypeId,
                 frameworkOwnership = setOf(builder.framework.identifier),
@@ -165,7 +162,7 @@ class CategoryBuilder(
 
     private fun addTranslationToFrameworkHierarchy(
         identifier: String,
-        aliasExport: String,
+        aliasExport: String?,
     ): TranslationBuilder {
         val newTranslation =
             TranslationBuilder(

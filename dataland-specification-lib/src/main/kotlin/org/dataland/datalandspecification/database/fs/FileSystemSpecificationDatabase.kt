@@ -101,5 +101,6 @@ class FileSystemSpecificationDatabase(
         saveSpecifications(File(baseFolder, "dataPointBaseTypes"), objectMapper, dataPointBaseTypes)
         saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointTypes)
         saveSpecifications(File(baseFolder, "frameworks"), objectMapper, frameworks)
+        saveSpecifications(File(baseFolder, "translations"), objectMapper, translations)
     }
 }

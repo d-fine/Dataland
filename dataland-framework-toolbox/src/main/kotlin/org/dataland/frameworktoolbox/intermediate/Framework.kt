@@ -48,6 +48,19 @@ class Framework(
     }
 
     /**
+     * Generate a translation for this framework In-Memory.
+     */
+    fun generateTranslations(datalandRepository: DatalandRepository): FrameworkSpecificationBuilder {
+        val frameworkDataModelBuilder = FrameworkSpecificationBuilder(this, datalandRepository)
+
+        root.children.forEach {
+            it.generateTranslation(frameworkDataModelBuilder.rootCategoryBuilder)
+        }
+
+        return frameworkDataModelBuilder
+    }
+
+    /**
      * Generate a Kotlin QA DataModel for this framework In-Memory.
      */
     fun generateQaModel(): FrameworkQaModelBuilder {

@@ -250,7 +250,18 @@ open class ComponentBase(
      * Build the specification for this component
      */
     fun generateSpecification(specificationCategoryBuilder: CategoryBuilder) {
-        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(specificationCategoryBuilder)
+        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(
+            specificationCategoryBuilder,
+        )
+    }
+
+    /**
+     * Build the translation for this component
+     */
+    fun generateTranslation(specificationCategoryBuilder: CategoryBuilder) {
+        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultTranslation(
+            specificationCategoryBuilder,
+        )
     }
 
     /**
@@ -261,6 +272,15 @@ open class ComponentBase(
             "This component (${javaClass.canonicalName})" +
                 " did not implement specification generation.",
         )
+
+    /**
+     * Build the specification for this component using the default generator
+     */
+    open fun generateDefaultTranslation(translationCategoryBuilder: CategoryBuilder) {
+        translationCategoryBuilder.addDefaultTranslation(
+            component = this,
+        )
+    }
 
     /**
      * Return constraints as a list of parseable strings

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.TextNode
  */
 class TranslationBuilder(
     override val identifier: String,
-    val aliasExport: String,
+    val aliasExport: String?,
     override val parentCategory: CategoryBuilder?,
 ) : SpecificationElement {
     override fun toJsonNode(): TextNode = JsonNodeFactory.instance.textNode(aliasExport)

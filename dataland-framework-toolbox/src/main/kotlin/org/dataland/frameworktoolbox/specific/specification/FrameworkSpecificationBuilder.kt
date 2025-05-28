@@ -85,8 +85,12 @@ class FrameworkSpecificationBuilder(
     /**
      * Build the framework specification and save it to the repository
      */
-    fun build() {
+    fun buildSpecifications() {
         buildFrameworkSpecification()
+        database.saveToDisk()
+    }
+
+    fun buildTranslations() {
         buildFrameworkTranslation()
         database.saveToDisk()
     }
