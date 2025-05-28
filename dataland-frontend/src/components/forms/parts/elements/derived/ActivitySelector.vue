@@ -59,7 +59,6 @@
 </template>
 
 <script lang="ts">
-//@ts-nocheck
 import UploadFormSubcategoryHeader from '@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue';
 import { type ActivityNode, activityTree } from '@/components/forms/parts/elements/derived/ActivityTree';
 import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
@@ -69,6 +68,7 @@ import PrimeButton from 'primevue/button';
 import Popover from 'primevue/popover';
 import RadioButton from 'primevue/radiobutton';
 import Tree from 'primevue/tree';
+import type { TreeNode } from 'primevue/treenode';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
@@ -83,11 +83,11 @@ export default defineComponent({
   },
   setup() {
     return {
-      popover: ref<Popover>(),
+      popover: ref<InstanceType<typeof Popover>>(),
     };
   },
   data: () => ({
-    allActivities: activityTree,
+    allActivities: activityTree as TreeNode[],
     selectedActivityValue: '',
   }),
   computed: {
@@ -129,7 +129,7 @@ export default defineComponent({
      * @param activity activity value from selected NACE codes
      */
     newActivitySelected(activity: ActivityNode) {
-      this.popover.hide();
+      this.popover?.hide();
       this.selectedActivityValue = activity.value as string;
     },
     /**

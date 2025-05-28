@@ -4,7 +4,7 @@
     <AutoComplete
       class="w-full"
       input-id="company_search_bar_standard"
-      ref="autocomplete"
+      id="autocomplete"
       v-model="searchBarInput"
       :suggestions="autocompleteArray"
       :min-length="3"
@@ -38,28 +38,26 @@
 </template>
 
 <script lang="ts">
-import AutoComplete, { type AutoCompleteCompleteEvent } from 'primevue/autocomplete';
-import { type CompanyIdAndName } from '@clients/backend';
 import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
-import { defineComponent, inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type CompanyIdAndName } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import AutoComplete, { type AutoCompleteCompleteEvent } from 'primevue/autocomplete';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      autocomplete: ref<HTMLFormElement>(),
     };
   },
   name: 'CompaniesOnlySearchBar',
   components: { AutoComplete, SearchResultHighlighter },
   mounted() {
-    const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
-    const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
     if (window.innerWidth > 768) {
-      inputOfAutocompleteComponent.focus();
+      const inputElement = document.getElementById('autocomplete')?.querySelector('.p-inputtext') as HTMLInputElement;
+      inputElement.focus();
     }
   },
   beforeUnmount() {
@@ -148,6 +146,7 @@ export default defineComponent({
 .p-input-icon-align {
   text-align: left;
 }
+
 .search-icon {
   z-index: 20;
   color: #958d7c;
