@@ -203,9 +203,9 @@
 						"comment": null,
 						"quality": "Reported"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 2129406879.93,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 97773.15,
 						"dataSource": {
 							"page": "383",
 							"fileName": "IntegratedReport",
@@ -214,10 +214,9 @@
 							"publicationDate": null
 						},
 						"comment": "parse primary interface",
-						"quality": "Reported",
-						"currency": "LSL"
+						"quality": "Reported"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "499",
@@ -1357,8 +1356,8 @@
 						"comment": "index solid state array",
 						"quality": "NoDataFound"
 					},
-					"enterpriseValue": {
-						"value": 5621876018.15,
+					"enterpriseValueInEUR": {
+						"value": 71462.4,
 						"dataSource": {
 							"page": "603",
 							"fileName": "SustainabilityReport",
@@ -1367,11 +1366,10 @@
 							"publicationDate": null
 						},
 						"comment": "navigate auxiliary bandwidth",
-						"quality": null,
-						"currency": "RUB"
+						"quality": null
 					},
-					"totalRevenue": {
-						"value": 5620095094.5,
+					"totalRevenueInEUR": {
+						"value": 7507.3,
 						"dataSource": {
 							"page": "218-1272",
 							"fileName": "SustainabilityReport",
@@ -1380,10 +1378,9 @@
 							"publicationDate": null
 						},
 						"comment": "parse virtual driver",
-						"quality": "Incomplete",
-						"currency": "BBD"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 58709.18,
 						"dataSource": {
 							"page": "1080-1250",
@@ -2522,8 +2519,8 @@
 						"comment": "copy primary protocol",
 						"quality": "NoDataFound"
 					},
-					"enterpriseValue": {
-						"value": 6708095176.07,
+					"enterpriseValueInEUR": {
+						"value": 40590.04,
 						"dataSource": {
 							"page": "1115",
 							"fileName": "SustainabilityReport",
@@ -2532,17 +2529,15 @@
 							"publicationDate": null
 						},
 						"comment": "quantify virtual firewall",
-						"quality": "Reported",
-						"currency": "ISK"
+						"quality": "Reported"
 					},
-					"totalRevenue": {
+					"totalRevenueInEUR": {
 						"value": null,
 						"dataSource": null,
 						"comment": "compress open-source bus",
-						"quality": "NoDataFound",
-						"currency": "KHR"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "686-800",
@@ -3596,9 +3591,9 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 9678165196.33,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 68944.77,
 						"dataSource": {
 							"page": "375",
 							"fileName": "IntegratedReport",
@@ -3607,10 +3602,9 @@
 							"publicationDate": null
 						},
 						"comment": "input 1080p protocol",
-						"quality": "Audited",
-						"currency": "PYG"
+						"quality": "Audited"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 13401.26,
 						"dataSource": {
 							"page": "531",
@@ -4739,8 +4733,8 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"enterpriseValue": {
-						"value": 6543609060.72,
+					"enterpriseValueInEUR": {
+						"value": 40308.44,
 						"dataSource": {
 							"page": "368",
 							"fileName": "ESEFReport",
@@ -4749,11 +4743,10 @@
 							"publicationDate": null
 						},
 						"comment": "input redundant panel",
-						"quality": "Estimated",
-						"currency": "ISK"
+						"quality": "Estimated"
 					},
-					"totalRevenue": {
-						"value": 3750862539.25,
+					"totalRevenueInEUR": {
+						"value": 7017.65,
 						"dataSource": {
 							"page": "793-1031",
 							"fileName": "AnnualReport",
@@ -4762,10 +4755,9 @@
 							"publicationDate": null
 						},
 						"comment": "hack optical monitor",
-						"quality": "Estimated",
-						"currency": "BAM"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 55198.11,
 						"dataSource": null,
 						"comment": "compress back-end bus",
@@ -5899,9 +5891,9 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 6095441581.72,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 72852.61,
 						"dataSource": {
 							"page": "897",
 							"fileName": "IntegratedReport",
@@ -5910,10 +5902,9 @@
 							"publicationDate": null
 						},
 						"comment": "reboot back-end circuit",
-						"quality": "NoDataFound",
-						"currency": "SAR"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 39455.98,
 						"dataSource": {
@@ -7071,7 +7062,7 @@
 						"comment": null,
 						"quality": null
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "377",
@@ -7081,11 +7072,10 @@
 							"publicationDate": null
 						},
 						"comment": "navigate open-source monitor",
-						"quality": "Reported",
-						"currency": "LSL"
+						"quality": "Reported"
 					},
-					"totalRevenue": {
-						"value": 368906742.72,
+					"totalRevenueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "761",
 							"fileName": "AnnualReport",
@@ -7094,10 +7084,9 @@
 							"publicationDate": null
 						},
 						"comment": "synthesize bluetooth card",
-						"quality": "Incomplete",
-						"currency": "HKD"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
@@ -8147,8 +8136,8 @@
 						"comment": "reboot optical bus",
 						"quality": null
 					},
-					"enterpriseValue": {
-						"value": 2428178207.06,
+					"enterpriseValueInEUR": {
+						"value": 68747.42,
 						"dataSource": {
 							"page": "289",
 							"fileName": "ESEFReport",
@@ -8157,11 +8146,10 @@
 							"publicationDate": null
 						},
 						"comment": "calculate open-source bus",
-						"quality": "Reported",
-						"currency": "PLN"
+						"quality": "Reported"
 					},
-					"totalRevenue": {
-						"value": 3537046026.99,
+					"totalRevenueInEUR": {
+						"value": 90437.62,
 						"dataSource": {
 							"page": "564-1045",
 							"fileName": "ESEFReport",
@@ -8170,10 +8158,9 @@
 							"publicationDate": null
 						},
 						"comment": "hack digital bandwidth",
-						"quality": "Reported",
-						"currency": "UZS"
+						"quality": "Reported"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 89343.3,
 						"dataSource": {
@@ -9185,8 +9172,8 @@
 					},
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": null,
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 4613974373.02,
+					"enterpriseValueInEUR": {
+						"value": 75836.31,
 						"dataSource": {
 							"page": "508",
 							"fileName": "IntegratedReport",
@@ -9195,11 +9182,10 @@
 							"publicationDate": null
 						},
 						"comment": "calculate neural circuit",
-						"quality": null,
-						"currency": "SEK"
+						"quality": null
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 48535.51,
 						"dataSource": {
 							"page": "909-1241",
@@ -10358,9 +10344,9 @@
 						"comment": "override wireless capacitor",
 						"quality": "Reported"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 3460045641.52,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 85001.08,
 						"dataSource": {
 							"page": "119",
 							"fileName": "AnnualReport",
@@ -10369,10 +10355,9 @@
 							"publicationDate": null
 						},
 						"comment": "program optical capacitor",
-						"quality": "NoDataFound",
-						"currency": "TOP"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 67064.81,
 						"dataSource": {
 							"page": "868-1272",
@@ -11615,8 +11600,8 @@
 						"comment": "navigate haptic driver",
 						"quality": null
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "278-1139",
@@ -11626,10 +11611,9 @@
 							"publicationDate": null
 						},
 						"comment": "hack neural circuit",
-						"quality": null,
-						"currency": "THB"
+						"quality": null
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 20513.45,
 						"dataSource": null,
 						"comment": "back up back-end transmitter",
@@ -12827,15 +12811,14 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"enterpriseValue": {
-						"value": 4845861480.45,
+					"enterpriseValueInEUR": {
+						"value": 67616.65,
 						"dataSource": null,
 						"comment": "index neural circuit",
-						"quality": "Incomplete",
-						"currency": "PKR"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "10",
@@ -13892,8 +13875,8 @@
 						"comment": "connect wireless bandwidth",
 						"quality": null
 					},
-					"enterpriseValue": {
-						"value": 2252692072.78,
+					"enterpriseValueInEUR": {
+						"value": 6557.85,
 						"dataSource": {
 							"page": "484",
 							"fileName": "AnnualReport",
@@ -13902,11 +13885,10 @@
 							"publicationDate": null
 						},
 						"comment": "quantify solid state card",
-						"quality": "Audited",
-						"currency": "BAM"
+						"quality": "Audited"
 					},
-					"totalRevenue": {
-						"value": 5615284729.65,
+					"totalRevenueInEUR": {
+						"value": 74940.07,
 						"dataSource": {
 							"page": "680",
 							"fileName": "AnnualReport",
@@ -13915,10 +13897,9 @@
 							"publicationDate": null
 						},
 						"comment": "back up back-end program",
-						"quality": "Incomplete",
-						"currency": "SDG"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "1162",
@@ -15075,7 +15056,7 @@
 						"comment": "navigate primary card",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "171",
@@ -15085,11 +15066,10 @@
 							"publicationDate": null
 						},
 						"comment": "calculate mobile bus",
-						"quality": "Incomplete",
-						"currency": "HKD"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 4517531698.41,
+					"totalRevenueInEUR": {
+						"value": 10118.86,
 						"dataSource": {
 							"page": "944-961",
 							"fileName": "AnnualReport",
@@ -15098,10 +15078,9 @@
 							"publicationDate": null
 						},
 						"comment": "quantify open-source array",
-						"quality": "Incomplete",
-						"currency": "BIF"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "922",
@@ -16266,8 +16245,8 @@
 						"comment": "parse wireless bandwidth",
 						"quality": "Audited"
 					},
-					"enterpriseValue": {
-						"value": 7870743845.25,
+					"enterpriseValueInEUR": {
+						"value": 8593.53,
 						"dataSource": {
 							"page": "853-1274",
 							"fileName": "SustainabilityReport",
@@ -16276,11 +16255,10 @@
 							"publicationDate": null
 						},
 						"comment": "navigate online transmitter",
-						"quality": "Estimated",
-						"currency": "BGN"
+						"quality": "Estimated"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 79269.15,
 						"dataSource": {
 							"page": "1083-1105",
@@ -17552,7 +17530,7 @@
 						"comment": "override redundant bandwidth",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "30-762",
@@ -17562,11 +17540,10 @@
 							"publicationDate": null
 						},
 						"comment": "hack digital firewall",
-						"quality": "NoDataFound",
-						"currency": "TOP"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
-						"value": 9928969148.71,
+					"totalRevenueInEUR": {
+						"value": 79112.05,
 						"dataSource": {
 							"page": "545",
 							"fileName": "SustainabilityReport",
@@ -17575,10 +17552,9 @@
 							"publicationDate": null
 						},
 						"comment": "connect primary pixel",
-						"quality": "Reported",
-						"currency": "SRD"
+						"quality": "Reported"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 2816.23,
 						"dataSource": {
 							"page": "37-347",
@@ -18783,8 +18759,8 @@
 						"comment": "generate haptic bus",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
-						"value": 5477513757.28,
+					"enterpriseValueInEUR": {
+						"value": 3665.4,
 						"dataSource": {
 							"page": "724-1033",
 							"fileName": "IntegratedReport",
@@ -18793,11 +18769,10 @@
 							"publicationDate": null
 						},
 						"comment": "quantify multi-byte driver",
-						"quality": "NoDataFound",
-						"currency": "AOA"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
-						"value": 7302602185.33,
+					"totalRevenueInEUR": {
+						"value": 88813.21,
 						"dataSource": {
 							"page": "846",
 							"fileName": "IntegratedReport",
@@ -18806,10 +18781,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "UGX"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "337-781",
@@ -19980,8 +19954,8 @@
 						"comment": "input digital alarm",
 						"quality": null
 					},
-					"enterpriseValue": {
-						"value": 350992165.93,
+					"enterpriseValueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "405-1083",
 							"fileName": "IntegratedReport",
@@ -19990,11 +19964,10 @@
 							"publicationDate": null
 						},
 						"comment": "transmit redundant system",
-						"quality": "Estimated",
-						"currency": "GYD"
+						"quality": "Estimated"
 					},
-					"totalRevenue": {
-						"value": 329709689.96,
+					"totalRevenueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "455",
 							"fileName": "IntegratedReport",
@@ -20003,10 +19976,9 @@
 							"publicationDate": null
 						},
 						"comment": "copy auxiliary program",
-						"quality": "NoDataFound",
-						"currency": "KMF"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 69257.74,
 						"dataSource": {
 							"page": "186-637",
@@ -21153,7 +21125,7 @@
 						"comment": "input back-end driver",
 						"quality": "Estimated"
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "211",
@@ -21163,10 +21135,9 @@
 							"publicationDate": null
 						},
 						"comment": "bypass cross-platform monitor",
-						"quality": "Estimated",
-						"currency": "SGD"
+						"quality": "Estimated"
 					},
-					"totalRevenue": {
+					"totalRevenueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "1130-1245",
@@ -21176,10 +21147,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "NoDataFound",
-						"currency": "SRD"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 99779,
 						"dataSource": {
 							"page": "194-428",
@@ -22451,8 +22421,8 @@
 						"comment": "program multi-byte protocol",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
-						"value": 3568406647.52,
+					"enterpriseValueInEUR": {
+						"value": 37405.16,
 						"dataSource": {
 							"page": "146-713",
 							"fileName": "IntegratedReport",
@@ -22461,10 +22431,9 @@
 							"publicationDate": null
 						},
 						"comment": "generate multi-byte system",
-						"quality": "NoDataFound",
-						"currency": "ILS"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
+					"totalRevenueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "1176-1185",
@@ -22474,10 +22443,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "GIP"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "564-886",
@@ -23758,8 +23726,8 @@
 						"comment": "back up redundant program",
 						"quality": "Audited"
 					},
-					"enterpriseValue": {
-						"value": 4033795425.52,
+					"enterpriseValueInEUR": {
+						"value": 81100.83,
 						"dataSource": {
 							"page": "780",
 							"fileName": "ESEFReport",
@@ -23768,11 +23736,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Estimated",
-						"currency": "SYP"
+						"quality": "Estimated"
 					},
-					"totalRevenue": {
-						"value": 5854867381.78,
+					"totalRevenueInEUR": {
+						"value": 44448.67,
 						"dataSource": {
 							"page": "90-401",
 							"fileName": "ESEFReport",
@@ -23781,10 +23748,9 @@
 							"publicationDate": null
 						},
 						"comment": "navigate mobile protocol",
-						"quality": "NoDataFound",
-						"currency": "KHR"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
@@ -24917,9 +24883,9 @@
 						"comment": "program digital application",
 						"quality": "Audited"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 5755971029.44,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 56667.61,
 						"dataSource": {
 							"page": "166-774",
 							"fileName": "IntegratedReport",
@@ -24928,10 +24894,9 @@
 							"publicationDate": null
 						},
 						"comment": "reboot virtual panel",
-						"quality": null,
-						"currency": "MRU"
+						"quality": null
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "909",
@@ -25993,8 +25958,8 @@
 						"quality": null
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 3597581478.57,
+					"enterpriseValueInEUR": {
+						"value": 96143.65,
 						"dataSource": {
 							"page": "482-703",
 							"fileName": "AnnualReport",
@@ -26003,11 +25968,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "YER"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 98650.74,
 						"dataSource": {
 							"page": "183",
@@ -27143,7 +27107,7 @@
 						"quality": "Audited"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "554",
@@ -27153,11 +27117,10 @@
 							"publicationDate": null
 						},
 						"comment": "generate mobile feed",
-						"quality": "NoDataFound",
-						"currency": "TTD"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
-						"value": 7961941974.32,
+					"totalRevenueInEUR": {
+						"value": 95075.5,
 						"dataSource": {
 							"page": "878",
 							"fileName": "SustainabilityReport",
@@ -27166,10 +27129,9 @@
 							"publicationDate": null
 						},
 						"comment": "reboot cross-platform port",
-						"quality": "Audited",
-						"currency": "XOF"
+						"quality": "Audited"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 26168.5,
 						"dataSource": {
@@ -28373,8 +28335,8 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"enterpriseValue": {
-						"value": 761956440.73,
+					"enterpriseValueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "935",
 							"fileName": "ESEFReport",
@@ -28383,11 +28345,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "UZS"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 6324371333.43,
+					"totalRevenueInEUR": {
+						"value": 57975.9,
 						"dataSource": {
 							"page": "224-254",
 							"fileName": "SustainabilityReport",
@@ -28396,10 +28357,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Estimated",
-						"currency": "MVR"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 31998.12,
 						"dataSource": {
 							"page": "703",
@@ -29554,15 +29514,14 @@
 						"comment": null,
 						"quality": null
 					},
-					"enterpriseValue": {
-						"value": 7421163072.93,
+					"enterpriseValueInEUR": {
+						"value": 59018.36,
 						"dataSource": null,
 						"comment": "override cross-platform application",
-						"quality": "Incomplete",
-						"currency": "MWK"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 936451306.86,
+					"totalRevenueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "213",
 							"fileName": "AnnualReport",
@@ -29571,10 +29530,9 @@
 							"publicationDate": null
 						},
 						"comment": "program haptic hard drive",
-						"quality": "Estimated",
-						"currency": "SYP"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "352",
@@ -30623,8 +30581,8 @@
 						"comment": null,
 						"quality": null
 					},
-					"enterpriseValue": {
-						"value": 4019924795.73,
+					"enterpriseValueInEUR": {
+						"value": 24512.11,
 						"dataSource": {
 							"page": "325",
 							"fileName": "AnnualReport",
@@ -30633,17 +30591,15 @@
 							"publicationDate": null
 						},
 						"comment": "navigate wireless program",
-						"quality": "Incomplete",
-						"currency": "DZD"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
+					"totalRevenueInEUR": {
 						"value": null,
 						"dataSource": null,
 						"comment": "index 1080p array",
-						"quality": "Incomplete",
-						"currency": "USD"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "677-994",
@@ -31891,8 +31847,8 @@
 						"comment": "reboot multi-byte array",
 						"quality": "Incomplete"
 					},
-					"enterpriseValue": {
-						"value": 8892044713.51,
+					"enterpriseValueInEUR": {
+						"value": 77881.6,
 						"dataSource": {
 							"page": "313",
 							"fileName": "SustainabilityReport",
@@ -31901,11 +31857,10 @@
 							"publicationDate": null
 						},
 						"comment": "synthesize mobile alarm",
-						"quality": "Audited",
-						"currency": "SLE"
+						"quality": "Audited"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 99797.5,
 						"dataSource": {
 							"page": "809",
@@ -33083,15 +33038,14 @@
 						"comment": "input back-end feed",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": null,
 						"comment": null,
-						"quality": null,
-						"currency": "TOP"
+						"quality": null
 					},
-					"totalRevenue": {
-						"value": 46774605.22,
+					"totalRevenueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "1114",
 							"fileName": "AnnualReport",
@@ -33100,10 +33054,9 @@
 							"publicationDate": null
 						},
 						"comment": "transmit wireless alarm",
-						"quality": "NoDataFound",
-						"currency": "VND"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
@@ -34253,21 +34206,19 @@
 						"quality": "Reported"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": null,
 						"comment": "quantify online panel",
-						"quality": "Incomplete",
-						"currency": "DJF"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 676646079.03,
+					"totalRevenueInEUR": {
+						"value": null,
 						"dataSource": null,
 						"comment": "navigate neural program",
-						"quality": null,
-						"currency": "TWD"
+						"quality": null
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "134-951",
@@ -35482,8 +35433,8 @@
 						"quality": "NoDataFound"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 4007437952.29,
+					"enterpriseValueInEUR": {
+						"value": 99174.12,
 						"dataSource": {
 							"page": "275-788",
 							"fileName": "ESEFReport",
@@ -35492,11 +35443,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Estimated",
-						"currency": "ZMW"
+						"quality": "Estimated"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "611",
@@ -36637,15 +36587,14 @@
 						"comment": "connect 1080p port",
 						"quality": "Estimated"
 					},
-					"enterpriseValue": {
-						"value": 3034952272.43,
+					"enterpriseValueInEUR": {
+						"value": 22607.27,
 						"dataSource": null,
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "DJF"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 83208.98,
 						"dataSource": {
 							"page": "51",
@@ -37872,8 +37821,8 @@
 					},
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": null,
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 9050707116.63,
+					"enterpriseValueInEUR": {
+						"value": 1895.94,
 						"dataSource": {
 							"page": "1001",
 							"fileName": "ESEFReport",
@@ -37882,11 +37831,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "ALL"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 2009616144.66,
+					"totalRevenueInEUR": {
+						"value": 45239.75,
 						"dataSource": {
 							"page": "624-962",
 							"fileName": "ESEFReport",
@@ -37895,10 +37843,9 @@
 							"publicationDate": null
 						},
 						"comment": "navigate online alarm",
-						"quality": "Audited",
-						"currency": "KMF"
+						"quality": "Audited"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 26261.15,
 						"dataSource": {
 							"page": "337-1087",
@@ -38988,9 +38935,9 @@
 						"comment": "reboot 1080p hard drive",
 						"quality": "Estimated"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 9368527110.47,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 79202.09,
 						"dataSource": {
 							"page": "505",
 							"fileName": "IntegratedReport",
@@ -38999,10 +38946,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "NoDataFound",
-						"currency": "SRD"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "708-1143",
@@ -40107,9 +40053,9 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"enterpriseValue": null,
-					"totalRevenue": {
-						"value": 9361134015.89,
+					"enterpriseValueInEUR": null,
+					"totalRevenueInEUR": {
+						"value": 92203.04,
 						"dataSource": {
 							"page": "1137",
 							"fileName": "ESEFReport",
@@ -40118,10 +40064,9 @@
 							"publicationDate": null
 						},
 						"comment": "compress online array",
-						"quality": "Estimated",
-						"currency": "VND"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 44930.81,
 						"dataSource": null,
@@ -41219,8 +41164,8 @@
 						"comment": null,
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
-						"value": 4403338631.03,
+					"enterpriseValueInEUR": {
+						"value": 80817.54,
 						"dataSource": {
 							"page": "924",
 							"fileName": "SustainabilityReport",
@@ -41229,11 +41174,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Audited",
-						"currency": "SYP"
+						"quality": "Audited"
 					},
-					"totalRevenue": {
-						"value": 721163763.1,
+					"totalRevenueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "1060-1136",
 							"fileName": "SustainabilityReport",
@@ -41242,10 +41186,9 @@
 							"publicationDate": null
 						},
 						"comment": "override cross-platform bandwidth",
-						"quality": "NoDataFound",
-						"currency": "FJD"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 5310.11,
 						"dataSource": {
 							"page": "415",
@@ -42387,8 +42330,8 @@
 						"quality": null
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 1041915375.85,
+					"enterpriseValueInEUR": {
+						"value": null,
 						"dataSource": {
 							"page": "1200",
 							"fileName": "SustainabilityReport",
@@ -42397,11 +42340,10 @@
 							"publicationDate": null
 						},
 						"comment": "generate cross-platform system",
-						"quality": "Audited",
-						"currency": "STN"
+						"quality": "Audited"
 					},
-					"totalRevenue": {
-						"value": 2573511905.61,
+					"totalRevenueInEUR": {
+						"value": 35379.47,
 						"dataSource": {
 							"page": "712-1277",
 							"fileName": "SustainabilityReport",
@@ -42410,10 +42352,9 @@
 							"publicationDate": null
 						},
 						"comment": "input back-end sensor",
-						"quality": "Audited",
-						"currency": "HTG"
+						"quality": "Audited"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 7968.02,
 						"dataSource": {
@@ -43462,8 +43403,8 @@
 						"comment": "generate haptic array",
 						"quality": "NoDataFound"
 					},
-					"enterpriseValue": {
-						"value": 8751252078.6,
+					"enterpriseValueInEUR": {
+						"value": 71480.67,
 						"dataSource": {
 							"page": "767-938",
 							"fileName": "SustainabilityReport",
@@ -43472,11 +43413,10 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": null,
-						"currency": "RUB"
+						"quality": null
 					},
-					"totalRevenue": {
-						"value": 9362811011.57,
+					"totalRevenueInEUR": {
+						"value": 42241.7,
 						"dataSource": {
 							"page": "687",
 							"fileName": "SustainabilityReport",
@@ -43485,10 +43425,9 @@
 							"publicationDate": null
 						},
 						"comment": "transmit optical monitor",
-						"quality": "Estimated",
-						"currency": "JPY"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "98-1212",
@@ -44533,8 +44472,8 @@
 						"comment": "reboot cross-platform bandwidth",
 						"quality": "NoDataFound"
 					},
-					"enterpriseValue": {
-						"value": 4887662473.76,
+					"enterpriseValueInEUR": {
+						"value": 7488.04,
 						"dataSource": {
 							"page": "477",
 							"fileName": "IntegratedReport",
@@ -44543,11 +44482,10 @@
 							"publicationDate": null
 						},
 						"comment": "program cross-platform feed",
-						"quality": "Audited",
-						"currency": "BBD"
+						"quality": "Audited"
 					},
-					"totalRevenue": {
-						"value": 3921768742.45,
+					"totalRevenueInEUR": {
+						"value": 4701.1,
 						"dataSource": {
 							"page": "945-1011",
 							"fileName": "IntegratedReport",
@@ -44556,10 +44494,9 @@
 							"publicationDate": null
 						},
 						"comment": "quantify open-source capacitor",
-						"quality": "Estimated",
-						"currency": "AUD"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "477-587",
@@ -45655,8 +45592,8 @@
 						"quality": "Reported"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 7701260823.96,
+					"enterpriseValueInEUR": {
+						"value": 68260.44,
 						"dataSource": {
 							"page": "298-1184",
 							"fileName": "AnnualReport",
@@ -45665,11 +45602,10 @@
 							"publicationDate": null
 						},
 						"comment": "back up digital circuit",
-						"quality": "Audited",
-						"currency": "PLN"
+						"quality": "Audited"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "1026-1188",
@@ -46755,8 +46691,8 @@
 						"comment": "index optical circuit",
 						"quality": "Estimated"
 					},
-					"enterpriseValue": {
-						"value": 8655168727.01,
+					"enterpriseValueInEUR": {
+						"value": 48536.81,
 						"dataSource": {
 							"page": "326",
 							"fileName": "SustainabilityReport",
@@ -46765,11 +46701,10 @@
 							"publicationDate": null
 						},
 						"comment": "bypass auxiliary firewall",
-						"quality": "Estimated",
-						"currency": "KZT"
+						"quality": "Estimated"
 					},
-					"totalRevenue": {
-						"value": 2885803930.52,
+					"totalRevenueInEUR": {
+						"value": 88797.99,
 						"dataSource": {
 							"page": "7-878",
 							"fileName": "SustainabilityReport",
@@ -46778,10 +46713,9 @@
 							"publicationDate": null
 						},
 						"comment": "hack neural firewall",
-						"quality": "Estimated",
-						"currency": "UGX"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": null,
 						"comment": "transmit 1080p matrix",
@@ -47949,8 +47883,8 @@
 						"quality": "NoDataFound"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 4794837758.77,
+					"enterpriseValueInEUR": {
+						"value": 7324.61,
 						"dataSource": {
 							"page": "313-929",
 							"fileName": "IntegratedReport",
@@ -47959,11 +47893,10 @@
 							"publicationDate": null
 						},
 						"comment": "generate primary feed",
-						"quality": "Incomplete",
-						"currency": "BBD"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 5982784746.75,
+					"totalRevenueInEUR": {
+						"value": 79566.14,
 						"dataSource": {
 							"page": "835-1156",
 							"fileName": "IntegratedReport",
@@ -47972,10 +47905,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "SSP"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 28249.9,
 						"dataSource": {
 							"page": "813-828",
@@ -49120,15 +49052,14 @@
 						"quality": "Audited"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 8214454701.2,
+					"enterpriseValueInEUR": {
+						"value": 9026.89,
 						"dataSource": null,
 						"comment": "program cross-platform firewall",
-						"quality": "NoDataFound",
-						"currency": "BGN"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
-						"value": 7212769532.67,
+					"totalRevenueInEUR": {
+						"value": 34679.23,
 						"dataSource": {
 							"page": "197",
 							"fileName": "IntegratedReport",
@@ -49137,10 +49068,9 @@
 							"publicationDate": null
 						},
 						"comment": "connect digital hard drive",
-						"quality": "Reported",
-						"currency": "HNL"
+						"quality": "Reported"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "901",
@@ -50381,15 +50311,14 @@
 						"quality": "Reported"
 					},
 					"scope4GhgEmissionsInTonnes": null,
-					"enterpriseValue": {
-						"value": 4835275691.41,
+					"enterpriseValueInEUR": {
+						"value": 74059.57,
 						"dataSource": null,
 						"comment": "index open-source capacitor",
-						"quality": "NoDataFound",
-						"currency": "SCR"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
-						"value": 3102830069.51,
+					"totalRevenueInEUR": {
+						"value": 76784.57,
 						"dataSource": {
 							"page": "623-1233",
 							"fileName": "IntegratedReport",
@@ -50398,10 +50327,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "NoDataFound",
-						"currency": "SHP"
+						"quality": "NoDataFound"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "1134-1136",
@@ -51515,7 +51443,7 @@
 						"comment": "quantify virtual system",
 						"quality": null
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "869",
@@ -51525,11 +51453,10 @@
 							"publicationDate": null
 						},
 						"comment": "connect back-end bandwidth",
-						"quality": "Audited",
-						"currency": "EGP"
+						"quality": "Audited"
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "1179",
@@ -52602,7 +52529,7 @@
 						"comment": "bypass neural port",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
+					"enterpriseValueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "705-864",
@@ -52612,11 +52539,10 @@
 							"publicationDate": null
 						},
 						"comment": "copy solid state circuit",
-						"quality": "Reported",
-						"currency": "NIO"
+						"quality": "Reported"
 					},
-					"totalRevenue": {
-						"value": 3052379249.78,
+					"totalRevenueInEUR": {
+						"value": 17789.92,
 						"dataSource": {
 							"page": "1083-1119",
 							"fileName": "AnnualReport",
@@ -52625,10 +52551,9 @@
 							"publicationDate": null
 						},
 						"comment": "override cross-platform monitor",
-						"quality": "Audited",
-						"currency": "CLP"
+						"quality": "Audited"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": null,
 						"dataSource": {
 							"page": "1088",
@@ -53776,8 +53701,8 @@
 						"comment": "connect online bandwidth",
 						"quality": null
 					},
-					"enterpriseValue": {
-						"value": 9229403836.9,
+					"enterpriseValueInEUR": {
+						"value": 42367.7,
 						"dataSource": {
 							"page": "997-1145",
 							"fileName": "AnnualReport",
@@ -53786,11 +53711,10 @@
 							"publicationDate": null
 						},
 						"comment": "hack auxiliary transmitter",
-						"quality": "Incomplete",
-						"currency": "JPY"
+						"quality": "Incomplete"
 					},
-					"totalRevenue": {
-						"value": 9912974790.7,
+					"totalRevenueInEUR": {
+						"value": 31049.78,
 						"dataSource": {
 							"page": "1094-1207",
 							"fileName": "AnnualReport",
@@ -53799,10 +53723,9 @@
 							"publicationDate": null
 						},
 						"comment": "connect haptic system",
-						"quality": null,
-						"currency": "GIP"
+						"quality": null
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 86686.56,
 						"dataSource": {
@@ -54913,15 +54836,14 @@
 						"comment": null,
 						"quality": "NoDataFound"
 					},
-					"enterpriseValue": {
-						"value": 9424096928.51,
+					"enterpriseValueInEUR": {
+						"value": 4139.52,
 						"dataSource": null,
 						"comment": "transmit mobile port",
-						"quality": "NoDataFound",
-						"currency": "ARS"
+						"quality": "NoDataFound"
 					},
-					"totalRevenue": {
-						"value": 2723236284.99,
+					"totalRevenueInEUR": {
+						"value": 52292.5,
 						"dataSource": {
 							"page": "426-1009",
 							"fileName": "IntegratedReport",
@@ -54930,10 +54852,9 @@
 							"publicationDate": null
 						},
 						"comment": "compress wireless hard drive",
-						"quality": "Incomplete",
-						"currency": "MAD"
+						"quality": "Incomplete"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 39923.28,
 						"dataSource": {
 							"page": "841",
@@ -56044,8 +55965,8 @@
 						"comment": "reboot bluetooth hard drive",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
-						"value": 8774587782.53,
+					"enterpriseValueInEUR": {
+						"value": 92710.13,
 						"dataSource": {
 							"page": "338",
 							"fileName": "ESEFReport",
@@ -56054,10 +55975,9 @@
 							"publicationDate": null
 						},
 						"comment": null,
-						"quality": "Estimated",
-						"currency": "VUV"
+						"quality": "Estimated"
 					},
-					"totalRevenue": {
+					"totalRevenueInEUR": {
 						"value": null,
 						"dataSource": {
 							"page": "834",
@@ -56067,10 +55987,9 @@
 							"publicationDate": null
 						},
 						"comment": "back up haptic protocol",
-						"quality": "Estimated",
-						"currency": "LSL"
+						"quality": "Estimated"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 86214.26,
 						"dataSource": null,
 						"comment": null,
@@ -57235,8 +57154,8 @@
 						"comment": "hack neural transmitter",
 						"quality": "Reported"
 					},
-					"enterpriseValue": {
-						"value": 8603437955.43,
+					"enterpriseValueInEUR": {
+						"value": 98447.66,
 						"dataSource": {
 							"page": "554",
 							"fileName": "IntegratedReport",
@@ -57245,11 +57164,10 @@
 							"publicationDate": null
 						},
 						"comment": "calculate optical protocol",
-						"quality": null,
-						"currency": "NAD"
+						"quality": null
 					},
-					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
+					"totalRevenueInEUR": null,
+					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": null,
 					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
 						"value": 45597.57,

@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy",
   "name" : "UN Global Compact Principles Compliance Policy",
-  "businessDefinition" : "Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.",
+  "businessDefinition" : "Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "eutaxonomy-non-financials", "sfdr" ],
   "constraints" : null
