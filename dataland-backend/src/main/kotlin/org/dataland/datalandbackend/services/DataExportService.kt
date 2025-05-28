@@ -278,7 +278,12 @@ class DataExportService
                             .getNonEmptyLeafNodesAsMapping(node)
                             .filterKeys { !isReferencedReportsField(it) }
                             .toMutableMap()
-                    if (keepValueFieldsOnly) nonEmptyNodes.filterNotTo(mutableMapOf()) { isMetaDataField(it.key) } else nonEmptyNodes
+
+                    if (keepValueFieldsOnly) {
+                        processQualityFields(nonEmptyNodes)
+                    } else {
+                        nonEmptyNodes
+                    }
                 }
             val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
 
@@ -289,6 +294,44 @@ class DataExportService
             }
 
             return Pair(csvData, nonEmptyFields)
+        }
+
+        /**
+         * Process a map of nodes to keep value fields and convert quality fields to value fields
+         * when there is no corresponding value.
+         * @param nodes The map of nodes to process
+         * @return A filtered map containing only value fields (including converted quality fields)
+         */
+        private fun processQualityFields(nodes: MutableMap<String, String>): MutableMap<String, String> {
+            val filteredNodes = mutableMapOf<String, String>()
+            val separator = JsonUtils.getPathSeparator()
+
+            // First pass: identify quality fields that don't have corresponding value fields
+            // and transform them into value fields
+            nodes.keys.toList().forEach { field ->
+                when {
+                    field.endsWith("${separator}quality") -> {
+                        val basePath = field.substringBeforeLast("${separator}quality")
+                        val valuePath = "${basePath}${separator}value"
+                        if (valuePath !in nodes) {
+                            // No value exists, use quality instead but place it in a value field
+                            filteredNodes[valuePath] = nodes[field]!!
+                        }
+                        // Don't keep the original quality field
+                    }
+                    field.endsWith("${separator}value") -> {
+                        // Always keep value fields
+                        filteredNodes[field] = nodes[field]!!
+                    }
+                    !isMetaDataField(field) -> {
+                        // Keep only non-metadata fields
+                        filteredNodes[field] = nodes[field]!!
+                    }
+                }
+            }
+            nodes.clear()
+            nodes.putAll(filteredNodes)
+            return nodes
         }
 
         /**

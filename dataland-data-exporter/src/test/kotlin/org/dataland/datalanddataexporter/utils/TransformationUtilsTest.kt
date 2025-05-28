@@ -156,6 +156,6 @@ class TransformationUtilsTest {
                 .with(schema)
                 .readValue<Map<String, String>>(csvFile)
 
-        assertEquals(csvData, expectedCsvData)
+        assertEquals(expectedCsvData, csvData)
     }
 }

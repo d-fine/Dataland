@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
@@ -114,5 +115,120 @@ class DataExportServiceTest {
             )
             workbook.close()
         }
+    }
+
+    @Test
+    fun `check that quality field is used as value when no value field exists and keepValueFieldsOnly is true`() {
+        val testJson = createTestJsonWithQualityNoValue()
+
+        // Process the data with keepValueFieldsOnly = true
+        val companyExportData =
+            SingleCompanyExportData(
+                companyName = "Quality Test Company",
+                companyLei = "TEST12345",
+                reportingPeriod = "2024",
+                data = objectMapper.treeToValue(testJson, Any::class.java),
+            )
+
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(companyExportData),
+                ExportFileType.CSV,
+                DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
+            )
+
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+
+        // Verify that the quality value was correctly used as a value field
+        // We expect to find "Audited" in the CSV (our test quality value)
+        Assertions.assertTrue(
+            csvString.contains("Audited"),
+            "CSV should contain the quality value 'Audited' in place of missing value field",
+        )
+
+        // Check that the original quality field name is not present in the output
+        val separator = JsonUtils.getPathSeparator()
+        Assertions.assertFalse(
+            csvString.contains("${separator}quality"),
+            "CSV should not contain the original quality field",
+        )
+    }
+
+    @Test
+    fun `check that quality field is ignored when value field exists and keepValueFieldsOnly is true`() {
+        val testJson = createTestJsonWithBothValueAndQuality()
+
+        // Process the data with keepValueFieldsOnly = true
+        val companyExportData =
+            SingleCompanyExportData(
+                companyName = "Both Fields Test Company",
+                companyLei = "TEST67890",
+                reportingPeriod = "2024",
+                data = objectMapper.treeToValue(testJson, Any::class.java),
+            )
+
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(companyExportData),
+                ExportFileType.CSV,
+                DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
+            )
+
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+
+        // Verify that the value field was kept (and not the quality field)
+        Assertions.assertTrue(
+            csvString.contains("42"),
+            "CSV should contain the value field content '42'",
+        )
+
+        // Verify that the quality field content is not present in the CSV
+        Assertions.assertFalse(
+            csvString.contains("Reported"),
+            "CSV should not contain the quality value 'Reported' when value exists",
+        )
+    }
+
+    /**
+     * Creates a test JSON with a data point that has only a quality field (no value field)
+     */
+    private fun createTestJsonWithQualityNoValue(): JsonNode {
+        val root = objectMapper.createObjectNode()
+        val data = objectMapper.createObjectNode()
+        root.set<JsonNode>("data", data)
+
+        val testField = objectMapper.createObjectNode()
+        data.set<JsonNode>("testCategory", testField)
+
+        val testPoint = objectMapper.createObjectNode()
+        testField.set<JsonNode>("testDataPoint", testPoint)
+
+        // Only set a quality field, no value field
+        testPoint.put("quality", "Audited")
+
+        return root
+    }
+
+    /**
+     * Creates a test JSON with a data point that has both a value and quality field
+     */
+    private fun createTestJsonWithBothValueAndQuality(): JsonNode {
+        val root = objectMapper.createObjectNode()
+        val data = objectMapper.createObjectNode()
+        root.set<JsonNode>("data", data)
+
+        val testField = objectMapper.createObjectNode()
+        data.set<JsonNode>("testCategory", testField)
+
+        val testPoint = objectMapper.createObjectNode()
+        testField.set<JsonNode>("testDataPoint", testPoint)
+
+        // Set both value and quality fields
+        testPoint.put("value", "42")
+        testPoint.put("quality", "Reported")
+
+        return root
     }
 }

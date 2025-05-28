@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.TextNode
  */
 class DatapointBuilder(
     override val identifier: String,
-    val dataPointId: String,
+    val dataPointId: String?,
     override val parentCategory: CategoryBuilder?,
 ) : SpecificationElement {
     override fun toJsonNode(): TextNode = JsonNodeFactory.instance.textNode(dataPointId)

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.specific.specification.FrameworkSpecificationBuilder
+import org.dataland.frameworktoolbox.specific.specification.FrameworkBuilder
 import org.dataland.frameworktoolbox.specific.specification.SpecificationNamingConvention
 
 /**
@@ -14,7 +14,7 @@ import org.dataland.frameworktoolbox.specific.specification.SpecificationNamingC
 class CategoryBuilder(
     override val identifier: String,
     override val parentCategory: CategoryBuilder?,
-    private val builder: FrameworkSpecificationBuilder,
+    private val builder: FrameworkBuilder,
     val childElements: MutableList<SpecificationElement> = mutableListOf(),
 ) : SpecificationElement {
     companion object {
@@ -77,6 +77,19 @@ class CategoryBuilder(
     }
 
     /**
+     *  Include a new translation in the hierarchy
+     */
+    fun addDefaultTranslation(component: ComponentBase): TranslationBuilder {
+        val aliasExport = component.aliasExport
+        val translation =
+            addTranslationToFrameworkHierarchy(
+                identifier = component.identifier,
+                aliasExport = aliasExport,
+            )
+        return translation
+    }
+
+    /**
      * Add a new data point specification to the framework
      */
     private fun addDatapointSpecification(
@@ -135,7 +148,7 @@ class CategoryBuilder(
      */
     private fun addDatapointToFrameworkHierarchy(
         identifier: String,
-        dataPointId: String,
+        dataPointId: String?,
     ): DatapointBuilder {
         val newDatapoint =
             DatapointBuilder(
@@ -145,5 +158,19 @@ class CategoryBuilder(
             )
         childElements.add(newDatapoint)
         return newDatapoint
+    }
+
+    private fun addTranslationToFrameworkHierarchy(
+        identifier: String,
+        aliasExport: String?,
+    ): TranslationBuilder {
+        val newTranslation =
+            TranslationBuilder(
+                identifier = identifier,
+                aliasExport = aliasExport,
+                parentCategory = this,
+            )
+        childElements.add(newTranslation)
+        return newTranslation
     }
 }
