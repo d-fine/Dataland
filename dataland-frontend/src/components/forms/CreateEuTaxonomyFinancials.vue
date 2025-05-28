@@ -31,7 +31,7 @@
                   :is-required="true"
                 />
                 <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <Calendar
+                  <DatePicker
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
                     inputId="icon"
@@ -135,7 +135,7 @@ import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { eutaxonomyFinancialsDataModel } from '@/frameworks/eutaxonomy-financials/UploadConfig';
@@ -198,7 +198,7 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
-    Calendar,
+    DatePicker,
     InputSwitch,
     InputTextFormField,
     NumberFormField,

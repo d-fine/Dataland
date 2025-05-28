@@ -110,7 +110,6 @@ import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import {
@@ -173,7 +172,6 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
-    Calendar,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,

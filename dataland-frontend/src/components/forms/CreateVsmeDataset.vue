@@ -26,7 +26,7 @@
                   :is-required="true"
                 />
                 <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <Calendar
+                  <DatePicker
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
                     inputId="icon"
@@ -136,7 +136,7 @@ import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import type Keycloak from 'keycloak-js';
 import { type Category } from '@/utils/GenericFrameworkTypes';
 import { AxiosError } from 'axios';

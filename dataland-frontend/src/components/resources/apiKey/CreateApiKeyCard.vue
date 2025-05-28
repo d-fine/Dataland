@@ -34,7 +34,7 @@
         </div>
 
         <div v-if="expiryTimeDropdown === 'custom'" class="col-7 text-right">
-          <Calendar
+          <DatePicker
             data-test="expiryDatePicker"
             inputId="icon"
             v-model="customDate"
@@ -79,7 +79,7 @@
 import PrimeButton from 'primevue/button';
 import { defineComponent, type PropType } from 'vue';
 import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import { calculateExpiryDateAsDateString, calculateDaysFromNow } from '@/utils/DataFormatUtils';
 import UserRolesBadges from '@/components/resources/apiKey/UserRolesBadges.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -88,7 +88,7 @@ import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from '@/DatalandSe
 
 export default defineComponent({
   name: 'CreateApiKeyCard',
-  components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
+  components: { PrimeButton, Dropdown, DatePicker, UserRolesBadges },
   props: {
     userRoles: {
       type: Array as PropType<string[]>,

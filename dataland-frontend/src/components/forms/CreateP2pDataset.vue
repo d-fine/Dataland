@@ -103,7 +103,6 @@ import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DriveMixType } from '@/api-models/DriveMixType';
@@ -158,7 +157,6 @@ export default defineComponent({
     PercentageFormField,
     Card,
     PrimeButton,
-    Calendar,
     SuccessMessage,
     FailMessage,
     SubmitButton,

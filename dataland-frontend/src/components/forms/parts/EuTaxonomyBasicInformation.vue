@@ -23,7 +23,7 @@
           :description="euTaxonomyKpiInfoMappings.fiscalYearEnd"
         />
         <div class="md:col-6 col-12 p-0">
-          <Calendar
+          <DatePicker
             inputId="fiscalYearEndAsDate"
             :modelValue="fiscalYearEndAsDate"
             data-test="fiscalYearEnd"
@@ -97,7 +97,7 @@ import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadForm
 import { defineComponent } from 'vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import { FormKit } from '@formkit/vue';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -106,7 +106,7 @@ import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsF
 
 export default defineComponent({
   name: 'EuTaxonomyBasicInformation',
-  components: { RadioButtonsFormField, UploadFormHeader, Calendar, FormKit, YesNoFormField },
+  components: { RadioButtonsFormField, UploadFormHeader, DatePicker, FormKit, YesNoFormField },
   emits: ['updateFiscalYearEndHandler'],
   data: () => ({
     euTaxonomyKpiInfoMappings,

@@ -20,7 +20,7 @@
                 />
               </span>
               <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <Calendar
+                <DatePicker
                   data-test="reportingPeriod"
                   v-model="availableReportingPeriods"
                   placeholder="Search by reporting period"
@@ -153,7 +153,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';
 import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
@@ -172,7 +172,7 @@ export default defineComponent({
     DataTable,
     Column,
     InputText,
-    Calendar,
+    DatePicker,
   },
   setup() {
     return {
