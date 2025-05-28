@@ -96,7 +96,9 @@ sonar {
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
                 "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
-                "dataland-reduced-local-stack/**",
+                "dataland-reduced-local-stack/**," +
+                "dataland-backend/src/main/kotlin/db/migration/utils/**," +
+                "dataland-internal-storage/src/main/kotlin/db/migration/utils/**",
         )
         property(
             "sonar.sources",
