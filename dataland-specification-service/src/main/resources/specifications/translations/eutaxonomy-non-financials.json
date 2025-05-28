@@ -1,0 +1,144 @@
+{
+  "id" : "eutaxonomy-non-financials",
+  "schema" : {
+    "general" : {
+      "fiscalYearDeviation" : "Fiscal Year Deviation",
+      "fiscalYearEnd" : "Fiscal Year End",
+      "scopeOfEntities" : "Scope Of Entities",
+      "nfrdMandatory" : "NFRD Mandatory",
+      "euTaxonomyActivityLevelReporting" : "EU Taxonomy Activity Level Reporting",
+      "assurance" : "Assurance",
+      "numberOfEmployees" : "Number of Employees",
+      "unGlobalCompactPrinciplesCompliancePolicy" : "UN Global Compact Principles Compliance Policy",
+      "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy" : "OECD Guidelines for Multinational Enterprises Compliance Policy",
+      "iloCoreLabourStandards" : "ILO Core Labour Standards",
+      "humanRightsDueDiligence" : "Human Rights Due Diligence",
+      "referencedReports" : "Referenced Reports"
+    },
+    "revenue" : {
+      "totalAmount" : "Total Amount",
+      "nonEligibleShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "eligibleShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "nonAlignedShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "nonAlignedActivities" : "Non-Aligned Activities",
+      "alignedShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentEligible" : "Substantial Contribution to CCM In Percent - Eligible",
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned",
+      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCM In Percent - Of which use of proceeds",
+      "substantialContributionToClimateChangeMitigationInPercentEnablingShare" : "Substantial Contribution to CCM In Percent - Enabling Share",
+      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare" : "Substantial Contribution to CCM In Percent - Transitional Share",
+      "substantialContributionToClimateChangeAdaptationInPercentEligible" : "Substantial Contribution to CCA In Percent - Eligible",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned",
+      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCA In Percent - Of which use of proceeds",
+      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare" : "Substantial Contribution to CCA In Percent - Enabling Share",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Eligible",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Of which use of proceeds",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Enabling Share",
+      "substantialContributionToTransitionToACircularEconomyInPercentEligible" : "Substantial Contribution to CE In Percent - Eligible",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned",
+      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CE In Percent - Of which use of proceeds",
+      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare" : "Substantial Contribution to CE In Percent - Enabling Share",
+      "substantialContributionToPollutionPreventionAndControlInPercentEligible" : "Substantial Contribution to PPC In Percent - Eligible",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned",
+      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds" : "Substantial Contribution to PPC In Percent - Of which use of proceeds",
+      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare" : "Substantial Contribution to PPC In Percent - Enabling Share",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible" : "Substantial Contribution to BIO In Percent - Eligible",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds" : "Substantial Contribution to BIO In Percent - Of which use of proceeds",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare" : "Substantial Contribution to BIO In Percent - Enabling Share",
+      "alignedActivities" : "Aligned Activities",
+      "enablingShareInPercent" : "Enabling Share In Percent",
+      "transitionalShareInPercent" : "Transitional Share In Percent"
+    },
+    "capex" : {
+      "totalAmount" : "Total Amount",
+      "nonEligibleShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "eligibleShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "nonAlignedShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "nonAlignedActivities" : "Non-Aligned Activities",
+      "alignedShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentEligible" : "Substantial Contribution to CCM In Percent - Eligible",
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned",
+      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCM In Percent - Of which use of proceeds",
+      "substantialContributionToClimateChangeMitigationInPercentEnablingShare" : "Substantial Contribution to CCM In Percent - Enabling Share",
+      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare" : "Substantial Contribution to CCM In Percent - Transitional Share",
+      "substantialContributionToClimateChangeAdaptationInPercentEligible" : "Substantial Contribution to CCA In Percent - Eligible",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned",
+      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCA In Percent - Of which use of proceeds",
+      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare" : "Substantial Contribution to CCA In Percent - Enabling Share",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Eligible",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Of which use of proceeds",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Enabling Share",
+      "substantialContributionToTransitionToACircularEconomyInPercentEligible" : "Substantial Contribution to CE In Percent - Eligible",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned",
+      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CE In Percent - Of which use of proceeds",
+      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare" : "Substantial Contribution to CE In Percent - Enabling Share",
+      "substantialContributionToPollutionPreventionAndControlInPercentEligible" : "Substantial Contribution to PPC In Percent - Eligible",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned",
+      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds" : "Substantial Contribution to PPC In Percent - Of which use of proceeds",
+      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare" : "Substantial Contribution to PPC In Percent - Enabling Share",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible" : "Substantial Contribution to BIO In Percent - Eligible",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds" : "Substantial Contribution to BIO In Percent - Of which use of proceeds",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare" : "Substantial Contribution to BIO In Percent - Enabling Share",
+      "alignedActivities" : "Aligned Activities",
+      "enablingShareInPercent" : "Enabling Share In Percent",
+      "transitionalShareInPercent" : "Transitional Share In Percent"
+    },
+    "opex" : {
+      "totalAmount" : "Total Amount",
+      "nonEligibleShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "eligibleShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "nonAlignedShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "nonAlignedActivities" : "Non-Aligned Activities",
+      "alignedShare" : {
+        "relativeShareInPercent" : "Relative Share in Percent",
+        "absoluteShare" : "Absolute Share"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned",
+      "alignedActivities" : "Aligned Activities",
+      "enablingShareInPercent" : "Enabling Share In Percent",
+      "transitionalShareInPercent" : "Transitional Share In Percent"
+    }
+  }
+}
