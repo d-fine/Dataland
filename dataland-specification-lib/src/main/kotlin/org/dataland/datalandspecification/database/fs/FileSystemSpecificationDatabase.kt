@@ -8,6 +8,7 @@ import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.DataPointBaseType
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.datalandspecification.specifications.Framework
+import org.dataland.datalandspecification.specifications.FrameworkTranslation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -75,6 +76,12 @@ class FileSystemSpecificationDatabase(
                 frameworks[id] = specification
             }
         logger.info("Loaded ${frameworks.size} framework specifications")
+        loadSpecifications<FrameworkTranslation>(File(baseFolder, "translations"), objectMapper, logger)
+            .forEach { (id, translation) ->
+                translations[id] = translation
+            }
+        logger.info("Loaded ${translations.size} framework translations")
+
         validateIntegrity()
     }
 
@@ -101,5 +108,6 @@ class FileSystemSpecificationDatabase(
         saveSpecifications(File(baseFolder, "dataPointBaseTypes"), objectMapper, dataPointBaseTypes)
         saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointTypes)
         saveSpecifications(File(baseFolder, "frameworks"), objectMapper, frameworks)
+        saveSpecifications(File(baseFolder, "translations"), objectMapper, translations)
     }
 }

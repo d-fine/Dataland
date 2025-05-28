@@ -276,6 +276,14 @@ abstract class PavedRoadFramework(
         specifications.build()
     }
 
+    protected fun compileTranslations(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications)) {
+            return
+        }
+        val translations = framework.generateTranslations(datalandProject)
+        translations.build()
+    }
+
     /**
      * Compiles a framework following the template and integrates it into the dataland repository
      */
@@ -296,12 +304,13 @@ abstract class PavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-        compileDataModel(datalandProject)
+       /* compileDataModel(datalandProject)
         compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
-        compileSpecifications(datalandProject)
+        compileSpecifications(datalandProject)*/
+        compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
