@@ -55,9 +55,9 @@ $el-list-item-bg: variables.$gray-light;
 $input-error: variables.$red;
 $input-checked-color: variables.$orange-prime;
 $dropdown-options-bg: var(--surface-hover);
-$inputswitch-slider-bg: variables.$orange-prime;
-$inputswitch-slider-bg-off: variables.$gray-light;
-$inputswitch-singlecolor-slider-bg: variables.$gray-light;
+$toggleswitch-slider-bg: variables.$orange-prime;
+$toggleswitch-slider-bg-off: variables.$gray-light;
+$toggleswitch-singlecolor-slider-bg: variables.$gray-light;
 
 //messages
 $message-block-bg: var(--primary-color-100);

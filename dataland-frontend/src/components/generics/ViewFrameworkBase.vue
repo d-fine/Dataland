@@ -24,7 +24,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -135,7 +135,7 @@ import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import OverlayPanel from 'primevue/overlaypanel';
 import { computed, defineComponent, inject, type PropType } from 'vue';
 import { useRoute } from 'vue-router';
@@ -154,7 +154,7 @@ export default defineComponent({
     OverlayPanel,
     SimpleReportingPeriodSelectorDialog,
     QualityAssuranceButtons,
-    InputSwitch,
+    ToggleSwitch,
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {

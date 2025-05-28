@@ -165,7 +165,6 @@ import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/Al
 import NonAlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue';
 import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import InputSwitch from 'primevue/inputswitch';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
@@ -204,7 +203,6 @@ export default defineComponent({
     Card,
     PrimeButton,
     DatePicker,
-    InputSwitch,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,

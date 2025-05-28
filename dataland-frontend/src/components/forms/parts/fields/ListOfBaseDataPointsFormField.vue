@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3" :data-test="name">
     <div class="px-2 py-3 next-to-each-other vertical-middle">
-      <InputSwitch
+      <ToggleSwitch
         data-test="dataPointToggleButton"
         inputId="dataPointIsAvailableSwitch"
         @click="dataPointAvailableToggle"
@@ -37,11 +37,11 @@ import type { DocumentToUpload } from '@/utils/FileUploadUtils';
 
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import FormListFormField from '@/components/forms/parts/fields/FormListFormField.vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 
 export default defineComponent({
   name: 'ListOfBaseDataPointsFormField',
-  components: { FormListFormField, UploadFormHeader, InputSwitch },
+  components: { FormListFormField, UploadFormHeader, ToggleSwitch },
   inject: {
     injectlistOfFilledKpis: {
       from: 'listOfFilledKpis',

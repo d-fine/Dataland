@@ -34,9 +34,9 @@ describeIf(
     it('When identifiers are accepted and rejected', () => {
       createRequest(1, `${permIdOfExistingCompany}, 12345incorrectNumber`, () => {
         cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
-        cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-inputswitch-checked');
+        cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-toggleswitch-checked');
         cy.get('[data-test="notifyMeImmediatelyInput"]').click();
-        cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
+        cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
       });
 
       cy.get('[data-test="reportingPeriodsHeading"]').contains('1 REPORTING PERIOD');

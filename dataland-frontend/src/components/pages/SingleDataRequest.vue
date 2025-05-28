@@ -60,8 +60,7 @@
                     </BasicFormSection>
                     <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
                       Receive emails directly or via summary
-                      <InputSwitch
-                        class="p-inputswitch p-inputswitch-slider"
+                      <ToggleSwitch
                         style="display: block; margin: 1rem 0"
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
@@ -251,7 +250,7 @@ import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -259,7 +258,7 @@ export default defineComponent({
   components: {
     SingleSelectFormElement,
     PrimeDialog,
-    InputSwitch,
+    ToggleSwitch,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,

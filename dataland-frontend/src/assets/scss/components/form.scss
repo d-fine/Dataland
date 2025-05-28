@@ -382,11 +382,11 @@ input[type='radio'] {
   }
 }
 
-.p-inputswitch {
+.p-toggleswitch{
   width: 2.1rem;
   height: 1.2rem;
-  .p-inputswitch-slider {
-    background: colors.$inputswitch-slider-bg-off;
+  .p-toggleswitch-slider {
+    background: colors.$toggleswitch-slider-bg-off;
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -402,9 +402,9 @@ input[type='radio'] {
       transition-duration: 0.2s;
     }
   }
-  &.p-inputswitch-checked {
-    .p-inputswitch-slider {
-      background: colors.$inputswitch-slider-bg;
+  &.p-toggleswitch-checked {
+    .p-toggleswitch-slider {
+      background: colors.$toggleswitch-slider-bg;
       &::before {
         background: colors.$bg-text-primary;
         transform: translateX(1rem);
@@ -413,11 +413,11 @@ input[type='radio'] {
   }
 }
 
-.p-inputswitch-singlecolor {
+.p-toggleswitch-singlecolor {
   width: 2.1rem;
   height: 1.2rem;
-  .p-inputswitch-slider {
-    background: colors.$inputswitch-singlecolor-slider-bg;
+  .p-toggleswitch-slider {
+    background: colors.$toggleswitch-singlecolor-slider-bg;
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -433,9 +433,9 @@ input[type='radio'] {
       transition-duration: 0.2s;
     }
   }
-  &.p-inputswitch-checked {
-    .p-inputswitch-slider {
-      background: colors.$inputswitch-singlecolor-slider-bg;
+  &.p-toggleswitch-checked {
+    .p-toggleswitch-slider {
+      background: colors.$toggleswitch-singlecolor-slider-bg;
       &::before {
         background: colors.$bg-text-primary;
         transform: translateX(1rem);

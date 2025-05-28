@@ -125,62 +125,61 @@
   </Card>
 </template>
 <script lang="ts">
-import { FormKit } from '@formkit/vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import Card from 'primevue/card';
-import { defineComponent, inject, computed } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import Tooltip from 'primevue/tooltip';
-import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import DatePicker from 'primevue/datepicker';
-import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { eutaxonomyFinancialsDataModel } from '@/frameworks/eutaxonomy-financials/UploadConfig';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import { type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import {
   type CompanyAssociatedDataEutaxonomyFinancialsData,
   type CompanyReport,
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
+import { FormKit } from '@formkit/vue';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Card from 'primevue/card';
+import DatePicker from 'primevue/datepicker';
+import Tooltip from 'primevue/tooltip';
+import { computed, defineComponent, inject } from 'vue';
 import { type LocationQueryValue, useRoute } from 'vue-router';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
-import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
-import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
-import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
-import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
-import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
-import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
-import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import InputSwitch from 'primevue/inputswitch';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
-import { smoothScroll } from '@/utils/SmoothScroll';
-import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
-import { type Subcategory } from '@/utils/GenericFrameworkTypes';
-import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
-import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
-import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
-import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
-import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
-import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
-import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
-import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
-import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
-import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
-import { getFilledKpis } from '@/utils/DataPoint';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
-import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
@@ -199,7 +198,6 @@ export default defineComponent({
     Card,
     PrimeButton,
     DatePicker,
-    InputSwitch,
     InputTextFormField,
     NumberFormField,
     DateFormField,

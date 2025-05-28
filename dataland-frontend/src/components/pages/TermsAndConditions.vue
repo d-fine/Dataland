@@ -2,10 +2,9 @@
   <LegalPage>
     <div class="flex justify-content-start align-items-center">
       <img src="/public/static/icons/uk_flag.jpg" height="20" alt="English" />
-      <InputSwitch
+      <ToggleSwitch
         data-test="terms-language-toggle-button"
         v-model="languageGerman"
-        class="p-inputswitch-singlecolor"
         style="margin-left: 10px; margin-right: 10px"
       />
       <img src="/public/static/icons/germany_flag.png" height="20" alt="German" />
@@ -1161,11 +1160,11 @@
 <script lang="ts">
 import LegalPage from '@/components/generics/LegalPage.vue';
 import { computed, defineComponent } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 
 export default defineComponent({
   name: 'TermsAndConditions',
-  components: { LegalPage, InputSwitch },
+  components: { LegalPage, ToggleSwitch },
   data() {
     return {
       languageGerman: false,

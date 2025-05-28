@@ -44,7 +44,7 @@
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a File Type.</p>
       <div class="flex align-content-start align-items-center">
-        <InputSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch" />
+        <ToggleSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch" />
         <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
@@ -95,7 +95,7 @@ import { type AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
 import { inject, onMounted, type Ref, ref } from 'vue';
 

@@ -189,7 +189,7 @@
                 <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
                 <div class="card__separator" />
                 Receive emails directly or via summary
-                <InputSwitch
+                <ToggleSwitch
                   style="margin: 1rem 0"
                   data-test="notifyMeImmediatelyInput"
                   inputId="notifyMeImmediatelyInput"
@@ -291,7 +291,7 @@ import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -302,7 +302,7 @@ export default defineComponent({
     EmailDetails,
     PrimeDialog,
     PrimeButton,
-    InputSwitch,
+    ToggleSwitch,
     BackButton,
     AuthenticationWrapper,
     TheHeader,
