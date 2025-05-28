@@ -5,11 +5,21 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.Framework
+import org.dataland.datalandspecification.specifications.FrameworkTranslation
 
 /**
  * Get the reference for this framework specification.
  */
-fun Framework.getRef(baseUrl: String): IdWithRefandAlias {
+fun Framework.getRef(baseUrl: String): IdWithRef =
+    IdWithRef(
+        id = this.id,
+        ref = "https://$baseUrl/specifications/frameworks/${this.id}",
+    )
+
+/**
+ * Get the reference for this framework specification.
+ */
+fun FrameworkTranslation.getRefAndAlias(baseUrl: String): IdWithRefAndAlias {
     val translationFile = "resources/specifications/translations/${this.id}.json"
     val translation =
         try {
@@ -23,9 +33,9 @@ fun Framework.getRef(baseUrl: String): IdWithRefandAlias {
         } catch (e: Exception) {
             null
         }
-    val alias = translation?.get(this.id)?.asText() ?: this.name
+    val alias = translation?.get(this.id)?.asText() ?: null
 
-    return IdWithRefandAlias(
+    return IdWithRefAndAlias(
         id = this.id,
         ref = "https://$baseUrl/specifications/frameworks/${this.id}",
         aliasExport = alias,
@@ -50,10 +60,15 @@ private fun translateSchema(
                     ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database.")
             val idWithRef = dataPointSpec.getRef(baseUrl)
 
+            val frameworkSpec =
+                database.translations[value.asText()]
+                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database.")
+            val idWithRefAndAlias = frameworkSpec.getRefAndAlias(baseUrl)
+
             val idWithRefNode: ObjectNode = JsonNodeFactory.instance.objectNode()
             idWithRefNode.put("id", idWithRef.id)
             idWithRefNode.put("ref", idWithRef.ref)
-            idWithRefNode.put("aliasExport", idWithRef.aliasExport ?: idWithRef.id)
+            idWithRefNode.put("aliasExport", idWithRefAndAlias.aliasExport ?: idWithRefAndAlias.id)
 
             schema.set<ObjectNode>(key, idWithRefNode)
         }
@@ -91,7 +106,7 @@ fun Framework.toSimpleDto(baseUrl: String): SimpleFrameworkSpecification =
  * A DTO for a framework specification.
  */
 data class FrameworkSpecification(
-    val framework: IdWithRefandAlias,
+    val framework: IdWithRef,
     val name: String,
     val businessDefinition: String,
     val schema: String,
@@ -102,6 +117,6 @@ data class FrameworkSpecification(
  * A simplified DTO for framework specification.
  */
 data class SimpleFrameworkSpecification(
-    val framework: IdWithRefandAlias,
+    val framework: IdWithRef,
     val name: String,
 )

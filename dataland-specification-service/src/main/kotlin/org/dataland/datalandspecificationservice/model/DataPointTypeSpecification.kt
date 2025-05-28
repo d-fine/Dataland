@@ -22,7 +22,6 @@ fun DataPointType.toDto(
     DataPointTypeSpecification(
         dataPointType = this.getRef(baseUrl),
         name = this.name,
-        aliasExport = this.aliasExport,
         businessDefinition = this.businessDefinition,
         constraints = this.constraints,
         usedBy =
@@ -42,7 +41,6 @@ fun DataPointType.toDto(
 data class DataPointTypeSpecification(
     val dataPointType: IdWithRef,
     val name: String,
-    val aliasExport: String,
     val businessDefinition: String,
     val dataPointBaseType: IdWithRef,
     val usedBy: List<IdWithRef>,
