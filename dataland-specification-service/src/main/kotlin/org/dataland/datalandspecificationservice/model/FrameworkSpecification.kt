@@ -57,18 +57,18 @@ private fun translateSchema(
             assert(value.isTextual)
             val dataPointSpec =
                 database.dataPointTypes[value.asText()]
-                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database.")
+                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database dataPointTypes.")
             val idWithRef = dataPointSpec.getRef(baseUrl)
 
-            val frameworkSpec =
-                database.translations[value.asText()]
-                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database.")
-            val idWithRefAndAlias = frameworkSpec.getRefAndAlias(baseUrl)
+//            val frameworkSpec =
+//                database.translations[value.asText()]
+//                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database translations.")
+//            val idWithRefAndAlias = frameworkSpec.getRefAndAlias(baseUrl)
 
             val idWithRefNode: ObjectNode = JsonNodeFactory.instance.objectNode()
             idWithRefNode.put("id", idWithRef.id)
             idWithRefNode.put("ref", idWithRef.ref)
-            idWithRefNode.put("aliasExport", idWithRefAndAlias.aliasExport ?: idWithRefAndAlias.id)
+//            idWithRefNode.put("aliasExport", idWithRefAndAlias.aliasExport ?: idWithRefAndAlias.id)
 
             schema.set<ObjectNode>(key, idWithRefNode)
         }
