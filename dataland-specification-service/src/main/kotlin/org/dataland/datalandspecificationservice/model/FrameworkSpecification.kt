@@ -9,11 +9,28 @@ import org.dataland.datalandspecification.specifications.Framework
 /**
  * Get the reference for this framework specification.
  */
-fun Framework.getRef(baseUrl: String): IdWithRef =
-    IdWithRef(
+fun Framework.getRef(baseUrl: String): IdWithRefandAlias {
+    val translationFile = "resources/specifications/translations/${this.id}.json"
+    val translation =
+        try {
+            val resource = this::class.java.classLoader.getResourceAsStream(translationFile)
+            if (resource != null) {
+                val objectMapper = ObjectMapper()
+                objectMapper.readTree(resource)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    val alias = translation?.get(this.id)?.asText() ?: this.name
+
+    return IdWithRefandAlias(
         id = this.id,
         ref = "https://$baseUrl/specifications/frameworks/${this.id}",
+        aliasExport = alias,
     )
+}
 
 /**
  * Translate the schema of a framework specification.
@@ -36,6 +53,7 @@ private fun translateSchema(
             val idWithRefNode: ObjectNode = JsonNodeFactory.instance.objectNode()
             idWithRefNode.put("id", idWithRef.id)
             idWithRefNode.put("ref", idWithRef.ref)
+            idWithRefNode.put("aliasExport", idWithRef.aliasExport ?: idWithRef.id)
 
             schema.set<ObjectNode>(key, idWithRefNode)
         }
@@ -73,7 +91,7 @@ fun Framework.toSimpleDto(baseUrl: String): SimpleFrameworkSpecification =
  * A DTO for a framework specification.
  */
 data class FrameworkSpecification(
-    val framework: IdWithRef,
+    val framework: IdWithRefandAlias,
     val name: String,
     val businessDefinition: String,
     val schema: String,
@@ -84,6 +102,6 @@ data class FrameworkSpecification(
  * A simplified DTO for framework specification.
  */
 data class SimpleFrameworkSpecification(
-    val framework: IdWithRef,
+    val framework: IdWithRefandAlias,
     val name: String,
 )
