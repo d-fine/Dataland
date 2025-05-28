@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
@@ -9,18 +9,21 @@ import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.kotlin.mock
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.UUID
 
 class DataExportServiceTest {
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+    private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportService = DataExportService(objectMapper, mockDataPointUtils, mockReferencedReportsUtils)
+    private val dataExportService = DataExportService(mockDataPointUtils, mockReferencedReportsUtils)
 
     private val testDataProvider = TestDataProvider(objectMapper)
     private val lksgTestData = testDataProvider.getLksgDataset()
@@ -45,9 +48,15 @@ class DataExportServiceTest {
                 mapOf("Header 1" to "Row 1 Col 1", "Header 2" to "Row 1 Col 2", "Header 3" to "Row 1 Col 3"),
                 mapOf("Header 1" to "Row 2 Col 1", "Header 2" to "Row 2 Col 2", "Header 3" to "Row 2 Col 3"),
             )
+        val readableHeaders =
+            mapOf(
+                "Header 1" to "First Header",
+                "Header 2" to "Second Header",
+                "Header 3" to "Third Header",
+            )
 
         Assertions.assertDoesNotThrow {
-            dataExportService.transformDataToExcel(header, data, ByteArrayOutputStream())
+            dataExportService.transformDataToExcelWithReadableHeaders(header, data, ByteArrayOutputStream(), readableHeaders)
         }
     }
 
@@ -81,7 +90,7 @@ class DataExportServiceTest {
     }
 
     @Test
-    fun `check that exported Excel starts with declaration of separator`() {
+    fun `check that exported Excel contains expected data`() {
         val excelStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportDataLksgTestData),
@@ -89,8 +98,21 @@ class DataExportServiceTest {
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
             )
-        val csvString = String(excelStream.inputStream.readAllBytes(), Charsets.UTF_8)
+        val bytes = excelStream.inputStream.readAllBytes()
+        Assertions.assertTrue(bytes.isNotEmpty(), "Excel stream should not be empty")
 
-        Assertions.assertTrue(csvString.matches("^.?sep=,.*$".toRegex()))
+        val inputStream = ByteArrayInputStream(bytes)
+        assertDoesNotThrow {
+            val workbook = XSSFWorkbook(inputStream)
+            val sheet = workbook.getSheetAt(0)
+            val headerRow = sheet.getRow(0)
+            Assertions.assertTrue(workbook.numberOfSheets > 0, "Excel should have at least one sheet")
+            Assertions.assertNotNull(headerRow, "Header row should exist")
+            Assertions.assertTrue(
+                headerRow.getCell(0)?.stringCellValue?.isNotEmpty() ?: false,
+                "First header cell should have content",
+            )
+            workbook.close()
+        }
     }
 }

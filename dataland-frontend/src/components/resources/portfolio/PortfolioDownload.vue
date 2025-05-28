@@ -92,7 +92,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
-import { type AxiosError } from 'axios';
+import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
@@ -257,6 +257,15 @@ function checkIfShowErrors(): void {
 }
 
 /**
+ * Get framework label from framework value for download
+ * @param frameworkValue
+ */
+function getFrameworkLabel(frameworkValue: string): string {
+  const frameworkOption = availableFrameworks.find((f) => f.value === frameworkValue);
+  return frameworkOption ? frameworkOption.label : frameworkValue;
+}
+
+/**
  * Handles download of portfolio
  */
 async function downloadPortfolio(): Promise<void> {
@@ -270,12 +279,16 @@ async function downloadPortfolio(): Promise<void> {
     ) as PublicFrameworkDataApi<FrameworkData>;
 
     const selectedExportFileType = ALL_EXPORT_FILE_TYPES.find((type) => type === selectedFileType.value)!;
+    const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       getSelectedReportingPeriods(),
       getCompanyIds(),
       selectedExportFileType,
-      keepValuesOnly.value
+      keepValuesOnly.value,
+      options
     );
 
     if (dataResponse.status === 204) {
@@ -285,8 +298,7 @@ async function downloadPortfolio(): Promise<void> {
     }
 
     const formatted_timestamp = getDateStringForDataExport(new Date());
-    const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
-    const filename = `data-export-${formatted_timestamp}.${fileExtension}`;
+    const filename = `data-export-${getFrameworkLabel(selectedFramework.value)}-${formatted_timestamp}.${fileExtension}`;
 
     forceFileDownload(dataResponse.data, filename);
   } catch (error) {
