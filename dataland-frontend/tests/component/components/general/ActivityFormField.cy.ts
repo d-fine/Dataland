@@ -9,7 +9,7 @@ describe('Component test for ActivitiesFormField', () => {
     cy.get('button[data-test="addNewProductButton"]').should('exist').click();
     cy.get('button[data-test="dataTestChooseActivityButton"]').should('have.length', 2);
     cy.get('button[data-test="dataTestChooseActivityButton"]').eq(1).click();
-    cy.get('div[data-test="activityOverlayPanel"]').should('be.visible');
+    cy.get('div[data-test="activityPopover"]').should('be.visible');
     cy.contains('.p-treenode-content', 'Construction and real estate').find('button').click();
     cy.get('ul.p-treenode-children')
       .should('be.visible')
@@ -19,7 +19,7 @@ describe('Component test for ActivitiesFormField', () => {
       .should('contain', 'Renovation of existing buildings')
       .find('div.p-radiobutton-box')
       .click({ force: true });
-    cy.get('div[data-test="activityOverlayPanel"]').should('not.exist');
+    cy.get('div[data-test="activityPopover"]').should('not.exist');
     cy.get('div[data-test="activityFormElement"]').should('contain', 'Renovation of existing buildings');
     cy.get('button[data-test="dataTestChooseActivityButton"]').eq(1).should('contain', 'Change Activity');
     cy.get('div[data-test="selectNaceCodes"]').eq(1).should('exist').find('div.p-multiselect-label-container').click();

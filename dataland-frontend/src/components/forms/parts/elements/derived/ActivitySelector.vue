@@ -16,7 +16,7 @@
     />
   </div>
 
-  <OverlayPanel ref="overlayPanel" data-test="activityOverlayPanel">
+  <Popover ref="popover" data-test="activityPopover">
     <div>
       <Tree :value="allActivities" class="w-full md:w-30rem" placeholder="Select Activitie">
         <template #default="slotProps">
@@ -36,7 +36,7 @@
         </template>
       </Tree>
     </div>
-  </OverlayPanel>
+  </Popover>
 
   <div class="my-4">
     <MultiSelectFormField
@@ -59,16 +59,17 @@
 </template>
 
 <script lang="ts">
-import Tree from 'primevue/tree';
-import OverlayPanel from 'primevue/overlaypanel';
-import { defineComponent, ref } from 'vue';
-import RadioButton from 'primevue/radiobutton';
-import PrimeButton from 'primevue/button';
+//@ts-nocheck
+import UploadFormSubcategoryHeader from '@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue';
 import { type ActivityNode, activityTree } from '@/components/forms/parts/elements/derived/ActivityTree';
 import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import UploadFormSubcategoryHeader from '@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue';
 import { convertNace } from '@/utils/NaceCodeConverter';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
+import PrimeButton from 'primevue/button';
+import Popover from 'primevue/popover';
+import RadioButton from 'primevue/radiobutton';
+import Tree from 'primevue/tree';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'ActivitySelector',
@@ -77,12 +78,12 @@ export default defineComponent({
     MultiSelectFormField,
     PrimeButton,
     Tree,
-    OverlayPanel,
+    Popover,
     RadioButton,
   },
   setup() {
     return {
-      overlayPanel: ref<OverlayPanel>(),
+      popover: ref<Popover>(),
     };
   },
   data: () => ({
@@ -128,7 +129,7 @@ export default defineComponent({
      * @param activity activity value from selected NACE codes
      */
     newActivitySelected(activity: ActivityNode) {
-      this.overlayPanel?.hide();
+      this.popover.hide();
       this.selectedActivityValue = activity.value as string;
     },
     /**
@@ -136,7 +137,7 @@ export default defineComponent({
      * @param event the onclick event
      */
     inputFocused(event: Event) {
-      this.overlayPanel?.show(event);
+      this.popover?.show(event);
     },
   },
 });

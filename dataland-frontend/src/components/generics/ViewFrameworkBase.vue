@@ -88,12 +88,12 @@
               </PrimeButton>
             </router-link>
           </div>
-          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+          <Popover ref="reportingPeriodsPopover">
             <SimpleReportingPeriodSelectorDialog
               :reporting-periods="availableReportingPeriods"
               @selected-reporting-period="goToUpdateFormByReportingPeriod"
             />
-          </OverlayPanel>
+          </Popover>
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
@@ -136,8 +136,8 @@ import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
-import OverlayPanel from 'primevue/overlaypanel';
-import { computed, defineComponent, inject, type PropType } from 'vue';
+import Popover from 'primevue/popover';
+import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
@@ -151,7 +151,7 @@ export default defineComponent({
     MarginWrapper,
     TheFooter,
     PrimeButton,
-    OverlayPanel,
+    Popover,
     SimpleReportingPeriodSelectorDialog,
     QualityAssuranceButtons,
     ToggleSwitch,
@@ -281,9 +281,9 @@ export default defineComponent({
       if (this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByDataId(this.singleDataMetaInfoToDisplay.dataId);
       } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
-        const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
-        if (panel) {
-          panel.toggle(event);
+        const reportingPeriodsPopover = ref();
+        if (reportingPeriodsPopover.value) {
+          reportingPeriodsPopover.value.toggle(event);
         }
       } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByReportingPeriod(this.availableReportingPeriods[0]);
