@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.specific.specification.FrameworkSpecificationBuilder
+import org.dataland.frameworktoolbox.specific.specification.FrameworkBuilder
 import org.dataland.frameworktoolbox.specific.specification.SpecificationNamingConvention
 
 /**
@@ -14,7 +14,7 @@ import org.dataland.frameworktoolbox.specific.specification.SpecificationNamingC
 class CategoryBuilder(
     override val identifier: String,
     override val parentCategory: CategoryBuilder?,
-    private val builder: FrameworkSpecificationBuilder,
+    private val builder: FrameworkBuilder,
     val childElements: MutableList<SpecificationElement> = mutableListOf(),
 ) : SpecificationElement {
     companion object {
@@ -81,12 +81,12 @@ class CategoryBuilder(
      */
     fun addDefaultTranslation(component: ComponentBase): TranslationBuilder {
         val aliasExport = component.aliasExport
-        val datapoint =
+        val translation =
             addTranslationToFrameworkHierarchy(
                 identifier = component.identifier,
                 aliasExport = aliasExport,
             )
-        return datapoint
+        return translation
     }
 
     /**

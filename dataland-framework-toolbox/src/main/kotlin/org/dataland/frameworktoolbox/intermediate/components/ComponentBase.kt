@@ -258,9 +258,9 @@ open class ComponentBase(
     /**
      * Build the translation for this component
      */
-    fun generateTranslation(specificationCategoryBuilder: CategoryBuilder) {
-        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultTranslation(
-            specificationCategoryBuilder,
+    fun generateTranslation(translationCategoryBuilder: CategoryBuilder) {
+        generateDefaultTranslation(
+            translationCategoryBuilder,
         )
     }
 

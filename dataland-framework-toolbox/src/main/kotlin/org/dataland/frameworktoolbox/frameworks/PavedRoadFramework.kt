@@ -273,7 +273,7 @@ abstract class PavedRoadFramework(
             }
         }
         val specifications = framework.generateSpecifications(datalandProject)
-        specifications.buildSpecifications()
+        specifications.build()
     }
 
     protected fun compileTranslations(datalandProject: DatalandRepository) {
@@ -281,7 +281,7 @@ abstract class PavedRoadFramework(
             return
         }
         val translations = framework.generateTranslations(datalandProject)
-        translations.buildTranslations()
+        translations.build()
     }
 
     /**
@@ -308,8 +308,8 @@ abstract class PavedRoadFramework(
         compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
-        compileFixtureGenerator(datalandProject)*/
-        compileSpecifications(datalandProject)
+        compileFixtureGenerator(datalandProject)
+        compileSpecifications(datalandProject)*/
         compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
