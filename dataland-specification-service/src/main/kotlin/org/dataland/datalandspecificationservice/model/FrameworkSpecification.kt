@@ -10,13 +10,15 @@ import org.dataland.datalandspecification.specifications.FrameworkTranslation
 /**
  * Get the reference for this framework specification.
  */
-
 fun Framework.getRef(baseUrl: String): IdWithRef =
     IdWithRef(
         id = this.id,
         ref = "https://$baseUrl/specifications/frameworks/${this.id}",
     )
 
+/**
+ * Get the reference and an alias for this framework specification.
+ */
 fun FrameworkTranslation.getRefAndAlias(baseUrl: String): IdWithRefAndAlias {
     val translationFile = "resources/specifications/translations/${this.id}.json"
     val translation =
@@ -29,6 +31,7 @@ fun FrameworkTranslation.getRefAndAlias(baseUrl: String): IdWithRefAndAlias {
                 null
             }
         } catch (e: Exception) {
+            println("Error while reading translation file $translationFile: ${e.message}")
             null
         }
     val alias = translation?.get(this.id)?.asText() ?: null
@@ -47,10 +50,12 @@ private fun translateSchema(
     schema: ObjectNode,
     baseUrl: String,
     database: SpecificationDatabase,
+    framework: String,
 ) {
+    val frameworkSpec = database.translations[framework]?.getRefAndAlias(baseUrl)
     for ((key, value) in schema.fields()) {
         if (value.isObject) {
-            translateSchema(value as ObjectNode, baseUrl, database)
+            translateSchema(value as ObjectNode, baseUrl, database, framework)
         } else {
             assert(value.isTextual)
             val dataPointSpec =
@@ -58,15 +63,10 @@ private fun translateSchema(
                     ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database dataPointTypes.")
             val idWithRef = dataPointSpec.getRef(baseUrl)
 
-            val frameworkSpec =
-                database.translations[value.asText()]
-                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database translations.")
-            val idWithRefAndAlias = frameworkSpec.getRefAndAlias(baseUrl)
-
             val idWithRefNode: ObjectNode = JsonNodeFactory.instance.objectNode()
             idWithRefNode.put("id", idWithRef.id)
             idWithRefNode.put("ref", idWithRef.ref)
-            idWithRefNode.put("aliasExport", idWithRefAndAlias.aliasExport ?: idWithRefAndAlias.id)
+            idWithRefNode.put("aliasExport", frameworkSpec?.aliasExport ?: dataPointSpec.name)
 
             schema.set<ObjectNode>(key, idWithRefNode)
         }
@@ -81,7 +81,8 @@ fun Framework.toDto(
     database: SpecificationDatabase,
 ): FrameworkSpecification {
     val newSchema: ObjectNode = this.schema.deepCopy()
-    translateSchema(newSchema, baseUrl, database)
+    val framework = this.id
+    translateSchema(newSchema, baseUrl, database, framework)
     return FrameworkSpecification(
         framework = this.getRef(baseUrl),
         name = this.name,

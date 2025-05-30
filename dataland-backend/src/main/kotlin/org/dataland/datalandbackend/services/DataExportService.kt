@@ -14,12 +14,9 @@ import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
-import org.springframework.web.servlet.RequestToViewNameTranslator
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
-import java.nio.file.Files
-import java.nio.file.Paths
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -31,7 +28,11 @@ class DataExportService
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
-        private val requestToViewNameTranslator: RequestToViewNameTranslator = TODO("initialize me")
+        companion object {
+            private const val HEADER_ROW_INDEX = 0
+            private const val FIRST_DATA_ROW_INDEX = 1
+        }
+
         private val objectMapper = JsonUtils.defaultObjectMapper
 
         /**
@@ -92,13 +93,13 @@ class DataExportService
             val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("Data")
-            val headerRow = sheet.createRow(0)
+            val headerRow = sheet.createRow(HEADER_ROW_INDEX)
             headerToBeUsed.forEachIndexed { index, headerField ->
                 val cell = headerRow.createCell(index)
                 cell.setCellValue(readableHeaders[headerField] ?: headerField)
             }
 
-            var rowIndex = 1
+            var rowIndex = FIRST_DATA_ROW_INDEX
             data.forEach { entry ->
                 val row = sheet.createRow(rowIndex++)
                 headerToBeUsed.forEachIndexed { index, headerField ->
@@ -180,7 +181,7 @@ class DataExportService
                 }
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
 
-            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames, dataType.toString())
+            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames)
             return PreparedExportData(csvData, csvSchema, readableHeaders)
         }
 
@@ -385,45 +386,8 @@ class DataExportService
             return csvSchemaBuilder.build().withHeader()
         }
 
-        private val translationCache = mutableMapOf<String, JsonNode?>()
-
-        private fun loadTranslations(frameworkId: String): JsonNode? =
-            translationCache.getOrPut(frameworkId) {
-                try {
-                    val path = Paths.get("translations", "$frameworkId.json")
-                    if (Files.exists(path)) {
-                        objectMapper.readTree(Files.newInputStream(path))
-                    } else {
-                        null
-                    }
-                } catch (e: Exception) {
-                    null
-                }
-            }
-
-        private fun getReadableNameFromTranslations(
-            translationRoot: JsonNode?,
-            fieldPath: String,
-        ): String? {
-            if (translationRoot == null) return null
-
-            val parts = fieldPath.split('.')
-            var currentNode = translationRoot.get("schema") ?: return null
-
-            for (part in parts) {
-                currentNode = currentNode.get(part) ?: return null
-            }
-
-            return if (currentNode.isTextual) currentNode.asText() else null
-        }
-
-        private fun createHumanReadableFieldNames(
-            fields: Collection<String>,
-            frameworkId: String,
-        ): Map<String, String> {
-            val translations = loadTranslations(frameworkId)
-
-            return fields.associateWith { originalFieldName ->
+        private fun createHumanReadableFieldNames(fields: Collection<String>): Map<String, String> =
+            fields.associateWith { originalFieldName ->
 
                 val cleanedFieldPath =
                     if (originalFieldName.startsWith("data.")) {
@@ -432,9 +396,7 @@ class DataExportService
                         originalFieldName
                     }
 
-                val readable = getReadableNameFromTranslations(translations, cleanedFieldPath)
-
-                readable ?: run {
+                run {
                     val parts = cleanedFieldPath.split('.')
                     val formattedString =
                         parts.joinToString(" ") { part ->
@@ -443,5 +405,4 @@ class DataExportService
                     formattedString.replace("General General", "General")
                 }
             }
-        }
     }
