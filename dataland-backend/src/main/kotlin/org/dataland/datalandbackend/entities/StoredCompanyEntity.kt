@@ -22,7 +22,7 @@ data class StoredCompanyEntity(
     @Id
     @Column(name = "company_id")
     val companyId: String,
-    @Column(name = "company_name")
+    @Column(name = "company_name", length = 1000)
     var companyName: String,
     @ElementCollection
     @Column(name = "company_alternative_names")
