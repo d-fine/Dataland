@@ -1,11 +1,13 @@
 package org.dataland.datalandspecificationservice.model
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.Framework
 import org.dataland.datalandspecification.specifications.FrameworkTranslation
+import java.io.IOException
 
 /**
  * Get the reference for this framework specification.
@@ -30,8 +32,11 @@ fun FrameworkTranslation.getRefAndAlias(baseUrl: String): IdWithRefAndAlias {
             } else {
                 null
             }
-        } catch (e: Exception) {
-            println("Error while reading translation file $translationFile: ${e.message}")
+        } catch (e: IOException) {
+            println("I/O error while reading translation file $translationFile: ${e.message}")
+            null
+        } catch (e: JsonProcessingException) {
+            println("JSON parsing error in translation file $translationFile: ${e.message}")
             null
         }
     val alias = translation?.get(this.id)?.asText() ?: null

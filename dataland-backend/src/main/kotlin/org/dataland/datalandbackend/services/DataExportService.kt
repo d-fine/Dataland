@@ -31,6 +31,10 @@ class DataExportService
         companion object {
             private const val HEADER_ROW_INDEX = 0
             private const val FIRST_DATA_ROW_INDEX = 1
+            private const val COMPANY_NAME_PRIORITY = -3
+            private const val COMPANY_LEI_PRIORITY = -2
+            private const val REPORTING_PERIOD_PRIORITY = -1
+            private const val DEFAULT_PRIORITY = 0
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -170,10 +174,10 @@ class DataExportService
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
                                 when {
-                                    it.startsWith("companyName") -> -3
-                                    it.startsWith("companyLei") -> -2
-                                    it.startsWith("reportingPeriod") -> -1
-                                    else -> 0
+                                    it.startsWith("companyName") -> COMPANY_NAME_PRIORITY
+                                    it.startsWith("companyLei") -> COMPANY_LEI_PRIORITY
+                                    it.startsWith("reportingPeriod") -> REPORTING_PERIOD_PRIORITY
+                                    else -> DEFAULT_PRIORITY
                                 }
                             }.then(naturalOrder()),
                         ),
