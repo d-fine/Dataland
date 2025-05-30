@@ -160,12 +160,13 @@ class DataExportService
         ): PreparedExportData {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
             val isAssembledDataset = (frameworkTemplate != null)
+
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
             val orderedHeaderFields =
                 if (isAssembledDataset) {
                     JsonUtils.getLeafNodeFieldNames(
-                        getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
+                        frameworkTemplate ?: portfolioExportRows.first(),
                         keepEmptyFields = true,
                         dropLastFieldName = true,
                     )
@@ -183,10 +184,25 @@ class DataExportService
                         ),
                     )
                 }
+
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
 
-            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames)
-            return PreparedExportData(csvData, csvSchema, readableHeaders)
+            val spec = dataPointUtils.getFrameworkSpecificationTranslations(dataType.toString())
+            val aliasMap: Map<String, String> =
+                spec?.let { s ->
+                    val translationsMap = dataPointUtils.getFrameworkSpecificationTranslations(dataType.toString())
+                    translationsMap
+                        ?.values
+                        ?.flatten()
+                        ?.associate { it.id to (it.aliasExport ?: it.id) } ?: emptyMap()
+                } ?: emptyMap()
+
+            val readableHeaders =
+                orderedHeaderFields.map { field ->
+                    aliasMap[field] ?: field
+                }
+
+            return PreparedExportData(csvData, csvSchema, readableHeaders as Map<String, String>)
         }
 
         private data class PreparedExportData(
@@ -390,9 +406,11 @@ class DataExportService
             return csvSchemaBuilder.build().withHeader()
         }
 
-        private fun createHumanReadableFieldNames(fields: Collection<String>): Map<String, String> =
+        private fun createHumanReadableFieldNames(
+            fields: Collection<String>,
+            translations: Map<String, String>,
+        ): Map<String, String> =
             fields.associateWith { originalFieldName ->
-
                 val cleanedFieldPath =
                     if (originalFieldName.startsWith("data.")) {
                         originalFieldName.removePrefix("data.")
@@ -400,13 +418,6 @@ class DataExportService
                         originalFieldName
                     }
 
-                run {
-                    val parts = cleanedFieldPath.split('.')
-                    val formattedString =
-                        parts.joinToString(" ") { part ->
-                            part.replace(Regex("([a-z])([A-Z])"), "$1 $2").replaceFirstChar { it.uppercaseChar() }
-                        }
-                    formattedString.replace("General General", "General")
-                }
+                translations[cleanedFieldPath] ?: cleanedFieldPath
             }
     }
