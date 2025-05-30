@@ -25,7 +25,10 @@ class EsgDatenkatalogFramework :
         File("./dataland-framework-toolbox/inputs/esg-datenkatalog/esg-datenkatalog.xlsx"),
         order = 8,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications,
+                FrameworkGenerationFeatures.Translations,
+            ),
     ) {
     private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {

@@ -77,7 +77,7 @@ class CategoryBuilder(
     }
 
     /**
-     *  Include a new translation in the hierarchy
+     *  Include a new translation in the framework translation hierarchy
      */
     fun addDefaultTranslation(component: ComponentBase): TranslationBuilder {
         val aliasExport = component.aliasExport
@@ -144,11 +144,11 @@ class CategoryBuilder(
     }
 
     /**
-     * Add a new data point to the framework hierarchy
+     * Add a new data point to the framework specification hierarchy
      */
     private fun addDatapointToFrameworkHierarchy(
         identifier: String,
-        dataPointId: String?,
+        dataPointId: String,
     ): DatapointBuilder {
         val newDatapoint =
             DatapointBuilder(
@@ -160,6 +160,9 @@ class CategoryBuilder(
         return newDatapoint
     }
 
+    /**
+     * Add a new translation to the framework translation hierarchy
+     */
     private fun addTranslationToFrameworkHierarchy(
         identifier: String,
         aliasExport: String?,

@@ -18,5 +18,9 @@ class NuclearAndGasFramework :
                 " 2021/2178, Annex XII ",
         File("./dataland-framework-toolbox/inputs/nuclear-and-gas/nuclear-and-gas.xlsx"),
         order = 4,
-        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.DataPointSpecifications),
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.DataPointSpecifications,
+                FrameworkGenerationFeatures.Translations,
+            ),
     )

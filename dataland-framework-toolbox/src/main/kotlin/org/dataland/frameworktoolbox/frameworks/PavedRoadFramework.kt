@@ -277,9 +277,16 @@ abstract class PavedRoadFramework(
     }
 
     protected fun compileTranslations(datalandProject: DatalandRepository) {
-        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications)) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.Translations)) {
             return
         }
+        val exportAliases = mutableListOf<String?>()
+        framework.root.nestedChildren.forEach { exportAliases.add(it.aliasExport) }
+        val duplicatedAliases = exportAliases.groupingBy { it }.eachCount().filter { it.value > 1 && it.key != null }
+        require(duplicatedAliases.isEmpty()) {
+            "Export aliases must be unique, found duplicates: $duplicatedAliases"
+        }
+
         val translations = framework.generateTranslations(datalandProject)
         translations.build()
     }
@@ -304,12 +311,12 @@ abstract class PavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-       /* compileDataModel(datalandProject)
+        compileDataModel(datalandProject)
         compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
-        compileSpecifications(datalandProject)*/
+        compileSpecifications(datalandProject)
         compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)

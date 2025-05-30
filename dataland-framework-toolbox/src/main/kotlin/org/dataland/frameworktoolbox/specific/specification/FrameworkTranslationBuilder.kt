@@ -5,7 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 
 /**
- * A builder for a framework specification
+ * A builder for a framework translation
  */
 class FrameworkTranslationBuilder(
     framework: Framework,
@@ -24,7 +24,7 @@ class FrameworkTranslationBuilder(
     }
 
     /**
-     * Build the framework specification and save it to the repository
+     * Build the framework translation and save it to the repository
      */
     fun build() {
         buildFrameworkTranslation()
