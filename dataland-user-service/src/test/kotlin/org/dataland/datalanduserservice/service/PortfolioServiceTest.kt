@@ -22,6 +22,7 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
@@ -39,6 +40,7 @@ class PortfolioServiceTest {
     private val dummyCorrelationId = UUID.randomUUID().toString()
     private val dummyPortfolioId = UUID.randomUUID()
     private val dummyUserId = "userId"
+    private val adminUserId = "adminUserId"
     private val dummyCompanyId = "companyId"
 
     private val dummyPortfolio = buildPortfolio(portfolioName = "Portfolio", userId = dummyUserId)
@@ -47,7 +49,7 @@ class PortfolioServiceTest {
     @BeforeEach
     fun setup() {
         reset(mockPortfolioRepository)
-        this.resetSecurityContext()
+        resetSecurityContext(dummyUserId, false) // will sometimes be overwritten at the beginning of a test
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any<PortfolioEntity>())
 
         portfolioService = PortfolioService(mockPortfolioRepository)
@@ -56,12 +58,20 @@ class PortfolioServiceTest {
     /**
      * Setting the security context to use dataland dummy user with role ROLE_USER
      */
-    private fun resetSecurityContext() {
+    private fun resetSecurityContext(
+        userId: String,
+        isAdmin: Boolean,
+    ) {
         mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(
                 "username",
-                dummyUserId,
-                roles = setOf(DatalandRealmRole.ROLE_USER),
+                userId,
+                roles =
+                    if (isAdmin) {
+                        setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_ADMIN)
+                    } else {
+                        setOf(DatalandRealmRole.ROLE_USER)
+                    },
             )
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -94,9 +104,60 @@ class PortfolioServiceTest {
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
+        verify(mockPortfolioRepository, times(1)).getPortfolioByUserIdAndPortfolioId(
+            dummyUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
+            adminUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByPortfolioId(any())
         assertEquals(
             dummyPortfolio,
-            portfolioService.getPortfolio(dummyPortfolio.portfolioId),
+            portfolioReturned,
+        )
+    }
+
+    @Test
+    fun `verify that dummy user cannot access admin portfolios`() {
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByUserIdAndPortfolioId(adminUserId, UUID.fromString(dummyPortfolio.portfolioId))
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        assertThrows<PortfolioNotFoundApiException> {
+            portfolioService.getPortfolio(dummyPortfolio.portfolioId)
+        }
+        verify(mockPortfolioRepository, times(1)).getPortfolioByUserIdAndPortfolioId(
+            dummyUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
+            adminUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByPortfolioId(any())
+    }
+
+    @Test
+    fun `verify that admin can access dummy user portfolio`() {
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        resetSecurityContext(adminUserId, true)
+        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
+        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
+            any(), any(),
+        )
+        verify(mockPortfolioRepository, times(1)).getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        assertEquals(
+            dummyPortfolio,
+            portfolioReturned,
         )
     }
 
@@ -109,6 +170,26 @@ class PortfolioServiceTest {
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.getPortfolio(dummyPortfolioId.toString())
         }
+    }
+
+    @Test
+    fun `verify that portfolios can be retrieved for a user by his or her ID`() {
+        doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
+            .whenever(mockPortfolioRepository)
+            .getAllByUserId(dummyUserId)
+        resetSecurityContext(adminUserId, true)
+        val portfolioList = portfolioService.getAllPortfoliosForUserById(dummyUserId)
+        assertEquals(2, portfolioList.size)
+        assertEquals(
+            listOf(dummyPortfolio.portfolioId, dummyPortfolio2.portfolioId),
+            portfolioList.map { it.portfolioId },
+        )
+    }
+
+    @Test
+    fun `verify that getAllPortfolios redirects to the repository with the correct pagination parameters`() {
+        portfolioService.getAllPortfolios(50, 3)
+        verify(mockPortfolioRepository).findAllWithPagination(50, 150)
     }
 
     @Test
