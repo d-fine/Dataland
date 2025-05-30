@@ -100,6 +100,9 @@ interface PortfolioApi {
             ApiResponse(responseCode = "200", description = "Successfully retrieved all portfolios."),
         ],
     )
+    @GetMapping(
+        value = ["/portfolios/all"],
+    )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN')",
     )
