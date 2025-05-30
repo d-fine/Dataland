@@ -40,7 +40,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved portfolios.",
+            "description": "Successfully retrieved portfolio.",
             "content": {
               "application/json": {
                 "schema": {
@@ -334,6 +334,68 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EnrichedPortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/users/{userId}": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get portfolios by userId.",
+        "operationId": "getPortfoliosForUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved portfolios.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolio"
+                  }
                 }
               }
             }

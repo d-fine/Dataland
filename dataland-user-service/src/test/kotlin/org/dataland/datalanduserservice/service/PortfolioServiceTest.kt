@@ -96,7 +96,7 @@ class PortfolioServiceTest {
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
         assertEquals(
             dummyPortfolio,
-            portfolioService.getPortfolioForUser(dummyPortfolio.portfolioId),
+            portfolioService.getPortfolio(dummyPortfolio.portfolioId),
         )
     }
 
@@ -107,7 +107,7 @@ class PortfolioServiceTest {
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioService.getPortfolioForUser(dummyPortfolioId.toString())
+            portfolioService.getPortfolio(dummyPortfolioId.toString())
         }
     }
 

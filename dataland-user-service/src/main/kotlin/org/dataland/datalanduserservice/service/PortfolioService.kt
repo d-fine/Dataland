@@ -5,6 +5,7 @@ import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -68,19 +69,61 @@ class PortfolioService
         }
 
         /**
-         * Retrieve portfolio for user by portfolioId
+         * Retrieve portfolio by portfolioId. Unless the user calling this is an admin, it only returns
+         * the portfolio if it belongs to the calling user.
          */
         @Transactional(readOnly = true)
-        fun getPortfolioForUser(portfolioId: String): BasePortfolio {
+        fun getPortfolio(portfolioId: String): BasePortfolio {
             val userId = DatalandAuthentication.fromContext().userId
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             val correlationId = UUID.randomUUID().toString()
             logger.info(
                 "Retrieve portfolio with portfolioId: $portfolioId for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
-            return portfolioRepository
-                .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
+            return if (userIsAdmin) {
+                portfolioRepository
+                    .getPortfolioByPortfolioId(UUID.fromString(portfolioId))
+                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
+            } else {
+                portfolioRepository
+                    .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
+            }
+        }
+
+        /**
+         * Retrieve all portfolios for a user specified by his or her userId. Called from the admin-only endpoint
+         * GET /portfolios/users/{userId}.
+         */
+        @Transactional(readOnly = true)
+        fun getAllPortfoliosForUserById(userId: String): List<BasePortfolio> {
+            val adminId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+            logger.info(
+                "By order of admin with userId $adminId, retrieve all portfolios for user with userId: $userId." +
+                    " CorrelationId: $correlationId.",
+            )
+            return portfolioRepository.getAllByUserId(userId).map { it.toBasePortfolio() }
+        }
+
+        /**
+         * Retrieve a paginated list of all portfolios that exist on Dataland. Called from the admin-only endpoint
+         * GET /portfolios/all
+         */
+        @Transactional(readOnly = true)
+        fun getAllPortfolios(
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): List<BasePortfolio> {
+            val adminId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+            logger.info(
+                "By order of admin with userId $adminId, retrieve the chunk with index $chunkIndex and size " +
+                    "up to $chunkSize of all portfolios on Dataland. CorrelationId: $correlationId.",
+            )
+            val offset = chunkIndex * chunkSize
+            return portfolioRepository.findAllWithPagination(chunkSize, offset).map { it.toBasePortfolio() }
         }
 
         /**
