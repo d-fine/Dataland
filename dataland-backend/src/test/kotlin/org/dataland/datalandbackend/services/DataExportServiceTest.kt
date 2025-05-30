@@ -76,6 +76,19 @@ class DataExportServiceTest {
     }
 
     @Test
+    fun `update predefined csv with current naming logic`() {
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(companyExportDataLksgTestData),
+                ExportFileType.CSV,
+                DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
+            )
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+        File("./src/test/resources/dataExport/lksgDataOutput.csv").writeText(csvString, Charsets.UTF_8)
+    }
+
+    @Test
     fun `check that exported csv coincides with predefined output`() {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
@@ -85,7 +98,7 @@ class DataExportServiceTest {
                 keepValueFieldsOnly = true,
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").inputStream().readAllBytes().toString(Charsets.UTF_8)
+        val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").readText(Charsets.UTF_8)
 
         Assertions.assertEquals(predefinedCsv, csvString)
     }

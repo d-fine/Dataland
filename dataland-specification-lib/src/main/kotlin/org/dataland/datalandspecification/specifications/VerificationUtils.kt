@@ -25,6 +25,9 @@ object VerificationUtils {
         }
     }
 
+    /**
+     * Flattens schema to create frameworkschema entries
+     */
     fun flattenSchema(
         schema: ObjectNode,
         prefix: String,
