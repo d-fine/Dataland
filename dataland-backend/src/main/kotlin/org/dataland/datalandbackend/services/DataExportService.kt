@@ -14,9 +14,12 @@ import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
+import org.springframework.web.servlet.RequestToViewNameTranslator
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -28,6 +31,7 @@ class DataExportService
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
+        private val requestToViewNameTranslator: RequestToViewNameTranslator = TODO("initialize me")
         private val objectMapper = JsonUtils.defaultObjectMapper
 
         /**
@@ -164,7 +168,6 @@ class DataExportService
                     LinkedHashSet(
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
-                                @Suppress("MagicNumber")
                                 when {
                                     it.startsWith("companyName") -> -3
                                     it.startsWith("companyLei") -> -2
@@ -176,7 +179,8 @@ class DataExportService
                     )
                 }
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
-            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames)
+
+            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames, dataType.toString())
             return PreparedExportData(csvData, csvSchema, readableHeaders)
         }
 
@@ -206,11 +210,9 @@ class DataExportService
             val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
             val rawCsv = csvWriter.writeValueAsString(csvData)
 
-            // Get original header names
             val originalHeaders = csvSchema.columnNames
             val humanHeaderLine = originalHeaders.joinToString(",") { readableHeaders[it] ?: it }
 
-            // Replace only the header line
             val csvWithReadableHeaders =
                 rawCsv
                     .lineSequence()
@@ -383,18 +385,63 @@ class DataExportService
             return csvSchemaBuilder.build().withHeader()
         }
 
-        private fun createHumanReadableFieldNames(fields: Collection<String>): Map<String, String> =
-            fields.associateWith { original ->
-                val parts = original.split('.')
-                val relevantParts = if (parts.firstOrNull() == "data") parts.drop(1) else parts
+        private val translationCache = mutableMapOf<String, JsonNode?>()
 
-                val formattedString =
-                    relevantParts.joinToString(" ") { part ->
-                        part
-                            .replace(Regex("([a-z])([A-Z])"), "$1 $2")
-                            .replaceFirstChar { it.uppercaseChar() }
+        private fun loadTranslations(frameworkId: String): JsonNode? =
+            translationCache.getOrPut(frameworkId) {
+                try {
+                    val path = Paths.get("translations", "$frameworkId.json")
+                    if (Files.exists(path)) {
+                        objectMapper.readTree(Files.newInputStream(path))
+                    } else {
+                        null
+                    }
+                } catch (e: Exception) {
+                    null
+                }
+            }
+
+        private fun getReadableNameFromTranslations(
+            translationRoot: JsonNode?,
+            fieldPath: String,
+        ): String? {
+            if (translationRoot == null) return null
+
+            val parts = fieldPath.split('.')
+            var currentNode = translationRoot.get("schema") ?: return null
+
+            for (part in parts) {
+                currentNode = currentNode.get(part) ?: return null
+            }
+
+            return if (currentNode.isTextual) currentNode.asText() else null
+        }
+
+        private fun createHumanReadableFieldNames(
+            fields: Collection<String>,
+            frameworkId: String,
+        ): Map<String, String> {
+            val translations = loadTranslations(frameworkId)
+
+            return fields.associateWith { originalFieldName ->
+
+                val cleanedFieldPath =
+                    if (originalFieldName.startsWith("data.")) {
+                        originalFieldName.removePrefix("data.")
+                    } else {
+                        originalFieldName
                     }
 
-                formattedString.replace("General General", "General")
+                val readable = getReadableNameFromTranslations(translations, cleanedFieldPath)
+
+                readable ?: run {
+                    val parts = cleanedFieldPath.split('.')
+                    val formattedString =
+                        parts.joinToString(" ") { part ->
+                            part.replace(Regex("([a-z])([A-Z])"), "$1 $2").replaceFirstChar { it.uppercaseChar() }
+                        }
+                    formattedString.replace("General General", "General")
+                }
             }
+        }
     }
