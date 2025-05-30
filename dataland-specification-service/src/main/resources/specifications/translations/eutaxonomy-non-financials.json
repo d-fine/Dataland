@@ -16,129 +16,129 @@
       "referencedReports" : "Referenced Reports"
     },
     "revenue" : {
-      "totalAmount" : "Total Amount",
+      "totalAmount" : "Total Amount Revenue",
       "nonEligibleShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Revenue NE",
+        "absoluteShare" : "Absolute Share Revenue NE"
       },
       "eligibleShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Revenue E",
+        "absoluteShare" : "Absolute Share Revenue E"
       },
       "nonAlignedShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Revenue NA",
+        "absoluteShare" : "Absolute Share Revenue NA"
       },
-      "nonAlignedActivities" : "Non-Aligned Activities",
+      "nonAlignedActivities" : "Non-Aligned Activities Revenue",
       "alignedShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Revenue",
+        "absoluteShare" : "Absolute Share Revenue"
       },
-      "substantialContributionToClimateChangeMitigationInPercentEligible" : "Substantial Contribution to CCM In Percent - Eligible",
-      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned",
-      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCM In Percent - Of which use of proceeds",
-      "substantialContributionToClimateChangeMitigationInPercentEnablingShare" : "Substantial Contribution to CCM In Percent - Enabling Share",
-      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare" : "Substantial Contribution to CCM In Percent - Transitional Share",
-      "substantialContributionToClimateChangeAdaptationInPercentEligible" : "Substantial Contribution to CCA In Percent - Eligible",
-      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned",
-      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCA In Percent - Of which use of proceeds",
-      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare" : "Substantial Contribution to CCA In Percent - Enabling Share",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Eligible",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Of which use of proceeds",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Enabling Share",
-      "substantialContributionToTransitionToACircularEconomyInPercentEligible" : "Substantial Contribution to CE In Percent - Eligible",
-      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned",
-      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CE In Percent - Of which use of proceeds",
-      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare" : "Substantial Contribution to CE In Percent - Enabling Share",
-      "substantialContributionToPollutionPreventionAndControlInPercentEligible" : "Substantial Contribution to PPC In Percent - Eligible",
-      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned",
-      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds" : "Substantial Contribution to PPC In Percent - Of which use of proceeds",
-      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare" : "Substantial Contribution to PPC In Percent - Enabling Share",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible" : "Substantial Contribution to BIO In Percent - Eligible",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds" : "Substantial Contribution to BIO In Percent - Of which use of proceeds",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare" : "Substantial Contribution to BIO In Percent - Enabling Share",
-      "alignedActivities" : "Aligned Activities",
-      "enablingShareInPercent" : "Enabling Share In Percent",
-      "transitionalShareInPercent" : "Transitional Share In Percent"
+      "substantialContributionToClimateChangeMitigationInPercentEligible" : "Substantial Contribution to CCM In Percent - Eligible Revenue",
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned Revenue",
+      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCM In Percent - Of which use of proceeds Revenue",
+      "substantialContributionToClimateChangeMitigationInPercentEnablingShare" : "Substantial Contribution to CCM In Percent - Enabling Share Revenue",
+      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare" : "Substantial Contribution to CCM In Percent - Transitional Share Revenue",
+      "substantialContributionToClimateChangeAdaptationInPercentEligible" : "Substantial Contribution to CCA In Percent - Eligible Revenue",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned Revenue",
+      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCA In Percent - Of which use of proceeds Revenue",
+      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare" : "Substantial Contribution to CCA In Percent - Enabling Share Revenue",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Eligible Revenue",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned Revenue",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Of which use of proceeds Revenue",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Enabling Share Revenue",
+      "substantialContributionToTransitionToACircularEconomyInPercentEligible" : "Substantial Contribution to CE In Percent - Eligible Revenue",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned Revenue",
+      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CE In Percent - Of which use of proceeds Revenue",
+      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare" : "Substantial Contribution to CE In Percent - Enabling Share Revenue",
+      "substantialContributionToPollutionPreventionAndControlInPercentEligible" : "Substantial Contribution to PPC In Percent - Eligible Revenue",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned Revenue",
+      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds" : "Substantial Contribution to PPC In Percent - Of which use of proceeds Revenue",
+      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare" : "Substantial Contribution to PPC In Percent - Enabling Share Revenue",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible" : "Substantial Contribution to BIO In Percent - Eligible Revenue",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned Revenue",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds" : "Substantial Contribution to BIO In Percent - Of which use of proceeds Revenue",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare" : "Substantial Contribution to BIO In Percent - Enabling Share Revenue",
+      "alignedActivities" : "Aligned Activities Revenue",
+      "enablingShareInPercent" : "Enabling Share In Percent Revenue",
+      "transitionalShareInPercent" : "Transitional Share In Percent Revenue"
     },
     "capex" : {
-      "totalAmount" : "Total Amount",
+      "totalAmount" : "Total Amount Capex",
       "nonEligibleShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Capex NE",
+        "absoluteShare" : "Absolute Share Capex NE"
       },
       "eligibleShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Capex E",
+        "absoluteShare" : "Absolute Share Capex E"
       },
       "nonAlignedShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Capex NA",
+        "absoluteShare" : "Absolute Share Capex NA"
       },
-      "nonAlignedActivities" : "Non-Aligned Activities",
+      "nonAlignedActivities" : "Non-Aligned Activities Capex NA",
       "alignedShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Capex A",
+        "absoluteShare" : "Absolute Share Capex A"
       },
-      "substantialContributionToClimateChangeMitigationInPercentEligible" : "Substantial Contribution to CCM In Percent - Eligible",
-      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned",
-      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCM In Percent - Of which use of proceeds",
-      "substantialContributionToClimateChangeMitigationInPercentEnablingShare" : "Substantial Contribution to CCM In Percent - Enabling Share",
-      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare" : "Substantial Contribution to CCM In Percent - Transitional Share",
-      "substantialContributionToClimateChangeAdaptationInPercentEligible" : "Substantial Contribution to CCA In Percent - Eligible",
-      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned",
-      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCA In Percent - Of which use of proceeds",
-      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare" : "Substantial Contribution to CCA In Percent - Enabling Share",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Eligible",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Of which use of proceeds",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Enabling Share",
-      "substantialContributionToTransitionToACircularEconomyInPercentEligible" : "Substantial Contribution to CE In Percent - Eligible",
-      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned",
-      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CE In Percent - Of which use of proceeds",
-      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare" : "Substantial Contribution to CE In Percent - Enabling Share",
-      "substantialContributionToPollutionPreventionAndControlInPercentEligible" : "Substantial Contribution to PPC In Percent - Eligible",
-      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned",
-      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds" : "Substantial Contribution to PPC In Percent - Of which use of proceeds",
-      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare" : "Substantial Contribution to PPC In Percent - Enabling Share",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible" : "Substantial Contribution to BIO In Percent - Eligible",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds" : "Substantial Contribution to BIO In Percent - Of which use of proceeds",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare" : "Substantial Contribution to BIO In Percent - Enabling Share",
-      "alignedActivities" : "Aligned Activities",
-      "enablingShareInPercent" : "Enabling Share In Percent",
-      "transitionalShareInPercent" : "Transitional Share In Percent"
+      "substantialContributionToClimateChangeMitigationInPercentEligible" : "Substantial Contribution to CCM In Percent - Eligible Capex",
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned Capex",
+      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCM In Percent - Of which use of proceeds Capex",
+      "substantialContributionToClimateChangeMitigationInPercentEnablingShare" : "Substantial Contribution to CCM In Percent - Enabling Share Capex",
+      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare" : "Substantial Contribution to CCM In Percent - Transitional Share Capex",
+      "substantialContributionToClimateChangeAdaptationInPercentEligible" : "Substantial Contribution to CCA In Percent - Eligible Capex",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned Capex",
+      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CCA In Percent - Of which use of proceeds Capex",
+      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare" : "Substantial Contribution to CCA In Percent - Enabling Share Capex",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Eligible Capex",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned Capex",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Of which use of proceeds Capex",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Enabling Share Capex",
+      "substantialContributionToTransitionToACircularEconomyInPercentEligible" : "Substantial Contribution to CE In Percent - Eligible Capex",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned Capex",
+      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds" : "Substantial Contribution to CE In Percent - Of which use of proceeds Capex",
+      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare" : "Substantial Contribution to CE In Percent - Enabling Share Capex",
+      "substantialContributionToPollutionPreventionAndControlInPercentEligible" : "Substantial Contribution to PPC In Percent - Eligible Capex",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned Capex",
+      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds" : "Substantial Contribution to PPC In Percent - Of which use of proceeds Capex",
+      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare" : "Substantial Contribution to PPC In Percent - Enabling Share Capex",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible" : "Substantial Contribution to BIO In Percent - Eligible Capex",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned Capex",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds" : "Substantial Contribution to BIO In Percent - Of which use of proceeds Capex",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare" : "Substantial Contribution to BIO In Percent - Enabling Share Capex",
+      "alignedActivities" : "Aligned Activities Capex",
+      "enablingShareInPercent" : "Enabling Share In Percent Capex",
+      "transitionalShareInPercent" : "Transitional Share In Percent Capex"
     },
     "opex" : {
-      "totalAmount" : "Total Amount",
+      "totalAmount" : "Total Amount Opex",
       "nonEligibleShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Opex NE",
+        "absoluteShare" : "Absolute Share Opex NE"
       },
       "eligibleShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Opex E",
+        "absoluteShare" : "Absolute Share Opex E"
       },
       "nonAlignedShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Opex NA",
+        "absoluteShare" : "Absolute Share Opex NA"
       },
-      "nonAlignedActivities" : "Non-Aligned Activities",
+      "nonAlignedActivities" : "Non-Aligned Activities Opex",
       "alignedShare" : {
-        "relativeShareInPercent" : "Relative Share in Percent",
-        "absoluteShare" : "Absolute Share"
+        "relativeShareInPercent" : "Relative Share in Percent Opex",
+        "absoluteShare" : "Absolute Share Opex"
       },
-      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned",
-      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned",
-      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned",
-      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned",
-      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned",
-      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned",
-      "alignedActivities" : "Aligned Activities",
-      "enablingShareInPercent" : "Enabling Share In Percent",
-      "transitionalShareInPercent" : "Transitional Share In Percent"
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "Substantial Contribution to CCM In Percent - Aligned Opex",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "Substantial Contribution to CCA In Percent - Aligned Opex",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "Substantial Contribution to Sustainable Use and Protection of WTR In Percent - Aligned Opex",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "Substantial Contribution to CE In Percent - Aligned Opex",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "Substantial Contribution to PPC In Percent - Aligned Opex",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "Substantial Contribution to BIO In Percent - Aligned Opex",
+      "alignedActivities" : "Aligned Activities Opex",
+      "enablingShareInPercent" : "Enabling Share In Percent Opex",
+      "transitionalShareInPercent" : "Transitional Share In Percent Opex"
     }
   }
 }

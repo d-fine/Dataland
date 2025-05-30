@@ -98,6 +98,10 @@ class FileSystemSpecificationDatabase(
             it.value.validateIntegrity(this)
             assert(it.value.id == it.key) { "Data point ID does not match key: ${it.key}" }
         }
+        translations.forEach {
+            it.value.validateIntegrity()
+            assert(it.value.id == it.key) { "Translation ID does not match key: ${it.key}" }
+        }
     }
 
     /**
