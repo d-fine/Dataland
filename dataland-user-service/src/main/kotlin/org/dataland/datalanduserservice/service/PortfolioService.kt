@@ -93,8 +93,8 @@ class PortfolioService
         }
 
         /**
-         * Retrieve all portfolios for a user specified by his or her userId. Called from the admin-only endpoint
-         * GET /portfolios/users/{userId}.
+         * Retrieve all portfolios for a user specified by his or her userId. Should only be called
+         * by admin users.
          */
         @Transactional(readOnly = true)
         fun getAllPortfoliosForUserById(userId: String): List<BasePortfolio> {
@@ -108,8 +108,8 @@ class PortfolioService
         }
 
         /**
-         * Retrieve a paginated list of all portfolios that exist on Dataland. Called from the admin-only endpoint
-         * GET /portfolios/all
+         * Retrieve a paginated list of all portfolios that exist on Dataland. Should only be called
+         * by admin users.
          */
         @Transactional(readOnly = true)
         fun getAllPortfolios(
