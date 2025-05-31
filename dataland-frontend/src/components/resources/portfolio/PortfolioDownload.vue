@@ -84,6 +84,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
@@ -91,7 +92,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
-import { type AxiosError } from 'axios';
+import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
@@ -104,8 +105,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
-const selectedFileType = ref(undefined);
-
+const selectedFileType = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const keepValuesOnly = ref(true);
 const showFileTypeError = ref(false);
@@ -257,6 +257,15 @@ function checkIfShowErrors(): void {
 }
 
 /**
+ * Get framework label from framework value for download
+ * @param frameworkValue
+ */
+function getFrameworkLabel(frameworkValue: string): string {
+  const frameworkOption = availableFrameworks.find((f) => f.value === frameworkValue);
+  return frameworkOption ? frameworkOption.label : frameworkValue;
+}
+
+/**
  * Handles download of portfolio
  */
 async function downloadPortfolio(): Promise<void> {
@@ -269,11 +278,17 @@ async function downloadPortfolio(): Promise<void> {
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
+    const selectedExportFileType = ALL_EXPORT_FILE_TYPES.find((type) => type === selectedFileType.value)!;
+    const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       getSelectedReportingPeriods(),
       getCompanyIds(),
-      selectedFileType.value,
-      keepValuesOnly.value
+      selectedExportFileType,
+      keepValuesOnly.value,
+      options
     );
 
     if (dataResponse.status === 204) {
@@ -282,7 +297,10 @@ async function downloadPortfolio(): Promise<void> {
       return;
     }
 
-    forceFileDownload(dataResponse.data, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
+    const formatted_timestamp = getDateStringForDataExport(new Date());
+    const filename = `data-export-${getFrameworkLabel(selectedFramework.value)}-${formatted_timestamp}.${fileExtension}`;
+
+    forceFileDownload(dataResponse.data, filename);
   } catch (error) {
     console.error(error);
     portfolioErrors.value = `${(error as AxiosError).message}`;

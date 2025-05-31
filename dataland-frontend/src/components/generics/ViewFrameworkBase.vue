@@ -125,6 +125,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
@@ -139,6 +140,9 @@ import InputSwitch from 'primevue/inputswitch';
 import OverlayPanel from 'primevue/overlaypanel';
 import { computed, defineComponent, inject, type PropType } from 'vue';
 import { useRoute } from 'vue-router';
+import type { DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -417,8 +421,16 @@ export default defineComponent({
           throw new ReferenceError('ExportFileType undefined.');
         }
 
+        const formatted_timestamp = getDateStringForDataExport(new Date());
         const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-        const filename = `${selectedYear}-${this.dataType}-${this.companyID}.${fileExtension}`;
+
+        const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
+          value: framework,
+          label: humanizeStringOrNumber(framework),
+        }));
+
+        const frameworkLabel = availableFrameworks.find(framework => framework.value === this.dataType)?.label || this.dataType;
+        const filename = `data-export-${frameworkLabel}-${formatted_timestamp}.${fileExtension}`;
 
         const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
           [selectedYear],
@@ -443,7 +455,7 @@ export default defineComponent({
      * In order to download a file via frontend, it is necessary to create a link, attach the file to it, and click
      * the link to trigger the file download. Afterward, the created element is deleted from the DOM.
      * @param content dataContent string to be downloaded to file
-     * @param filename name of file to be downloaded
+     * @param filename name of the file to be downloaded
      */
     forceFileDownload(content: string, filename: string) {
       const url = window.URL.createObjectURL(new Blob([content]));

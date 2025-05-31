@@ -57,6 +57,8 @@ dependencies {
     testImplementation(Spring.security.spring_security_test)
     testImplementation(libs.mockito.kotlin)
     kapt(Spring.boot.configurationProcessor)
+    implementation("org.apache.poi:poi:5.4.1")
+    implementation("org.apache.poi:poi-ooxml:5.4.1")
 }
 
 openApi {

@@ -1,0 +1,18 @@
+{
+  "id" : "additional-company-information",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "fiscalYearDeviation" : "Fiscal Year Deviation",
+        "fiscalYearEnd" : "Fiscal Year End",
+        "referencedReports" : "Referenced Reports"
+      },
+      "financialInformation" : {
+        "equity" : "Equity",
+        "debt" : "Debt",
+        "balanceSheetTotal" : "Balance Sheet Total",
+        "evic" : "EVIC"
+      }
+    }
+  }
+}

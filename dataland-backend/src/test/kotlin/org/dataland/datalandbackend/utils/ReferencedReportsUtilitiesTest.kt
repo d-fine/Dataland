@@ -33,7 +33,7 @@ class ReferencedReportsUtilitiesTest {
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities(defaultObjectMapper)
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
 
     private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
         val schema =

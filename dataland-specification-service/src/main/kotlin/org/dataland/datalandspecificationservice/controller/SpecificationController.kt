@@ -8,7 +8,9 @@ import org.dataland.datalandspecificationservice.api.SpecificationApi
 import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSpecification
 import org.dataland.datalandspecificationservice.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.model.FrameworkSpecification
+import org.dataland.datalandspecificationservice.model.IdWithRefAndAlias
 import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecification
+import org.dataland.datalandspecificationservice.model.getRefAndAlias
 import org.dataland.datalandspecificationservice.model.toDto
 import org.dataland.datalandspecificationservice.model.toSimpleDto
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,6 +61,17 @@ class SpecificationController(
                     "The framework specification with the given id was not found in the database.",
                 )
         return ResponseEntity.ok(frameworkSpecification.toDto(datalandPrimaryUrl, database))
+    }
+
+    fun getFrameworkSpecificationTranslations(frameworkSpecificationId: String): ResponseEntity<IdWithRefAndAlias> {
+        val frameworkTranslation =
+            database.translations[frameworkSpecificationId]
+                ?: throw ResourceNotFoundApiException(
+                    "Framework Translation with id $frameworkSpecificationId not found",
+                    "The framework translation with the given id was not found in the database.",
+                )
+
+        return ResponseEntity.ok(frameworkTranslation.getRefAndAlias(datalandPrimaryUrl))
     }
 
     override fun getDataPointTypeSpecification(dataPointTypeId: String): ResponseEntity<DataPointTypeSpecification> {

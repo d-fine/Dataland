@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.TextNode
 
 /**
- * A DatapointBuilder is a part of a DataModel hierarchy for the framework specification
+ * A TranslationBuilder is a part of a DataModel hierarchy for the framework translations
  */
-class DatapointBuilder(
+class TranslationBuilder(
     override val identifier: String,
-    val dataPointId: String,
+    val aliasExport: String?,
     override val parentCategory: CategoryBuilder?,
 ) : SpecificationElement {
-    override fun toJsonNode(): TextNode = JsonNodeFactory.instance.textNode(dataPointId)
+    override fun toJsonNode(): TextNode = JsonNodeFactory.instance.textNode(aliasExport)
 }

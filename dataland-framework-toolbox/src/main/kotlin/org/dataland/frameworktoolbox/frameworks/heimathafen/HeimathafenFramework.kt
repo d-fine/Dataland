@@ -22,7 +22,10 @@ class HeimathafenFramework :
         File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
         order = 9,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications,
+                FrameworkGenerationFeatures.Translations,
+            ),
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()
 

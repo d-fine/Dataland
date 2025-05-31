@@ -52,7 +52,7 @@ internal class DataControllerTest {
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
 
-    private val dataExportService = DataExportService(objectMapper, mockDataPointUtils, mockReferencedReportsUtils)
+    private val dataExportService = DataExportService(mockDataPointUtils, mockReferencedReportsUtils)
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
