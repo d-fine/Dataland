@@ -126,7 +126,7 @@ class PortfolioEnrichmentService
             val userId = DatalandAuthentication.fromContext().userId
             logger.info("Retrieve enriched portfolio with portfolioId: $portfolioId for user with userId: $userId.")
 
-            val portfolio = portfolioService.getPortfolioForUser(portfolioId)
+            val portfolio = portfolioService.getPortfolio(portfolioId)
             return EnrichedPortfolio(
                 portfolioId = portfolioId,
                 portfolioName = portfolio.portfolioName,

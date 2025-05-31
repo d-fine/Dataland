@@ -29,12 +29,23 @@ class PortfolioController
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
 
         override fun getPortfolio(portfolioId: String): ResponseEntity<BasePortfolio> =
-            ResponseEntity.ok(portfolioService.getPortfolioForUser(portfolioId))
+            ResponseEntity.ok(portfolioService.getPortfolio(portfolioId))
+
+        override fun getPortfoliosForUser(userId: String): ResponseEntity<List<BasePortfolio>> =
+            ResponseEntity.ok(portfolioService.getAllPortfoliosForUserById(userId))
+
+        override fun getAllPortfolios(
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): ResponseEntity<List<BasePortfolio>> = ResponseEntity.ok(portfolioService.getAllPortfolios(chunkSize, chunkIndex))
 
         override fun createPortfolio(portfolioUpload: PortfolioUpload): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
             validator.validatePortfolioCreation(portfolioUpload, correlationId)
-            return ResponseEntity(portfolioService.createPortfolio(BasePortfolio(portfolioUpload), correlationId), HttpStatus.CREATED)
+            return ResponseEntity(
+                portfolioService.createPortfolio(BasePortfolio(portfolioUpload), correlationId),
+                HttpStatus.CREATED,
+            )
         }
 
         override fun replacePortfolio(
@@ -43,7 +54,13 @@ class PortfolioController
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
             validator.validatePortfolioReplacement(portfolioId, portfolioUpload, correlationId)
-            return ResponseEntity.ok(portfolioService.replacePortfolio(portfolioId, BasePortfolio(portfolioUpload), correlationId))
+            return ResponseEntity.ok(
+                portfolioService.replacePortfolio(
+                    portfolioId,
+                    BasePortfolio(portfolioUpload),
+                    correlationId,
+                ),
+            )
         }
 
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
