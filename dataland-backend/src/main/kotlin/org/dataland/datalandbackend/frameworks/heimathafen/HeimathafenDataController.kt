@@ -67,6 +67,7 @@ class HeimathafenDataController
             companyIds: List<String>,
             exportFileType: ExportFileType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super
                 .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)

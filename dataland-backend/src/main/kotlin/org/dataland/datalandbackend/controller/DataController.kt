@@ -168,6 +168,7 @@ open class DataController<T>(
         companyIds: List<String>,
         exportFileType: ExportFileType,
         keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
         if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
                 it.companyInformation == null

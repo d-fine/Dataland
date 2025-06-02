@@ -54,6 +54,7 @@ class DataExportService
             exportFileType: ExportFileType,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean = true,
         ): InputStreamResource {
             val jsonData = portfolioData.map { convertDataToJson(it) }
             if (jsonData.isEmpty()) {
@@ -158,6 +159,7 @@ class DataExportService
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean = true,
         ): PreparedExportData {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
             val isAssembledDataset = (frameworkTemplate != null)
@@ -205,7 +207,11 @@ class DataExportService
                 val aliasHeader = aliasExportMap[strippedField]
                 val hardcodedHeader = hardcodedMap[fieldName]
 
-                readableHeaders["data.$strippedField"] = aliasHeader ?: hardcodedHeader ?: strippedField
+                if (includeAliases) {
+                    readableHeaders["data.$strippedField"] = aliasHeader ?: hardcodedHeader ?: strippedField
+                } else {
+                    readableHeaders["data.$strippedField"] = strippedField
+                }
             }
 
             return PreparedExportData(csvData, csvSchema, readableHeaders)
