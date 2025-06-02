@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import com.example.translation.SfdrHardcodedMapping
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
@@ -187,22 +188,27 @@ class DataExportService
 
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
 
-            val spec = dataPointUtils.getFrameworkSpecificationTranslations(dataType.toString())
-            val aliasMap: Map<String, String> =
-                spec?.let { s ->
-                    val translationsMap = dataPointUtils.getFrameworkSpecificationTranslations(dataType.toString())
-                    translationsMap
-                        ?.values
-                        ?.flatten()
-                        ?.associate { it.id to (it.aliasExport ?: it.id) } ?: emptyMap()
-                } ?: emptyMap()
-
-            val readableHeaders =
-                orderedHeaderFields.map { field ->
-                    aliasMap[field] ?: field
+            val aliasExportMap =
+                if (isAssembledDataset && frameworkTemplate != null) {
+                    extractAliasExportFields(frameworkTemplate)
+                } else {
+                    emptyMap()
                 }
 
-            return PreparedExportData(csvData, csvSchema, readableHeaders as Map<String, String>)
+            val hardcodedMap = getHardcodedAliasMapping(dataType) ?: emptyMap()
+
+            val readableHeaders = mutableMapOf<String, String>()
+
+            nonEmptyHeaderFields.forEach { fieldName ->
+                val strippedField = fieldName.removePrefix("data.")
+
+                val aliasHeader = aliasExportMap[strippedField]
+                val hardcodedHeader = hardcodedMap[fieldName]
+
+                readableHeaders["data.$strippedField"] = aliasHeader ?: hardcodedHeader ?: strippedField
+            }
+
+            return PreparedExportData(csvData, csvSchema, readableHeaders)
         }
 
         private data class PreparedExportData(
@@ -406,18 +412,35 @@ class DataExportService
             return csvSchemaBuilder.build().withHeader()
         }
 
-        private fun createHumanReadableFieldNames(
-            fields: Collection<String>,
-            translations: Map<String, String>,
-        ): Map<String, String> =
-            fields.associateWith { originalFieldName ->
-                val cleanedFieldPath =
-                    if (originalFieldName.startsWith("data.")) {
-                        originalFieldName.removePrefix("data.")
-                    } else {
-                        originalFieldName
-                    }
+        private fun extractAliasExportFields(
+            schema: JsonNode,
+            prefix: String = "",
+        ): Map<String, String> {
+            val separator = JsonUtils.getPathSeparator()
+            val result = mutableMapOf<String, String>()
 
-                translations[cleanedFieldPath] ?: cleanedFieldPath
+            val fields = schema.fieldNames()
+            while (fields.hasNext()) {
+                val field = fields.next()
+                val node = schema.get(field)
+                val fullPath = if (prefix.isEmpty()) field else "$prefix$separator$field"
+
+                when {
+                    node.has("aliasExport") -> {
+                        val aliasExport = node.get("aliasExport").asText()
+                        result[fullPath] = aliasExport
+                    }
+                    node.isObject -> {
+                        result.putAll(extractAliasExportFields(node, fullPath))
+                    }
+                }
             }
+            return result
+        }
+
+        private fun getHardcodedAliasMapping(dataType: DataType): Map<String, String>? =
+            when (dataType.toString().lowercase()) {
+                "sfdr" -> SfdrHardcodedMapping
+                else -> null
+            } as Map<String, String>?
     }
