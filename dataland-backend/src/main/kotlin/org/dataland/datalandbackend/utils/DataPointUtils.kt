@@ -12,7 +12,6 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
-import org.dataland.datalandspecification.specifications.FrameworkTranslation
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -61,19 +60,6 @@ class DataPointUtils
         fun getFrameworkSpecificationOrNull(framework: String): FrameworkSpecification? =
             try {
                 specificationClient.getFrameworkSpecification(framework)
-            } catch (ignore: ClientException) {
-                null
-            }
-
-        /**
-         * Retrieve the list of translations (aliases) for a given framework specification.
-         * @param frameworkId the identifier of the framework specification
-         * @return a list of IdWithRefAndAlias objects representing translations for the framework,
-         *         or an empty list if no translations are found or the framework does not exist
-         */
-        fun getFrameworkSpecificationTranslations(frameworkId: String): Map<String, List<FrameworkTranslation>>? =
-            try {
-                specificationClient.getFrameworkSpecificationTranslations(frameworkId)
             } catch (ignore: ClientException) {
                 null
             }
