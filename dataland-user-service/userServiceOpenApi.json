@@ -489,7 +489,7 @@
         "tags": [
           "portfolio-controller"
         ],
-        "summary": "Get all portfolios.",
+        "summary": "Get a segment of all portfolios for the given chunk size and index.",
         "operationId": "getAllPortfolios",
         "parameters": [
           {
@@ -515,7 +515,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved all portfolios.",
+            "description": "Successfully retrieved the requested chunk of portfolios.",
             "content": {
               "*/*": {
                 "schema": {
