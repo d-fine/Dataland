@@ -1,9 +1,9 @@
 package org.dataland.datalanduserservice.repository
 
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -33,13 +33,7 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     /**
      * Return a paginated chunk of all portfolios that exist on Dataland.
      */
-    @Query(
-        "SELECT p FROM PortfolioEntity p ORDER BY p.lastUpdateTimestamp DESC LIMIT :limit OFFSET :offset",
-    )
-    fun findAllWithPagination(
-        @Param("limit") limit: Int,
-        @Param("offset") offset: Int,
-    ): List<PortfolioEntity>
+    override fun findAll(pageable: Pageable): Page<PortfolioEntity>
 
     /**
      * Delete specific portfolio by portfolioId for userId

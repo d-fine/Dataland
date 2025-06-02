@@ -8,6 +8,8 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -122,8 +124,11 @@ class PortfolioService
                 "By order of admin with userId $adminId, retrieve the chunk with index $chunkIndex and size " +
                     "up to $chunkSize of all portfolios on Dataland. CorrelationId: $correlationId.",
             )
-            val offset = chunkIndex * chunkSize
-            return portfolioRepository.findAllWithPagination(chunkSize, offset).map { it.toBasePortfolio() }
+            return portfolioRepository
+                .findAll(
+                    PageRequest.of(chunkIndex, chunkSize, Sort.by("lastUpdateTimestamp")),
+                ).content
+                .map { it.toBasePortfolio() }
         }
 
         /**

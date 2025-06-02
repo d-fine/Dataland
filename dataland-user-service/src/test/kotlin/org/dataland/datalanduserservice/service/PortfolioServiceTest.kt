@@ -25,6 +25,9 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
@@ -34,6 +37,7 @@ import java.util.UUID
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
     private val mockSecurityContext = mock<SecurityContext>()
+    private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
     private lateinit var mockAuthentication: DatalandAuthentication
 
@@ -49,8 +53,13 @@ class PortfolioServiceTest {
     @BeforeEach
     fun setup() {
         reset(mockPortfolioRepository)
-        resetSecurityContext(dummyUserId, setOf(DatalandRealmRole.ROLE_USER)) // will sometimes be overwritten at the beginning of a test
+        resetSecurityContext(
+            dummyUserId,
+            setOf(DatalandRealmRole.ROLE_USER),
+        ) // will sometimes be overwritten at the beginning of a test
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any<PortfolioEntity>())
+        doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
+        doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
         portfolioService = PortfolioService(mockPortfolioRepository)
     }
@@ -184,7 +193,11 @@ class PortfolioServiceTest {
     @Test
     fun `verify that getAllPortfolios redirects to the repository with the correct pagination parameters`() {
         portfolioService.getAllPortfolios(50, 3)
-        verify(mockPortfolioRepository).findAllWithPagination(50, 150)
+        verify(mockPortfolioRepository).findAll(
+            PageRequest.of(
+                3, 50, Sort.by("lastUpdateTimestamp"),
+            ),
+        )
     }
 
     @Test
