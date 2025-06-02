@@ -1,6 +1,5 @@
 // @ts-nocheck
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
-import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -90,9 +89,6 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     if (framework == 'sfdr') {
       dataType = DataTypeEnum.Sfdr;
       createDataset = CreateSfdrDataset;
-    } else if (framework == 'p2p') {
-      dataType = DataTypeEnum.P2p;
-      createDataset = CreateP2pDataset;
     } else {
       dataType = DataTypeEnum.Lksg;
       createDataset = CreateLksgDataset;

@@ -42,7 +42,6 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-financials');
   require('./eu-taxonomy-non-financials');
-  require('./p2p');
   require('./vsme');
   require('./esg-datenkatalog');
   require('./company-ownership');

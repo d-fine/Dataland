@@ -22,15 +22,6 @@
           </div>
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.P2p"
-              :frameworkIdentifier="DataTypeEnum.P2p"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-              data-test="MultiLayerDataTableFrameworkPanelP2P"
-            />
-            <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
               :frameworkIdentifier="dataType"
               :companyId="companyId"
@@ -80,7 +71,6 @@ import type Keycloak from 'keycloak-js';
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
 import { convertDataModelToMLDTConfig } from '@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter';
-import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
   type FrameworkViewConfiguration,
@@ -90,9 +80,6 @@ import {
 export default defineComponent({
   name: 'ViewMultipleDatasetsDisplayBase',
   computed: {
-    p2pDataModel() {
-      return p2pDataModel;
-    },
     frameworkConfiguration(): FrontendFrameworkDefinition<object> | undefined {
       return this.dataType ? getFrontendFrameworkDefinition(this.dataType) : undefined;
     },

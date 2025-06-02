@@ -80,7 +80,6 @@ function humanizeViaMapping(rawText: string): string {
     lksg: 'LkSG',
     sfdr: 'SFDR',
     sme: 'SME',
-    p2p: 'WWF Pathways to Paris',
     inhouseproduction: 'In-house Production',
     contractprocessing: 'Contract Processing',
     hvcplastics: 'HVC Plastics',
@@ -130,8 +129,6 @@ export function getFrameworkTitle(framework: string): string {
       return 'EU Taxonomy';
     case DataTypeEnum.EutaxonomyNonFinancials:
       return 'EU Taxonomy';
-    case DataTypeEnum.P2p:
-      return 'WWF';
     case DataTypeEnum.EsgDatenkatalog:
       return 'ESG Datenkatalog';
     default:
@@ -145,7 +142,6 @@ export function getFrameworkTitle(framework: string): string {
  */
 export function frameworkHasSubTitle(framework: string): boolean {
   return (
-    framework == DataTypeEnum.P2p ||
     framework == DataTypeEnum.EutaxonomyFinancials ||
     framework == DataTypeEnum.EutaxonomyNonFinancials ||
     framework == DataTypeEnum.EsgDatenkatalog
@@ -162,8 +158,6 @@ export function getFrameworkSubtitle(framework: string): string {
       return 'for financial companies';
     case DataTypeEnum.EutaxonomyNonFinancials:
       return 'for non-financial companies';
-    case DataTypeEnum.P2p:
-      return 'Pathways to Paris';
     case DataTypeEnum.EsgDatenkatalog:
       return 'für Corporate Schuldscheindarlehen';
     default:

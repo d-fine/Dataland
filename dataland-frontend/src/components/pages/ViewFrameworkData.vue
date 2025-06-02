@@ -57,7 +57,7 @@ export default defineComponent({
   },
   computed: {
     multiViewFrameworks(): string[] {
-      return [DataTypeEnum.P2p, ...getAllFrameworkIdentifiers()];
+      return getAllFrameworkIdentifiers();
     },
   },
 });

@@ -22,7 +22,6 @@ import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFi
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
-import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 import BackButton from '@/components/general/BackButton.vue';
@@ -49,8 +48,6 @@ const frameworkToUploadComponent = computed(() => {
       return CreateEuTaxonomyNonFinancials;
     case `${DataTypeEnum.EutaxonomyFinancials}`:
       return CreateEuTaxonomyForFinancials;
-    case `${DataTypeEnum.P2p}`:
-      return CreateP2pDataset;
     case `${DataTypeEnum.Lksg}`:
       return CreateLksgDataset;
     case `${DataTypeEnum.Sfdr}`:
