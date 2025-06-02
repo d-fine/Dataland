@@ -140,7 +140,8 @@ import InputSwitch from 'primevue/inputswitch';
 import OverlayPanel from 'primevue/overlaypanel';
 import { computed, defineComponent, inject, type PropType } from 'vue';
 import { useRoute } from 'vue-router';
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import type { DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 export default defineComponent({
