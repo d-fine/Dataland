@@ -428,7 +428,8 @@ export default defineComponent({
           label: humanizeStringOrNumber(framework),
         }));
 
-        const frameworkLabel = availableFrameworks.find(framework => framework.value === this.dataType)?.label || this.dataType;
+        const frameworkLabel =
+          availableFrameworks.find((framework) => framework.value === this.dataType)?.label || this.dataType;
         const filename = `data-export-${frameworkLabel}-${formatted_timestamp}.${fileExtension}`;
 
         const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
