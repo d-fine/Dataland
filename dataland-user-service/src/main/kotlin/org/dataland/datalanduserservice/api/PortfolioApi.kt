@@ -93,11 +93,11 @@ interface PortfolioApi {
      * Get a paginated list of all portfolios that exist on Dataland. This is an admin-only endpoint.
      */
     @Operation(
-        summary = "Get all portfolios.",
+        summary = "Get a segment of all portfolios for the given chunk size and index.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved all portfolios."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved the requested chunk of portfolios."),
         ],
     )
     @GetMapping(

@@ -49,29 +49,24 @@ class PortfolioServiceTest {
     @BeforeEach
     fun setup() {
         reset(mockPortfolioRepository)
-        resetSecurityContext(dummyUserId, false) // will sometimes be overwritten at the beginning of a test
+        resetSecurityContext(dummyUserId, setOf(DatalandRealmRole.ROLE_USER)) // will sometimes be overwritten at the beginning of a test
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any<PortfolioEntity>())
 
         portfolioService = PortfolioService(mockPortfolioRepository)
     }
 
     /**
-     * Setting the security context to use dataland dummy user with role ROLE_USER
+     * Setting the security context to use the specified userId and set of roles.
      */
     private fun resetSecurityContext(
         userId: String,
-        isAdmin: Boolean,
+        roles: Set<DatalandRealmRole>,
     ) {
         mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(
                 "username",
                 userId,
-                roles =
-                    if (isAdmin) {
-                        setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_ADMIN)
-                    } else {
-                        setOf(DatalandRealmRole.ROLE_USER)
-                    },
+                roles,
             )
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -149,7 +144,7 @@ class PortfolioServiceTest {
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
             .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
-        resetSecurityContext(adminUserId, true)
+        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
         val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
         verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
             any(), any(),
@@ -177,7 +172,7 @@ class PortfolioServiceTest {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
             .getAllByUserId(dummyUserId)
-        resetSecurityContext(adminUserId, true)
+        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
         val portfolioList = portfolioService.getAllPortfoliosForUserById(dummyUserId)
         assertEquals(2, portfolioList.size)
         assertEquals(
