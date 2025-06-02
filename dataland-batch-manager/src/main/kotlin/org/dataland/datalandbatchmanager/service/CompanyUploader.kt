@@ -1,6 +1,11 @@
 package org.dataland.datalandbatchmanager.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.resilience4j.ratelimiter.RateLimiter
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry
+import io.github.resilience4j.ratelimiter.RequestNotPermitted
+import io.github.resilience4j.retry.Retry
+import io.github.resilience4j.retry.RetryRegistry
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -21,6 +26,8 @@ import java.net.SocketTimeoutException
 class CompanyUploader(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val rateLimiterRegistry: RateLimiterRegistry,
+    @Autowired private val retryRegistry: RetryRegistry,
 ) {
     companion object {
         const val MAX_RETRIES = 3
@@ -28,6 +35,9 @@ class CompanyUploader(
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    private val rateLimiter: RateLimiter = rateLimiterRegistry.rateLimiter("apiRateLimiter")
+    private val retry: Retry = retryRegistry.retry("apiRetry")
 
     @Suppress("ReturnCount")
     private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException): Pair<String?, Set<String?>?> {
@@ -63,24 +73,29 @@ class CompanyUploader(
         return Pair(conflictingCompanyIds.first(), conflictingIdentifierTypes)
     }
 
-    private fun retryOnCommonApiErrors(functionToExecute: () -> Unit) {
-        var counter = 0
-        while (counter < MAX_RETRIES) {
-            try {
-                functionToExecute()
-                return
-            } catch (exception: ClientException) {
-                logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
-                counter++
-            } catch (exception: SocketTimeoutException) {
-                logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
-                counter++
-            } catch (exception: ServerException) {
-                logger.error("Unexpected server exception. Response was: ${exception.message}.")
-                counter++
-            }
+    private fun executeWithRetryAndThrottling(task: () -> Unit) {
+        retry.eventPublisher.onRetry { event ->
+            logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed due to: ${event.lastThrowable?.message}, retrying...")
         }
-        logger.error("Maximum number of retries exceeded.")
+        val decoratedTask =
+            RateLimiter
+                .decorateRunnable(
+                    rateLimiter,
+                    Retry.decorateRunnable(retry, task),
+                )
+
+        try {
+            decoratedTask.run()
+            logger.info("Function executed successfully.")
+        } catch (exception: RequestNotPermitted) {
+            logger.warn("RateLimiter rejected the call: ${exception.message}")
+        } catch (exception: ClientException) {
+            logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
+        } catch (exception: SocketTimeoutException) {
+            logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
+        } catch (exception: ServerException) {
+            logger.error("Unexpected server exception. Response was: ${exception.message}.")
+        }
     }
 
     /**
@@ -91,9 +106,10 @@ class CompanyUploader(
     fun uploadOrPatchSingleCompany(companyInformation: ExternalCompanyInformation) {
         var patchCompanyId: String? = null
         var allConflictingIdentifiers: Set<String?>? = null
-        retryOnCommonApiErrors {
+
+        executeWithRetryAndThrottling {
             try {
-                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()} ")
+                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()}")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
                 val (conflictingCompanyId, conflictingIdentifiers) =
@@ -125,7 +141,7 @@ class CompanyUploader(
         conflictingIdentifiers: Set<String?>?,
     ) {
         val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
-        retryOnCommonApiErrors {
+        executeWithRetryAndThrottling {
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyPatch,
@@ -135,13 +151,14 @@ class CompanyUploader(
 
     /**
      * Updates the final / ultimate parents of all companies.
-     * @param finalParentMapping the parent-mapping with the format "LEI"->"LEI"
+     * @param finalParentMapping the parent-mapping with the format "LEI" -> "LEI"
      */
     fun updateRelationships(finalParentMapping: Map<String, String>) {
         for ((startLei, endLei) in finalParentMapping) {
             val companyId = searchCompanyByLEI(startLei) ?: continue
             logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
-            retryOnCommonApiErrors {
+
+            executeWithRetryAndThrottling {
                 companyDataControllerApi.patchCompanyById(
                     companyId,
                     CompanyInformationPatch(parentCompanyLei = endLei),
@@ -151,21 +168,30 @@ class CompanyUploader(
     }
 
     private fun searchCompanyByLEI(lei: String): String? {
-        var companyId: String? = null
-        retryOnCommonApiErrors {
-            logger.info("Searching for company with LEI: $lei")
-            companyId =
-                try {
-                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
-                } catch (e: ClientException) {
-                    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.error("Could not find company with LEI: $lei")
-                        return@retryOnCommonApiErrors
-                    }
-                    throw e
-                }
+        val decoratedSupplier =
+            RateLimiter
+                .decorateSupplier(
+                    rateLimiter,
+                    Retry.decorateSupplier(retry) {
+                        logger.info("Searching for company with LEI: $lei")
+                        try {
+                            companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
+                        } catch (exception: ClientException) {
+                            if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
+                                logger.warn("Could not find company with LEI: $lei")
+                                return@decorateSupplier null // gracefully return null without retry
+                            }
+                            throw exception
+                        }
+                    },
+                )
+
+        return try {
+            decoratedSupplier.get()
+        } catch (exception: RequestNotPermitted) {
+            logger.warn("Rate limiter rejected call to searchCompanyByLEI for LEI $lei: ${exception.message}")
+            null
         }
-        return companyId
     }
 
     /**
@@ -190,7 +216,7 @@ class CompanyUploader(
                 IdentifierType.Isin.value to isins.toList(),
             )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
-        retryOnCommonApiErrors {
+        executeWithRetryAndThrottling {
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyPatch,
