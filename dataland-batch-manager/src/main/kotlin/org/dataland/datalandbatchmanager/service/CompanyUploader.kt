@@ -2,8 +2,8 @@ package org.dataland.datalandbatchmanager.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.resilience4j.ratelimiter.RateLimiter
+import io.github.resilience4j.ratelimiter.RateLimiter.waitForPermission
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry
-import io.github.resilience4j.ratelimiter.RequestNotPermitted
 import io.github.resilience4j.retry.Retry
 import io.github.resilience4j.retry.RetryRegistry
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
@@ -38,6 +38,12 @@ class CompanyUploader(
 
     private val rateLimiter: RateLimiter = rateLimiterRegistry.rateLimiter("apiRateLimiter")
     private val retry: Retry = retryRegistry.retry("apiRetry")
+
+    init {
+        retry.eventPublisher.onRetry { event ->
+            logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed due to: ${event.lastThrowable?.message}, retrying...")
+        }
+    }
 
     @Suppress("ReturnCount")
     private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException): Pair<String?, Set<String?>?> {
@@ -74,21 +80,10 @@ class CompanyUploader(
     }
 
     private fun executeWithRetryAndThrottling(task: () -> Unit) {
-        retry.eventPublisher.onRetry { event ->
-            logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed due to: ${event.lastThrowable?.message}, retrying...")
-        }
-        val decoratedTask =
-            RateLimiter
-                .decorateRunnable(
-                    rateLimiter,
-                    Retry.decorateRunnable(retry, task),
-                )
-
         try {
-            decoratedTask.run()
+            waitForPermission(rateLimiter)
+            Retry.decorateRunnable(retry, task).run()
             logger.info("Function executed successfully.")
-        } catch (exception: RequestNotPermitted) {
-            logger.warn("RateLimiter rejected the call: ${exception.message}")
         } catch (exception: ClientException) {
             logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
         } catch (exception: SocketTimeoutException) {
@@ -168,30 +163,27 @@ class CompanyUploader(
     }
 
     private fun searchCompanyByLEI(lei: String): String? {
-        val decoratedSupplier =
-            RateLimiter
-                .decorateSupplier(
-                    rateLimiter,
-                    Retry.decorateSupplier(retry) {
-                        logger.info("Searching for company with LEI: $lei")
-                        try {
-                            companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
-                        } catch (exception: ClientException) {
-                            if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
-                                logger.warn("Could not find company with LEI: $lei")
-                                return@decorateSupplier null // gracefully return null without retry
-                            }
-                            throw exception
-                        }
-                    },
-                )
+        var companyId: String? = null
+        var found404 = false
 
-        return try {
-            decoratedSupplier.get()
-        } catch (exception: RequestNotPermitted) {
-            logger.warn("Rate limiter rejected call to searchCompanyByLEI for LEI $lei: ${exception.message}")
-            null
+        executeWithRetryAndThrottling {
+            logger.info("Searching for company with LEI: $lei")
+            try {
+                companyId =
+                    companyDataControllerApi
+                        .getCompanyIdByIdentifier(IdentifierType.Lei, lei)
+                        .companyId
+            } catch (exception: ClientException) {
+                if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    logger.warn("Could not find company with LEI: $lei")
+                    found404 = true
+                } else {
+                    throw exception
+                }
+            }
         }
+
+        return if (found404) null else companyId
     }
 
     /**
