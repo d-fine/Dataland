@@ -18,7 +18,7 @@ data class JsonSpecificationLeaf(
  * Utilities for working with JSON framework specifications.
  */
 object JsonSpecificationUtils {
-    private fun isTerminalNode(node: JsonNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref")
+    private fun isTerminalNode(node: JsonNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref", "aliasExport")
 
     /**
      * Hydrates a JSON specification with data from a data function. During hydration, leaf nodes of the
@@ -109,6 +109,12 @@ object JsonSpecificationUtils {
         val dataMap = mutableMapOf<String, JsonSpecificationLeaf>()
         if (!jsonNode.isNull) {
             val upcomingPath = if (currentPath.isEmpty()) fieldName else "$currentPath.$fieldName"
+            print("TESTTESTTEST\n")
+            print(jsonNode.toString())
+            print("1...........1\n")
+            print(currentSpecificationNode.get(fieldName))
+            print("2...........2\n")
+            print(currentSpecificationNode.toString())
             val matchingSpecificationNode =
                 currentSpecificationNode.get(fieldName)
                     ?: throw InvalidInputApiException(
