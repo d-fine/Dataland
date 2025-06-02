@@ -19,7 +19,7 @@ data class TemplateRow(
     @JsonProperty("Field Name")
     var fieldName: String,
     @JsonProperty("Alias Export")
-    var aliasExport: String,
+    var aliasExport: String = "",
     @JsonProperty("Tooltip")
     var combinedTooltip: String?,
     @JsonProperty("Tooltip - upload page")
