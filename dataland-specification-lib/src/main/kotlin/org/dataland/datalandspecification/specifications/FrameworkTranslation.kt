@@ -11,7 +11,6 @@ import org.dataland.datalandspecification.specifications.VerificationUtils.flatt
 data class FrameworkTranslation(
     val id: String,
     val schema: ObjectNode = JsonNodeFactory.instance.objectNode(),
-    val aliasExport: String,
 ) {
     /**
      * A flattened version of the schema
