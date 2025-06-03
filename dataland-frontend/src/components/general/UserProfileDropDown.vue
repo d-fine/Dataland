@@ -32,22 +32,21 @@
 </template>
 
 <script lang="ts">
-import PrimeMenu from 'primevue/menu';
-import { defineComponent, inject, ref } from 'vue';
-import type { Ref } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
 import defaultProfilePicture from '@/assets/images/elements/default_user_icon.svg';
-import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import router from '@/router';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
+import PrimeMenu from 'primevue/menu';
+import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'UserProfileDropDown',
   components: { PrimeMenu },
   emits: ['profilePictureLoadingError', 'profilePictureObtained'],
   setup() {
-    const menu: Ref<PrimeMenu | undefined> = ref();
+    const menu = ref<typeof PrimeMenu | undefined>();
 
     /**
      * Toggles the dropdown menu (shows/hides it) on a mouse click.

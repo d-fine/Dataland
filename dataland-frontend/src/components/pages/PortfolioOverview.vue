@@ -3,26 +3,51 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="2">
       <TheContent class="min-h-screen paper-section relative">
-        <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
-          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId">
-            <template #header>
+        <Tabs value="addNewPortfolio" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
+          <TabList>
+            <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
               <div class="p-tabview-header" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
-            </template>
-            <PortfolioDetails
-              :portfolioId="portfolio.portfolioId"
-              @update:portfolio-overview="getPortfolios"
-              :data-test="`portfolio-${portfolio.portfolioName}`"
-            />
-          </TabPanel>
-          <TabPanel>
-            <template #header>
+            </Tab>
+            <Tab value="addNewPortfolio">
               <div @click="addNewPortfolio" data-test="addNewPortfolio">
                 <i class="pi pi-plus pr-2" /> New Portfolio
               </div>
-            </template>
-            <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
-          </TabPanel>
-        </TabView>
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+              <template #header>
+                <div class="p-tabview-header" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
+              </template>
+              <PortfolioDetails
+                :portfolioId="portfolio.portfolioId"
+                @update:portfolio-overview="getPortfolios"
+                :data-test="`portfolio-${portfolio.portfolioName}`"
+              />
+            </TabPanel>
+            <TabPanel value="addNewPortfolio">
+              <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
+            </TabPanel>
+          </TabPanels>
+          <!--          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId">-->
+          <!--            <template #header>-->
+          <!--              <div class="p-tabview-header" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>-->
+          <!--            </template>-->
+          <!--            <PortfolioDetails-->
+          <!--              :portfolioId="portfolio.portfolioId"-->
+          <!--              @update:portfolio-overview="getPortfolios"-->
+          <!--              :data-test="`portfolio-${portfolio.portfolioName}`"-->
+          <!--            />-->
+          <!--          </TabPanel>-->
+          <!--          <TabPanel>-->
+          <!--            <template #header>-->
+          <!--              <div @click="addNewPortfolio" data-test="addNewPortfolio">-->
+          <!--                <i class="pi pi-plus pr-2" /> New Portfolio-->
+          <!--              </div>-->
+          <!--            </template>-->
+          <!--            <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>-->
+          <!--          </TabPanel>-->
+        </Tabs>
       </TheContent>
       <TheFooter :is-light-version="true" :sections="footerSections" />
     </DatasetsTabMenu>
@@ -43,8 +68,12 @@ import type { Content, Section } from '@/types/ContentTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { BasePortfolioName } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
+// import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -78,7 +107,7 @@ watch(
       void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
     }
   },
-  { flush: 'post' }
+  { flush: 'post' },
 );
 
 /**
@@ -91,7 +120,7 @@ watch(
     if (newIndex !== -1) {
       currentIndex.value = newIndex;
     }
-  }
+  },
 );
 
 /**
@@ -131,10 +160,10 @@ async function getPortfolios(): Promise<void> {
 /**
  * Called when currently active portfolio is changed.
  */
-function onTabChange(event: TabViewChangeEvent): void {
-  currentIndex.value = event.index;
+function onTabChange(value: number | string): void {
+  currentIndex.value = value as number;
 
-  const selectedPortfolio = portfolioNames.value[event.index];
+  const selectedPortfolio = portfolioNames.value[value as number];
   if (selectedPortfolio) {
     const name = encodeURI(selectedPortfolio.portfolioName);
     localStorage.setItem('lastPortfolioName', name);
@@ -157,7 +186,7 @@ function addNewPortfolio(): void {
       if (portfolioName) {
         void getPortfolios().then(() => {
           currentIndex.value = portfolioNames.value.findIndex(
-            (portfolio) => portfolio.portfolioId == portfolioName.portfolioId
+            (portfolio) => portfolio.portfolioId == portfolioName.portfolioId,
           );
         });
       }
@@ -167,7 +196,7 @@ function addNewPortfolio(): void {
 </script>
 
 <style scoped lang="scss">
-.p-tabview-header {
+.p-tab {
   max-width: 15em;
   overflow: hidden;
   text-overflow: ellipsis;
