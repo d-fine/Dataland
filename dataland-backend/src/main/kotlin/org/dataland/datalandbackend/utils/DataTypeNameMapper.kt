@@ -1,5 +1,8 @@
 package org.dataland.datalandbackend.utils
 
+/**
+ * Object for mapping frameworks to human readable names
+ */
 object DataTypeNameMapper {
     private val mapping =
         mapOf(
@@ -15,5 +18,8 @@ object DataTypeNameMapper {
             "heimathafen" to "Heimathafen",
         )
 
+    /**
+     * Fetches the name which is displayed in the download
+     */
     fun getDisplayName(dataType: String): String? = mapping[dataType]
 }

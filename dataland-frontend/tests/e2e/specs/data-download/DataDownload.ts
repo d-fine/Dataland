@@ -8,6 +8,9 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 
 describeIf(
   'As a user, I want to be able to download datasets from Dataland',
@@ -49,6 +52,12 @@ describeIf(
      * @param fileType Needs to be one of the identifiers of an ExportFileTypes
      */
     function visitPageAndClickDownloadButton(fileType: string): void {
+      const fileTypeMap: Record<string, string> = {
+        JSON: 'JavaScript Object Notation (.json)',
+        CSV: 'Comma-separated Values (.csv)',
+        EXCEL: 'Excel File (.xlsx)',
+      };
+
       cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
 
       cy.get('button[data-test=downloadDataButton]').should('exist').click();
@@ -56,12 +65,19 @@ describeIf(
         .should('exist')
         .within(() => {
           cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
-          cy.get('[data-test="fileTypeSelector"]').select(fileType);
+          const dropdownValue = fileTypeMap[fileType.toUpperCase()];
+          if (!dropdownValue) {
+            throw new Error(`Unsupported fileType: ${fileType}`);
+          }
+          cy.get('[data-test="fileTypeSelector"]').select(dropdownValue);
           cy.get('button[data-test=downloadDataButtonInModal]').click();
         });
     }
 
     before(() => {
+      const fixedDate = new Date('2021-01-01T00:00:00Z');
+      cy.clock(fixedDate.getTime(), ['Date']);
+
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then((jsonContent) => {
         const preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
@@ -93,7 +109,14 @@ describeIf(
     it('Download data as csv file, check for appropriate size and delete it afterwards', () => {
       const exportFileType = ExportFileType.Csv;
       const fileTypeInformation = ExportFileTypeInformation.CSV;
-      const fileName = `${reportingPeriod}-${dataType}-${storedCompany.companyId}.${fileTypeInformation.fileExtension}`;
+      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
+        value: framework,
+        label: humanizeStringOrNumber(framework),
+      }));
+      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
+
+      const formatted_timestamp = getDateStringForDataExport(new Date());
+      const fileName = `data-export-${frameworkLabel}-${formatted_timestamp}.${fileTypeInformation.fileExtension}`;
 
       visitPageAndClickDownloadButton(exportFileType.toString());
 

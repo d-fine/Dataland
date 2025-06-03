@@ -300,29 +300,26 @@ class DataExportService
         private fun processQualityFields(nodes: MutableMap<String, String>): MutableMap<String, String> {
             val filteredNodes = mutableMapOf<String, String>()
             val separator = JsonUtils.getPathSeparator()
-
-            // First pass: identify quality fields that don't have corresponding value fields
-            // and transform them into value fields
             nodes.keys.toList().forEach { field ->
                 when {
                     field.endsWith("${separator}quality") -> {
                         val basePath = field.substringBeforeLast("${separator}quality")
                         val valuePath = "${basePath}${separator}value"
                         if (valuePath !in nodes) {
-                            // No value exists, use quality instead but place it in a value field
-                            filteredNodes[valuePath] = nodes[field]!!
+                            nodes[field]?.let { qualityValue ->
+                                filteredNodes[valuePath] = qualityValue
+                            }
                         }
-                        // Don't keep the original quality field
                     }
-
                     field.endsWith("${separator}value") -> {
-                        // Always keep value fields
-                        filteredNodes[field] = nodes[field]!!
+                        nodes[field]?.let { value ->
+                            filteredNodes[field] = value
+                        }
                     }
-
                     !isMetaDataField(field) -> {
-                        // Keep only non-metadata fields
-                        filteredNodes[field] = nodes[field]!!
+                        nodes[field]?.let { value ->
+                            filteredNodes[field] = value
+                        }
                     }
                 }
             }

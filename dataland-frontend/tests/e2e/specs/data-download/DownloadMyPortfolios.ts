@@ -13,6 +13,7 @@ import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { join } from 'path';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 
 let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
@@ -91,12 +92,18 @@ function testDownloadPortfolio({
   keepValuesOnly = true,
 }: {
   description: string;
-  fileType: 'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)';
+  fileType: 'Comma-separated Values (.csv)' | 'Excel File (.xlsx)';
   keepValuesOnly?: boolean;
 }): void {
   it(description, () => {
     const downloadDir = Cypress.config('downloadsFolder');
-    const expectedFileName = `Portfolio-${portfolioName}-eutaxonomy-non-financials.csv`;
+
+    // Get a stable formatted timestamp from fixed date
+    const formatted_timestamp = getDateStringForDataExport(new Date());
+
+    const fileExtension = getFileExtension(fileType);
+
+    const expectedFileName = `data-export-EU Taxonomy Non-Financials-${formatted_timestamp}.${fileExtension}`;
     const downloadFilePath = join(downloadDir, expectedFileName);
     const minimumFileSizeInByte = 5000;
 
@@ -117,7 +124,24 @@ function testDownloadPortfolio({
   });
 }
 
+/**
+ * Extracts file extension from users choise
+ * @param fileType type of file to be downloaded
+ */
+function getFileExtension(fileType: string): string {
+  switch (fileType) {
+    case 'Comma-separated Values (.csv)':
+      return 'csv';
+    case 'Excel File (.xlsx)':
+      return 'xlsx';
+    default:
+      throw new Error(`Unknown fileType: ${fileType}`);
+  }
+}
+
 before(function () {
+  const fixedDate = new Date('2023-01-01T00:00:00Z');
+  cy.clock(fixedDate.getTime(), ['Date']);
   cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then((jsonContent) => {
     const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyNonFinancialsData>>;
     euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
@@ -171,7 +195,7 @@ describeIf(
 
     testDownloadPortfolio({
       description: 'Download the portfolio as an Excel-compatible CSV file without additional information',
-      fileType: 'Excel-compatible CSV File (.csv)',
+      fileType: 'Excel File (.xlsx)',
       keepValuesOnly: false,
     });
 
@@ -182,7 +206,7 @@ describeIf(
 
     testDownloadPortfolio({
       description: 'Download the portfolio as an Excel-compatible CSV file with additional information',
-      fileType: 'Excel-compatible CSV File (.csv)',
+      fileType: 'Excel File (.xlsx)',
     });
 
     it('Shows that not all reporting periods are clickable when data is missing', () => {
