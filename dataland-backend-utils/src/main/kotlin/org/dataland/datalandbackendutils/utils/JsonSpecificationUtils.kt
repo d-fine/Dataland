@@ -18,7 +18,10 @@ data class JsonSpecificationLeaf(
  * Utilities for working with JSON framework specifications.
  */
 object JsonSpecificationUtils {
-    private fun isTerminalNode(node: JsonNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref", "aliasExport")
+    private fun isTerminalNode(node: JsonNode): Boolean =
+        node.fieldNames().asSequence().toSet() == setOf("id", "ref", "aliasExport") ||
+            node.fieldNames().asSequence().toSet() == setOf("id", "ref") &&
+            node.findValue("id").asText() == "referencedReports"
 
     /**
      * Hydrates a JSON specification with data from a data function. During hydration, leaf nodes of the
