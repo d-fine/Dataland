@@ -104,11 +104,11 @@ class CompanyUploader(
                     throw exception
                 }
             } catch (e: SocketTimeoutException) {
-                logger.info("Caught exception after retries: ${e::class.simpleName} - ${e.message}")
+                logger.warn("Caught eeeexception after retries: ${e::class.simpleName} - ${e.message}")
             } catch (e: ClientException) {
-                logger.info("Caught exception after retries: ${e::class.simpleName} - ${e.message}")
+                logger.warn("Caught eeeexception after retries: ${e::class.simpleName} - ${e.message}")
             } catch (e: ServerException) {
-                logger.info("Caught exception after retries: ${e::class.simpleName} - ${e.message}")
+                logger.warn("Caught eeeexception after retries: ${e::class.simpleName} - ${e.message}")
             }
         }
     }
