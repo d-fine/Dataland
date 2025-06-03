@@ -20,8 +20,7 @@ data class JsonSpecificationLeaf(
 object JsonSpecificationUtils {
     private fun isTerminalNode(node: JsonNode): Boolean =
         node.fieldNames().asSequence().toSet() == setOf("id", "ref", "aliasExport") ||
-            node.fieldNames().asSequence().toSet() == setOf("id", "ref") &&
-            node.findValue("id").asText() == "referencedReports"
+            node.fieldNames().asSequence().toSet() == setOf("id", "ref")
 
     /**
      * Hydrates a JSON specification with data from a data function. During hydration, leaf nodes of the
