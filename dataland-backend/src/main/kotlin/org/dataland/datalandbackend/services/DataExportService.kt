@@ -83,7 +83,7 @@ class DataExportService
             headerFields: List<String>,
             data: List<Map<String, String>>,
             outputStream: OutputStream,
-            readableHeaders: Map<String, String>,
+            readableHeaders: Map<String, String> = emptyMap(),
         ) {
             val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
             val workbook = XSSFWorkbook()
@@ -176,14 +176,12 @@ class DataExportService
                     )
                 }
             val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
-            val readableHeaders = createHumanReadableFieldNames(csvSchema.columnNames)
-            return PreparedExportData(csvData, csvSchema, readableHeaders)
+            return PreparedExportData(csvData, csvSchema)
         }
 
         private data class PreparedExportData(
             val csvData: List<Map<String, String>>,
             val csvSchema: CsvSchema,
-            val readableHeaders: Map<String, String>,
         )
 
         /**
@@ -199,27 +197,19 @@ class DataExportService
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema, readableHeaders) = prepareExportData(portfolioExportRows, dataType, keepValueFieldsOnly)
+            val (csvData, csvSchema) =
+                prepareExportData(
+                    portfolioExportRows,
+                    dataType,
+                    keepValueFieldsOnly,
+                )
 
             val outputStream = ByteArrayOutputStream()
             val csvMapper = CsvMapper()
             val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
             val rawCsv = csvWriter.writeValueAsString(csvData)
 
-            // Get original header names
-            val originalHeaders = csvSchema.columnNames
-            val humanHeaderLine = originalHeaders.joinToString(",") { readableHeaders[it] ?: it }
-
-            // Replace only the header line
-            val csvWithReadableHeaders =
-                rawCsv
-                    .lineSequence()
-                    .toList()
-                    .let {
-                        listOf(humanHeaderLine) + it.drop(1)
-                    }.joinToString("\n")
-
-            outputStream.write(csvWithReadableHeaders.toByteArray())
+            outputStream.write(rawCsv.toByteArray())
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -236,13 +226,18 @@ class DataExportService
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema, readableHeaders) = prepareExportData(portfolioExportRows, dataType, keepValueFieldsOnly)
+            val (csvData, csvSchema) =
+                prepareExportData(
+                    portfolioExportRows,
+                    dataType,
+                    keepValueFieldsOnly,
+                )
             val excelHeaderFields =
                 csvSchema.columnNames
                     .filter { it.startsWith("data.") }
                     .map { it.substringAfter("data.") }
             val outputStream = ByteArrayOutputStream()
-            transformDataToExcelWithReadableHeaders(excelHeaderFields, csvData, outputStream, readableHeaders)
+            transformDataToExcelWithReadableHeaders(excelHeaderFields, csvData, outputStream)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -319,10 +314,12 @@ class DataExportService
                         }
                         // Don't keep the original quality field
                     }
+
                     field.endsWith("${separator}value") -> {
                         // Always keep value fields
                         filteredNodes[field] = nodes[field]!!
                     }
+
                     !isMetaDataField(field) -> {
                         // Keep only non-metadata fields
                         filteredNodes[field] = nodes[field]!!
@@ -382,19 +379,4 @@ class DataExportService
             }
             return csvSchemaBuilder.build().withHeader()
         }
-
-        private fun createHumanReadableFieldNames(fields: Collection<String>): Map<String, String> =
-            fields.associateWith { original ->
-                val parts = original.split('.')
-                val relevantParts = if (parts.firstOrNull() == "data") parts.drop(1) else parts
-
-                val formattedString =
-                    relevantParts.joinToString(" ") { part ->
-                        part
-                            .replace(Regex("([a-z])([A-Z])"), "$1 $2")
-                            .replaceFirstChar { it.uppercaseChar() }
-                    }
-
-                formattedString.replace("General General", "General")
-            }
     }
