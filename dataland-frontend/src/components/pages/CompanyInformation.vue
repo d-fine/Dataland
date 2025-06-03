@@ -18,6 +18,20 @@
           </div>
         </div>
         <div class="right-elements">
+          <PrimeButton
+            class="primary-button"
+            aria-label="Add company to your portfolios"
+            @click="isPortfolioModalOpen = true"
+            data-test="addCompanyToPortfoliosButton"
+          >
+            <span>+ Add to a portfolio</span>
+          </PrimeButton>
+          <AddCompanyToPortfoliosModal
+            :company-id="companyId"
+            :is-modal-open="isPortfolioModalOpen"
+            @close-portfolio-modal="onClosePortfolioModal"
+            data-test="portfolioModal"
+          />
           <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
@@ -78,10 +92,11 @@ import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
+import AddCompanyToPortfoliosModal from '@/components/general/AddCompanyToPortfoliosModal.vue';
 
 export default defineComponent({
   name: 'CompanyInformation',
-  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
+  components: { AddCompanyToPortfoliosModal, ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -94,6 +109,7 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
+      isPortfolioModalOpen: false,
       isUserCompanyOwner: false,
       hasCompanyOwner: false,
       dialogIsOpen: false,
@@ -180,6 +196,13 @@ export default defineComponent({
      */
     onCloseDialog() {
       this.dialogIsOpen = false;
+    },
+
+    /**
+     * Handles the close event of the modal for adding the company to ones portfolio(s).
+     */
+    onClosePortfolioModal() {
+      this.isPortfolioModalOpen = false;
     },
     /**
      * Gets the parent company based on the lei
