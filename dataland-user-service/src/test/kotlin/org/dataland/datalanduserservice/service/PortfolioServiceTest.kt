@@ -195,7 +195,7 @@ class PortfolioServiceTest {
         portfolioService.getAllPortfolios(50, 3)
         verify(mockPortfolioRepository).findAll(
             PageRequest.of(
-                3, 50, Sort.by("lastUpdateTimestamp"),
+                3, 50, Sort.by("lastUpdateTimestamp").descending(),
             ),
         )
     }
