@@ -3,9 +3,10 @@ package org.dataland.datalandbatchmanager.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.resilience4j.ratelimiter.RateLimiter
 import io.github.resilience4j.ratelimiter.RateLimiter.waitForPermission
-import io.github.resilience4j.ratelimiter.RateLimiterRegistry
+import io.github.resilience4j.ratelimiter.RateLimiterConfig
 import io.github.resilience4j.retry.Retry
-import io.github.resilience4j.retry.RetryRegistry
+import io.github.resilience4j.retry.RetryConfig
+import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.net.SocketTimeoutException
+import java.time.Duration
 
 /**
  * Class for handling the upload of the company information retrieved from GLEIF to the Dataland backend
@@ -26,22 +28,88 @@ import java.net.SocketTimeoutException
 class CompanyUploader(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val rateLimiterRegistry: RateLimiterRegistry,
-    @Autowired private val retryRegistry: RetryRegistry,
 ) {
     companion object {
         const val MAX_RETRIES = 3
         const val UNAUTHORIZED_CODE = 401
+        const val LIMIT_FOR_PERIOD = 1000
+        const val LIMIT_REFRESH_DURATION: Long = 1
+        const val TIMEOUT_DURATION: Long = 500
+        const val CLIENT_EXCEPTION_STATUS_CODE = 400
+        const val SERVER_EXCEPTION_STATUS_CODE = 500
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val rateLimiter: RateLimiter = rateLimiterRegistry.rateLimiter("apiRateLimiter")
-    private val retry: Retry = retryRegistry.retry("apiRetry")
+    private val rateLimiter: RateLimiter
+    private val retry: Retry
 
     init {
+        val retryConfig =
+            RetryConfig
+                .custom<Any>()
+                .maxAttempts(MAX_RETRIES)
+                .waitDuration(Duration.ofSeconds(1))
+                .retryExceptions(
+                    SocketTimeoutException::class.java,
+                    ClientException::class.java,
+                    ServerException::class.java,
+                ).build()
+
+        retry = Retry.of("apiRetry", retryConfig)
+
         retry.eventPublisher.onRetry { event ->
             logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed due to: ${event.lastThrowable?.message}, retrying...")
+        }
+
+        // Programmatic RateLimiter configuration
+        val rateLimiterConfig =
+            RateLimiterConfig
+                .custom()
+                .limitForPeriod(LIMIT_FOR_PERIOD)
+                .limitRefreshPeriod(Duration.ofSeconds(LIMIT_REFRESH_DURATION))
+                .timeoutDuration(Duration.ofMillis(TIMEOUT_DURATION))
+                .build()
+
+        rateLimiter = RateLimiter.of("apiRateLimiter", rateLimiterConfig)
+    }
+
+    /**
+     * Tests the behavior of the `executeWithRetryAndThrottling` method by simulating various exceptions
+     * and verifying that the appropriate handling and logging mechanisms are invoked.
+     *
+     * This method simulates the following exceptions:
+     * - `SocketTimeoutException`: Mimics a network socket timeout scenario.
+     * - `ClientException`: Represents a scenario where a client-side error occurs.
+     * - `ServerException`: Mimics a server error scenario.
+     *
+     * Each exception is thrown during the execution of `executeWithRetryAndThrottling` to validate
+     * that retries and throttling are handled correctly. The method logs relevant information
+     * about the exception that was caught after exhausting retries.
+     *
+     * Execution occurs during the post-construction phase as denoted by the `@PostConstruct` annotation.
+     */
+    @PostConstruct
+    fun testExecuteWithRetryAndThrottlingLogging() {
+        val exceptionsToTest =
+            listOf(
+                SocketTimeoutException("Simulated timeout") as Throwable,
+                ClientException("Simulated client error", CLIENT_EXCEPTION_STATUS_CODE) as Throwable,
+                ServerException("Simulated server error", SERVER_EXCEPTION_STATUS_CODE) as Throwable,
+            )
+
+        exceptionsToTest.forEach { exception ->
+            try {
+                executeWithRetryAndThrottling {
+                    throw exception
+                }
+            } catch (e: SocketTimeoutException) {
+                logger.info("Caught exception after retries: ${e::class.simpleName} - ${e.message}")
+            } catch (e: ClientException) {
+                logger.info("Caught exception after retries: ${e::class.simpleName} - ${e.message}")
+            } catch (e: ServerException) {
+                logger.info("Caught exception after retries: ${e::class.simpleName} - ${e.message}")
+            }
         }
     }
 
@@ -80,9 +148,10 @@ class CompanyUploader(
     }
 
     private fun executeWithRetryAndThrottling(task: () -> Unit) {
+        val decoratedTask = Retry.decorateRunnable(retry, task)
         try {
             waitForPermission(rateLimiter)
-            Retry.decorateRunnable(retry, task).run()
+            decoratedTask.run()
             logger.info("Function executed successfully.")
         } catch (exception: ClientException) {
             logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
