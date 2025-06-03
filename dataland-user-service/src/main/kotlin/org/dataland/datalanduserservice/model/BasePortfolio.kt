@@ -23,6 +23,12 @@ data class BasePortfolio(
     val lastUpdateTimestamp: Long,
     @field:JsonProperty(required = true)
     override val companyIds: Set<String>,
+    @field:JsonProperty(required = false)
+    override val isMonitored: Boolean,
+    @field:JsonProperty(required = false)
+    override val startingMonitoringPeriod: String?,
+    @field:JsonProperty(required = false)
+    override val monitoredFrameworks: Set<String>?,
 ) : Portfolio {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
@@ -31,6 +37,9 @@ data class BasePortfolio(
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = portfolioUpload.companyIds,
+        isMonitored = portfolioUpload.isMonitored,
+        startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod,
+        monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
 
     /**
@@ -49,5 +58,8 @@ data class BasePortfolio(
             creationTimestamp = creationTimestamp ?: this.creationTimestamp,
             lastUpdateTimestamp = this.lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
+            isMonitored = this.monitoredFrameworks != null,
+            startingMonitoringPeriod = this.startingMonitoringPeriod,
+            monitoredFrameworks = this.monitoredFrameworks?.toMutableSet() ?: mutableSetOf(),
         )
 }

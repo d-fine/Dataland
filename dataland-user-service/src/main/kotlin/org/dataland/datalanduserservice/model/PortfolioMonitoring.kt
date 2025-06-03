@@ -1,11 +1,9 @@
 package org.dataland.datalanduserservice.model
 
 /**
- * Interface for the Portfolio API models
+ * Interface for the Portfolio Monitoring API models
  */
-interface Portfolio {
-    val portfolioName: String
-    val companyIds: Set<String>
+interface PortfolioMonitoring {
     val isMonitored: Boolean
     val startingMonitoringPeriod: String?
     val monitoredFrameworks: Set<String>?

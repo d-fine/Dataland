@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
+import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -139,4 +140,42 @@ class PortfolioService
             getAllPortfoliosForUser().map {
                 BasePortfolioName(it.portfolioId, it.portfolioName)
             }
+
+        @Transactional
+        fun patchMonitoring(
+            portfolioId: String,
+            patch: PortfolioMonitoringPatch,
+        ) {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+
+            logger.info(
+                "Patch monitoring for portfolio with portfolioId: $portfolioId for user with userId: $userId. " +
+                    "CorrelationId: $correlationId. Patch: $patch",
+            )
+
+            val portfolioEntity =
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+                    ?: throw PortfolioNotFoundApiException(portfolioId)
+
+            var updated = false
+
+            patch.startingMonitoringPeriod?.let {
+                portfolioEntity.startingMonitoringPeriod = it
+                updated = true
+            }
+
+            patch.monitoredFrameworks?.let {
+                portfolioEntity.monitoredFrameworks = it.toMutableSet()
+                updated = true
+            }
+
+            if (updated) {
+                portfolioEntity.lastUpdateTimestamp = System.currentTimeMillis()
+                portfolioRepository.save(portfolioEntity)
+                logger.info("Monitoring successfully patched for portfolioId: $portfolioId. CorrelationId: $correlationId.")
+            } else {
+                logger.info("No monitoring fields were updated for portfolioId: $portfolioId. CorrelationId: $correlationId.")
+            }
+        }
     }
