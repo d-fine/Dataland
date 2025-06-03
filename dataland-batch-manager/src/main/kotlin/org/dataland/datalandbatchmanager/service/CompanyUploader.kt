@@ -80,9 +80,10 @@ class CompanyUploader(
     }
 
     private fun executeWithRetryAndThrottling(task: () -> Unit) {
+        val decoratedTask = Retry.decorateRunnable(retry, task)
         try {
             waitForPermission(rateLimiter)
-            Retry.decorateRunnable(retry, task).run()
+            decoratedTask.run()
             logger.info("Function executed successfully.")
         } catch (exception: ClientException) {
             logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")

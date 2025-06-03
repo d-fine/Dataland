@@ -119,7 +119,7 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 3 * * SUN")
+        @Scheduled(cron = "0 30 12 * * *")
         private fun processUpdates() {
             logger.info("Running scheduled update of GLEIF data.")
             waitForBackend()
