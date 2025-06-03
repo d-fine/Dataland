@@ -1,5 +1,5 @@
 # This is an image that has node, cypress os dependencies and a jdk included. It can be used to execute Java or Node Stuff
-FROM cypress/base:22.15.0@sha256:dcca936f59362209da3d29acd9e01b299d3ab72bcf32a22c2949ba4210f9b92f
+FROM cypress/base:22.15.1@sha256:36b4ba4df18d5043cc419b6377cec6ab624203615d8f7fdc700f23f5cba4c53b
 RUN apt-get update && \
     apt-get install -y wget curl apt-transport-https gnupg ca-certificates && \
     mkdir -p /etc/apt/keyrings && \
