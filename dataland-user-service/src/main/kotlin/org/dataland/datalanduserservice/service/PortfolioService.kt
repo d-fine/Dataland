@@ -126,7 +126,7 @@ class PortfolioService
             )
             return portfolioRepository
                 .findAll(
-                    PageRequest.of(chunkIndex, chunkSize, Sort.by("lastUpdateTimestamp")),
+                    PageRequest.of(chunkIndex, chunkSize, Sort.by("lastUpdateTimestamp").descending()),
                 ).content
                 .map { it.toBasePortfolio() }
         }
