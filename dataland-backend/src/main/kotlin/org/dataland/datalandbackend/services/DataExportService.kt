@@ -300,29 +300,33 @@ class DataExportService
         private fun processQualityFields(nodes: MutableMap<String, String>): MutableMap<String, String> {
             val filteredNodes = mutableMapOf<String, String>()
             val separator = JsonUtils.getPathSeparator()
+
             nodes.keys.toList().forEach { field ->
-                when {
-                    field.endsWith("${separator}quality") -> {
-                        val basePath = field.substringBeforeLast("${separator}quality")
-                        val valuePath = "${basePath}${separator}value"
-                        if (valuePath !in nodes) {
-                            nodes[field]?.let { qualityValue ->
-                                filteredNodes[valuePath] = qualityValue
-                            }
+                if (field.endsWith("${separator}quality")) {
+                    val basePath = field.substringBeforeLast("${separator}quality")
+                    val valuePath = "${basePath}${separator}value"
+                    if (valuePath !in nodes) {
+                        nodes[field]?.let { qualityValue ->
+                            filteredNodes[valuePath] = qualityValue
                         }
                     }
-                    field.endsWith("${separator}value") -> {
-                        nodes[field]?.let { value ->
-                            filteredNodes[field] = value
-                        }
+                    return@forEach // go to next iteration
+                }
+
+                if (field.endsWith("${separator}value")) {
+                    nodes[field]?.let { value ->
+                        filteredNodes[field] = value
                     }
-                    !isMetaDataField(field) -> {
-                        nodes[field]?.let { value ->
-                            filteredNodes[field] = value
-                        }
+                    return@forEach
+                }
+
+                if (!isMetaDataField(field)) {
+                    nodes[field]?.let { value ->
+                        filteredNodes[field] = value
                     }
                 }
             }
+
             nodes.clear()
             nodes.putAll(filteredNodes)
             return nodes
