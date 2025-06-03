@@ -149,7 +149,9 @@ class DataPointValidatorTest {
 
     @Test
     fun `verify that data points with array are not seen as empty`() {
-        val activityValidationClass = "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>>"
+        val activityValidationClass =
+            "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util." +
+                "List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>>"
         val dataPointId = "someAlignedActivityDataPoint"
         val dataPointBaseTypeId = "extendedEuTaxonomyAlignedActivitiesComponent"
 
@@ -160,7 +162,7 @@ class DataPointValidatorTest {
                 name = "dummy",
                 businessDefinition = "dummy",
                 usedBy = emptyList(),
-            )
+            ),
         ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
 
         doReturn(

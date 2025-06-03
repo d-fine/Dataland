@@ -93,7 +93,6 @@ object JsonSpecificationUtils {
                     "Unexpected leaf at JSON path: $currentPath",
                 )
             }
-            // TODO Broken for arrays!
             for ((fieldName, jsonNode) in currentDataNode.fields()) {
                 dataMap.putAll(processNode(fieldName, jsonNode, currentPath, currentSpecificationNode))
             }

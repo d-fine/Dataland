@@ -77,11 +77,19 @@ object JsonComparator {
 
     private fun isNestedNode(node: JsonNode): Boolean = node.isObject || node.isArray
 
-    private fun isNestedFullyNullObject(node: JsonNode): Boolean = node.isObject && node.fields().asSequence()
-        .all { isFullyNullObject(it.value) }
+    private fun isNestedFullyNullObject(node: JsonNode): Boolean =
+        node.isObject &&
+            node
+                .fields()
+                .asSequence()
+                .all { isFullyNullObject(it.value) }
 
-    private fun isNestedFullyNullArray(node: JsonNode): Boolean = node.isArray && node.elements().asSequence()
-        .all { isFullyNullObject(it) }
+    private fun isNestedFullyNullArray(node: JsonNode): Boolean =
+        node.isArray &&
+            node
+                .elements()
+                .asSequence()
+                .all { isFullyNullObject(it) }
 
     private fun valuesDiffer(
         expected: JsonNode,
