@@ -1,6 +1,8 @@
 package org.dataland.batchmanager.gleif
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry
+import io.github.resilience4j.retry.RetryRegistry
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -38,7 +40,9 @@ class CompanyUploaderTest {
     @BeforeEach
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper())
+        val rateLimiterRegistry = mock<RateLimiterRegistry>()
+        val retryRegistry = mock<RetryRegistry>()
+        companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper(), rateLimiterRegistry, retryRegistry)
         mockStoredCompany = mock()
     }
 
