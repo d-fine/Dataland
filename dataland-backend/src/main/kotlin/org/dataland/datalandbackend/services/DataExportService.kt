@@ -109,7 +109,7 @@ class DataExportService
                 }
             }
 
-            headerToBeUsed.forEachIndexed { index, headerField ->
+            headerToBeUsed.forEachIndexed { index, _ ->
                 sheet.autoSizeColumn(index)
             }
 

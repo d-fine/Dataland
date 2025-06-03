@@ -43,17 +43,24 @@ class DataExportServiceTest {
 
     @Test
     fun `minimal test for writing excel file`() {
-        val header = listOf("Header 1", "Header 2", "Header 3")
+        // Define constants for headers
+        val header1 = "Header 1"
+        val header2 = "Header 2"
+        val header3 = "Header 3"
+
+        val header = listOf(header1, header2, header3)
+
         val data =
             listOf(
-                mapOf("Header 1" to "Row 1 Col 1", "Header 2" to "Row 1 Col 2", "Header 3" to "Row 1 Col 3"),
-                mapOf("Header 1" to "Row 2 Col 1", "Header 2" to "Row 2 Col 2", "Header 3" to "Row 2 Col 3"),
+                mapOf(header1 to "Row 1 Col 1", header2 to "Row 1 Col 2", header3 to "Row 1 Col 3"),
+                mapOf(header1 to "Row 2 Col 1", header2 to "Row 2 Col 2", header3 to "Row 2 Col 3"),
             )
+
         val readableHeaders =
             mapOf(
-                "Header 1" to "First Header",
-                "Header 2" to "Second Header",
-                "Header 3" to "Third Header",
+                header1 to "First Header",
+                header2 to "Second Header",
+                header3 to "Third Header",
             )
 
         Assertions.assertDoesNotThrow {
