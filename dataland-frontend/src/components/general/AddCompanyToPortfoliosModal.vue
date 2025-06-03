@@ -56,11 +56,10 @@ const props = defineProps(
     }
 );
 
-onMounted(() => {
-  fetchUserPortfolios()
-});
-
-watch<boolean>(() => props.isModalOpen, (newValue) => {
+watch<boolean>(() => props.isModalOpen, async (newValue) => {
+  if (newValue) {
+    await fetchUserPortfolios();
+  }
   isModalVisible.value = newValue;
 });
 
@@ -72,8 +71,17 @@ const fetchUserPortfolios = async (): Promise<void> => {
 const handleCompanyAddition = (): void => {
   if (selectedPortfolios.value.length === 0) return;
   selectedPortfolios.value.forEach((portfolio) => {
-
+    portfolio.companyIds.add(props.companyId);
+    apiClientProvider.apiClients.portfolioController.replacePortfolio(
+        portfolio.portfolioId,
+        {
+          portfolioName: portfolio.portfolioName,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          companyIds: portfolio.companyIds as unknown as Set<string>
+        }
+    )
   });
+
 }
 </script>
 
