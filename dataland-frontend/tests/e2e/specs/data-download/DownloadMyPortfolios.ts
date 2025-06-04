@@ -145,8 +145,6 @@ function getFileExtension(fileType: string): string {
 }
 
 before(function () {
-  const fixedDate = new Date('2023-01-01T00:00:00Z');
-  cy.clock(fixedDate.getTime(), ['Date']);
   cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then((jsonContent) => {
     const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyNonFinancialsData>>;
     euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(

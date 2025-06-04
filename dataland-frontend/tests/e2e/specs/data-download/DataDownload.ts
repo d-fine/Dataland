@@ -72,10 +72,43 @@ describeIf(
         });
     }
 
-    before(() => {
-      const fixedDate = new Date('2021-01-01T00:00:00Z');
-      cy.clock(fixedDate.getTime(), ['Date']);
+    /**
+     * Verifies that a downloaded file with a given prefix and extension exists,
+     * has an appropriate file size, and deletes it afterwards to avoid clutter.
+     *
+     * @param partialFileNamePrefix - The beginning of the expected filename (e.g. 'data-export-FrameworkName').
+     * @param fileExtension - The file extension to match (e.g. 'csv', 'xlsx', 'json').
+     */
+    function verifyDownloadedFile(partialFileNamePrefix: string, fileExtension: string): void {
+      const downloadsFolder = Cypress.config('downloadsFolder');
 
+      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
+      cy.task('findFileByPrefix', {
+        folder: downloadsFolder,
+        prefix: partialFileNamePrefix,
+        extension: fileExtension,
+      }).then((filePath) => {
+        const filePathStr = filePath as string;
+        expect(filePathStr).to.exist;
+        checkThatFileExists(filePathStr);
+        checkFileSizeAndDeleteAfterwards(filePathStr);
+      });
+    }
+
+    /**
+     * Returns the human-readable label for the currently selected framework data type.
+     *
+     * @returns label corresponding to the current `dataType`.
+     */
+    function getFrameworkLabel(): string {
+      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((f) => ({
+        value: f,
+        label: humanizeStringOrNumber(f),
+      }));
+      return availableFrameworks.find((f) => f.value === dataType)?.label ?? dataType;
+    }
+
+    before(() => {
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then((jsonContent) => {
         const preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
@@ -104,32 +137,10 @@ describeIf(
       cy.ensureLoggedIn(reader_name, reader_pw);
     });
 
-    it('Download data as csv file, check for appropriate size and delete it afterwards', () => {
-      const exportFileType = ExportFileType.Csv;
-      const fileTypeInformation = ExportFileTypeInformation.CSV;
-
-      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
-        value: framework,
-        label: humanizeStringOrNumber(framework),
-      }));
-      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
-
-      visitPageAndClickDownloadButton(exportFileType.toString());
-
-      const partialFileNamePrefix = `data-export-${frameworkLabel}`;
-      const fileExtension = fileTypeInformation.fileExtension;
-
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
-      cy.task('findFileByPrefix', {
-        folder: Cypress.config('downloadsFolder'),
-        prefix: partialFileNamePrefix,
-        extension: fileExtension,
-      }).then((filePath) => {
-        const filePathStr = filePath as string;
-        expect(filePathStr).to.exist;
-        checkThatFileExists(filePathStr);
-        checkFileSizeAndDeleteAfterwards(filePathStr);
-      });
+    it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
+      const frameworkLabel = getFrameworkLabel();
+      visitPageAndClickDownloadButton(ExportFileType.Excel.toString());
+      verifyDownloadedFile(`data-export-${frameworkLabel}`, ExportFileTypeInformation.EXCEL.fileExtension);
     });
 
     it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
@@ -140,7 +151,7 @@ describeIf(
         value: framework,
         label: humanizeStringOrNumber(framework),
       }));
-      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
+      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label ?? dataType;
 
       visitPageAndClickDownloadButton(exportFileType.toString());
 
@@ -160,30 +171,9 @@ describeIf(
     });
 
     it('Download data as json file, check for appropriate size and delete it afterwards', () => {
-      const exportFileType = ExportFileType.Json;
-      const fileTypeInformation = ExportFileTypeInformation.JSON;
-
-      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
-        value: framework,
-        label: humanizeStringOrNumber(framework),
-      }));
-      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
-
-      visitPageAndClickDownloadButton(exportFileType.toString());
-
-      const partialFileNamePrefix = `data-export-${frameworkLabel}`;
-      const fileExtension = fileTypeInformation.fileExtension;
-
-      cy.task('findFileByPrefix', {
-        folder: Cypress.config('downloadsFolder'),
-        prefix: partialFileNamePrefix,
-        extension: fileExtension,
-      }).then((filePath) => {
-        const filePathStr = filePath as string;
-        expect(filePathStr).to.exist;
-        checkThatFileExists(filePathStr);
-        checkFileSizeAndDeleteAfterwards(filePathStr);
-      });
+      const frameworkLabel = getFrameworkLabel();
+      visitPageAndClickDownloadButton(ExportFileType.Json.toString());
+      verifyDownloadedFile(`data-export-${frameworkLabel}`, ExportFileTypeInformation.JSON.fileExtension);
     });
   }
 );
