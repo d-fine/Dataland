@@ -267,7 +267,19 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
         ): Pair<List<Map<String, String>>, Set<String>> {
             val csvData =
-                getCsvData(nodes, keepValueFieldsOnly)
+                nodes.map { node ->
+                    val nonEmptyNodes =
+                        JsonUtils
+                            .getNonEmptyLeafNodesAsMapping(node)
+                            .filterKeys { !isReferencedReportsField(it) }
+                            .toMutableMap()
+
+                    if (keepValueFieldsOnly) {
+                        processQualityFields(nonEmptyNodes)
+                    } else {
+                        nonEmptyNodes
+                    }
+                }
             val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
 
             csvData.forEach { dataSet ->
@@ -278,24 +290,6 @@ class DataExportService
 
             return Pair(csvData, nonEmptyFields)
         }
-
-        private fun getCsvData(
-            nodes: List<JsonNode>,
-            keepValueFieldsOnly: Boolean,
-        ): List<MutableMap<String, String>> =
-            nodes.map { node ->
-                val nonEmptyNodes =
-                    JsonUtils
-                        .getNonEmptyLeafNodesAsMapping(node)
-                        .filterKeys { !isReferencedReportsField(it) }
-                        .toMutableMap()
-
-                if (keepValueFieldsOnly) {
-                    processQualityFields(nonEmptyNodes)
-                } else {
-                    nonEmptyNodes
-                }
-            }
 
         /**
          * Process a map of nodes to keep value fields and convert quality fields to value fields
