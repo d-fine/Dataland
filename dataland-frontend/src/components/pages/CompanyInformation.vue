@@ -91,12 +91,19 @@ import SingleDataRequestButton from '@/components/resources/companyCockpit/Singl
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
+import PrimeButton from 'primevue/button';
 import router from '@/router';
 import AddCompanyToPortfoliosModal from '@/components/general/AddCompanyToPortfoliosModal.vue';
 
 export default defineComponent({
   name: 'CompanyInformation',
-  components: { AddCompanyToPortfoliosModal, ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
+  components: {
+    AddCompanyToPortfoliosModal,
+    ClaimOwnershipDialog,
+    ContextMenuButton,
+    SingleDataRequestButton,
+    PrimeButton,
+  },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),

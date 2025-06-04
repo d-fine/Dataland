@@ -27,6 +27,7 @@ import { defineEmits, inject, ref, watch } from 'vue';
 import { type BasePortfolio } from '@clients/userservice';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import MultiSelect from 'primevue/multiselect';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import type Keycloak from 'keycloak-js';
