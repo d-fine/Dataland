@@ -4,6 +4,7 @@ import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -104,19 +105,27 @@ class PortfolioService
         @Transactional
         fun replacePortfolio(
             portfolioId: String,
-            portfolio: BasePortfolio,
+            portfolioUpload: PortfolioUpload,
             correlationId: String,
         ): BasePortfolio {
+            val userId = DatalandAuthentication.fromContext().userId
             logger.info(
-                "Replace portfolio with portfolioId: $portfolioId for user with userId: ${portfolio.userId}." +
+                "Replace portfolio with portfolioId: $portfolioId for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
             val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
+
             return portfolioRepository
-                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
-                .toBasePortfolio()
+                .save(
+                    BasePortfolio
+                        .invariantMonitoring(
+                            originalPortfolio.toBasePortfolio(),
+                            portfolioId,
+                            portfolioUpload,
+                        ).toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp),
+                ).toBasePortfolio()
         }
 
         /**

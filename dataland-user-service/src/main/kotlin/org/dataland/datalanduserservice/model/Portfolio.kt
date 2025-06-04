@@ -6,7 +6,7 @@ package org.dataland.datalanduserservice.model
 interface Portfolio {
     val portfolioName: String
     val companyIds: Set<String>
-    val isMonitored: Boolean
+    val isMonitored: Boolean?
     val startingMonitoringPeriod: String?
     val monitoredFrameworks: Set<String>?
 }

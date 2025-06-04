@@ -24,7 +24,7 @@ data class BasePortfolio(
     @field:JsonProperty(required = true)
     override val companyIds: Set<String>,
     @field:JsonProperty(required = false)
-    override val isMonitored: Boolean,
+    override val isMonitored: Boolean?,
     @field:JsonProperty(required = false)
     override val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
@@ -41,6 +41,25 @@ data class BasePortfolio(
         startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
+
+    companion object {
+        fun invariantMonitoring(
+            originalPortfolio: BasePortfolio,
+            portfolioId: String,
+            portfolioUpload: PortfolioUpload,
+        ): BasePortfolio =
+            BasePortfolio(
+                portfolioId = portfolioId,
+                portfolioName = portfolioUpload.portfolioName,
+                userId = DatalandAuthentication.fromContext().userId,
+                creationTimestamp = originalPortfolio.creationTimestamp,
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = portfolioUpload.companyIds,
+                isMonitored = portfolioUpload.isMonitored ?: originalPortfolio.isMonitored,
+                startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod ?: originalPortfolio.startingMonitoringPeriod,
+                monitoredFrameworks = portfolioUpload.monitoredFrameworks ?: originalPortfolio.monitoredFrameworks,
+            )
+    }
 
     /**
      * Creates portfolio entity object from BasePortfolio.
