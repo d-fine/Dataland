@@ -30,9 +30,10 @@ class CompanyUploader(
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     companion object {
-        const val MAX_RETRIES = 3
+        const val MAX_RETRIES = 5
+        const val WAIT_DURATION: Long = 1
         const val UNAUTHORIZED_CODE = 401
-        const val LIMIT_FOR_PERIOD = 1000
+        const val LIMIT_FOR_PERIOD = 2
         const val LIMIT_REFRESH_DURATION: Long = 1
         const val TIMEOUT_DURATION: Long = 500
         const val CLIENT_EXCEPTION_STATUS_CODE = 400
@@ -49,7 +50,7 @@ class CompanyUploader(
             RetryConfig
                 .custom<Any>()
                 .maxAttempts(MAX_RETRIES)
-                .waitDuration(Duration.ofSeconds(1))
+                .waitDuration(Duration.ofSeconds(WAIT_DURATION))
                 .retryExceptions(
                     SocketTimeoutException::class.java,
                     ClientException::class.java,
@@ -99,16 +100,8 @@ class CompanyUploader(
             )
 
         exceptionsToTest.forEach { exception ->
-            try {
-                executeWithRetryAndThrottling {
-                    throw exception
-                }
-            } catch (e: SocketTimeoutException) {
-                logger.warn("Caught eeeexception after retries: ${e::class.simpleName} - ${e.message}")
-            } catch (e: ClientException) {
-                logger.warn("Caught eeeexception after retries: ${e::class.simpleName} - ${e.message}")
-            } catch (e: ServerException) {
-                logger.warn("Caught eeeexception after retries: ${e::class.simpleName} - ${e.message}")
+            executeWithRetryAndThrottling {
+                throw exception
             }
         }
     }
@@ -148,9 +141,12 @@ class CompanyUploader(
     }
 
     private fun executeWithRetryAndThrottling(task: () -> Unit) {
-        val decoratedTask = Retry.decorateRunnable(retry, task)
+        val decoratedTask =
+            Retry.decorateCheckedRunnable(retry) {
+                waitForPermission(rateLimiter)
+                task()
+            }
         try {
-            waitForPermission(rateLimiter)
             decoratedTask.run()
             logger.info("Function executed successfully.")
         } catch (exception: ClientException) {
