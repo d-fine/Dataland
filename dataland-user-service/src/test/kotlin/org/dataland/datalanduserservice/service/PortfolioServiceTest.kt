@@ -167,6 +167,7 @@ class PortfolioServiceTest {
         assertEquals(expectedPortfolioNames, portfolioNames)
     }
 
+    @Suppress("complexity:LongParameterList")
     /**
      * Used to create dummy portfolios efficiently
      */
@@ -175,12 +176,19 @@ class PortfolioServiceTest {
         portfolioName: String,
         userId: String,
         companyIds: MutableSet<String>? = null,
-    ) = BasePortfolio(
-        portfolioId = portfolioId ?: UUID.randomUUID().toString(),
-        portfolioName = portfolioName,
-        userId = userId,
-        creationTimestamp = Instant.now().toEpochMilli(),
-        lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
-    )
+        isMonitored: Boolean = false,
+        startingMonitoringPeriod: String? = null,
+        monitoredFrameworks: MutableSet<String>? = null,
+    ) =
+        BasePortfolio(
+            portfolioId = portfolioId ?: UUID.randomUUID().toString(),
+            portfolioName = portfolioName,
+            userId = userId,
+            creationTimestamp = Instant.now().toEpochMilli(),
+            lastUpdateTimestamp = Instant.now().toEpochMilli(),
+            companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
+            isMonitored = isMonitored,
+            startingMonitoringPeriod = startingMonitoringPeriod,
+            monitoredFrameworks = monitoredFrameworks ?: mutableSetOf("sfdr"),
+        )
 }

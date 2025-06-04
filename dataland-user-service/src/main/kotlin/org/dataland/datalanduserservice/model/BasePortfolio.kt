@@ -58,7 +58,7 @@ data class BasePortfolio(
             creationTimestamp = creationTimestamp ?: this.creationTimestamp,
             lastUpdateTimestamp = this.lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
-            isMonitored = this.monitoredFrameworks != null,
+            isMonitored = this.isMonitored,
             startingMonitoringPeriod = this.startingMonitoringPeriod,
             monitoredFrameworks = this.monitoredFrameworks?.toMutableSet() ?: mutableSetOf(),
         )

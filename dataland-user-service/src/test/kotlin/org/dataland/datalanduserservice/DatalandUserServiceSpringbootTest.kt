@@ -61,17 +61,26 @@ class DatalandUserServiceSpringbootTest
         private val validCompanyId1 = "valid-company-id-1"
         private val validCompanyId2 = "valid-company-id-2"
         private val invalidCompanyId = "invalid-company-id"
+        private val isMonitored = true
+        private val dummyStartingMonitoringPeriod = "2023"
+        private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "taxo")
 
         private val dummyPortfolioUpload1 =
             PortfolioUpload(
                 portfolioName = "Test Portfolio",
                 companyIds = setOf(validCompanyId1, validCompanyId2),
+                isMonitored,
+                dummyStartingMonitoringPeriod,
+                dummyMonitoredFrameworks,
             )
 
         private val dummyPortfolioUpload2 =
             PortfolioUpload(
                 portfolioName = "Second Test Portfolio",
                 companyIds = setOf(validCompanyId1),
+                isMonitored,
+                dummyStartingMonitoringPeriod,
+                dummyMonitoredFrameworks,
             )
 
         @BeforeEach

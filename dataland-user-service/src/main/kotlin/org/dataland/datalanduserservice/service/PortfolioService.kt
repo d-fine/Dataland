@@ -141,6 +141,9 @@ class PortfolioService
                 BasePortfolioName(it.portfolioId, it.portfolioName)
             }
 
+        /**
+         * Patches the monitoring of an existing portfolio.
+         */
         @Transactional
         fun patchMonitoring(
             portfolioId: String,
