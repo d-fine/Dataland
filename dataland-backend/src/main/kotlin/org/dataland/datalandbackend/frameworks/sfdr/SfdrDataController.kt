@@ -70,7 +70,7 @@ class SfdrDataController
             includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanySfdrData")
         override fun getFrameworkDatasetsForCompany(

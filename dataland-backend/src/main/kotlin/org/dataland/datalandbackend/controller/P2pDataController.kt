@@ -74,13 +74,14 @@ class P2pDataController
             reportingPeriods: List<String>,
             companyIds: List<String>,
             exportFileType: ExportFileType,
-            includeDataMetaInformation: Boolean,
+            keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super.exportCompanyAssociatedDataByDimensions(
                 reportingPeriods,
                 companyIds,
                 exportFileType,
-                includeDataMetaInformation,
+                keepValueFieldsOnly,
+                includeAliases,
             )
     }

@@ -72,7 +72,7 @@ class AdditionalCompanyInformationDataController
             includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
         override fun getFrameworkDatasetsForCompany(
