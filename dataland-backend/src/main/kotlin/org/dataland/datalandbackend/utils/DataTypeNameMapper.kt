@@ -9,12 +9,12 @@ object DataTypeNameMapper {
             "sfdr" to "SFDR",
             "eutaxonomy-financials" to "EU Taxonomy Financials",
             "eutaxonomy-non-financials" to "EU Taxonomy Non-Financials",
-            "nuclear-and-gas" to "EU Taxonomy Non-Financials Nuclear and Gas",
+            "nuclear-and-gas" to "EU Taxonomy Nuclear and Gas",
             "p2p" to "WWF Pathways to Paris",
             "lksg" to "LkSG",
             "additional-company-information" to "Additional Company Information",
             "vsme" to "VSME",
-            "esg-datenkatalog" to "Esg Datenkatalog für Großunternehmen",
+            "esg-datenkatalog" to "ESG Datenkatalog für Großunternehmen",
             "heimathafen" to "Heimathafen",
         )
 

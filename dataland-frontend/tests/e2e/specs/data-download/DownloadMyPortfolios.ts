@@ -106,7 +106,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadButton"]').click();
 
-    cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional warten
+    cy.wait(Cypress.env('medium_timeout_in_ms') as number);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
