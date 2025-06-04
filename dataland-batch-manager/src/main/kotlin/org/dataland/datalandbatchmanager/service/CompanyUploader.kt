@@ -7,7 +7,6 @@ import io.github.resilience4j.ratelimiter.RateLimiterConfig
 import io.github.resilience4j.ratelimiter.RequestNotPermitted
 import io.github.resilience4j.retry.Retry
 import io.github.resilience4j.retry.RetryConfig
-import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -31,14 +30,12 @@ class CompanyUploader(
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     companion object {
-        const val MAX_RETRIES = 5
-        const val WAIT_DURATION: Long = 1
+        const val MAX_RETRIES = 50
+        const val WAIT_DURATION: Long = 120
         const val UNAUTHORIZED_CODE = 401
-        const val LIMIT_FOR_PERIOD = 750
+        const val LIMIT_FOR_PERIOD = 500
         const val LIMIT_REFRESH_DURATION: Long = 1
         const val TIMEOUT_DURATION: Long = 60
-        const val CLIENT_EXCEPTION_STATUS_CODE = 400
-        const val SERVER_EXCEPTION_STATUS_CODE = 500
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -74,37 +71,6 @@ class CompanyUploader(
                 .build()
 
         rateLimiter = RateLimiter.of("testLimiter", rateLimiterConfig)
-    }
-
-    /**
-     * Tests the behavior of the `executeWithRetryAndThrottling` method by simulating various exceptions
-     * and verifying that the appropriate handling and logging mechanisms are invoked.
-     *
-     * This method simulates the following exceptions:
-     * - `SocketTimeoutException`: Mimics a network socket timeout scenario.
-     * - `ClientException`: Represents a scenario where a client-side error occurs.
-     * - `ServerException`: Mimics a server error scenario.
-     *
-     * Each exception is thrown during the execution of `executeWithRetryAndThrottling` to validate
-     * that retries and throttling are handled correctly. The method logs relevant information
-     * about the exception that was caught after exhausting retries.
-     *
-     * Execution occurs during the post-construction phase as denoted by the `@PostConstruct` annotation.
-     */
-    @PostConstruct
-    fun testExecuteWithRetryAndThrottlingLogging() {
-        val exceptionsToTest =
-            listOf(
-                SocketTimeoutException("Simulated timeout") as Throwable,
-                ClientException("Simulated client error", CLIENT_EXCEPTION_STATUS_CODE) as Throwable,
-                ServerException("Simulated server error", SERVER_EXCEPTION_STATUS_CODE) as Throwable,
-            )
-
-        exceptionsToTest.forEach { exception ->
-            executeWithRetryAndThrottling {
-                throw exception
-            }
-        }
     }
 
     @Suppress("ReturnCount")
