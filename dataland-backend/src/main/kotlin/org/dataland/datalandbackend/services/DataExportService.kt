@@ -61,8 +61,8 @@ class DataExportService
                 throw DownloadDataNotFoundApiException()
             }
             return when (exportFileType) {
-                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly)
-                ExportFileType.EXCEL -> buildExcelStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly)
+                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly, includeAliases)
+                ExportFileType.EXCEL -> buildExcelStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly, includeAliases)
                 ExportFileType.JSON -> buildJsonStreamFromPortfolioAsJsonData(jsonData)
             }
         }
@@ -196,6 +196,7 @@ class DataExportService
                 } else {
                     emptyMap()
                 }
+            println(aliasExportMap)
 
             val hardcodedMap = getHardcodedAliasMapping(dataType) ?: emptyMap()
 
@@ -235,8 +236,13 @@ class DataExportService
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema, readableHeaders) = prepareExportData(portfolioExportRows, dataType, keepValueFieldsOnly)
+            val (csvData, csvSchema, readableHeaders) =
+                prepareExportData(
+                    portfolioExportRows, dataType,
+                    keepValueFieldsOnly, includeAliases,
+                )
 
             val outputStream = ByteArrayOutputStream()
             val csvMapper = CsvMapper()
@@ -270,8 +276,13 @@ class DataExportService
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema, readableHeaders) = prepareExportData(portfolioExportRows, dataType, keepValueFieldsOnly)
+            val (csvData, csvSchema, readableHeaders) =
+                prepareExportData(
+                    portfolioExportRows, dataType,
+                    keepValueFieldsOnly, includeAliases,
+                )
             val excelHeaderFields =
                 csvSchema.columnNames
                     .filter { it.startsWith("data.") }
