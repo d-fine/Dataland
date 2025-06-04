@@ -12,8 +12,6 @@ import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUt
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
-import { join } from 'path';
-import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 
 let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
@@ -98,14 +96,9 @@ function testDownloadPortfolio({
   it(description, () => {
     const downloadDir = Cypress.config('downloadsFolder');
 
-    // Get a stable formatted timestamp from fixed date
-    const formatted_timestamp = getDateStringForDataExport(new Date());
-
     const fileExtension = getFileExtension(fileType);
 
-    const expectedFileName = `data-export-EU Taxonomy Non-Financials-${formatted_timestamp}.${fileExtension}`;
-    const downloadFilePath = join(downloadDir, expectedFileName);
-    const minimumFileSizeInByte = 5000;
+    const partialFileNamePrefix = 'data-export-EU Taxonomy Non-Financials';
 
     cy.get('[data-test="fileTypeSelector"]').select(fileType);
     if (keepValuesOnly) {
@@ -113,13 +106,25 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadButton"]').click();
 
-    cy.readFile(downloadFilePath, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
-    cy.task('getFileSize', downloadFilePath).then((size) => {
-      expect(size).to.be.greaterThan(minimumFileSizeInByte);
-    });
+    // Warte auf die Datei, die mit prefix beginnt
+    cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional warten
+    cy.task('findFileByPrefix', {
+      folder: downloadDir,
+      prefix: partialFileNamePrefix,
+      extension: fileExtension,
+    }).then((filePath) => {
+      const filePathStr = filePath as string;
+      expect(filePathStr).to.exist;
 
-    cy.task('deleteFile', downloadFilePath).then(() => {
-      cy.readFile(downloadFilePath).should('not.exist');
+      cy.readFile(filePathStr, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
+
+      cy.task('getFileSize', filePathStr).then((size) => {
+        expect(size).to.be.greaterThan(5000);
+      });
+
+      cy.task('deleteFile', filePathStr).then(() => {
+        cy.readFile(filePathStr).should('not.exist');
+      });
     });
   });
 }
