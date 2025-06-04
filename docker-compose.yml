@@ -572,7 +572,8 @@ services:
     depends_on:
       - email-service-db
     environment:
-      <<: [ *mailjet-api-id-and-secret, *rabbit-mq-user-and-pass ]
+      <<: *mailjet-api-id-and-secret
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
