@@ -119,11 +119,11 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 * * * * *")
+        @Scheduled(cron = "0 0 3 * * SUN")
         private fun processUpdates() {
             logger.info("Running scheduled update of GLEIF data.")
             waitForBackend()
-            gleifGoldenCopyIngestor.prepareGleifDeltaFile(false)
+            gleifGoldenCopyIngestor.prepareGleifDeltaFile()
             gleifGoldenCopyIngestor.processIsinMappingFile()
             gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
         }
