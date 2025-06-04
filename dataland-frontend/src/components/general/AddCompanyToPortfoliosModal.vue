@@ -12,7 +12,7 @@
       @after-hide="closeDialog"
   >
     <MultiSelect
-        v-model="selectedPortfolioNames"
+        v-model="selectedPortfolios"
         :options="allUserPortfolios"
         optionLabel="portfolioName"
         placeholder="Select portfolios"
@@ -45,7 +45,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const isModalVisible = ref<boolean>(false);
 let allUserPortfolios: ReducedBasePortfolio[] = [];
-const selectedPortfolioNames = ref<string[]>([]);
+const selectedPortfolios = ref<ReducedBasePortfolio[]>([]);
 
 const props = defineProps({
   companyId: {
@@ -87,28 +87,30 @@ const fetchUserPortfolios = async (): Promise<void> => {
 };
 
 const handleCompanyAddition = (): void => {
-  if (selectedPortfolioNames.value.length === 0) return;
-  selectedPortfolioNames.value.forEach(async (portfolioName) => {
-    console.log("portfolioName: " + JSON.stringify(portfolioName) + "!!!!!!!");
+  if (selectedPortfolios.value.length === 0) return;
+  selectedPortfolios.value.forEach(async (selectedPortfolio) => {
+    console.log("selectedPortfolio: " + JSON.stringify(selectedPortfolio) + "!!!!!!!");
+    /*
     const reducedBasePortfolio = allUserPortfolios.find(
         (reducedBasePortfolio) => {
           console.log("reducedBasePortfolio.portfolioName: " + reducedBasePortfolio.portfolioName + "!!!!!!!")
-          return reducedBasePortfolio.portfolioName === portfolioName
+          return reducedBasePortfolio.portfolioName === selectedPortfolio.portfolioName
         }
     );
+     */
     await apiClientProvider.apiClients.portfolioController.replacePortfolio(
-        reducedBasePortfolio!!.portfolioId,
+        selectedPortfolio.portfolioId,
         {
-          portfolioName: portfolioName,
+          portfolioName: selectedPortfolio.portfolioName,
           // as unknown as Set<string> cast required to ensure proper json is created
-          companyIds: [...reducedBasePortfolio!!.companyIds, props.companyId] as unknown as Set<string>,
+          companyIds: [...selectedPortfolio.companyIds, props.companyId] as unknown as Set<string>,
         });
   });
   closeDialog();
 };
 
 const closeDialog = (): void => {
-  selectedPortfolioNames.value = [];
+  selectedPortfolios.value = [];
   isModalVisible.value = false;
   emit('closePortfolioModal');
 };
