@@ -341,29 +341,27 @@ class DataExportService
             val filteredNodes = mutableMapOf<String, String>()
             val separator = JsonUtils.getPathSeparator()
 
-            // First pass: identify quality fields that don't have corresponding value fields
-            // and transform them into value fields
-            nodes.keys.toList().forEach { field ->
+            val keys = nodes.keys.toList()
+            for (field in keys) {
+                val value = nodes[field] ?: continue
+
                 when {
                     field.endsWith("${separator}quality") -> {
-                        val basePath = field.substringBeforeLast("${separator}quality")
+                        val basePath = field.removeSuffix("${separator}quality")
                         val valuePath = "${basePath}${separator}value"
                         if (valuePath !in nodes) {
-                            // No value exists, use quality instead but place it in a value field
-                            filteredNodes[valuePath] = nodes[field]!!
+                            filteredNodes[valuePath] = value
                         }
-                        // Don't keep the original quality field
                     }
                     field.endsWith("${separator}value") -> {
-                        // Always keep value fields
-                        filteredNodes[field] = nodes[field]!!
+                        filteredNodes[field] = value
                     }
                     !isMetaDataField(field) -> {
-                        // Keep only non-metadata fields
-                        filteredNodes[field] = nodes[field]!!
+                        filteredNodes[field] = value
                     }
                 }
             }
+
             nodes.clear()
             nodes.putAll(filteredNodes)
             return nodes
