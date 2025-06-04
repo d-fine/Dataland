@@ -18,7 +18,9 @@
       placeholder="Select portfolios"
       class="w-full md:w-80"
     />
-    <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition"> </PrimeButton>
+    <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
+      <span>Add company to portfolio(s)</span>
+    </PrimeButton>
   </PrimeDialog>
 </template>
 
@@ -71,12 +73,11 @@ const fetchUserPortfolios = async (): Promise<void> => {
 
 const handleCompanyAddition = (): void => {
   if (selectedPortfolios.value.length === 0) return;
-  selectedPortfolios.value.forEach((portfolio) => {
-    portfolio.companyIds.add(props.companyId);
-    void apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolio.portfolioId, {
+  selectedPortfolios.value.forEach(async (portfolio) => {
+    await apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolio.portfolioId, {
       portfolioName: portfolio.portfolioName,
       // as unknown as Set<string> cast required to ensure proper json is created
-      companyIds: portfolio.companyIds as unknown as Set<string>,
+      companyIds: new Set([...portfolio.companyIds, props.companyId]) as unknown as Set<string>,
     });
   });
   closeDialog();
