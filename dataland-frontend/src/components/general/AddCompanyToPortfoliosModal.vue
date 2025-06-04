@@ -89,8 +89,12 @@ const fetchUserPortfolios = async (): Promise<void> => {
 const handleCompanyAddition = (): void => {
   if (selectedPortfolioNames.value.length === 0) return;
   selectedPortfolioNames.value.forEach(async (portfolioName) => {
+    console.log("portfolioName: " + JSON.stringify(portfolioName) + "!!!!!!!");
     const reducedBasePortfolio = allUserPortfolios.find(
-        (reducedBasePortfolio) => reducedBasePortfolio.portfolioName === portfolioName
+        (reducedBasePortfolio) => {
+          console.log("reducedBasePortfolio.portfolioName: " + reducedBasePortfolio.portfolioName + "!!!!!!!")
+          return reducedBasePortfolio.portfolioName === portfolioName
+        }
     );
     await apiClientProvider.apiClients.portfolioController.replacePortfolio(
         reducedBasePortfolio!!.portfolioId,
