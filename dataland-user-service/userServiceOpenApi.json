@@ -663,7 +663,6 @@
       "PortfolioUpload": {
         "required": [
           "companyIds",
-          "isMonitored",
           "portfolioName"
         ],
         "type": "object",
@@ -697,7 +696,6 @@
         "required": [
           "companyIds",
           "creationTimestamp",
-          "isMonitored",
           "lastUpdateTimestamp",
           "portfolioId",
           "portfolioName",
