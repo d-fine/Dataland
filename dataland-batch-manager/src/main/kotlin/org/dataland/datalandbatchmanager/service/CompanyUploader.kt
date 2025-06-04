@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.resilience4j.ratelimiter.RateLimiter
 import io.github.resilience4j.ratelimiter.RateLimiter.waitForPermission
 import io.github.resilience4j.ratelimiter.RateLimiterConfig
+import io.github.resilience4j.ratelimiter.RequestNotPermitted
 import io.github.resilience4j.retry.Retry
 import io.github.resilience4j.retry.RetryConfig
 import jakarta.annotation.PostConstruct
@@ -33,9 +34,9 @@ class CompanyUploader(
         const val MAX_RETRIES = 5
         const val WAIT_DURATION: Long = 1
         const val UNAUTHORIZED_CODE = 401
-        const val LIMIT_FOR_PERIOD = 2
+        const val LIMIT_FOR_PERIOD = 100
         const val LIMIT_REFRESH_DURATION: Long = 1
-        const val TIMEOUT_DURATION: Long = 500
+        const val TIMEOUT_DURATION: Long = 60
         const val CLIENT_EXCEPTION_STATUS_CODE = 400
         const val SERVER_EXCEPTION_STATUS_CODE = 500
     }
@@ -69,10 +70,10 @@ class CompanyUploader(
                 .custom()
                 .limitForPeriod(LIMIT_FOR_PERIOD)
                 .limitRefreshPeriod(Duration.ofSeconds(LIMIT_REFRESH_DURATION))
-                .timeoutDuration(Duration.ofMillis(TIMEOUT_DURATION))
+                .timeoutDuration(Duration.ofMinutes(TIMEOUT_DURATION))
                 .build()
 
-        rateLimiter = RateLimiter.of("apiRateLimiter", rateLimiterConfig)
+        rateLimiter = RateLimiter.of("testLimiter", rateLimiterConfig)
     }
 
     /**
@@ -155,6 +156,8 @@ class CompanyUploader(
             logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
         } catch (exception: ServerException) {
             logger.error("Unexpected server exception. Response was: ${exception.message}.")
+        } catch (exception: RequestNotPermitted) {
+            logger.error("Rate limit exceeded: ${exception.message}.")
         }
     }
 
