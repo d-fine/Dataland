@@ -104,7 +104,7 @@ interface DataApi<T> {
      * @param reportingPeriods specifies the reporting periods
      * @param companyIds specifies the companies
      * @param exportFileType specifies the file type to export to
-     * @param includeDataMetaInformation specifies whether to include metadata in the export
+     * @param keepValueFieldsOnly specifies whether to exclude metadata from the export
      * @return JSON of companyAssociatedData in the form of InputStreamResource
      */
     @Operation(
