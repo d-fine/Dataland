@@ -71,7 +71,7 @@ export function getHyphenatedDate(date: Date): string {
  * @param date
  */
 export function getDateStringForDataExport(date: Date): string {
-  return `${getHyphenatedDate(date)}-${padStart(date.getHours())}${padStart(date.getMinutes())}`;
+  return `${getHyphenatedDate(date)}-${padStart(date.getHours())}${padStart(date.getMinutes())}${padStart(date.getSeconds())}`;
 }
 
 /**

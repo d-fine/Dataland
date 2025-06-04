@@ -301,27 +301,22 @@ class DataExportService
             val filteredNodes = mutableMapOf<String, String>()
             val separator = JsonUtils.getPathSeparator()
 
-            nodes.keys.toList().forEach { field ->
-                if (field.endsWith("${separator}quality")) {
-                    val basePath = field.substringBeforeLast("${separator}quality")
-                    val valuePath = "${basePath}${separator}value"
-                    if (valuePath !in nodes) {
-                        nodes[field]?.let { qualityValue ->
-                            filteredNodes[valuePath] = qualityValue
+            val keys = nodes.keys.toList()
+            for (field in keys) {
+                val value = nodes[field] ?: continue
+
+                when {
+                    field.endsWith("${separator}quality") -> {
+                        val basePath = field.removeSuffix("${separator}quality")
+                        val valuePath = "${basePath}${separator}value"
+                        if (valuePath !in nodes) {
+                            filteredNodes[valuePath] = value
                         }
                     }
-                    return@forEach // go to next iteration
-                }
-
-                if (field.endsWith("${separator}value")) {
-                    nodes[field]?.let { value ->
+                    field.endsWith("${separator}value") -> {
                         filteredNodes[field] = value
                     }
-                    return@forEach
-                }
-
-                if (!isMetaDataField(field)) {
-                    nodes[field]?.let { value ->
+                    !isMetaDataField(field) -> {
                         filteredNodes[field] = value
                     }
                 }

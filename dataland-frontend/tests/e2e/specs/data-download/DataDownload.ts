@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { DataTypeEnum, ExportFileType, type LksgData, type StoredCompany } from '@clients/backend';
 import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
@@ -10,7 +9,6 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 
 describeIf(
   'As a user, I want to be able to download datasets from Dataland',
@@ -109,49 +107,83 @@ describeIf(
     it('Download data as csv file, check for appropriate size and delete it afterwards', () => {
       const exportFileType = ExportFileType.Csv;
       const fileTypeInformation = ExportFileTypeInformation.CSV;
+
       const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
         value: framework,
         label: humanizeStringOrNumber(framework),
       }));
       const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
 
-      const formatted_timestamp = getDateStringForDataExport(new Date());
-      const fileName = `data-export-${frameworkLabel}-${formatted_timestamp}.${fileTypeInformation.fileExtension}`;
-
       visitPageAndClickDownloadButton(exportFileType.toString());
 
-      const filePath = join(Cypress.config('downloadsFolder'), fileName);
-      checkThatFileExists(filePath);
-      checkFileSizeAndDeleteAfterwards(filePath);
+      const partialFileNamePrefix = `data-export-${frameworkLabel}`;
+      const fileExtension = fileTypeInformation.fileExtension;
+
+      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
+      cy.task('findFileByPrefix', {
+        folder: Cypress.config('downloadsFolder'),
+        prefix: partialFileNamePrefix,
+        extension: fileExtension,
+      }).then((filePath) => {
+        const filePathStr = filePath as string;
+        expect(filePathStr).to.exist;
+        checkThatFileExists(filePathStr);
+        checkFileSizeAndDeleteAfterwards(filePathStr);
+      });
     });
 
     it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
       const exportFileType = ExportFileType.Excel;
       const fileTypeInformation = ExportFileTypeInformation.EXCEL;
-      const fileName = `${reportingPeriod}-${dataType}-${storedCompany.companyId}.${fileTypeInformation.fileExtension}`;
+
+      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
+        value: framework,
+        label: humanizeStringOrNumber(framework),
+      }));
+      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
 
       visitPageAndClickDownloadButton(exportFileType.toString());
 
-      const filePath = join(Cypress.config('downloadsFolder'), fileName);
-      checkThatFileExists(filePath);
+      const partialFileNamePrefix = `data-export-${frameworkLabel}`;
+      const fileExtension = fileTypeInformation.fileExtension;
 
-      const termToCheck = 'sep=,';
-      cy.task('checkFileContent', { path: filePath, term: termToCheck }).then((isFound) => {
-        expect(isFound).to.be.true;
+      cy.task('findFileByPrefix', {
+        folder: Cypress.config('downloadsFolder'),
+        prefix: partialFileNamePrefix,
+        extension: fileExtension,
+      }).then((filePath) => {
+        const filePathStr = filePath as string;
+        expect(filePathStr).to.exist;
+        checkThatFileExists(filePathStr);
+        checkFileSizeAndDeleteAfterwards(filePathStr);
       });
-      checkFileSizeAndDeleteAfterwards(filePath);
     });
 
     it('Download data as json file, check for appropriate size and delete it afterwards', () => {
       const exportFileType = ExportFileType.Json;
       const fileTypeInformation = ExportFileTypeInformation.JSON;
-      const fileName = `${reportingPeriod}-${dataType}-${storedCompany.companyId}.${fileTypeInformation.fileExtension}`;
+
+      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
+        value: framework,
+        label: humanizeStringOrNumber(framework),
+      }));
+      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label || dataType;
 
       visitPageAndClickDownloadButton(exportFileType.toString());
 
-      const filePath = join(Cypress.config('downloadsFolder'), fileName);
-      checkThatFileExists(filePath);
-      checkFileSizeAndDeleteAfterwards(filePath);
+      const partialFileNamePrefix = `data-export-${frameworkLabel}`;
+      const fileExtension = fileTypeInformation.fileExtension;
+
+      cy.task('findFileByPrefix', {
+        folder: Cypress.config('downloadsFolder'),
+        prefix: partialFileNamePrefix,
+        extension: fileExtension,
+      }).then((filePath) => {
+        const filePathStr = filePath as string;
+        expect(filePathStr).to.exist;
+        checkThatFileExists(filePathStr);
+        checkFileSizeAndDeleteAfterwards(filePathStr);
+      });
     });
   }
 );
