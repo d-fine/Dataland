@@ -34,12 +34,18 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import type Keycloak from 'keycloak-js';
 
+interface ReducedBasePortfolio {
+  portfolioId: string,
+  portfolioName: string,
+  companyIds: string[]
+}
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isModalVisible = ref<boolean>(false);
-const allUserPortfolios = ref<BasePortfolio[]>([]);
-const selectedPortfolios = ref<BasePortfolio[]>([]);
+let allUserPortfolios: ReducedBasePortfolio[] = [];
+let selectedPortfolios: ReducedBasePortfolio[] = [];
 
 const props = defineProps({
   companyId: {
@@ -65,10 +71,19 @@ watch<boolean>(
   }
 );
 
+const convertToReducedBasePortfolio = (basePortfolio: BasePortfolio): ReducedBasePortfolio => {
+  return {
+    portfolioId: basePortfolio.portfolioId,
+    portfolioName: basePortfolio.portfolioName,
+    companyIds: Array.from(basePortfolio.companyIds)
+  };
+};
+
 const fetchUserPortfolios = async (): Promise<void> => {
-  allUserPortfolios.value = (
+  const allUserBasePortfolios = (
     await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
   ).data;
+
 };
 
 const handleCompanyAddition = (): void => {
