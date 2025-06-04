@@ -192,12 +192,12 @@ abstract class BaseExportTest<T> {
      */
     protected fun testExcelExportForBothCompanies() {
         // Export both companies as Excel
-        val multiCompanyExcelExport =
+        var multiCompanyExcelExport =
             exportDataAsExcel(
                 companyIds = listOf(companyWithNullFieldId, companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
             )
-
+        multiCompanyExcelExport = ensureFileIsExcelFile(multiCompanyExcelExport)
         ExportTestUtils.validateExportFile(multiCompanyExcelExport, "Multi-company Excel export")
 
         // Get the CSV version of the Excel file for analysis
@@ -207,6 +207,14 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(excelAsCsvFile)
 
         validateMultiCompanyExport(excelAsCsvFile, headers, "Excel")
+    }
+
+    private fun ensureFileIsExcelFile(multiCompanyExcelExport: File): File {
+        var multiCompanyExcelExport1 = multiCompanyExcelExport
+        val excelFilename = "${multiCompanyExcelExport1.parent}\\${multiCompanyExcelExport1.nameWithoutExtension}.xlsx"
+        multiCompanyExcelExport1.renameTo(File(excelFilename))
+        multiCompanyExcelExport1 = File(excelFilename)
+        return multiCompanyExcelExport1
     }
 
     /**

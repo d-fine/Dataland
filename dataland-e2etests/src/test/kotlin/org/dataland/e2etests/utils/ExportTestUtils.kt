@@ -40,11 +40,13 @@ object ExportTestUtils {
             exportFile
         } else {
             val csvFile = File(exportFile.parent, "${exportFile.nameWithoutExtension}.csv")
-            if (!csvFile.exists() && exportFile.extension.lowercase() == "xlsx") {
+            if (csvFile.exists()) {
+                csvFile
+            } else if (!csvFile.exists() && exportFile.extension.lowercase() == "xlsx") {
                 convertExcelToCsv(exportFile, csvFile)
                 csvFile
             } else {
-                csvFile
+                exportFile
             }
         }
 
