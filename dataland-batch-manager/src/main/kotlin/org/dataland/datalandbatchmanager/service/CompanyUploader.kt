@@ -34,7 +34,7 @@ class CompanyUploader(
         const val MAX_RETRIES = 5
         const val WAIT_DURATION: Long = 1
         const val UNAUTHORIZED_CODE = 401
-        const val LIMIT_FOR_PERIOD = 100
+        const val LIMIT_FOR_PERIOD = 750
         const val LIMIT_REFRESH_DURATION: Long = 1
         const val TIMEOUT_DURATION: Long = 60
         const val CLIENT_EXCEPTION_STATUS_CODE = 400
