@@ -14,6 +14,7 @@
     <Listbox
         v-model="selectedPortfolios"
         :options="allUserPortfolios"
+        multiple
         optionLabel="portfolioName"
         placeholder="Select portfolios"
         class="w-full md:w-80"
@@ -29,6 +30,7 @@ import {defineEmits, inject, ref, watch} from 'vue';
 import {type BasePortfolio} from '@clients/userservice';
 import {ApiClientProvider} from '@/services/ApiClients.ts';
 import {assertDefined} from '@/utils/TypeScriptUtils.ts';
+import Listbox from 'primevue/listbox';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import type Keycloak from 'keycloak-js';
