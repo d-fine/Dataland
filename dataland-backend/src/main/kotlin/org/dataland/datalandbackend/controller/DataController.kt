@@ -213,7 +213,8 @@ open class DataController<T>(
     }
 
     /**
-     * Get framework label from framework value for download
+     * Builds HTTP headers for exporting data, setting the appropriate content type and
+     * content disposition for file download.
      * @param frameworkValue
      */
 

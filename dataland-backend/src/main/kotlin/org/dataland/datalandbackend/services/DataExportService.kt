@@ -142,7 +142,6 @@ class DataExportService
          * @return PreparedExportData containing:
          *   - the CSV data as a list of maps
          *   - the CSV schema
-         *   - header fields with human-readable names
          */
         private fun prepareExportData(
             portfolioExportRows: List<JsonNode>,
