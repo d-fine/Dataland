@@ -193,7 +193,7 @@ abstract class BaseExportTest<T> {
     protected fun testExcelExportForBothCompanies() {
         // Export both companies as Excel
         val multiCompanyExcelExport =
-            forceFileToHaveXlsxExtension(
+            changeFilenameToEndWithXlsx(
                 exportDataAsExcel(
                     companyIds = listOf(companyWithNullFieldId, companyWithNonNullFieldId),
                     reportingPeriods = listOf(reportingPeriod),
@@ -210,11 +210,15 @@ abstract class BaseExportTest<T> {
         validateMultiCompanyExport(excelAsCsvFile, headers, "Excel")
     }
 
-    private fun forceFileToHaveXlsxExtension(multiCompanyExcelExport: File): File {
+    private fun changeFilenameToEndWithXlsx(multiCompanyExcelExport: File): File {
         val tmp = multiCompanyExcelExport
         val excelFilename = "${multiCompanyExcelExport.parent}\\${multiCompanyExcelExport.nameWithoutExtension}.xlsx"
-        tmp.renameTo(File(excelFilename))
-        return File(excelFilename)
+
+        return if (tmp.renameTo(File(excelFilename))) {
+            File(excelFilename)
+        } else {
+            multiCompanyExcelExport
+        }
     }
 
     /**
