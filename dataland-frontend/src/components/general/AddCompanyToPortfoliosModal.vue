@@ -83,23 +83,23 @@ const fetchUserPortfolios = async (): Promise<void> => {
   const allUserBasePortfolios = (
     await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
   ).data;
-
+  allUserPortfolios = allUserBasePortfolios.map(convertToReducedBasePortfolio);
 };
 
 const handleCompanyAddition = (): void => {
-  if (selectedPortfolios.value.length === 0) return;
-  selectedPortfolios.value.forEach(async (portfolio) => {
+  if (selectedPortfolios.length === 0) return;
+  selectedPortfolios.forEach(async (portfolio) => {
     await apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolio.portfolioId, {
       portfolioName: portfolio.portfolioName,
       // as unknown as Set<string> cast required to ensure proper json is created
-      companyIds: new Set([...portfolio.companyIds, props.companyId]) as unknown as Set<string>,
+      companyIds: [...portfolio.companyIds, props.companyId] as unknown as Set<string>,
     });
   });
   closeDialog();
 };
 
 const closeDialog = (): void => {
-  selectedPortfolios.value = [];
+  selectedPortfolios = [];
   isModalVisible.value = false;
   emit('closePortfolioModal');
 };
