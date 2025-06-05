@@ -6,13 +6,10 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
-import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -25,10 +22,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyBoolean
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.reset
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.core.Message
@@ -51,38 +46,23 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode
 class DataManagerExceptionTest
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
-        val dataMetaInformationManager: DataMetaInformationManager,
-        val companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+        dataMetaInformationManager: DataMetaInformationManager,
+        companyQueryManager: CompanyQueryManager,
+        dataManagerUtils: DataManagerUtils,
+        sourceabilityDataManager: SourceabilityDataManager,
         val companyAlterationManager: CompanyAlterationManager,
-        val dataManagerUtils: DataManagerUtils,
-        val sourceabilityDataManager: SourceabilityDataManager,
         val cloudEventsMessageHandler: CloudEventMessageHandler,
-    ) {
-        val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
-        val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
-        val testDataProvider = TestDataProvider(objectMapper)
-        lateinit var dataManager: DataManager
-        lateinit var spyDataManager: DataManager
-        lateinit var messageQueueListenerForDataManager: MessageQueueListenerForDataManager
-        val correlationId = IdUtils.generateUUID()
-        val dataUUID = "JustSomeUUID"
-        val euTaxonomyNonFinancialsFrameworkName = "eutaxonomy-non-financials"
-
+    ) : DataManagerTest(
+            objectMapper = objectMapper,
+            dataMetaInformationManager = dataMetaInformationManager,
+            companyQueryManager = companyQueryManager,
+            dataManagerUtils = dataManagerUtils,
+            sourceabilityDataManager = sourceabilityDataManager,
+        ) {
         @BeforeEach
-        fun setup() {
-            reset(mockStorageClient, mockMessageQueuePublications)
-            dataManager =
-                DataManager(
-                    objectMapper, companyQueryManager, dataMetaInformationManager,
-                    mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
-                )
-            spyDataManager = spy(dataManager)
-            messageQueueListenerForDataManager =
-                MessageQueueListenerForDataManager(
-                    objectMapper, dataMetaInformationManager,
-                    dataManager, sourceabilityDataManager,
-                )
+        override fun setup() {
+            super.setup()
         }
 
         private fun getSingleDataStoredMessage(dataId: String): List<Message> =

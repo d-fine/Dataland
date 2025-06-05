@@ -9,10 +9,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
-import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -21,11 +18,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.spy
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -49,37 +43,22 @@ import java.util.UUID
 class DataManagerNoExceptionTest
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
-        val dataMetaInformationManager: DataMetaInformationManager,
-        val companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+        dataMetaInformationManager: DataMetaInformationManager,
+        companyQueryManager: CompanyQueryManager,
+        dataManagerUtils: DataManagerUtils,
+        sourceabilityDataManager: SourceabilityDataManager,
         val companyAlterationManager: CompanyAlterationManager,
-        val dataManagerUtils: DataManagerUtils,
-        val sourceabilityDataManager: SourceabilityDataManager,
-    ) {
-        val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
-        val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
-        val testDataProvider = TestDataProvider(objectMapper)
-        lateinit var dataManager: DataManager
-        lateinit var spyDataManager: DataManager
-        lateinit var messageQueueListenerForDataManager: MessageQueueListenerForDataManager
-        val correlationId = IdUtils.generateUUID()
-        val dataUUID = "JustSomeUUID"
-        val euTaxonomyNonFinancialsFrameworkName = "eutaxonomy-non-financials"
-
+    ) : DataManagerTest(
+            objectMapper = objectMapper,
+            dataMetaInformationManager = dataMetaInformationManager,
+            companyQueryManager = companyQueryManager,
+            dataManagerUtils = dataManagerUtils,
+            sourceabilityDataManager = sourceabilityDataManager,
+        ) {
         @BeforeEach
-        fun setup() {
-            reset(mockStorageClient, mockMessageQueuePublications)
-            dataManager =
-                DataManager(
-                    objectMapper, companyQueryManager, dataMetaInformationManager,
-                    mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
-                )
-            spyDataManager = spy(dataManager)
-            messageQueueListenerForDataManager =
-                MessageQueueListenerForDataManager(
-                    objectMapper, dataMetaInformationManager,
-                    dataManager, sourceabilityDataManager,
-                )
+        override fun setup() {
+            super.setup()
         }
 
         @Test
