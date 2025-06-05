@@ -42,10 +42,10 @@ data class BasePortfolio(
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
 
-    /**
-     * Alternative constructor that updates keeping the monitoring information of a given BasePortfolio invariant.
-     */
     companion object {
+        /**
+         * Alternative constructor that updates keeping the monitoring information of a given BasePortfolio invariant.
+         */
         fun keepMonitoringInvariant(
             originalPortfolio: BasePortfolio,
             portfolioUpload: PortfolioUpload,

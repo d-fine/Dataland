@@ -130,11 +130,14 @@ class PortfolioService
             correlationId: String,
         ): BasePortfolio {
             logger.info(
-                "Replace portfolio with portfolioId: $portfolioId for user with userId: ${UUID.randomUUID()}." +
+                "Replace portfolio with portfolioId: $portfolioId for user with userId: ${DatalandAuthentication.fromContext().userId}." +
                     " CorrelationId: $correlationId.",
             )
             val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(UUID.randomUUID().toString(), UUID.fromString(portfolioId))
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(
+                    DatalandAuthentication.fromContext().userId,
+                    UUID.fromString(portfolioId),
+                )
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
             val portfolio = BasePortfolio.keepMonitoringInvariant(originalPortfolio.toBasePortfolio(), portfolioUpload)
@@ -186,24 +189,18 @@ class PortfolioService
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
-            var updated = false
-
-            patch.startingMonitoringPeriod?.let {
-                portfolioEntity.startingMonitoringPeriod = it
-                updated = true
+            if (patch.startingMonitoringPeriod != null) {
+                portfolioEntity.startingMonitoringPeriod = patch.startingMonitoringPeriod
             }
 
-            patch.monitoredFrameworks?.let {
-                portfolioEntity.monitoredFrameworks = it.toMutableSet()
-                updated = true
+            if (patch.monitoredFrameworks != null) {
+                portfolioEntity.monitoredFrameworks = patch.monitoredFrameworks.toMutableSet()
             }
 
-            if (updated) {
-                portfolioEntity.lastUpdateTimestamp = System.currentTimeMillis()
-                portfolioRepository.save(portfolioEntity)
-                logger.info("Monitoring successfully patched for portfolioId: $portfolioId. CorrelationId: $correlationId.")
-            } else {
-                logger.info("No monitoring fields were updated for portfolioId: $portfolioId. CorrelationId: $correlationId.")
-            }
+            portfolioEntity.isMonitored = patch.isMonitored
+
+            portfolioEntity.lastUpdateTimestamp = System.currentTimeMillis()
+            portfolioRepository.save(portfolioEntity)
+            logger.info("Monitoring successfully patched for portfolioId: $portfolioId. CorrelationId: $correlationId.")
         }
     }
