@@ -94,12 +94,15 @@ class ProcessDataUpdates
         private fun logFlagFileFoundAndDelete(flagFile: File?) {
             if (flagFile?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
-                if (!flagFile.delete()) {
-                    logger.error(
-                        "Unable to delete flag file $flagFile. Manually remove it or import will " +
-                            "be triggered after service restart again.",
-                    )
-                }
+                logger.error(flagFile.absolutePath)
+                /**
+                 if (!flagFile.delete()) {
+                 logger.error(
+                 "Unable to delete flag file $flagFile. Manually remove it or import will " +
+                 "be triggered after service restart again.",
+                 )
+                 }
+                 */
             }
         }
 
