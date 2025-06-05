@@ -125,6 +125,7 @@ class ProcessDataUpdates
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
             if (flagFileGleif?.exists() == true) {
+                flagFileGleif.delete()
                 allGleifCompaniesIngestManualUpdateFlagFilePath = null // this will be removed for the final version
                 logger.info("Running scheduled update of GLEIF data.")
                 waitForBackend()
