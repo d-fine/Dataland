@@ -91,50 +91,49 @@ class DataExportService
          * @param readableHeaders a map of original header names to readable header names
          */
         fun transformDataToExcelWithReadableHeaders(
-            headerFields: List<String>, // These are already readable names
+            headerFields: List<String>,
             data: List<Map<String, String>>,
             outputStream: OutputStream,
-            readableHeaders: Map<String, String>, // Still used to lookup data keys
+            readableHeaders: Map<String, String>,
         ) {
-            val staticFields = listOf("companyName", "companyLei", "reportingPeriod")
-            val staticReadable = staticFields.map { readableHeaders[it] ?: it }
-            val headerToBeUsed =
-                staticFields +
-                    data
-                        .firstOrNull()
-                        ?.keys
-                        .orEmpty()
-                        .filter { it.startsWith("data.") }
-
-            val headerRowLabels = staticReadable + headerFields
-
+            val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("Data")
             val headerRow = sheet.createRow(HEADER_ROW_INDEX)
-
-            headerRowLabels.forEachIndexed { index, label ->
+            headerToBeUsed.forEachIndexed { index, headerField ->
                 val cell = headerRow.createCell(index)
-                cell.setCellValue(label)
+                val readable =
+                    readableHeaders[headerField]
+                        ?: readableHeaders[headerField.removeSuffix(".value")]
+                        ?: headerField.substringAfterLast(".") // fallback to just the field name
+
+                cell.setCellValue(readable)
             }
+
+            println("++++++++++++++++++++++++Readable Headers ++++++++++++++++++++++++++++++++")
+            println(readableHeaders)
 
             var rowIndex = FIRST_DATA_ROW_INDEX
             data.forEach { entry ->
                 val row = sheet.createRow(rowIndex++)
-                headerToBeUsed.forEachIndexed { index, fieldKey ->
+                headerToBeUsed.forEachIndexed { index, headerField ->
                     val cell = row.createCell(index)
-                    if (fieldKey in entry) {
-                        cell.setCellValue(entry[fieldKey] ?: "")
-                    } else if ("$fieldKey.value" in entry) {
-                        cell.setCellValue(entry["$fieldKey.value"] ?: "")
+                    if (headerField in entry.keys) {
+                        cell.setCellValue(entry[headerField] ?: "")
+                    } else if ("$headerField.value" in entry.keys) {
+                        cell.setCellValue(entry["$headerField.value"] ?: "")
                     } else {
                         cell.setCellValue("")
                     }
                 }
             }
 
-            headerRowLabels.indices.forEach { index ->
+            headerToBeUsed.forEachIndexed { index, headerField ->
                 sheet.autoSizeColumn(index)
             }
+
+            println("++++++++++++++++++++++++Header to be used ++++++++++++++++++++++++++++++++")
+            println(headerToBeUsed)
 
             workbook.write(outputStream)
             workbook.close()
@@ -300,10 +299,26 @@ class DataExportService
                     keepValueFieldsOnly, includeAliases,
                 )
 
-            val excelHeaderFields = readableHeaders.values.toList()
+            val excelHeaderFields =
+                csvSchema.columnNames
+                    .filter { it.startsWith("data.") }
+
+            val finalHeaderFields =
+                excelHeaderFields.map { field ->
+                    readableHeaders[field] ?: field.substringAfter("data.")
+                }
+
+            println("++++++++++++++++++++++++Final Header Fields ++++++++++++++++++++++++++++++++")
+            println(finalHeaderFields)
 
             val outputStream = ByteArrayOutputStream()
-            transformDataToExcelWithReadableHeaders(excelHeaderFields, csvData, outputStream, readableHeaders)
+            transformDataToExcelWithReadableHeaders(
+                finalHeaderFields,
+                csvData,
+                outputStream,
+                readableHeaders,
+            )
+
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
