@@ -94,15 +94,12 @@ class ProcessDataUpdates
         private fun logFlagFileFoundAndDelete(flagFile: File?) {
             if (flagFile?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
-                logger.error(flagFile.absolutePath)
-                /**
-                 if (!flagFile.delete()) {
-                 logger.error(
-                 "Unable to delete flag file $flagFile. Manually remove it or import will " +
-                 "be triggered after service restart again.",
-                 )
-                 }
-                 */
+                if (!flagFile.delete()) {
+                    logger.error(
+                        "Unable to delete flag file $flagFile. Manually remove it or import will " +
+                            "be triggered after service restart again.",
+                    )
+                }
             }
         }
 
@@ -127,9 +124,7 @@ class ProcessDataUpdates
         @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestUpdateFlagFilePath?.let { File(it) }
-
             if (flagFileGleif?.exists() == true) {
-                logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
                 allGleifCompaniesIngestUpdateFlagFilePath = null
                 logger.info("Running scheduled update of GLEIF data.")
                 waitForBackend()
@@ -138,9 +133,9 @@ class ProcessDataUpdates
                 gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
                 // flagFile.delete()
             } else {
-                logger.error("Gleif flag path is set but file not found")
-                logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
-                logger.error("flagFileGleif: $flagFileGleif")
+                logger.info("Gleif flag path is set but file not found")
+                logger.info("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
+                logger.info("flagFileGleif: $flagFileGleif")
             }
         }
 
