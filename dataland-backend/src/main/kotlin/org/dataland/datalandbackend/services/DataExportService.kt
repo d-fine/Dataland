@@ -102,8 +102,16 @@ class DataExportService
             val headerRow = sheet.createRow(HEADER_ROW_INDEX)
             headerToBeUsed.forEachIndexed { index, headerField ->
                 val cell = headerRow.createCell(index)
-                cell.setCellValue(readableHeaders[headerField] ?: headerField)
+                val readable =
+                    readableHeaders[headerField]
+                        ?: readableHeaders[headerField.removeSuffix(".value")]
+                        ?: headerField.substringAfterLast(".") // fallback to just the field name
+
+                cell.setCellValue(readable)
             }
+
+            println("++++++++++++++++++++++++Readable Headers ++++++++++++++++++++++++++++++++")
+            println(readableHeaders)
 
             var rowIndex = FIRST_DATA_ROW_INDEX
             data.forEach { entry ->
@@ -123,6 +131,9 @@ class DataExportService
             headerToBeUsed.forEachIndexed { index, headerField ->
                 sheet.autoSizeColumn(index)
             }
+
+            println("++++++++++++++++++++++++Header to be used ++++++++++++++++++++++++++++++++")
+            println(headerToBeUsed)
 
             workbook.write(outputStream)
             workbook.close()
@@ -196,17 +207,19 @@ class DataExportService
                 } else {
                     emptyMap()
                 }
-            println(aliasExportMap)
 
             val hardcodedMap = getHardcodedAliasMapping(dataType) ?: emptyMap()
 
             val readableHeaders = mutableMapOf<String, String>()
 
             nonEmptyHeaderFields.forEach { fieldName ->
-                val strippedField = fieldName.removePrefix("data.")
+                val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
 
                 val aliasHeader = aliasExportMap[strippedField]
+                println(aliasHeader)
+
                 val hardcodedHeader = hardcodedMap[fieldName]
+                println(fieldName)
 
                 if (includeAliases) {
                     readableHeaders["data.$strippedField"] = aliasHeader ?: hardcodedHeader ?: strippedField
@@ -249,15 +262,17 @@ class DataExportService
             val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
             val rawCsv = csvWriter.writeValueAsString(csvData)
 
-            val originalHeaders = csvSchema.columnNames
-            val humanHeaderLine = originalHeaders.joinToString(",") { readableHeaders[it] ?: it }
-
             val csvWithReadableHeaders =
                 rawCsv
                     .lineSequence()
                     .toList()
                     .let {
-                        listOf(humanHeaderLine) + it.drop(1)
+                        listOf(
+                            readableHeaders.values
+                                .toString()
+                                .removeSuffix("[")
+                                .removePrefix("]"),
+                        ) + it.drop(1)
                     }.joinToString("\n")
 
             outputStream.write(csvWithReadableHeaders.toByteArray())
@@ -283,12 +298,27 @@ class DataExportService
                     portfolioExportRows, dataType,
                     keepValueFieldsOnly, includeAliases,
                 )
+
             val excelHeaderFields =
                 csvSchema.columnNames
                     .filter { it.startsWith("data.") }
-                    .map { it.substringAfter("data.") }
+
+            val finalHeaderFields =
+                excelHeaderFields.map { field ->
+                    readableHeaders[field] ?: field.substringAfter("data.")
+                }
+
+            println("++++++++++++++++++++++++Final Header Fields ++++++++++++++++++++++++++++++++")
+            println(finalHeaderFields)
+
             val outputStream = ByteArrayOutputStream()
-            transformDataToExcelWithReadableHeaders(excelHeaderFields, csvData, outputStream, readableHeaders)
+            transformDataToExcelWithReadableHeaders(
+                finalHeaderFields,
+                csvData,
+                outputStream,
+                readableHeaders,
+            )
+
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 

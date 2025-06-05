@@ -307,7 +307,8 @@ async function downloadPortfolio(): Promise<void> {
       getCompanyIds(),
       selectedExportFileType,
       keepValuesOnly.value,
-      options
+      includeAlias.value,
+      options,
     );
 
     if (dataResponse.status === 204) {
