@@ -16,7 +16,6 @@
         :options="allUserPortfolios"
         multiple
         optionLabel="portfolioName"
-        placeholder="Select portfolios"
         class="w-full md:w-80"
     />
     <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
