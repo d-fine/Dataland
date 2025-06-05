@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the portfolio API for Dataland users to manage their portfolios.
@@ -55,7 +56,7 @@ interface PortfolioApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolio."),
         ],
     )
     @GetMapping(
@@ -68,6 +69,49 @@ interface PortfolioApi {
     fun getPortfolio(
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<BasePortfolio>
+
+    /**
+     * Get all portfolios for a given user. This is an admin-only endpoint.
+     */
+    @Operation(
+        summary = "Get portfolios by userId.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/users/{userId}"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN')",
+    )
+    fun getPortfoliosForUser(
+        @PathVariable("userId") userId: String,
+    ): ResponseEntity<List<BasePortfolio>>
+
+    /**
+     * Get a paginated list of all portfolios that exist on Dataland. This is an admin-only endpoint.
+     */
+    @Operation(
+        summary = "Get a segment of all portfolios for the given chunk size and index.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved the requested chunk of portfolios."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/all"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN')",
+    )
+    fun getAllPortfolios(
+        @RequestParam(defaultValue = "100") chunkSize: Int,
+        @RequestParam(defaultValue = "0") chunkIndex: Int,
+    ): ResponseEntity<List<BasePortfolio>>
 
     /**
      * Post a new portfolio.

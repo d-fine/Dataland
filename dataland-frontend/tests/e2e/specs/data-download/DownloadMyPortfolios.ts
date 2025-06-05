@@ -12,7 +12,6 @@ import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUt
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
-import { join } from 'path';
 
 let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
@@ -91,14 +90,15 @@ function testDownloadPortfolio({
   keepValuesOnly = true,
 }: {
   description: string;
-  fileType: 'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)';
+  fileType: 'Comma-separated Values (.csv)' | 'Excel File (.xlsx)';
   keepValuesOnly?: boolean;
 }): void {
   it(description, () => {
     const downloadDir = Cypress.config('downloadsFolder');
-    const expectedFileName = `Portfolio-${portfolioName}-eutaxonomy-non-financials.csv`;
-    const downloadFilePath = join(downloadDir, expectedFileName);
-    const minimumFileSizeInByte = 5000;
+
+    const fileExtension = getFileExtension(fileType);
+
+    const partialFileNamePrefix = 'data-export-EU Taxonomy Non-Financials';
 
     cy.get('[data-test="fileTypeSelector"]').select(fileType);
     if (keepValuesOnly) {
@@ -106,15 +106,41 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadButton"]').click();
 
-    cy.readFile(downloadFilePath, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
-    cy.task('getFileSize', downloadFilePath).then((size) => {
-      expect(size).to.be.greaterThan(minimumFileSizeInByte);
-    });
+    cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+    cy.task('findFileByPrefix', {
+      folder: downloadDir,
+      prefix: partialFileNamePrefix,
+      extension: fileExtension,
+    }).then((filePath) => {
+      const filePathStr = filePath as string;
+      expect(filePathStr).to.exist;
 
-    cy.task('deleteFile', downloadFilePath).then(() => {
-      cy.readFile(downloadFilePath).should('not.exist');
+      cy.readFile(filePathStr, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
+
+      cy.task('getFileSize', filePathStr).then((size) => {
+        expect(size).to.be.greaterThan(5000);
+      });
+
+      cy.task('deleteFile', filePathStr).then(() => {
+        cy.readFile(filePathStr).should('not.exist');
+      });
     });
   });
+}
+
+/**
+ * Extracts file extension from user's choice
+ * @param fileType type of file to be downloaded
+ */
+function getFileExtension(fileType: string): string {
+  switch (fileType) {
+    case 'Comma-separated Values (.csv)':
+      return 'csv';
+    case 'Excel File (.xlsx)':
+      return 'xlsx';
+    default:
+      throw new Error(`Unknown fileType: ${fileType}`);
+  }
 }
 
 before(function () {
@@ -171,7 +197,7 @@ describeIf(
 
     testDownloadPortfolio({
       description: 'Download the portfolio as an Excel-compatible CSV file without additional information',
-      fileType: 'Excel-compatible CSV File (.csv)',
+      fileType: 'Excel File (.xlsx)',
       keepValuesOnly: false,
     });
 
@@ -182,7 +208,7 @@ describeIf(
 
     testDownloadPortfolio({
       description: 'Download the portfolio as an Excel-compatible CSV file with additional information',
-      fileType: 'Excel-compatible CSV File (.csv)',
+      fileType: 'Excel File (.xlsx)',
     });
 
     it('Shows that not all reporting periods are clickable when data is missing', () => {
