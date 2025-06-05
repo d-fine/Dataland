@@ -38,6 +38,9 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode
 import java.time.Instant
 import java.util.UUID
 
+/**
+ * A class for testing cases where DataManager should not throw an exception.
+ */
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
