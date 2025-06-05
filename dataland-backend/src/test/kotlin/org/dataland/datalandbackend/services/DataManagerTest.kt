@@ -76,6 +76,7 @@ class DataManagerTest
         lateinit var messageQueueListenerForDataManager: MessageQueueListenerForDataManager
         val correlationId = IdUtils.generateUUID()
         val dataUUID = "JustSomeUUID"
+        val euTaxonomyNonFinancialsFrameworkName = "eutaxonomy-non-financials"
 
         @BeforeEach
         fun setup() {
@@ -106,7 +107,7 @@ class DataManagerTest
             val companyId = companyAlterationManager.addCompany(companyInformation).companyId
             return StorableDataset(
                 companyId,
-                DataType("eutaxonomy-non-financials"),
+                DataType(euTaxonomyNonFinancialsFrameworkName),
                 "USER_ID_OF_AN_UPLOADING_USER",
                 Instant.now().toEpochMilli(),
                 "",
@@ -140,7 +141,7 @@ class DataManagerTest
             )
             val thrown =
                 assertThrows<ResourceNotFoundApiException> {
-                    dataManager.getPublicDataset(dataId, DataType("eutaxonomy-non-financials"), correlationId)
+                    dataManager.getPublicDataset(dataId, DataType(euTaxonomyNonFinancialsFrameworkName), correlationId)
                 }
             assertEquals("No dataset with the id: $dataId could be found in the data store.", thrown.message)
         }
@@ -433,7 +434,7 @@ class DataManagerTest
             val dataMetaInformationSearchFilterWithoutSearchResults =
                 DataMetaInformationSearchFilter(
                     companyId = euTaxonomyNonFinancialDataset.companyId,
-                    dataType = DataType("eutaxonomy-non-financials"),
+                    dataType = DataType(euTaxonomyNonFinancialsFrameworkName),
                     reportingPeriod = "dummyReportingPeriod",
                     onlyActive = true,
                 )
