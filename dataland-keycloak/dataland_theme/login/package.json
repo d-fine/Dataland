@@ -19,7 +19,7 @@
     "primeicons": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.15.24",
+    "@types/node": "22.15.29",
     "@typescript-eslint/parser": "8.31.1",
     "@typescript-eslint/eslint-plugin": "8.31.1",
     "eslint": "9.26.0",
