@@ -43,13 +43,12 @@ data class BasePortfolio(
     )
 
     companion object {
-        fun invariantMonitoring(
+        fun keepMonitoringInvariant(
             originalPortfolio: BasePortfolio,
-            portfolioId: String,
             portfolioUpload: PortfolioUpload,
         ): BasePortfolio =
             BasePortfolio(
-                portfolioId = portfolioId,
+                portfolioId = UUID.randomUUID().toString(),
                 portfolioName = portfolioUpload.portfolioName,
                 userId = DatalandAuthentication.fromContext().userId,
                 creationTimestamp = originalPortfolio.creationTimestamp,

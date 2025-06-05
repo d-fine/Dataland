@@ -44,11 +44,11 @@ class PortfolioController
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
             validator.validatePortfolioReplacement(portfolioId, portfolioUpload, correlationId)
-
             return ResponseEntity.ok(
                 portfolioService.replacePortfolio(
                     portfolioId,
-                    portfolioUpload, correlationId,
+                    portfolioUpload,
+                    correlationId,
                 ),
             )
         }

@@ -108,24 +108,19 @@ class PortfolioService
             portfolioUpload: PortfolioUpload,
             correlationId: String,
         ): BasePortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
             logger.info(
-                "Replace portfolio with portfolioId: $portfolioId for user with userId: $userId." +
+                "Replace portfolio with portfolioId: $portfolioId for user with userId: ${UUID.randomUUID()}." +
                     " CorrelationId: $correlationId.",
             )
             val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(UUID.randomUUID().toString(), UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
+            val portfolio = BasePortfolio.keepMonitoringInvariant(originalPortfolio.toBasePortfolio(), portfolioUpload)
+
             return portfolioRepository
-                .save(
-                    BasePortfolio
-                        .invariantMonitoring(
-                            originalPortfolio.toBasePortfolio(),
-                            portfolioId,
-                            portfolioUpload,
-                        ).toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp),
-                ).toBasePortfolio()
+                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
+                .toBasePortfolio()
         }
 
         /**
