@@ -124,8 +124,8 @@ class ProcessDataUpdates
         @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
             if (allGleifCompaniesIngestUpdateFlagFilePath != null) {
-                allGleifCompaniesIngestUpdateFlagFilePath = null
                 logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
+                allGleifCompaniesIngestUpdateFlagFilePath = null
                 logger.info("Running scheduled update of GLEIF data.")
                 waitForBackend()
                 gleifGoldenCopyIngestor.prepareGleifDeltaFile(true)
