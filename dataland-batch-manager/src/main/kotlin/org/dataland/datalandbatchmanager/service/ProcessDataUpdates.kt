@@ -128,6 +128,11 @@ class ProcessDataUpdates
                 return
             }
             val flagFile = File(allGleifCompaniesIngestUpdateFlagFilePath)
+            if (flagFile.name != "perform_gleif_full_golden_copy_update_flag") {
+                logger.warn("Flag file path does not point to the expected update flag file: ${flagFile.name}")
+                return
+            }
+
             if (flagFile.exists()) {
                 logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
                 allGleifCompaniesIngestUpdateFlagFilePath = null
