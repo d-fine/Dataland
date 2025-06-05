@@ -126,6 +126,8 @@ class ProcessDataUpdates
             if (allGleifCompaniesIngestUpdateFlagFilePath == null) {
                 logger.error("Gleif flag file path is not set.")
                 return
+            } else {
+                logger.info("Found flag file path. $allGleifCompaniesIngestUpdateFlagFilePath")
             }
             val flagFile = File(allGleifCompaniesIngestUpdateFlagFilePath)
             if (flagFile.name != "perform_gleif_full_golden_copy_update_flag") {
