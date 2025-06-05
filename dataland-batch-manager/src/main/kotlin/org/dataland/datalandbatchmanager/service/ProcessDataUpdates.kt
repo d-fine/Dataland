@@ -39,6 +39,8 @@ class ProcessDataUpdates
         private val allNorthDataCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
         private val allGleifCompaniesIngestFlagFilePath: String?,
+        @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies-for-manual-update.flag-file:#{null}}")
+        private var allGleifCompaniesIngestUpdateFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
         private val allNorthDataCompaniesIngestFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
@@ -119,13 +121,19 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 3 * * SUN")
+        @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
-            logger.info("Running scheduled update of GLEIF data.")
-            waitForBackend()
-            gleifGoldenCopyIngestor.prepareGleifDeltaFile()
-            gleifGoldenCopyIngestor.processIsinMappingFile()
-            gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
+            if (allGleifCompaniesIngestUpdateFlagFilePath != null) {
+                allGleifCompaniesIngestUpdateFlagFilePath = null
+                logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
+                logger.info("Running scheduled update of GLEIF data.")
+                waitForBackend()
+                gleifGoldenCopyIngestor.prepareGleifDeltaFile(true)
+                gleifGoldenCopyIngestor.processIsinMappingFile()
+                gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
+            } else {
+                logger.error("Gleif flag file not found")
+            }
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
