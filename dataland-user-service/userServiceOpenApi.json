@@ -786,6 +786,19 @@
             "items": {
               "$ref": "#/components/schemas/EnrichedPortfolioEntry"
             }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
