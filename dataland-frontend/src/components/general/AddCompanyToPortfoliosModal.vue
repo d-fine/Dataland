@@ -16,7 +16,7 @@
         :options="allUserPortfolios"
         multiple
         optionLabel="portfolioName"
-        class="w-full md:w-80"
+        class="w-full md:w-56"
     />
     <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
       <span>Add company to portfolio(s)</span>
