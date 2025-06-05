@@ -4,11 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
-import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
-import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -23,22 +20,15 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyBoolean
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.core.Message
@@ -49,15 +39,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode
-import java.time.Instant
-import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 @Suppress("LongParameterList")
-class DataManagerTest
+class DataManagerExceptionTest
     @Autowired
     constructor(
         private val objectMapper: ObjectMapper,
@@ -102,22 +90,12 @@ class DataManagerTest
                 ),
             )
 
-        private fun addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt(): StorableDataset {
-            val companyInformation = testDataProvider.getCompanyInformation(1).first()
-            val companyId = companyAlterationManager.addCompany(companyInformation).companyId
-            return StorableDataset(
-                companyId,
-                DataType(euTaxonomyNonFinancialsFrameworkName),
-                "USER_ID_OF_AN_UPLOADING_USER",
-                Instant.now().toEpochMilli(),
-                "",
-                "someEuTaxonomyDataForNonFinancials123",
-            )
-        }
-
         @Test
         fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
-            val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+            val euTaxonomyNonFinancialDataset =
+                testDataProvider.addCompanyAndReturnStorableDatasetForIt(
+                    companyAlterationManager, euTaxonomyNonFinancialsFrameworkName,
+                )
             val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
             val thrown =
                 assertThrows<InvalidInputApiException> {
@@ -132,7 +110,10 @@ class DataManagerTest
 
         @Test
         fun `check that an exception is thrown if the received data from the data storage is empty`() {
-            val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+            val euTaxonomyNonFinancialDataset =
+                testDataProvider.addCompanyAndReturnStorableDatasetForIt(
+                    companyAlterationManager, euTaxonomyNonFinancialsFrameworkName,
+                )
             val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
             `when`(mockStorageClient.selectDataById(dataId, correlationId))
                 .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
@@ -148,7 +129,10 @@ class DataManagerTest
 
         @Test
         fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
-            val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+            val euTaxonomyNonFinancialDataset =
+                testDataProvider.addCompanyAndReturnStorableDatasetForIt(
+                    companyAlterationManager, euTaxonomyNonFinancialsFrameworkName,
+                )
             val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
             val expectedDataTypeName = euTaxonomyNonFinancialDataset.dataType.name
             `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
@@ -168,7 +152,10 @@ class DataManagerTest
 
         @Test
         fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
-            val storableDatasetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+            val storableDatasetForNonFinancials =
+                testDataProvider.addCompanyAndReturnStorableDatasetForIt(
+                    companyAlterationManager, euTaxonomyNonFinancialsFrameworkName,
+                )
             val dataId =
                 dataManager.storeDataset(
                     storableDatasetForNonFinancials,
@@ -213,7 +200,9 @@ class DataManagerTest
         @Test
         fun `check an exception is thrown during storing a dataset when sending notification to message queue fails`() {
             val storableEuTaxonomyDatasetForNonFinancials =
-                addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+                testDataProvider.addCompanyAndReturnStorableDatasetForIt(
+                    companyAlterationManager, euTaxonomyNonFinancialsFrameworkName,
+                )
 
             `when`(
                 mockMessageQueuePublications.publishDatasetUploadedMessage(
@@ -225,27 +214,6 @@ class DataManagerTest
                     dataUUID, storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
                 )
             }
-        }
-
-        @Test
-        fun `check that processing a patch event works as expected`() {
-            val storableEuTaxonomyDatasetForNonFinancials =
-                addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
-
-            doNothing().whenever(mockMessageQueuePublications).publishDatasetMetaInfoPatchMessage(any(), any(), anyString())
-
-            assertDoesNotThrow {
-                spyDataManager.storeDatasetInTemporaryStoreAndSendPatchMessage(
-                    dataUUID, storableEuTaxonomyDatasetForNonFinancials, correlationId,
-                )
-            }
-
-            verify(mockMessageQueuePublications, times(1))
-                .publishDatasetMetaInfoPatchMessage(
-                    dataUUID,
-                    storableEuTaxonomyDatasetForNonFinancials.uploaderUserId,
-                    correlationId,
-                )
         }
 
         @Test
@@ -302,32 +270,6 @@ class DataManagerTest
         }
 
         @Test
-        fun `test that data id for new active dataset can be empty`() {
-            val storableEuTaxonomyDatasetForNonFinancials: StorableDataset =
-                addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
-            val dataId =
-                dataManager.storeDataset(
-                    storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
-                )
-            val messageWithEmptyCurrentlyActiveDataId =
-                objectMapper.writeValueAsString(
-                    QaStatusChangeMessage(
-                        dataId = dataId,
-                        updatedQaStatus = QaStatus.Accepted,
-                        currentlyActiveDataId = null,
-                    ),
-                )
-
-            assertDoesNotThrow {
-                messageQueueListenerForDataManager.changeQaStatus(
-                    messageWithEmptyCurrentlyActiveDataId,
-                    "",
-                    MessageType.QA_STATUS_UPDATED,
-                )
-            }
-        }
-
-        @Test
         fun `test that AmqpRejectAndDontRequeueException is thrown if the data id for changed QA status is empty`() {
             val messageWithEmptyDataIDs =
                 objectMapper.writeValueAsString(
@@ -349,103 +291,5 @@ class DataManagerTest
                 "Message was rejected: Provided data ID to change qa status dataset is empty",
                 thrown.message,
             )
-        }
-
-        private fun createNewDataMetaInformationWithQaStatus(
-            dataId: String,
-            qaStatus: QaStatus,
-        ) {
-            val companyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).first()
-            val company: StoredCompanyEntity = companyAlterationManager.addCompany(companyInformation)
-
-            val datasetToBeUpdated =
-                DataMetaInformationEntity(
-                    dataId = dataId,
-                    company = company,
-                    dataType = "sfdr",
-                    uploadTime = Instant.now().toEpochMilli(),
-                    uploaderUserId = "dummyUserId",
-                    qaStatus = qaStatus,
-                    reportingPeriod = "2023",
-                    currentlyActive = false,
-                )
-
-            this.dataMetaInformationManager.storeDataMetaInformation(datasetToBeUpdated)
-        }
-
-        @Test
-        fun `test changing the QA status of a pending dataset to Accepted and setting it to active`() {
-            val dataId = "someDataId"
-            val newQaStatus = QaStatus.Accepted
-
-            createNewDataMetaInformationWithQaStatus(dataId, QaStatus.Pending)
-
-            val messageWithChangedQAStatus =
-                objectMapper.writeValueAsString(
-                    QaStatusChangeMessage(dataId, newQaStatus, dataId),
-                )
-            assertDoesNotThrow {
-                messageQueueListenerForDataManager.changeQaStatus(
-                    messageWithChangedQAStatus,
-                    "",
-                    MessageType.QA_STATUS_UPDATED,
-                )
-            }
-
-            val updatedDataset = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-
-            assertEquals(QaStatus.Accepted, updatedDataset.qaStatus)
-            assertNotNull(updatedDataset.currentlyActive)
-            assertEquals(true, updatedDataset.currentlyActive)
-        }
-
-        @Test
-        fun `test rejecting an accepted dataset and setting it to inactive and setting a second dataset to active`() {
-            val oldDataId = "oldDatasetDataId"
-            val newDataId = "newDatasetDataId"
-
-            createNewDataMetaInformationWithQaStatus(oldDataId, QaStatus.Accepted)
-            createNewDataMetaInformationWithQaStatus(newDataId, QaStatus.Accepted)
-
-            val messageWithChangedQAStatus =
-                objectMapper.writeValueAsString(
-                    QaStatusChangeMessage(oldDataId, QaStatus.Rejected, newDataId),
-                )
-            assertDoesNotThrow {
-                messageQueueListenerForDataManager.changeQaStatus(
-                    messageWithChangedQAStatus,
-                    "",
-                    MessageType.QA_STATUS_UPDATED,
-                )
-            }
-
-            val rejectedInactiveDataset = dataMetaInformationManager.getDataMetaInformationByDataId(oldDataId)
-            val acceptedActiveDataset = dataMetaInformationManager.getDataMetaInformationByDataId(newDataId)
-
-            assertEquals(QaStatus.Rejected, rejectedInactiveDataset.qaStatus)
-            assertEquals(false, rejectedInactiveDataset.currentlyActive)
-            assertEquals(QaStatus.Accepted, acceptedActiveDataset.qaStatus)
-            assertEquals(true, acceptedActiveDataset.currentlyActive)
-        }
-
-        @Test
-        fun `check that no exception is thrown when a search for company data and metainformation yields no results`() {
-            val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
-            val dataMetaInformationSearchFilterWithoutSearchResults =
-                DataMetaInformationSearchFilter(
-                    companyId = euTaxonomyNonFinancialDataset.companyId,
-                    dataType = DataType(euTaxonomyNonFinancialsFrameworkName),
-                    reportingPeriod = "dummyReportingPeriod",
-                    onlyActive = true,
-                )
-            assertDoesNotThrow {
-                assertEquals(
-                    emptyList<PlainDataAndMetaInformation>(),
-                    dataManager.getAllDatasetsAndMetaInformation(
-                        dataMetaInformationSearchFilterWithoutSearchResults,
-                        UUID.randomUUID().toString(),
-                    ),
-                )
-            }
         }
     }
