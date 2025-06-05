@@ -14,7 +14,7 @@
     <Listbox
         v-model="selectedPortfolios"
         :options="allUserPortfolios"
-        multiple
+        :multiple="true"
         optionLabel="portfolioName"
         class="w-full md:w-56"
     />
