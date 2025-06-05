@@ -11,8 +11,8 @@ export const ExportFileTypeInformation: Record<ExportFileType, FileTypeInformati
     description: 'Comma-separated Values',
   },
   EXCEL: {
-    fileExtension: 'csv',
-    description: 'Excel-compatible CSV File',
+    fileExtension: 'xlsx',
+    description: 'Excel File',
   },
   JSON: {
     fileExtension: 'json',
