@@ -123,19 +123,9 @@ class ProcessDataUpdates
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
-            if (allGleifCompaniesIngestUpdateFlagFilePath == null) {
-                logger.error("Gleif flag file path is not set.")
-                return
-            } else {
-                logger.info("Found flag file path. $allGleifCompaniesIngestUpdateFlagFilePath")
-            }
-            val flagFile = File(allGleifCompaniesIngestUpdateFlagFilePath)
-            if (flagFile.name != "perform_gleif_full_golden_copy_update_flag") {
-                logger.warn("Flag file path does not point to the expected update flag file: ${flagFile.name}")
-                return
-            }
+            val flagFileGleif = allGleifCompaniesIngestUpdateFlagFilePath?.let { File(it) }
 
-            if (flagFile.exists()) {
+            if (flagFileGleif?.exists() == true) {
                 logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
                 allGleifCompaniesIngestUpdateFlagFilePath = null
                 logger.info("Running scheduled update of GLEIF data.")
@@ -146,6 +136,8 @@ class ProcessDataUpdates
                 // flagFile.delete()
             } else {
                 logger.error("Gleif flag path is set but file not found")
+                logger.error("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestUpdateFlagFilePath")
+                logger.error("flagFileGleif: $flagFileGleif")
             }
         }
 
