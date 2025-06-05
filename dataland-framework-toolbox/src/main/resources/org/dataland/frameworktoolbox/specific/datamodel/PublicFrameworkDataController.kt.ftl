@@ -74,6 +74,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
         companyIds: List<String>,
         exportFileType: ExportFileType,
         keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
         return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
     }
