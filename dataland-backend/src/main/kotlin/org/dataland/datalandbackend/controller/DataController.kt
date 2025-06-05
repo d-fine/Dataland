@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.utils.DataTypeNameMapper
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -30,6 +31,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
@@ -167,6 +169,7 @@ open class DataController<T>(
         companyIds: List<String>,
         exportFileType: ExportFileType,
         keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
         if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
                 it.companyInformation == null
@@ -210,14 +213,20 @@ open class DataController<T>(
             .body(companyAssociatedDataForExport)
     }
 
+    /**
+     * Get framework label from framework value for download
+     * @param frameworkValue
+     */
+
     private fun buildHttpHeadersForExport(exportFileType: ExportFileType): HttpHeaders {
         val headers = HttpHeaders()
-        val timestamp = LocalDateTime.now().toString()
+        val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHmmss"))
+        val frameworkName = DataTypeNameMapper.getDisplayName(dataType.name)
         headers.contentType = exportFileType.mediaType
         headers.contentDisposition =
             ContentDisposition
                 .attachment()
-                .filename("data-export-$timestamp.${exportFileType.fileExtension}")
+                .filename("data-export-$frameworkName-$timestamp.${exportFileType.fileExtension}")
                 .build()
         return headers
     }

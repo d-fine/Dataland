@@ -69,7 +69,7 @@ class AssembledDataManagerTest {
             companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities(defaultObjectMapper)
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val dataPointUtils =
         DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
 

@@ -50,6 +50,14 @@
       <span class="gray-text font-italic text-xs ml-0 mb-3">
         Download only data values. Turn off to include additional details, e.g. comment, data source, ...
       </span>
+      <div class="flex align-content-start align-items-center">
+        <InputSwitch v-model="includeAlias" :disabled="!keepValuesOnly" class="form-field vertical-middle" data-test="includeAliasSwitch"
+        />   <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten Field Names </span>
+      </div>
+      <span class="gray-text font-italic text-xs ml-0 mb-3">
+        Use shorter aliases, e. g. CI_GAR_PCT in export. (Only Applicable if Values Only is selected)
+      </span>
+
     </FormKit>
     <Message v-if="portfolioErrors" severity="error" class="my-1 text-xs" :life="3000">
       {{ portfolioErrors }}
@@ -84,6 +92,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
@@ -91,23 +100,33 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
 import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
-import { type AxiosError } from 'axios';
+import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import InputSwitch from 'primevue/inputswitch';
 import Message from 'primevue/message';
-import { inject, onMounted, type Ref, ref } from 'vue';
+import {computed, inject, onMounted, type Ref, ref} from 'vue';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const portfolioName = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const selectedFramework = ref<string | undefined>(undefined);
-const selectedFileType = ref(undefined);
-
+const selectedFileType = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const keepValuesOnly = ref(true);
+const aliasExportDefault = ref(true);
+const includeAlias = computed({
+  get: () => keepValuesOnly.value && aliasExportDefault.value,
+  set: (val: boolean) => {
+    if (keepValuesOnly.value) {
+      aliasExportDefault.value = val;
+    } else {
+      aliasExportDefault.value = false
+    }
+  }
+})
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
@@ -257,6 +276,15 @@ function checkIfShowErrors(): void {
 }
 
 /**
+ * Get framework label from framework value for download
+ * @param frameworkValue
+ */
+function getFrameworkLabel(frameworkValue: string): string {
+  const frameworkOption = availableFrameworks.find((f) => f.value === frameworkValue);
+  return frameworkOption ? frameworkOption.label : frameworkValue;
+}
+
+/**
  * Handles download of portfolio
  */
 async function downloadPortfolio(): Promise<void> {
@@ -269,11 +297,18 @@ async function downloadPortfolio(): Promise<void> {
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
+    const selectedExportFileType = ALL_EXPORT_FILE_TYPES.find((type) => type === selectedFileType.value)!;
+    const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       getSelectedReportingPeriods(),
       getCompanyIds(),
-      selectedFileType.value,
-      keepValuesOnly.value
+      selectedExportFileType,
+      keepValuesOnly.value,
+      includeAlias.value,
+      options,
     );
 
     if (dataResponse.status === 204) {
@@ -282,7 +317,10 @@ async function downloadPortfolio(): Promise<void> {
       return;
     }
 
-    forceFileDownload(dataResponse.data, `Portfolio-${portfolioName.value}-${selectedFramework.value}.csv`);
+    const formatted_timestamp = getDateStringForDataExport(new Date());
+    const filename = `data-export-${getFrameworkLabel(selectedFramework.value)}-${formatted_timestamp}.${fileExtension}`;
+
+    forceFileDownload(dataResponse.data, filename);
   } catch (error) {
     console.error(error);
     portfolioErrors.value = `${(error as AxiosError).message}`;

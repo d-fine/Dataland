@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress';
 import { promises, rmdir } from 'fs';
 import { createHash } from 'crypto';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 let returnEmail: string;
 let returnPassword: string;
@@ -142,6 +144,16 @@ export default defineConfig({
         async checkFileContent({ path, term }) {
           const content = await promises.readFile(path, 'utf8');
           return content.includes(term);
+        },
+      });
+      on('task', {
+        async findFileByPrefix({ folder, prefix, extension }) {
+          const files = await readdir(folder);
+          const match = files.find((file) => file.startsWith(prefix) && file.endsWith(`.${extension}`));
+          if (!match) {
+            throw new Error(`No file found starting with '${prefix}' and ending with '.${extension}'`);
+          }
+          return join(folder, match);
         },
       });
 

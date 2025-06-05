@@ -32,6 +32,7 @@ dependencies {
     implementation(Spring.boot.web)
     testImplementation(Spring.boot.test)
     testImplementation(libs.awaitility)
+    implementation(libs.poi.ooxml)
 }
 
 tasks.withType<Test> {
