@@ -105,6 +105,27 @@ class PortfolioService
         @Transactional
         fun replacePortfolio(
             portfolioId: String,
+            portfolio: BasePortfolio,
+            correlationId: String,
+        ): BasePortfolio {
+            logger.info(
+                "Replace portfolio with portfolioId: $portfolioId for user with userId: ${portfolio.userId}." +
+                    " CorrelationId: $correlationId.",
+            )
+            val originalPortfolio =
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
+                    ?: throw PortfolioNotFoundApiException(portfolioId)
+            return portfolioRepository
+                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
+                .toBasePortfolio()
+        }
+
+        /**
+         * Replace an existing portfolio.TEST
+         */
+        @Transactional
+        fun replacePortfolioTEST(
+            portfolioId: String,
             portfolioUpload: PortfolioUpload,
             correlationId: String,
         ): BasePortfolio {

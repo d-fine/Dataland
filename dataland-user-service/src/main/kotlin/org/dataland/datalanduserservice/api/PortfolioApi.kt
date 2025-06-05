@@ -118,6 +118,31 @@ interface PortfolioApi {
     ): ResponseEntity<BasePortfolio>
 
     /**
+     * Replace an existing portfolio. (TEST)
+     */
+    @Operation(
+        summary = "Replace an existing portfolio.",
+        description = "Replace the existing portfolio with given portfolioId entirely",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully replaced existing portfolio."),
+        ],
+    )
+    @PutMapping(
+        value = ["/portfolios/{portfolioId}/test"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_USER')",
+    )
+    fun replacePortfolioTEST(
+        @PathVariable(name = "portfolioId") portfolioId: String,
+        @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
+    ): ResponseEntity<BasePortfolio>
+
+    /**
      * Delete an existing portfolio.
      */
     @Operation(

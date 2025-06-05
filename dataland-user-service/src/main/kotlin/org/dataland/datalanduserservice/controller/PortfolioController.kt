@@ -44,8 +44,17 @@ class PortfolioController
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
             validator.validatePortfolioReplacement(portfolioId, portfolioUpload, correlationId)
+            return ResponseEntity.ok(portfolioService.replacePortfolio(portfolioId, BasePortfolio(portfolioUpload), correlationId))
+        }
+
+        override fun replacePortfolioTEST(
+            portfolioId: String,
+            portfolioUpload: PortfolioUpload,
+        ): ResponseEntity<BasePortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            validator.validatePortfolioReplacement(portfolioId, portfolioUpload, correlationId)
             return ResponseEntity.ok(
-                portfolioService.replacePortfolio(
+                portfolioService.replacePortfolioTEST(
                     portfolioId,
                     portfolioUpload,
                     correlationId,
