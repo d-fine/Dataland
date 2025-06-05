@@ -38,11 +38,11 @@ class GleifGoldenCopyIngestor(
     /**
      * Starting point for GLEIF delta file handling
      */
-    fun prepareGleifDeltaFile(allGleifCompaniesForManualUpdate: Boolean) {
-        logger.info("Starting Gleif company update cycle for latest ${if (allGleifCompaniesForManualUpdate) "full" else "delta"} file.")
+    fun prepareGleifDeltaFile(doFullGleifUpdate: Boolean) {
+        logger.info("Starting Gleif company update cycle for latest ${if (doFullGleifUpdate) "full" else "delta"} file.")
         val tempFile = File.createTempFile("gleif_update_delta", ".zip")
         val gleifFileSupplier =
-            if (allGleifCompaniesForManualUpdate) {
+            if (doFullGleifUpdate) {
                 gleifApiAccessor::getFullGoldenCopy
             } else {
                 gleifApiAccessor::getLastMonthGoldenCopyDelta
