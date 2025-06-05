@@ -2957,6 +2957,15 @@
               "type": "boolean",
               "default": true
             }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -3249,6 +3258,15 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -3553,6 +3571,15 @@
               "type": "boolean",
               "default": true
             }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -3845,6 +3872,15 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -4149,6 +4185,15 @@
               "type": "boolean",
               "default": true
             }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -4441,6 +4486,15 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -4745,6 +4799,15 @@
               "type": "boolean",
               "default": true
             }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -5043,6 +5106,15 @@
               "type": "boolean",
               "default": true
             }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -5335,6 +5407,15 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -20826,10 +20907,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
