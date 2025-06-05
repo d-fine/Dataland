@@ -21,17 +21,11 @@
           <PrimeButton
             class="primary-button"
             aria-label="Add company to your portfolios"
-            @click="isPortfolioModalOpen = true"
+            @click="openPortfolioModal"
             data-test="addCompanyToPortfoliosButton"
           >
-            <span>+ Add to a portfolio</span>
+            <i class="pi pi-plus pr-2" />Add to a portfolio
           </PrimeButton>
-          <AddCompanyToPortfoliosModal
-            :company-id="companyId"
-            :is-modal-open="isPortfolioModalOpen"
-            @close-portfolio-modal="onClosePortfolioModal"
-            data-test="portfolioModal"
-          />
           <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
@@ -93,7 +87,11 @@ import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/
 import { CompanyRole } from '@clients/communitymanager';
 import PrimeButton from 'primevue/button';
 import router from '@/router';
-import AddCompanyToPortfoliosModal from '@/components/general/AddCompanyToPortfoliosModal.vue';
+import AddCompanyToPortfoliosModal, {ReducedBasePortfolio} from '@/components/general/AddCompanyToPortfoliosModal.vue';
+import {BasePortfolio} from "@clients/userservice";
+import {useDialog} from "primevue/usedialog";
+
+const dialog = useDialog();
 
 export default defineComponent({
   name: 'CompanyInformation',
@@ -182,6 +180,37 @@ export default defineComponent({
       }
     },
 
+    convertToReducedBasePortfolio(basePortfolio: BasePortfolio): ReducedBasePortfolio {
+      return {
+        portfolioId: basePortfolio.portfolioId,
+        portfolioName: basePortfolio.portfolioName,
+        companyIds: Array.from(basePortfolio.companyIds)
+      };
+    },
+
+    /**
+     * Get the list of all portfolios of the current user.
+     */
+    async fetchUserPortfolios(): Promise<ReducedBasePortfolio[]> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      return (
+          await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
+      ).data.map(this.convertToReducedBasePortfolio);
+    },
+
+    async openPortfolioModal(): Promise<void> {
+      dialog.open(AddCompanyToPortfoliosModal, {
+        props: {
+          header: 'Add company to your portfolio(s)',
+          modal: true,
+        },
+        data: {
+          companyId: this.companyId,
+          allUserPortfolios: this.fetchUserPortfolios(),
+        }
+      });
+    },
+
     /**
      * triggers route push to parent company if the parent company exists
      * @returns route push
@@ -205,12 +234,6 @@ export default defineComponent({
       this.dialogIsOpen = false;
     },
 
-    /**
-     * Handles the close event of the modal for adding the company to ones portfolio(s).
-     */
-    onClosePortfolioModal() {
-      this.isPortfolioModalOpen = false;
-    },
     /**
      * Gets the parent company based on the lei
      * @param parentCompanyLei lei of the parent company

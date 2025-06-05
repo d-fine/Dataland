@@ -1,50 +1,34 @@
 <template>
-  <PrimeDialog
-      v-model:visible="isModalVisible"
-      style="text-align: center; width: 30em"
-      header="Add company to portfolios"
-      :show-header="true"
-      :closable="true"
-      :dismissable-mask="true"
-      :modal="true"
-      :close-on-escape="true"
-      data-test="addCompanyToPortfoliosModal"
-      @after-hide="closeDialog"
-  >
-    <Listbox
-        v-model="selectedPortfolios"
-        :options="allUserPortfolios"
-        :multiple="true"
-        optionLabel="portfolioName"
-        class="w-full md:w-56"
-    />
-    <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
-      <span>Add company to portfolio(s)</span>
-    </PrimeButton>
-  </PrimeDialog>
+  <Listbox
+      v-model="selectedPortfolios"
+      :options="allUserPortfolios"
+      multiple
+      optionLabel="portfolioName"
+  />
+  <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
+    <span>Add company to portfolio(s)</span>
+  </PrimeButton>
 </template>
 
 <script setup lang="ts">
-import {defineEmits, inject, ref, watch} from 'vue';
-import {type BasePortfolio} from '@clients/userservice';
+import {defineEmits, inject, type PropType, type Ref, ref} from 'vue';
 import {ApiClientProvider} from '@/services/ApiClients.ts';
 import {assertDefined} from '@/utils/TypeScriptUtils.ts';
 import Listbox from 'primevue/listbox';
 import PrimeButton from 'primevue/button';
-import PrimeDialog from 'primevue/dialog';
 import type Keycloak from 'keycloak-js';
+import type {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
 
-interface ReducedBasePortfolio {
+export interface ReducedBasePortfolio {
   portfolioId: string,
   portfolioName: string,
   companyIds: string[]
 }
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const isModalVisible = ref<boolean>(false);
-let allUserPortfolios: ReducedBasePortfolio[] = [];
 const selectedPortfolios = ref<ReducedBasePortfolio[]>([]);
 
 const props = defineProps({
@@ -52,39 +36,13 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  isModalOpen: {
-    type: Boolean,
-    required: false,
-    default: false,
+  allUserPortfolios: {
+    type: Array as PropType<Array<ReducedBasePortfolio>>,
+    required: true,
   },
 });
 
 const emit = defineEmits(['closePortfolioModal']);
-
-watch<boolean>(
-    () => props.isModalOpen,
-    async (newValue) => {
-      if (newValue) {
-        await fetchUserPortfolios();
-      }
-      isModalVisible.value = newValue;
-    }
-);
-
-const convertToReducedBasePortfolio = (basePortfolio: BasePortfolio): ReducedBasePortfolio => {
-  return {
-    portfolioId: basePortfolio.portfolioId,
-    portfolioName: basePortfolio.portfolioName,
-    companyIds: Array.from(basePortfolio.companyIds)
-  };
-};
-
-const fetchUserPortfolios = async (): Promise<void> => {
-  const allUserBasePortfolios = (
-      await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
-  ).data;
-  allUserPortfolios = allUserBasePortfolios.map(convertToReducedBasePortfolio);
-};
 
 const handleCompanyAddition = (): void => {
   if (selectedPortfolios.value.length === 0) return;
@@ -111,8 +69,7 @@ const handleCompanyAddition = (): void => {
 
 const closeDialog = (): void => {
   selectedPortfolios.value = [];
-  isModalVisible.value = false;
-  emit('closePortfolioModal');
+  dialogRef?.value.close();
 };
 </script>
 
