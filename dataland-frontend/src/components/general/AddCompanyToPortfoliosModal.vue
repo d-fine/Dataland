@@ -61,12 +61,10 @@ const closeDialog = (): void => {
 
 <style scoped lang="scss">
 .p-highlight {
-  background-color: #f0f0f0; /* Change background color when highlighted */
-  color: #333; /* Change text color */
+  background-color: darkseagreen !important;
 }
 
 .p-focus {
-  border: 2px solid #000; /* Perhaps give a border to indicate focus */
-  outline: none; /* Remove default outline */
+  background-color: mediumseagreen !important;
 }
 </style>
