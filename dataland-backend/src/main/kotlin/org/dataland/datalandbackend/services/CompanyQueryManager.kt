@@ -176,7 +176,10 @@ class CompanyQueryManager
          * @return a boolean signalling if the company is public or not
          */
         @Transactional
-        fun isCompanyPublic(companyId: String): Boolean = getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
+        fun isCompanyPublic(companyId: String?): Boolean =
+            companyId?.let {
+                getCompanyByIdAndAssertExistence(it).isTeaserCompany
+            } ?: false
 
         /**
          * Get all reporting periods for which at least one active dataset of the specified company and data type exists

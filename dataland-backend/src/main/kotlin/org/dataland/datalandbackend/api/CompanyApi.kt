@@ -255,7 +255,7 @@ interface CompanyApi {
         value = ["/{companyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyById(
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<StoredCompany>

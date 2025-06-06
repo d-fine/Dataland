@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param dataManagerUtils holds util methods for handling of data
- * @param companyRoleChecker service for checking company roles
  * @param messageQueuePublications service for publishing messages to the message queue
  */
 @Service("DataManager")
@@ -298,7 +297,6 @@ class DataManager
                 )
             if (mapOfDataDimensionsWithDataAsString.isEmpty()) {
                 logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
-                throw IllegalArgumentException("Data not found for given search filter.")
             }
 
             return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->

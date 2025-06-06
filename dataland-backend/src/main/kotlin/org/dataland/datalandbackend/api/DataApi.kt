@@ -104,7 +104,7 @@ interface DataApi<T> {
      * @param reportingPeriods specifies the reporting periods
      * @param companyIds specifies the companies
      * @param exportFileType specifies the file type to export to
-     * @param includeDataMetaInformation specifies whether to include metadata in the export
+     * @param keepValueFieldsOnly specifies whether to exclude metadata from the export
      * @return JSON of companyAssociatedData in the form of InputStreamResource
      */
     @Operation(
@@ -166,7 +166,7 @@ interface DataApi<T> {
         value = ["/companies/{companyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,

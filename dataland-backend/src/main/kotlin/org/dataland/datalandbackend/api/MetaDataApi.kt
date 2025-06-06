@@ -56,7 +56,7 @@ interface MetaDataApi {
     @GetMapping(
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getListOfDataMetaInfo(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
