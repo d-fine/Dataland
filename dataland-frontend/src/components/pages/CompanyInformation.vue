@@ -92,6 +92,7 @@ import router from '@/router';
 import AddCompanyToPortfoliosModal, {ReducedBasePortfolio} from '@/components/general/AddCompanyToPortfoliosModal.vue';
 import {BasePortfolio} from "@clients/userservice";
 import {useDialog} from "primevue/usedialog";
+import {registerAndRedirectToSearchPage} from "@/utils/KeycloakUtils.ts";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const authenticated = inject<boolean>('authenticated');
@@ -181,11 +182,15 @@ function convertToReducedBasePortfolio(basePortfolio: BasePortfolio): ReducedBas
  * Get the list of all portfolios of the current user.
  */
 async function fetchUserPortfolios(): Promise<void> {
-  if (!authenticated) return;
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  allUserPortfolios = (
-      await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
-  ).data.map(convertToReducedBasePortfolio);
+  assertDefined(getKeycloakPromise)()
+      .then(async (keycloak) => {
+        if (!keycloak.authenticated) return;
+        const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+        allUserPortfolios = (
+            await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
+        ).data.map(convertToReducedBasePortfolio);
+      })
+      .catch((error) => console.log(error));
 }
 
 async function openPortfolioModal(): Promise<void> {
