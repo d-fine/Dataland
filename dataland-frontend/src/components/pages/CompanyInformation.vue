@@ -109,7 +109,7 @@ const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
 const parentCompany = ref<CompanyIdAndName | null>(null);
 
-let allUserPortfolios: ReducedBasePortfolio[];
+let allUserPortfolios: ReducedBasePortfolio[] = [];
 
 const displaySector = computed(() => {
   if (companyInformation.value?.sector) {
@@ -181,6 +181,7 @@ function convertToReducedBasePortfolio(basePortfolio: BasePortfolio): ReducedBas
  * Get the list of all portfolios of the current user.
  */
 async function fetchUserPortfolios(): Promise<void> {
+  if (!authenticated) return;
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
   allUserPortfolios = (
       await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
