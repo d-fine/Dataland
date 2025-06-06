@@ -10,6 +10,7 @@
       option-value="value"
       data-test="listOfReportingPeriods"
       placeholder="Select Starting Period"
+      class="wider-dropdown"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="frameworkError">
       Please select Starting Period.
@@ -57,24 +58,24 @@ import PrimeButton from 'primevue/button';
 import type { CompanyIdAndName } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry, PortfolioMonitoringPatch } from '@clients/userservice';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
 import Dropdown from 'primevue/dropdown';
+import { sendBulkRequest } from '@/utils/RequestUtils.ts';
 
 const availableFrameworks: DropdownOption[] = [
   { value: 'sfdr', label: 'SFDR' },
   { value: 'EU_TAXONOMY', label: 'EU Taxonomy' },
 ];
 const reportingYears = [
-  { label: "2024", value: 2024 },
-  { label: "2023", value: 2023 },
-  { label: "2022", value: 2022 },
-  { label: "2021", value: 2021 },
-  { label: "2020", value: 2020 },
-  { label: "2019", value: 2019 }
+  { label: '2024', value: 2024 },
+  { label: '2023', value: 2023 },
+  { label: '2022', value: 2022 },
+  { label: '2021', value: 2021 },
+  { label: '2020', value: 2020 },
+  { label: '2019', value: 2019 },
 ];
 
 const selectedStartingYear = ref<number | null>(null);
@@ -83,9 +84,7 @@ const selectedReportingPeriods = computed(() => {
   const startingYear = selectedStartingYear.value;
   if (!startingYear) return [];
 
-  return reportingYears
-    .filter(year => year.value >= startingYear && year.value <= 2024)
-    .map(year => year.value);
+  return reportingYears.filter((year) => year.value >= startingYear && year.value <= 2024).map((year) => year.value);
 });
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -212,21 +211,18 @@ async function createBulkDataRequest(): Promise<void> {
     .filter((c) => c.sector?.toLowerCase() !== 'financials')
     .map((c) => c.companyId);
 
-  const noSectorCompanyIds = portfolioEntries.value
-    .filter((c) => !c.sector)
-    .map((c) => c.companyId);
-
+  const noSectorCompanyIds = portfolioEntries.value.filter((c) => !c.sector).map((c) => c.companyId);
 
   const requests = [];
   const reportingPeriodsSet = selectedReportingPeriods.value as unknown as Set<string>;
-  console.log(reportingPeriodsSet)
 
   if (isEUTaxonomySelected && financialCompanyIds.length > 0) {
     requests.push(
       sendBulkRequest(
         reportingPeriodsSet,
         new Set(['eutaxonomy-financials', 'nuclear-and-gas']),
-        new Set(financialCompanyIds)
+        new Set(financialCompanyIds),
+        assertDefined(getKeycloakPromise)
       )
     );
   }
@@ -236,7 +232,8 @@ async function createBulkDataRequest(): Promise<void> {
       sendBulkRequest(
         reportingPeriodsSet,
         new Set(['eutaxonomy-non-financials', 'nuclear-and-gas']),
-        new Set(nonFinancialCompanyIds)
+        new Set(nonFinancialCompanyIds),
+        assertDefined(getKeycloakPromise)
       )
     );
   }
@@ -246,7 +243,8 @@ async function createBulkDataRequest(): Promise<void> {
       sendBulkRequest(
         reportingPeriodsSet,
         new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']),
-        new Set(noSectorCompanyIds)
+        new Set(noSectorCompanyIds),
+        assertDefined(getKeycloakPromise)
       )
     );
   }
@@ -256,7 +254,8 @@ async function createBulkDataRequest(): Promise<void> {
       sendBulkRequest(
         reportingPeriodsSet,
         new Set(['sfdr']),
-        new Set(getCompanyIds())
+        new Set(getCompanyIds()),
+        assertDefined(getKeycloakPromise)
       )
     );
   }
@@ -271,31 +270,6 @@ async function createBulkDataRequest(): Promise<void> {
   } catch (error) {
     console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
   }
-}
-
-/**
- * Sends bulk data request
- * @param reportingPeriods
- * @param dataTypes
- * @param companyIdentifiers
- */
-async function sendBulkRequest(
-  reportingPeriods: Set<string>,
-  dataTypes: Set<BulkDataRequestDataTypesEnum>,
-  companyIdentifiers: Set<string>
-): Promise<void> {
-  const payloadBulkDataRequest: BulkDataRequest = {
-    reportingPeriods: Array.from(reportingPeriods) as unknown as Set<string>,
-    dataTypes: Array.from(dataTypes) as unknown as Set<BulkDataRequestDataTypesEnum>,
-    companyIdentifiers: Array.from(companyIdentifiers) as unknown as Set<string>,
-    notifyMeImmediately: false,
-  };
-  console.log(payloadBulkDataRequest)
-
-  const requestDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-    .requestController;
-
-  await requestDataControllerApi.postBulkDataRequest(payloadBulkDataRequest);
 }
 
 /**
@@ -340,7 +314,6 @@ async function prefillModal(): Promise<void> {
     console.error('Error fetching and prefilling enriched portfolio:', error);
   }
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -363,19 +336,6 @@ label {
 
 label > div {
   text-align: left;
-}
-
-.toggle-chip-group,
-.framework-select-wrapper {
-  width: 100%;
-}
-
-.toggle-chip-group {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-  justify-content: center;
-  margin-bottom: 1.5em;
 }
 
 .button-wrapper {
@@ -409,5 +369,9 @@ label > div {
 .framework-label {
   margin: 0;
   cursor: pointer;
+}
+
+.wider-dropdown {
+  width: 250px;
 }
 </style>

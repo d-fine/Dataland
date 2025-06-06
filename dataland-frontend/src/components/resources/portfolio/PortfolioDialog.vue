@@ -81,6 +81,7 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { sendBulkRequest } from '@/utils/RequestUtils.ts';
 
 class CompanyIdAndName {
   companyId: string;
@@ -123,7 +124,6 @@ onMounted(() => {
   portfolioName.value = portfolio.portfolioName;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
 });
-
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
@@ -203,6 +203,81 @@ async function savePortfolio(): Promise<void> {
     }
   } finally {
     isPortfolioSaving.value = false;
+  }
+
+  if (!portfolioId.value) {
+    throw new Error('portfolioId is undefined');
+  }
+  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
+    portfolioId.value.toString()
+  );
+
+  if (portfolio.data.isMonitored) {
+    const financialCompanyIds = portfolio.data.entries
+      .filter((c) => c.sector?.toLowerCase() === 'financials')
+      .map((c) => c.companyId);
+
+    const nonFinancialCompanyIds = portfolio.data.entries
+      .filter((c) => c.sector?.toLowerCase() !== 'financials')
+      .map((c) => c.companyId);
+
+    const noSectorCompanyIds = portfolio.data.entries.filter((c) => !c.sector).map((c) => c.companyId);
+
+    const requests = [];
+    if (!portfolio.data.startingMonitoringPeriod) {
+      throw new Error('Missing startingMonitoringPeriod');
+    }
+    const startYear = parseInt(portfolio.data.startingMonitoringPeriod);
+    const endYear = 2024;
+
+    const reportingPeriodsSet = new Set<string>();
+    for (let year = startYear; year <= endYear; year++) {
+      reportingPeriodsSet.add(year.toString());
+    }
+    const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
+
+    if (financialCompanyIds.length > 0 && monitoredFrameworks?.has('eutaxonomy-financials')) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(['eutaxonomy-financials', 'nuclear-and-gas']),
+          new Set(financialCompanyIds),
+          assertDefined(getKeycloakPromise)
+        )
+      );
+    }
+    if (nonFinancialCompanyIds.length > 0 && monitoredFrameworks?.has('eutaxonomy-non-financials')) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(['eutaxonomy-non-financials', 'nuclear-and-gas']),
+          new Set(nonFinancialCompanyIds),
+          assertDefined(getKeycloakPromise)
+        )
+      );
+    }
+
+    if (noSectorCompanyIds.length > 0) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']),
+          new Set(noSectorCompanyIds),
+          assertDefined(getKeycloakPromise)
+        )
+      );
+    }
+
+    if (monitoredFrameworks?.has('sfdr')) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(['sfdr']),
+          new Set(processCompanyInputString()),
+          assertDefined(getKeycloakPromise)
+        )
+      );
+    }
   }
 }
 

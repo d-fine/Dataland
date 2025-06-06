@@ -362,6 +362,7 @@ function editPortfolio(): void {
     },
     data: {
       portfolio: enrichedPortfolio.value,
+      activateMonitoring: isMonitored.value,
     },
     onClose() {
       loadPortfolio();
