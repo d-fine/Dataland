@@ -3,6 +3,7 @@
       v-model="selectedPortfolios"
       :options="allUserPortfolios"
       multiple
+      :meta-key-selection="false"
       optionLabel="portfolioName"
   />
   <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
