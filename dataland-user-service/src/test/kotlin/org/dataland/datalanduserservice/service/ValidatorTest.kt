@@ -145,7 +145,7 @@ class ValidatorTest {
         doReturn(true)
             .whenever(mockPortfolioService)
             .existsPortfolioForUser(dummyPortfolioId.toString(), dummyCorrelationId)
-        doReturn(BasePortfolio(validPortfolioUpload)).whenever(mockPortfolioService).getPortfolioForUser(any())
+        doReturn(BasePortfolio(validPortfolioUpload)).whenever(mockPortfolioService).getPortfolio(any())
         doReturn(true)
             .whenever(mockPortfolioService)
             .existsPortfolioWithNameForUser(invalidPortfolioName, dummyCorrelationId)

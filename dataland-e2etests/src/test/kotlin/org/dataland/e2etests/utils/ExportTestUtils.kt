@@ -1,29 +1,52 @@
 
 package org.dataland.e2etests.utils
 
+import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.junit.jupiter.api.Assertions
 import java.io.File
+import java.io.FileWriter
 
 object ExportTestUtils {
     private val QUOTE_REGEX = "(^\")|(\"$)".toRegex()
 
+    fun convertExcelToCsv(
+        excelFile: File,
+        csvFile: File,
+    ) {
+        val workbook = WorkbookFactory.create(excelFile)
+        FileWriter(csvFile.path).use { writer ->
+            val sheet = workbook.getSheetAt(0)
+            for (row in sheet) {
+                val rowData =
+                    row.joinToString(",") { cell ->
+                        cell.toString()
+                    }
+                writer.append(rowData).append("\n")
+            }
+        }
+        workbook.close()
+    }
+
     /**
      * Provides a readable CSV file with the same name (without extension) as the given file,
-     * if such a file exists. Otherwise, returns the given file.
+     * if such a file exists. If the provided file is an excel file, it will be converted to csv.
+     * Otherwise, returns the given file.
      *
      * @param exportFile The file to check for a corresponding CSV version.
-     * @return A readable CSV file if it exists, otherwise the originally provided file.
+     * @return A readable CSV file if it exists (excel files will be converted to csv), otherwise the originally provided file.
      */
     fun getReadableCsvFile(exportFile: File): File =
         if (exportFile.extension.lowercase() == "csv") {
             exportFile
         } else {
             val csvFile = File(exportFile.parent, "${exportFile.nameWithoutExtension}.csv")
-            if (!csvFile.exists()) {
-                // If the conversion file doesn't exist, just use the original
-                exportFile
-            } else {
+            if (csvFile.exists()) {
                 csvFile
+            } else if (!csvFile.exists() && exportFile.extension.lowercase() == "xlsx") {
+                convertExcelToCsv(exportFile, csvFile)
+                csvFile
+            } else {
+                exportFile
             }
         }
 
