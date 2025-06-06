@@ -12,7 +12,7 @@
       placeholder="Select Starting Period"
       class="wider-dropdown"
     />
-    <p v-show="showReportingPeriodsError" class="text-danger" data-test="frameworkError">
+    <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
     </p>
     <label for="frameworkSelector">
