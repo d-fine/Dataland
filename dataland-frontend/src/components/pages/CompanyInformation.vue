@@ -92,7 +92,6 @@ import router from '@/router';
 import AddCompanyToPortfoliosModal, {ReducedBasePortfolio} from '@/components/general/AddCompanyToPortfoliosModal.vue';
 import {BasePortfolio} from "@clients/userservice";
 import {useDialog} from "primevue/usedialog";
-import {registerAndRedirectToSearchPage} from "@/utils/KeycloakUtils.ts";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const authenticated = inject<boolean>('authenticated');
