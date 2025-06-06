@@ -64,21 +64,6 @@ class PortfolioController
             )
         }
 
-        override fun replacePortfolioTEST(
-            portfolioId: String,
-            portfolioUpload: PortfolioUpload,
-        ): ResponseEntity<BasePortfolio> {
-            val correlationId = UUID.randomUUID().toString()
-            validator.validatePortfolioReplacement(portfolioId, portfolioUpload, correlationId)
-            return ResponseEntity.ok(
-                portfolioService.replacePortfolioTEST(
-                    portfolioId,
-                    portfolioUpload,
-                    correlationId,
-                ),
-            )
-        }
-
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
             ResponseEntity(portfolioService.deletePortfolio(portfolioId), HttpStatus.NO_CONTENT)
 
@@ -91,8 +76,9 @@ class PortfolioController
         override fun patchMonitoring(
             portfolioId: String,
             monitoringUpdate: PortfolioMonitoringPatch,
-        ): ResponseEntity<Unit> {
-            portfolioService.patchMonitoring(portfolioId, monitoringUpdate)
-            return ResponseEntity.ok().build()
+        ): ResponseEntity<BasePortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            portfolioService.patchMonitoring(portfolioId, monitoringUpdate, correlationId)
+            return ResponseEntity.ok(portfolioService.patchMonitoring(portfolioId, monitoringUpdate, correlationId))
         }
     }

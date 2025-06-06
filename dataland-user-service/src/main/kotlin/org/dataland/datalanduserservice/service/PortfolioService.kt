@@ -4,7 +4,6 @@ import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
-import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -164,35 +163,15 @@ class PortfolioService
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
             return portfolioRepository
-                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
-                .toBasePortfolio()
-        }
-
-        /**
-         * Replace an existing portfolio.TEST
-         */
-        @Transactional
-        fun replacePortfolioTEST(
-            portfolioId: String,
-            portfolioUpload: PortfolioUpload,
-            correlationId: String,
-        ): BasePortfolio {
-            logger.info(
-                "Replace portfolio with portfolioId: $portfolioId for user with userId: ${DatalandAuthentication.fromContext().userId}." +
-                    " CorrelationId: $correlationId.",
-            )
-            val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(
-                    DatalandAuthentication.fromContext().userId,
-                    UUID.fromString(portfolioId),
-                )
-                    ?: throw PortfolioNotFoundApiException(portfolioId)
-
-            val portfolio = BasePortfolio.keepMonitoringInvariant(originalPortfolio.toBasePortfolio(), portfolioUpload)
-
-            return portfolioRepository
-                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
-                .toBasePortfolio()
+                .save(
+                    portfolio.toPortfolioEntity(
+                        portfolioId,
+                        originalPortfolio.creationTimestamp,
+                        originalPortfolio.isMonitored,
+                        originalPortfolio.startingMonitoringPeriod,
+                        originalPortfolio.monitoredFrameworks,
+                    ),
+                ).toBasePortfolio()
         }
 
         /**
@@ -224,31 +203,27 @@ class PortfolioService
         fun patchMonitoring(
             portfolioId: String,
             patch: PortfolioMonitoringPatch,
-        ) {
+            correlationId: String,
+        ): BasePortfolio {
             val userId = DatalandAuthentication.fromContext().userId
-            val correlationId = UUID.randomUUID().toString()
-
             logger.info(
-                "Patch monitoring for portfolio with portfolioId: $portfolioId for user with userId: $userId. " +
-                    "CorrelationId: $correlationId. Patch: $patch",
+                "Patch monitoring of portfolio with portfolioId: $portfolioId for user with userId: $userId." +
+                    " CorrelationId: $correlationId.",
             )
 
-            val portfolioEntity =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+            val originalPortfolio =
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))?.toBasePortfolio()
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
-            if (patch.startingMonitoringPeriod != null) {
-                portfolioEntity.startingMonitoringPeriod = patch.startingMonitoringPeriod
-            }
-
-            if (patch.monitoredFrameworks != null) {
-                portfolioEntity.monitoredFrameworks = patch.monitoredFrameworks.toMutableSet()
-            }
-
-            portfolioEntity.isMonitored = patch.isMonitored
-
-            portfolioEntity.lastUpdateTimestamp = System.currentTimeMillis()
-            portfolioRepository.save(portfolioEntity)
-            logger.info("Monitoring successfully patched for portfolioId: $portfolioId. CorrelationId: $correlationId.")
+            return portfolioRepository
+                .save(
+                    originalPortfolio.toPortfolioEntity(
+                        portfolioId,
+                        originalPortfolio.creationTimestamp,
+                        patch.isMonitored,
+                        patch.startingMonitoringPeriod,
+                        patch.monitoredFrameworks,
+                    ),
+                ).toBasePortfolio()
         }
     }
