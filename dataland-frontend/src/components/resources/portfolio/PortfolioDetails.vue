@@ -433,6 +433,7 @@ function monitorPortfolio(): void {
       portfolio: enrichedPortfolio.value,
       companies: portfolioEntriesToDisplay.value,
       activateMonitoring: activateMonitoring.value,
+      portfolioId: enrichedPortfolio.value?.portfolioId
     },
     onClose() {
       loadPortfolio();
@@ -516,10 +517,13 @@ a:after {
 
   :deep(.p-inputswitch) {
     transform: scale(1.3);
+    margin-left: 0.3rem; /* push it right so it’s not clipped */
   }
 
   span {
     white-space: nowrap;
   }
 }
+
+
 </style>

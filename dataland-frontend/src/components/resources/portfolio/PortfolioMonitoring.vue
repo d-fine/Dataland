@@ -22,7 +22,7 @@
         class="framework-switch-row"
       >
         <InputSwitch
-          class="form-field"
+          class="form-field vertical-middle"
           v-model="framework.value"
           :id="framework.id"
           @change="onFrameworksSwitched"
@@ -77,7 +77,6 @@ const selectedReportingPeriods = computed(() => {
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const portfolioId = ref<string | null>(null);
 const reportingYearsToggleOptions = reactive(
   reportingYears.map((year) => ({
     name: String(year),
@@ -87,6 +86,7 @@ const reportingYearsToggleOptions = reactive(
 );
 const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
+const portfolioId = ref<string>('');
 const availableReportingPeriods = computed(() => {
   if (!selectedStartingYear.value) {
     return reportingYearsToggleOptions;
@@ -114,13 +114,14 @@ function onFrameworksSwitched(): void {
   resetErrors();
 }
 
-onMounted(() => {
+onMounted(async() => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
     const portfolio = data.portfolio as EnrichedPortfolio;
-    portfolioId.value = portfolio.portfolioId;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
+    portfolioId.value = portfolio.portfolioId;
   }
+  await prefillModal();
 });
 
 /**
@@ -184,7 +185,7 @@ async function createPatch(): Promise<void> {
     .portfolioController;
 
   try {
-    await portfolioControllerApi.patchMonitoring(portfolioId.value as string, payloadPatchMonitoring);
+    await portfolioControllerApi.patchMonitoring(portfolioId.value, payloadPatchMonitoring);
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
   }
@@ -237,6 +238,59 @@ async function createBulkDataRequest(): Promise<void> {
     console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
   }
 }
+
+/**
+ * Prefills Modal based on database
+ */
+async function prefillModal(): Promise<void> {
+  if (!portfolioId.value) return;
+
+  try {
+    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)())
+    const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioId.value);
+
+    if (!portfolio) return;
+
+    portfolioCompanies.value = getUniqueSortedCompanies(portfolio.data.entries);
+
+    if (portfolio.data.startingMonitoringPeriod) {
+      const startPeriod = String(portfolio.data.startingMonitoringPeriod);
+      selectedStartingYear.value = startPeriod;
+
+      reportingYearsToggleOptions.forEach(option => {
+        option.value = option.name === startPeriod;
+      });
+    }
+
+    let monitoredSet: Set<string>;
+    if (portfolio.data.monitoredFrameworks instanceof Set) {
+      monitoredSet = portfolio.data.monitoredFrameworks;
+    } else if (Array.isArray(portfolio.data.monitoredFrameworks)) {
+      monitoredSet = new Set(portfolio.data.monitoredFrameworks);
+    } else {
+      monitoredSet = new Set();
+    }
+
+    // Define the special EU Taxonomy data types
+    const euTaxoDatatypes = new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']);
+    const hasEuTaxoDatatypes = [...monitoredSet].some(dt => euTaxoDatatypes.has(dt));
+
+    // Now set toggle values:
+    frameworkSwitchOptions.forEach(option => {
+      if (option.id === 'EU_TAXONOMY') {
+        // If any special EU taxonomy data types or "EU_TAXONOMY" explicitly present => select toggle
+        option.value = hasEuTaxoDatatypes || monitoredSet.has(option.id);
+      } else {
+        // For other frameworks like SFDR, just check if they are included
+        option.value = monitoredSet.has(option.id);
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching and prefilling enriched portfolio:', error);
+  }
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -295,5 +349,6 @@ label > div {
   margin: 0;
   cursor: pointer;
 }
+
 
 </style>
