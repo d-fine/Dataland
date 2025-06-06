@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineEmits, inject, type PropType, type Ref, ref} from 'vue';
+import {defineEmits, inject, onMounted, type Ref, ref} from 'vue';
 import {ApiClientProvider} from '@/services/ApiClients.ts';
 import {assertDefined} from '@/utils/TypeScriptUtils.ts';
 import Listbox from 'primevue/listbox';
@@ -27,41 +27,31 @@ export interface ReducedBasePortfolio {
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
+const data = dialogRef?.value.data;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
+let companyId: string;
+let allUserPortfolios: ReducedBasePortfolio[];
 
 const selectedPortfolios = ref<ReducedBasePortfolio[]>([]);
 
-const props = defineProps({
-  companyId: {
-    type: String,
-    required: true,
-  },
-  allUserPortfolios: {
-    type: Array as PropType<Array<ReducedBasePortfolio>>,
-    required: true,
-  },
-});
-
 const emit = defineEmits(['closePortfolioModal']);
+
+onMounted(() => {
+  companyId = data.companyId;
+  allUserPortfolios = data.allUserPortfolios;
+});
 
 const handleCompanyAddition = (): void => {
   if (selectedPortfolios.value.length === 0) return;
   selectedPortfolios.value.forEach(async (selectedPortfolio) => {
     console.log("selectedPortfolio: " + JSON.stringify(selectedPortfolio) + "!!!!!!!");
-    /*
-    const reducedBasePortfolio = allUserPortfolios.find(
-        (reducedBasePortfolio) => {
-          console.log("reducedBasePortfolio.portfolioName: " + reducedBasePortfolio.portfolioName + "!!!!!!!")
-          return reducedBasePortfolio.portfolioName === selectedPortfolio.portfolioName
-        }
-    );
-     */
     await apiClientProvider.apiClients.portfolioController.replacePortfolio(
         selectedPortfolio.portfolioId,
         {
           portfolioName: selectedPortfolio.portfolioName,
           // as unknown as Set<string> cast required to ensure proper json is created
-          companyIds: [...selectedPortfolio.companyIds, props.companyId] as unknown as Set<string>,
+          companyIds: [...selectedPortfolio.companyIds, companyId] as unknown as Set<string>,
         });
   });
   closeDialog();
