@@ -51,9 +51,9 @@ data class BasePortfolio(
             portfolioUpload: PortfolioUpload,
         ): BasePortfolio =
             BasePortfolio(
-                portfolioId = UUID.randomUUID().toString(),
+                portfolioId = originalPortfolio.portfolioId,
                 portfolioName = portfolioUpload.portfolioName,
-                userId = DatalandAuthentication.fromContext().userId,
+                userId = originalPortfolio.userId,
                 creationTimestamp = originalPortfolio.creationTimestamp,
                 lastUpdateTimestamp = Instant.now().toEpochMilli(),
                 companyIds = portfolioUpload.companyIds,
