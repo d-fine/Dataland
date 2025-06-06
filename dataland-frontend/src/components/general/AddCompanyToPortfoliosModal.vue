@@ -19,7 +19,6 @@ import Listbox from 'primevue/listbox';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
 import type {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 
 export interface ReducedBasePortfolio {
   portfolioId: string,
