@@ -31,15 +31,15 @@ const data = dialogRef?.value.data;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 let companyId: string;
-let allUserPortfolios: ReducedBasePortfolio[];
 
+const allUserPortfolios = ref<ReducedBasePortfolio[]>();
 const selectedPortfolios = ref<ReducedBasePortfolio[]>([]);
 
 const emit = defineEmits(['closePortfolioModal']);
 
 onMounted(() => {
   companyId = data.companyId;
-  allUserPortfolios = data.allUserPortfolios;
+  allUserPortfolios.value = data.allUserPortfolios;
 });
 
 const handleCompanyAddition = (): void => {
