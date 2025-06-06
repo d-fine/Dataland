@@ -61,7 +61,7 @@ const closeDialog = (): void => {
 
 <style scoped lang="scss">
 .p-listbox-list .p-highlight {
-  background-color: darkseagreen !important;
+  background-color: darkseagreen;
 }
 
 /*.p-listbox-item.p-focus {
