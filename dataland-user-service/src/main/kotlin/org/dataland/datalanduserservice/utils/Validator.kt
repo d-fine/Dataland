@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
+import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.springframework.beans.factory.annotation.Autowired
@@ -88,6 +89,22 @@ class Validator
                 } else {
                     throw exception
                 }
+            }
+        }
+
+        /**
+         * Validates that the portfo
+         */
+        fun validateMonitoringPatch(
+            portfolioId: String,
+            patch: PortfolioMonitoringPatch,
+            correlationId: String,
+        ) {
+            if (!portfolioService.existsPortfolioForUser(portfolioId, correlationId)) {
+                throw PortfolioNotFoundApiException(portfolioId)
+            }
+
+            if (patch.isMonitored == null && patch.startingMonitoringPeriod == null && patch.monitoredFrameworks == null) {
             }
         }
     }

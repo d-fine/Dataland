@@ -21,76 +21,6 @@
     }
   ],
   "paths": {
-    "/portfolios/{portfolioId}/test": {
-      "put": {
-        "tags": [
-          "portfolio-controller"
-        ],
-        "summary": "Replace an existing portfolio.",
-        "description": "Replace the existing portfolio with given portfolioId entirely",
-        "operationId": "replacePortfolioTEST",
-        "parameters": [
-          {
-            "name": "portfolioId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortfolioUpload"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully replaced existing portfolio.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BasePortfolio"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/portfolios/{portfolioId}/": {
       "get": {
         "tags": [
@@ -411,7 +341,13 @@
         "responses": {
           "200": {
             "description": "Successfully updated monitoring.",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -949,9 +885,6 @@
         }
       },
       "PortfolioMonitoringPatch": {
-        "required": [
-          "isMonitored"
-        ],
         "type": "object",
         "properties": {
           "isMonitored": {
