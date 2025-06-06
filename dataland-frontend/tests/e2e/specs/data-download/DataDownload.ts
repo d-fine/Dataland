@@ -10,7 +10,7 @@ import { describeIf } from '@e2e/support/TestUtility.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
-Cypress._.times(10,() => {
+Cypress._.times(10, () => {
   describeIf(
     'As a user, I want to be able to download datasets from Dataland',
     {
@@ -137,7 +137,6 @@ Cypress._.times(10,() => {
       beforeEach(() => {
         cy.ensureLoggedIn(reader_name, reader_pw);
       });
-
 
       it('Download data as CSV file, check for appropriate size and delete it afterwards', () => {
         const frameworkLabel = getFrameworkLabel();

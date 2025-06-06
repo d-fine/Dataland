@@ -1,21 +1,21 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="reportingYearSelector" class="reporting-period-label">
-      <div>Starting Period</div>
+      <p>Starting Period</p>
     </label>
-    <ToggleChipFormInputs
-      :name="'listOfReportingPeriods'"
-      :options="reportingYearsToggleOptions"
-      :availableOptions="availableReportingPeriods"
-      @changed="onReportingYearsChanged"
+    <Dropdown
+      v-model="selectedStartingYear"
+      :options="reportingYears"
+      option-label="label"
+      option-value="value"
       data-test="listOfReportingPeriods"
-      class="toggle-chip-group"
+      placeholder="Select Starting Period"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="frameworkError">
       Please select Starting Period.
     </p>
     <label for="frameworkSelector">
-      <div>Frameworks</div>
+      <p>Frameworks</p>
     </label>
     <div class="framework-switch-group">
       <div v-for="framework in frameworkSwitchOptions" :key="framework.id" class="framework-switch-row">
@@ -61,41 +61,39 @@ import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@client
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
+import Dropdown from 'primevue/dropdown';
 
 const availableFrameworks: DropdownOption[] = [
   { value: 'sfdr', label: 'SFDR' },
   { value: 'EU_TAXONOMY', label: 'EU Taxonomy' },
 ];
-const reportingYears = [2024, 2023, 2022, 2021, 2020, 2019];
-const selectedStartingYear = ref<string | null>(null);
+const reportingYears = [
+  { label: "2024", value: 2024 },
+  { label: "2023", value: 2023 },
+  { label: "2022", value: 2022 },
+  { label: "2021", value: 2021 },
+  { label: "2020", value: 2020 },
+  { label: "2019", value: 2019 }
+];
+
+const selectedStartingYear = ref<number | null>(null);
+
 const selectedReportingPeriods = computed(() => {
-  const startingYear = Number(selectedStartingYear.value);
-  if (isNaN(startingYear)) return [];
-  return reportingYears.filter((year) => year >= startingYear && year <= 2024).map(String);
+  const startingYear = selectedStartingYear.value;
+  if (!startingYear) return [];
+
+  return reportingYears
+    .filter(year => year.value >= startingYear && year.value <= 2024)
+    .map(year => year.value);
 });
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const reportingYearsToggleOptions = reactive(
-  reportingYears.map((year) => ({
-    name: String(year),
-    value: false,
-    tooltip: `Start monitoring from ${year}`,
-  }))
-);
 const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
 const portfolioId = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
-const availableReportingPeriods = computed(() => {
-  if (!selectedStartingYear.value) {
-    return reportingYearsToggleOptions;
-  }
-
-  return reportingYearsToggleOptions.filter((option) => option.name === selectedStartingYear.value);
-});
 
 const frameworkSwitchOptions = reactive(
   availableFrameworks.map((framework) => ({
@@ -131,25 +129,6 @@ onMounted(async () => {
 function resetErrors(): void {
   showReportingPeriodsError.value = false;
   showFrameworksError.value = false;
-}
-
-/**
- * Handles change of startingYear
- */
-function onReportingYearsChanged(): void {
-  const selected = reportingYearsToggleOptions.find((option) => option.value);
-
-  if (selected) {
-    selectedStartingYear.value = selected.name;
-    reportingYearsToggleOptions.forEach((option) => {
-      option.value = option.name === selected.name;
-    });
-  } else {
-    selectedStartingYear.value = null;
-    reportingYearsToggleOptions.forEach((option) => {
-      option.value = false;
-    });
-  }
 }
 
 /**
@@ -233,10 +212,14 @@ async function createBulkDataRequest(): Promise<void> {
     .filter((c) => c.sector?.toLowerCase() !== 'financials')
     .map((c) => c.companyId);
 
+  const noSectorCompanyIds = portfolioEntries.value
+    .filter((c) => !c.sector)
+    .map((c) => c.companyId);
+
 
   const requests = [];
   const reportingPeriodsSet = selectedReportingPeriods.value as unknown as Set<string>;
-
+  console.log(reportingPeriodsSet)
 
   if (isEUTaxonomySelected && financialCompanyIds.length > 0) {
     requests.push(
@@ -254,6 +237,16 @@ async function createBulkDataRequest(): Promise<void> {
         reportingPeriodsSet,
         new Set(['eutaxonomy-non-financials', 'nuclear-and-gas']),
         new Set(nonFinancialCompanyIds)
+      )
+    );
+  }
+
+  if (noSectorCompanyIds.length > 0) {
+    requests.push(
+      sendBulkRequest(
+        reportingPeriodsSet,
+        new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']),
+        new Set(noSectorCompanyIds)
       )
     );
   }
@@ -316,16 +309,12 @@ async function prefillModal(): Promise<void> {
     const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioId.value);
 
     if (!portfolio) return;
+    if (!portfolio.data.isMonitored) return;
 
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.data.entries);
 
     if (portfolio.data.startingMonitoringPeriod) {
-      const startPeriod = String(portfolio.data.startingMonitoringPeriod);
-      selectedStartingYear.value = startPeriod;
-
-      reportingYearsToggleOptions.forEach((option) => {
-        option.value = option.name === startPeriod;
-      });
+      selectedStartingYear.value = Number(portfolio.data.startingMonitoringPeriod);
     }
 
     let monitoredSet: Set<string>;
@@ -351,6 +340,7 @@ async function prefillModal(): Promise<void> {
     console.error('Error fetching and prefilling enriched portfolio:', error);
   }
 }
+
 </script>
 
 <style scoped lang="scss">

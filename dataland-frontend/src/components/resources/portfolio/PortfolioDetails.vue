@@ -9,7 +9,7 @@
     persists.
   </div>
   <div v-else>
-    <span class="button_bar">
+    <div class="button_bar">
       <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
@@ -19,17 +19,16 @@
       </PrimeButton>
 
       <div class="monitor-toggle-wrapper">
-        <InputSwitch :modelValue="activateMonitoring" @update:modelValue="onToggleMonitoring" />
+        <InputSwitch :modelValue="isMonitored" @update:modelValue="onToggleMonitoring" />
         <span data-test="monitorPortfolioToggleCaption" class="ml-2">Monitor Portfolio</span>
       </div>
-
-      <span style="display: flex; align-items: center; margin-left: auto; gap: 0.5rem">
+      <div>
         <PrimeButton class="primary-button" @click="monitorPortfolio()" data-test="monitor-portfolio">
           <i class="pi pi-bell pr-2" /> EDIT MONITORING
         </PrimeButton>
         <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
-      </span>
-    </span>
+      </div>
+    </div>
 
     <DataTable
       stripedRows
@@ -228,7 +227,7 @@ const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const isLoading = ref(true);
 const isError = ref(false);
-const activateMonitoring = ref<boolean>(false);
+const isMonitored = ref<boolean>(false);
 
 onMounted(() => {
   loadPortfolio();
@@ -314,7 +313,7 @@ function loadPortfolio(): void {
       enrichedPortfolio.value = response.data;
 
       portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-      activateMonitoring.value = enrichedPortfolio.value?.isMonitored ?? false;
+      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
     .catch((reason) => {
       console.error(reason);
@@ -430,7 +429,7 @@ function monitorPortfolio(): void {
       portfolioName: fullName,
       portfolio: enrichedPortfolio.value,
       companies: portfolioEntriesToDisplay.value,
-      activateMonitoring: activateMonitoring.value,
+      activateMonitoring: isMonitored.value,
       portfolioId: enrichedPortfolio.value?.portfolioId,
     },
     onClose() {
@@ -442,10 +441,10 @@ function monitorPortfolio(): void {
 
 /**
  * Opens the modal for monitoring settings
- * @param enabled if toggle is on or not
+ * @param newValue tracks changes of toggle
  */
 async function onToggleMonitoring(newValue: boolean): Promise<void> {
-  activateMonitoring.value = newValue;
+  isMonitored.value = newValue;
   if (newValue) {
     monitorPortfolio();
   } else {
