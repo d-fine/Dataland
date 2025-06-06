@@ -1,6 +1,12 @@
 package org.dataland.datalandbatchmanager.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.resilience4j.ratelimiter.RateLimiter
+import io.github.resilience4j.ratelimiter.RateLimiter.waitForPermission
+import io.github.resilience4j.ratelimiter.RateLimiterConfig
+import io.github.resilience4j.ratelimiter.RequestNotPermitted
+import io.github.resilience4j.retry.Retry
+import io.github.resilience4j.retry.RetryConfig
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -13,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.net.SocketTimeoutException
+import java.time.Duration
 
 /**
  * Class for handling the upload of the company information retrieved from GLEIF to the Dataland backend
@@ -23,11 +30,48 @@ class CompanyUploader(
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     companion object {
-        const val MAX_RETRIES = 3
+        const val MAX_RETRIES = 50
+        const val WAIT_DURATION: Long = 120
         const val UNAUTHORIZED_CODE = 401
+        const val LIMIT_FOR_PERIOD = 500
+        const val LIMIT_REFRESH_DURATION: Long = 1
+        const val TIMEOUT_DURATION: Long = 60
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    private val rateLimiter: RateLimiter
+    private val retry: Retry
+
+    init {
+        val retryConfig =
+            RetryConfig
+                .custom<Any>()
+                .maxAttempts(MAX_RETRIES)
+                .waitDuration(Duration.ofSeconds(WAIT_DURATION))
+                .retryExceptions(
+                    SocketTimeoutException::class.java,
+                    ClientException::class.java,
+                    ServerException::class.java,
+                ).build()
+
+        retry = Retry.of("apiRetry", retryConfig)
+
+        retry.eventPublisher.onRetry { event ->
+            logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed due to: ${event.lastThrowable?.message}, retrying...")
+        }
+
+        // Programmatic RateLimiter configuration
+        val rateLimiterConfig =
+            RateLimiterConfig
+                .custom()
+                .limitForPeriod(LIMIT_FOR_PERIOD)
+                .limitRefreshPeriod(Duration.ofSeconds(LIMIT_REFRESH_DURATION))
+                .timeoutDuration(Duration.ofMinutes(TIMEOUT_DURATION))
+                .build()
+
+        rateLimiter = RateLimiter.of("testLimiter", rateLimiterConfig)
+    }
 
     @Suppress("ReturnCount")
     private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException): Pair<String?, Set<String?>?> {
@@ -63,24 +107,24 @@ class CompanyUploader(
         return Pair(conflictingCompanyIds.first(), conflictingIdentifierTypes)
     }
 
-    private fun retryOnCommonApiErrors(functionToExecute: () -> Unit) {
-        var counter = 0
-        while (counter < MAX_RETRIES) {
-            try {
-                functionToExecute()
-                return
-            } catch (exception: ClientException) {
-                logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
-                counter++
-            } catch (exception: SocketTimeoutException) {
-                logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
-                counter++
-            } catch (exception: ServerException) {
-                logger.error("Unexpected server exception. Response was: ${exception.message}.")
-                counter++
+    private fun executeWithRetryAndThrottling(task: () -> Unit) {
+        val decoratedTask =
+            Retry.decorateCheckedRunnable(retry) {
+                waitForPermission(rateLimiter)
+                task()
             }
+        try {
+            decoratedTask.run()
+            logger.info("Function executed successfully.")
+        } catch (exception: ClientException) {
+            logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
+        } catch (exception: SocketTimeoutException) {
+            logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
+        } catch (exception: ServerException) {
+            logger.error("Unexpected server exception. Response was: ${exception.message}.")
+        } catch (exception: RequestNotPermitted) {
+            logger.error("Rate limit exceeded: ${exception.message}.")
         }
-        logger.error("Maximum number of retries exceeded.")
     }
 
     /**
@@ -91,9 +135,10 @@ class CompanyUploader(
     fun uploadOrPatchSingleCompany(companyInformation: ExternalCompanyInformation) {
         var patchCompanyId: String? = null
         var allConflictingIdentifiers: Set<String?>? = null
-        retryOnCommonApiErrors {
+
+        executeWithRetryAndThrottling {
             try {
-                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()} ")
+                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()}")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
                 val (conflictingCompanyId, conflictingIdentifiers) =
@@ -125,7 +170,7 @@ class CompanyUploader(
         conflictingIdentifiers: Set<String?>?,
     ) {
         val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
-        retryOnCommonApiErrors {
+        executeWithRetryAndThrottling {
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyPatch,
@@ -135,13 +180,14 @@ class CompanyUploader(
 
     /**
      * Updates the final / ultimate parents of all companies.
-     * @param finalParentMapping the parent-mapping with the format "LEI"->"LEI"
+     * @param finalParentMapping the parent-mapping with the format "LEI" -> "LEI"
      */
     fun updateRelationships(finalParentMapping: Map<String, String>) {
         for ((startLei, endLei) in finalParentMapping) {
             val companyId = searchCompanyByLEI(startLei) ?: continue
             logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
-            retryOnCommonApiErrors {
+
+            executeWithRetryAndThrottling {
                 companyDataControllerApi.patchCompanyById(
                     companyId,
                     CompanyInformationPatch(parentCompanyLei = endLei),
@@ -152,20 +198,26 @@ class CompanyUploader(
 
     private fun searchCompanyByLEI(lei: String): String? {
         var companyId: String? = null
-        retryOnCommonApiErrors {
+        var found404 = false
+
+        executeWithRetryAndThrottling {
             logger.info("Searching for company with LEI: $lei")
-            companyId =
-                try {
-                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
-                } catch (e: ClientException) {
-                    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.error("Could not find company with LEI: $lei")
-                        return@retryOnCommonApiErrors
-                    }
-                    throw e
+            try {
+                companyId =
+                    companyDataControllerApi
+                        .getCompanyIdByIdentifier(IdentifierType.Lei, lei)
+                        .companyId
+            } catch (exception: ClientException) {
+                if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    logger.warn("Could not find company with LEI: $lei")
+                    found404 = true
+                } else {
+                    throw exception
                 }
+            }
         }
-        return companyId
+
+        return if (found404) null else companyId
     }
 
     /**
@@ -190,7 +242,7 @@ class CompanyUploader(
                 IdentifierType.Isin.value to isins.toList(),
             )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
-        retryOnCommonApiErrors {
+        executeWithRetryAndThrottling {
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyPatch,
