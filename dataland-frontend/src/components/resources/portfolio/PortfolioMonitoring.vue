@@ -238,7 +238,7 @@ async function createBulkDataRequest(): Promise<void> {
     );
   }
 
-  if (noSectorCompanyIds.length > 0) {
+  if (isEUTaxonomySelected && noSectorCompanyIds.length > 0) {
     requests.push(
       sendBulkRequest(
         reportingPeriodsSet,
