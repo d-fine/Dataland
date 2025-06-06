@@ -109,6 +109,8 @@ const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
 const parentCompany = ref<CompanyIdAndName | null>(null);
 
+let allUserPortfolios: ReducedBasePortfolio[];
+
 const displaySector = computed(() => {
   if (companyInformation.value?.sector) {
     return companyInformation.value?.sector;
@@ -178,23 +180,25 @@ function convertToReducedBasePortfolio(basePortfolio: BasePortfolio): ReducedBas
 /**
  * Get the list of all portfolios of the current user.
  */
-async function fetchUserPortfolios(): Promise<ReducedBasePortfolio[]> {
+async function fetchUserPortfolios(): Promise<void> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  return (
+  allUserPortfolios = (
       await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
   ).data.map(convertToReducedBasePortfolio);
 }
 
 async function openPortfolioModal(): Promise<void> {
-  dialog.open(AddCompanyToPortfoliosModal, {
-    props: {
-      header: 'Add company to your portfolio(s)',
-      modal: true,
-    },
-    data: {
-      companyId: props.companyId,
-      allUserPortfolios: fetchUserPortfolios(),
-    }
+  fetchUserPortfolios().then(() => {
+    dialog.open(AddCompanyToPortfoliosModal, {
+      props: {
+        header: 'Add company to your portfolio(s)',
+        modal: true,
+      },
+      data: {
+        companyId: props.companyId,
+        allUserPortfolios: allUserPortfolios,
+      }
+    });
   });
 }
 
