@@ -20807,6 +20807,37 @@
           }
         }
       },
+      "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
