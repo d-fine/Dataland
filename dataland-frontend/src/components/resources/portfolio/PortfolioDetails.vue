@@ -10,26 +10,26 @@
   </div>
   <div v-else>
     <span class="button_bar">
-  <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
-    <i class="material-icons pr-2">edit</i> Edit Portfolio
-  </PrimeButton>
+      <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
+        <i class="material-icons pr-2">edit</i> Edit Portfolio
+      </PrimeButton>
 
-  <PrimeButton class="primary-button" @click="downloadPortfolio()" data-test="download-portfolio">
-    <i class="pi pi-download pr-2" /> Download Portfolio
-  </PrimeButton>
+      <PrimeButton class="primary-button" @click="downloadPortfolio()" data-test="download-portfolio">
+        <i class="pi pi-download pr-2" /> Download Portfolio
+      </PrimeButton>
 
-  <div class="monitor-toggle-wrapper">
-    <InputSwitch :modelValue="activateMonitoring" @update:modelValue="onToggleMonitoring" />
-    <span data-test="monitorPortfolioToggleCaption" class="ml-2">Monitor Portfolio</span>
-  </div>
+      <div class="monitor-toggle-wrapper">
+        <InputSwitch :modelValue="activateMonitoring" @update:modelValue="onToggleMonitoring" />
+        <span data-test="monitorPortfolioToggleCaption" class="ml-2">Monitor Portfolio</span>
+      </div>
 
-  <span style="display: flex; align-items: center; margin-left: auto; gap: 0.5rem">
-    <PrimeButton class="primary-button" @click="monitorPortfolio()" data-test="monitor-portfolio">
-      <i class="pi pi-bell pr-2" /> EDIT MONITORING
-    </PrimeButton>
-    <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
-  </span>
-</span>
+      <span style="display: flex; align-items: center; margin-left: auto; gap: 0.5rem">
+        <PrimeButton class="primary-button" @click="monitorPortfolio()" data-test="monitor-portfolio">
+          <i class="pi pi-bell pr-2" /> EDIT MONITORING
+        </PrimeButton>
+        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+      </span>
+    </span>
 
     <DataTable
       stripedRows
@@ -340,8 +340,6 @@ async function stopMonitoring(): Promise<void> {
   }
 }
 
-
-
 /**
  * Resets all filters
  */
@@ -433,7 +431,7 @@ function monitorPortfolio(): void {
       portfolio: enrichedPortfolio.value,
       companies: portfolioEntriesToDisplay.value,
       activateMonitoring: activateMonitoring.value,
-      portfolioId: enrichedPortfolio.value?.portfolioId
+      portfolioId: enrichedPortfolio.value?.portfolioId,
     },
     onClose() {
       loadPortfolio();
@@ -524,6 +522,4 @@ a:after {
     white-space: nowrap;
   }
 }
-
-
 </style>

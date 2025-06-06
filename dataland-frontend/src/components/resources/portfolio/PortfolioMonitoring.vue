@@ -11,16 +11,14 @@
       data-test="listOfReportingPeriods"
       class="toggle-chip-group"
     />
-    <p v-show="showReportingPeriodsError" class="text-danger" data-test="frameworkError">Please select Starting Period.</p>
+    <p v-show="showReportingPeriodsError" class="text-danger" data-test="frameworkError">
+      Please select Starting Period.
+    </p>
     <label for="frameworkSelector">
       <div>Frameworks</div>
     </label>
     <div class="framework-switch-group">
-      <div
-        v-for="framework in frameworkSwitchOptions"
-        :key="framework.id"
-        class="framework-switch-row"
-      >
+      <div v-for="framework in frameworkSwitchOptions" :key="framework.id" class="framework-switch-row">
         <InputSwitch
           class="form-field vertical-middle"
           v-model="framework.value"
@@ -35,7 +33,9 @@
         EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
       </span>
     </div>
-    <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select at least one Framework.</p>
+    <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">
+      Please select at least one Framework.
+    </p>
     <div class="button-wrapper" style="width: 100%; text-align: right">
       <PrimeButton
         data-test="saveChangesButton"
@@ -81,7 +81,7 @@ const reportingYearsToggleOptions = reactive(
   reportingYears.map((year) => ({
     name: String(year),
     value: false,
-    tooltip: `Start monitoring from ${year}`
+    tooltip: `Start monitoring from ${year}`,
   }))
 );
 const showFrameworksError = ref(false);
@@ -103,9 +103,7 @@ const frameworkSwitchOptions = reactive(
   }))
 );
 
-const selectedFrameworks = computed(() =>
-  frameworkSwitchOptions.filter((f) => f.value).map((f) => f.id)
-);
+const selectedFrameworks = computed(() => frameworkSwitchOptions.filter((f) => f.value).map((f) => f.id));
 
 /**
  * Resets Frameworkerros
@@ -114,7 +112,7 @@ function onFrameworksSwitched(): void {
   resetErrors();
 }
 
-onMounted(async() => {
+onMounted(async () => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
     const portfolio = data.portfolio as EnrichedPortfolio;
@@ -170,12 +168,17 @@ function getCompanyIds(): string[] {
  * Handles creation of patch
  */
 async function createPatch(): Promise<void> {
-  let dataTypes: string[];
+  const dataTypes: string[] = [];
+
   if (selectedFrameworks.value.includes('EU_TAXONOMY')) {
-    dataTypes = ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'];
-  } else {
-    dataTypes = selectedFrameworks.value;
+    dataTypes.push('eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas');
   }
+
+  selectedFrameworks.value.forEach((fw) => {
+    if (fw !== 'EU_TAXONOMY') {
+      dataTypes.push(fw);
+    }
+  });
   const payloadPatchMonitoring: PortfolioMonitoringPatch = {
     isMonitored: true,
     startingMonitoringPeriod: selectedStartingYear.value as unknown as string,
@@ -209,13 +212,16 @@ async function createBulkDataRequest(): Promise<void> {
     return;
   }
 
-  let dataTypes: string[];
+  const dataTypes: string[] = [];
 
   if (selectedFrameworks.value.includes('EU_TAXONOMY')) {
-    dataTypes = ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'];
-  } else {
-    dataTypes = selectedFrameworks.value;
+    dataTypes.push('eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas');
   }
+  selectedFrameworks.value.forEach((fw) => {
+    if (fw !== 'EU_TAXONOMY') {
+      dataTypes.push(fw);
+    }
+  });
 
   const payloadBulkDataRequest: BulkDataRequest = {
     reportingPeriods: selectedReportingPeriods.value as unknown as Set<string>,
@@ -246,7 +252,7 @@ async function prefillModal(): Promise<void> {
   if (!portfolioId.value) return;
 
   try {
-    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)())
+    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioId.value);
 
     if (!portfolio) return;
@@ -257,7 +263,7 @@ async function prefillModal(): Promise<void> {
       const startPeriod = String(portfolio.data.startingMonitoringPeriod);
       selectedStartingYear.value = startPeriod;
 
-      reportingYearsToggleOptions.forEach(option => {
+      reportingYearsToggleOptions.forEach((option) => {
         option.value = option.name === startPeriod;
       });
     }
@@ -270,27 +276,21 @@ async function prefillModal(): Promise<void> {
     } else {
       monitoredSet = new Set();
     }
+    console.log(portfolio.data.monitoredFrameworks);
 
-    // Define the special EU Taxonomy data types
     const euTaxoDatatypes = new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']);
-    const hasEuTaxoDatatypes = [...monitoredSet].some(dt => euTaxoDatatypes.has(dt));
-
-    // Now set toggle values:
-    frameworkSwitchOptions.forEach(option => {
+    const hasEuTaxoDatatypes = [...monitoredSet].some((dt) => euTaxoDatatypes.has(dt));
+    frameworkSwitchOptions.forEach((option) => {
       if (option.id === 'EU_TAXONOMY') {
-        // If any special EU taxonomy data types or "EU_TAXONOMY" explicitly present => select toggle
         option.value = hasEuTaxoDatatypes || monitoredSet.has(option.id);
       } else {
-        // For other frameworks like SFDR, just check if they are included
         option.value = monitoredSet.has(option.id);
       }
     });
-
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
   }
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -349,6 +349,4 @@ label > div {
   margin: 0;
   cursor: pointer;
 }
-
-
 </style>
