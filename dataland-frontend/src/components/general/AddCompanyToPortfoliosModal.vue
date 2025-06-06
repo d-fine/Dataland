@@ -32,7 +32,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 let companyId: string;
 
-const allUserPortfolios = ref<ReducedBasePortfolio[]>();
+const allUserPortfolios = ref<ReducedBasePortfolio[]>([]);
 const selectedPortfolios = ref<ReducedBasePortfolio[]>([]);
 
 const emit = defineEmits(['closePortfolioModal']);
