@@ -19,6 +19,7 @@
         </div>
         <div class="right-elements">
           <PrimeButton
+              v-if="authenticated"
               class="primary-button"
               aria-label="Add company to your portfolios"
               @click="openPortfolioModal"
@@ -181,15 +182,10 @@ function convertToReducedBasePortfolio(basePortfolio: BasePortfolio): ReducedBas
  * Get the list of all portfolios of the current user.
  */
 async function fetchUserPortfolios(): Promise<void> {
-  assertDefined(getKeycloakPromise)()
-      .then(async (keycloak) => {
-        if (!keycloak.authenticated) return;
-        const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-        allUserPortfolios = (
-            await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
-        ).data.map(convertToReducedBasePortfolio);
-      })
-      .catch((error) => console.log(error));
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  allUserPortfolios = (
+      await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
+  ).data.map(convertToReducedBasePortfolio);
 }
 
 async function openPortfolioModal(): Promise<void> {

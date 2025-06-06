@@ -1,16 +1,14 @@
 <template>
-  <AuthenticationWrapper>
-    <Listbox
-        v-model="selectedPortfolios"
-        :options="allUserPortfolios"
-        multiple
-        :meta-key-selection="false"
-        optionLabel="portfolioName"
-    />
-    <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
-      <span>Add company to portfolio(s)</span>
-    </PrimeButton>
-  </AuthenticationWrapper>
+  <Listbox
+      v-model="selectedPortfolios"
+      :options="allUserPortfolios"
+      multiple
+      :meta-key-selection="false"
+      optionLabel="portfolioName"
+  />
+  <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
+    <span>Add company to portfolio(s)</span>
+  </PrimeButton>
 </template>
 
 <script setup lang="ts">
