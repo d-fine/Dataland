@@ -383,7 +383,8 @@ label > div {
 .toggle-chip-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  justify-items: start;
+  justify-items: center;
+  justify-content: center;
   margin-bottom: 1.5em;
 }
 
