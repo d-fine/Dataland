@@ -44,16 +44,16 @@ class PortfolioMonitoringServiceTest {
 
     @BeforeEach
     fun setup() {
-        resetSecurityContext(dummyUserId)
+        resetSecurityContext()
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any())
         portfolioMonitoringService = PortfolioMonitoringService(mockPortfolioRepository)
     }
 
-    private fun resetSecurityContext(userId: String) {
+    private fun resetSecurityContext() {
         val mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(
                 "username",
-                userId,
+                dummyUserId,
                 setOf(),
             )
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
@@ -79,7 +79,7 @@ class PortfolioMonitoringServiceTest {
     }
 
     @Test
-    fun `verify that non-monitor values remain unchanged after patching monitoring`() {
+    fun `verify that non monitor values remain unchanged after patching monitoring`() {
         val originalPortfolio =
             dummyPortfolio.copy(
                 portfolioName = "Original Portfolio",

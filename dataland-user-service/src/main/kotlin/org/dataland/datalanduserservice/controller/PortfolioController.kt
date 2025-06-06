@@ -80,7 +80,6 @@ class PortfolioController
             monitoringUpdate: PortfolioMonitoringPatch,
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
-            portfolioMonitoringService.patchMonitoring(portfolioId, monitoringUpdate, correlationId)
             return ResponseEntity.ok(portfolioMonitoringService.patchMonitoring(portfolioId, monitoringUpdate, correlationId))
         }
     }
