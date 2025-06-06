@@ -6,6 +6,7 @@
       :meta-key-selection="false"
       optionLabel="portfolioName"
       :disabled="isLoading"
+      data-test="'portfolioSelectionListbox'"
   />
 
   <Message v-if="errorMessage" severity="error" class="my-3">
@@ -18,6 +19,7 @@
     :disabled="selectedPortfolios.length === 0 || isLoading"
     :loading="isLoading"
     @click="handleCompanyAddition"
+    :data-test="'saveButton'"
   >
     <span>Add company to portfolio(s)</span>
   </PrimeButton>
