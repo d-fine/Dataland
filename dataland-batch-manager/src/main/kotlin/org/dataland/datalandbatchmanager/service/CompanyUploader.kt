@@ -138,7 +138,7 @@ class CompanyUploader(
 
         executeWithRetryAndThrottling {
             try {
-                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()}")
+                logger.info("uploadOrPatchSingleCompany for ${companyInformation.getNameAndIdentifier()}")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
                 val (conflictingCompanyId, conflictingIdentifiers) =
@@ -171,6 +171,7 @@ class CompanyUploader(
     ) {
         val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
         executeWithRetryAndThrottling {
+            logger.info("patchSingleCompany data for ${companyInformation.getNameAndIdentifier()}")
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyPatch,
@@ -185,9 +186,9 @@ class CompanyUploader(
     fun updateRelationships(finalParentMapping: Map<String, String>) {
         for ((startLei, endLei) in finalParentMapping) {
             val companyId = searchCompanyByLEI(startLei) ?: continue
-            logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
 
             executeWithRetryAndThrottling {
+                logger.info("updateRelationship of company with ID: $companyId and LEI: $startLei")
                 companyDataControllerApi.patchCompanyById(
                     companyId,
                     CompanyInformationPatch(parentCompanyLei = endLei),
@@ -201,7 +202,7 @@ class CompanyUploader(
         var found404 = false
 
         executeWithRetryAndThrottling {
-            logger.info("Searching for company with LEI: $lei")
+            logger.info("searchCompanyByLEI: $lei")
             try {
                 companyId =
                     companyDataControllerApi
@@ -243,6 +244,7 @@ class CompanyUploader(
             )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
         executeWithRetryAndThrottling {
+            logger.info("updateIsinsOfCompany with ID: $companyId")
             companyDataControllerApi.patchCompanyById(
                 companyId,
                 companyPatch,
