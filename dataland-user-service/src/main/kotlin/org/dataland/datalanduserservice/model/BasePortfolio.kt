@@ -71,6 +71,9 @@ data class BasePortfolio(
     fun toPortfolioEntity(
         portfolioId: String? = null,
         creationTimestamp: Long? = null,
+        isMonitoredPatch: Boolean? = null,
+        startingMonitoringPeriodPatch: String? = null,
+        monitoredFrameworksPatch: MutableSet<String>? = null,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -79,8 +82,8 @@ data class BasePortfolio(
             creationTimestamp = creationTimestamp ?: this.creationTimestamp,
             lastUpdateTimestamp = this.lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
-            isMonitored = this.isMonitored,
-            startingMonitoringPeriod = this.startingMonitoringPeriod,
-            monitoredFrameworks = this.monitoredFrameworks?.toMutableSet() ?: mutableSetOf(),
+            isMonitored = isMonitoredPatch ?: this.isMonitored,
+            startingMonitoringPeriod = startingMonitoringPeriodPatch ?: this.startingMonitoringPeriod,
+            monitoredFrameworks = monitoredFrameworksPatch ?: this.monitoredFrameworks?.toMutableSet() ?: mutableSetOf(),
         )
 }

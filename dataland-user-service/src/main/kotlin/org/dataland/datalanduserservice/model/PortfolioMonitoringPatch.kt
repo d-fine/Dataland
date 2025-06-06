@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class PortfolioMonitoringPatch(
     @field:JsonProperty(required = false)
-    override val isMonitored: Boolean,
+    override val isMonitored: Boolean?,
     @field:JsonProperty(required = false)
     override val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
     // @field:NotEmpty(message = "Please provide at least one framework.")
-    override val monitoredFrameworks: Set<String>?,
+    override val monitoredFrameworks: MutableSet<String>?,
 ) : PortfolioMonitoring
