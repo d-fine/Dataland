@@ -228,7 +228,7 @@ const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const isLoading = ref(true);
 const isError = ref(false);
-const activateMonitoring = ref(false);
+const activateMonitoring = ref<boolean>(false);
 
 onMounted(() => {
   loadPortfolio();

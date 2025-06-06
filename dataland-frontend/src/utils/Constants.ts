@@ -20,7 +20,7 @@ export const ALL_FRAMEWORKS_IN_DISPLAYED_ORDER = [...MAIN_FRAMEWORKS_IN_ENUM_CLA
 ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(
   ...ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => !MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.includes(framework))
 );
-export const EU_TAXONOMY_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
   ['eu-taxonomy-financials', 'eu-taxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
 );
 

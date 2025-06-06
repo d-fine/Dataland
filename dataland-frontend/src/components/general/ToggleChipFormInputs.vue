@@ -3,6 +3,7 @@
     <template v-for="option in options" :key="option.name">
       <ToggleChip
         :label="option.name"
+        :modelValue="option.value"
         :disabled="isDisabled(option.name)"
         @on-change="onToggleChange(option, $event)"
       />

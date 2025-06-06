@@ -55,19 +55,20 @@ import InputSwitch from 'primevue/inputswitch';
 import { computed, inject, onMounted, reactive, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import type { CompanyIdAndName } from '@clients/backend';
-import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import type { EnrichedPortfolio, EnrichedPortfolioEntry, PortfolioMonitoringPatch } from '@clients/userservice';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
+import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
 
 const availableFrameworks: DropdownOption[] = [
   { value: 'sfdr', label: 'SFDR' },
   { value: 'EU_TAXONOMY', label: 'EU Taxonomy' },
 ];
-const reportingYears = [2025, 2024, 2023, 2022, 2021, 2020];
+const reportingYears = [2024, 2023, 2022, 2021, 2020, 2019];
 const selectedStartingYear = ref<string | null>(null);
 const selectedReportingPeriods = computed(() => {
   const startingYear = Number(selectedStartingYear.value);
@@ -87,6 +88,7 @@ const reportingYearsToggleOptions = reactive(
 const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
 const portfolioId = ref<string>('');
+const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const availableReportingPeriods = computed(() => {
   if (!selectedStartingYear.value) {
     return reportingYearsToggleOptions;
@@ -118,6 +120,7 @@ onMounted(async () => {
     const portfolio = data.portfolio as EnrichedPortfolio;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
     portfolioId.value = portfolio.portfolioId;
+    portfolioEntries.value = portfolio.entries;
   }
   await prefillModal();
 });
@@ -165,20 +168,27 @@ function getCompanyIds(): string[] {
 }
 
 /**
+ * Gets datatypes for Framework selection
+ * @param frameworks selected frameworks of the user
+ */
+function getDataTypesFromFrameworks(frameworks: string[]): string[] {
+  const dataTypes: string[] = [];
+
+  if (frameworks.includes('EU_TAXONOMY')) {
+    dataTypes.push('eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas');
+  }
+  frameworks.forEach((fw) => {
+    if (fw !== 'EU_TAXONOMY') dataTypes.push(fw);
+  });
+
+  return dataTypes;
+}
+
+/**
  * Handles creation of patch
  */
 async function createPatch(): Promise<void> {
-  const dataTypes: string[] = [];
-
-  if (selectedFrameworks.value.includes('EU_TAXONOMY')) {
-    dataTypes.push('eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas');
-  }
-
-  selectedFrameworks.value.forEach((fw) => {
-    if (fw !== 'EU_TAXONOMY') {
-      dataTypes.push(fw);
-    }
-  });
+  const dataTypes = getDataTypesFromFrameworks(selectedFrameworks.value);
   const payloadPatchMonitoring: PortfolioMonitoringPatch = {
     isMonitored: true,
     startingMonitoringPeriod: selectedStartingYear.value as unknown as string,
@@ -212,29 +222,54 @@ async function createBulkDataRequest(): Promise<void> {
     return;
   }
 
-  const dataTypes: string[] = [];
+  const isEUTaxonomySelected = selectedFrameworks.value.includes('EU_TAXONOMY');
+  const isSfdrSelected = selectedFrameworks.value.includes('sfdr');
 
-  if (selectedFrameworks.value.includes('EU_TAXONOMY')) {
-    dataTypes.push('eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas');
+  const financialCompanyIds = portfolioEntries.value
+    .filter((c) => c.sector?.toLowerCase() === 'financials')
+    .map((c) => c.companyId);
+
+  const nonFinancialCompanyIds = portfolioEntries.value
+    .filter((c) => c.sector?.toLowerCase() !== 'financials')
+    .map((c) => c.companyId);
+
+
+  const requests = [];
+  const reportingPeriodsSet = selectedReportingPeriods.value as unknown as Set<string>;
+
+
+  if (isEUTaxonomySelected && financialCompanyIds.length > 0) {
+    requests.push(
+      sendBulkRequest(
+        reportingPeriodsSet,
+        new Set(['eutaxonomy-financials', 'nuclear-and-gas']),
+        new Set(financialCompanyIds)
+      )
+    );
   }
-  selectedFrameworks.value.forEach((fw) => {
-    if (fw !== 'EU_TAXONOMY') {
-      dataTypes.push(fw);
-    }
-  });
 
-  const payloadBulkDataRequest: BulkDataRequest = {
-    reportingPeriods: selectedReportingPeriods.value as unknown as Set<string>,
-    dataTypes: dataTypes as unknown as Set<BulkDataRequestDataTypesEnum>,
-    companyIdentifiers: getCompanyIds() as unknown as Set<string>,
-    notifyMeImmediately: false,
-  };
+  if (isEUTaxonomySelected && nonFinancialCompanyIds.length > 0) {
+    requests.push(
+      sendBulkRequest(
+        reportingPeriodsSet,
+        new Set(['eutaxonomy-non-financials', 'nuclear-and-gas']),
+        new Set(nonFinancialCompanyIds)
+      )
+    );
+  }
 
-  const requestDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-    .requestController;
+  if (isSfdrSelected) {
+    requests.push(
+      sendBulkRequest(
+        reportingPeriodsSet,
+        new Set(['sfdr']),
+        new Set(getCompanyIds())
+      )
+    );
+  }
 
   try {
-    await requestDataControllerApi.postBulkDataRequest(payloadBulkDataRequest);
+    await Promise.all(requests);
     await createPatch();
 
     dialogRef?.value.close({
@@ -243,6 +278,31 @@ async function createBulkDataRequest(): Promise<void> {
   } catch (error) {
     console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
   }
+}
+
+/**
+ * Sends bulk data request
+ * @param reportingPeriods
+ * @param dataTypes
+ * @param companyIdentifiers
+ */
+async function sendBulkRequest(
+  reportingPeriods: Set<string>,
+  dataTypes: Set<BulkDataRequestDataTypesEnum>,
+  companyIdentifiers: Set<string>
+): Promise<void> {
+  const payloadBulkDataRequest: BulkDataRequest = {
+    reportingPeriods: Array.from(reportingPeriods) as unknown as Set<string>,
+    dataTypes: Array.from(dataTypes) as unknown as Set<BulkDataRequestDataTypesEnum>,
+    companyIdentifiers: Array.from(companyIdentifiers) as unknown as Set<string>,
+    notifyMeImmediately: false,
+  };
+  console.log(payloadBulkDataRequest)
+
+  const requestDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+    .requestController;
+
+  await requestDataControllerApi.postBulkDataRequest(payloadBulkDataRequest);
 }
 
 /**
@@ -276,10 +336,10 @@ async function prefillModal(): Promise<void> {
     } else {
       monitoredSet = new Set();
     }
-    console.log(portfolio.data.monitoredFrameworks);
 
-    const euTaxoDatatypes = new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']);
+    const euTaxoDatatypes = new Set(EU_TAXONOMY_FRAMEWORKS);
     const hasEuTaxoDatatypes = [...monitoredSet].some((dt) => euTaxoDatatypes.has(dt));
+
     frameworkSwitchOptions.forEach((option) => {
       if (option.id === 'EU_TAXONOMY') {
         option.value = hasEuTaxoDatatypes || monitoredSet.has(option.id);
@@ -343,6 +403,16 @@ label > div {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.framework-switch-row :deep(.p-inputswitch) {
+  width: 2.6rem;
+  height: 1.2rem;
+}
+
+.framework-switch-row :deep(.p-inputswitch-slider) {
+  height: 100%;
+  border-radius: 1rem;
 }
 
 .framework-label {
