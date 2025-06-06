@@ -44,7 +44,7 @@ data class PortfolioEntity(
     @CollectionTable(name = "frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     @OrderBy("asc")
-    var monitoredFrameworks: MutableSet<String>?,
+    var monitoredFrameworks: Set<String>?,
 ) {
     /**
      * create PortfolioResponse from entity

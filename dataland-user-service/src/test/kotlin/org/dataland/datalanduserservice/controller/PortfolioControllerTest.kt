@@ -5,6 +5,7 @@ package org.dataland.datalanduserservice.controller
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
+import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -33,6 +34,7 @@ class PortfolioControllerTest {
     private val mockValidator = mock<Validator>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
+    private val mockPortfolioMonitoringService = mock<PortfolioMonitoringService>()
 
     private lateinit var mockAuthentication: DatalandAuthentication
     private lateinit var portfolioController: PortfolioController
@@ -60,7 +62,13 @@ class PortfolioControllerTest {
         reset(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
         this.resetSecurityContext()
         doNothing().whenever(mockValidator).validatePortfolioCreation(eq(validPortfolioUpload), any())
-        portfolioController = PortfolioController(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
+        portfolioController =
+            PortfolioController(
+                mockPortfolioService,
+                mockValidator,
+                mockPortfolioEnrichmentService,
+                mockPortfolioMonitoringService,
+            )
     }
 
     /**

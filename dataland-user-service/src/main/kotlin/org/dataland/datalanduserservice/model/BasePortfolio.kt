@@ -73,7 +73,7 @@ data class BasePortfolio(
         creationTimestamp: Long? = null,
         isMonitoredPatch: Boolean? = null,
         startingMonitoringPeriodPatch: String? = null,
-        monitoredFrameworksPatch: MutableSet<String>? = null,
+        monitoredFrameworksPatch: Set<String>? = null,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -84,6 +84,6 @@ data class BasePortfolio(
             companyIds = this.companyIds.toMutableSet(),
             isMonitored = isMonitoredPatch ?: this.isMonitored,
             startingMonitoringPeriod = startingMonitoringPeriodPatch ?: this.startingMonitoringPeriod,
-            monitoredFrameworks = monitoredFrameworksPatch ?: this.monitoredFrameworks?.toMutableSet() ?: mutableSetOf(),
+            monitoredFrameworks = monitoredFrameworksPatch ?: this.monitoredFrameworks?.toSet() ?: mutableSetOf(),
         )
 }

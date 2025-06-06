@@ -7,6 +7,7 @@ import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
+import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.datalanduserservice.utils.Validator
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +26,7 @@ class PortfolioController
         private val portfolioService: PortfolioService,
         private val validator: Validator,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
+        private val portfolioMonitoringService: PortfolioMonitoringService,
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
@@ -78,7 +80,7 @@ class PortfolioController
             monitoringUpdate: PortfolioMonitoringPatch,
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
-            portfolioService.patchMonitoring(portfolioId, monitoringUpdate, correlationId)
-            return ResponseEntity.ok(portfolioService.patchMonitoring(portfolioId, monitoringUpdate, correlationId))
+            portfolioMonitoringService.patchMonitoring(portfolioId, monitoringUpdate, correlationId)
+            return ResponseEntity.ok(portfolioMonitoringService.patchMonitoring(portfolioId, monitoringUpdate, correlationId))
         }
     }
