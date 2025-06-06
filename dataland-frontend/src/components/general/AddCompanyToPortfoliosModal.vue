@@ -1,14 +1,16 @@
 <template>
-  <Listbox
-      v-model="selectedPortfolios"
-      :options="allUserPortfolios"
-      multiple
-      :meta-key-selection="false"
-      optionLabel="portfolioName"
-  />
-  <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
-    <span>Add company to portfolio(s)</span>
-  </PrimeButton>
+  <AuthenticationWrapper>
+    <Listbox
+        v-model="selectedPortfolios"
+        :options="allUserPortfolios"
+        multiple
+        :meta-key-selection="false"
+        optionLabel="portfolioName"
+    />
+    <PrimeButton class="primary-button" aria-label="Add Company" @click="handleCompanyAddition">
+      <span>Add company to portfolio(s)</span>
+    </PrimeButton>
+  </AuthenticationWrapper>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +21,7 @@ import Listbox from 'primevue/listbox';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
 import type {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 
 export interface ReducedBasePortfolio {
   portfolioId: string,
@@ -46,7 +49,6 @@ onMounted(() => {
 const handleCompanyAddition = (): void => {
   if (selectedPortfolios.value.length === 0) return;
   selectedPortfolios.value.forEach(async (selectedPortfolio) => {
-    console.log("selectedPortfolio: " + JSON.stringify(selectedPortfolio) + "!!!!!!!");
     await apiClientProvider.apiClients.portfolioController.replacePortfolio(
         selectedPortfolio.portfolioId,
         {
