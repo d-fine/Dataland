@@ -188,8 +188,9 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      companyIds: portfolioCompanies.value.map((c) => c.companyId) as unknown as Set<string>,
     };
+
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
@@ -219,73 +220,64 @@ async function savePortfolio(): Promise<void> {
   const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
     portfolioId.value.toString()
   );
+  if (!portfolio.data.isMonitored) return;
+  if (!portfolio.data.startingMonitoringPeriod) throw new Error('Missing startingMonitoringPeriod');
 
-  if (portfolio.data.isMonitored) {
-    const financialCompanyIds = portfolio.data.entries
-      .filter((c) => c.sector?.toLowerCase() === 'financials')
-      .map((c) => c.companyId);
+  const startYear = parseInt(portfolio.data.startingMonitoringPeriod);
+  const endYear = LATEST_PERIOD;
+  const reportingPeriodsSet = new Set<string>(
+    Array.from({ length: endYear - startYear + 1 }, (_, i) => (startYear + i).toString())
+  );
 
-    const nonFinancialCompanyIds = portfolio.data.entries
-      .filter((c) => c.sector?.toLowerCase() !== 'financials')
-      .map((c) => c.companyId);
+  const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
+  const entries = portfolio.data.entries;
+  const allIds = new Set(entries.map((c) => c.companyId));
+  const financialIds = new Set(entries.filter((c) => c.sector?.toLowerCase() === 'financials').map((c) => c.companyId));
+  const nonFinancialIds = new Set(
+    entries.filter((c) => c.sector?.toLowerCase() !== 'financials').map((c) => c.companyId)
+  );
+  const noSectorIds = new Set(entries.filter((c) => !c.sector).map((c) => c.companyId));
 
-    const noSectorCompanyIds = portfolio.data.entries.filter((c) => !c.sector).map((c) => c.companyId);
+  const requests = [];
 
-    const requests = [];
-    if (!portfolio.data.startingMonitoringPeriod) {
-      throw new Error('Missing startingMonitoringPeriod');
-    }
-    const startYear = parseInt(portfolio.data.startingMonitoringPeriod);
-    const endYear = LATEST_PERIOD;
+  const hasTaxFramework = EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks.has(fw));
+  const keycloak = assertDefined(getKeycloakPromise);
 
-    const reportingPeriodsSet = new Set<string>();
-    for (let year = startYear; year <= endYear; year++) {
-      reportingPeriodsSet.add(year.toString());
-    }
-    const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
-
-    if (financialCompanyIds.length > 0 && EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks?.has(fw))) {
+  if (hasTaxFramework) {
+    if (financialIds.size > 0) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
           new Set(EU_TAXONOMY_FRAMEWORKS_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          new Set(financialCompanyIds),
-          assertDefined(getKeycloakPromise)
+          financialIds,
+          keycloak
         )
       );
     }
-    if (nonFinancialCompanyIds.length > 0 && EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks?.has(fw))) {
+    if (nonFinancialIds.size > 0) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
           new Set(EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          new Set(nonFinancialCompanyIds),
-          assertDefined(getKeycloakPromise)
+          nonFinancialIds,
+          keycloak
         )
       );
     }
-
-    if (noSectorCompanyIds.length > 0 && EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks?.has(fw))) {
+    if (noSectorIds.size > 0) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
           new Set(EU_TAXONOMY_FRAMEWORKS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          new Set(noSectorCompanyIds),
-          assertDefined(getKeycloakPromise)
+          noSectorIds,
+          keycloak
         )
       );
     }
+  }
 
-    if (monitoredFrameworks?.has('sfdr')) {
-      requests.push(
-        sendBulkRequest(
-          reportingPeriodsSet,
-          new Set(['sfdr']),
-          new Set(portfolio.data.entries.map((c) => c.companyId)),
-          assertDefined(getKeycloakPromise)
-        )
-      );
-    }
+  if (monitoredFrameworks.has('sfdr')) {
+    requests.push(sendBulkRequest(reportingPeriodsSet, new Set(['sfdr']), allIds, keycloak));
   }
 }
 

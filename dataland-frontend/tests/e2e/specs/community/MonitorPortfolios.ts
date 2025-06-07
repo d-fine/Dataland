@@ -17,8 +17,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
       const nonFinancialPortfolio = `nonFinancialPortfolio ${Date.now()}`;
       const financialPortfolio = `financialPortfolio ${Date.now()}`;
       const nonSectorPortfolio = `NonFinancialPortfolio ${Date.now()}`;
-      const sfdrPortfolio= `sfdrPortfolio ${Date.now()}`;
-
+      const sfdrPortfolio = `sfdrPortfolio ${Date.now()}`;
 
       before(() => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
@@ -97,7 +96,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           permId: permIdNonFinancial,
           expectedDataTypes: ['eutaxonomy-non-financials', 'nuclear-and-gas'],
           notExpectedDataTypes: ['eutaxonomy-financials'],
-          framework: 'EU Taxonomy'
+          framework: 'EU Taxonomy',
         });
       });
 
@@ -107,7 +106,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           permId: permIdFinancial,
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas'],
           notExpectedDataTypes: ['eutaxonomy-non-financials'],
-          framework: 'EU Taxonomy'
+          framework: 'EU Taxonomy',
         });
       });
 
@@ -116,7 +115,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           portfolioName: nonSectorPortfolio,
           permId: permIdNoSector,
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
-          framework: 'EU Taxonomy'
+          framework: 'EU Taxonomy',
         });
       });
 
@@ -126,7 +125,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           permId: permIdNoSector,
           expectedDataTypes: ['sfdr'],
           notExpectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
-          framework: 'SFDR'
+          framework: 'SFDR',
         });
       });
     }
