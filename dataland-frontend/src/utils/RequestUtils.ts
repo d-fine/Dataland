@@ -1,5 +1,11 @@
 import type Keycloak from 'keycloak-js';
-import { type AccessStatus, RequestStatus, type RequestPriority } from '@clients/communitymanager';
+import {
+  type AccessStatus,
+  RequestStatus,
+  type RequestPriority,
+  type BulkDataRequestDataTypesEnum,
+  type BulkDataRequest,
+} from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
 
 /**
@@ -114,4 +120,27 @@ export function priorityBadgeClass(priority: RequestPriority): string {
  */
 export function getRequestStatusLabel(requestStatus: RequestStatus): string {
   return requestStatus === RequestStatus.NonSourceable ? 'No sources available' : requestStatus;
+}
+
+/**
+ * BulkRequest Handler
+ * @param reportingPeriods
+ * @param dataTypes
+ * @param companyIdentifiers
+ */
+export async function sendBulkRequest(
+  reportingPeriods: Set<string>,
+  dataTypes: Set<BulkDataRequestDataTypesEnum>,
+  companyIdentifiers: Set<string>,
+  getKeycloakPromise: () => Promise<Keycloak> // <-- hier übergeben
+): Promise<void> {
+  const payloadBulkDataRequest: BulkDataRequest = {
+    reportingPeriods: Array.from(reportingPeriods) as unknown as Set<string>,
+    dataTypes: Array.from(dataTypes) as unknown as Set<BulkDataRequestDataTypesEnum>,
+    companyIdentifiers: Array.from(companyIdentifiers) as unknown as Set<string>,
+    notifyMeImmediately: false,
+  };
+
+  const requestDataControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.requestController;
+  await requestDataControllerApi.postBulkDataRequest(payloadBulkDataRequest);
 }

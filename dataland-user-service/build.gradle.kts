@@ -50,6 +50,8 @@ dependencies {
     runtimeOnly(libs.h2)
     runtimeOnly(libs.postgresql)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("org.mockito:mockito-inline:4.+")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     testImplementation(Spring.boot.test)
     testImplementation(Spring.security.spring_security_test)
     kapt(Spring.boot.configurationProcessor)

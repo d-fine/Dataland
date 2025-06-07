@@ -9,15 +9,26 @@
     persists.
   </div>
   <div v-else>
-    <span class="button_bar">
+    <div class="button_bar">
       <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
+
       <PrimeButton class="primary-button" @click="downloadPortfolio()" data-test="download-portfolio">
         <i class="pi pi-download pr-2" /> Download Portfolio
       </PrimeButton>
-      <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
-    </span>
+
+      <div class="monitor-toggle-wrapper">
+        <InputSwitch :modelValue="isMonitored" @update:modelValue="onToggleMonitoring" data-test="monitorSwitch" />
+        <span data-test="monitorPortfolioToggleCaption" class="ml-2">Monitor Portfolio</span>
+      </div>
+      <div>
+        <PrimeButton class="primary-button" @click="monitorPortfolio()" data-test="monitor-portfolio">
+          <i class="pi pi-bell pr-2" /> EDIT MONITORING
+        </PrimeButton>
+        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+      </div>
+    </div>
 
     <DataTable
       stripedRows
@@ -131,7 +142,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { DataTypeEnum } from '@clients/backend';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import type { EnrichedPortfolio, EnrichedPortfolioEntry, PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import { FilterMatchMode } from 'primevue/api';
 import PrimeButton from 'primevue/button';
@@ -141,6 +152,8 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
+import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -214,6 +227,7 @@ const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const isLoading = ref(true);
 const isError = ref(false);
+const isMonitored = ref<boolean>(false);
 
 onMounted(() => {
   loadPortfolio();
@@ -299,12 +313,30 @@ function loadPortfolio(): void {
       enrichedPortfolio.value = response.data;
 
       portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
     .catch((reason) => {
       console.error(reason);
       isError.value = true;
     })
     .finally(() => (isLoading.value = false));
+}
+
+/**
+ * Reset patch if toggle is set to false
+ */
+async function stopMonitoring(): Promise<void> {
+  const payloadPatchMonitoring: PortfolioMonitoringPatch = {
+    isMonitored: false,
+  };
+  const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+    .portfolioController;
+
+  try {
+    await portfolioControllerApi.patchMonitoring(props.portfolioId, payloadPatchMonitoring);
+  } catch (error) {
+    console.error('Error setting Monitoring Flag to false:', error);
+  }
 }
 
 /**
@@ -330,6 +362,7 @@ function editPortfolio(): void {
     },
     data: {
       portfolio: enrichedPortfolio.value,
+      activateMonitoring: isMonitored.value,
     },
     onClose() {
       loadPortfolio();
@@ -365,7 +398,59 @@ function downloadPortfolio(): void {
       portfolio: enrichedPortfolio.value,
       companies: portfolioEntriesToDisplay.value,
     },
+    onClose() {
+      loadPortfolio();
+      emit('update:portfolio-overview');
+    },
   });
+}
+
+/**
+ * Opens the PortfolioMonitoring with the current portfolio's data.
+ * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ */
+function monitorPortfolio(): void {
+  const fullName = 'Monitoring of ' + enrichedPortfolio.value?.portfolioName;
+  dialog.open(PortfolioMonitoring, {
+    props: {
+      modal: true,
+      header: fullName,
+      pt: {
+        title: {
+          style: {
+            maxWidth: '15em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
+      },
+    },
+    data: {
+      portfolioName: fullName,
+      portfolio: enrichedPortfolio.value,
+      companies: portfolioEntriesToDisplay.value,
+      activateMonitoring: isMonitored.value,
+      portfolioId: enrichedPortfolio.value?.portfolioId,
+    },
+    onClose() {
+      loadPortfolio();
+      emit('update:portfolio-overview');
+    },
+  });
+}
+
+/**
+ * Opens the modal for monitoring settings
+ * @param newValue tracks changes of toggle
+ */
+async function onToggleMonitoring(newValue: boolean): Promise<void> {
+  isMonitored.value = newValue;
+  if (newValue) {
+    monitorPortfolio();
+  } else {
+    await stopMonitoring();
+  }
 }
 </script>
 
@@ -420,6 +505,21 @@ a:after {
 
   :last-child {
     margin-left: auto;
+  }
+}
+.monitor-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+
+  :deep(.p-inputswitch) {
+    transform: scale(1.3);
+    margin-left: 0.3rem; /* push it right so it’s not clipped */
+  }
+
+  span {
+    white-space: nowrap;
   }
 }
 </style>

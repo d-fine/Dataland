@@ -81,6 +81,14 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { sendBulkRequest } from '@/utils/RequestUtils.ts';
+import {
+  EU_TAXONOMY_FRAMEWORKS,
+  EU_TAXONOMY_FRAMEWORKS_FINANCIALS,
+  EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS,
+  LATEST_PERIOD,
+} from '@/utils/Constants.ts';
+import { type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 
 class CompanyIdAndName {
   companyId: string;
@@ -123,7 +131,6 @@ onMounted(() => {
   portfolioName.value = portfolio.portfolioName;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
 });
-
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
@@ -181,11 +188,16 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      companyIds: portfolioCompanies.value.map((c) => c.companyId) as unknown as Set<string>,
     };
+
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
+
+    if (!portfolioId.value) {
+      portfolioId.value = response.data.portfolioId;
+    }
 
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
@@ -203,6 +215,69 @@ async function savePortfolio(): Promise<void> {
     }
   } finally {
     isPortfolioSaving.value = false;
+  }
+
+  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
+    portfolioId.value.toString()
+  );
+  if (!portfolio.data.isMonitored) return;
+  if (!portfolio.data.startingMonitoringPeriod) throw new Error('Missing startingMonitoringPeriod');
+
+  const startYear = parseInt(portfolio.data.startingMonitoringPeriod);
+  const endYear = LATEST_PERIOD;
+  const reportingPeriodsSet = new Set<string>(
+    Array.from({ length: endYear - startYear + 1 }, (_, i) => (startYear + i).toString())
+  );
+
+  const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
+  const entries = portfolio.data.entries;
+  const allIds = new Set(entries.map((c) => c.companyId));
+  const financialIds = new Set(entries.filter((c) => c.sector?.toLowerCase() === 'financials').map((c) => c.companyId));
+  const nonFinancialIds = new Set(
+    entries.filter((c) => c.sector?.toLowerCase() !== 'financials').map((c) => c.companyId)
+  );
+  const noSectorIds = new Set(entries.filter((c) => !c.sector).map((c) => c.companyId));
+
+  const requests = [];
+
+  const hasTaxFramework = EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks.has(fw));
+  const keycloak = assertDefined(getKeycloakPromise);
+
+  if (hasTaxFramework) {
+    if (financialIds.size > 0) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(EU_TAXONOMY_FRAMEWORKS_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
+          financialIds,
+          keycloak
+        )
+      );
+    }
+    if (nonFinancialIds.size > 0) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
+          nonFinancialIds,
+          keycloak
+        )
+      );
+    }
+    if (noSectorIds.size > 0) {
+      requests.push(
+        sendBulkRequest(
+          reportingPeriodsSet,
+          new Set(EU_TAXONOMY_FRAMEWORKS) as unknown as Set<BulkDataRequestDataTypesEnum>,
+          noSectorIds,
+          keycloak
+        )
+      );
+    }
+  }
+
+  if (monitoredFrameworks.has('sfdr')) {
+    requests.push(sendBulkRequest(reportingPeriodsSet, new Set(['sfdr']), allIds, keycloak));
   }
 }
 

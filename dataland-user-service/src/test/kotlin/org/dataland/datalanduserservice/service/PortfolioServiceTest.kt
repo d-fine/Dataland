@@ -263,13 +263,15 @@ class PortfolioServiceTest {
         portfolioId: String? = null,
         portfolioName: String,
         userId: String,
-        companyIds: MutableSet<String>? = null,
     ) = BasePortfolio(
         portfolioId = portfolioId ?: UUID.randomUUID().toString(),
         portfolioName = portfolioName,
         userId = userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
+        companyIds = mutableSetOf(dummyCompanyId),
+        isMonitored = null,
+        startingMonitoringPeriod = null,
+        monitoredFrameworks = null,
     )
 }
