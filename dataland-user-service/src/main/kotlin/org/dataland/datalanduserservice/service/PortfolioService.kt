@@ -3,7 +3,6 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
-import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -195,35 +194,4 @@ class PortfolioService
             getAllPortfoliosForUser().map {
                 BasePortfolioName(it.portfolioId, it.portfolioName)
             }
-
-        /**
-         * Patches the monitoring of an existing portfolio.
-         */
-        @Transactional
-        fun patchMonitoring(
-            portfolioId: String,
-            patch: PortfolioMonitoringPatch,
-            correlationId: String,
-        ): BasePortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
-            logger.info(
-                "Patch monitoring of portfolio with portfolioId: $portfolioId for user with userId: $userId." +
-                    " CorrelationId: $correlationId.",
-            )
-
-            val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))?.toBasePortfolio()
-                    ?: throw PortfolioNotFoundApiException(portfolioId)
-
-            return portfolioRepository
-                .save(
-                    originalPortfolio.toPortfolioEntity(
-                        portfolioId,
-                        originalPortfolio.creationTimestamp,
-                        patch.isMonitored,
-                        patch.startingMonitoringPeriod,
-                        patch.monitoredFrameworks,
-                    ),
-                ).toBasePortfolio()
-        }
     }

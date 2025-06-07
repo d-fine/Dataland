@@ -42,27 +42,6 @@ data class BasePortfolio(
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
 
-    companion object {
-        /**
-         * Alternative constructor that updates keeping the monitoring information of a given BasePortfolio invariant.
-         */
-        fun keepMonitoringInvariant(
-            originalPortfolio: BasePortfolio,
-            portfolioUpload: PortfolioUpload,
-        ): BasePortfolio =
-            BasePortfolio(
-                portfolioId = originalPortfolio.portfolioId,
-                portfolioName = portfolioUpload.portfolioName,
-                userId = originalPortfolio.userId,
-                creationTimestamp = originalPortfolio.creationTimestamp,
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                companyIds = portfolioUpload.companyIds,
-                isMonitored = portfolioUpload.isMonitored ?: originalPortfolio.isMonitored,
-                startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod ?: originalPortfolio.startingMonitoringPeriod,
-                monitoredFrameworks = portfolioUpload.monitoredFrameworks ?: originalPortfolio.monitoredFrameworks,
-            )
-    }
-
     /**
      * Creates portfolio entity object from BasePortfolio.
      * In case of replacing an existing portfolio (PUT), provide portfolioId and creationTimestamp of portfolio to be
@@ -73,7 +52,7 @@ data class BasePortfolio(
         creationTimestamp: Long? = null,
         isMonitoredPatch: Boolean? = null,
         startingMonitoringPeriodPatch: String? = null,
-        monitoredFrameworksPatch: MutableSet<String>? = null,
+        monitoredFrameworksPatch: Set<String>? = null,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -84,6 +63,6 @@ data class BasePortfolio(
             companyIds = this.companyIds.toMutableSet(),
             isMonitored = isMonitoredPatch ?: this.isMonitored,
             startingMonitoringPeriod = startingMonitoringPeriodPatch ?: this.startingMonitoringPeriod,
-            monitoredFrameworks = monitoredFrameworksPatch ?: this.monitoredFrameworks?.toMutableSet() ?: mutableSetOf(),
+            monitoredFrameworks = monitoredFrameworksPatch ?: this.monitoredFrameworks?.toSet(),
         )
 }
