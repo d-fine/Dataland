@@ -1,5 +1,4 @@
 import { DataTypeEnum } from '@clients/backend';
-import { BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 
 // - Available frameworks settings
 

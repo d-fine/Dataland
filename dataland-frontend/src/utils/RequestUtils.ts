@@ -7,8 +7,6 @@ import {
   type BulkDataRequest,
 } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { inject } from 'vue';
 
 /**
  * Patches the RequestStatus of a StoredDataRequest
