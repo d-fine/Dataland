@@ -19,7 +19,12 @@
       <p>Frameworks</p>
     </label>
     <div class="framework-switch-group">
-      <div v-for="framework in frameworkSwitchOptions" :key="framework.id" class="framework-switch-row">
+      <div
+        v-for="framework in frameworkSwitchOptions"
+        :key="framework.id"
+        class="framework-switch-row"
+        data-test="frameworkSelection"
+      >
         <InputSwitch
           class="form-field vertical-middle"
           v-model="framework.value"

@@ -194,6 +194,10 @@ async function savePortfolio(): Promise<void> {
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
 
+    if (!portfolioId.value) {
+      portfolioId.value = response.data.portfolioId;
+    }
+
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
@@ -212,9 +216,6 @@ async function savePortfolio(): Promise<void> {
     isPortfolioSaving.value = false;
   }
 
-  if (!portfolioId.value) {
-    throw new Error('portfolioId is undefined');
-  }
   const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
     portfolioId.value.toString()
   );
