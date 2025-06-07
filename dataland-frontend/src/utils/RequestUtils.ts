@@ -144,6 +144,5 @@ export async function sendBulkRequest(
   };
 
   const requestDataControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.requestController;
-
   await requestDataControllerApi.postBulkDataRequest(payloadBulkDataRequest);
 }

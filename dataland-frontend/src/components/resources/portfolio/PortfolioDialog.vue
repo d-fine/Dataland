@@ -82,6 +82,12 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import { sendBulkRequest } from '@/utils/RequestUtils.ts';
+import {
+  EU_TAXONOMY_FRAMEWORKS,
+  EU_TAXONOMY_FRAMEWORKS_FINANCIALS,
+  EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS,
+} from '@/utils/Constants.ts';
+import { type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 
 class CompanyIdAndName {
   companyId: string;
@@ -236,32 +242,32 @@ async function savePortfolio(): Promise<void> {
     }
     const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
 
-    if (financialCompanyIds.length > 0 && monitoredFrameworks?.has('eutaxonomy-financials')) {
+    if (financialCompanyIds.length > 0 && EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks?.has(fw))) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
-          new Set(['eutaxonomy-financials', 'nuclear-and-gas']),
+          new Set(EU_TAXONOMY_FRAMEWORKS_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
           new Set(financialCompanyIds),
           assertDefined(getKeycloakPromise)
         )
       );
     }
-    if (nonFinancialCompanyIds.length > 0 && monitoredFrameworks?.has('eutaxonomy-non-financials')) {
+    if (nonFinancialCompanyIds.length > 0 && EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks?.has(fw))) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
-          new Set(['eutaxonomy-non-financials', 'nuclear-and-gas']),
+          new Set(EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
           new Set(nonFinancialCompanyIds),
           assertDefined(getKeycloakPromise)
         )
       );
     }
 
-    if (noSectorCompanyIds.length > 0) {
+    if (noSectorCompanyIds.length > 0 && EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks?.has(fw))) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
-          new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']),
+          new Set(EU_TAXONOMY_FRAMEWORKS) as unknown as Set<BulkDataRequestDataTypesEnum>,
           new Set(noSectorCompanyIds),
           assertDefined(getKeycloakPromise)
         )
@@ -273,7 +279,7 @@ async function savePortfolio(): Promise<void> {
         sendBulkRequest(
           reportingPeriodsSet,
           new Set(['sfdr']),
-          new Set(processCompanyInputString()),
+          new Set(portfolio.data.entries.map((c) => c.companyId)),
           assertDefined(getKeycloakPromise)
         )
       );

@@ -84,7 +84,7 @@ describe('Portfolio Monitoring Modal', function () {
       });
 
     cy.get('[data-test="saveChangesButton"]').click();
-   });
+  });
 
   it('displays EU Taxonomy message when that framework is selected', function () {
     cy.get('.framework-switch-row')

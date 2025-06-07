@@ -1,4 +1,5 @@
 import { DataTypeEnum } from '@clients/backend';
+import { BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 
 // - Available frameworks settings
 
@@ -21,7 +22,15 @@ ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(
   ...ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => !MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.includes(framework))
 );
 export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  ['eu-taxonomy-financials', 'eu-taxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+  ['eu-taxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
 );
 
 // - Keycloak and session management related settings
