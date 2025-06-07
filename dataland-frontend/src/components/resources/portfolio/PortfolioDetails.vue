@@ -19,7 +19,7 @@
       </PrimeButton>
 
       <div class="monitor-toggle-wrapper">
-        <InputSwitch :modelValue="isMonitored" @update:modelValue="onToggleMonitoring" />
+        <InputSwitch :modelValue="isMonitored" @update:modelValue="onToggleMonitoring" data-test="monitorSwitch"/>
         <span data-test="monitorPortfolioToggleCaption" class="ml-2">Monitor Portfolio</span>
       </div>
       <div>

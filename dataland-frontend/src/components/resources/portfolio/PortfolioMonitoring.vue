@@ -61,7 +61,7 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
+import { EU_TAXONOMY_FRAMEWORKS, LATEST_PERIOD } from '@/utils/Constants.ts';
 import Dropdown from 'primevue/dropdown';
 import { sendBulkRequest } from '@/utils/RequestUtils.ts';
 
@@ -84,7 +84,9 @@ const selectedReportingPeriods = computed(() => {
   const startingYear = selectedStartingYear.value;
   if (!startingYear) return [];
 
-  return reportingYears.filter((year) => year.value >= startingYear && year.value <= 2024).map((year) => year.value);
+  return reportingYears
+    .filter((year) => year.value >= startingYear && year.value <= LATEST_PERIOD)
+    .map((year) => year.value);
 });
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');

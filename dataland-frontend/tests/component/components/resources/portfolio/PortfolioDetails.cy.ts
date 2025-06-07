@@ -110,7 +110,40 @@ describe('Check the portfolio details view', function (): void {
       });
     });
   });
+
+  it('Check Input Switch', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="monitorPortfolioToggleCaption"]')
+          .should('contain.text', 'Monitor Portfolio');
+        cy.get('.monitor-toggle-wrapper .p-inputswitch').should('exist');
+        cy.get('[data-test="monitorSwitch"]').should('be.visible').click();
+      });
+    });
+  });
+
+  it('Check Monitoring Button', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="monitor-portfolio"]')
+          .should('be.visible')
+          .and('contain.text', 'EDIT MONITORING')
+          .click();
+      });
+    });
+  });
 });
+
 
 /**
  * Checks of the sort- and column-filter-icons are present in the table header

@@ -86,6 +86,7 @@ import {
   EU_TAXONOMY_FRAMEWORKS,
   EU_TAXONOMY_FRAMEWORKS_FINANCIALS,
   EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS,
+  LATEST_PERIOD,
 } from '@/utils/Constants.ts';
 import { type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 
@@ -234,7 +235,7 @@ async function savePortfolio(): Promise<void> {
       throw new Error('Missing startingMonitoringPeriod');
     }
     const startYear = parseInt(portfolio.data.startingMonitoringPeriod);
-    const endYear = 2024;
+    const endYear = LATEST_PERIOD;
 
     const reportingPeriodsSet = new Set<string>();
     for (let year = startYear; year <= endYear; year++) {

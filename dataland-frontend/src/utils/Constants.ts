@@ -33,6 +33,8 @@ export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN
   ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
 );
 
+export const LATEST_PERIOD: number = 2024;
+
 // - Keycloak and session management related settings
 
 export const KEYCLOAK_INIT_OPTIONS = {
