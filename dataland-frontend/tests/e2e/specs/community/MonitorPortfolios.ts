@@ -23,7 +23,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
           const nonFinancialCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
           const financialCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, 'financials');
-          const noSectorCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, null);
+          const noSectorCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, undefined);
 
           permIdNonFinancial = assertDefined(nonFinancialCompany.identifiers[IdentifierType.PermId][0]);
           await uploadCompanyViaApi(token, nonFinancialCompany);
@@ -58,7 +58,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         notExpectedDataTypes?: string[];
         framework: string;
       }): void {
-        cy.wait(10000);
+        cy.wait(Cypress.env('medium_timeout_in_ms') as number);
 
         cy.get('[data-test="addNewPortfolio"]').click({ force: true });
         cy.get('[name="portfolioName"]').type(portfolioName);
@@ -68,7 +68,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
 
-        cy.wait(10000);
+        cy.wait(Cypress.env('medium_timeout_in_ms') as number);
         cy.get('[data-test="monitor-portfolio"]').filter(':visible').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
