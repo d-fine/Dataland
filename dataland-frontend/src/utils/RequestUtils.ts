@@ -132,7 +132,7 @@ export async function sendBulkRequest(
   reportingPeriods: Set<string>,
   dataTypes: Set<BulkDataRequestDataTypesEnum>,
   companyIdentifiers: Set<string>,
-  getKeycloakPromise: () => Promise<Keycloak> // <-- hier übergeben
+  getKeycloakPromise: () => Promise<Keycloak>
 ): Promise<void> {
   const payloadBulkDataRequest: BulkDataRequest = {
     reportingPeriods: Array.from(reportingPeriods) as unknown as Set<string>,

@@ -63,7 +63,7 @@ describeIf(
           expect(body.dataTypes).not.to.include('sfdr');
         });
 
-      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click( {force: true} );
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[name="portfolioName"]').clear();
       cy.get('[name="portfolioName"]').type(editedPortfolioName);
@@ -77,7 +77,7 @@ describeIf(
           EU_TAXONOMY_FRAMEWORKS.forEach((type) => expect(body.dataTypes).to.include(type));
           expect(body.dataTypes).not.to.include('sfdr');
         });
-      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click( { force: true } );
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click({ force: true });
       cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
 
       cy.window().then((win) => {

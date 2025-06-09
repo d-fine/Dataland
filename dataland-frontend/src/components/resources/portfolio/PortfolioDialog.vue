@@ -191,9 +191,9 @@ async function savePortfolio(): Promise<void> {
       companyIds: portfolioCompanies.value.map((c) => c.companyId) as unknown as Set<string>,
     };
 
-    const response = await (portfolioId.value
-      ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
-      : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
+    const response = portfolioId.value
+      ? await apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
+      : await apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload);
 
     if (!portfolioId.value) {
       portfolioId.value = response.data.portfolioId;
@@ -203,27 +203,46 @@ async function savePortfolio(): Promise<void> {
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
     } as BasePortfolioName);
+    await fetchAndProcessPortfolioData(response.data.portfolioId);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      portfolioErrors.value =
-        error.status == 409
-          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
-          : error.message;
-    } else {
-      portfolioErrors.value = 'An unknown error occurred.';
-      console.log(error);
-    }
+    handlePortfolioError(error);
   } finally {
     isPortfolioSaving.value = false;
   }
 
-  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
-    portfolioId.value.toString()
-  );
-  if (!portfolio.data.isMonitored) return;
-  if (!portfolio.data.startingMonitoringPeriod) throw new Error('Missing startingMonitoringPeriod');
 
-  const startYear = parseInt(portfolio.data.startingMonitoringPeriod);
+}
+
+/**
+ *
+ * @param error
+ */
+function handlePortfolioError(error: unknown): void {
+  if (error instanceof AxiosError) {
+    portfolioErrors.value =
+      error.status === 409
+        ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+        : error.message;
+  } else {
+    portfolioErrors.value = 'An unknown error occurred.';
+    console.log(error);
+  }
+}
+
+/**
+ *
+ */
+async function fetchAndProcessPortfolioData(portfolioIdToFetch: string): Promise<void> {
+  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
+    portfolioIdToFetch
+  );
+
+  if (!portfolio.data.isMonitored) return;
+
+  const startingPeriod = portfolio.data.startingMonitoringPeriod;
+  if (!startingPeriod) throw new Error('Missing startingMonitoringPeriod');
+
+  const startYear = parseInt(startingPeriod);
   const endYear = LATEST_PERIOD;
   const reportingPeriodsSet = new Set<string>(
     Array.from({ length: endYear - startYear + 1 }, (_, i) => (startYear + i).toString())
@@ -231,6 +250,7 @@ async function savePortfolio(): Promise<void> {
 
   const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
   const entries = portfolio.data.entries;
+
   const allIds = new Set(entries.map((c) => c.companyId));
   const financialIds = new Set(entries.filter((c) => c.sector?.toLowerCase() === 'financials').map((c) => c.companyId));
   const nonFinancialIds = new Set(
@@ -238,11 +258,40 @@ async function savePortfolio(): Promise<void> {
   );
   const noSectorIds = new Set(entries.filter((c) => !c.sector).map((c) => c.companyId));
 
-  const requests = [];
+  const requests = getBulkRequests(
+    reportingPeriodsSet,
+    monitoredFrameworks,
+    financialIds,
+    nonFinancialIds,
+    noSectorIds,
+    allIds
+  );
 
+  for (const request of requests) {
+    await request;
+  }
+}
+
+/**
+ *
+ * @param reportingPeriodsSet
+ * @param monitoredFrameworks
+ * @param financialIds
+ * @param nonFinancialIds
+ * @param noSectorIds
+ * @param allIds
+ */
+function getBulkRequests(
+  reportingPeriodsSet: Set<string>,
+  monitoredFrameworks: Set<string>,
+  financialIds: Set<string>,
+  nonFinancialIds: Set<string>,
+  noSectorIds: Set<string>,
+  allIds: Set<string>
+): Promise<unknown>[] {
+  const requests: Promise<unknown>[] = [];
   const hasTaxFramework = EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks.has(fw));
   const keycloak = assertDefined(getKeycloakPromise);
-
   if (hasTaxFramework) {
     if (financialIds.size > 0) {
       requests.push(
@@ -279,6 +328,8 @@ async function savePortfolio(): Promise<void> {
   if (monitoredFrameworks.has('sfdr')) {
     requests.push(sendBulkRequest(reportingPeriodsSet, new Set(['sfdr']), allIds, keycloak));
   }
+
+  return requests;
 }
 
 /**

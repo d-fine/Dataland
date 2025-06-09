@@ -1,9 +1,9 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { IdentifierType } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility.ts';
+import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 
 describe('Portfolio Monitoring Bulk Data Request Modal', () => {
   describeIf(
@@ -13,17 +13,16 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
       let permIdNonFinancial: string;
       let permIdFinancial: string;
       let permIdNoSector: string;
-
       const nonFinancialPortfolio = `nonFinancialPortfolio ${Date.now()}`;
       const financialPortfolio = `financialPortfolio ${Date.now()}`;
-      const nonSectorPortfolio = `NonFinancialPortfolio ${Date.now()}`;
+      const nonSectorPortfolio = `NonSectorPortfolio ${Date.now()}`;
       const sfdrPortfolio = `sfdrPortfolio ${Date.now()}`;
 
       before(() => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
           const nonFinancialCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
           const financialCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, 'financials');
-          const noSectorCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, undefined);
+          const noSectorCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, '');
 
           permIdNonFinancial = assertDefined(nonFinancialCompany.identifiers[IdentifierType.PermId][0]);
           await uploadCompanyViaApi(token, nonFinancialCompany);
@@ -43,7 +42,29 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
       });
 
       /**
-       * Helper Function for creating bulk requests
+       * Checks bulk data request
+       * @param body response of request
+       * @param expectedDataTypes expected frameworks
+       * @param notExpectedDataTypes not expected frameworks
+       */
+      function assertBulkRequestBody(
+        body: { reportingPeriods: number[]; dataTypes: string[] },
+        expectedDataTypes: string[],
+        notExpectedDataTypes: string[]
+      ): void {
+        expect(body.reportingPeriods).to.include(2023);
+        expectedDataTypes.forEach((type) => expect(body.dataTypes).to.include(type));
+        notExpectedDataTypes.forEach((type) => expect(body.dataTypes).not.to.include(type));
+      }
+
+
+      /**
+       * Test function for creating portfolio and monitor it
+       * @param portfolioName name of portfolio
+       * @param permId company ids to be monitored
+       * @param expectedDataTypes frameworks to be monitored
+       * @param notExpectedDataTypes frameworks not expected in response
+       * @param framework selected framework
        */
       function testBulkDataRequest({
         portfolioName,
@@ -58,8 +79,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         notExpectedDataTypes?: string[];
         framework: string;
       }): void {
-        cy.wait(Cypress.env('medium_timeout_in_ms') as number);
-
+        cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="addNewPortfolio"]').click({ force: true });
         cy.get('[name="portfolioName"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
@@ -68,11 +88,10 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
 
-        cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+        cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="monitor-portfolio"]').filter(':visible').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
-
         cy.get('[data-test="frameworkSelection"]')
           .contains(framework)
           .parent()
@@ -84,9 +103,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         cy.wait('@postBulkRequest')
           .its('request.body')
           .should((body) => {
-            expect(body.reportingPeriods).to.include(2023);
-            expectedDataTypes.forEach((type) => expect(body.dataTypes).to.include(type));
-            notExpectedDataTypes.forEach((type) => expect(body.dataTypes).not.to.include(type));
+            assertBulkRequestBody(body, expectedDataTypes, notExpectedDataTypes);
           });
       }
 
