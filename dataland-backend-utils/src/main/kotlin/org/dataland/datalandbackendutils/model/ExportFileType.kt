@@ -16,6 +16,14 @@ enum class ExportFileType(
     val description: String = "",
 ) {
     CSV("csv", MediaType.asMediaType(MimeType.valueOf("text/csv")), "Comma-separated Values"),
-    EXCEL("xlsx", MediaType.asMediaType(MediaType.valueOf("application/vnd.ms-excel")), "Excel File"),
+    EXCEL(
+        "xlsx",
+        MediaType.asMediaType(
+            MediaType.valueOf(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            ),
+        ),
+        "Excel File",
+    ),
     JSON("json", MediaType.APPLICATION_JSON, "JavaScript Object Notation"),
 }
