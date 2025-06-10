@@ -212,8 +212,8 @@ async function savePortfolio(): Promise<void> {
 }
 
 /**
- *
- * @param error
+ * Handles errors that occur when working with portfolios.
+ * @param error error object thrown during portfolio operations
  */
 function handlePortfolioError(error: unknown): void {
   if (error instanceof AxiosError) {
@@ -228,7 +228,12 @@ function handlePortfolioError(error: unknown): void {
 }
 
 /**
+ * Fetches and processes portfolio data for a given portfolio ID.
  *
+ * Retrieves enriched portfolio information from the API, verifies if the portfolio is monitored,
+ *  and triggers bulk data requests for each relevant framework.
+ *
+ * @param  portfolioIdToFetch ID of the portfolio to fetch and monitor.
  */
 async function fetchAndProcessPortfolioData(portfolioIdToFetch: string): Promise<void> {
   const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioIdToFetch);
@@ -269,18 +274,19 @@ async function fetchAndProcessPortfolioData(portfolioIdToFetch: string): Promise
 }
 
 /**
+ * Constructs a list of bulk data requests based on reporting periods, frameworks, and company groups.
  *
- * @param reportingPeriodsSet
- * @param monitoredFrameworks
- * @param financialIds
- * @param nonFinancialIds
- * @param noSectorIds
- * @param allIds
+ * @param reportingPeriodsSet - set of years (as strings) representing the reporting periods.
+ * @param monitoredFrameworks - set of frameworks that are being monitored for the portfolio.
+ * @param companyIds - set of company IDs that belong to the financial sector.
+ * @param nonFinancialIds - set of company IDs that do not belong to the financial sector.
+ * @param noSectorIds - set of company IDs that do not have sector information.
+ * @param allIds -  all company IDs in the portfolio.
  */
 function getBulkRequests(
   reportingPeriodsSet: Set<string>,
   monitoredFrameworks: Set<string>,
-  financialIds: Set<string>,
+  companyIds: Set<string>,
   nonFinancialIds: Set<string>,
   noSectorIds: Set<string>,
   allIds: Set<string>
@@ -289,12 +295,12 @@ function getBulkRequests(
   const hasTaxFramework = EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks.has(fw));
   const keycloak = assertDefined(getKeycloakPromise);
   if (hasTaxFramework) {
-    if (financialIds.size > 0) {
+    if (companyIds.size > 0) {
       requests.push(
         sendBulkRequest(
           reportingPeriodsSet,
           new Set(EU_TAXONOMY_FRAMEWORKS_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          financialIds,
+          companyIds,
           keycloak
         )
       );
