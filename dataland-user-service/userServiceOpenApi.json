@@ -315,7 +315,7 @@
         "tags": [
           "portfolio-controller"
         ],
-        "summary": "Patches the monitoring of a portfolio.",
+        "summary": "Patches the monitoring status of a portfolio.",
         "description": "Updates the monitoring-related fields of an existing portfolio.",
         "operationId": "patchMonitoring",
         "parameters": [

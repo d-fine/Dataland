@@ -162,15 +162,8 @@ class PortfolioService
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
             return portfolioRepository
-                .save(
-                    portfolio.toPortfolioEntity(
-                        portfolioId,
-                        originalPortfolio.creationTimestamp,
-                        originalPortfolio.isMonitored,
-                        originalPortfolio.startingMonitoringPeriod,
-                        originalPortfolio.monitoredFrameworks,
-                    ),
-                ).toBasePortfolio()
+                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
+                .toBasePortfolio()
         }
 
         /**

@@ -231,7 +231,7 @@ interface PortfolioApi {
      * Patches the monitoring of an existing portfolio.
      */
     @Operation(
-        summary = "Patches the monitoring of a portfolio.",
+        summary = "Patches the monitoring status of a portfolio.",
         description = "Updates the monitoring-related fields of an existing portfolio.",
     )
     @ApiResponses(
@@ -247,6 +247,6 @@ interface PortfolioApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun patchMonitoring(
         @PathVariable("portfolioId") portfolioId: String,
-        @Valid @RequestBody monitoringUpdate: PortfolioMonitoringPatch,
+        @Valid @RequestBody portfolioMonitoringPatch: PortfolioMonitoringPatch,
     ): ResponseEntity<BasePortfolio>
 }

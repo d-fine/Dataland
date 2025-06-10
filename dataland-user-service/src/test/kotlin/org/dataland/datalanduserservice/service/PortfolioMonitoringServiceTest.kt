@@ -38,8 +38,8 @@ class PortfolioMonitoringServiceTest {
             lastUpdateTimestamp = System.currentTimeMillis(),
             companyIds = mutableSetOf("companyId"),
             isMonitored = false,
-            startingMonitoringPeriod = null,
-            monitoredFrameworks = mutableSetOf("sfdr"),
+            startingMonitoringPeriod = "2023",
+            monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
         )
 
     @BeforeEach
@@ -62,10 +62,10 @@ class PortfolioMonitoringServiceTest {
 
     @Test
     fun `verify that patchMonitoring throws PortfolioNotFoundApiException if portfolio not found`() {
-        val patch =
+        val portfolioMonitoringPatch =
             PortfolioMonitoringPatch(
                 isMonitored = true,
-                startingMonitoringPeriod = "2025-06-01",
+                startingMonitoringPeriod = "2022",
                 monitoredFrameworks = mutableSetOf("sfdr"),
             )
 
@@ -74,7 +74,7 @@ class PortfolioMonitoringServiceTest {
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolioId))
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioMonitoringService.patchMonitoring(dummyPortfolioId, patch, dummyCorrelationId)
+            portfolioMonitoringService.patchMonitoring(dummyPortfolioId, portfolioMonitoringPatch, dummyCorrelationId)
         }
     }
 
@@ -86,10 +86,10 @@ class PortfolioMonitoringServiceTest {
                 userId = dummyUserId,
                 companyIds = mutableSetOf("companyA", "companyB"),
             )
-        val patch =
+        val portfolioMonitoringPatch =
             PortfolioMonitoringPatch(
                 isMonitored = true,
-                startingMonitoringPeriod = "2025-Q3",
+                startingMonitoringPeriod = "2021",
                 monitoredFrameworks = mutableSetOf("sfdr", "euro"),
             )
 
@@ -100,15 +100,15 @@ class PortfolioMonitoringServiceTest {
         val updatedPortfolio =
             portfolioMonitoringService.patchMonitoring(
                 dummyPortfolio.portfolioId,
-                patch,
+                portfolioMonitoringPatch,
                 dummyCorrelationId,
             )
 
         assertEquals(originalPortfolio.portfolioName, updatedPortfolio.portfolioName)
         assertEquals(originalPortfolio.userId, updatedPortfolio.userId)
         assertEquals(originalPortfolio.companyIds, updatedPortfolio.companyIds)
-        assertEquals(patch.isMonitored, updatedPortfolio.isMonitored)
-        assertEquals(patch.startingMonitoringPeriod, updatedPortfolio.startingMonitoringPeriod)
-        assertEquals(patch.monitoredFrameworks, updatedPortfolio.monitoredFrameworks)
+        assertEquals(portfolioMonitoringPatch.isMonitored, updatedPortfolio.isMonitored)
+        assertEquals(portfolioMonitoringPatch.startingMonitoringPeriod, updatedPortfolio.startingMonitoringPeriod)
+        assertEquals(portfolioMonitoringPatch.monitoredFrameworks, updatedPortfolio.monitoredFrameworks)
     }
 }
