@@ -2,6 +2,7 @@
   <Listbox
     v-model="selectedPortfolios"
     :options="allUserPortfolios"
+    :virtual-scroller-options="{ itemSize: 30, scrollWidth: '100%', scrollHeight: '300px', autoSize: true }"
     multiple
     :meta-key-selection="false"
     optionLabel="portfolioName"
@@ -60,11 +61,28 @@ const closeDialog = (): void => {
 </script>
 
 <style scoped lang="scss">
-.p-listbox-item.p-highlight {
-  background-color: darkseagreen !important;
+@use '../../assets/scss/colors';
+@use '../../assets/scss/variables';
+
+:deep(.p-listbox-item) {
+  max-width: 300px;
+  padding: 0 variables.$spacing-xxxs; // only horizontal padding
+  border-top: variables.$spacing-xxxs solid white;
+  border-bottom: variables.$spacing-xxxs solid white;
+  background-color: variables.$white;
+  background-clip: padding-box; // background color only applies to padding-box area, not the border
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-p-listbox-item.p-focus {
-  background-color: mediumseagreen !important;
+:deep(.p-listbox-item:hover) {
+  color: colors.$fill-dropdown-hover-text;
+  background-color: colors.$fill-dropdown-hover-bg;
+}
+
+:deep(.p-listbox-item.p-highlight) {
+  color: colors.$fill-dropdown-select-text-color;
+  background-color: colors.$fill-dropdown-select-bg-color;
 }
 </style>
