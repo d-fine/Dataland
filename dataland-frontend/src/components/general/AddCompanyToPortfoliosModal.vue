@@ -60,11 +60,11 @@ const closeDialog = (): void => {
 </script>
 
 <style scoped lang="scss">
-.p-listbox-list .p-highlight {
+.p-listbox-item.p-highlight {
   background-color: darkseagreen;
 }
 
-/*.p-listbox-item.p-focus {
+p-listbox-item.p-focus {
   background-color: mediumseagreen !important;
-}*/
+}
 </style>
