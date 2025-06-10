@@ -1,6 +1,10 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="reportingYearSelector" class="reporting-period-label">
+      <p>Activate Monitoring</p>
+    </label>
+    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" @change="handleMonitoring" />
+    <label for="reportingYearSelector" class="reporting-period-label">
       <p>Starting Period</p>
     </label>
     <Dropdown
@@ -11,6 +15,7 @@
       data-test="listOfReportingPeriods"
       placeholder="Select Starting Period"
       class="wider-dropdown"
+      :disabled="!monitoringActive"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
@@ -30,6 +35,7 @@
           v-model="framework.value"
           :id="framework.id"
           @change="onFrameworksSwitched"
+          :disabled="!monitoringActive"
         />
         <label :for="framework.id" class="framework-label">
           {{ framework.label }}
@@ -42,10 +48,11 @@
     <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">
       Please select at least one Framework.
     </p>
-    <div class="button-wrapper" style="width: 100%; text-align: right">
+
+    <div class="button-group-wrapper">
       <PrimeButton
         data-test="saveChangesButton"
-        class="primary-button my-2"
+        class="primary-button my-2 mr-2"
         label="SAVE CHANGES"
         icon="pi pi-save"
         title="Cancel (changes will not be saved)"
@@ -66,13 +73,13 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-import { EU_TAXONOMY_FRAMEWORKS, LATEST_PERIOD } from '@/utils/Constants.ts';
+import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
 import Dropdown from 'primevue/dropdown';
-import { sendBulkRequest } from '@/utils/RequestUtils.ts';
+import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
 
 const availableFrameworks: DropdownOption[] = [
   { value: 'sfdr', label: 'SFDR' },
-  { value: 'EU_TAXONOMY', label: 'EU Taxonomy' },
+  { value: 'eutaxonomy', label: 'EU Taxonomy' },
 ];
 const reportingYears = [
   { label: '2024', value: 2024 },
@@ -85,14 +92,6 @@ const reportingYears = [
 
 const selectedStartingYear = ref<number | null>(null);
 
-const selectedReportingPeriods = computed(() => {
-  const startingYear = selectedStartingYear.value;
-  if (!startingYear) return [];
-
-  return reportingYears
-    .filter((year) => year.value >= startingYear && year.value <= LATEST_PERIOD)
-    .map((year) => year.value);
-});
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -100,6 +99,8 @@ const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
 const portfolioId = ref<string>('');
 const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
+const portfolioName = ref<string>('');
+const userid = ref<string>('');
 
 const frameworkSwitchOptions = reactive(
   availableFrameworks.map((framework) => ({
@@ -109,7 +110,13 @@ const frameworkSwitchOptions = reactive(
   }))
 );
 
+const monitoringActive = ref<boolean>(false);
 const selectedFrameworks = computed(() => frameworkSwitchOptions.filter((f) => f.value).map((f) => f.id));
+
+/**
+ * Reset patch if toggle is set to false
+ */
+async function handleMonitoring(): Promise<void> {}
 
 /**
  * Resets Frameworkerros
@@ -122,6 +129,8 @@ onMounted(async () => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
     const portfolio = data.portfolio as EnrichedPortfolio;
+    portfolioName.value = portfolio.portfolioName;
+    userid.value = portfolio.userId;
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
     portfolioId.value = portfolio.portfolioId;
     portfolioEntries.value = portfolio.entries;
@@ -146,38 +155,14 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
 }
 
 /**
- * Extracts company IDs from the selected portfolio
- */
-function getCompanyIds(): string[] {
-  return portfolioCompanies.value.map((company) => company.companyId);
-}
-
-/**
- * Gets datatypes for Framework selection
- * @param frameworks selected frameworks of the user
- */
-function getDataTypesFromFrameworks(frameworks: string[]): string[] {
-  const dataTypes: string[] = [];
-
-  if (frameworks.includes('EU_TAXONOMY')) {
-    dataTypes.push('eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas');
-  }
-  frameworks.forEach((fw) => {
-    if (fw !== 'EU_TAXONOMY') dataTypes.push(fw);
-  });
-
-  return dataTypes;
-}
-
-/**
  * Handles creation of patch
  */
 async function createPatch(): Promise<void> {
-  const dataTypes = getDataTypesFromFrameworks(selectedFrameworks.value);
   const payloadPatchMonitoring: PortfolioMonitoringPatch = {
     isMonitored: true,
     startingMonitoringPeriod: selectedStartingYear.value as unknown as string,
-    monitoredFrameworks: dataTypes as unknown as Set<string>,
+    // as unknown as Set<string> cast required to ensure proper json is created
+    monitoredFrameworks: selectedFrameworks.value as unknown as Set<string>,
   };
   const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
     .portfolioController;
@@ -195,87 +180,57 @@ async function createPatch(): Promise<void> {
 async function createBulkDataRequest(): Promise<void> {
   resetErrors();
 
-  if (!selectedStartingYear.value) {
-    showReportingPeriodsError.value = true;
-  }
-
-  if (selectedFrameworks.value.length === 0) {
-    showFrameworksError.value = true;
-  }
-
-  if (showReportingPeriodsError.value || showFrameworksError.value) {
-    return;
-  }
-
-  const isEUTaxonomySelected = selectedFrameworks.value.includes('EU_TAXONOMY');
-  const isSfdrSelected = selectedFrameworks.value.includes('sfdr');
-
-  const financialCompanyIds = portfolioEntries.value
-    .filter((c) => c.sector?.toLowerCase() === 'financials')
-    .map((c) => c.companyId);
-
-  const nonFinancialCompanyIds = portfolioEntries.value
-    .filter((c) => c.sector?.toLowerCase() !== 'financials')
-    .map((c) => c.companyId);
-
-  const noSectorCompanyIds = portfolioEntries.value.filter((c) => !c.sector).map((c) => c.companyId);
-
-  const requests = [];
-  const reportingPeriodsSet = selectedReportingPeriods.value as unknown as Set<string>;
-
-  if (isEUTaxonomySelected && financialCompanyIds.length > 0) {
-    requests.push(
-      sendBulkRequest(
-        reportingPeriodsSet,
-        new Set(['eutaxonomy-financials', 'nuclear-and-gas']),
-        new Set(financialCompanyIds),
-        assertDefined(getKeycloakPromise)
-      )
-    );
-  }
-
-  if (isEUTaxonomySelected && nonFinancialCompanyIds.length > 0) {
-    requests.push(
-      sendBulkRequest(
-        reportingPeriodsSet,
-        new Set(['eutaxonomy-non-financials', 'nuclear-and-gas']),
-        new Set(nonFinancialCompanyIds),
-        assertDefined(getKeycloakPromise)
-      )
-    );
-  }
-
-  if (isEUTaxonomySelected && noSectorCompanyIds.length > 0) {
-    requests.push(
-      sendBulkRequest(
-        reportingPeriodsSet,
-        new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas']),
-        new Set(noSectorCompanyIds),
-        assertDefined(getKeycloakPromise)
-      )
-    );
-  }
-
-  if (isSfdrSelected) {
-    requests.push(
-      sendBulkRequest(
-        reportingPeriodsSet,
-        new Set(['sfdr']),
-        new Set(getCompanyIds()),
-        assertDefined(getKeycloakPromise)
-      )
-    );
-  }
-
-  try {
-    await Promise.all(requests);
-    await createPatch();
+  if (monitoringActive.value === false) {
+    const payloadPatchMonitoring: PortfolioMonitoringPatch = {
+      isMonitored: false,
+    };
+    const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+      .portfolioController;
+    try {
+      await portfolioControllerApi.patchMonitoring(portfolioId.value, payloadPatchMonitoring);
+    } catch (error) {
+      console.error('Error setting Monitoring Flag to false:', error);
+    }
 
     dialogRef?.value.close({
       updated: true,
     });
-  } catch (error) {
-    console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
+  } else {
+    if (!selectedStartingYear.value) {
+      showReportingPeriodsError.value = true;
+    }
+
+    if (selectedFrameworks.value.length === 0) {
+      showFrameworksError.value = true;
+    }
+
+    if (showReportingPeriodsError.value || showFrameworksError.value) {
+      return;
+    }
+
+    try {
+      await createPatch();
+
+      const enrichedPortfolio: EnrichedPortfolio = {
+        portfolioName: portfolioName.value,
+        userId: userid.value,
+        portfolioId: portfolioId.value,
+        entries: portfolioEntries.value,
+        startingMonitoringPeriod: selectedStartingYear.value!.toString(),
+        monitoredFrameworks: new Set(selectedFrameworks.value),
+        isMonitored: true,
+      };
+
+      await Promise.all(
+     sendBulkRequestForPortfolio(enrichedPortfolio, assertDefined(getKeycloakPromise))
+      );
+
+      dialogRef?.value.close({
+        updated: true,
+      });
+    } catch (error) {
+      console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
+    }
   }
 }
 
@@ -316,6 +271,8 @@ async function prefillModal(): Promise<void> {
       } else {
         option.value = monitoredSet.has(option.id);
       }
+
+      monitoringActive.value = Boolean(portfolio.data.isMonitored);
     });
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
@@ -324,6 +281,12 @@ async function prefillModal(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
+.button-group-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
 .portfolio-monitoring-content {
   width: 20em;
   height: 100%;

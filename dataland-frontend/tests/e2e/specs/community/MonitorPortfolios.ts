@@ -109,7 +109,6 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
         cy.get('[data-test="deleteButton"]').click();
         cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).should('not.exist');
-
       }
 
       it('submits bulk data request when inputs are valid for non financial company', () => {

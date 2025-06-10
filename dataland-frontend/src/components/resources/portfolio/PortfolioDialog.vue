@@ -81,14 +81,7 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
-import { sendBulkRequest } from '@/utils/RequestUtils.ts';
-import {
-  EU_TAXONOMY_FRAMEWORKS,
-  EU_TAXONOMY_FRAMEWORKS_FINANCIALS,
-  EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS,
-  LATEST_PERIOD,
-} from '@/utils/Constants.ts';
-import { type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
+import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
 
 class CompanyIdAndName {
   companyId: string;
@@ -109,27 +102,32 @@ const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
-const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const portfolioFrameworks = ref<string[]>([
+const portfolioCompanies = ref<CompanyIdAndName[]>([])
+const enrichedPortfolioCompanies = ref<EnrichedPortfolioEntry[]>([]);
+const portfolioFrameworks: string[] =[
   'sfdr',
   'eutaxonomy-financials',
   'eutaxonomy-non-financials',
   'nuclear-and-gas',
-]);
+];
 
+let portfolio: EnrichedPortfolio;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isValidPortfolioUpload = computed(
-  () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
+  () => portfolioName.value && portfolioFrameworks.length > 0 && portfolioCompanies.value?.length > 0
 );
 
 onMounted(() => {
-  const data = dialogRef?.value.data;
-  if (!data || !data.portfolio) return;
-  const portfolio = data.portfolio as EnrichedPortfolio;
+  const enrichedPortfolio = dialogRef?.value.data;
+  if (!enrichedPortfolio || !enrichedPortfolio.portfolio) return;
+  portfolio = enrichedPortfolio.portfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
+  enrichedPortfolioCompanies.value = portfolio.entries;
+  portfolioCompanies.value = getUniqueSortedCompanies(
+    portfolio.entries.map((entry) => new CompanyIdAndName(entry))
+  );
 });
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
@@ -188,6 +186,7 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
+      // as unknown as Set<string> cast required to ensure proper json is created
       companyIds: portfolioCompanies.value.map((c) => c.companyId) as unknown as Set<string>,
     };
 
@@ -203,135 +202,22 @@ async function savePortfolio(): Promise<void> {
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
     } as BasePortfolioName);
-    await fetchAndProcessPortfolioData(response.data.portfolioId);
+    await Promise.all(
+      sendBulkRequestForPortfolio(portfolio, assertDefined(getKeycloakPromise))
+    );
   } catch (error) {
-    handlePortfolioError(error);
+    if (error instanceof AxiosError) {
+      portfolioErrors.value =
+        error.status === 409
+          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+          : error.message;
+    } else {
+      portfolioErrors.value = 'An unknown error occurred.';
+      console.log(error);
+    }
   } finally {
     isPortfolioSaving.value = false;
   }
-}
-
-/**
- * Handles errors that occur when working with portfolios.
- * @param error error object thrown during portfolio operations
- */
-function handlePortfolioError(error: unknown): void {
-  if (error instanceof AxiosError) {
-    portfolioErrors.value =
-      error.status === 409
-        ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
-        : error.message;
-  } else {
-    portfolioErrors.value = 'An unknown error occurred.';
-    console.log(error);
-  }
-}
-
-/**
- * Fetches and processes portfolio data for a given portfolio ID.
- *
- * Retrieves enriched portfolio information from the API, verifies if the portfolio is monitored,
- *  and triggers bulk data requests for each relevant framework.
- *
- * @param  portfolioIdToFetch ID of the portfolio to fetch and monitor.
- */
-async function fetchAndProcessPortfolioData(portfolioIdToFetch: string): Promise<void> {
-  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioIdToFetch);
-
-  if (!portfolio.data.isMonitored) return;
-
-  const startingPeriod = portfolio.data.startingMonitoringPeriod;
-  if (!startingPeriod) throw new Error('Missing startingMonitoringPeriod');
-
-  const startYear = parseInt(startingPeriod);
-  const endYear = LATEST_PERIOD;
-  const reportingPeriodsSet = new Set<string>(
-    Array.from({ length: endYear - startYear + 1 }, (_, i) => (startYear + i).toString())
-  );
-
-  const monitoredFrameworks = new Set(portfolio.data.monitoredFrameworks);
-  const entries = portfolio.data.entries;
-
-  const allIds = new Set(entries.map((c) => c.companyId));
-  const financialIds = new Set(entries.filter((c) => c.sector?.toLowerCase() === 'financials').map((c) => c.companyId));
-  const nonFinancialIds = new Set(
-    entries.filter((c) => c.sector?.toLowerCase() !== 'financials').map((c) => c.companyId)
-  );
-  const noSectorIds = new Set(entries.filter((c) => !c.sector).map((c) => c.companyId));
-
-  const requests = getBulkRequests(
-    reportingPeriodsSet,
-    monitoredFrameworks,
-    financialIds,
-    nonFinancialIds,
-    noSectorIds,
-    allIds
-  );
-
-  for (const request of requests) {
-    await request;
-  }
-}
-
-/**
- * Constructs a list of bulk data requests based on reporting periods, frameworks, and company groups.
- *
- * @param reportingPeriodsSet - set of years (as strings) representing the reporting periods.
- * @param monitoredFrameworks - set of frameworks that are being monitored for the portfolio.
- * @param companyIds - set of company IDs that belong to the financial sector.
- * @param nonFinancialIds - set of company IDs that do not belong to the financial sector.
- * @param noSectorIds - set of company IDs that do not have sector information.
- * @param allIds -  all company IDs in the portfolio.
- */
-function getBulkRequests(
-  reportingPeriodsSet: Set<string>,
-  monitoredFrameworks: Set<string>,
-  companyIds: Set<string>,
-  nonFinancialIds: Set<string>,
-  noSectorIds: Set<string>,
-  allIds: Set<string>
-): Promise<unknown>[] {
-  const requests: Promise<unknown>[] = [];
-  const hasTaxFramework = EU_TAXONOMY_FRAMEWORKS.some((fw) => monitoredFrameworks.has(fw));
-  const keycloak = assertDefined(getKeycloakPromise);
-  if (hasTaxFramework) {
-    if (companyIds.size > 0) {
-      requests.push(
-        sendBulkRequest(
-          reportingPeriodsSet,
-          new Set(EU_TAXONOMY_FRAMEWORKS_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          companyIds,
-          keycloak
-        )
-      );
-    }
-    if (nonFinancialIds.size > 0) {
-      requests.push(
-        sendBulkRequest(
-          reportingPeriodsSet,
-          new Set(EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          nonFinancialIds,
-          keycloak
-        )
-      );
-    }
-    if (noSectorIds.size > 0) {
-      requests.push(
-        sendBulkRequest(
-          reportingPeriodsSet,
-          new Set(EU_TAXONOMY_FRAMEWORKS) as unknown as Set<BulkDataRequestDataTypesEnum>,
-          noSectorIds,
-          keycloak
-        )
-      );
-    }
-  }
-
-  if (monitoredFrameworks.has('sfdr')) {
-    requests.push(sendBulkRequest(reportingPeriodsSet, new Set(['sfdr']), allIds, keycloak));
-  }
-
-  return requests;
 }
 
 /**

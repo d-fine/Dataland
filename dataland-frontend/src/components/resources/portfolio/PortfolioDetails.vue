@@ -10,20 +10,20 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
+      <PrimeButton class="primary-button" @click="opensEditModal()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
 
-      <PrimeButton class="primary-button" @click="downloadPortfolio()" data-test="download-portfolio">
+      <PrimeButton class="primary-button" @click="opensDownloadModal()" data-test="download-portfolio">
         <i class="pi pi-download pr-2" /> Download Portfolio
       </PrimeButton>
-
-      <div class="monitor-toggle-wrapper">
-        <InputSwitch :modelValue="isMonitored" @update:modelValue="onToggleMonitoring" data-test="monitorSwitch" />
-        <span data-test="monitorPortfolioToggleCaption" class="ml-2">Monitor Portfolio</span>
+      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBatch" v-if="isMonitored">
+        <span class="material-icons-outlined fs-sm">verified</span>
+        Portfolio actively monitored
       </div>
+
       <div>
-        <PrimeButton class="primary-button" @click="monitorPortfolio()" data-test="monitor-portfolio">
+        <PrimeButton class="primary-button" @click="opensMonitorModal()" data-test="monitor-portfolio">
           <i class="pi pi-bell pr-2" /> EDIT MONITORING
         </PrimeButton>
         <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
@@ -142,7 +142,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { DataTypeEnum } from '@clients/backend';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry, PortfolioMonitoringPatch } from '@clients/userservice';
+import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import { FilterMatchMode } from 'primevue/api';
 import PrimeButton from 'primevue/button';
@@ -152,7 +152,6 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 
 /**
@@ -323,23 +322,6 @@ function loadPortfolio(): void {
 }
 
 /**
- * Reset patch if toggle is set to false
- */
-async function stopMonitoring(): Promise<void> {
-  const payloadPatchMonitoring: PortfolioMonitoringPatch = {
-    isMonitored: false,
-  };
-  const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-    .portfolioController;
-
-  try {
-    await portfolioControllerApi.patchMonitoring(props.portfolioId, payloadPatchMonitoring);
-  } catch (error) {
-    console.error('Error setting Monitoring Flag to false:', error);
-  }
-}
-
-/**
  * Resets all filters
  */
 function resetFilters(): void {
@@ -354,7 +336,7 @@ function resetFilters(): void {
  * Once the dialog is closed, it reloads the portfolio data and emits an update event
  * to refresh the portfolio overview.
  */
-function editPortfolio(): void {
+function opensEditModal(): void {
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Edit Portfolio',
@@ -362,7 +344,7 @@ function editPortfolio(): void {
     },
     data: {
       portfolio: enrichedPortfolio.value,
-      activateMonitoring: isMonitored.value,
+      isMonitoring: isMonitored.value,
     },
     onClose() {
       loadPortfolio();
@@ -375,7 +357,7 @@ function editPortfolio(): void {
  * Opens the PortfolioDownload with the current portfolio's data for downloading.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function downloadPortfolio(): void {
+function opensDownloadModal(): void {
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
   dialog.open(PortfolioDownload, {
@@ -409,7 +391,7 @@ function downloadPortfolio(): void {
  * Opens the PortfolioMonitoring with the current portfolio's data.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function monitorPortfolio(): void {
+function opensMonitorModal(): void {
   const fullName = 'Monitoring of ' + enrichedPortfolio.value?.portfolioName;
   dialog.open(PortfolioMonitoring, {
     props: {
@@ -418,7 +400,7 @@ function monitorPortfolio(): void {
       pt: {
         title: {
           style: {
-            maxWidth: '15em',
+            maxWidth: '18em',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -427,30 +409,13 @@ function monitorPortfolio(): void {
       },
     },
     data: {
-      portfolioName: fullName,
       portfolio: enrichedPortfolio.value,
-      companies: portfolioEntriesToDisplay.value,
-      activateMonitoring: isMonitored.value,
-      portfolioId: enrichedPortfolio.value?.portfolioId,
     },
     onClose() {
       loadPortfolio();
       emit('update:portfolio-overview');
     },
   });
-}
-
-/**
- * Opens the modal for monitoring settings
- * @param newValue tracks changes of toggle
- */
-async function onToggleMonitoring(newValue: boolean): Promise<void> {
-  isMonitored.value = newValue;
-  if (newValue) {
-    monitorPortfolio();
-  } else {
-    await stopMonitoring();
-  }
 }
 </script>
 
@@ -502,6 +467,7 @@ a:after {
   display: flex;
   margin: 1rem;
   gap: 1rem;
+  align-items: center;
 
   :last-child {
     margin-left: auto;
