@@ -67,9 +67,8 @@ const closeDialog = (): void => {
 :deep(.p-listbox-item) {
   max-width: 300px;
   padding: 0 variables.$spacing-xxxs; // only horizontal padding
-  border-top: variables.$spacing-xxxs solid white;
-  border-bottom: variables.$spacing-xxxs solid white;
-  background-color: variables.$white;
+  border-top: variables.$spacing-xxxs solid transparent;
+  border-bottom: variables.$spacing-xxxs solid transparent;
   background-clip: padding-box; // background color only applies to padding-box area, not the border
   overflow: hidden;
   text-overflow: ellipsis;
