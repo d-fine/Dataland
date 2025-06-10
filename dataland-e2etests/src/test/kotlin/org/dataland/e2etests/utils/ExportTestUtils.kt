@@ -15,7 +15,7 @@ object ExportTestUtils {
     ) {
         val workbook = WorkbookFactory.create(excelFile)
         FileWriter(csvFile.path).use { writer ->
-            val sheet = workbook.getSheetAt(0) // Get the first sheet
+            val sheet = workbook.getSheetAt(0)
             for (row in sheet) {
                 val rowData =
                     row.joinToString(",") { cell ->
@@ -29,7 +29,7 @@ object ExportTestUtils {
 
     /**
      * Provides a readable CSV file with the same name (without extension) as the given file,
-     * if such a file exists. If the provided file is an excel file, it will be converte dto csv.
+     * if such a file exists. If the provided file is an excel file, it will be converted to csv.
      * Otherwise, returns the given file.
      *
      * @param exportFile The file to check for a corresponding CSV version.

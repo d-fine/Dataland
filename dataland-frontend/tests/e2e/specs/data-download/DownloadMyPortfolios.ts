@@ -106,8 +106,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadButton"]').click();
 
-    // Warte auf die Datei, die mit prefix beginnt
-    cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional warten
+    cy.wait(Cypress.env('medium_timeout_in_ms') as number);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
@@ -130,7 +129,7 @@ function testDownloadPortfolio({
 }
 
 /**
- * Extracts file extension from users choise
+ * Extracts file extension from user's choice
  * @param fileType type of file to be downloaded
  */
 function getFileExtension(fileType: string): string {

@@ -214,8 +214,9 @@ open class DataController<T>(
     }
 
     /**
-     * Get framework label from framework value for download
-     * @param frameworkValue
+     * Builds HTTP headers for exporting data, setting the appropriate content type and
+     * content disposition for file download.
+     * @param exportFileType type of export selected by user
      */
 
     private fun buildHttpHeadersForExport(exportFileType: ExportFileType): HttpHeaders {
