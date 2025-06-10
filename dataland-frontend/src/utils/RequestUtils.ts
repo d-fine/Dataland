@@ -10,7 +10,8 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import {
   EU_TAXONOMY_FRAMEWORKS,
   EU_TAXONOMY_FRAMEWORKS_FINANCIALS,
-  EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS, LATEST_PERIOD,
+  EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS,
+  LATEST_PERIOD,
 } from '@/utils/Constants.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
@@ -142,13 +143,12 @@ function extractPeriodandCompanyIds(portfolio: EnrichedPortfolio): {
   noSectorIds: Set<string>;
 } {
   const reportingPeriodsSet = new Set<string>(
-    Array.from(
-      { length: LATEST_PERIOD - Number(portfolio.startingMonitoringPeriod) + 1 },
-      (_, i) => (Number(portfolio.startingMonitoringPeriod) + i).toString()
+    Array.from({ length: LATEST_PERIOD - Number(portfolio.startingMonitoringPeriod) + 1 }, (_, i) =>
+      (Number(portfolio.startingMonitoringPeriod) + i).toString()
     )
   );
 
-  const monitoredFrameworks = new Set(portfolio.monitoredFrameworks)
+  const monitoredFrameworks = new Set(portfolio.monitoredFrameworks);
 
   const allIds = new Set(portfolio.entries.map((c) => c.companyId));
   const financialIds = new Set(
@@ -170,16 +170,6 @@ function extractPeriodandCompanyIds(portfolio: EnrichedPortfolio): {
 }
 
 /**
- * Constructs a list of bulk data requests based on reporting periods, frameworks, and company groups.
- *
- * @param reportingPeriodsSet - set of years (as strings) representing the reporting periods.
- * @param monitoredFrameworks - set of frameworks that are being monitored for the portfolio.
- * @param companyIds - set of company IDs that belong to the financial sector.
- * @param nonFinancialIds - set of company IDs that do not belong to the financial sector.
- * @param noSectorIds - set of company IDs that do not have sector information.
- * @param allIds -  all company IDs in the portfolio.
- */
-/**
  * Constructs and sends bulk data requests based on portfolio configuration.
  *
  * @param portfolio - Enriched portfolio object containing entries and monitoring info.
@@ -190,19 +180,13 @@ export function sendBulkRequestForPortfolio(
   portfolio: EnrichedPortfolio,
   getKeycloakPromise: () => Promise<Keycloak>
 ): Promise<unknown>[] {
-  const requestDataControllerApi =  new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const requestDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)());
   const requests: Promise<unknown>[] = [];
 
-  const {
-    reportingPeriodsSet,
-    monitoredFrameworks,
-    allIds,
-    financialIds,
-    nonFinancialIds,
-    noSectorIds,
-  } = extractPeriodandCompanyIds(portfolio);
+  const { reportingPeriodsSet, monitoredFrameworks, allIds, financialIds, nonFinancialIds, noSectorIds } =
+    extractPeriodandCompanyIds(portfolio);
 
-  const makeRequest = (
+  const makeRequest = async (
     companyIdentifiers: Set<string>,
     dataTypes: Set<BulkDataRequestDataTypesEnum>
   ): Promise<unknown> => {
@@ -212,10 +196,19 @@ export function sendBulkRequestForPortfolio(
       companyIdentifiers: Array.from(companyIdentifiers) as unknown as Set<string>,
       notifyMeImmediately: false,
     };
-    return requestDataControllerApi.apiClients.requestController.postBulkDataRequest(payload);
+    console.log("Sending bulk request with payload:", payload);
+
+    try {
+      const response = await requestDataControllerApi.apiClients.requestController.postBulkDataRequest(payload);
+      console.log("Bulk request successful, response:", response);
+      return response;
+    } catch (err) {
+      console.error("Bulk request failed:", err);
+      throw err;
+    }
   };
 
-  if (monitoredFrameworks.has('EU_Taxonomy')) {
+  if (monitoredFrameworks.has('eutaxonomy')) {
     if (financialIds.size > 0) {
       requests.push(
         makeRequest(financialIds, new Set(EU_TAXONOMY_FRAMEWORKS_FINANCIALS) as Set<BulkDataRequestDataTypesEnum>)
@@ -224,20 +217,21 @@ export function sendBulkRequestForPortfolio(
 
     if (nonFinancialIds.size > 0) {
       requests.push(
-        makeRequest(nonFinancialIds, new Set(EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS) as Set<BulkDataRequestDataTypesEnum>)
+        makeRequest(
+          nonFinancialIds,
+          new Set(EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS) as Set<BulkDataRequestDataTypesEnum>
+        )
       );
     }
 
     if (noSectorIds.size > 0) {
-      requests.push(
-        makeRequest(noSectorIds, new Set(EU_TAXONOMY_FRAMEWORKS) as Set<BulkDataRequestDataTypesEnum>)
-      );
+      requests.push(makeRequest(noSectorIds, new Set(EU_TAXONOMY_FRAMEWORKS) as Set<BulkDataRequestDataTypesEnum>));
     }
   }
 
   if (monitoredFrameworks.has('sfdr')) {
     requests.push(makeRequest(allIds, new Set(['sfdr']) as Set<BulkDataRequestDataTypesEnum>));
   }
-  console.log(requests)
+  console.log(requests);
   return requests;
 }

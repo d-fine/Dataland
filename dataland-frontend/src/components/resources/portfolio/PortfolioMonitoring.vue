@@ -1,11 +1,11 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
-    <label for="reportingYearSelector" class="reporting-period-label">
-      <p>Activate Monitoring</p>
+    <label for="monitoringToggle" class="activate-monitoring" >
+      Activate Monitoring
     </label>
-    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" @change="handleMonitoring" />
+    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" @change="handleMonitoring" data-test="activateMonitoringToggle"/>
     <label for="reportingYearSelector" class="reporting-period-label">
-      <p>Starting Period</p>
+      Starting Period
     </label>
     <Dropdown
       v-model="selectedStartingYear"
@@ -21,7 +21,7 @@
       Please select Starting Period.
     </p>
     <label for="frameworkSelector">
-      <p>Frameworks</p>
+      Frameworks
     </label>
     <div class="framework-switch-group">
       <div
@@ -221,9 +221,7 @@ async function createBulkDataRequest(): Promise<void> {
         isMonitored: true,
       };
 
-      await Promise.all(
-     sendBulkRequestForPortfolio(enrichedPortfolio, assertDefined(getKeycloakPromise))
-      );
+      await Promise.all(sendBulkRequestForPortfolio(enrichedPortfolio, assertDefined(getKeycloakPromise)));
 
       dialogRef?.value.close({
         updated: true,

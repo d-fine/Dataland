@@ -102,32 +102,32 @@ const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
-const portfolioCompanies = ref<CompanyIdAndName[]>([])
-const enrichedPortfolioCompanies = ref<EnrichedPortfolioEntry[]>([]);
-const portfolioFrameworks: string[] =[
+const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
   'eutaxonomy-non-financials',
   'nuclear-and-gas',
-];
+]);
 
-let portfolio: EnrichedPortfolio;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isValidPortfolioUpload = computed(
-  () => portfolioName.value && portfolioFrameworks.length > 0 && portfolioCompanies.value?.length > 0
+  () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+const enrichedPortfolio = ref<EnrichedPortfolio | null>(null);
 
 onMounted(() => {
-  const enrichedPortfolio = dialogRef?.value.data;
-  if (!enrichedPortfolio || !enrichedPortfolio.portfolio) return;
-  portfolio = enrichedPortfolio.portfolio;
+  const data = dialogRef?.value.data;
+  if (!data || !data.portfolio) return;
+  const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  enrichedPortfolioCompanies.value = portfolio.entries;
-  portfolioCompanies.value = getUniqueSortedCompanies(
-    portfolio.entries.map((entry) => new CompanyIdAndName(entry))
-  );
+  if (data && data.portfolio) {
+    const portfolio = data.portfolio as EnrichedPortfolio;
+    enrichedPortfolio.value = portfolio;
+  }
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map(e => new CompanyIdAndName(e)));
 });
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
@@ -186,7 +186,6 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      // as unknown as Set<string> cast required to ensure proper json is created
       companyIds: portfolioCompanies.value.map((c) => c.companyId) as unknown as Set<string>,
     };
 
@@ -202,21 +201,34 @@ async function savePortfolio(): Promise<void> {
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
     } as BasePortfolioName);
-    await Promise.all(
-      sendBulkRequestForPortfolio(portfolio, assertDefined(getKeycloakPromise))
-    );
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      portfolioErrors.value =
-        error.status === 409
-          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
-          : error.message;
-    } else {
-      portfolioErrors.value = 'An unknown error occurred.';
-      console.log(error);
+    if (enrichedPortfolio.value && enrichedPortfolio.value.isMonitored) {
+      console.log("starting Bulk request")
+      await Promise.all(
+        sendBulkRequestForPortfolio(enrichedPortfolio.value, assertDefined(getKeycloakPromise))
+      );
     }
+  } catch (error) {
+    handlePortfolioError(error);
   } finally {
     isPortfolioSaving.value = false;
+  }
+
+
+}
+
+/**
+ *
+ * @param error
+ */
+function handlePortfolioError(error: unknown): void {
+  if (error instanceof AxiosError) {
+    portfolioErrors.value =
+      error.status === 409
+        ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+        : error.message;
+  } else {
+    portfolioErrors.value = 'An unknown error occurred.';
+    console.log(error);
   }
 }
 
