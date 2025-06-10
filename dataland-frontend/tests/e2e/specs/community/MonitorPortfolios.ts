@@ -57,7 +57,6 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         notExpectedDataTypes.forEach((type) => expect(body.dataTypes).not.to.include(type));
       }
 
-
       /**
        * Test function for creating portfolio and monitor it
        * @param portfolioName name of portfolio

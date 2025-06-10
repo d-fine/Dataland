@@ -209,8 +209,6 @@ async function savePortfolio(): Promise<void> {
   } finally {
     isPortfolioSaving.value = false;
   }
-
-
 }
 
 /**
@@ -233,9 +231,7 @@ function handlePortfolioError(error: unknown): void {
  *
  */
 async function fetchAndProcessPortfolioData(portfolioIdToFetch: string): Promise<void> {
-  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(
-    portfolioIdToFetch
-  );
+  const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioIdToFetch);
 
   if (!portfolio.data.isMonitored) return;
 
