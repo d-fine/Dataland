@@ -76,7 +76,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
     }
 
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")

@@ -72,7 +72,7 @@ class EutaxonomyFinancialsDataController
             includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
 
         @Operation(operationId = "getAllCompanyEutaxonomyFinancialsData")
         override fun getFrameworkDatasetsForCompany(
