@@ -138,32 +138,18 @@ class CompanyUploader(
 
         executeWithRetryAndThrottling {
             try {
-                // TRY-CATCH JUST FOR DEBUGGING PURPOSE
-                try {
-                    logger.info("uploadOrPatchSingleCompany for ${companyInformation.getNameAndIdentifier()}")
-                    companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
-                } catch (exception: ClientException) {
-                    val (conflictingCompanyId, conflictingIdentifiers) =
-                        checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
-                    if (conflictingCompanyId != null) {
-                        patchCompanyId = conflictingCompanyId
-                        allConflictingIdentifiers = conflictingIdentifiers
-                    } else {
-                        throw exception
-                    }
-                }
+                logger.info("uploadOrPatchSingleCompany for ${companyInformation.getNameAndIdentifier()}")
+                companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
-                logger
-                    .error("ClientError; patchSingleCompany; patchCompanyID: $patchCompanyId; allConflictingIdentifiers: $allConflictingIdentifiers; exception: $exception")
-                throw exception
-            } catch (exception: ServerException) {
-                logger
-                    .error("ServerError; patchSingleCompany; patchCompanyID: $patchCompanyId; allConflictingIdentifiers: $allConflictingIdentifiers; exception: $exception")
-                throw exception
-            } catch (exception: SocketTimeoutException) {
-                logger
-                    .error("TimeoutError; patchSingleCompany; patchCompanyID: $patchCompanyId; allConflictingIdentifiers: $allConflictingIdentifiers; exception: $exception")
-                throw exception
+                val (conflictingCompanyId, conflictingIdentifiers) =
+                    checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
+                if (conflictingCompanyId != null) {
+                    patchCompanyId = conflictingCompanyId
+                    allConflictingIdentifiers = conflictingIdentifiers
+                } else {
+                    logger.error("message: ${exception.message}") // ONLY FOR DEBUGGING
+                    throw exception
+                }
             }
         }
 
@@ -187,25 +173,10 @@ class CompanyUploader(
         val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
         executeWithRetryAndThrottling {
             logger.info("patchSingleCompany data for ${companyInformation.getNameAndIdentifier()}")
-            try {
-                // TRY-CATCH JUST FOR DEBUGGING PURPOSE
-                companyDataControllerApi.patchCompanyById(
-                    companyId,
-                    companyPatch,
-                )
-            } catch (exception: ClientException) {
-                logger
-                    .error("ClientError; patchSingleCompany; companyID: $companyId; companyInformation $companyInformation; conflictingIdentifiers $conflictingIdentifiers; exception: $exception")
-                throw exception
-            } catch (exception: ServerException) {
-                logger
-                    .error("ServerError; patchSingleCompany; companyID: $companyId; companyInformation $companyInformation; conflictingIdentifiers $conflictingIdentifiers; exception: $exception")
-                throw exception
-            } catch (exception: SocketTimeoutException) {
-                logger
-                    .error("TimeoutError; patchSingleCompany; companyID: $companyId; companyInformation $companyInformation; conflictingIdentifiers $conflictingIdentifiers; exception: $exception")
-                throw exception
-            }
+            companyDataControllerApi.patchCompanyById(
+                companyId,
+                companyPatch,
+            )
         }
     }
 
@@ -219,25 +190,10 @@ class CompanyUploader(
 
             executeWithRetryAndThrottling {
                 logger.info("updateRelationship of company with ID: $companyId and LEI: $startLei")
-                try {
-                    // TRY-CATCH JUST FOR DEBUGGING PURPOSE
-                    companyDataControllerApi.patchCompanyById(
-                        companyId,
-                        CompanyInformationPatch(parentCompanyLei = endLei),
-                    )
-                } catch (exception: ClientException) {
-                    logger
-                        .error("ClientError; patchSingleCompany; companyID: $companyId; startLei $startLei; endLei $endLei; exception: $exception")
-                    throw exception
-                } catch (exception: ServerException) {
-                    logger
-                        .error("ServerError; patchSingleCompany; companyID: $companyId; startLei $startLei; endLei $endLei; exception: $exception")
-                    throw exception
-                } catch (exception: SocketTimeoutException) {
-                    logger
-                        .error("TimeoutError; patchSingleCompany; companyID: $companyId; startLei $startLei; endLei $endLei; exception: $exception")
-                    throw exception
-                }
+                companyDataControllerApi.patchCompanyById(
+                    companyId,
+                    CompanyInformationPatch(parentCompanyLei = endLei),
+                )
             }
         }
     }
@@ -248,31 +204,18 @@ class CompanyUploader(
 
         executeWithRetryAndThrottling {
             logger.info("searchCompanyByLEI: $lei")
-
             try {
-                // TRY-CATCH JUST FOR DEBUGGING PURPOSE
-                try {
-                    companyId =
-                        companyDataControllerApi
-                            .getCompanyIdByIdentifier(IdentifierType.Lei, lei)
-                            .companyId
-                } catch (exception: ClientException) {
-                    if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.warn("Could not find company with LEI: $lei")
-                        found404 = true
-                    } else {
-                        throw exception
-                    }
-                }
+                companyId =
+                    companyDataControllerApi
+                        .getCompanyIdByIdentifier(IdentifierType.Lei, lei)
+                        .companyId
             } catch (exception: ClientException) {
-                logger.error("ClientError; patchSingleCompany; companyID: $companyId; exception: $exception")
-                throw exception
-            } catch (exception: ServerException) {
-                logger.error("ServerError; patchSingleCompany; companyID: $companyId; exception: $exception")
-                throw exception
-            } catch (exception: SocketTimeoutException) {
-                logger.error("TimeoutError; patchSingleCompany; companyID: $companyId; exception: $exception")
-                throw exception
+                if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    logger.warn("Could not find company with LEI: $lei")
+                    found404 = true
+                } else {
+                    throw exception
+                }
             }
         }
 
@@ -303,22 +246,10 @@ class CompanyUploader(
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
         executeWithRetryAndThrottling {
             logger.info("updateIsinsOfCompany with ID: $companyId")
-            try {
-                // TRY-CATCH JUST FOR DEBUGGING PURPOSE
-                companyDataControllerApi.patchCompanyById(
-                    companyId,
-                    companyPatch,
-                )
-            } catch (exception: ClientException) {
-                logger.error("ClientError; patchSingleCompany; companyID: $companyId; isins: $isins; exception: $exception")
-                throw exception
-            } catch (exception: ServerException) {
-                logger.error("ServerError; patchSingleCompany; companyID: $companyId; isins: $isins; exception: $exception")
-                throw exception
-            } catch (exception: SocketTimeoutException) {
-                logger.error("TimeoutError; patchSingleCompany; companyID: $companyId; isins: $isins; exception: $exception")
-                throw exception
-            }
+            companyDataControllerApi.patchCompanyById(
+                companyId,
+                companyPatch,
+            )
         }
     }
 }
