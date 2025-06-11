@@ -3,215 +3,146 @@ import AddCompanyToPortfoliosDialog from '@/components/general/AddCompanyToPortf
 import type { ReducedBasePortfolio } from '@/components/general/AddCompanyToPortfoliosModal.vue';
 
 describe('AddCompanyToPortfoliosDialog', () => {
+  const companyId = 'COMP-123';
   const mockPortfolios: ReducedBasePortfolio[] = [
     { portfolioId: 'p1', portfolioName: 'One', companyIds: [] },
     { portfolioId: 'p2', portfolioName: 'Two', companyIds: [] },
     { portfolioId: 'p3', portfolioName: 'Three', companyIds: [] },
   ];
 
-  const mockDialogRef = {
+  /**
+   * Creates a mock dialogRef object for mounting the AddCompanyToPortfoliosDialog component in tests.
+   *
+   * @param {Partial<ReducedBasePortfolio[]>} [override=mockPortfolios] - Optional override for the list of user portfolios.
+   * This allows customizing the `allUserPortfolios` provided to the component.
+   * @param {() => void} [closeStub] - Optional stub function to replace the default `dialogRef.close()` method.
+   * Useful for assertions in tests that validate whether the dialog was closed.
+   *
+   * @returns {{ value: { data: { companyId: string; allUserPortfolios: Partial<ReducedBasePortfolio[]> }; close: () => void } }}
+   * A mock dialogRef object structured as expected by the component.
+   */
+  const getMockDialogRef = (
+    override: Partial<ReducedBasePortfolio[]> = mockPortfolios,
+    closeStub?: () => void
+  ): {
     value: {
       data: {
-        companyId: 'COMP-123',
-        allUserPortfolios: mockPortfolios,
+        companyId: string;
+        allUserPortfolios: Partial<ReducedBasePortfolio[]>;
+      };
+      close: () => void;
+    };
+  } => ({
+    value: {
+      data: {
+        companyId,
+        allUserPortfolios: override,
       },
+      close: closeStub ?? cy.stub(),
     },
-  };
+  });
 
-  it('Should display empty dialog for new portfolio', () => {
+  /**
+   * Mounts the `AddCompanyToPortfoliosDialog` component with the provided dialogRef
+   * using Cypress and the default mocked authentication context.
+   *
+   * @param {object} dialogRef - The mock dialog reference to inject into the component.
+   * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
+   *
+   * @returns {void}
+   */
+  function mountComponent(dialogRef: object): void {
     // @ts-ignore
     cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
       keycloak: minimalKeycloakMock({}),
       global: {
-        provide: {
-          dialogRef: mockDialogRef,
-        },
+        provide: { dialogRef },
       },
     });
+  }
+
+  it('shows empty selection state for a new portfolio', () => {
+    mountComponent(getMockDialogRef());
 
     cy.get('.p-listbox').should('exist');
     cy.get('.p-listbox-item.p-highlight').should('not.exist');
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
   });
 
-  it('Should disable button and show "No available options" when user has no portfolios', () => {
-    // Empty portfolio list
-    const mockDialogRef = {
-      value: {
-        data: {
-          companyId: 'COMP-123',
-          allUserPortfolios: [],
-        },
-        close: cy.stub(),
-      },
-    };
+  it('disables button and shows "No available options" for empty portfolio list', () => {
+    mountComponent(getMockDialogRef([]));
 
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          dialogRef: mockDialogRef,
-        },
-      },
-    });
-
-    // Check Listbox shows no options
     cy.get('.p-listbox').should('exist');
-    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options'); // Default empty message from PrimeVue
-
-    // ✅ Check the button is disabled
-    cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
+    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options');
+    cy.get('[data-test="saveButton"]').should('be.disabled');
   });
 
-  it('should apply p-highlight to all selected and p-focus only to the last selected portfolio', () => {
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          dialogRef: {
-            value: {
-              data: {
-                companyId: 'COMP-123',
-                allUserPortfolios: mockPortfolios,
-              },
-              close: cy.stub(),
-            },
-          },
-        },
-      },
-    });
+  it('applies highlight and focus styles correctly when selecting multiple portfolios', () => {
+    mountComponent(getMockDialogRef());
 
-    // Select multiple portfolios in order
-    cy.get('.p-listbox-item').eq(0).click(); // Select "One"
-    cy.get('.p-listbox-item').eq(1).click(); // Select "Two"
-    cy.get('.p-listbox-item').eq(2).click(); // Select "Three" last
+    cy.get('.p-listbox-item').eq(0).click(); // One
+    cy.get('.p-listbox-item').eq(1).click(); // Two
+    cy.get('.p-listbox-item').eq(2).click(); // Three
 
-    // Assert "Three" has both highlight and focus
     cy.get('.p-listbox-item').eq(2).should('have.class', 'p-highlight').and('have.class', 'p-focus');
-
-    // Assert "One" and "Two" have highlight only
     cy.get('.p-listbox-item').eq(0).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
-
     cy.get('.p-listbox-item').eq(1).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
-
-    // No unselected left in this case — if you deselect one, add:
-    // cy.get('.p-listbox-item').eq(0).click(); // Deselect "One"
-    // cy.get('.p-listbox-item').eq(0).should('not.have.class', 'p-highlight').and('not.have.class', 'p-focus');
   });
 
-  it('should call the correct API endpoint with correct data after clicking the add button', () => {
-    const companyIdToAdd = 'NEW-COMPANY-ID';
+  it('calls replace API with correct data when adding a company', () => {
+    const newCompanyId = 'NEW-COMPANY-ID';
+    const mockDialogRef = getMockDialogRef(mockPortfolios.map((p) => ({ ...p, companyIds: [] })));
 
-    // Intercept the PUT call
+    mockDialogRef.value.data.companyId = newCompanyId;
+
     cy.intercept('PUT', '**/portfolios/**').as('updatePortfolio');
 
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          dialogRef: {
-            value: {
-              data: {
-                companyId: companyIdToAdd,
-                allUserPortfolios: mockPortfolios,
-              },
-              close: cy.stub(),
-            },
-          },
-        },
-      },
-    });
+    mountComponent(mockDialogRef);
 
-    // Select both portfolios
     cy.get('.p-listbox-item').eq(0).click();
     cy.get('.p-listbox-item').eq(1).click();
 
-    // Click the button
-    cy.get('button').contains('Add company').click();
+    cy.get('[data-test="saveButton"]').click();
 
-    // Wait for and validate both API calls
     cy.wait('@updatePortfolio').then((interception) => {
-      // Validate URL contains correct portfolioId
       const url = interception.request.url;
-      const allowedIds = ['p1', 'p2'];
-      const matchedUrls = allowedIds.some((id) => url.includes(`/users/portfolios/${id}`));
-      expect(matchedUrls, `Expected URL to include one of the allowed portfolio IDs, got ${url}`).to.be.true;
+      expect(['p1', 'p2'].some((id) => url.includes(id))).to.be.true;
 
       const body = interception.request.body;
-
-      // Validate body shape and data
-      expect(body).to.have.property('portfolioName').that.is.a('string');
-      expect(body).to.have.property('companyIds').that.includes(companyIdToAdd);
+      expect(body.companyIds).to.include(newCompanyId);
+      expect(body.portfolioName).to.be.a('string');
     });
 
-    // Wait for the second call if needed
     cy.wait('@updatePortfolio');
   });
 
-  it('Should handle API errors gracefully', () => {
-    // Intercept the replacePortfolio API and simulate a failure
+  it('displays error message on failed API response', () => {
     cy.intercept('PUT', '**/portfolios/**', {
       statusCode: 500,
       body: { message: 'Internal server error' },
     }).as('replacePortfolio');
 
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          dialogRef: mockDialogRef,
-        },
-      },
-    });
+    mountComponent(getMockDialogRef());
 
-    // Select a portfolio from the list
     cy.get('.p-listbox-item').first().click();
-    cy.get('button').contains('Add company').click();
-
+    cy.get('[data-test="saveButton"]').click();
     cy.wait('@replacePortfolio');
 
-    cy.get('.p-message-text').should('be.visible').and('contain.text', 'fail'); // Assumes your error message contains "Failed"
+    cy.get('.p-message-text').should('be.visible').and('contain.text', 'fail'); // UI should show fallback error
   });
 
-  it('Should close the modal after successful company addition', () => {
-    const closeStub = cy.stub().as('closeStub'); // Tracks if modal is closed
+  it('closes the dialog after successful company addition', () => {
+    const closeStub = cy.stub().as('closeStub');
 
-    // Intercept PUT request to simulate success
     cy.intercept('PUT', '**/portfolios/**', {
       statusCode: 200,
-      body: {},
     }).as('addCompany');
 
-    // Mount the component
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          dialogRef: {
-            value: {
-              data: {
-                companyId: 'COMP-123',
-                allUserPortfolios: mockPortfolios,
-              },
-              close: closeStub, // Inject the stubbed close function
-            },
-          },
-        },
-      },
-    });
+    mountComponent(getMockDialogRef(mockPortfolios, closeStub));
 
-    // Select the portfolio
     cy.get('.p-listbox-item').first().click();
+    cy.get('[data-test="saveButton"]').click();
 
-    // Click the "Add company" button
-    cy.get('button').contains('Add company').click();
-
-    // Wait for the API and check if dialogRef.close() was called
     cy.wait('@addCompany').then(() => {
       cy.get('@closeStub').should('have.been.called');
     });
