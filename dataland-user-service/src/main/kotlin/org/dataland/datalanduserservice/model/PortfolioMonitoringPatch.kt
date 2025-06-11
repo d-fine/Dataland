@@ -12,6 +12,5 @@ data class PortfolioMonitoringPatch(
     @field:JsonProperty(required = false)
     override val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
-    // @field:NotEmpty(message = "Please provide at least one framework.")
-    override val monitoredFrameworks: MutableSet<String>?,
+    override val monitoredFrameworks: Set<String>?,
 ) : PortfolioMonitoring

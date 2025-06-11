@@ -77,9 +77,11 @@ class PortfolioController
 
         override fun patchMonitoring(
             portfolioId: String,
-            monitoringUpdate: PortfolioMonitoringPatch,
+            portfolioMonitoringPatch: PortfolioMonitoringPatch,
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
-            return ResponseEntity.ok(portfolioMonitoringService.patchMonitoring(portfolioId, monitoringUpdate, correlationId))
+            return ResponseEntity.ok(
+                portfolioMonitoringService.patchMonitoring(portfolioId, portfolioMonitoringPatch, correlationId),
+            )
         }
     }

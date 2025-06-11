@@ -46,7 +46,7 @@ class ValidatorTest {
     private val invalidCompanyId = "invalid-company-id"
     private val isMonitored = true
     private val dummyStartingMonitoringPeriod = "2023"
-    private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "taxo")
+    private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
 
     private val validPortfolioUpload =
         PortfolioUpload(

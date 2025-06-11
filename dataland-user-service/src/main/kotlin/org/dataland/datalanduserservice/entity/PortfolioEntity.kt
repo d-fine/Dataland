@@ -38,13 +38,13 @@ data class PortfolioEntity(
     @Column(name = "company_ids")
     @OrderBy("asc")
     val companyIds: MutableSet<String>,
-    var isMonitored: Boolean? = false,
-    var startingMonitoringPeriod: String?,
+    val isMonitored: Boolean? = false,
+    val startingMonitoringPeriod: String?,
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
+    @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     @OrderBy("asc")
-    var monitoredFrameworks: Set<String>?,
+    val monitoredFrameworks: Set<String>?,
 ) {
     /**
      * create PortfolioResponse from entity

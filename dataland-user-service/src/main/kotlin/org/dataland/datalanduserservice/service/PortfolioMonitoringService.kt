@@ -28,7 +28,7 @@ class PortfolioMonitoringService
         @Transactional
         fun patchMonitoring(
             portfolioId: String,
-            patch: PortfolioMonitoringPatch,
+            portfolioMonitoringPatch: PortfolioMonitoringPatch,
             correlationId: String,
         ): BasePortfolio {
             val userId = DatalandAuthentication.fromContext().userId
@@ -48,9 +48,10 @@ class PortfolioMonitoringService
                     originalPortfolio.toPortfolioEntity(
                         portfolioId,
                         originalPortfolio.creationTimestamp,
-                        patch.isMonitored,
-                        patch.startingMonitoringPeriod,
-                        patch.monitoredFrameworks,
+                        System.currentTimeMillis(),
+                        portfolioMonitoringPatch.isMonitored,
+                        portfolioMonitoringPatch.startingMonitoringPeriod,
+                        portfolioMonitoringPatch.monitoredFrameworks,
                     ),
                 ).toBasePortfolio()
         }

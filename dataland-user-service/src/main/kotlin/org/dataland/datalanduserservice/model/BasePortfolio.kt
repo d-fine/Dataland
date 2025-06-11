@@ -29,7 +29,8 @@ data class BasePortfolio(
     override val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
     override val monitoredFrameworks: Set<String>?,
-) : Portfolio {
+) : Portfolio,
+    PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
         portfolioName = portfolioUpload.portfolioName,
@@ -50,6 +51,7 @@ data class BasePortfolio(
     fun toPortfolioEntity(
         portfolioId: String? = null,
         creationTimestamp: Long? = null,
+        lastUpdateTimestamp: Long? = null,
         isMonitoredPatch: Boolean? = null,
         startingMonitoringPeriodPatch: String? = null,
         monitoredFrameworksPatch: Set<String>? = null,
@@ -59,7 +61,7 @@ data class BasePortfolio(
             portfolioName = this.portfolioName,
             userId = this.userId,
             creationTimestamp = creationTimestamp ?: this.creationTimestamp,
-            lastUpdateTimestamp = this.lastUpdateTimestamp,
+            lastUpdateTimestamp = lastUpdateTimestamp ?: this.lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
             isMonitored = isMonitoredPatch ?: this.isMonitored,
             startingMonitoringPeriod = startingMonitoringPeriodPatch ?: this.startingMonitoringPeriod,
