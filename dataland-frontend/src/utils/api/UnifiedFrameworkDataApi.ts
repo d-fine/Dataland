@@ -29,7 +29,7 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
-    includeDataMetaInformation?: boolean,
+    keepValuesOnly? : boolean,
     includeAlias?: boolean,
     options?: AxiosRequestConfig
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,7 +76,7 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
     companyIds: string[],
     fileFormat: ExportFileType,
     includeAlias: boolean,
-    includeDataMetaInformation?: boolean,
+    keepValuesOnly?: boolean,
     options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 } & {
@@ -141,7 +141,7 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
     companyIds: string[],
     fileFormat: ExportFileType,
     includeAlias: boolean,
-    includeMetaData?: boolean,
+    keepValuesOnly? : boolean,
     options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -150,7 +150,7 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
       companyIds,
       fileFormat,
       includeAlias,
-      includeMetaData,
+      keepValuesOnly,
       options
     );
   }
