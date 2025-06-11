@@ -1,8 +1,8 @@
 <template>
   <div class="grid">
     <div class="col-8 text-left">
-      <span class="p-fluid">
-        <span class="p-input-icon-left p-input-icon-right">
+      <div class="p-fluid">
+        <div class="p-input-icon-left p-input-icon-right">
           <i
             class="pi pi-search d-framework-searchbar-input-icon"
             aria-hidden="true"
@@ -44,11 +44,11 @@
               </ul>
             </template>
           </AutoComplete>
-        </span>
+        </div>
         <div class="mt-2">
           <span class="red-text" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
         </div>
-      </span>
+      </div>
     </div>
   </div>
 </template>
@@ -81,6 +81,10 @@ export interface AutoCompleteInternalState {
     focusInput: HTMLInputElement;
   };
 }
+
+// const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
+//TODO: Transfer to Composition API, use templateRef
 
 export default defineComponent({
   setup() {
