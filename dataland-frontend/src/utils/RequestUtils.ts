@@ -169,7 +169,7 @@ export function sendBulkRequestForPortfolio(
     requests.push(
       requestController.postBulkDataRequest({
         reportingPeriods: reportingPeriods as unknown as Set<string>,
-        dataTypes: new Set(['sfdr']) as unknown as Set<BulkDataRequestDataTypesEnum>,
+        dataTypes: ['sfdr'] as unknown as Set<BulkDataRequestDataTypesEnum>,
         companyIdentifiers: companies.map((company) => company.companyId) as unknown as Set<string>,
         notifyMeImmediately: false,
       })
