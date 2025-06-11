@@ -91,7 +91,7 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="saveButton"]').click();
 
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
-        cy.get('[data-test="monitor-portfolio"]').filter(':visible').click({ force: true });
+        cy.get('[data-test="monitor-portfolio"]').click({ force: true });
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
