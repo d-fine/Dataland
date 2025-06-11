@@ -37,6 +37,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
 
       beforeEach(() => {
         cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
+        cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount('/portfolios');
       });
@@ -71,12 +72,14 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         expectedDataTypes,
         notExpectedDataTypes = [],
         framework,
+        frameworkValue,
       }: {
         portfolioName: string;
         permId: string;
         expectedDataTypes: string[];
         notExpectedDataTypes?: string[];
         framework: string;
+        frameworkValue: string;
       }): void {
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="addNewPortfolio"]').click({ force: true });
@@ -88,7 +91,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         cy.get('[data-test="saveButton"]').click();
 
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
-        cy.get('[data-test="monitor-portfolio"]').filter(':visible').click();
+        cy.get('[data-test="monitor-portfolio"]').filter(':visible').click({ force: true });
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
@@ -98,13 +101,24 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           .find('input[type="checkbox"]')
           .click({ force: true });
 
+
         cy.get('[data-test="saveChangesButton"]').click();
+
+        cy.wait('@patchMonitoring')
+          .its('request.body')
+          .should((body) => {
+            expect(body.isMonitored).to.be.true;
+            expect(body.startingMonitoringPeriod).to.equal('2023');
+            expect(body.monitoredFrameworks).to.include(frameworkValue);
+          });
+
 
         cy.wait('@postBulkRequest')
           .its('request.body')
           .should((body) => {
             assertBulkRequestBody(body, expectedDataTypes, notExpectedDataTypes);
           });
+
         cy.get('[data-test="isMonitoredBadge"]').should('be.visible');
         cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
@@ -119,6 +133,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           expectedDataTypes: ['eutaxonomy-non-financials', 'nuclear-and-gas'],
           notExpectedDataTypes: ['eutaxonomy-financials'],
           framework: 'EU Taxonomy',
+          frameworkValue: 'eutaxonomy'
         });
       });
 
@@ -129,6 +144,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas'],
           notExpectedDataTypes: ['eutaxonomy-non-financials'],
           framework: 'EU Taxonomy',
+          frameworkValue: 'eutaxonomy'
         });
       });
 
@@ -138,6 +154,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           permId: permIdNoSector,
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
           framework: 'EU Taxonomy',
+          frameworkValue: 'eutaxonomy'
         });
       });
 
@@ -148,6 +165,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           expectedDataTypes: ['sfdr'],
           notExpectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
           framework: 'SFDR',
+          frameworkValue: 'sfdr'
         });
       });
     }
