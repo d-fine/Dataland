@@ -93,7 +93,11 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
-        cy.get('[data-test="frameworkSelection"]').eq(1).find('input[type="checkbox"]').click({ force: true });
+        cy.get('[data-test="frameworkSelection"]')
+          .contains('EU Taxonomy')
+          .parent()
+          .find('input[type="checkbox"]')
+          .click({ force: true });
 
         cy.get('[data-test="saveChangesButton"]').click();
 
