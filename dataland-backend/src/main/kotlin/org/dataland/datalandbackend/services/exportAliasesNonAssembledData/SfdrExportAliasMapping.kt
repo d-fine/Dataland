@@ -13,7 +13,8 @@ object SfdrExportAliasMapping : ExportAliasMapping {
             "environmental.greenhouseGasEmissions.scope1And2GhgEmissionsInTonnes" to "Scope 1 and 2 GHG emissions",
             "environmental.greenhouseGasEmissions.scope1And2GhgEmissionsLocationBasedInTonnes"
                 to "Scope 1 and 2 GHG emissions (location-based)",
-            "environmental.greenhouseGasEmissions.scope1And2GhgEmissionsMarketBasedInTonnes" to "Scope 1 and 2 GHG emissions (market-based)",
+            "environmental.greenhouseGasEmissions.scope1And2GhgEmissionsMarketBasedInTonnes"
+                to "Scope 1 and 2 GHG emissions (market-based)",
             "environmental.greenhouseGasEmissions.scope3GhgEmissionsInTonnes" to "Scope 3 GHG emissions",
             "environmental.greenhouseGasEmissions.scope3UpstreamGhgEmissionsInTonnes" to "Scope 3 upstream GHG emissions",
             "environmental.greenhouseGasEmissions.scope3DownstreamGhgEmissionsInTonnes" to "Scope 3 downstream GHG emissions ",
