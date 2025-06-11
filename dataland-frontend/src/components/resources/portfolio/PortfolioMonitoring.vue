@@ -228,6 +228,7 @@ async function prefillModal(): Promise<void> {
 label {
   width: 100%;
   margin-bottom: 1em;
+  margin-top: 1em;
   padding: 0;
 }
 

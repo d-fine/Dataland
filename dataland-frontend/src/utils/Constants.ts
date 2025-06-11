@@ -25,7 +25,7 @@ export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORD
 );
 
 export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+  ['eutaxonomy-financials', 'nuclear-and-gas'].includes(framework)
 );
 
 export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
