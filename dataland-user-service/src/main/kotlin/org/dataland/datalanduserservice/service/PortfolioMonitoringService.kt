@@ -2,9 +2,7 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
-import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.repository.PortfolioRepository
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,18 +26,17 @@ class PortfolioMonitoringService
         @Transactional
         fun patchMonitoring(
             portfolioId: String,
-            portfolioMonitoringPatch: PortfolioMonitoringPatch,
+            portfolio: BasePortfolio,
             correlationId: String,
         ): BasePortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
             logger.info(
-                "Patch monitoring of portfolio with portfolioId: $portfolioId for user with userId: $userId." +
+                "Patch monitoring status of portfolio with portfolioId: $portfolioId for user with userId: ${portfolio.userId}." +
                     " CorrelationId: $correlationId.",
             )
 
             val originalPortfolio =
                 portfolioRepository
-                    .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+                    .getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
                     ?.toBasePortfolio()
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
@@ -48,10 +45,10 @@ class PortfolioMonitoringService
                     originalPortfolio.toPortfolioEntity(
                         portfolioId,
                         originalPortfolio.creationTimestamp,
-                        System.currentTimeMillis(),
-                        portfolioMonitoringPatch.isMonitored,
-                        portfolioMonitoringPatch.startingMonitoringPeriod,
-                        portfolioMonitoringPatch.monitoredFrameworks,
+                        portfolio.lastUpdateTimestamp,
+                        portfolio.isMonitored,
+                        portfolio.startingMonitoringPeriod,
+                        portfolio.monitoredFrameworks,
                     ),
                 ).toBasePortfolio()
         }

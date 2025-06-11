@@ -17,6 +17,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.time.Instant
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -34,8 +35,8 @@ class PortfolioMonitoringServiceTest {
             portfolioId = dummyPortfolioId,
             portfolioName = "Portfolio",
             userId = dummyUserId,
-            creationTimestamp = System.currentTimeMillis(),
-            lastUpdateTimestamp = System.currentTimeMillis(),
+            creationTimestamp = Instant.now().toEpochMilli(),
+            lastUpdateTimestamp = Instant.now().toEpochMilli(),
             companyIds = mutableSetOf("companyId"),
             isMonitored = false,
             startingMonitoringPeriod = "2023",
@@ -74,7 +75,7 @@ class PortfolioMonitoringServiceTest {
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolioId))
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioMonitoringService.patchMonitoring(dummyPortfolioId, portfolioMonitoringPatch, dummyCorrelationId)
+            portfolioMonitoringService.patchMonitoring(dummyPortfolioId, BasePortfolio(portfolioMonitoringPatch), dummyCorrelationId)
         }
     }
 
@@ -90,7 +91,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 startingMonitoringPeriod = "2021",
-                monitoredFrameworks = mutableSetOf("sfdr", "euro"),
+                monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
             )
 
         doReturn(originalPortfolio.toPortfolioEntity())
@@ -100,7 +101,7 @@ class PortfolioMonitoringServiceTest {
         val updatedPortfolio =
             portfolioMonitoringService.patchMonitoring(
                 dummyPortfolio.portfolioId,
-                portfolioMonitoringPatch,
+                BasePortfolio(portfolioMonitoringPatch),
                 dummyCorrelationId,
             )
 

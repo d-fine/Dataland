@@ -64,7 +64,7 @@ class DatalandUserServiceSpringbootTest
         private val invalidCompanyId = "invalid-company-id"
         private val isMonitored = false
         private val dummyStartingMonitoringPeriod = "2023"
-        private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "taxo")
+        private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
 
         private val dummyPortfolioUpload1 =
             PortfolioUpload(

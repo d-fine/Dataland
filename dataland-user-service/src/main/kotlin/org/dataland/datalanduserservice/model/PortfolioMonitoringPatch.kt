@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * --- API model ---
- * Portfolio API model for GET/POST methods
+ * Portfolio Monitoring API model for PATCH method
  */
 data class PortfolioMonitoringPatch(
     @field:JsonProperty(required = false)
