@@ -186,6 +186,7 @@ async function createBulkDataRequest(): Promise<void> {
       updated: true,
     });
   } else {
+
     if (!selectedStartingYear.value) {
       showReportingPeriodsError.value = true;
     }
@@ -203,7 +204,7 @@ async function createBulkDataRequest(): Promise<void> {
 
       await Promise.all(
         sendBulkRequestForPortfolio(
-          selectedStartingYear.value! as unknown as Set<string>,
+          selectedStartingYear.value! as unknown as string,
           Array.from(selectedFrameworks.value),
           portfolioCompanies.value,
           assertDefined(getKeycloakPromise)
