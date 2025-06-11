@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,7 +44,8 @@ class MetaDataControllerTest {
     }
 
     companion object {
-        private const val SLEEP_DURATION_MS: Long = 1000
+        private const val MAX_AWAITILITY_DURATION_MS = 10000L
+        private const val AWAITILITY_POLL_DELAY_MS = 500L
     }
 
     @Test
@@ -78,49 +81,107 @@ class MetaDataControllerTest {
         assertEquals(clientException.statusCode, 404)
     }
 
+    private fun postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
+        dataType: DataTypeEnum,
+        expectedSizeOfDataMetaInfoSearchResult: Int,
+        errorMessage: String,
+        getDataMetaInfoResultSize: (List<String>) -> Int,
+    ) {
+        val companyIds =
+            apiAccessor
+                .uploadCompanyAndFrameworkDataForMultipleFrameworks(
+                    mapOf(dataType to listOfTestCompanyInformation),
+                    numberOfDatasetsToPostPerCompany,
+                ).let { uploadInfos -> uploadInfos.map { it.actualStoredCompany.companyId }.distinct() }
+
+        var actualSizeOfDataMetaInfoSearchResult = 0
+        Awaitility
+            .await()
+            .atMost(MAX_AWAITILITY_DURATION_MS, TimeUnit.MILLISECONDS)
+            .pollDelay(AWAITILITY_POLL_DELAY_MS, TimeUnit.MILLISECONDS)
+            .untilAsserted {
+                actualSizeOfDataMetaInfoSearchResult = getDataMetaInfoResultSize(companyIds)
+                assertEquals(
+                    expectedSizeOfDataMetaInfoSearchResult,
+                    actualSizeOfDataMetaInfoSearchResult,
+                    "$errorMessage The found size is $actualSizeOfDataMetaInfoSearchResult.",
+                )
+            }
+    }
+
     @Test
-    fun `post companies and eu taxonomy data and check meta info search with only active as filter`() {
-        val usedDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val initialSizeOfDataMetaInfo =
+    fun `post companies and eu taxonomy data and check meta info search including inactive datasets`() {
+        val dataTypeUploaded = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+        val dataTypeNotUploaded = DataTypeEnum.eutaxonomyMinusFinancials
+        val initialNumberOfDataSets =
+            listOf(dataTypeUploaded, dataTypeNotUploaded)
+                .associateWith {
+                    apiAccessor.getNumberOfDataMetaInfo(
+                        showOnlyActive = false,
+                        dataType = it,
+                    )
+                }
+
+        val expectedSizeOfDataMetaInfoForUploadedDataType = initialNumberOfDataSets[dataTypeUploaded]!! + totalNumberOfDatasetsPerFramework
+        postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
+            dataType = dataTypeUploaded,
+            expectedSizeOfDataMetaInfoSearchResult = expectedSizeOfDataMetaInfoForUploadedDataType,
+            errorMessage =
+                "The list with all data meta info is expected to increase by " +
+                    "$totalNumberOfDatasetsPerFramework to $expectedSizeOfDataMetaInfoForUploadedDataType.",
+        ) {
             apiAccessor.getNumberOfDataMetaInfo(
                 showOnlyActive = false,
-                dataType = usedDataType,
+                dataType = dataTypeUploaded,
             )
-        apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(usedDataType to listOfTestCompanyInformation),
-            numberOfDatasetsToPostPerCompany,
-        )
-        Thread.sleep(SLEEP_DURATION_MS)
-        val sizeOfListOfDataMetaInfo =
-            apiAccessor.getNumberOfDataMetaInfo(
-                showOnlyActive = false,
-                dataType = usedDataType,
-            )
-        val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDatasetsPerFramework
+        }
+
         assertEquals(
-            expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
-            "The list with all data meta info is expected to increase by $totalNumberOfDatasetsPerFramework to " +
-                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
+            initialNumberOfDataSets[dataTypeNotUploaded],
+            apiAccessor.getNumberOfDataMetaInfo(
+                dataType = dataTypeNotUploaded,
+                showOnlyActive = false,
+            ),
         )
     }
 
     @Test
+    fun `post companies and eu taxonomy data and check meta info search excluding inactive datasets`() {
+        val usedDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+        val initialSizeOfDataMetaInfo =
+            apiAccessor.getNumberOfDataMetaInfo(
+                showOnlyActive = true,
+                dataType = usedDataType,
+            )
+        val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + numberOfCompaniesToPostPerFramework
+        postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
+            dataType = usedDataType,
+            expectedSizeOfDataMetaInfoSearchResult = expectedSizeOfDataMetaInfo,
+            errorMessage =
+                "The list with all data meta info is expected to increase by " +
+                    "$numberOfCompaniesToPostPerFramework to $expectedSizeOfDataMetaInfo.",
+        ) {
+            apiAccessor.getNumberOfDataMetaInfo(
+                showOnlyActive = true,
+                dataType = usedDataType,
+            )
+        }
+    }
+
+    @Test
     fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
-        val listOfUploadInfo =
-            apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-                mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
-                numberOfDatasetsToPostPerCompany,
+        postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
+            dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+            expectedSizeOfDataMetaInfoSearchResult = numberOfDatasetsToPostPerCompany,
+            errorMessage =
+                "The first posted company is expected to have meta info " +
+                    "about $numberOfDatasetsToPostPerCompany data sets.",
+        ) { companyIds ->
+            apiAccessor.getNumberOfDataMetaInfo(
+                companyId = companyIds[0],
+                showOnlyActive = false,
             )
-        val companyIdOfFirstUploadedCompany = listOfUploadInfo[0].actualStoredCompany.companyId
-        val listOfDataMetaInfoForFirstCompanyId =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-                companyIdOfFirstUploadedCompany, showOnlyActive = false,
-            )
-        assertEquals(
-            numberOfDatasetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
-            "The first posted company is expected to have meta info about $numberOfDatasetsToPostPerCompany " +
-                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
-        )
+        }
     }
 
     @Test
@@ -147,21 +208,52 @@ class MetaDataControllerTest {
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filters on company ID and data type`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val listOfUploadInfo =
-            apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-                mapOf(testDataType to listOfTestCompanyInformation), numberOfDatasetsToPostPerCompany,
-            )
-        Thread.sleep(SLEEP_DURATION_MS)
-        val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType =
+        postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
+            dataType = testDataType,
+            expectedSizeOfDataMetaInfoSearchResult = numberOfDatasetsToPostPerCompany,
+            errorMessage =
+                "The first posted company is expected to have meta info " +
+                    "about $numberOfDatasetsToPostPerCompany data sets.",
+        ) { companyIds ->
             apiAccessor.getNumberOfDataMetaInfo(
-                listOfUploadInfo[0].actualStoredCompany.companyId,
-                testDataType,
-                false,
+                companyId = companyIds[0],
+                dataType = testDataType,
+                showOnlyActive = false,
             )
+        }
+    }
+
+    @Test
+    fun `post companies and eu taxonomy financials data and check that no non-financials data sets exist`() {
+        val initialNumberOfNonFinancialsDatasets =
+            apiAccessor.getNumberOfDataMetaInfo(
+                dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+                showOnlyActive = false,
+            )
+        val postedDataType = DataTypeEnum.eutaxonomyMinusFinancials
+        postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
+            dataType = postedDataType,
+            expectedSizeOfDataMetaInfoSearchResult = totalNumberOfDatasetsPerFramework,
+            errorMessage =
+                "The posted companies are expected to have a total number " +
+                    "of $totalNumberOfDatasetsPerFramework datasets for eu taxonomy financials.",
+        ) { companyIds ->
+            companyIds
+                .map {
+                    apiAccessor.getNumberOfDataMetaInfo(
+                        companyId = it,
+                        dataType = postedDataType,
+                        showOnlyActive = false,
+                    )
+                }.sum()
+        }
+
         assertEquals(
-            numberOfDatasetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
-            "The first posted company is expected to have meta info about $numberOfDatasetsToPostPerCompany " +
-                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
+            initialNumberOfNonFinancialsDatasets,
+            apiAccessor.getNumberOfDataMetaInfo(
+                dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+                showOnlyActive = false,
+            ),
         )
     }
 
