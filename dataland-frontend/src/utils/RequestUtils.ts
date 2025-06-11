@@ -150,31 +150,40 @@ export function sendBulkRequestForPortfolio(
   const reportingPeriods = Array.from({ length: LATEST_PERIOD - Number(startingMonitoringPeriod) + 1 }, (_, i) =>
     (Number(startingMonitoringPeriod) + i).toString()
   );
+  console.log('REPORTING PERIODS', reportingPeriods);
 
   const companyIdsForFinancial = companies
     .filter((company) => company.sector?.toLowerCase() === 'financials')
     .map((company) => company.companyId);
   const companyIdsForNonFinancial = companies
-    .filter((company) => !!company.sector && company.sector.toLowerCase() !== 'financials')
+    .filter((company) => company.sector && company.sector.toLowerCase() !== 'financials')
     .map((company) => company.companyId);
-  const companyIdsWithNoSector = companies.filter(
-    (company) => !(company.companyId in companyIdsForFinancial || company.companyId in companyIdsForNonFinancial)
-  );
+  const companyIdsWithNoSector = companies
+    .filter(
+      (company) =>
+        !companyIdsForFinancial.includes(company.companyId) && !companyIdsForNonFinancial.includes(company.companyId)
+    )
+    .map((company) => company.companyId);
+  console.log('COMPANIES', companies);
+  console.log('reportingPeriods:', reportingPeriods);
+  console.log('companyIdsWithNoSector:', companyIdsWithNoSector);
+
+  console.log('sfdr' in monitoredFrameworks);
+  console.log(monitoredFrameworks);
 
   const requests = [];
-
-  if ('sfdr' in monitoredFrameworks) {
+  if (monitoredFrameworks.includes('sfdr')) {
     requests.push(
       requestController.postBulkDataRequest({
         reportingPeriods: reportingPeriods as unknown as Set<string>,
-        dataTypes: ['sfdr'] as unknown as Set<BulkDataRequestDataTypesEnum>,
+        dataTypes: new Set(['sfdr']) as unknown as Set<BulkDataRequestDataTypesEnum>,
         companyIdentifiers: companies.map((company) => company.companyId) as unknown as Set<string>,
         notifyMeImmediately: false,
       })
     );
   }
 
-  if ('eutaxonomy' in monitoredFrameworks) {
+  if (monitoredFrameworks.includes('eutaxonomy')) {
     if (companyIdsForFinancial.length > 0) {
       requests.push(
         requestController.postBulkDataRequest({

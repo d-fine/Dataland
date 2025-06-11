@@ -62,7 +62,7 @@ import InputSwitch from 'primevue/inputswitch';
 import { computed, inject, onMounted, reactive, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import type { CompanyIdAndName } from '@clients/backend';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry, PortfolioMonitoringPatch } from '@clients/userservice';
+import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -70,6 +70,7 @@ import type Keycloak from 'keycloak-js';
 import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
 import Dropdown from 'primevue/dropdown';
 import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
+import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
 
 const availableFrameworks: DropdownOption[] = [
   { value: 'sfdr', label: 'SFDR' },
@@ -84,15 +85,14 @@ const reportingYears = [
   { label: '2019', value: 2019 },
 ];
 
-const selectedStartingYear = ref<string | undefined>(undefined);
+const selectedStartingYear = ref<number | undefined>(undefined);
 
-const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const portfolioCompanies = ref<CompanyIdAndNameAndSector[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
 const portfolioId = ref<string>('');
-const portfolioEntries = ref<EnrichedPortfolioEntry[]>([]);
 const portfolioName = ref<string>('');
 const userid = ref<string>('');
 
@@ -120,9 +120,10 @@ onMounted(async () => {
     const portfolio = data.portfolio as EnrichedPortfolio;
     portfolioName.value = portfolio.portfolioName;
     userid.value = portfolio.userId;
-    portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
     portfolioId.value = portfolio.portfolioId;
-    portfolioEntries.value = portfolio.entries;
+    portfolioCompanies.value = getUniqueSortedCompanies(
+      portfolio.entries.map((entry) => new CompanyIdAndNameAndSector(entry))
+    );
   }
   await prefillModal();
 });
@@ -169,7 +170,7 @@ async function createPatch(): Promise<void> {
 async function createBulkDataRequest(): Promise<void> {
   resetErrors();
 
-  if (monitoringActive.value === false) {
+  if (!monitoringActive.value) {
     const payloadPatchMonitoring: PortfolioMonitoringPatch = {
       isMonitored: false,
     };
@@ -202,9 +203,9 @@ async function createBulkDataRequest(): Promise<void> {
 
       await Promise.all(
         sendBulkRequestForPortfolio(
-          selectedStartingYear.value!,
+          selectedStartingYear.value! as unknown as Set<string>,
           Array.from(selectedFrameworks.value),
-          portfolioEntries.value,
+          portfolioCompanies.value,
           assertDefined(getKeycloakPromise)
         )
       );
@@ -234,7 +235,7 @@ async function prefillModal(): Promise<void> {
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.data.entries);
 
     if (portfolio.data.startingMonitoringPeriod) {
-      selectedStartingYear.value = portfolio.data.startingMonitoringPeriod;
+      selectedStartingYear.value = Number(portfolio.data.startingMonitoringPeriod);
     }
 
     let monitoredSet: Set<string>;
