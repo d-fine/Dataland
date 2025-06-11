@@ -5,7 +5,7 @@ import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 
-describe('Portfolio Monitoring Bulk Data Request Modal', () => {
+describe('Portfolio Monitoring Modal', () => {
   describeIf(
     'As a user I want to be able to monitor a portfolio',
     { executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'] },
