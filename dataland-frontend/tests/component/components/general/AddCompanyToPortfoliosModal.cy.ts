@@ -58,9 +58,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
 
     // ✅ Check Listbox shows no options
     cy.get('.p-listbox').should('exist');
-    cy.get('.p-listbox-empty-message')
-      .should('be.visible')
-      .and('contain.text', 'No available options'); // ✅ Default empty message from PrimeVue
+    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options'); // ✅ Default empty message from PrimeVue
 
     // ✅ Check the button is disabled
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
@@ -91,18 +89,12 @@ describe('AddCompanyToPortfoliosDialog', () => {
     cy.get('.p-listbox-item').eq(2).click(); // Select "Three" last
 
     // Assert "Three" has both highlight and focus
-    cy.get('.p-listbox-item').eq(2)
-      .should('have.class', 'p-highlight')
-      .and('have.class', 'p-focus');
+    cy.get('.p-listbox-item').eq(2).should('have.class', 'p-highlight').and('have.class', 'p-focus');
 
     // Assert "One" and "Two" have highlight only
-    cy.get('.p-listbox-item').eq(0)
-      .should('have.class', 'p-highlight')
-      .and('not.have.class', 'p-focus');
+    cy.get('.p-listbox-item').eq(0).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
 
-    cy.get('.p-listbox-item').eq(1)
-      .should('have.class', 'p-highlight')
-      .and('not.have.class', 'p-focus');
+    cy.get('.p-listbox-item').eq(1).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
 
     // No unselected left in this case — if you deselect one, add:
     // cy.get('.p-listbox-item').eq(0).click(); // Deselect "One"
@@ -138,9 +130,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
     cy.get('.p-listbox-item').eq(1).click();
 
     // Click the button
-    cy.get('button')
-      .contains('Add company')
-      .click();
+    cy.get('button').contains('Add company').click();
 
     // Wait for and validate both API calls
     cy.wait('@updatePortfolio').then((interception) => {
@@ -184,9 +174,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
 
     cy.wait('@replacePortfolio');
 
-    cy.get('.p-message-text')
-      .should('be.visible')
-      .and('contain.text', 'fail'); // Assumes your error message contains "Failed"
+    cy.get('.p-message-text').should('be.visible').and('contain.text', 'fail'); // Assumes your error message contains "Failed"
   });
 
   it('Should close the modal after successful company addition', () => {
@@ -228,5 +216,4 @@ describe('AddCompanyToPortfoliosDialog', () => {
       cy.get('@closeStub').should('have.been.called');
     });
   });
-
 });
