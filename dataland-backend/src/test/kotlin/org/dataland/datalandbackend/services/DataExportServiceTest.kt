@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
@@ -49,6 +50,11 @@ class DataExportServiceTest {
         val header3 = "Header 3"
 
         val header = listOf(header1, header2, header3)
+        val csvSchemaBuilder = CsvSchema.builder()
+        header.forEach { it ->
+            csvSchemaBuilder.addColumn(it)
+        }
+        val csvSchema = csvSchemaBuilder.build().withHeader()
 
         val data =
             listOf(
@@ -56,15 +62,8 @@ class DataExportServiceTest {
                 mapOf(header1 to "Row 2 Col 1", header2 to "Row 2 Col 2", header3 to "Row 2 Col 3"),
             )
 
-        val readableHeaders =
-            mapOf(
-                header1 to "First Header",
-                header2 to "Second Header",
-                header3 to "Third Header",
-            )
-
         Assertions.assertDoesNotThrow {
-            dataExportService.transformDataToExcelWithReadableHeaders(header, data, ByteArrayOutputStream(), readableHeaders)
+            dataExportService.transformDataToExcelWithReadableHeaders(data, csvSchema, ByteArrayOutputStream())
         }
     }
 

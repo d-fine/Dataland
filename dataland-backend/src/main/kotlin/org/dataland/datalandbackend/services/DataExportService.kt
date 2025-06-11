@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.example.translation.SfdrHardcodedMapping
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
@@ -8,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
+import org.dataland.datalandbackend.services.exportAliasesNonAssembledData.SfdrExportAliasMapping
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.ExportFileType
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import kotlin.collections.map
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -31,7 +32,6 @@ class DataExportService
     ) {
         companion object {
             private const val HEADER_ROW_INDEX = 0
-            private const val FIRST_DATA_ROW_INDEX = 1
             private const val PRIORITY_COMPANY_NAME = -3
             private const val PRIORITY_COMPANY_LEI = -2
             private const val PRIORITY_REPORTING_PERIOD = -1
@@ -85,55 +85,43 @@ class DataExportService
 
         /**
          * Transform the data to an Excel file with human-readable headers.
-         * @param headerFields the header fields to be used (has to be consistent with the keys in the data map)
-         * @param data the data to be transformed (each entry in the list represents a row in the Excel file)
+         * @param csvDataWithReadableHeaders the data to be transformed (each entry in the list represents a row in the Excel file)
          * @param outputStream the output stream to write the data to
-         * @param readableHeaders a map of original header names to readable header names
          */
         fun transformDataToExcelWithReadableHeaders(
-            headerFields: List<String>,
-            data: List<Map<String, String>>,
+            csvDataWithReadableHeaders: List<Map<String, String>>,
+            csvSchema: CsvSchema,
             outputStream: OutputStream,
-            readableHeaders: Map<String, String>,
         ) {
-            val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("Data")
             val headerRow = sheet.createRow(HEADER_ROW_INDEX)
-            headerToBeUsed.forEachIndexed { index, headerField ->
-                val cell = headerRow.createCell(index)
-                val readable =
-                    readableHeaders[headerField]
-                        ?: readableHeaders[headerField.removeSuffix(".value")]
-                        ?: headerField.substringAfterLast(".") // fallback to just the field name
-
-                cell.setCellValue(readable)
-            }
-
-            println("++++++++++++++++++++++++Readable Headers ++++++++++++++++++++++++++++++++")
-            println(readableHeaders)
-
-            var rowIndex = FIRST_DATA_ROW_INDEX
-            data.forEach { entry ->
-                val row = sheet.createRow(rowIndex++)
-                headerToBeUsed.forEachIndexed { index, headerField ->
-                    val cell = row.createCell(index)
-                    if (headerField in entry.keys) {
-                        cell.setCellValue(entry[headerField] ?: "")
-                    } else if ("$headerField.value" in entry.keys) {
-                        cell.setCellValue(entry["$headerField.value"] ?: "")
-                    } else {
-                        cell.setCellValue("")
+            val columnsWithValues = mutableSetOf<String>()
+            csvDataWithReadableHeaders.forEach { dataMap ->
+                dataMap.forEach { (key, value) ->
+                    if (value.isNotEmpty()) {
+                        columnsWithValues.add(key)
                     }
                 }
             }
 
-            headerToBeUsed.forEachIndexed { index, headerField ->
-                sheet.autoSizeColumn(index)
+            columnsWithValues.forEachIndexed { index, columnName ->
+                val cell = headerRow.createCell(index)
+                cell.setCellValue(columnName)
             }
 
-            println("++++++++++++++++++++++++Header to be used ++++++++++++++++++++++++++++++++")
-            println(headerToBeUsed)
+            val orderedColumnsWithValues = csvSchema.columnNames.filter { it in columnsWithValues }
+
+            // Write data rows filtering only relevant columns
+
+            csvDataWithReadableHeaders.forEachIndexed { rowIndex, dataMap ->
+                val row = sheet.createRow(rowIndex + 1)
+                orderedColumnsWithValues.forEachIndexed { colIndex, columnName ->
+                    val cell = row.createCell(colIndex)
+                    val value = dataMap[columnName] ?: ""
+                    cell.setCellValue(value)
+                }
+            }
 
             workbook.write(outputStream)
             workbook.close()
@@ -177,13 +165,40 @@ class DataExportService
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
+            val aliasExportMap =
+                if (isAssembledDataset && frameworkTemplate != null) {
+                    extractAliasExportFields(frameworkTemplate)
+                } else {
+                    emptyMap()
+                }
+
+            val hardcodedMap = getHardcodedAliasMapping(dataType)
+
+            val readableHeaders = mutableMapOf<String, String>()
+
+            nonEmptyHeaderFields.forEach { fieldName ->
+                val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
+
+                val aliasHeader = aliasExportMap[strippedField]
+                val hardcodedHeader = hardcodedMap?.get(strippedField)
+
+                if (includeAliases) {
+                    readableHeaders["data.$strippedField"] = aliasHeader ?: hardcodedHeader ?: fieldName
+                } else {
+                    readableHeaders["data.$strippedField"] = fieldName
+                }
+            }
+
             val orderedHeaderFields =
                 if (isAssembledDataset) {
-                    JsonUtils.getLeafNodeFieldNames(
-                        frameworkTemplate ?: portfolioExportRows.first(),
-                        keepEmptyFields = true,
-                        dropLastFieldName = true,
-                    )
+                    JsonUtils
+                        .getLeafNodeFieldNames(
+                            frameworkTemplate ?: portfolioExportRows.first(),
+                            keepEmptyFields = true,
+                            dropLastFieldName = true,
+                        ).mapNotNull {
+                            readableHeaders["data.$it"]
+                        }
                 } else {
                     LinkedHashSet(
                         nonEmptyHeaderFields.sortedWith(
@@ -199,34 +214,7 @@ class DataExportService
                     )
                 }
 
-            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
-
-            val aliasExportMap =
-                if (isAssembledDataset && frameworkTemplate != null) {
-                    extractAliasExportFields(frameworkTemplate)
-                } else {
-                    emptyMap()
-                }
-
-            val hardcodedMap = getHardcodedAliasMapping(dataType) ?: emptyMap()
-
-            val readableHeaders = mutableMapOf<String, String>()
-
-            nonEmptyHeaderFields.forEach { fieldName ->
-                val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
-
-                val aliasHeader = aliasExportMap[strippedField]
-                println(aliasHeader)
-
-                val hardcodedHeader = hardcodedMap[fieldName]
-                println(fieldName)
-
-                if (includeAliases) {
-                    readableHeaders["data.$strippedField"] = aliasHeader ?: hardcodedHeader ?: strippedField
-                } else {
-                    readableHeaders["data.$strippedField"] = strippedField
-                }
-            }
+            val csvSchema = createCsvSchemaBuilder(readableHeaders.values.toSet(), orderedHeaderFields, isAssembledDataset)
 
             return PreparedExportData(csvData, csvSchema, readableHeaders)
         }
@@ -259,25 +247,22 @@ class DataExportService
 
             val outputStream = ByteArrayOutputStream()
             val csvMapper = CsvMapper()
-            val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
-            val rawCsv = csvWriter.writeValueAsString(csvData)
 
             val csvWithReadableHeaders =
-                rawCsv
-                    .lineSequence()
-                    .toList()
-                    .let {
-                        listOf(
-                            readableHeaders.values
-                                .toString()
-                                .removeSuffix("[")
-                                .removePrefix("]"),
-                        ) + it.drop(1)
-                    }.joinToString("\n")
-
-            outputStream.write(csvWithReadableHeaders.toByteArray())
+                mapsReadableHeadersToCsvData(csvData, readableHeaders)
+            csvMapper.writer(csvSchema).writeValues(outputStream).writeAll(csvWithReadableHeaders)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
+
+        private fun mapsReadableHeadersToCsvData(
+            csvData: List<Map<String, String>>,
+            readableHeaders: Map<String, String>,
+        ): List<Map<String, String>> =
+            csvData.map { originalMap ->
+                originalMap.mapKeys { (key, _) ->
+                    readableHeaders[key.removeSuffix(".value")] ?: key
+                }
+            }
 
         /**
          * Create a ByteStream to be used for Excel export from a list of JSON objects.
@@ -299,24 +284,15 @@ class DataExportService
                     keepValueFieldsOnly, includeAliases,
                 )
 
-            val excelHeaderFields =
-                csvSchema.columnNames
-                    .filter { it.startsWith("data.") }
-
-            val finalHeaderFields =
-                excelHeaderFields.map { field ->
-                    readableHeaders[field] ?: field.substringAfter("data.")
-                }
-
-            println("++++++++++++++++++++++++Final Header Fields ++++++++++++++++++++++++++++++++")
-            println(finalHeaderFields)
-
             val outputStream = ByteArrayOutputStream()
+
+            val csvWithReadableHeaders =
+                mapsReadableHeadersToCsvData(csvData, readableHeaders)
+
             transformDataToExcelWithReadableHeaders(
-                finalHeaderFields,
-                csvData,
+                csvWithReadableHeaders,
+                csvSchema,
                 outputStream,
-                readableHeaders,
             )
 
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
@@ -422,13 +398,12 @@ class DataExportService
          * Creates the CSV schema based on the provided headers
          * The first parameter determines which fields are used to create columns; the second parameter determines the
          * order of the columns.
-         * @param usedHeaderFields a set of column names used as the headers in the CSV
-         * @param orderedHeaderFields a list of all existing header fields in the correct order
+         * @param orderedHeaderFields a set of column names used as the headers in the CSV in the correct order
          * @return the csv schema builder
          */
         private fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
-            orderedHeaderFields: Collection<String>,
+            orderedHeaderFields: Collection<String?>,
             isAssembledDataset: Boolean,
         ): CsvSchema {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
@@ -438,16 +413,11 @@ class DataExportService
             if (isAssembledDataset) {
                 usedHeaderFields
                     .filter {
-                        !it.startsWith("data" + JsonUtils.getPathSeparator())
+                        !orderedHeaderFields.contains(it)
                     }.forEach { csvSchemaBuilder.addColumn(it) }
 
-                orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
-                    usedHeaderFields
-                        .filter { usedHeaderField ->
-                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
-                        }.forEach {
-                            csvSchemaBuilder.addColumn(it)
-                        }
+                orderedHeaderFields.forEach { it ->
+                    csvSchemaBuilder.addColumn(it)
                 }
             } else {
                 orderedHeaderFields.forEach {
@@ -485,7 +455,7 @@ class DataExportService
 
         private fun getHardcodedAliasMapping(dataType: DataType): Map<String, String>? =
             when (dataType.toString().lowercase()) {
-                "sfdr" -> SfdrHardcodedMapping
+                "sfdr" -> SfdrExportAliasMapping.fieldNameToReadableName
                 else -> null
-            } as Map<String, String>?
+            }
     }
