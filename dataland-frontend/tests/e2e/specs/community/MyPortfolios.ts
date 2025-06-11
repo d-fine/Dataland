@@ -4,7 +4,7 @@ import { IdentifierType } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
+import { EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS } from '@/utils/Constants.ts';
 
 describeIf(
   'As a user I want to be able to create, edit and delete my portfolios',
@@ -44,6 +44,7 @@ describeIf(
       cy.get('[data-test="saveButton"]').click();
 
       cy.get('[data-test="monitor-portfolio"]').filter(':visible').click();
+      cy.get('[data-test="activateMonitoringToggle"]').click();
       cy.get('[data-test="listOfReportingPeriods"]').click();
       cy.get('.p-dropdown-item').contains('2023').click();
 
@@ -58,8 +59,8 @@ describeIf(
       cy.wait('@postBulkRequest')
         .its('request.body')
         .should((body) => {
-          expect(body.reportingPeriods).to.include(2023);
-          EU_TAXONOMY_FRAMEWORKS.forEach((type) => expect(body.dataTypes).to.include(type));
+          expect(body.reportingPeriods).to.include('2023');
+          EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS.forEach((type) => expect(body.dataTypes).to.include(type));
           expect(body.dataTypes).not.to.include('sfdr');
         });
 
@@ -74,7 +75,7 @@ describeIf(
         .its('request.body')
         .should((body) => {
           expect(body.reportingPeriods).to.include('2023');
-          EU_TAXONOMY_FRAMEWORKS.forEach((type) => expect(body.dataTypes).to.include(type));
+          EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS.forEach((type) => expect(body.dataTypes).to.include(type));
           expect(body.dataTypes).not.to.include('sfdr');
         });
       cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click({ force: true });

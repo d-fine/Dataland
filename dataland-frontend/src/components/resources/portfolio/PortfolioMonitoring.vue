@@ -50,7 +50,7 @@
         label="SAVE CHANGES"
         icon="pi pi-save"
         title="Cancel (changes will not be saved)"
-        @click="createBulkDataRequest()"
+        @click="patchPortfolioMonitoring()"
       />
     </div>
   </div>
@@ -59,7 +59,6 @@
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { CompanyIdAndNameAndSector, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
-import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
 import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
@@ -136,67 +135,74 @@ async function patchPortfolioMonitoring(): Promise<void> {
     monitoredFrameworks: selectedFrameworkOptions as unknown as Set<string>,
   };
 
+  if (!selectedStartingYear.value) {
+    showReportingPeriodsError.value = true;
+  }
+
+  if (selectedFrameworkOptions.value.length === 0) {
+    showFrameworksError.value = true;
+  }
+
+  if (showReportingPeriodsError.value || showFrameworksError.value) {
+    return;
+  }
+
   try {
     await portfolioControllerApi.patchMonitoring(portfolioId.value, portfolioMonitoringPatch);
-    await sendBulkRequestsForPortfolio()
+    await Promise.all(sendBulkRequestsForPortfolio(
+      selectedStartingYear.value! as unknown as string,
+      Array.from(selectedFrameworkOptions.value),
+      portfolioCompanies.value,
+      assertDefined(getKeycloakPromise)
+    ))
 
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
   }
 }
 
-/**
- * Handles Bulk Request for Portfolio Monitoring
- */
-async function createBulkDataRequest(): Promise<void> {
-
-  if (!isMonitoringActive.value) {
-    const payloadPatchMonitoring: PortfolioMonitoringPatch = {
-      isMonitored: false,
-    };
-
-    try {
-      await portfolioControllerApi.patchMonitoring(portfolioId.value, payloadPatchMonitoring);
-    } catch (error) {
-      console.error('Error setting Monitoring Flag to false:', error);
-    }
-
-    dialogRef?.value.close({
-      updated: true,
-    });
-  } else {
-    if (!selectedStartingYear.value) {
-      showReportingPeriodsError.value = true;
-    }
-
-    if (selectedFrameworkOptions.value.length === 0) {
-      showFrameworksError.value = true;
-    }
-
-    if (showReportingPeriodsError.value || showFrameworksError.value) {
-      return;
-    }
-
-    try {
-      await patchPortfolioMonitoring();
-
-      await Promise.all(
-        sendBulkRequestsForPortfolio(
-          selectedStartingYear.value! as unknown as string,
-          Array.from(selectedFrameworkOptions.value),
-          portfolioCompanies.value,
-          assertDefined(getKeycloakPromise)
-        )
-      );
-
-      dialogRef?.value.close({
-        updated: true,
-      });
-    } catch (error) {
-      console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
-    }
-  }
-}
+// /**
+//  * Handles Bulk Request for Portfolio Monitoring
+//  */
+// async function createBulkDataRequest(): Promise<void> {
+//
+//   if (!isMonitoringActive.value) {
+//     const payloadPatchMonitoring: PortfolioMonitoringPatch = {
+//       isMonitored: false,
+//     };
+//
+//     try {
+//       await portfolioControllerApi.patchMonitoring(portfolioId.value, payloadPatchMonitoring);
+//     } catch (error) {
+//       console.error('Error setting Monitoring Flag to false:', error);
+//     }
+//
+//     dialogRef?.value.close({
+//       updated: true,
+//     });
+//   } else {
+//
+//
+//     try {
+//       await patchPortfolioMonitoring();
+//
+//       await Promise.all(
+//         sendBulkRequestsForPortfolio(
+//           selectedStartingYear.value! as unknown as string,
+//           Array.from(selectedFrameworkOptions.value),
+//           portfolioCompanies.value,
+//           assertDefined(getKeycloakPromise)
+//         )
+//       );
+//
+//       dialogRef?.value.close({
+//         updated: true,
+//       });
+//     } catch (error) {
+//       console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
+//     }
+//   }
+// }
 
 /**
  * Prefills Modal based on database
@@ -217,27 +223,12 @@ async function prefillModal(): Promise<void> {
       selectedStartingYear.value = Number(portfolio.data.startingMonitoringPeriod);
     }
 
-    let monitoredSet: Set<string>;
-    if (portfolio.data.monitoredFrameworks instanceof Set) {
-      monitoredSet = portfolio.data.monitoredFrameworks;
-    } else if (Array.isArray(portfolio.data.monitoredFrameworks)) {
-      monitoredSet = new Set(portfolio.data.monitoredFrameworks);
-    } else {
-      monitoredSet = new Set();
+    if (portfolio.data.monitoredFrameworks) {
+      availableFrameworkMonitoringOptions.value.forEach((option) => {
+        option.isActive = portfolio.data.monitoredFrameworks?.has(option.value);
+      });
     }
 
-    const euTaxoDatatypes = new Set(EU_TAXONOMY_FRAMEWORKS);
-    const hasEuTaxoDatatypes = [...monitoredSet].some((dt) => euTaxoDatatypes.has(dt));
-
-    frameworkSwitchOptions.forEach((option) => {
-      if (option.id === 'EU_TAXONOMY') {
-        option.value = hasEuTaxoDatatypes || monitoredSet.has(option.id);
-      } else {
-        option.value = monitoredSet.has(option.id);
-      }
-
-      isMonitoringActive.value = Boolean(portfolio.data.isMonitored);
-    });
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
   }

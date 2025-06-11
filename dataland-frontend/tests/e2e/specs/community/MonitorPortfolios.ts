@@ -52,7 +52,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
         expectedDataTypes: string[],
         notExpectedDataTypes: string[]
       ): void {
-        expect(body.reportingPeriods).to.include(2023);
+        expect(body.reportingPeriods).to.include('2023');
         expectedDataTypes.forEach((type) => expect(body.dataTypes).to.include(type));
         notExpectedDataTypes.forEach((type) => expect(body.dataTypes).not.to.include(type));
       }
