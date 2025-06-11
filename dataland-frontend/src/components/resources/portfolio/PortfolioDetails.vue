@@ -17,8 +17,8 @@
       <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
         <i class="pi pi-download pr-2" /> Download Portfolio
       </PrimeButton>
-      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBatch" v-if="isMonitored">
-        <span class="material-icons-outlined fs-sm">verified</span>
+      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
+        <span class="material-icons-outlined fs-sm pr-1">verified</span>
         Portfolio actively monitored
       </div>
 
