@@ -16,7 +16,6 @@ describe('Portfolio Monitoring Modal', () => {
       const nonFinancialPortfolio = `nonFinancialPortfolio ${Date.now()}`;
       const financialPortfolio = `financialPortfolio ${Date.now()}`;
       const nonSectorPortfolio = `NonSectorPortfolio ${Date.now()}`;
-      const sfdrPortfolio = `sfdrPortfolio ${Date.now()}`;
 
       before(() => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
@@ -71,7 +70,6 @@ describe('Portfolio Monitoring Modal', () => {
         permId,
         expectedDataTypes,
         notExpectedDataTypes = [],
-        framework,
         frameworkValue,
       }: {
         portfolioName: string;
@@ -95,10 +93,7 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
-          cy.get('[data-test="frameworkSelection"]')
-              .eq(1)
-              .find('input[type="checkbox"]')
-              .click({ force: true });
+        cy.get('[data-test="frameworkSelection"]').eq(1).find('input[type="checkbox"]').click({ force: true });
 
         cy.get('[data-test="saveChangesButton"]').click();
 
