@@ -186,7 +186,6 @@ async function createBulkDataRequest(): Promise<void> {
       updated: true,
     });
   } else {
-
     if (!selectedStartingYear.value) {
       showReportingPeriodsError.value = true;
     }

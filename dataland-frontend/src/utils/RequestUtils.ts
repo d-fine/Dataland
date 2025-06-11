@@ -150,7 +150,6 @@ export function sendBulkRequestForPortfolio(
   const reportingPeriods = Array.from({ length: LATEST_PERIOD - Number(startingMonitoringPeriod) + 1 }, (_, i) =>
     (Number(startingMonitoringPeriod) + i).toString()
   );
-  console.log('REPORTING PERIODS', reportingPeriods);
 
   const companyIdsForFinancial = companies
     .filter((company) => company.sector?.toLowerCase() === 'financials')
@@ -164,12 +163,6 @@ export function sendBulkRequestForPortfolio(
         !companyIdsForFinancial.includes(company.companyId) && !companyIdsForNonFinancial.includes(company.companyId)
     )
     .map((company) => company.companyId);
-  console.log('COMPANIES', companies);
-  console.log('reportingPeriods:', reportingPeriods);
-  console.log('companyIdsWithNoSector:', companyIdsWithNoSector);
-
-  console.log('sfdr' in monitoredFrameworks);
-  console.log(monitoredFrameworks);
 
   const requests = [];
   if (monitoredFrameworks.includes('sfdr')) {
