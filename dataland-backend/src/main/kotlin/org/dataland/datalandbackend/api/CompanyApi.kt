@@ -35,7 +35,7 @@ const val COMPANY_SEARCH_STRING_DESCRIPTION =
     "Search string used for substring matching. Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
- * Defines the restful dataland-backend API regarding company data.
+ * Defines the restfull dataland-backend API regarding company data.
  */
 @RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
