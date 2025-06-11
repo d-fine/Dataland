@@ -29,8 +29,8 @@ describe('AddCompanyToPortfoliosDialog', () => {
       },
     });
 
-    cy.get('.p-listbox').should('exist'); // Listbox is present
-    cy.get('.p-listbox-item.p-highlight').should('not.exist'); // Nothing selected
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-item.p-highlight').should('not.exist');
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
   });
 
@@ -40,7 +40,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
       value: {
         data: {
           companyId: 'COMP-123',
-          allUserPortfolios: [], // ✅ No portfolios
+          allUserPortfolios: [],
         },
         close: cy.stub(),
       },
@@ -56,9 +56,9 @@ describe('AddCompanyToPortfoliosDialog', () => {
       },
     });
 
-    // ✅ Check Listbox shows no options
+    // Check Listbox shows no options
     cy.get('.p-listbox').should('exist');
-    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options'); // ✅ Default empty message from PrimeVue
+    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options'); // Default empty message from PrimeVue
 
     // ✅ Check the button is disabled
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
@@ -178,7 +178,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
   });
 
   it('Should close the modal after successful company addition', () => {
-    const closeStub = cy.stub().as('closeStub'); // ✅ Tracks if modal is closed
+    const closeStub = cy.stub().as('closeStub'); // Tracks if modal is closed
 
     // Intercept PUT request to simulate success
     cy.intercept('PUT', '**/portfolios/**', {
@@ -198,7 +198,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
                 companyId: 'COMP-123',
                 allUserPortfolios: mockPortfolios,
               },
-              close: closeStub, // ✅ Inject the stubbed close function
+              close: closeStub, // Inject the stubbed close function
             },
           },
         },
