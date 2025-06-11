@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * Defines the restful dataland-backend API regarding data exchange
+ * Defines the restful Dataland-backend API regarding data exchange
  */
 
 @SecurityRequirement(name = "default-bearer-auth")
