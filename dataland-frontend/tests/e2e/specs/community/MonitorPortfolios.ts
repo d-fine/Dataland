@@ -89,11 +89,11 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="saveButton"]').click();
 
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
-          cy.get(`[data-test="portfolio-${portfolioName}"]`)
-              .should('exist')
-              .within(() => {
-                  cy.get('[data-test="monitor-portfolio"]').click();
-              });
+        cy.get(`[data-test="portfolio-${portfolioName}"]`)
+          .should('exist')
+          .within(() => {
+            cy.get('[data-test="monitor-portfolio"]').click();
+          });
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
@@ -118,17 +118,15 @@ describe('Portfolio Monitoring Modal', () => {
           .should((body) => {
             assertBulkRequestBody(body, expectedDataTypes, notExpectedDataTypes);
           });
-          cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]')
-              .contains(portfolioName)
-              .click();
+        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
 
-          cy.get(`[data-test="portfolio-${portfolioName}"]`)
-              .should('exist')
-              .then(($el) => {
-                  cy.wrap($el)
-                      .find('[data-test="isMonitoredBadge"]', { timeout: Cypress.env('short_timeout_in_ms') as number })
-                      .should('be.visible');
-              });
+        cy.get(`[data-test="portfolio-${portfolioName}"]`)
+          .should('exist')
+          .then(($el) => {
+            cy.wrap($el)
+              .find('[data-test="isMonitoredBadge"]', { timeout: Cypress.env('short_timeout_in_ms') as number })
+              .should('be.visible');
+          });
         cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
         cy.get('[data-test="deleteButton"]').click();
