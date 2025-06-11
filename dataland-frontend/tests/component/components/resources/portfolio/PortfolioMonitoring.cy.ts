@@ -88,12 +88,9 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('displays EU Taxonomy message when that framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-row')
-      .contains('EU Taxonomy')
-      .parents('.framework-switch-row')
-      .within(() => {
-        cy.get('input[type="checkbox"]').check({ force: true });
-      });
+    cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy')
+      .find('input[type="checkbox"]')
+      .click({ force: true });
 
     cy.get('.gray-text').should(
       'contain.text',
