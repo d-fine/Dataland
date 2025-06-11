@@ -77,7 +77,7 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
-import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
+import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -114,6 +114,7 @@ onMounted(() => {
     portfolio.entries.map((entry) => new CompanyIdAndNameAndSector(entry))
   );
 });
+
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
@@ -163,6 +164,7 @@ async function addCompanies(): Promise<void> {
  * If creating/updating portfolio is successful, the name and id of the created/updated portfolio is passed to the
  * dialog's close function. This way, the parent component (portfolioOverview) can use this information to switch to the
  * according tab.
+ * On updating a portfolio, if portfolioMonitoring is activated, also new bulk data requests are triggered.
  */
 async function savePortfolio(): Promise<void> {
   if (!isValidPortfolioUpload.value) return;
@@ -180,44 +182,37 @@ async function savePortfolio(): Promise<void> {
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
+
     if (portfolioId.value && enrichedPortfolio.value?.isMonitored) {
-      try {
-        await Promise.all(
-          sendBulkRequestForPortfolio(
-            enrichedPortfolio.value.startingMonitoringPeriod!,
-            Array.from(enrichedPortfolio.value.monitoredFrameworks!),
-            portfolioCompanies.value,
-            assertDefined(getKeycloakPromise)
-          )
-        );
-      } catch (error) {
-        console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
-        handlePortfolioError(error);
-        dialogRef?.value.close({
-          updated: false,
-          error: true,
-          portfolioId: response.data.portfolioId,
-          portfolioName: response.data.portfolioName,
-        } as BasePortfolioName);
-        return;
-      }
+      await Promise.all(
+        sendBulkRequestsForPortfolio(
+          enrichedPortfolio.value.startingMonitoringPeriod!,
+          Array.from(enrichedPortfolio.value.monitoredFrameworks!),
+          portfolioCompanies.value,
+          assertDefined(getKeycloakPromise)
+        )
+      );
     }
+
     dialogRef?.value.close({
       updated: true,
       error: false,
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
     } as BasePortfolioName);
+  } catch (error) {
+    handlePortfolioConflictError(error);
   } finally {
     isPortfolioSaving.value = false;
   }
 }
 
 /**
- *
+ * Handles the (expected) 409 Conflict error in the case the user tries to create a portfolio with a name which
+ * already exists
  * @param error
  */
-function handlePortfolioError(error: unknown): void {
+function handlePortfolioConflictError(error: unknown): void {
   if (error instanceof AxiosError) {
     portfolioErrors.value =
       error.status === 409

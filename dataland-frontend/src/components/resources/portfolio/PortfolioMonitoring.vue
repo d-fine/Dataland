@@ -69,7 +69,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
 import Dropdown from 'primevue/dropdown';
-import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
+import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
 import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
 
 const availableFrameworks: DropdownOption[] = [
@@ -202,7 +202,7 @@ async function createBulkDataRequest(): Promise<void> {
       await createPatch();
 
       await Promise.all(
-        sendBulkRequestForPortfolio(
+        sendBulkRequestsForPortfolio(
           selectedStartingYear.value! as unknown as string,
           Array.from(selectedFrameworks.value),
           portfolioCompanies.value,

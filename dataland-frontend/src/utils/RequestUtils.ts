@@ -139,7 +139,7 @@ export function getRequestStatusLabel(requestStatus: RequestStatus): string {
  * @param companies
  * @param keycloakPromiseGetter
  */
-export function sendBulkRequestForPortfolio(
+export function sendBulkRequestsForPortfolio(
   startingMonitoringPeriod: string,
   monitoredFrameworks: string[],
   companies: CompanyIdAndNameAndSector[],
