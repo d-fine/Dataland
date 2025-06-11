@@ -1,7 +1,7 @@
 <template>
   <div class="portfolio-dialog-content">
     <FormKit
-      v-model="enrichedPortfolio?.portfolioName"
+      v-model="portfolioName"
       type="text"
       label="Portfolio Name"
       name="portfolioName"
@@ -70,12 +70,7 @@
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type {
-  BasePortfolioName,
-  EnrichedPortfolio,
-  EnrichedPortfolioEntry,
-  PortfolioUpload,
-} from '@clients/userservice';
+import type { BasePortfolioName, EnrichedPortfolio, PortfolioUpload } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -83,7 +78,6 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
-
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -109,7 +103,6 @@ const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
 
-
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (!data || !data.portfolio) return;
@@ -117,7 +110,9 @@ onMounted(() => {
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
   enrichedPortfolio.value = portfolio;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map(entry => new CompanyIdAndNameAndSector(entry)));
+  portfolioCompanies.value = getUniqueSortedCompanies(
+    portfolio.entries.map((entry) => new CompanyIdAndNameAndSector(entry))
+  );
 });
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
@@ -152,7 +147,6 @@ async function addCompanies(): Promise<void> {
       .map((it) => it.identifier);
 
     portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
-
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
@@ -180,49 +174,40 @@ async function savePortfolio(): Promise<void> {
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
       isMonitored: enrichedPortfolio.value?.isMonitored,
       startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
-      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks
+      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks,
     };
+
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
-
-    if (!portfolioId.value || !enrichedPortfolio.value?.isMonitored) {
-      return
-    }
-
-    await Promise.all(
-          sendBulkRequestForPortfolio(
-            enrichedPortfolio.value.startingMonitoringPeriod,
-            Array.from(enrichedPortfolio.value.monitoredFrameworks),
-            portfolioCompanies.value,
-            assertDefined(getKeycloakPromise())
-          );
-
-
-    if (enrichedPortfolio.value && enrichedPortfolio.value.isMonitored) {
-      console.log("Starting Bulk request...");
+    if (portfolioId.value && enrichedPortfolio.value?.isMonitored) {
       try {
         await Promise.all(
-          sendBulkRequestForPortfolio(enrichedPortfolio.value, assertDefined(getKeycloakPromise))
+          sendBulkRequestForPortfolio(
+            enrichedPortfolio.value.startingMonitoringPeriod!,
+            Array.from(enrichedPortfolio.value.monitoredFrameworks!),
+            portfolioCompanies.value,
+            assertDefined(getKeycloakPromise)
+          )
         );
-        dialogRef?.value.close({
-          updated: true,
-        });
       } catch (error) {
         console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
+        handlePortfolioError(error);
         dialogRef?.value.close({
           updated: false,
           error: true,
-        });
+          portfolioId: response.data.portfolioId,
+          portfolioName: response.data.portfolioName,
+        } as BasePortfolioName);
+        return;
       }
-    } else {
-      dialogRef?.value.close({
-        portfolioId: response.data.portfolioId,
-        portfolioName: response.data.portfolioName,
-      } as BasePortfolioName);
     }
-  } catch (error) {
-    handlePortfolioError(error);
+    dialogRef?.value.close({
+      updated: true,
+      error: false,
+      portfolioId: response.data.portfolioId,
+      portfolioName: response.data.portfolioName,
+    } as BasePortfolioName);
   } finally {
     isPortfolioSaving.value = false;
   }
