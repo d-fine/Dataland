@@ -40,21 +40,21 @@ export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenD
   }
 
   exportCompanyAssociatedDataByDimensions(
-      reportingPeriods: string[],
-      companyIds: string[],
-      fileFormat: ExportFileType,
-      includeAliases: boolean,
-      keepValueFieldsOnly?: boolean,
-      options?: AxiosRequestConfig
+    reportingPeriods: string[],
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    includeAliases: boolean,
+    keepValueFieldsOnly?: boolean,
+    options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-      AxiosPromise<any> {
+  AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedHeimathafenDataByDimensions(
-        reportingPeriods,
-        companyIds,
-        fileFormat,
-        includeAliases,
-        keepValueFieldsOnly,
-        options
+      reportingPeriods,
+      companyIds,
+      fileFormat,
+      includeAliases,
+      keepValueFieldsOnly,
+      options
     );
   }
 

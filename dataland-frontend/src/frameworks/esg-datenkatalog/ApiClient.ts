@@ -48,21 +48,21 @@ export class EsgDatenkatalogApiClient implements PublicFrameworkDataApi<EsgDaten
   }
 
   exportCompanyAssociatedDataByDimensions(
-      reportingPeriods: string[],
-      companyIds: string[],
-      fileFormat: ExportFileType,
-      includeAliases: boolean,
-      keepValueFieldsOnly?: boolean,
-      options?: AxiosRequestConfig
+    reportingPeriods: string[],
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    includeAliases: boolean,
+    keepValueFieldsOnly?: boolean,
+    options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-      AxiosPromise<any> {
+  AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataByDimensions(
-        reportingPeriods,
-        companyIds,
-        fileFormat,
-        includeAliases,
-        keepValueFieldsOnly,
-        options
+      reportingPeriods,
+      companyIds,
+      fileFormat,
+      includeAliases,
+      keepValueFieldsOnly,
+      options
     );
   }
 
