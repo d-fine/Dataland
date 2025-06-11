@@ -10,11 +10,11 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton class="primary-button" @click="opensEditModal()" data-test="edit-portfolio">
+      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
 
-      <PrimeButton class="primary-button" @click="opensDownloadModal()" data-test="download-portfolio">
+      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
         <i class="pi pi-download pr-2" /> Download Portfolio
       </PrimeButton>
       <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBatch" v-if="isMonitored">
@@ -23,7 +23,7 @@
       </div>
 
       <div>
-        <PrimeButton class="primary-button" @click="opensMonitorModal()" data-test="monitor-portfolio">
+        <PrimeButton class="primary-button" @click="openMonitorModal()" data-test="monitor-portfolio">
           <i class="pi pi-bell pr-2" /> EDIT MONITORING
         </PrimeButton>
         <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
@@ -336,7 +336,7 @@ function resetFilters(): void {
  * Once the dialog is closed, it reloads the portfolio data and emits an update event
  * to refresh the portfolio overview.
  */
-function opensEditModal(): void {
+function openEditModal(): void {
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Edit Portfolio',
@@ -357,7 +357,7 @@ function opensEditModal(): void {
  * Opens the PortfolioDownload with the current portfolio's data for downloading.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function opensDownloadModal(): void {
+function openDownloadModal(): void {
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
   dialog.open(PortfolioDownload, {
@@ -391,7 +391,7 @@ function opensDownloadModal(): void {
  * Opens the PortfolioMonitoring with the current portfolio's data.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function opensMonitorModal(): void {
+function openMonitorModal(): void {
   const fullName = 'Monitoring of ' + enrichedPortfolio.value?.portfolioName;
   dialog.open(PortfolioMonitoring, {
     props: {

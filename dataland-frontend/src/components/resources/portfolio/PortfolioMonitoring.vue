@@ -1,12 +1,8 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
-    <label for="monitoringToggle" class="activate-monitoring" >
-      Activate Monitoring
-    </label>
-    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" data-test="activateMonitoringToggle"/>
-    <label for="reportingYearSelector" class="reporting-period-label">
-      Starting Period
-    </label>
+    <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
+    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" data-test="activateMonitoringToggle" />
+    <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
     <Dropdown
       v-model="selectedStartingYear"
       :options="reportingYears"
@@ -20,9 +16,7 @@
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
     </p>
-    <label for="frameworkSelector">
-      Frameworks
-    </label>
+    <label for="frameworkSelector"> Frameworks </label>
     <div class="framework-switch-group">
       <div
         v-for="framework in frameworkSwitchOptions"
@@ -90,7 +84,7 @@ const reportingYears = [
   { label: '2019', value: 2019 },
 ];
 
-const selectedStartingYear = ref<number | null>(null);
+const selectedStartingYear = ref<string | undefined>(undefined);
 
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -206,17 +200,14 @@ async function createBulkDataRequest(): Promise<void> {
     try {
       await createPatch();
 
-      const enrichedPortfolio: EnrichedPortfolio = {
-        portfolioName: portfolioName.value,
-        userId: userid.value,
-        portfolioId: portfolioId.value,
-        entries: portfolioEntries.value,
-        startingMonitoringPeriod: selectedStartingYear.value!.toString(),
-        monitoredFrameworks: new Set(selectedFrameworks.value),
-        isMonitored: true,
-      };
-
-      await Promise.all(sendBulkRequestForPortfolio(enrichedPortfolio, assertDefined(getKeycloakPromise)));
+      await Promise.all(
+        sendBulkRequestForPortfolio(
+          selectedStartingYear.value!,
+          Array.from(selectedFrameworks.value),
+          portfolioEntries.value,
+          assertDefined(getKeycloakPromise)
+        )
+      );
 
       dialogRef?.value.close({
         updated: true,
@@ -243,7 +234,7 @@ async function prefillModal(): Promise<void> {
     portfolioCompanies.value = getUniqueSortedCompanies(portfolio.data.entries);
 
     if (portfolio.data.startingMonitoringPeriod) {
-      selectedStartingYear.value = Number(portfolio.data.startingMonitoringPeriod);
+      selectedStartingYear.value = portfolio.data.startingMonitoringPeriod;
     }
 
     let monitoredSet: Set<string>;
