@@ -70,12 +70,12 @@ import InputSwitch from 'primevue/inputswitch';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
 type MonitoringOption = {
-  value: string,
-  label: string,
-  isActive: boolean
-}
+  value: string;
+  label: string;
+  isActive: boolean;
+};
 
-const reportingYears = [2019, 2020, 2021, 2022, 2023, 2024];
+const reportingYears = [2024, 2023, 2022, 2021, 2020, 2019];
 
 const reportingPeriodsOptions = reportingYears.map((year) => ({
   label: year.toString(),
@@ -85,10 +85,11 @@ const reportingPeriodsOptions = reportingYears.map((year) => ({
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.portfolioController;
+const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+  .portfolioController;
 
 const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
-  { value: 'sfdr', label: 'SFDR', isActive: false},
+  { value: 'sfdr', label: 'SFDR', isActive: false },
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
 ]);
 const selectedStartingYear = ref<number | undefined>(undefined);
@@ -102,9 +103,7 @@ const userId = ref<string>('');
 const isMonitoringActive = ref(false);
 
 const selectedFrameworkOptions = computed(() => {
-  return availableFrameworkMonitoringOptions.value
-    .filter((option) => option.isActive)
-    .map(option => option.value);
+  return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
 });
 
 onMounted(() => {
@@ -153,15 +152,16 @@ async function patchPortfolioMonitoring(): Promise<void> {
 
   try {
     await portfolioControllerApi.patchMonitoring(portfolioId.value, portfolioMonitoringPatch);
-    await Promise.all(sendBulkRequestsForPortfolio(
-      selectedStartingYear.value! as unknown as string,
-      Array.from(selectedFrameworkOptions.value),
-      portfolioCompanies.value,
-      assertDefined(getKeycloakPromise)
-    ))
+    await Promise.all(
+      sendBulkRequestsForPortfolio(
+        selectedStartingYear.value! as unknown as string,
+        Array.from(selectedFrameworkOptions.value),
+        portfolioCompanies.value,
+        assertDefined(getKeycloakPromise)
+      )
+    );
 
     dialogRef?.value.close();
-
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
   }
@@ -171,10 +171,6 @@ async function patchPortfolioMonitoring(): Promise<void> {
  * Prefills Modal based on database
  */
 async function prefillModal(): Promise<void> {
-  if (!portfolioId.value) return;
-
-  if (isMonitoringActive.value = true) {
-
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioId.value);
@@ -182,27 +178,33 @@ async function prefillModal(): Promise<void> {
     if (!portfolio) return;
 
     const portfolioData = portfolio.data;
+
     isMonitoringActive.value = portfolioData.isMonitored ?? false;
+
+    if (!isMonitoringActive.value) {
+      selectedStartingYear.value = undefined;
+      availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((opt) => ({
+        ...opt,
+        isActive: false,
+      }));
+      return;
+    }
 
     if (portfolioData.startingMonitoringPeriod) {
       selectedStartingYear.value = Number(portfolioData.startingMonitoringPeriod);
     }
 
-    // Set active frameworks from data
     const monitoredSet = new Set(portfolioData.monitoredFrameworks);
-    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map(opt => ({
+    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((opt) => ({
       ...opt,
       isActive: monitoredSet.has(opt.value),
     }));
 
     portfolioCompanies.value = getUniqueSortedCompanies(portfolioData.entries);
-
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
   }
-  }
 }
-
 </script>
 
 <style scoped lang="scss">

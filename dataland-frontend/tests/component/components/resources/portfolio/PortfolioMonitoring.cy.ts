@@ -31,7 +31,6 @@ describe('Portfolio Monitoring Modal', function () {
     });
   });
 
-
   it('shows validation errors when both inputs are missing', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
 

@@ -115,7 +115,6 @@ onMounted(() => {
   );
 });
 
-
 /**
  * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input text field.
  */
@@ -134,6 +133,7 @@ async function addCompanies(): Promise<void> {
         return {
           companyId: validEntry.companyInformation!.companyId,
           companyName: validEntry.companyInformation!.companyName,
+          sector: validEntry.companyInformation!.sector ?? undefined,
         };
       });
     invalidIdentifiers = companyValidationResults
