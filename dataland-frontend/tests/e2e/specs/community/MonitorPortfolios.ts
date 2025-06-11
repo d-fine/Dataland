@@ -101,7 +101,6 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           .find('input[type="checkbox"]')
           .click({ force: true });
 
-
         cy.get('[data-test="saveChangesButton"]').click();
 
         cy.wait('@patchMonitoring')
@@ -111,7 +110,6 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
             expect(body.startingMonitoringPeriod).to.equal('2023');
             expect(body.monitoredFrameworks).to.include(frameworkValue);
           });
-
 
         cy.wait('@postBulkRequest')
           .its('request.body')
@@ -133,7 +131,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           expectedDataTypes: ['eutaxonomy-non-financials', 'nuclear-and-gas'],
           notExpectedDataTypes: ['eutaxonomy-financials'],
           framework: 'EU Taxonomy',
-          frameworkValue: 'eutaxonomy'
+          frameworkValue: 'eutaxonomy',
         });
       });
 
@@ -144,7 +142,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas'],
           notExpectedDataTypes: ['eutaxonomy-non-financials'],
           framework: 'EU Taxonomy',
-          frameworkValue: 'eutaxonomy'
+          frameworkValue: 'eutaxonomy',
         });
       });
 
@@ -154,7 +152,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           permId: permIdNoSector,
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
           framework: 'EU Taxonomy',
-          frameworkValue: 'eutaxonomy'
+          frameworkValue: 'eutaxonomy',
         });
       });
 
@@ -165,7 +163,7 @@ describe('Portfolio Monitoring Bulk Data Request Modal', () => {
           expectedDataTypes: ['sfdr'],
           notExpectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
           framework: 'SFDR',
-          frameworkValue: 'sfdr'
+          frameworkValue: 'sfdr',
         });
       });
     }
