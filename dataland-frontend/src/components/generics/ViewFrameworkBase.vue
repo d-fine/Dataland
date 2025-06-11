@@ -439,7 +439,7 @@ export default defineComponent({
           [this.companyID],
           exportFileType,
           true,
-          false,
+          true,
           options
         );
         const dataContent =
