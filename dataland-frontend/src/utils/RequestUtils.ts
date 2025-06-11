@@ -5,7 +5,7 @@ import {
   type AccessStatus,
   RequestStatus,
   type RequestPriority,
-  type BulkDataRequestDataTypesEnum,
+  BulkDataRequestDataTypesEnum,
   type BulkDataRequestResponse,
 } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -169,7 +169,7 @@ export function sendBulkRequestForPortfolio(
     requests.push(
       requestController.postBulkDataRequest({
         reportingPeriods: reportingPeriods as unknown as Set<string>,
-        dataTypes: ['sfdr'] as unknown as Set<BulkDataRequestDataTypesEnum>,
+        dataTypes: [BulkDataRequestDataTypesEnum.Sfdr] as unknown as Set<BulkDataRequestDataTypesEnum>,
         companyIdentifiers: companies.map((company) => company.companyId) as unknown as Set<string>,
         notifyMeImmediately: false,
       })
