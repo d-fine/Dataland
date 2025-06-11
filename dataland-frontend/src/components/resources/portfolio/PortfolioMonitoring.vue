@@ -3,7 +3,7 @@
     <label for="monitoringToggle" class="activate-monitoring" >
       Activate Monitoring
     </label>
-    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" @change="handleMonitoring" data-test="activateMonitoringToggle"/>
+    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" data-test="activateMonitoringToggle"/>
     <label for="reportingYearSelector" class="reporting-period-label">
       Starting Period
     </label>
@@ -112,11 +112,6 @@ const frameworkSwitchOptions = reactive(
 
 const monitoringActive = ref<boolean>(false);
 const selectedFrameworks = computed(() => frameworkSwitchOptions.filter((f) => f.value).map((f) => f.id));
-
-/**
- * Reset patch if toggle is set to false
- */
-async function handleMonitoring(): Promise<void> {}
 
 /**
  * Resets Frameworkerros

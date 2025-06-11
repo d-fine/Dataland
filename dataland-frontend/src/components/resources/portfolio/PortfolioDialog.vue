@@ -183,6 +183,7 @@ async function savePortfolio(): Promise<void> {
   if (!isValidPortfolioUpload.value) return;
 
   isPortfolioSaving.value = true;
+
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
@@ -197,23 +198,33 @@ async function savePortfolio(): Promise<void> {
       portfolioId.value = response.data.portfolioId;
     }
 
-    dialogRef?.value.close({
-      portfolioId: response.data.portfolioId,
-      portfolioName: response.data.portfolioName,
-    } as BasePortfolioName);
     if (enrichedPortfolio.value && enrichedPortfolio.value.isMonitored) {
-      console.log("starting Bulk request")
-      await Promise.all(
-        sendBulkRequestForPortfolio(enrichedPortfolio.value, assertDefined(getKeycloakPromise))
-      );
+      console.log("Starting Bulk request...");
+      try {
+        await Promise.all(
+          sendBulkRequestForPortfolio(enrichedPortfolio.value, assertDefined(getKeycloakPromise))
+        );
+        dialogRef?.value.close({
+          updated: true,
+        });
+      } catch (error) {
+        console.error('Error submitting Bulk Request for Portfolio Monitoring:', error);
+        dialogRef?.value.close({
+          updated: false,
+          error: true,
+        });
+      }
+    } else {
+      dialogRef?.value.close({
+        portfolioId: response.data.portfolioId,
+        portfolioName: response.data.portfolioName,
+      } as BasePortfolioName);
     }
   } catch (error) {
     handlePortfolioError(error);
   } finally {
     isPortfolioSaving.value = false;
   }
-
-
 }
 
 /**
