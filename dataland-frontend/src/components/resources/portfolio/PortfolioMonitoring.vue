@@ -12,6 +12,7 @@
       placeholder="Select Starting Period"
       class="wider-dropdown"
       :disabled="!isMonitoringActive"
+      @change="resetErrors"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
@@ -58,7 +59,7 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { CompanyIdAndNameAndSector, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
+import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
 import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
@@ -67,7 +68,7 @@ import PrimeButton from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import InputSwitch from 'primevue/inputswitch';
-import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
 
 type MonitoringOption = {
   value: string;
@@ -93,31 +94,31 @@ const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
 ]);
 const selectedStartingYear = ref<number | undefined>(undefined);
-const portfolioCompanies = ref<CompanyIdAndNameAndSector[]>([]);
 const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
-const portfolioId = ref<string>('');
-const portfolioName = ref<string>('');
-const userId = ref<string>('');
-
+const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
 
 const selectedFrameworkOptions = computed(() => {
   return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
 });
 
+watch(
+  () => availableFrameworkMonitoringOptions.value,
+  () => {
+    console.log(availableFrameworkMonitoringOptions.value);
+  },
+  { immediate: true }
+);
+
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
-    const portfolio = data.portfolio as EnrichedPortfolio;
-    portfolioName.value = portfolio.portfolioName;
-    userId.value = portfolio.userId;
-    portfolioId.value = portfolio.portfolioId;
-    portfolioCompanies.value = getUniqueSortedCompanies(
-      portfolio.entries.map((entry) => new CompanyIdAndNameAndSector(entry))
-    );
+    portfolio.value = data.portfolio as EnrichedPortfolio;
+    prefillModal();
+  } else {
+    dialogRef?.value.close();
   }
-  void prefillModal();
 });
 
 /**
@@ -151,12 +152,12 @@ async function patchPortfolioMonitoring(): Promise<void> {
   }
 
   try {
-    await portfolioControllerApi.patchMonitoring(portfolioId.value, portfolioMonitoringPatch);
+    await portfolioControllerApi.patchMonitoring(portfolio.value!.portfolioId, portfolioMonitoringPatch);
     await Promise.all(
       sendBulkRequestsForPortfolio(
-        selectedStartingYear.value! as unknown as string,
+        selectedStartingYear.value!.toString(),
         Array.from(selectedFrameworkOptions.value),
-        portfolioCompanies.value,
+        portfolio.value!.entries.map((entry) => new CompanyIdAndNameAndSector(entry)),
         assertDefined(getKeycloakPromise)
       )
     );
@@ -170,37 +171,29 @@ async function patchPortfolioMonitoring(): Promise<void> {
 /**
  * Prefills Modal based on database
  */
-async function prefillModal(): Promise<void> {
+function prefillModal(): void {
   try {
-    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const portfolio = await apiClientProvider.apiClients.portfolioController.getEnrichedPortfolio(portfolioId.value);
+    if (!portfolio.value) return;
 
-    if (!portfolio) return;
-
-    const portfolioData = portfolio.data;
-
-    isMonitoringActive.value = portfolioData.isMonitored ?? false;
+    isMonitoringActive.value = portfolio.value.isMonitored ?? false;
 
     if (!isMonitoringActive.value) {
       selectedStartingYear.value = undefined;
-      availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((opt) => ({
-        ...opt,
+      availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+        ...option,
         isActive: false,
       }));
       return;
     }
 
-    if (portfolioData.startingMonitoringPeriod) {
-      selectedStartingYear.value = Number(portfolioData.startingMonitoringPeriod);
+    if (portfolio.value.startingMonitoringPeriod) {
+      selectedStartingYear.value = Number(portfolio.value.startingMonitoringPeriod);
     }
 
-    const monitoredSet = new Set(portfolioData.monitoredFrameworks);
-    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((opt) => ({
-      ...opt,
-      isActive: monitoredSet.has(opt.value),
+    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+      ...option,
+      isActive: Array.from(portfolio.value!.monitoredFrameworks!).includes(option.value) ?? false,
     }));
-
-    portfolioCompanies.value = getUniqueSortedCompanies(portfolioData.entries);
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
   }
