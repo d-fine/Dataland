@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
+import { CompanyIdAndNameAndSector, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { BasePortfolioName, EnrichedPortfolio, PortfolioUpload } from '@clients/userservice';
 import { AxiosError } from 'axios';
@@ -115,13 +115,6 @@ onMounted(() => {
   );
 });
 
-/**
- * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
- */
-function getUniqueSortedCompanies(entries: CompanyIdAndNameAndSector[]): CompanyIdAndNameAndSector[] {
-  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
-  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
-}
 
 /**
  * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input text field.

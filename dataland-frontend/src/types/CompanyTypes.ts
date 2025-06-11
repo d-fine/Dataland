@@ -11,3 +11,11 @@ export class CompanyIdAndNameAndSector {
     this.sector = enrichedPortfolioEntry.sector;
   }
 }
+
+/**
+ * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
+ */
+export function getUniqueSortedCompanies(entries: CompanyIdAndNameAndSector[]): CompanyIdAndNameAndSector[] {
+  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
+  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
+}

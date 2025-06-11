@@ -1,7 +1,7 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch class="form-field vertical-middle" v-model="monitoringActive" data-test="activateMonitoringToggle" />
+    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle" />
     <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
     <Dropdown
       v-model="selectedStartingYear"
@@ -11,7 +11,7 @@
       data-test="listOfReportingPeriods"
       placeholder="Select Starting Period"
       class="wider-dropdown"
-      :disabled="!monitoringActive"
+      :disabled="!isMonitoringActive"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
@@ -19,20 +19,20 @@
     <label for="frameworkSelector"> Frameworks </label>
     <div class="framework-switch-group">
       <div
-        v-for="framework in frameworkSwitchOptions"
-        :key="framework.id"
+        v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
+        :key="frameworkMonitoringOption.value"
         class="framework-switch-row"
         data-test="frameworkSelection"
       >
         <InputSwitch
           class="form-field vertical-middle"
-          v-model="framework.value"
-          :id="framework.id"
-          @change="onFrameworksSwitched"
-          :disabled="!monitoringActive"
+          v-model="frameworkMonitoringOption.isActive"
+          :id="frameworkMonitoringOption.value"
+          @change="resetErrors"
+          :disabled="!isMonitoringActive"
         />
-        <label :for="framework.id" class="framework-label">
-          {{ framework.label }}
+        <label :for="frameworkMonitoringOption.value" class="framework-label">
+          {{ frameworkMonitoringOption.label }}
         </label>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
@@ -57,75 +57,64 @@
 </template>
 
 <script setup lang="ts">
-import type { DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
-import InputSwitch from 'primevue/inputswitch';
-import { computed, inject, onMounted, reactive, type Ref, ref } from 'vue';
-import PrimeButton from 'primevue/button';
-import type { CompanyIdAndName } from '@clients/backend';
-import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type Keycloak from 'keycloak-js';
+import { CompanyIdAndNameAndSector, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
 import { EU_TAXONOMY_FRAMEWORKS } from '@/utils/Constants.ts';
-import Dropdown from 'primevue/dropdown';
 import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
-import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Dropdown from 'primevue/dropdown';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import InputSwitch from 'primevue/inputswitch';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
-const availableFrameworks: DropdownOption[] = [
-  { value: 'sfdr', label: 'SFDR' },
-  { value: 'eutaxonomy', label: 'EU Taxonomy' },
-];
-const reportingYears = [
-  { label: '2024', value: 2024 },
-  { label: '2023', value: 2023 },
-  { label: '2022', value: 2022 },
-  { label: '2021', value: 2021 },
-  { label: '2020', value: 2020 },
-  { label: '2019', value: 2019 },
-];
+type MonitoringOption = {
+  value: string,
+  label: string,
+  isActive: boolean
+}
 
-const selectedStartingYear = ref<number | undefined>(undefined);
+const reportingYears = [2019, 2020, 2021, 2022, 2023, 2024];
 
-const portfolioCompanies = ref<CompanyIdAndNameAndSector[]>([]);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
+const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.portfolioController;
+
+const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
+  { value: 'sfdr', label: 'SFDR', isActive: false},
+  { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
+]);
+const selectedStartingYear = ref<number | undefined>(undefined);
+const portfolioCompanies = ref<CompanyIdAndNameAndSector[]>([]);
 const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
 const portfolioId = ref<string>('');
 const portfolioName = ref<string>('');
-const userid = ref<string>('');
+const userId = ref<string>('');
 
-const frameworkSwitchOptions = reactive(
-  availableFrameworks.map((framework) => ({
-    id: framework.value,
-    label: framework.label,
-    value: false,
-  }))
-);
+const isMonitoringActive = computed(() => {
+  return availableFrameworkMonitoringOptions.value.some((option) => option.isActive)
+})
 
-const monitoringActive = ref<boolean>(false);
-const selectedFrameworks = computed(() => frameworkSwitchOptions.filter((f) => f.value).map((f) => f.id));
+const selectedFrameworkOptions = computed(() => {
+  return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map(option => option.value)
+})
 
-/**
- * Resets Frameworkerros
- */
-function onFrameworksSwitched(): void {
-  resetErrors();
-}
-
-onMounted(async () => {
+onMounted(() => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
     const portfolio = data.portfolio as EnrichedPortfolio;
     portfolioName.value = portfolio.portfolioName;
-    userid.value = portfolio.userId;
+    userId.value = portfolio.userId;
     portfolioId.value = portfolio.portfolioId;
     portfolioCompanies.value = getUniqueSortedCompanies(
       portfolio.entries.map((entry) => new CompanyIdAndNameAndSector(entry))
     );
   }
-  await prefillModal();
+  void prefillModal();
 });
 
 /**
@@ -137,28 +126,20 @@ function resetErrors(): void {
 }
 
 /**
- * Retrieve the array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
+ * Patch a portfolio with monitoring information
  */
-function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
-  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
-  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
-}
-
-/**
- * Handles creation of patch
- */
-async function createPatch(): Promise<void> {
-  const payloadPatchMonitoring: PortfolioMonitoringPatch = {
+async function patchPortfolioMonitoring(): Promise<void> {
+  const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: true,
     startingMonitoringPeriod: selectedStartingYear.value as unknown as string,
     // as unknown as Set<string> cast required to ensure proper json is created
-    monitoredFrameworks: selectedFrameworks.value as unknown as Set<string>,
+    monitoredFrameworks: selectedFrameworkOptions as unknown as Set<string>,
   };
-  const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-    .portfolioController;
 
   try {
-    await portfolioControllerApi.patchMonitoring(portfolioId.value, payloadPatchMonitoring);
+    await portfolioControllerApi.patchMonitoring(portfolioId.value, portfolioMonitoringPatch);
+    await sendBulkRequestsForPortfolio()
+
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
   }
@@ -168,14 +149,12 @@ async function createPatch(): Promise<void> {
  * Handles Bulk Request for Portfolio Monitoring
  */
 async function createBulkDataRequest(): Promise<void> {
-  resetErrors();
 
-  if (!monitoringActive.value) {
+  if (!isMonitoringActive.value) {
     const payloadPatchMonitoring: PortfolioMonitoringPatch = {
       isMonitored: false,
     };
-    const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-      .portfolioController;
+
     try {
       await portfolioControllerApi.patchMonitoring(portfolioId.value, payloadPatchMonitoring);
     } catch (error) {
@@ -190,7 +169,7 @@ async function createBulkDataRequest(): Promise<void> {
       showReportingPeriodsError.value = true;
     }
 
-    if (selectedFrameworks.value.length === 0) {
+    if (selectedFrameworkOptions.value.length === 0) {
       showFrameworksError.value = true;
     }
 
@@ -199,12 +178,12 @@ async function createBulkDataRequest(): Promise<void> {
     }
 
     try {
-      await createPatch();
+      await patchPortfolioMonitoring();
 
       await Promise.all(
         sendBulkRequestsForPortfolio(
           selectedStartingYear.value! as unknown as string,
-          Array.from(selectedFrameworks.value),
+          Array.from(selectedFrameworkOptions.value),
           portfolioCompanies.value,
           assertDefined(getKeycloakPromise)
         )
@@ -257,7 +236,7 @@ async function prefillModal(): Promise<void> {
         option.value = monitoredSet.has(option.id);
       }
 
-      monitoringActive.value = Boolean(portfolio.data.isMonitored);
+      isMonitoringActive.value = Boolean(portfolio.data.isMonitored);
     });
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
