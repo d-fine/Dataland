@@ -43,6 +43,18 @@ data class BasePortfolio(
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
 
+    constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
+        portfolioId = UUID.randomUUID().toString(),
+        portfolioName = "",
+        userId = DatalandAuthentication.fromContext().userId,
+        creationTimestamp = Instant.now().toEpochMilli(),
+        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+        companyIds = emptySet(),
+        isMonitored = portfolioMonitoringPatch.isMonitored,
+        startingMonitoringPeriod = portfolioMonitoringPatch.startingMonitoringPeriod,
+        monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
+    )
+
     /**
      * Creates portfolio entity object from BasePortfolio.
      * In case of replacing an existing portfolio (PUT), provide portfolioId and creationTimestamp of portfolio to be

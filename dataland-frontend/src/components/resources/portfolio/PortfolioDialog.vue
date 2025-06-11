@@ -1,7 +1,7 @@
 <template>
   <div class="portfolio-dialog-content">
     <FormKit
-      v-model="portfolioName"
+      v-model="enrichedPortfolio?.portfolioName"
       type="text"
       label="Portfolio Name"
       name="portfolioName"
@@ -68,6 +68,7 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type {
   BasePortfolioName,
@@ -83,15 +84,6 @@ import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import { sendBulkRequestForPortfolio } from '@/utils/RequestUtils.ts';
 
-class CompanyIdAndName {
-  companyId: string;
-  companyName: string;
-
-  public constructor(portfolioEntry: EnrichedPortfolioEntry) {
-    this.companyId = portfolioEntry.companyId;
-    this.companyName = portfolioEntry.companyName;
-  }
-}
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -102,7 +94,8 @@ const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
-const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const portfolioCompanies = ref<CompanyIdAndNameAndSector[]>([]);
+const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -115,7 +108,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
-const enrichedPortfolio = ref<EnrichedPortfolio | null>(null);
+
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -123,16 +116,13 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  if (data && data.portfolio) {
-    const portfolio = data.portfolio as EnrichedPortfolio;
-    enrichedPortfolio.value = portfolio;
-  }
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map(e => new CompanyIdAndName(e)));
+  enrichedPortfolio.value = portfolio;
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map(entry => new CompanyIdAndNameAndSector(entry)));
 });
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
-function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
+function getUniqueSortedCompanies(entries: CompanyIdAndNameAndSector[]): CompanyIdAndNameAndSector[] {
   const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
   return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
 }
@@ -149,9 +139,9 @@ async function addCompanies(): Promise<void> {
     const companyValidationResults = (
       await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
-    const validIdentifiers: CompanyIdAndName[] = companyValidationResults
+    const validIdentifiers: CompanyIdAndNameAndSector[] = companyValidationResults
       .filter((validationResult) => validationResult.companyInformation)
-      .map((validEntry): CompanyIdAndName => {
+      .map((validEntry): CompanyIdAndNameAndSector => {
         return {
           companyId: validEntry.companyInformation!.companyId,
           companyName: validEntry.companyInformation!.companyName,
@@ -162,6 +152,7 @@ async function addCompanies(): Promise<void> {
       .map((it) => it.identifier);
 
     portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
+
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
@@ -183,20 +174,30 @@ async function savePortfolio(): Promise<void> {
   if (!isValidPortfolioUpload.value) return;
 
   isPortfolioSaving.value = true;
-
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      companyIds: portfolioCompanies.value.map((c) => c.companyId) as unknown as Set<string>,
+      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      isMonitored: enrichedPortfolio.value?.isMonitored,
+      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
+      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks
     };
+    const response = await (portfolioId.value
+      ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
+      : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
 
-    const response = portfolioId.value
-      ? await apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
-      : await apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload);
-
-    if (!portfolioId.value) {
-      portfolioId.value = response.data.portfolioId;
+    if (!portfolioId.value || !enrichedPortfolio.value?.isMonitored) {
+      return
     }
+
+    await Promise.all(
+          sendBulkRequestForPortfolio(
+            enrichedPortfolio.value.startingMonitoringPeriod,
+            Array.from(enrichedPortfolio.value.monitoredFrameworks),
+            portfolioCompanies.value,
+            assertDefined(getKeycloakPromise())
+          );
+
 
     if (enrichedPortfolio.value && enrichedPortfolio.value.isMonitored) {
       console.log("Starting Bulk request...");
