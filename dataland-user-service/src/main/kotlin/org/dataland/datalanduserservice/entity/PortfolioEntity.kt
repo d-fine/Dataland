@@ -32,7 +32,7 @@ data class PortfolioEntity(
     @Column(name = "user_id")
     val userId: String,
     val creationTimestamp: Long,
-    var lastUpdateTimestamp: Long,
+    val lastUpdateTimestamp: Long,
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "company_ids", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "company_ids")

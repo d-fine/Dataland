@@ -49,7 +49,7 @@ data class BasePortfolio(
         userId = DatalandAuthentication.fromContext().userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = emptySet(),
+        companyIds = setOf(""),
         isMonitored = portfolioMonitoringPatch.isMonitored,
         startingMonitoringPeriod = portfolioMonitoringPatch.startingMonitoringPeriod,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
