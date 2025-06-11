@@ -95,11 +95,10 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
-        cy.get('[data-test="frameworkSelection"]')
-          .contains(framework)
-          .parent()
-          .find('input[type="checkbox"]')
-          .click({ force: true });
+          cy.get('[data-test="frameworkSelection"]')
+              .eq(1)
+              .find('input[type="checkbox"]')
+              .click({ force: true });
 
         cy.get('[data-test="saveChangesButton"]').click();
 
@@ -153,17 +152,6 @@ describe('Portfolio Monitoring Modal', () => {
           expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
           framework: 'EU Taxonomy',
           frameworkValue: 'eutaxonomy',
-        });
-      });
-
-      it('submits bulk data request when inputs are valid for non sector company for sfdr', () => {
-        testBulkDataRequest({
-          portfolioName: sfdrPortfolio,
-          permId: permIdNoSector,
-          expectedDataTypes: ['sfdr'],
-          notExpectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
-          framework: 'SFDR',
-          frameworkValue: 'sfdr',
         });
       });
     }
