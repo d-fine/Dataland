@@ -1,20 +1,10 @@
-import { type CompanyIdAndName } from '@/types/CompanyTypes.ts';
-import { type AxiosPromise } from 'axios';
 import type Keycloak from 'keycloak-js';
 import {
   type AccessStatus,
   RequestStatus,
   type RequestPriority,
-  BulkDataRequestDataTypesEnum,
-  type BulkDataRequestResponse,
 } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
-import {
-  EU_TAXONOMY_FRAMEWORKS,
-  EU_TAXONOMY_FRAMEWORKS_FINANCIALS,
-  EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS,
-  LATEST_PERIOD,
-} from '@/utils/Constants.ts';
 
 /**
  * Patches the RequestStatus of a StoredDataRequest
