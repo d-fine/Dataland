@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -141,4 +142,23 @@ class PortfolioEnrichmentService
                 monitoredFrameworks = portfolio.monitoredFrameworks,
             )
         }
+
+        /**
+         * Retrieve an enriched portfolio for a given portfolio.
+         */
+        @Transactional(readOnly = true)
+        fun getEnrichedPortfolio(portfolio: BasePortfolio): EnrichedPortfolio =
+            EnrichedPortfolio(
+                portfolioId = portfolio.portfolioId,
+                portfolioName = portfolio.portfolioName,
+                userId = portfolio.userId,
+                entries =
+                    getEnrichedEntries(
+                        portfolio.companyIds.toList(),
+                        majorFrameworks,
+                    ),
+                isMonitored = portfolio.isMonitored,
+                startingMonitoringPeriod = portfolio.startingMonitoringPeriod,
+                monitoredFrameworks = portfolio.monitoredFrameworks,
+            )
     }

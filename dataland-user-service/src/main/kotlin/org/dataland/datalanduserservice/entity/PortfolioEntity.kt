@@ -49,7 +49,10 @@ data class PortfolioEntity(
     /**
      * create PortfolioResponse from entity
      */
-    fun toBasePortfolio(): BasePortfolio =
+    fun toBasePortfolio(
+        isMonitored: Boolean = false,
+        monitoredFrameworks: Set<String> = emptySet<String>(),
+    ): BasePortfolio =
         BasePortfolio(
             portfolioId.toString(),
             portfolioName,

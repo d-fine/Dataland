@@ -23,6 +23,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioMonitoringServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
+    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private lateinit var portfolioMonitoringService: PortfolioMonitoringService
 
@@ -47,7 +48,7 @@ class PortfolioMonitoringServiceTest {
     fun setup() {
         resetSecurityContext()
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any())
-        portfolioMonitoringService = PortfolioMonitoringService(mockPortfolioRepository)
+        portfolioMonitoringService = PortfolioMonitoringService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
     }
 
     private fun resetSecurityContext() {
@@ -81,12 +82,8 @@ class PortfolioMonitoringServiceTest {
 
     @Test
     fun `verify that non monitor values remain unchanged after patching monitoring`() {
-        val originalPortfolio =
-            dummyPortfolio.copy(
-                portfolioName = "Original Portfolio",
-                userId = dummyUserId,
-                companyIds = mutableSetOf("companyA", "companyB"),
-            )
+        val originalPortfolio = dummyPortfolio
+
         val portfolioMonitoringPatch =
             PortfolioMonitoringPatch(
                 isMonitored = true,
@@ -104,6 +101,9 @@ class PortfolioMonitoringServiceTest {
                 BasePortfolio(portfolioMonitoringPatch),
                 dummyCorrelationId,
             )
+
+        println(BasePortfolio(portfolioMonitoringPatch).isMonitored)
+        println(updatedPortfolio.isMonitored)
 
         assertEquals(originalPortfolio.portfolioName, updatedPortfolio.portfolioName)
         assertEquals(originalPortfolio.userId, updatedPortfolio.userId)
