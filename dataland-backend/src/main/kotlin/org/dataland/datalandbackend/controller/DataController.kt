@@ -201,6 +201,7 @@ open class DataController<T>(
                     exportFileType,
                     dataType,
                     keepValueFieldsOnly,
+                    includeAliases,
                 )
             } catch (_: DownloadDataNotFoundApiException) {
                 return ResponseEntity.noContent().build()

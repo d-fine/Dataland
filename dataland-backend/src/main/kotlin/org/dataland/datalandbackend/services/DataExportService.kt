@@ -46,7 +46,7 @@ class DataExportService
             exportFileType: ExportFileType,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
-            includeAliases: Boolean = true,
+            includeAliases: Boolean,
         ): InputStreamResource {
             val jsonData = portfolioData.map { convertDataToJson(it) }
             if (jsonData.isEmpty()) {
