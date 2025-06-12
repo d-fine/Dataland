@@ -68,9 +68,13 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { CompanyIdAndName, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { BasePortfolioName, EnrichedPortfolio, PortfolioUpload } from '@clients/userservice';
+import type {
+  BasePortfolioName,
+  EnrichedPortfolio,
+  EnrichedPortfolioEntry,
+  PortfolioUpload,
+} from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -78,9 +82,22 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
+class CompanyIdAndName {
+  companyId: string;
+  companyName: string;
+
+  public constructor(portfolioEntry: EnrichedPortfolioEntry) {
+    this.companyId = portfolioEntry.companyId;
+    this.companyName = portfolioEntry.companyName;
+  }
+}
+
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
+const isMonitored = ref<boolean>(false);
+const startingMonitoringPeriod = ref<string>('');
+const monitoredFrameworks = ref<Set<string>>(new Set());
 const companyIdentifiersInput = ref('');
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
@@ -88,7 +105,6 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -108,11 +124,19 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  enrichedPortfolio.value = portfolio;
-  portfolioCompanies.value = getUniqueSortedCompanies(
-    portfolio.entries.map((entry) => new CompanyIdAndName(entry))
-  );
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
+  isMonitored.value = portfolio.isMonitored;
+  startingMonitoringPeriod.value = portfolio.startingMonitoringPeriod;
+  monitoredFrameworks.value = new Set(portfolio.monitoredFrameworks);
 });
+
+/**
+ * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
+ */
+function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
+  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
+  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
+}
 
 /**
  * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input text field.
@@ -132,7 +156,6 @@ async function addCompanies(): Promise<void> {
         return {
           companyId: validEntry.companyInformation!.companyId,
           companyName: validEntry.companyInformation!.companyName,
-          sector: validEntry.companyInformation!.sector ?? undefined,
         };
       });
     invalidIdentifiers = companyValidationResults
@@ -156,7 +179,6 @@ async function addCompanies(): Promise<void> {
  * If creating/updating portfolio is successful, the name and id of the created/updated portfolio is passed to the
  * dialog's close function. This way, the parent component (portfolioOverview) can use this information to switch to the
  * according tab.
- * On updating a portfolio, if portfolioMonitoring is activated, also new bulk data requests are triggered.
  */
 async function savePortfolio(): Promise<void> {
   if (!isValidPortfolioUpload.value) return;
@@ -166,42 +188,30 @@ async function savePortfolio(): Promise<void> {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
-      isMonitored: enrichedPortfolio.value?.isMonitored,
-      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
-      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks,
+      isMonitored: isMonitored.value,
+      startingMonitoringPeriod: startingMonitoringPeriod.value,
+      monitoredFrameworks: monitoredFrameworks.value
     };
-
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
 
     dialogRef?.value.close({
-      updated: true,
-      error: false,
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
     } as BasePortfolioName);
   } catch (error) {
-    handlePortfolioConflictError(error);
+    if (error instanceof AxiosError) {
+      portfolioErrors.value =
+        error.status == 409
+          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+          : error.message;
+    } else {
+      portfolioErrors.value = 'An unknown error occurred.';
+      console.log(error);
+    }
   } finally {
     isPortfolioSaving.value = false;
-  }
-}
-
-/**
- * Handles the (expected) 409 Conflict error in the case the user tries to create a portfolio with a name which
- * already exists
- * @param error
- */
-function handlePortfolioConflictError(error: unknown): void {
-  if (error instanceof AxiosError) {
-    portfolioErrors.value =
-      error.status === 409
-        ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
-        : error.message;
-  } else {
-    portfolioErrors.value = 'An unknown error occurred.';
-    console.log(error);
   }
 }
 
