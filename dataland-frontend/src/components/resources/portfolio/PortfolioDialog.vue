@@ -95,9 +95,7 @@ class CompanyIdAndName {
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const isMonitored = ref<boolean>(false);
-const startingMonitoringPeriod = ref<string>('');
-const monitoredFrameworks = ref<Set<string>>(new Set(''));
+
 const companyIdentifiersInput = ref('');
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
@@ -105,6 +103,7 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -124,10 +123,10 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
-  isMonitored.value = portfolio.isMonitored!;
-  startingMonitoringPeriod.value = portfolio.startingMonitoringPeriod!;
-  monitoredFrameworks.value = portfolio.monitoredFrameworks!;
+  enrichedPortfolio.value = portfolio;
+  portfolioCompanies.value = getUniqueSortedCompanies(
+      portfolio.entries.map((entry) => new CompanyIdAndName(entry))
+  );
 });
 
 /**
@@ -188,9 +187,9 @@ async function savePortfolio(): Promise<void> {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
-      isMonitored: isMonitored.value,
-      startingMonitoringPeriod: startingMonitoringPeriod.value,
-      monitoredFrameworks: monitoredFrameworks.value
+      isMonitored: enrichedPortfolio.value?.isMonitored,
+      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
+      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
