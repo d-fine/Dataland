@@ -97,7 +97,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const isMonitored = ref<boolean>(false);
 const startingMonitoringPeriod = ref<string>('');
-const monitoredFrameworks = ref<Set<string>>(new Set());
+const monitoredFrameworks = ref<Set<string>>(new Set(''));
 const companyIdentifiersInput = ref('');
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
@@ -125,9 +125,9 @@ onMounted(() => {
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
-  isMonitored.value = portfolio.isMonitored;
-  startingMonitoringPeriod.value = portfolio.startingMonitoringPeriod;
-  monitoredFrameworks.value = new Set(portfolio.monitoredFrameworks);
+  isMonitored.value = portfolio.isMonitored!;
+  startingMonitoringPeriod.value = portfolio.startingMonitoringPeriod!;
+  monitoredFrameworks.value = portfolio.monitoredFrameworks!;
 });
 
 /**
