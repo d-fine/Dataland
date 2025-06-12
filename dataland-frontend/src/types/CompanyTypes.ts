@@ -1,6 +1,6 @@
 import { type EnrichedPortfolioEntry } from '@clients/userservice';
 
-export class CompanyIdAndNameAndSector {
+export class CompanyIdAndName {
   companyId: string;
   companyName: string;
   sector?: string;
@@ -8,14 +8,13 @@ export class CompanyIdAndNameAndSector {
   public constructor(enrichedPortfolioEntry: EnrichedPortfolioEntry) {
     this.companyId = enrichedPortfolioEntry.companyId;
     this.companyName = enrichedPortfolioEntry.companyName;
-    this.sector = enrichedPortfolioEntry.sector;
   }
 }
 
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
-export function getUniqueSortedCompanies(entries: CompanyIdAndNameAndSector[]): CompanyIdAndNameAndSector[] {
+export function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
   const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
   return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
 }

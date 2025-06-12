@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { CompanyIdAndNameAndSector, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
+import { CompanyIdAndName, getUniqueSortedCompanies } from '@/types/CompanyTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { BasePortfolioName, EnrichedPortfolio, PortfolioUpload } from '@clients/userservice';
 import { AxiosError } from 'axios';
@@ -87,7 +87,7 @@ const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
-const portfolioCompanies = ref<CompanyIdAndNameAndSector[]>([]);
+const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
@@ -110,7 +110,7 @@ onMounted(() => {
   portfolioName.value = portfolio.portfolioName;
   enrichedPortfolio.value = portfolio;
   portfolioCompanies.value = getUniqueSortedCompanies(
-    portfolio.entries.map((entry) => new CompanyIdAndNameAndSector(entry))
+    portfolio.entries.map((entry) => new CompanyIdAndName(entry))
   );
 });
 
@@ -126,9 +126,9 @@ async function addCompanies(): Promise<void> {
     const companyValidationResults = (
       await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
-    const validIdentifiers: CompanyIdAndNameAndSector[] = companyValidationResults
+    const validIdentifiers: CompanyIdAndName[] = companyValidationResults
       .filter((validationResult) => validationResult.companyInformation)
-      .map((validEntry): CompanyIdAndNameAndSector => {
+      .map((validEntry): CompanyIdAndName => {
         return {
           companyId: validEntry.companyInformation!.companyId,
           companyName: validEntry.companyInformation!.companyName,

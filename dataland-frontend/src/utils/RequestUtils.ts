@@ -1,4 +1,4 @@
-import { type CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
+import { type CompanyIdAndName } from '@/types/CompanyTypes.ts';
 import { type AxiosPromise } from 'axios';
 import type Keycloak from 'keycloak-js';
 import {
@@ -130,85 +130,4 @@ export function priorityBadgeClass(priority: RequestPriority): string {
  */
 export function getRequestStatusLabel(requestStatus: RequestStatus): string {
   return requestStatus === RequestStatus.NonSourceable ? 'No sources available' : requestStatus;
-}
-
-/**
- * Sends BulkDataRequest and handles sector-framework assignments
- * @param startingMonitoringPeriod
- * @param monitoredFrameworks
- * @param companies
- * @param keycloakPromiseGetter
- */
-export function sendBulkRequestsForPortfolio(
-  startingMonitoringPeriod: string,
-  monitoredFrameworks: string[],
-  companies: CompanyIdAndNameAndSector[],
-  keycloakPromiseGetter: () => Promise<Keycloak>
-): AxiosPromise<BulkDataRequestResponse>[] {
-  const requestController = new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController;
-
-  const reportingPeriods = Array.from({ length: LATEST_PERIOD - Number(startingMonitoringPeriod) + 1 }, (_, i) =>
-    (Number(startingMonitoringPeriod) + i).toString()
-  );
-
-  const companyIdsForFinancial = companies
-    .filter((company) => company.sector?.toLowerCase() === 'financials')
-    .map((company) => company.companyId);
-  const companyIdsForNonFinancial = companies
-    .filter((company) => company.sector && company.sector.toLowerCase() !== 'financials')
-    .map((company) => company.companyId);
-  const companyIdsWithNoSector = companies
-    .filter(
-      (company) =>
-        !companyIdsForFinancial.includes(company.companyId) && !companyIdsForNonFinancial.includes(company.companyId)
-    )
-    .map((company) => company.companyId);
-
-  const requests = [];
-  if (monitoredFrameworks.includes('sfdr')) {
-    requests.push(
-      requestController.postBulkDataRequest({
-        reportingPeriods: reportingPeriods as unknown as Set<string>,
-        dataTypes: [BulkDataRequestDataTypesEnum.Sfdr] as unknown as Set<BulkDataRequestDataTypesEnum>,
-        companyIdentifiers: companies.map((company) => company.companyId) as unknown as Set<string>,
-        notifyMeImmediately: false,
-      })
-    );
-  }
-
-  if (monitoredFrameworks.includes('eutaxonomy')) {
-    if (companyIdsForFinancial.length > 0) {
-      requests.push(
-        requestController.postBulkDataRequest({
-          reportingPeriods: reportingPeriods as unknown as Set<string>,
-          dataTypes: EU_TAXONOMY_FRAMEWORKS_FINANCIALS as unknown as Set<BulkDataRequestDataTypesEnum>,
-          companyIdentifiers: companyIdsForFinancial as unknown as Set<string>,
-          notifyMeImmediately: false,
-        })
-      );
-    }
-
-    if (companyIdsForNonFinancial.length > 0) {
-      requests.push(
-        requestController.postBulkDataRequest({
-          reportingPeriods: reportingPeriods as unknown as Set<string>,
-          dataTypes: EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS as unknown as Set<BulkDataRequestDataTypesEnum>,
-          companyIdentifiers: companyIdsForNonFinancial as unknown as Set<string>,
-          notifyMeImmediately: false,
-        })
-      );
-    }
-
-    if (companyIdsWithNoSector.length > 0) {
-      requests.push(
-        requestController.postBulkDataRequest({
-          reportingPeriods: reportingPeriods as unknown as Set<string>,
-          dataTypes: EU_TAXONOMY_FRAMEWORKS as unknown as Set<BulkDataRequestDataTypesEnum>,
-          companyIdentifiers: companyIdsWithNoSector as unknown as Set<string>,
-          notifyMeImmediately: false,
-        })
-      );
-    }
-  }
-  return requests;
 }

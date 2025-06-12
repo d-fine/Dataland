@@ -59,8 +59,6 @@
 
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { CompanyIdAndNameAndSector } from '@/types/CompanyTypes.ts';
-import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
@@ -153,14 +151,6 @@ async function patchPortfolioMonitoring(): Promise<void> {
 
   try {
     await portfolioControllerApi.patchMonitoring(portfolio.value!.portfolioId, portfolioMonitoringPatch);
-    await Promise.all(
-      sendBulkRequestsForPortfolio(
-        selectedStartingYear.value!.toString(),
-        Array.from(selectedFrameworkOptions.value),
-        portfolio.value!.entries.map((entry) => new CompanyIdAndNameAndSector(entry)),
-        assertDefined(getKeycloakPromise)
-      )
-    );
 
     dialogRef?.value.close();
   } catch (error) {
@@ -215,7 +205,7 @@ function prefillModal(): void {
   padding: 0.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* ensure container children align left */
+  align-items: flex-start;
 }
 
 label {
