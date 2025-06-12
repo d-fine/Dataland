@@ -77,7 +77,6 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
-import { sendBulkRequestsForPortfolio } from '@/utils/RequestUtils.ts';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -175,17 +174,6 @@ async function savePortfolio(): Promise<void> {
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
-
-    if (portfolioId.value && enrichedPortfolio.value?.isMonitored) {
-      await Promise.all(
-        sendBulkRequestsForPortfolio(
-          enrichedPortfolio.value.startingMonitoringPeriod!,
-          Array.from(enrichedPortfolio.value.monitoredFrameworks!),
-          portfolioCompanies.value,
-          assertDefined(getKeycloakPromise)
-        )
-      );
-    }
 
     dialogRef?.value.close({
       updated: true,
