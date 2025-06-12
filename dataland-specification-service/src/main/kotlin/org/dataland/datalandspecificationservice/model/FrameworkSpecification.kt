@@ -58,7 +58,7 @@ private fun translateSchema(
     framework: String,
 ) {
     val frameworkSpec = database.translations[framework]?.getRefAndAlias(baseUrl)
-    for ((key, value) in schema.fields()) {
+    for ((key, value) in schema.properties()) {
         if (value.isObject) {
             translateSchema(value as ObjectNode, baseUrl, database, framework)
         } else {
@@ -71,7 +71,7 @@ private fun translateSchema(
             val idWithRefNode: ObjectNode = JsonNodeFactory.instance.objectNode()
             idWithRefNode.put("id", idWithRef.id)
             idWithRefNode.put("ref", idWithRef.ref)
-            idWithRefNode.put("aliasExport", frameworkSpec?.aliasExport ?: dataPointSpec.name)
+            idWithRefNode.put("aliasExport", frameworkSpec?.aliasExport)
 
             schema.set<ObjectNode>(key, idWithRefNode)
         }
