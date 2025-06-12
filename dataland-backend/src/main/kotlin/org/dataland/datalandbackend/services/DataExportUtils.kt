@@ -120,9 +120,9 @@ class DataExportUtils
 
                 if (includeAliases) {
                     if (isAssembledDataset) {
-                        readableHeaders["data.$strippedField"] = hardcodedHeader ?: fieldName
-                    } else {
                         readableHeaders["data.$strippedField"] = aliasHeader ?: fieldName
+                    } else {
+                        readableHeaders["data.$strippedField"] = hardcodedHeader ?: fieldName
                     }
                 } else {
                     readableHeaders["data.$strippedField"] = fieldName
