@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
@@ -24,7 +25,8 @@ class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportService = DataExportService(mockDataPointUtils, mockReferencedReportsUtils)
+    private val dataExportUtils = DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils)
+    private val dataExportService = DataExportService(dataExportUtils)
 
     private val testDataProvider = TestDataProvider(objectMapper)
     private val lksgTestData = testDataProvider.getLksgDataset()
@@ -49,6 +51,11 @@ class DataExportServiceTest {
         val header3 = "Header 3"
 
         val header = listOf(header1, header2, header3)
+        val csvSchemaBuilder = CsvSchema.builder()
+        header.forEach { it ->
+            csvSchemaBuilder.addColumn(it)
+        }
+        val csvSchema = csvSchemaBuilder.build().withHeader()
 
         val data =
             listOf(
@@ -56,15 +63,8 @@ class DataExportServiceTest {
                 mapOf(header1 to "Row 2 Col 1", header2 to "Row 2 Col 2", header3 to "Row 2 Col 3"),
             )
 
-        val readableHeaders =
-            mapOf(
-                header1 to "First Header",
-                header2 to "Second Header",
-                header3 to "Third Header",
-            )
-
         Assertions.assertDoesNotThrow {
-            dataExportService.transformDataToExcelWithReadableHeaders(header, data, ByteArrayOutputStream(), readableHeaders)
+            dataExportService.transformDataToExcelWithReadableHeaders(data, csvSchema, ByteArrayOutputStream())
         }
     }
 
@@ -76,10 +76,25 @@ class DataExportServiceTest {
                 ExportFileType.JSON,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
 
         Assertions.assertEquals(listOf(lksgCompanyExportTestData), exportedJsonObject)
+    }
+
+    @Test
+    fun `update predefined csv with current naming logic`() {
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(companyExportDataLksgTestData),
+                ExportFileType.CSV,
+                DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
+                includeAliases = false,
+            )
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+        File("./src/test/resources/dataExport/lksgDataOutput.csv").writeText(csvString, Charsets.UTF_8)
     }
 
     @Test
@@ -90,9 +105,10 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").inputStream().readAllBytes().toString(Charsets.UTF_8)
+        val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").readText(Charsets.UTF_8)
 
         Assertions.assertEquals(predefinedCsv, csvString)
     }
@@ -105,6 +121,7 @@ class DataExportServiceTest {
                 ExportFileType.EXCEL,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val bytes = excelStream.inputStream.readAllBytes()
         Assertions.assertTrue(bytes.isNotEmpty(), "Excel stream should not be empty")
@@ -143,6 +160,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -181,6 +199,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)

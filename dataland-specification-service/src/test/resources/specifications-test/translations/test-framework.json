@@ -1,0 +1,10 @@
+{
+  "id": "test-framework",
+  "schema": {
+    "test1": {
+      "test2": {
+        "test3": "alias"
+      }
+    }
+  }
+}

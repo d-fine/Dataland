@@ -13,6 +13,7 @@ enum class FrameworkGenerationFeatures {
     UploadPage,
     FakeFixtures,
     DataPointSpecifications,
+    Translations,
     ;
 
     companion object {

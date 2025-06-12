@@ -88,6 +88,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
                 keepValueFieldsOnly = keepValueFieldsOnly,
+                includeAliases = false,
             )
 
     override fun exportDataAsExcel(
@@ -99,6 +100,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.EXCEL,
+                includeAliases = false,
             )
 
     override fun retrieveData(companyId: String): Any =

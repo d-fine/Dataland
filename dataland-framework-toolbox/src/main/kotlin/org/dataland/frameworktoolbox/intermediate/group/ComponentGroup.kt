@@ -125,6 +125,17 @@ class ComponentGroup(
         }
     }
 
+    override fun generateDefaultTranslation(specificationCategoryBuilder: CategoryBuilder) {
+        val containerCategory =
+            specificationCategoryBuilder.addCategory(
+                identifier = identifier,
+            )
+
+        children.forEach {
+            it.generateTranslation(containerCategory)
+        }
+    }
+
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         val groupSection = sectionBuilder.addSection(identifier)
         children.forEach {
