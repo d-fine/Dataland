@@ -311,9 +311,9 @@ class DataExportUtils
         private fun extractAliasExportFields(
             schema: JsonNode,
             prefix: String = "",
-        ): Map<String, String> {
+        ): Map<String, String?> {
             val separator = JsonUtils.getPathSeparator()
-            val result = mutableMapOf<String, String>()
+            val result = mutableMapOf<String, String?>()
 
             val fields = schema.fieldNames()
             while (fields.hasNext()) {
@@ -323,8 +323,8 @@ class DataExportUtils
 
                 when {
                     node.has("aliasExport") -> {
-                        val aliasExport = node.get("aliasExport").asText()
-                        result[fullPath] = aliasExport
+                        val aliasExport = node.get("aliasExport")?.asText()
+                        result[fullPath] = if (aliasExport != "null") aliasExport else null
                     }
                     node.isObject -> {
                         result.putAll(extractAliasExportFields(node, fullPath))
