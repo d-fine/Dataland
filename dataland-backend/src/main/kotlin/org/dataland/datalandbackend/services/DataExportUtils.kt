@@ -11,6 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.collections.map
 
+/**
+ * The class holds methods which are used in the data export. Mainly it contains functions to map the
+ * correct export aliases to the data that is to be exported. Export aliases for assembled datasets are provided
+ * by the specification service, aliases for other datasets are hardcoded.
+ *  @param dataPointUtils
+ *  @param referencedReportsUtilities
+ */
 @Component
 class DataExportUtils
     @Autowired
