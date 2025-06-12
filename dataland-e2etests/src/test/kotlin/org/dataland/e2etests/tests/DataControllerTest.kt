@@ -1,9 +1,12 @@
 package org.dataland.e2etests.tests
 
+import org.awaitility.Awaitility
 import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
+import org.dataland.datalandbackend.openApiClient.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -152,6 +155,53 @@ class DataControllerTest {
                 apiAccessor.dataControllerApiForSfdrData.getAllCompanySfdrData(companyId),
             )
         }
+    }
+
+    @Test
+    fun `post a dummy company and a dataset and check that no other datasets are available`() {
+        val reportingPeriod = "2024"
+        val uploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOf(testCompanyInformation),
+                listOf(testDataEuTaxonomyNonFinancials),
+                apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+                reportingPeriod = reportingPeriod,
+                ensureQaPassed = true,
+            )
+        val companyId = uploadInfo[0].actualStoredCompany.companyId
+        val dataId = uploadInfo[0].actualStoredDataMetaInfo!!.dataId
+
+        Awaitility.await().until {
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .getAllCompanyEutaxonomyNonFinancialsData(
+                    companyId = companyId,
+                    showOnlyActive = false,
+                ).size == 1
+        }
+
+        assertThrows<ClientException> {
+            apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId)
+        }.let { assert(it.message!!.contains("code=404")) }
+
+        apiAccessor.dataControllerApiForEuTaxonomyFinancials
+            .getAllCompanyEutaxonomyFinancialsData(
+                companyId = companyId,
+                showOnlyActive = false,
+            ).let { assertEquals(0, it.size) }
+
+        apiAccessor.dataControllerApiForSfdrData
+            .getAllCompanySfdrData(
+                companyId = companyId,
+                showOnlyActive = false,
+            ).let { assertEquals(0, it.size) }
+
+        apiAccessor.dataControllerApiForEuTaxonomyFinancials
+            .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
+                companyIds = listOf(companyId),
+                reportingPeriods = listOf(reportingPeriod),
+                fileFormat = ExportFileType.CSV,
+                keepValueFieldsOnly = false,
+            ).let { assert(it.readBytes().isEmpty()) }
     }
 
     private fun uploadEuTaxoDataset(companyId: UUID) {
