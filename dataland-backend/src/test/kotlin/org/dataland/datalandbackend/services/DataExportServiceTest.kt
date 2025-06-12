@@ -76,6 +76,7 @@ class DataExportServiceTest {
                 ExportFileType.JSON,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
 
@@ -90,6 +91,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         File("./src/test/resources/dataExport/lksgDataOutput.csv").writeText(csvString, Charsets.UTF_8)
@@ -103,6 +105,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").readText(Charsets.UTF_8)
@@ -118,6 +121,7 @@ class DataExportServiceTest {
                 ExportFileType.EXCEL,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
         val bytes = excelStream.inputStream.readAllBytes()
         Assertions.assertTrue(bytes.isNotEmpty(), "Excel stream should not be empty")
@@ -156,6 +160,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -194,6 +199,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
+                includeAliases = false,
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
