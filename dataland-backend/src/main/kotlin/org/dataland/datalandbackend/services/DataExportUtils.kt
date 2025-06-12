@@ -73,6 +73,13 @@ class DataExportUtils
             }
         }
 
+        /**
+         * A data class for export data
+         *
+         * @param csvData the data to be exported with the original json path headers
+         * @param csvSchema
+         * @param readableHeaders a map json path name to export alias
+         */
         data class PreparedExportData(
             val csvData: List<Map<String, String>>,
             val csvSchema: CsvSchema,
