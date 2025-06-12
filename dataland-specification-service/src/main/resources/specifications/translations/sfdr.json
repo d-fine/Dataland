@@ -1,0 +1,146 @@
+{
+  "id" : "sfdr",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "dataDate" : null,
+        "fiscalYearDeviation" : null,
+        "fiscalYearEnd" : null,
+        "referencedReports" : null
+      }
+    },
+    "environmental" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : null,
+        "scope2GhgEmissionsInTonnes" : null,
+        "scope2GhgEmissionsLocationBasedInTonnes" : null,
+        "scope2GhgEmissionsMarketBasedInTonnes" : null,
+        "scope1And2GhgEmissionsInTonnes" : null,
+        "scope1And2GhgEmissionsLocationBasedInTonnes" : null,
+        "scope1And2GhgEmissionsMarketBasedInTonnes" : null,
+        "scope3GhgEmissionsInTonnes" : null,
+        "scope3UpstreamGhgEmissionsInTonnes" : null,
+        "scope3DownstreamGhgEmissionsInTonnes" : null,
+        "scope1And2And3GhgEmissionsInTonnes" : null,
+        "scope1And2And3GhgEmissionsLocationBasedInTonnes" : null,
+        "scope1And2And3GhgEmissionsMarketBasedInTonnes" : null,
+        "scope4GhgEmissionsInTonnes" : null,
+        "enterpriseValueInEUR" : null,
+        "totalRevenueInEUR" : null,
+        "carbonFootprintInTonnesPerMillionEUREnterpriseValue" : null,
+        "ghgIntensityInTonnesPerMillionEURRevenue" : null,
+        "ghgIntensityScope1InTonnesPerMillionEURRevenue" : null,
+        "ghgIntensityScope2InTonnesPerMillionEURRevenue" : null,
+        "ghgIntensityScope3InTonnesPerMillionEURRevenue" : null,
+        "ghgIntensityScope4InTonnesPerMillionEURRevenue" : null,
+        "fossilFuelSectorExposure" : null,
+        "financedScope1AndScope2Emissions" : null,
+        "financedScope3Emissions" : null
+      },
+      "energyPerformance" : {
+        "renewableEnergyProductionInGWh" : null,
+        "renewableEnergyConsumptionInGWh" : null,
+        "nonRenewableEnergyProductionInGWh" : null,
+        "relativeNonRenewableEnergyProductionInPercent" : null,
+        "nonRenewableEnergyConsumptionInGWh" : null,
+        "relativeNonRenewableEnergyConsumptionInPercent" : null,
+        "applicableHighImpactClimateSectors" : null,
+        "totalHighImpactClimateSectorEnergyConsumptionInGWh" : null,
+        "nonRenewableEnergyConsumptionFossilFuelsInGWh" : null,
+        "nonRenewableEnergyConsumptionCrudeOilInGWh" : null,
+        "nonRenewableEnergyConsumptionNaturalGasInGWh" : null,
+        "nonRenewableEnergyConsumptionLigniteInGWh" : null,
+        "nonRenewableEnergyConsumptionCoalInGWh" : null,
+        "nonRenewableEnergyConsumptionNuclearEnergyInGWh" : null,
+        "nonRenewableEnergyConsumptionOtherInGWh" : null
+      },
+      "biodiversity" : {
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure" : null,
+        "protectedAreasExposure" : null,
+        "rareOrEndangeredEcosystemsExposure" : null,
+        "highlyBiodiverseGrasslandExposure" : null,
+        "manufactureOfAgrochemicalPesticidesProducts" : null,
+        "landDegradationDesertificationSoilSealingExposure" : null,
+        "sustainableAgriculturePolicy" : null,
+        "sustainableOceansAndSeasPolicy" : null,
+        "threatenedSpeciesExposure" : null,
+        "biodiversityProtectionPolicy" : null,
+        "deforestationPolicy" : null
+      },
+      "water" : {
+        "emissionsToWaterInTonnes" : null,
+        "waterConsumptionInCubicMeters" : null,
+        "waterReusedInCubicMeters" : null,
+        "relativeWaterUsageInCubicMetersPerMillionEURRevenue" : null,
+        "waterManagementPolicy" : null,
+        "highWaterStressAreaExposure" : null
+      },
+      "waste" : {
+        "hazardousAndRadioactiveWasteInTonnes" : null,
+        "nonRecycledWasteInTonnes" : null
+      },
+      "emissions" : {
+        "emissionsOfInorganicPollutantsInTonnes" : null,
+        "emissionsOfAirPollutantsInTonnes" : null,
+        "emissionsOfOzoneDepletionSubstancesInTonnes" : null,
+        "carbonReductionInitiatives" : null
+      }
+    },
+    "social" : {
+      "socialAndEmployeeMatters" : {
+        "humanRightsLegalProceedings" : null,
+        "iloCoreLabourStandards" : null,
+        "environmentalPolicy" : null,
+        "corruptionLegalProceedings" : null,
+        "transparencyDisclosurePolicy" : null,
+        "humanRightsDueDiligencePolicy" : null,
+        "policyAgainstChildLabour" : null,
+        "policyAgainstForcedLabour" : null,
+        "policyAgainstDiscriminationInTheWorkplace" : null,
+        "iso14001Certificate" : null,
+        "policyAgainstBriberyAndCorruption" : null,
+        "fairBusinessMarketingAdvertisingPolicy" : null,
+        "technologiesExpertiseTransferPolicy" : null,
+        "fairCompetitionPolicy" : null,
+        "violationOfTaxRulesAndRegulation" : null,
+        "unGlobalCompactPrinciplesCompliancePolicy" : null,
+        "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling" : null,
+        "averageGrossHourlyEarningsMaleEmployees" : null,
+        "averageGrossHourlyEarningsFemaleEmployees" : null,
+        "unadjustedGenderPayGapInPercent" : null,
+        "femaleBoardMembersSupervisoryBoard" : null,
+        "femaleBoardMembersBoardOfDirectors" : null,
+        "maleBoardMembersSupervisoryBoard" : null,
+        "maleBoardMembersBoardOfDirectors" : null,
+        "boardGenderDiversitySupervisoryBoardInPercent" : null,
+        "boardGenderDiversityBoardOfDirectorsInPercent" : null,
+        "controversialWeaponsExposure" : null,
+        "workplaceAccidentPreventionPolicy" : null,
+        "rateOfAccidents" : null,
+        "workdaysLostInDays" : null,
+        "supplierCodeOfConduct" : null,
+        "grievanceHandlingMechanism" : null,
+        "whistleblowerProtectionPolicy" : null,
+        "reportedIncidentsOfDiscrimination" : null,
+        "sanctionedIncidentsOfDiscrimination" : null,
+        "excessiveCeoPayRatio" : null
+      },
+      "greenSecurities" : {
+        "securitiesNotCertifiedAsGreen" : null
+      },
+      "humanRights" : {
+        "humanRightsPolicy" : null,
+        "humanRightsDueDiligence" : null,
+        "traffickingInHumanBeingsPolicy" : null,
+        "reportedChildLabourIncidents" : null,
+        "reportedForcedOrCompulsoryLabourIncidents" : null,
+        "numberOfReportedIncidentsOfHumanRightsViolations" : null
+      },
+      "antiCorruptionAndAntiBribery" : {
+        "casesOfInsufficientActionAgainstBriberyAndCorruption" : null,
+        "reportedConvictionsOfBriberyAndCorruption" : null,
+        "totalAmountOfReportedFinesOfBriberyAndCorruption" : null
+      }
+    }
+  }
+}
