@@ -4,7 +4,6 @@ import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -38,7 +37,7 @@ class ApiClients(
      * Creates an auto-authenticated version of the RequestControllerApi of the community manager
      */
     @Bean
-    fun getRequestsControllerApi(
+    fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): RequestControllerApi = RequestControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 }

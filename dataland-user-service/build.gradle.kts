@@ -30,6 +30,8 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
     implementation(libs.flyway.core)
     implementation(libs.jackson.kotlin)
     implementation(libs.json)
@@ -120,6 +122,9 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
     configOptions.set(
         mapOf(
+            "dateLibrary" to "java21",
+            "serializationLibrary" to "jackson",
+            "useTags" to "true",
             "withInterfaces" to "true",
             "withSeparateModelsAndApi" to "true",
         ),
@@ -127,6 +132,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
 }
 
 tasks.register("generateClients") {
+    description = "Generate all required clients"
     group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateCommunityManagerClient")
@@ -134,6 +140,8 @@ tasks.register("generateClients") {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
@@ -171,9 +179,4 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }
