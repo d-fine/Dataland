@@ -80,7 +80,7 @@ class CategoryBuilder(
      *  Include a new translation in the framework translation hierarchy
      */
     fun addDefaultTranslation(component: ComponentBase): TranslationBuilder {
-        val aliasExport = component.aliasExport
+        val aliasExport = if (component.aliasExport != "") component.aliasExport else null
         val translation =
             addTranslationToFrameworkHierarchy(
                 identifier = component.identifier,

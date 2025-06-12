@@ -9,7 +9,7 @@ import kotlin.collections.component2
  */
 data class FrameworkSchemaEntry(
     val jsonPath: String,
-    val value: String,
+    val value: String?,
 )
 
 object VerificationUtils {
@@ -38,6 +38,8 @@ object VerificationUtils {
                 val newPath = "$prefix.$key"
                 if (value.isObject) {
                     yieldAll(flattenSchema(value as ObjectNode, newPath))
+                } else if (value.isNull) {
+                    yield(FrameworkSchemaEntry(newPath, null))
                 } else {
                     assert(value.isTextual)
                     yield(FrameworkSchemaEntry(newPath, value.asText()))

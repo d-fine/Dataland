@@ -23,9 +23,12 @@ data class FrameworkTranslation(
      * Validates the integrity of the framework specification.
      */
     fun validateIntegrity() {
-        val schemaExportAliases = flattenedSchema.map { it.value }.toList()
+        val schemaExportAliases = flattenedSchema.mapNotNull { it.value }.toList()
         val duplicatedAliases =
-            schemaExportAliases.groupingBy { it }.eachCount().filter { it.value > 1 }
-        check(duplicatedAliases.isEmpty()) { "The following exportAliases are duplicates: $duplicatedAliases" }
+            schemaExportAliases
+                .groupingBy { it }
+                .eachCount()
+                .filter { it.value > 1 }
+        check(duplicatedAliases.isEmpty()) { "The following exportAliases for $id are duplicates: ${duplicatedAliases.entries}" }
     }
 }

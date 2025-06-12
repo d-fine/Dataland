@@ -281,7 +281,7 @@ abstract class PavedRoadFramework(
             return
         }
         val exportAliases = mutableListOf<String?>()
-        framework.root.nestedChildren.forEach { exportAliases.add(it.aliasExport) }
+        framework.root.nestedChildren.forEach { if (it.aliasExport != "") exportAliases.add(it.aliasExport) }
         val duplicatedAliases = exportAliases.groupingBy { it }.eachCount().filter { it.value > 1 && it.key != null }
         require(duplicatedAliases.isEmpty()) {
             "Export aliases must be unique, found duplicates: $duplicatedAliases"
