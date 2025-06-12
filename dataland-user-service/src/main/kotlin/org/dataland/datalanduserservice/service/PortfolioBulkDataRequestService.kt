@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Year
 
+/**
+ * Service to create Bulk Data Requests upon Portfolio or Monitoring changes.
+ */
 @Service
 class PortfolioBulkDataRequestService
     @Autowired
@@ -14,6 +17,9 @@ class PortfolioBulkDataRequestService
         private val requestControllerApi: RequestControllerApi,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
     ) {
+        /**
+         * Sends Bulk Data Requests with respect to the Monitoring Status and Company Sectors.
+         */
         fun sendBulkDataRequest(portfolio: BasePortfolio) {
             val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(portfolio)
             val monitoringPeriods = getMonitoringPeriods(portfolio.startingMonitoringPeriod)

@@ -3,7 +3,6 @@ import org.dataland.datalandcommunitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
-import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -25,8 +24,8 @@ class PortfolioBulkDataRequestServiceTest {
     private lateinit var portfolioEnrichmentService: PortfolioEnrichmentService
     private lateinit var service: PortfolioBulkDataRequestService
 
-    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
-    private val mockPortfolioRepository = mock<PortfolioRepository>()
+    // vate val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
+    // private val mockPortfolioRepository = mock<PortfolioRepository>()
 
     @BeforeEach
     fun setup() {
