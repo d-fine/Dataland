@@ -7,7 +7,6 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWith
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -47,7 +46,7 @@ class NuclearAndGasAlignedDenominatorComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "NuclearAndGasFormElement",
@@ -76,7 +75,7 @@ class NuclearAndGasAlignedDenominatorComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
             "dataGenerator.randomExtendedDataPoint(" +

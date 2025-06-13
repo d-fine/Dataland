@@ -112,7 +112,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedRevenueDenominator,
+                dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedRevenueDenominator?.value,
                 'Nuclear and Gas Taxonomy-aligned Revenue (denominator)'
               ),
           },
@@ -124,7 +124,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedCapexDenominator,
+                dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedCapexDenominator?.value,
                 'Nuclear and Gas Taxonomy-aligned CapEx (denominator)'
               ),
           },
@@ -144,7 +144,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator,
+                dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator?.value,
                 'Nuclear and Gas Taxonomy-aligned Revenue (numerator)'
               ),
           },
@@ -156,7 +156,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedCapexNumerator,
+                dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedCapexNumerator?.value,
                 'Nuclear and Gas Taxonomy-aligned CapEx (numerator)'
               ),
           },
@@ -176,7 +176,8 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedRevenue,
+                dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedRevenue
+                  ?.value,
                 'Nuclear and Gas Taxonomy-eligible but not aligned Revenue'
               ),
           },
@@ -188,7 +189,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedCapex,
+                dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedCapex?.value,
                 'Nuclear and Gas Taxonomy-eligible but not aligned CapEx'
               ),
           },
@@ -208,7 +209,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue,
+                dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue?.value,
                 'Nuclear and Gas Taxonomy-non-eligible Revenue'
               ),
           },
@@ -220,7 +221,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
-                dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex,
+                dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex?.value,
                 'Nuclear and Gas Taxonomy-non-eligible CapEx'
               ),
           },
