@@ -1,18 +1,18 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle" />
+    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle"/>
     <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
     <Dropdown
-      v-model="selectedStartingYear"
-      :options="reportingPeriodsOptions"
-      option-label="label"
-      option-value="value"
-      data-test="listOfReportingPeriods"
-      placeholder="Select Starting Period"
-      class="wider-dropdown"
-      :disabled="!isMonitoringActive"
-      @change="resetErrors"
+        v-model="selectedStartingYear"
+        :options="reportingPeriodsOptions"
+        option-label="label"
+        option-value="value"
+        data-test="listOfReportingPeriods"
+        placeholder="Select Starting Period"
+        class="wider-dropdown"
+        :disabled="!isMonitoringActive"
+        @change="resetErrors"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
@@ -20,17 +20,17 @@
     <label for="frameworkSelector"> Frameworks </label>
     <div class="framework-switch-group">
       <div
-        v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
-        :key="frameworkMonitoringOption.value"
-        class="framework-switch-row"
-        data-test="frameworkSelection"
+          v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
+          :key="frameworkMonitoringOption.value"
+          class="framework-switch-row"
+          data-test="frameworkSelection"
       >
         <InputSwitch
-          class="form-field vertical-middle"
-          v-model="frameworkMonitoringOption.isActive"
-          :id="frameworkMonitoringOption.value"
-          @change="resetErrors"
-          :disabled="!isMonitoringActive"
+            class="form-field vertical-middle"
+            v-model="frameworkMonitoringOption.isActive"
+            :id="frameworkMonitoringOption.value"
+            @change="resetErrors"
+            :disabled="!isMonitoringActive"
         />
         <label :for="frameworkMonitoringOption.value" class="framework-label">
           {{ frameworkMonitoringOption.label }}
@@ -46,27 +46,27 @@
 
     <div class="button-group-wrapper">
       <PrimeButton
-        data-test="saveChangesButton"
-        class="primary-button my-2 mr-2"
-        label="SAVE CHANGES"
-        icon="pi pi-save"
-        title="Cancel (changes will not be saved)"
-        @click="patchPortfolioMonitoring()"
+          data-test="saveChangesButton"
+          class="primary-button my-2 mr-2"
+          label="SAVE CHANGES"
+          icon="pi pi-save"
+          title="Cancel (changes will not be saved)"
+          @click="patchPortfolioMonitoring()"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import {ApiClientProvider} from '@/services/ApiClients.ts';
+import {assertDefined} from '@/utils/TypeScriptUtils.ts';
+import type {EnrichedPortfolio, PortfolioMonitoringPatch} from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type {DynamicDialogInstance} from 'primevue/dynamicdialogoptions';
 import InputSwitch from 'primevue/inputswitch';
-import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
+import {computed, inject, onMounted, type Ref, ref, watch} from 'vue';
 
 type MonitoringOption = {
   value: string;
@@ -85,11 +85,11 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-  .portfolioController;
+    .portfolioController;
 
 const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
-  { value: 'sfdr', label: 'SFDR', isActive: false },
-  { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
+  {value: 'sfdr', label: 'SFDR', isActive: false},
+  {value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false},
 ]);
 const selectedStartingYear = ref<number | undefined>(undefined);
 const showFrameworksError = ref(false);
@@ -102,11 +102,11 @@ const selectedFrameworkOptions = computed(() => {
 });
 
 watch(
-  () => availableFrameworkMonitoringOptions.value,
-  () => {
-    console.log(availableFrameworkMonitoringOptions.value);
-  },
-  { immediate: true }
+    () => availableFrameworkMonitoringOptions.value,
+    () => {
+      console.log(availableFrameworkMonitoringOptions.value);
+    },
+    {immediate: true}
 );
 
 onMounted(() => {
@@ -197,6 +197,7 @@ function prefillModal(): void {
   justify-content: flex-end;
   gap: 0.5rem;
 }
+
 .portfolio-monitoring-content {
   width: 20em;
   height: 100%;

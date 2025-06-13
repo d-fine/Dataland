@@ -805,6 +805,8 @@
       "PortfolioUpload": {
         "required": [
           "companyIds",
+          "isMonitored",
+          "monitoredFrameworks",
           "portfolioName"
         ],
         "type": "object",
@@ -838,7 +840,9 @@
         "required": [
           "companyIds",
           "creationTimestamp",
+          "isMonitored",
           "lastUpdateTimestamp",
+          "monitoredFrameworks",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -885,6 +889,10 @@
         }
       },
       "PortfolioMonitoringPatch": {
+        "required": [
+          "isMonitored",
+          "monitoredFrameworks"
+        ],
         "type": "object",
         "properties": {
           "isMonitored": {

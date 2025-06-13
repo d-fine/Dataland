@@ -5,13 +5,13 @@
         <span>Framework</span>
       </label>
       <FormKit
-        :options="availableFrameworks"
-        v-model="selectedFramework"
-        data-test="frameworkSelector"
-        type="select"
-        name="frameworkSelector"
-        placeholder="Select framework"
-        @input="onFrameworkChange"
+          :options="availableFrameworks"
+          v-model="selectedFramework"
+          data-test="frameworkSelector"
+          type="select"
+          name="frameworkSelector"
+          placeholder="Select framework"
+          @input="onFrameworkChange"
       />
       <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
       <label for="reportingYearSelector">
@@ -19,13 +19,13 @@
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
-          :key="selectedFramework || 'no-framework'"
-          :name="'listOfReportingPeriods'"
-          :options="allReportingPeriodOptions"
-          :availableOptions="availableReportingPeriods"
-          data-test="listOfReportingPeriods"
-          class="toggle-chip-group"
-          @changed="resetErrors"
+            :key="selectedFramework || 'no-framework'"
+            :name="'listOfReportingPeriods'"
+            :options="allReportingPeriodOptions"
+            :availableOptions="availableReportingPeriods"
+            data-test="listOfReportingPeriods"
+            class="toggle-chip-group"
+            @changed="resetErrors"
         />
       </div>
       <p v-if="showReportingPeriodsError" class="text-danger mt-2" data-test="reportingPeriodsError">
@@ -35,16 +35,16 @@
         <span>File Type</span>
       </label>
       <FormKit
-        v-model="selectedFileType"
-        data-test="fileTypeSelector"
-        type="select"
-        name="fileTypeSelector"
-        placeholder="Select file type"
-        :options="fileTypeSelectionOptions"
+          v-model="selectedFileType"
+          data-test="fileTypeSelector"
+          type="select"
+          name="fileTypeSelector"
+          placeholder="Select file type"
+          :options="fileTypeSelectionOptions"
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a File Type.</p>
       <div class="flex align-content-start align-items-center">
-        <InputSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch" />
+        <InputSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch"/>
         <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
@@ -56,49 +56,49 @@
     </Message>
     <template v-if="!isDownloading">
       <PrimeButton
-        data-test="downloadButton"
-        class="primary-button my-2"
-        label="Download Portfolio"
-        icon="pi pi-download"
-        title="Download the selected frameworks and reporting periods for current portfolio"
-        @click="handlePortfolioDownload"
+          data-test="downloadButton"
+          class="primary-button my-2"
+          label="Download Portfolio"
+          icon="pi pi-download"
+          title="Download the selected frameworks and reporting periods for current portfolio"
+          @click="handlePortfolioDownload"
       />
     </template>
     <template v-else>
       <div class="my-4" data-test="downloadSpinner">
-        <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true" />
+        <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true"/>
       </div>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
+import ToggleChipFormInputs, {type ToggleChipInputType} from '@/components/general/ToggleChipFormInputs.vue';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import {
   createNewPercentCompletedRef,
   downloadIsInProgress,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
-import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
-import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
-import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
-import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { type DropdownOption } from '@/utils/PremadeDropdownDatasets.ts';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { type CompanyIdAndName, ExportFileType } from '@clients/backend';
-import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/userservice';
-import { type AxiosError, type AxiosRequestConfig } from 'axios';
+import {getFrameworkDataApiForIdentifier} from '@/frameworks/FrameworkApiUtils.ts';
+import {ApiClientProvider} from '@/services/ApiClients.ts';
+import {ExportFileTypeInformation} from '@/types/ExportFileTypeInformation.ts';
+import {type PublicFrameworkDataApi} from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import {MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER} from '@/utils/Constants.ts';
+import {getDateStringForDataExport} from '@/utils/DataFormatUtils.ts';
+import {forceFileDownload} from '@/utils/FileDownloadUtils.ts';
+import {type FrameworkData} from '@/utils/GenericFrameworkTypes.ts';
+import {type DropdownOption} from '@/utils/PremadeDropdownDatasets.ts';
+import {humanizeStringOrNumber} from '@/utils/StringFormatter.ts';
+import {assertDefined} from '@/utils/TypeScriptUtils.ts';
+import {type CompanyIdAndName, ExportFileType} from '@clients/backend';
+import {type EnrichedPortfolio, type EnrichedPortfolioEntry} from '@clients/userservice';
+import {type AxiosError, type AxiosRequestConfig} from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import {type DynamicDialogInstance} from 'primevue/dynamicdialogoptions';
 import InputSwitch from 'primevue/inputswitch';
 import Message from 'primevue/message';
-import { inject, onMounted, type Ref, ref } from 'vue';
+import {inject, onMounted, type Ref, ref} from 'vue';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -190,11 +190,11 @@ function updateAvailableReportingPeriods(framework: string): void {
   });
 
   availableReportingPeriods.value = Array.from(availablePeriods)
-    .sort((a, b) => parseInt(b) - parseInt(a))
-    .map((period) => ({
-      name: period,
-      value: false,
-    }));
+      .sort((a, b) => parseInt(b) - parseInt(a))
+      .map((period) => ({
+        name: period,
+        value: false,
+      }));
 }
 
 /**
@@ -274,21 +274,21 @@ async function downloadPortfolio(): Promise<void> {
 
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     const frameworkDataApi = getFrameworkDataApiForIdentifier(
-      selectedFramework.value,
-      apiClientProvider
+        selectedFramework.value,
+        apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
     const selectedExportFileType = ALL_EXPORT_FILE_TYPES.find((type) => type === selectedFileType.value)!;
     const fileExtension = ExportFileTypeInformation[selectedExportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
-      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+        fileExtension === 'xlsx' ? {responseType: 'arraybuffer'} : undefined;
 
     const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      getSelectedReportingPeriods(),
-      getCompanyIds(),
-      selectedExportFileType,
-      keepValuesOnly.value,
-      options
+        getSelectedReportingPeriods(),
+        getCompanyIds(),
+        selectedExportFileType,
+        keepValuesOnly.value,
+        options
     );
 
     if (dataResponse.status === 204) {
