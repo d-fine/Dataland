@@ -17,15 +17,13 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.Instant
 import java.time.Year
 
 class PortfolioBulkDataRequestServiceTest {
     private lateinit var requestControllerApi: RequestControllerApi
     private lateinit var portfolioEnrichmentService: PortfolioEnrichmentService
     private lateinit var service: PortfolioBulkDataRequestService
-
-    // vate val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
-    // private val mockPortfolioRepository = mock<PortfolioRepository>()
 
     @BeforeEach
     fun setup() {
@@ -68,16 +66,16 @@ class PortfolioBulkDataRequestServiceTest {
     }
 
     @Test
-    fun `sendBulkDataRequest posts eutaxonomy requests when monitoredFrameworks contains eutaxonomy`() {
+    fun `check that sendBulkDataRequest posts eutaxonomy requests when monitoredFrameworks contains eutaxonomy`() {
         val basePortfolio =
             BasePortfolio(
                 portfolioId = "p1",
                 portfolioName = "Portfolio 1",
                 userId = "user1",
-                creationTimestamp = System.currentTimeMillis(),
-                lastUpdateTimestamp = System.currentTimeMillis(),
-                companyIds = setOf("id1", "id2"),
-                isMonitored = false,
+                creationTimestamp = Instant.now().toEpochMilli(),
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = setOf("c1", "c2", "c3"),
+                isMonitored = true,
                 startingMonitoringPeriod = "2020",
                 monitoredFrameworks = setOf("eutaxonomy"),
             )
@@ -131,18 +129,55 @@ class PortfolioBulkDataRequestServiceTest {
     }
 
     @Test
-    fun `sendBulkDataRequest posts sfdr request when monitoredFrameworks contains sfdr`() {
+    fun `check that sendBulkDataRequest posts sfdr request when monitoredFrameworks contains sfdr`() {
         val basePortfolio =
             BasePortfolio(
                 portfolioId = "p2",
                 portfolioName = "Portfolio 2",
                 userId = "user2",
-                creationTimestamp = System.currentTimeMillis(),
-                lastUpdateTimestamp = System.currentTimeMillis(),
-                companyIds = setOf("id1", "id2"),
-                isMonitored = false,
-                startingMonitoringPeriod = "2020",
+                creationTimestamp = Instant.now().toEpochMilli(),
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = setOf("c1", "c2", "c3"),
+                isMonitored = true,
+                startingMonitoringPeriod = "2022",
                 monitoredFrameworks = setOf("sfdr"),
+            )
+
+        val enrichedPortfolio = createMockedEnrichedPortfolio()
+        whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
+
+        service.sendBulkDataRequest(basePortfolio)
+
+        val expectedMonitoringPeriods = (2022 until Year.now().value).map { it.toString() }.toSet()
+
+        val captor = argumentCaptor<BulkDataRequest>()
+        verify(requestControllerApi, times(1)).postBulkDataRequest(captor.capture())
+
+        val capturedRequests = captor.allValues
+
+        assertEquals(setOf("c1", "c2", "c3"), capturedRequests[0].companyIdentifiers)
+
+        val request = capturedRequests[0]
+
+        assertEquals(enrichedPortfolio.entries.map { it.companyId }.toSet(), request.companyIdentifiers)
+        assertEquals(setOf(BulkDataRequest.DataTypes.sfdr), request.dataTypes)
+        assertEquals(expectedMonitoringPeriods, request.reportingPeriods)
+        assertFalse(request.notifyMeImmediately)
+    }
+
+    @Test
+    fun `check that sendBulkDataRequest posts both sfdr and eutaxonomy requests when monitoredFrameworks contains both`() {
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "p_combined",
+                portfolioName = "Combined Portfolio",
+                userId = "user_combined",
+                creationTimestamp = Instant.now().toEpochMilli(),
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = setOf("c1", "c2", "c3"),
+                isMonitored = true,
+                startingMonitoringPeriod = "2021",
+                monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
             )
 
         val enrichedPortfolio = createMockedEnrichedPortfolio()
@@ -153,31 +188,62 @@ class PortfolioBulkDataRequestServiceTest {
         val expectedMonitoringPeriods = (2021 until Year.now().value).map { it.toString() }.toSet()
 
         val captor = argumentCaptor<BulkDataRequest>()
-        verify(requestControllerApi, times(3)).postBulkDataRequest(captor.capture())
+
+        verify(requestControllerApi, times(4)).postBulkDataRequest(captor.capture())
 
         val capturedRequests = captor.allValues
 
         assertEquals(setOf("c1"), capturedRequests[0].companyIdentifiers)
+        assertEquals(
+            setOf(
+                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+            ),
+            capturedRequests[0].dataTypes,
+        )
+        assertEquals(expectedMonitoringPeriods, capturedRequests[0].reportingPeriods)
+        assertFalse(capturedRequests[0].notifyMeImmediately)
 
-        val request = argumentCaptor<BulkDataRequest>().firstValue
+        assertEquals(setOf("c2"), capturedRequests[1].companyIdentifiers)
+        assertEquals(
+            setOf(
+                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+            ),
+            capturedRequests[1].dataTypes,
+        )
+        assertEquals(expectedMonitoringPeriods, capturedRequests[1].reportingPeriods)
+        assertFalse(capturedRequests[1].notifyMeImmediately)
 
-        assertEquals(enrichedPortfolio.entries.map { it.companyId }.toSet(), request.companyIdentifiers)
-        assertEquals(setOf(BulkDataRequest.DataTypes.sfdr), request.dataTypes)
-        assertEquals(expectedMonitoringPeriods, request.reportingPeriods)
-        assertFalse(request.notifyMeImmediately)
+        assertEquals(setOf("c3"), capturedRequests[2].companyIdentifiers)
+        assertEquals(
+            setOf(
+                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+            ),
+            capturedRequests[2].dataTypes,
+        )
+        assertEquals(expectedMonitoringPeriods, capturedRequests[2].reportingPeriods)
+        assertFalse(capturedRequests[2].notifyMeImmediately)
+
+        assertEquals(setOf("c1", "c2", "c3"), capturedRequests[3].companyIdentifiers)
+        assertEquals(setOf(BulkDataRequest.DataTypes.sfdr), capturedRequests[3].dataTypes)
+        assertEquals(expectedMonitoringPeriods, capturedRequests[3].reportingPeriods)
+        assertFalse(capturedRequests[3].notifyMeImmediately)
     }
 
     @Test
-    fun `sendBulkDataRequest throws exception on invalid startingMonitoringPeriod`() {
+    fun `check that sendBulkDataRequest throws exception on invalid startingMonitoringPeriod`() {
         val basePortfolio =
             BasePortfolio(
                 portfolioId = "p3",
                 portfolioName = "Portfolio 3",
                 userId = "user3",
-                creationTimestamp = System.currentTimeMillis(),
-                lastUpdateTimestamp = System.currentTimeMillis(),
-                companyIds = setOf("id1", "id2"),
-                isMonitored = false,
+                creationTimestamp = Instant.now().toEpochMilli(),
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = setOf("c1", "c2", "c3"),
+                isMonitored = true,
                 startingMonitoringPeriod = "Zweitausendzwanzig",
                 monitoredFrameworks = setOf("eutaxonomy"),
             )

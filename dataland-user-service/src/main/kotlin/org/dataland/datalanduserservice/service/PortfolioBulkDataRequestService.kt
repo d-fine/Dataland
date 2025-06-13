@@ -21,61 +21,63 @@ class PortfolioBulkDataRequestService
          * Sends Bulk Data Requests with respect to the Monitoring Status and Company Sectors.
          */
         fun sendBulkDataRequest(portfolio: BasePortfolio) {
-            val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(portfolio)
-            val monitoringPeriods = getMonitoringPeriods(portfolio.startingMonitoringPeriod)
+            if (portfolio.isMonitored) {
+                val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(portfolio)
+                val monitoringPeriods = getMonitoringPeriods(portfolio.startingMonitoringPeriod)
 
-            if ("eutaxonomy" in portfolio.monitoredFrameworks) {
-                requestControllerApi.postBulkDataRequest(
-                    BulkDataRequest(
-                        companyIdentifiers = getFinancialsCompanyIds(enrichedPortfolio),
-                        dataTypes =
-                            setOf(
-                                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-                            ),
-                        reportingPeriods = monitoringPeriods,
-                        notifyMeImmediately = false,
-                    ),
-                )
+                if ("eutaxonomy" in portfolio.monitoredFrameworks) {
+                    requestControllerApi.postBulkDataRequest(
+                        BulkDataRequest(
+                            companyIdentifiers = getFinancialsCompanyIds(enrichedPortfolio),
+                            dataTypes =
+                                setOf(
+                                    BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                                    BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                                ),
+                            reportingPeriods = monitoringPeriods,
+                            notifyMeImmediately = false,
+                        ),
+                    )
 
-                requestControllerApi.postBulkDataRequest(
-                    BulkDataRequest(
-                        companyIdentifiers = getNonFinancialsCompanyIds(enrichedPortfolio),
-                        dataTypes =
-                            setOf(
-                                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-                            ),
-                        reportingPeriods = monitoringPeriods,
-                        notifyMeImmediately = false,
-                    ),
-                )
+                    requestControllerApi.postBulkDataRequest(
+                        BulkDataRequest(
+                            companyIdentifiers = getNonFinancialsCompanyIds(enrichedPortfolio),
+                            dataTypes =
+                                setOf(
+                                    BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                                    BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                                ),
+                            reportingPeriods = monitoringPeriods,
+                            notifyMeImmediately = false,
+                        ),
+                    )
 
-                requestControllerApi.postBulkDataRequest(
-                    BulkDataRequest(
-                        companyIdentifiers = getUndefinedCompanyIds(enrichedPortfolio),
-                        dataTypes =
-                            setOf(
-                                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-                            ),
-                        reportingPeriods = monitoringPeriods,
-                        notifyMeImmediately = false,
-                    ),
-                )
-            }
+                    requestControllerApi.postBulkDataRequest(
+                        BulkDataRequest(
+                            companyIdentifiers = getUndefinedCompanyIds(enrichedPortfolio),
+                            dataTypes =
+                                setOf(
+                                    BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                                    BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                                    BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                                ),
+                            reportingPeriods = monitoringPeriods,
+                            notifyMeImmediately = false,
+                        ),
+                    )
+                }
 
-            if ("sfdr" in portfolio.monitoredFrameworks) {
-                requestControllerApi.postBulkDataRequest(
-                    BulkDataRequest(
-                        companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
-                        dataTypes =
-                            setOf(BulkDataRequest.DataTypes.sfdr),
-                        reportingPeriods = monitoringPeriods,
-                        notifyMeImmediately = false,
-                    ),
-                )
+                if ("sfdr" in portfolio.monitoredFrameworks) {
+                    requestControllerApi.postBulkDataRequest(
+                        BulkDataRequest(
+                            companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
+                            dataTypes =
+                                setOf(BulkDataRequest.DataTypes.sfdr),
+                            reportingPeriods = monitoringPeriods,
+                            notifyMeImmediately = false,
+                        ),
+                    )
+                }
             }
         }
 

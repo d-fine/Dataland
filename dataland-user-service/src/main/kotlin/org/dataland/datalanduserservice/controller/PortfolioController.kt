@@ -73,7 +73,7 @@ class PortfolioController
             ResponseEntity.ok(portfolioService.getAllPortfolioNamesForCurrentUser())
 
         override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
-            ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioId))
+            ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioService.getPortfolio(portfolioId)))
 
         override fun patchMonitoring(
             portfolioId: String,

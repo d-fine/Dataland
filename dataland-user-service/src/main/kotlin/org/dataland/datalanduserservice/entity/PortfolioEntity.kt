@@ -49,10 +49,7 @@ data class PortfolioEntity(
     /**
      * create PortfolioResponse from entity
      */
-    fun toBasePortfolio(
-        isMonitored: Boolean = false,
-        monitoredFrameworks: Set<String> = emptySet<String>(),
-    ): BasePortfolio =
+    fun toBasePortfolio(): BasePortfolio =
         BasePortfolio(
             portfolioId.toString(),
             portfolioName,
@@ -60,8 +57,8 @@ data class PortfolioEntity(
             creationTimestamp,
             lastUpdateTimestamp,
             companyIds,
-            isMonitored,
+            isMonitored ?: false,
             startingMonitoringPeriod,
-            monitoredFrameworks,
+            monitoredFrameworks ?: emptySet(),
         )
 }

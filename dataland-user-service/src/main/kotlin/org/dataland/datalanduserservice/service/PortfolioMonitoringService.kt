@@ -44,7 +44,7 @@ class PortfolioMonitoringService
             val updatedPortfolioEntity =
                 originalPortfolio.toPortfolioEntity(
                     portfolioId,
-                    portfolio.creationTimestamp,
+                    originalPortfolio.creationTimestamp,
                     portfolio.lastUpdateTimestamp,
                     portfolio.isMonitored,
                     portfolio.startingMonitoringPeriod,

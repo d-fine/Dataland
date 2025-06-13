@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -50,6 +52,9 @@ class DatalandUserServiceSpringbootTest
     ) {
         @MockitoBean
         private val mockKeycloakUserService = mock<KeycloakUserService>()
+
+        @MockitoBean
+        private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
 
         @MockitoBean
         private val mockCompanyDataController = mock<CompanyDataControllerApi>()
@@ -92,6 +97,7 @@ class DatalandUserServiceSpringbootTest
             doReturn(listOf("ROLE_USER")).whenever(mockKeycloakUserService).getUserRoleNames(userId)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
+            doNothing().whenever(mockPortfolioBulkDataRequestService).sendBulkDataRequest(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -158,11 +164,39 @@ class DatalandUserServiceSpringbootTest
                         .body!!
 
                 assertEquals(originalPortfolioResponse.portfolioId, patchedPortfolio.portfolioId)
-                assertTrue(patchedPortfolio.isMonitored!!)
+                assertTrue(patchedPortfolio.isMonitored)
                 assertEquals(portfolioMonitoringPatch.startingMonitoringPeriod, patchedPortfolio.startingMonitoringPeriod)
                 assertEquals(portfolioMonitoringPatch.monitoredFrameworks, patchedPortfolio.monitoredFrameworks)
                 assertEquals(originalPortfolioResponse.creationTimestamp, patchedPortfolio.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < patchedPortfolio.lastUpdateTimestamp)
+            }
+
+            @Test
+            fun `test that patching monitoring triggers community manager bulk data request`() {
+                val originalPortfolioResponse =
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
+
+                val portfolioMonitoringPatch =
+                    PortfolioMonitoringPatch(
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2020",
+                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                    )
+
+                assertDoesNotThrow {
+                    portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch)
+                }
+
+                org.mockito.kotlin
+                    .verify(mockPortfolioBulkDataRequestService)
+                    .sendBulkDataRequest(
+                        org.mockito.kotlin.check {
+                            assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
+                            assertTrue(it.isMonitored)
+                            assertEquals("2020", it.startingMonitoringPeriod)
+                            assertEquals(setOf("sfdr", "eutaxonomy"), it.monitoredFrameworks)
+                        },
+                    )
             }
 
             @Test
