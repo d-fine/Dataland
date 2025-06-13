@@ -86,7 +86,7 @@ class PortfolioBulkDataRequestService
         ) {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    companyIdentifiers = getFinancialsCompanyIds(enrichedPortfolio),
+                    companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
                     dataTypes =
                         setOf(
                             BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
@@ -104,7 +104,7 @@ class PortfolioBulkDataRequestService
         ) {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    companyIdentifiers = getNonFinancialsCompanyIds(enrichedPortfolio),
+                    companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
                     dataTypes =
                         setOf(
                             BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
@@ -122,7 +122,7 @@ class PortfolioBulkDataRequestService
         ) {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    companyIdentifiers = getUndefinedCompanyIds(enrichedPortfolio),
+                    companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
                     dataTypes =
                         setOf(
                             BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
