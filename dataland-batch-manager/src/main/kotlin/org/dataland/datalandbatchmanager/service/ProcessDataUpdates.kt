@@ -112,6 +112,7 @@ class ProcessDataUpdates
             if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
                 logger.info("Found flag file or force ingest flag for NorthData.")
                 logFlagFileFoundAndDelete(flagFileNorthData)
+
                 waitForBackend()
                 logger.info("Retrieving all company data available via NorthData.")
                 northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
@@ -128,9 +129,10 @@ class ProcessDataUpdates
                 flagFileGleif.delete()
                 allGleifCompaniesIngestManualUpdateFlagFilePath = null // this will be removed for the final version
                 logger.info("Running scheduled update of GLEIF data.")
+
                 waitForBackend()
                 gleifGoldenCopyIngestor.prepareGleifDeltaFile(true)
-                gleifGoldenCopyIngestor.processIsinMappingFile()
+                gleifGoldenCopyIngestor.processIsinMappingFile(true)
                 gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
                 // flagFileGleif.delete() ***this will be added after the scheduled is set to the real time
             } else {

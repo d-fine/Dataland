@@ -97,14 +97,14 @@ class GleifGoldenCopyIngestor(
      * Starting point for ISIN mapping file handling
      */
     @Synchronized
-    fun processIsinMappingFile() {
+    fun processIsinMappingFile(doFullIsinUpdate: Boolean = false) {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
         val duration =
             measureTime {
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
                 val deltaMapping: Map<String, Set<String>> =
-                    if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
+                    if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L || doFullIsinUpdate) {
                         isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
                     } else {
                         isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)

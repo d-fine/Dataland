@@ -40,71 +40,59 @@ class CompanyUploader(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val rateLimiter: RateLimiter
-    private val retry: Retry
-
-    init {
-        val retryConfig =
-            RetryConfig
-                .custom<Any>()
-                .maxAttempts(MAX_RETRIES)
-                .waitDuration(Duration.ofSeconds(WAIT_DURATION))
-                .retryExceptions(
-                    SocketTimeoutException::class.java,
-                    ClientException::class.java,
-                    ServerException::class.java,
-                ).build()
-
-        retry = Retry.of("apiRetry", retryConfig)
-
-        retry.eventPublisher.onRetry { event ->
-            logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed due to: ${event.lastThrowable?.message}, retrying...")
-        }
-
-        // Programmatic RateLimiter configuration
-        val rateLimiterConfig =
+    private val rateLimiter: RateLimiter =
+        RateLimiter.of(
+            "companyUploaderLimiter",
             RateLimiterConfig
                 .custom()
                 .limitForPeriod(LIMIT_FOR_PERIOD)
                 .limitRefreshPeriod(Duration.ofSeconds(LIMIT_REFRESH_DURATION))
                 .timeoutDuration(Duration.ofMinutes(TIMEOUT_DURATION))
-                .build()
+                .build(),
+        )
 
-        rateLimiter = RateLimiter.of("testLimiter", rateLimiterConfig)
-    }
+    private val retry: Retry =
+        Retry
+            .of(
+                "companyUploaderRetry",
+                RetryConfig
+                    .custom<Any>()
+                    .maxAttempts(MAX_RETRIES)
+                    .waitDuration(Duration.ofSeconds(WAIT_DURATION))
+                    .retryExceptions(
+                        SocketTimeoutException::class.java,
+                        ClientException::class.java,
+                        ServerException::class.java,
+                    ).build(),
+            ).apply {
+                eventPublisher.onRetry { event ->
+                    logger.warn("Retry attempt #${event.numberOfRetryAttempts} failed: ${event.lastThrowable?.message}, retrying...")
+                }
+            }
 
     @Suppress("ReturnCount")
     private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException): Pair<String?, Set<String?>?> {
-        if (exception.statusCode != HttpStatus.BAD_REQUEST.value()) {
-            return Pair(null, null)
-        }
+        if (exception.statusCode != HttpStatus.BAD_REQUEST.value()) return null to null
 
         val exceptionResponse = exception.response!! as ClientError<*>
         val exceptionBodyString = exceptionResponse.body.toString()
 
         val errorResponseBody = objectMapper.readTree(exceptionBodyString)
         val firstError = errorResponseBody["errors"]?.get(0)
-        if (firstError?.get("errorType")?.textValue() != "duplicate-company-identifier") {
-            return Pair(null, null)
-        }
+        if (firstError?.get("errorType")?.textValue() != "duplicate-company-identifier") return null to null
 
         val conflictingIdentifiers = firstError["metaInformation"]
-        if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() == 0) {
-            return Pair(null, null)
-        }
+        if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() == 0) return null to null
 
-        val conflictingIdentifierTypes: MutableSet<String?> = mutableSetOf()
-        val conflictingCompanyIds: MutableSet<String?> = mutableSetOf()
-        conflictingIdentifiers.forEach {
-            conflictingIdentifierTypes.add(it["identifierType"]?.textValue())
-            conflictingCompanyIds.add(it["companyId"]?.textValue())
-        }
+        val conflictingCompanyIds = conflictingIdentifiers.mapNotNull { it["companyId"]?.textValue() }.toSet()
+        val conflictingIdentifierTypes = conflictingIdentifiers.mapNotNull { it["identifierType"]?.textValue() }.toSet()
 
-        if (conflictingCompanyIds.size != 1) {
+        return if (conflictingCompanyIds.size != 1) {
+            conflictingCompanyIds.first() to conflictingIdentifierTypes
+        } else {
             logger.error("Found conflicting identifiers for two different companies $conflictingCompanyIds")
-            return Pair(null, null)
+            null to null
         }
-        return Pair(conflictingCompanyIds.first(), conflictingIdentifierTypes)
     }
 
     private fun executeWithRetryAndThrottling(task: () -> Unit) {
@@ -118,6 +106,7 @@ class CompanyUploader(
             logger.info("Function executed successfully.")
         } catch (exception: ClientException) {
             logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
+            throw exception
         } catch (exception: SocketTimeoutException) {
             logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
         } catch (exception: ServerException) {
@@ -141,8 +130,7 @@ class CompanyUploader(
                 logger.info("uploadOrPatchSingleCompany for ${companyInformation.getNameAndIdentifier()}")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
-                val (conflictingCompanyId, conflictingIdentifiers) =
-                    checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
+                val (conflictingCompanyId, conflictingIdentifiers) = checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
                 if (conflictingCompanyId != null) {
                     patchCompanyId = conflictingCompanyId
                     allConflictingIdentifiers = conflictingIdentifiers
@@ -173,10 +161,7 @@ class CompanyUploader(
         val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
         executeWithRetryAndThrottling {
             logger.info("patchSingleCompany data for ${companyInformation.getNameAndIdentifier()}")
-            companyDataControllerApi.patchCompanyById(
-                companyId,
-                companyPatch,
-            )
+            companyDataControllerApi.patchCompanyById(companyId, companyPatch)
         }
     }
 
@@ -185,15 +170,11 @@ class CompanyUploader(
      * @param finalParentMapping the parent-mapping with the format "LEI" -> "LEI"
      */
     fun updateRelationships(finalParentMapping: Map<String, String>) {
-        for ((startLei, endLei) in finalParentMapping) {
-            val companyId = searchCompanyByLEI(startLei) ?: continue
-
+        finalParentMapping.forEach { (startLei, endLei) ->
+            val companyId = searchCompanyByLEI(startLei) ?: return@forEach
             executeWithRetryAndThrottling {
                 logger.info("updateRelationship of company with ID: $companyId and LEI: $startLei")
-                companyDataControllerApi.patchCompanyById(
-                    companyId,
-                    CompanyInformationPatch(parentCompanyLei = endLei),
-                )
+                companyDataControllerApi.patchCompanyById(companyId, CompanyInformationPatch(parentCompanyLei = endLei))
             }
         }
     }
@@ -205,10 +186,7 @@ class CompanyUploader(
         executeWithRetryAndThrottling {
             logger.info("searchCompanyByLEI: $lei")
             try {
-                companyId =
-                    companyDataControllerApi
-                        .getCompanyIdByIdentifier(IdentifierType.Lei, lei)
-                        .companyId
+                companyId = companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
             } catch (exception: ClientException) {
                 if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
                     logger.warn("Could not find company with LEI: $lei")
@@ -218,7 +196,6 @@ class CompanyUploader(
                 }
             }
         }
-
         return if (found404) null else companyId
     }
 
@@ -227,11 +204,27 @@ class CompanyUploader(
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
     fun updateIsins(leiIsinMapping: Map<String, Set<String>>) {
-        @Suppress("unused")
-        for ((lei, newIsins) in leiIsinMapping) {
-            val companyId = searchCompanyByLEI(lei) ?: continue
+        val retryLeiIsinMappingQueue = mutableMapOf<String, Set<String>>()
+
+        leiIsinMapping.forEach { (lei, newIsins) ->
+            val companyId = searchCompanyByLEI(lei) ?: return@forEach
             logger.info("Patching company with ID: $companyId and LEI: $lei")
-            updateIsinsOfCompany(newIsins, companyId)
+            try {
+                updateIsinsOfCompany(newIsins, companyId)
+            } catch (exception: ClientException) {
+                logger.warn("Initial update failed due to ${exception.message} for company with ID: $companyId and LEI: $lei")
+                retryLeiIsinMappingQueue[lei] = newIsins
+            }
+        }
+
+        retryLeiIsinMappingQueue.forEach { (lei, newIsins) ->
+            val companyId = searchCompanyByLEI(lei) ?: return@forEach
+            logger.warn("Retrying to patch company with ID: $companyId and LEI: $lei")
+            try {
+                updateIsinsOfCompany(newIsins, companyId)
+            } catch (exception: ClientException) {
+                logger.error("Retry failed due to ${exception.message} for company with ID: $companyId and LEI: $lei")
+            }
         }
     }
 
@@ -246,10 +239,7 @@ class CompanyUploader(
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
         executeWithRetryAndThrottling {
             logger.info("updateIsinsOfCompany with ID: $companyId")
-            companyDataControllerApi.patchCompanyById(
-                companyId,
-                companyPatch,
-            )
+            companyDataControllerApi.patchCompanyById(companyId, companyPatch)
         }
     }
 }
