@@ -41,6 +41,11 @@ class PortfolioBulkDataRequestService
                             notifyMeImmediately = false,
                         ),
                     )
+                    println("Bulkrequest sent")
+                    println(getAllCompanyIds(enrichedPortfolio))
+                    println(monitoringPeriods)
+                    println(portfolio.monitoredFrameworks)
+                    println(portfolio.isMonitored)
                 }
             }
         }
