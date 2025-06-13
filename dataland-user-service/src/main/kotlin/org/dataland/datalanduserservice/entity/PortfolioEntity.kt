@@ -43,7 +43,6 @@ data class PortfolioEntity(
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
-    @OrderBy("asc")
     val monitoredFrameworks: Set<String>?,
 ) {
     /**

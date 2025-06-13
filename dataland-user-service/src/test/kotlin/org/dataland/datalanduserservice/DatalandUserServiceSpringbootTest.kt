@@ -97,7 +97,7 @@ class DatalandUserServiceSpringbootTest
             doReturn(listOf("ROLE_USER")).whenever(mockKeycloakUserService).getUserRoleNames(userId)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
-            doNothing().whenever(mockPortfolioBulkDataRequestService).sendBulkDataRequest(any())
+            doNothing().whenever(mockPortfolioBulkDataRequestService).sendBulkDataRequestIfMonitored(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -189,7 +189,7 @@ class DatalandUserServiceSpringbootTest
 
                 org.mockito.kotlin
                     .verify(mockPortfolioBulkDataRequestService)
-                    .sendBulkDataRequest(
+                    .sendBulkDataRequestIfMonitored(
                         org.mockito.kotlin.check {
                             assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
                             assertTrue(it.isMonitored)

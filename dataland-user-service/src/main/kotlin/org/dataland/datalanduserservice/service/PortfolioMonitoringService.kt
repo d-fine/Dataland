@@ -53,9 +53,7 @@ class PortfolioMonitoringService
 
             val updatedPortfolio = updatedPortfolioEntity.toBasePortfolio()
 
-            if (portfolio.isMonitored) {
-                portfolioBulkDataRequestService.sendBulkDataRequest(updatedPortfolio)
-            }
+            portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(updatedPortfolio)
 
             return portfolioRepository
                 .save(updatedPortfolioEntity)

@@ -56,17 +56,15 @@ data class BasePortfolio(
     )
 
     /**
-     * Creates portfolio entity object from BasePortfolio.
-     * In case of replacing an existing portfolio (PUT), provide portfolioId and creationTimestamp of portfolio to be
-     * replaced in order to keep them (and not replace them).
+     * Creates portfolio entity object from BasePortfolio. If parameters are null, the given values remain.
      */
     fun toPortfolioEntity(
         portfolioId: String? = null,
         creationTimestamp: Long? = null,
         lastUpdateTimestamp: Long? = null,
-        isMonitoredPatch: Boolean?,
-        startingMonitoringPeriodPatch: String? = null,
-        monitoredFrameworksPatch: Set<String>?,
+        isMonitored: Boolean? = null,
+        startingMonitoringPeriod: String? = null,
+        monitoredFrameworks: Set<String>? = null,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -75,8 +73,8 @@ data class BasePortfolio(
             creationTimestamp = creationTimestamp ?: this.creationTimestamp,
             lastUpdateTimestamp = lastUpdateTimestamp ?: this.lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
-            isMonitored = isMonitoredPatch ?: this.isMonitored,
-            startingMonitoringPeriod = startingMonitoringPeriodPatch ?: this.startingMonitoringPeriod,
-            monitoredFrameworks = monitoredFrameworksPatch ?: this.monitoredFrameworks,
+            isMonitored = isMonitored ?: this.isMonitored,
+            startingMonitoringPeriod = startingMonitoringPeriod ?: this.startingMonitoringPeriod,
+            monitoredFrameworks = monitoredFrameworks ?: this.monitoredFrameworks,
         )
 }

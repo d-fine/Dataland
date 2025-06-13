@@ -134,7 +134,7 @@ class PortfolioBulkDataRequestServiceTest {
         val enrichedPortfolio = createMockedEnrichedPortfolio()
         whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
 
-        service.sendBulkDataRequest(basePortfolio)
+        service.sendBulkDataRequestIfMonitored(basePortfolio)
 
         val expectedMonitoringPeriods =
             (basePortfolio.startingMonitoringPeriod!!.toInt() until Year.now().value).map { it.toString() }.toSet()
@@ -173,7 +173,7 @@ class PortfolioBulkDataRequestServiceTest {
 
         val exception =
             assertThrows<IllegalArgumentException> {
-                service.sendBulkDataRequest(basePortfolio)
+                service.sendBulkDataRequestIfMonitored(basePortfolio)
             }
         assertTrue(exception.message!!.contains("Invalid start year"))
     }

@@ -20,7 +20,7 @@ class PortfolioBulkDataRequestService
         /**
          * Sends Bulk Data Requests with respect to the Monitoring Status and Company Sectors.
          */
-        fun sendBulkDataRequest(portfolio: BasePortfolio) {
+        fun sendBulkDataRequestIfMonitored(portfolio: BasePortfolio) {
             if (portfolio.isMonitored) {
                 val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(portfolio)
                 val monitoringPeriods = getMonitoringPeriods(portfolio.startingMonitoringPeriod)
@@ -41,11 +41,6 @@ class PortfolioBulkDataRequestService
                             notifyMeImmediately = false,
                         ),
                     )
-                    println("Bulkrequest sent")
-                    println(getAllCompanyIds(enrichedPortfolio))
-                    println(monitoringPeriods)
-                    println(portfolio.monitoredFrameworks)
-                    println(portfolio.isMonitored)
                 }
             }
         }

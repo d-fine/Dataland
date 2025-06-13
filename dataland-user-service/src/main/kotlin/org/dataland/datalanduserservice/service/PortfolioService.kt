@@ -143,9 +143,9 @@ class PortfolioService
             logger.info(
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
-            if (portfolio.isMonitored) {
-                portfolioBulkDataRequestService.sendBulkDataRequest(portfolio)
-            }
+
+            portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(portfolio)
+
             return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
 
@@ -163,19 +163,23 @@ class PortfolioService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolioEntity =
+            val originalPortfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
-            val originalPortfolio = originalPortfolioEntity.toBasePortfolio()
+            val updatedPortfolioEntity =
+                portfolio.toPortfolioEntity(
+                    portfolioId,
+                    originalPortfolio.creationTimestamp,
+                    portfolio.lastUpdateTimestamp,
+                    portfolio.isMonitored,
+                    portfolio.startingMonitoringPeriod,
+                    portfolio.monitoredFrameworks,
+                )
 
-            if (portfolio.isMonitored) {
-                portfolioBulkDataRequestService.sendBulkDataRequest(originalPortfolio)
-            }
+            portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(updatedPortfolioEntity.toBasePortfolio())
 
-            return portfolioRepository
-                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolioEntity.creationTimestamp))
-                .toBasePortfolio()
+            return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
 
         /**

@@ -16,7 +16,7 @@ data class PortfolioUpload(
     @field:JsonProperty(required = false)
     val isMonitored: Boolean = false,
     @field:JsonProperty(required = false)
-    val startingMonitoringPeriod: String?,
+    val startingMonitoringPeriod: String? = null,
     @field:JsonProperty(required = false)
     val monitoredFrameworks: Set<String> = emptySet(),
 ) : Portfolio
