@@ -180,9 +180,11 @@ function prefillModal(): void {
       selectedStartingYear.value = Number(portfolio.value.startingMonitoringPeriod);
     }
 
+    const monitoredFrameworks = portfolio.value.monitoredFrameworks as Set<string>;
+
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
-      isActive: Array.from(portfolio.value!.monitoredFrameworks!).includes(option.value) ?? false,
+      isActive: monitoredFrameworks?.has(option.value) ?? false,
     }));
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
