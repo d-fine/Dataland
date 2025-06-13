@@ -1,0 +1,59 @@
+{
+  "id": "extendedNuclearAndGasAlignedNumeratorComponent",
+  "name": "Aligned numerator data point with an extended source",
+  "businessDefinition": "Proportion of Taxonomy-aligned Economic Activity in the Numerator of the applicable KPI.",
+  "validatedBy": "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedNumerator>",
+  "example": {
+    "value": {
+      "taxonomyAlignedShareNumeratorNAndG426": {
+        "mitigationAndAdaptation": 5,
+        "mitigation": 6,
+        "adaptation": 4
+      },
+      "taxonomyAlignedShareNumeratorNAndG427": {
+        "mitigationAndAdaptation": 30,
+        "mitigation": 8,
+        "adaptation": 8
+      },
+      "taxonomyAlignedShareNumeratorNAndG428": {
+        "mitigationAndAdaptation": 25,
+        "mitigation": null,
+        "adaptation": null
+      },
+      "taxonomyAlignedShareNumeratorNAndG429": {
+        "mitigationAndAdaptation": null,
+        "mitigation": null,
+        "adaptation": null
+      },
+      "taxonomyAlignedShareNumeratorNAndG430": {
+        "mitigationAndAdaptation": 7.5,
+        "mitigation": 48,
+        "adaptation": 20
+      },
+      "taxonomyAlignedShareNumeratorNAndG431": {
+        "mitigationAndAdaptation": 5,
+        "mitigation": 10,
+        "adaptation": 24
+      },
+      "taxonomyAlignedShareNumeratorOtherActivities": {
+        "mitigationAndAdaptation": 27.5,
+        "mitigation": 28,
+        "adaptation": 44
+      },
+      "taxonomyAlignedShareNumerator": {
+        "mitigationAndAdaptation": 100,
+        "mitigation": 100,
+        "adaptation": 100
+      }
+    },
+    "quality": "Reported",
+    "comment": "",
+    "dataSource": {
+      "page": "125",
+      "tagName": null,
+      "fileName": "CompanyXYZ_Nuclear_And_Gas_Report_2024",
+      "fileReference": "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
+      "publicationDate": "2025-03-02"
+    }
+  }
+}
