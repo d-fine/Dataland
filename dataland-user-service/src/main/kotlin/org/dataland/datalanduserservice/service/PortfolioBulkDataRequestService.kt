@@ -64,7 +64,7 @@ class PortfolioBulkDataRequestService
 
         private fun getNonFinancialsCompanyIds(portfolio: EnrichedPortfolio): Set<String> =
             portfolio.entries
-                .filter { it.sector !== null && it.sector !== "financials" }
+                .filter { it.sector != null && it.sector != "financials" }
                 .map { it.companyId }
                 .toSet()
 
@@ -86,7 +86,7 @@ class PortfolioBulkDataRequestService
         ) {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
+                    companyIdentifiers = getFinancialsCompanyIds(enrichedPortfolio),
                     dataTypes =
                         setOf(
                             BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
@@ -104,7 +104,7 @@ class PortfolioBulkDataRequestService
         ) {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
+                    companyIdentifiers = getNonFinancialsCompanyIds(enrichedPortfolio),
                     dataTypes =
                         setOf(
                             BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
@@ -122,7 +122,7 @@ class PortfolioBulkDataRequestService
         ) {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
+                    companyIdentifiers = getUndefinedCompanyIds(enrichedPortfolio),
                     dataTypes =
                         setOf(
                             BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
