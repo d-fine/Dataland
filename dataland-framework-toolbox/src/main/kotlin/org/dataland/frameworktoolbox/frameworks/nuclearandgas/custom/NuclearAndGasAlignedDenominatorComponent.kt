@@ -8,9 +8,11 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadCo
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -29,36 +31,18 @@ class NuclearAndGasAlignedDenominatorComponent(
         "org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedDenominator"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            TypeReference(
-                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
-                isNullable,
-                listOf(
-                    TypeReference(
-                        fullyQualifiedNameOfKotlinType,
-                        false,
-                    ),
-                ),
-            ),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
         )
     }
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addQaPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            TypeReference(
-                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
-                isNullable,
-                listOf(
-                    TypeReference(
-                        "org.dataland.datalandbackend.openApiClient.model." +
-                            "ExtendedDataPointNuclearAndGasAlignedDenominator",
-                        isNullable,
-                    ),
-                ),
-            ),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
         )
     }
 
@@ -101,6 +85,10 @@ class NuclearAndGasAlignedDenominatorComponent(
     }
 
     override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
-        super.generateDefaultSpecification(specificationCategoryBuilder)
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "NuclearAndGasAlignedDenominatorComponent",
+        )
     }
 }
