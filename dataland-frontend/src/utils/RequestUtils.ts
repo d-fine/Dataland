@@ -1,9 +1,5 @@
 import type Keycloak from 'keycloak-js';
-import {
-  type AccessStatus,
-  RequestStatus,
-  type RequestPriority,
-} from '@clients/communitymanager';
+import { type AccessStatus, RequestStatus, type RequestPriority } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
 
 /**
