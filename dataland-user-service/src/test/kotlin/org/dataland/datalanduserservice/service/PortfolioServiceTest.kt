@@ -270,7 +270,7 @@ class PortfolioServiceTest {
         userId = userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = mutableSetOf(dummyCompanyId),
+        companyIds = setOf(dummyCompanyId),
         isMonitored = false,
         startingMonitoringPeriod = null,
         monitoredFrameworks = emptySet(),

@@ -38,17 +38,18 @@ class PortfolioMonitoringServiceTest {
             userId = dummyUserId,
             creationTimestamp = Instant.now().toEpochMilli(),
             lastUpdateTimestamp = Instant.now().toEpochMilli(),
-            companyIds = mutableSetOf("companyId"),
+            companyIds = setOf("companyId"),
             isMonitored = false,
             startingMonitoringPeriod = "2023",
-            monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
+            monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
         )
 
     @BeforeEach
     fun setup() {
         resetSecurityContext()
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any())
-        portfolioMonitoringService = PortfolioMonitoringService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
+        portfolioMonitoringService =
+            PortfolioMonitoringService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
     }
 
     private fun resetSecurityContext() {
@@ -68,7 +69,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 startingMonitoringPeriod = "2022",
-                monitoredFrameworks = mutableSetOf("sfdr"),
+                monitoredFrameworks = setOf("sfdr"),
             )
 
         doReturn(null)
@@ -76,7 +77,11 @@ class PortfolioMonitoringServiceTest {
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolioId))
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioMonitoringService.patchMonitoring(dummyPortfolioId, BasePortfolio(portfolioMonitoringPatch), dummyCorrelationId)
+            portfolioMonitoringService.patchMonitoring(
+                dummyPortfolioId,
+                BasePortfolio(portfolioMonitoringPatch),
+                dummyCorrelationId,
+            )
         }
     }
 
@@ -88,7 +93,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 startingMonitoringPeriod = "2021",
-                monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
+                monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
             )
 
         doReturn(originalPortfolio.toPortfolioEntity())
@@ -101,9 +106,6 @@ class PortfolioMonitoringServiceTest {
                 BasePortfolio(portfolioMonitoringPatch),
                 dummyCorrelationId,
             )
-
-        println(BasePortfolio(portfolioMonitoringPatch).isMonitored)
-        println(updatedPortfolio.isMonitored)
 
         assertEquals(originalPortfolio.portfolioName, updatedPortfolio.portfolioName)
         assertEquals(originalPortfolio.userId, updatedPortfolio.userId)

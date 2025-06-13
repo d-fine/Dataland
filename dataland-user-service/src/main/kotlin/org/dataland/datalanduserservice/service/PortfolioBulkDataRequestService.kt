@@ -1,11 +1,11 @@
 package org.dataland.datalanduserservice.service
+
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.Year
 
 /**
  * Service to create Bulk Data Requests upon Portfolio or Monitoring changes.
@@ -32,36 +32,26 @@ class PortfolioBulkDataRequestService
                 }
 
                 if ("sfdr" in portfolio.monitoredFrameworks) {
-                    requestControllerApi.postBulkDataRequest(
-                        BulkDataRequest(
-                            companyIdentifiers = getAllCompanyIds(enrichedPortfolio),
-                            dataTypes =
-                                setOf(BulkDataRequest.DataTypes.sfdr),
-                            reportingPeriods = monitoringPeriods,
-                            notifyMeImmediately = false,
-                        ),
-                    )
+                    sendSfdrBulkDataRequest(enrichedPortfolio, monitoringPeriods)
                 }
             }
         }
 
-        private fun getFinancialsCompanyIds(portfolio: EnrichedPortfolio): Set<String> =
+        private fun getCompanyIdsBySector(
+            portfolio: EnrichedPortfolio,
+            filterFunction: (String?) -> Boolean,
+        ): Set<String> =
             portfolio.entries
-                .filter { it.sector == "financials" }
+                .filter { filterFunction(it.sector) }
                 .map { it.companyId }
                 .toSet()
 
-        private fun getUndefinedCompanyIds(portfolio: EnrichedPortfolio): Set<String> =
-            portfolio.entries
-                .filter { it.sector == null }
-                .map { it.companyId }
-                .toSet()
+        private fun getFinancialsCompanyIds(portfolio: EnrichedPortfolio) = getCompanyIdsBySector(portfolio) { it == "financials" }
 
-        private fun getNonFinancialsCompanyIds(portfolio: EnrichedPortfolio): Set<String> =
-            portfolio.entries
-                .filter { it.sector != null && it.sector != "financials" }
-                .map { it.companyId }
-                .toSet()
+        private fun getUndefinedCompanyIds(portfolio: EnrichedPortfolio) = getCompanyIdsBySector(portfolio) { it == null }
+
+        private fun getNonFinancialsCompanyIds(portfolio: EnrichedPortfolio) =
+            getCompanyIdsBySector(portfolio) { it != null && it != "financials" }
 
         private fun getAllCompanyIds(portfolio: EnrichedPortfolio): Set<String> = portfolio.entries.map { it.companyId }.toSet()
 
@@ -69,64 +59,68 @@ class PortfolioBulkDataRequestService
             val startingMonitoringPeriodInt =
                 startingMonitoringPeriod?.toIntOrNull()
                     ?: throw IllegalArgumentException("Invalid start year: '$startingMonitoringPeriod' is not a valid number")
-            val currentYear = Year.now().value
-            return (startingMonitoringPeriodInt until currentYear)
+            return (startingMonitoringPeriodInt until 2025)
                 .map { it.toString() }
                 .toSet()
+        }
+
+        private fun sendBulkDataRequest(
+            enrichedPortfolio: EnrichedPortfolio,
+            monitoringPeriods: Set<String>,
+            selector: (EnrichedPortfolio) -> Set<String>,
+            types: Set<BulkDataRequest.DataTypes>,
+        ) {
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    companyIdentifiers = selector(enrichedPortfolio),
+                    dataTypes = types,
+                    reportingPeriods = monitoringPeriods,
+                    notifyMeImmediately = false,
+                ),
+            )
         }
 
         private fun sendFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) {
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    companyIdentifiers = getFinancialsCompanyIds(enrichedPortfolio),
-                    dataTypes =
-                        setOf(
-                            BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                            BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-                        ),
-                    reportingPeriods = monitoringPeriods,
-                    notifyMeImmediately = false,
-                ),
-            )
-        }
+        ) = sendBulkDataRequest(
+            enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
+            setOf(
+                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+            ),
+        )
 
         private fun sendNonFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) {
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    companyIdentifiers = getNonFinancialsCompanyIds(enrichedPortfolio),
-                    dataTypes =
-                        setOf(
-                            BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                            BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-                        ),
-                    reportingPeriods = monitoringPeriods,
-                    notifyMeImmediately = false,
-                ),
-            )
-        }
+        ) = sendBulkDataRequest(
+            enrichedPortfolio, monitoringPeriods, ::getNonFinancialsCompanyIds,
+            setOf(
+                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+            ),
+        )
 
         private fun sendUndefinedBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) {
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    companyIdentifiers = getUndefinedCompanyIds(enrichedPortfolio),
-                    dataTypes =
-                        setOf(
-                            BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                            BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                            BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-                        ),
-                    reportingPeriods = monitoringPeriods,
-                    notifyMeImmediately = false,
-                ),
-            )
-        }
+        ) = sendBulkDataRequest(
+            enrichedPortfolio, monitoringPeriods, ::getUndefinedCompanyIds,
+            setOf(
+                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+            ),
+        )
+
+        private fun sendSfdrBulkDataRequest(
+            enrichedPortfolio: EnrichedPortfolio,
+            monitoringPeriods: Set<String>,
+        ) = sendBulkDataRequest(
+            enrichedPortfolio, monitoringPeriods, ::getAllCompanyIds,
+            setOf(
+                BulkDataRequest.DataTypes.sfdr,
+            ),
+        )
     }

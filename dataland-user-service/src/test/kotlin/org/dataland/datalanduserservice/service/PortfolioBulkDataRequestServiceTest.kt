@@ -1,10 +1,10 @@
+package org.dataland.datalanduserservice.service
+
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
-import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
-import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -118,7 +118,13 @@ class PortfolioBulkDataRequestServiceTest {
                         startingMonitoringPeriod = "2021",
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                     ),
-                    4, null, false,
+                    4,
+                    setOf(
+                        BulkDataRequest.DataTypes.sfdr, BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                        BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                        BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                    ),
+                    false,
                 ),
             )
     }

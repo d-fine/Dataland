@@ -89,13 +89,17 @@ class PortfolioEnrichmentService
         ): List<EnrichedPortfolioEntry> {
             val companyValidationResults = companyDataControllerApi.postCompanyValidation(companyIdList)
             val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
-                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(companyIdList, frameworkList)
+                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
+                    companyIdList,
+                    frameworkList,
+                )
             val enrichedEntries = mutableListOf<EnrichedPortfolioEntry>()
 
             companyValidationResults.forEach { validationResult ->
                 val companyInformation = validationResult.companyInformation ?: return@forEach
                 val mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
-                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId] ?: mapOf()
+                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId]
+                        ?: mapOf()
                 enrichedEntries.add(
                     getEnrichedEntry(
                         companyInformation,
