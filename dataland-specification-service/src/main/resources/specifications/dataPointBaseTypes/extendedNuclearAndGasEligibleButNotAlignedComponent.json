@@ -5,42 +5,42 @@
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasEligibleButNotAligned>",
   "example" : {
     "value" : {
-      "taxonomyAlignedShareDenominatorNAndG426" : {
+      "taxonomyEligibleButNotAlignedShareNAndG426" : {
         "mitigationAndAdaptation" : 1.2,
         "mitigation" : 1.3,
         "adaptation" : 1.1
       },
-      "taxonomyAlignedShareDenominatorNAndG427" : {
+      "taxonomyEligibleButNotAlignedShareNAndG427" : {
         "mitigationAndAdaptation" : 2.2,
         "mitigation" : 1.4,
         "adaptation" : 1.2
       },
-      "taxonomyAlignedShareDenominatorNAndG428" : {
+      "taxonomyEligibleButNotAlignedShareNAndG428" : {
         "mitigationAndAdaptation" : 2,
         "mitigation" : 1,
         "adaptation" : 1
       },
-      "taxonomyAlignedShareDenominatorNAndG429" : {
+      "taxonomyEligibleButNotAlignedShareNAndG429" : {
         "mitigationAndAdaptation" : null,
         "mitigation" : null,
         "adaptation" : null
       },
-      "taxonomyAlignedShareDenominatorNAndG430" : {
+      "taxonomyEligibleButNotAlignedShareNAndG430" : {
         "mitigationAndAdaptation" : 1.3,
         "mitigation" : 3.4,
         "adaptation" : 1.5
       },
-      "taxonomyAlignedShareDenominatorNAndG431" : {
+      "taxonomyEligibleButNotAlignedShareNAndG431" : {
         "mitigationAndAdaptation" : 1.2,
         "mitigation" : 1.5,
         "adaptation" : 1.6
       },
-      "taxonomyAlignedShareDenominatorOtherActivities" : {
+      "taxonomyEligibleButNotAlignedShareOtherActivities" : {
         "mitigationAndAdaptation" : 2.2,
         "mitigation" : 2.1,
         "adaptation" : 2
       },
-      "taxonomyAlignedShareDenominator" : {
+      "taxonomyEligibleButNotAlignedShare" : {
         "mitigationAndAdaptation" : 10.1,
         "mitigation" : 10.7,
         "adaptation" : 8.4
