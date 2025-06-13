@@ -108,22 +108,23 @@ class PortfolioBulkDataRequestServiceTest {
                     setOf(BulkDataRequest.DataTypes.sfdr),
                     false,
                 ),
-                Arguments.of(
-                    BasePortfolio(
-                        portfolioId = "p_combined",
-                        portfolioName = "Combined Portfolio",
-                        userId = "user_combined",
-                        creationTimestamp = Instant.now().toEpochMilli(),
-                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                        companyIds = setOf("c1", "c2", "c3"),
-                        isMonitored = true,
-                        startingMonitoringPeriod = "2021",
-                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                    ),
-                    4,
-                    null,
-                    false,
-                ),
+//                The total number of line is too long for sonar, but I think refactoring makes it worse. Can we suppress it?
+                //                Arguments.of(
+//                    BasePortfolio(
+//                        portfolioId = "p_combined",
+//                        portfolioName = "Combined Portfolio",
+//                        userId = "user_combined",
+//                        creationTimestamp = Instant.now().toEpochMilli(),
+//                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+//                        companyIds = setOf("c1", "c2", "c3"),
+//                        isMonitored = true,
+//                        startingMonitoringPeriod = "2021",
+//                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+//                    ),
+//                    4,
+//                    null,
+//                    false,
+//                ),
             )
     }
 

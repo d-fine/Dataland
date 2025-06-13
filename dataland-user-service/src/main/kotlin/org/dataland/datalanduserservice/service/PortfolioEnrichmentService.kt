@@ -114,32 +114,6 @@ class PortfolioEnrichmentService
             return enrichedEntries
         }
 
-//        !!CAUSES CIRCULAR DEPENDENCY OF SERVICES!!
-//        /**
-//         * Retrieve an enriched portfolio for a given portfolio ID
-//         * @param portfolioId the portfolio identifier
-//         */
-//        @Transactional(readOnly = true)
-//        fun getEnrichedPortfolio(portfolioId: String): EnrichedPortfolio {
-//            val userId = DatalandAuthentication.fromContext().userId
-//            logger.info("Retrieve enriched portfolio with portfolioId: $portfolioId for user with userId: $userId.")
-//
-//            val portfolio = portfolioService.getPortfolio(portfolioId)
-//            return EnrichedPortfolio(
-//                portfolioId = portfolioId,
-//                portfolioName = portfolio.portfolioName,
-//                userId = portfolio.userId,
-//                entries =
-//                    getEnrichedEntries(
-//                        portfolio.companyIds.toList(),
-//                        majorFrameworks,
-//                    ),
-//                isMonitored = portfolio.isMonitored,
-//                startingMonitoringPeriod = portfolio.startingMonitoringPeriod,
-//                monitoredFrameworks = portfolio.monitoredFrameworks,
-//            )
-//        }
-
         /**
          * Retrieve an enriched portfolio for a given portfolio.
          */
