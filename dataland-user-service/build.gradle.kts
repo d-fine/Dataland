@@ -52,6 +52,7 @@ dependencies {
     runtimeOnly(libs.h2)
     runtimeOnly(libs.postgresql)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     testImplementation(Spring.boot.test)
     testImplementation(Spring.security.spring_security_test)
     kapt(Spring.boot.configurationProcessor)

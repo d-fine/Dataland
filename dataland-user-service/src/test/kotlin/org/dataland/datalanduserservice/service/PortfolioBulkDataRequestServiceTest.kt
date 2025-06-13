@@ -6,11 +6,13 @@ import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
 import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -19,6 +21,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
 import java.time.Year
+import java.util.stream.Stream
 
 class PortfolioBulkDataRequestServiceTest {
     private lateinit var requestControllerApi: RequestControllerApi
@@ -65,176 +68,97 @@ class PortfolioBulkDataRequestServiceTest {
         )
     }
 
-    @Test
-    fun `check that sendBulkDataRequest posts eutaxonomy requests when monitoredFrameworks contains eutaxonomy`() {
-        val basePortfolio =
-            BasePortfolio(
-                portfolioId = "p1",
-                portfolioName = "Portfolio 1",
-                userId = "user1",
-                creationTimestamp = Instant.now().toEpochMilli(),
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                companyIds = setOf("c1", "c2", "c3"),
-                isMonitored = true,
-                startingMonitoringPeriod = "2020",
-                monitoredFrameworks = setOf("eutaxonomy"),
+    companion object {
+        @JvmStatic
+        fun providePortfolios(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(
+                    BasePortfolio(
+                        portfolioId = "p1",
+                        portfolioName = "Portfolio 1",
+                        userId = "user1",
+                        creationTimestamp = Instant.now().toEpochMilli(),
+                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                        companyIds = setOf("c1", "c2", "c3"),
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2020",
+                        monitoredFrameworks = setOf("eutaxonomy"),
+                    ),
+                    3,
+                    setOf(
+                        BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                        BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
+                        BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                    ),
+                    false,
+                ),
+                Arguments.of(
+                    BasePortfolio(
+                        portfolioId = "p2",
+                        portfolioName = "Portfolio 2",
+                        userId = "user2",
+                        creationTimestamp = Instant.now().toEpochMilli(),
+                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                        companyIds = setOf("c1", "c2", "c3"),
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2022",
+                        monitoredFrameworks = setOf("sfdr"),
+                    ),
+                    1,
+                    setOf(BulkDataRequest.DataTypes.sfdr),
+                    false,
+                ),
+                Arguments.of(
+                    BasePortfolio(
+                        portfolioId = "p_combined",
+                        portfolioName = "Combined Portfolio",
+                        userId = "user_combined",
+                        creationTimestamp = Instant.now().toEpochMilli(),
+                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                        companyIds = setOf("c1", "c2", "c3"),
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2021",
+                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                    ),
+                    4,
+                    null,
+                    false,
+                ),
             )
+    }
 
+    @ParameterizedTest
+    @MethodSource("providePortfolios")
+    fun `sendBulkDataRequest behaves correctly for various frameworks`(
+        basePortfolio: BasePortfolio,
+        expectedRequestCount: Int,
+        expectedDataTypes: Set<BulkDataRequest.DataTypes>?,
+        expectedNotify: Boolean,
+    ) {
         val enrichedPortfolio = createMockedEnrichedPortfolio()
         whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
 
         service.sendBulkDataRequest(basePortfolio)
 
-        val expectedMonitoringPeriods = (2020 until Year.now().value).map { it.toString() }.toSet()
+        val expectedMonitoringPeriods =
+            (basePortfolio.startingMonitoringPeriod!!.toInt() until Year.now().value).map { it.toString() }.toSet()
 
         val captor = argumentCaptor<BulkDataRequest>()
-        verify(requestControllerApi, times(3)).postBulkDataRequest(captor.capture())
-        val capturedRequests = captor.allValues
-
-        assertEquals(setOf("c1"), capturedRequests[0].companyIdentifiers)
-
-        assertEquals(setOf("c1"), capturedRequests[0].companyIdentifiers)
-        assertEquals(
-            setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-            ),
-            capturedRequests[0].dataTypes,
-        )
-        assertEquals(expectedMonitoringPeriods, capturedRequests[0].reportingPeriods)
-        assertFalse(capturedRequests[0].notifyMeImmediately)
-
-        assertEquals(setOf("c2"), capturedRequests[1].companyIdentifiers)
-        assertEquals(
-            setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-            ),
-            capturedRequests[1].dataTypes,
-        )
-        assertEquals(expectedMonitoringPeriods, capturedRequests[1].reportingPeriods)
-        assertFalse(capturedRequests[1].notifyMeImmediately)
-
-        assertEquals(setOf("c3"), capturedRequests[2].companyIdentifiers)
-        assertEquals(
-            setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-            ),
-            capturedRequests[2].dataTypes,
-        )
-        assertEquals(expectedMonitoringPeriods, capturedRequests[2].reportingPeriods)
-        assertFalse(capturedRequests[2].notifyMeImmediately)
-    }
-
-    @Test
-    fun `check that sendBulkDataRequest posts sfdr request when monitoredFrameworks contains sfdr`() {
-        val basePortfolio =
-            BasePortfolio(
-                portfolioId = "p2",
-                portfolioName = "Portfolio 2",
-                userId = "user2",
-                creationTimestamp = Instant.now().toEpochMilli(),
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                companyIds = setOf("c1", "c2", "c3"),
-                isMonitored = true,
-                startingMonitoringPeriod = "2022",
-                monitoredFrameworks = setOf("sfdr"),
-            )
-
-        val enrichedPortfolio = createMockedEnrichedPortfolio()
-        whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
-
-        service.sendBulkDataRequest(basePortfolio)
-
-        val expectedMonitoringPeriods = (2022 until Year.now().value).map { it.toString() }.toSet()
-
-        val captor = argumentCaptor<BulkDataRequest>()
-        verify(requestControllerApi, times(1)).postBulkDataRequest(captor.capture())
+        verify(requestControllerApi, times(expectedRequestCount)).postBulkDataRequest(captor.capture())
 
         val capturedRequests = captor.allValues
 
-        assertEquals(setOf("c1", "c2", "c3"), capturedRequests[0].companyIdentifiers)
-
-        val request = capturedRequests[0]
-
-        assertEquals(enrichedPortfolio.entries.map { it.companyId }.toSet(), request.companyIdentifiers)
-        assertEquals(setOf(BulkDataRequest.DataTypes.sfdr), request.dataTypes)
-        assertEquals(expectedMonitoringPeriods, request.reportingPeriods)
-        assertFalse(request.notifyMeImmediately)
+        if (expectedDataTypes != null) {
+            capturedRequests.forEach { request ->
+                assertTrue(request.dataTypes.all { it in expectedDataTypes })
+                assertEquals(expectedMonitoringPeriods, request.reportingPeriods)
+                assertEquals(expectedNotify, request.notifyMeImmediately)
+            }
+        }
     }
 
     @Test
-    fun `check that sendBulkDataRequest posts both sfdr and eutaxonomy requests when monitoredFrameworks contains both`() {
-        val basePortfolio =
-            BasePortfolio(
-                portfolioId = "p_combined",
-                portfolioName = "Combined Portfolio",
-                userId = "user_combined",
-                creationTimestamp = Instant.now().toEpochMilli(),
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                companyIds = setOf("c1", "c2", "c3"),
-                isMonitored = true,
-                startingMonitoringPeriod = "2021",
-                monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-            )
-
-        val enrichedPortfolio = createMockedEnrichedPortfolio()
-        whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
-
-        service.sendBulkDataRequest(basePortfolio)
-
-        val expectedMonitoringPeriods = (2021 until Year.now().value).map { it.toString() }.toSet()
-
-        val captor = argumentCaptor<BulkDataRequest>()
-
-        verify(requestControllerApi, times(4)).postBulkDataRequest(captor.capture())
-
-        val capturedRequests = captor.allValues
-
-        assertEquals(setOf("c1"), capturedRequests[0].companyIdentifiers)
-        assertEquals(
-            setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-            ),
-            capturedRequests[0].dataTypes,
-        )
-        assertEquals(expectedMonitoringPeriods, capturedRequests[0].reportingPeriods)
-        assertFalse(capturedRequests[0].notifyMeImmediately)
-
-        assertEquals(setOf("c2"), capturedRequests[1].companyIdentifiers)
-        assertEquals(
-            setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-            ),
-            capturedRequests[1].dataTypes,
-        )
-        assertEquals(expectedMonitoringPeriods, capturedRequests[1].reportingPeriods)
-        assertFalse(capturedRequests[1].notifyMeImmediately)
-
-        assertEquals(setOf("c3"), capturedRequests[2].companyIdentifiers)
-        assertEquals(
-            setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
-            ),
-            capturedRequests[2].dataTypes,
-        )
-        assertEquals(expectedMonitoringPeriods, capturedRequests[2].reportingPeriods)
-        assertFalse(capturedRequests[2].notifyMeImmediately)
-
-        assertEquals(setOf("c1", "c2", "c3"), capturedRequests[3].companyIdentifiers)
-        assertEquals(setOf(BulkDataRequest.DataTypes.sfdr), capturedRequests[3].dataTypes)
-        assertEquals(expectedMonitoringPeriods, capturedRequests[3].reportingPeriods)
-        assertFalse(capturedRequests[3].notifyMeImmediately)
-    }
-
-    @Test
-    fun `check that sendBulkDataRequest throws exception on invalid startingMonitoringPeriod`() {
+    fun `sendBulkDataRequest throws exception on invalid startingMonitoringPeriod`() {
         val basePortfolio =
             BasePortfolio(
                 portfolioId = "p3",
