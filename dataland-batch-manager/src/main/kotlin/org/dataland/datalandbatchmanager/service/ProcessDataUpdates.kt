@@ -39,6 +39,8 @@ class ProcessDataUpdates
         private val allNorthDataCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
         private val allGleifCompaniesIngestFlagFilePath: String?,
+        @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies-for-manual-update.flag-file:#{null}}")
+        private var allGleifCompaniesIngestManualUpdateFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
         private val allNorthDataCompaniesIngestFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
@@ -110,6 +112,7 @@ class ProcessDataUpdates
             if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
                 logger.info("Found flag file or force ingest flag for NorthData.")
                 logFlagFileFoundAndDelete(flagFileNorthData)
+
                 waitForBackend()
                 logger.info("Retrieving all company data available via NorthData.")
                 northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
@@ -119,13 +122,24 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 3 * * SUN")
+        @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
-            logger.info("Running scheduled update of GLEIF data.")
-            waitForBackend()
-            gleifGoldenCopyIngestor.prepareGleifDeltaFile()
-            gleifGoldenCopyIngestor.processIsinMappingFile()
-            gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
+            val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
+            if (flagFileGleif?.exists() == true) {
+                flagFileGleif.delete()
+                allGleifCompaniesIngestManualUpdateFlagFilePath = null // this will be reemoved for the final version
+                logger.info("Running scheduled update of GLEIF data.")
+
+                waitForBackend()
+                gleifGoldenCopyIngestor.prepareGleifDeltaFile(true)
+                gleifGoldenCopyIngestor.processIsinMappingFile(true)
+                gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
+                // flagFileGleif.delete() ***this will be added after the scheduled is set to the real time
+            } else {
+                logger.info("Gleif flag path is set but file not found")
+                logger.info("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestManualUpdateFlagFilePath")
+                logger.info("flagFileGleif: $flagFileGleif")
+            }
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
