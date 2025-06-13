@@ -1,0 +1,8 @@
+{
+  "id" : "extendedNuclearAndGasNonEligibleComponentNuclearAndGasTaxonomyNonEligibleRevenue",
+  "name" : "Nuclear and Gas Taxonomy-non-eligible Revenue",
+  "businessDefinition" : "Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - Revenue-based",
+  "dataPointBaseTypeId" : "extendedNuclearAndGasNonEligibleComponent",
+  "frameworkOwnership" : [ "nuclear-and-gas" ],
+  "constraints" : null
+}
