@@ -120,7 +120,7 @@ class ProcessDataUpdatesTest {
                 mockRequestPriorityUpdater,
                 mockCommunityActuatorApi,
                 false, false,
-                null, null, oldFile,
+                null, null, null, oldFile,
             )
         processDataUpdates.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
@@ -159,6 +159,7 @@ class ProcessDataUpdatesTest {
 
     private fun mockFileIngestion(isinMappingFile: File): Pair<BufferedReader, MockedStatic<File>> {
         val flagFileGleif = File.createTempFile("test", ".csv")
+        val flagFileGleifUpdate = File.createTempFile("test1", ".csv")
         val flagFileNorthdata = File.createTempFile("test2", ".csv")
         val bufferedReader = BufferedReader(BufferedReader.nullReader())
 
@@ -177,7 +178,7 @@ class ProcessDataUpdatesTest {
                 companyIngestorNorthData, mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockCommunityActuatorApi, false, false,
-                flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
+                flagFileGleif.absolutePath, flagFileGleifUpdate.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
             )
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
@@ -199,7 +200,7 @@ class ProcessDataUpdatesTest {
                 mockRequestPriorityUpdater,
                 communityActuatorApi,
                 false, false,
-                null, null, oldFile,
+                null, null, null, oldFile,
             )
 
         processDataUpdates.waitForCommunityManager()
