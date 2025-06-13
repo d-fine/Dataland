@@ -58,7 +58,7 @@ class NuclearAndGasAlignedDenominatorComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatNuclearAndGasTaxonomyShareDataForTable(" +
-                    "${getTypescriptFieldAccessor(true)}, \"${
+                    "${getTypescriptFieldAccessor()}, \"${
                         StringEscapeUtils.escapeEcmaScript(
                             label,
                         )

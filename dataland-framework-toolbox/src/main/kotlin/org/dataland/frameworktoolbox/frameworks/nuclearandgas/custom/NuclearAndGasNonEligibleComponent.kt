@@ -58,7 +58,7 @@ class NuclearAndGasNonEligibleComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatNuclearAndGasTaxonomyShareDataForTable(" +
-                    "${getTypescriptFieldAccessor(true)}, \"${
+                    "${getTypescriptFieldAccessor()}, \"${
                         StringEscapeUtils.escapeEcmaScript(
                             label,
                         )
