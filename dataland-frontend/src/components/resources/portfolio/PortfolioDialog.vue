@@ -186,7 +186,7 @@ async function savePortfolio(): Promise<void> {
       companyIds: new Set(portfolioCompanies.value.map((company) => company.companyId)),
       isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
       startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
-      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks,
+      monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks ?? new Set<string>(),
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
