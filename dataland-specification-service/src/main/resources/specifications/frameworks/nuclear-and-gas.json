@@ -1,0 +1,34 @@
+{
+  "id" : "nuclear-and-gas",
+  "name" : "EU Taxonomy Nuclear and Gas",
+  "businessDefinition" : "EU Taxonomy Nuclear and Gas Framework according to the Commission Delegated Regulation (EU) 2021/2178, Annex XII ",
+  "referencedReportJsonPath" : "general.general.referencedReports",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "nuclearEnergyRelatedActivitiesSection426" : "extendedEnumYesNoNuclearEnergyRelatedActivitiesSection426",
+        "nuclearEnergyRelatedActivitiesSection427" : "extendedEnumYesNoNuclearEnergyRelatedActivitiesSection427",
+        "nuclearEnergyRelatedActivitiesSection428" : "extendedEnumYesNoNuclearEnergyRelatedActivitiesSection428",
+        "fossilGasRelatedActivitiesSection429" : "extendedEnumYesNoFossilGasRelatedActivitiesSection429",
+        "fossilGasRelatedActivitiesSection430" : "extendedEnumYesNoFossilGasRelatedActivitiesSection430",
+        "fossilGasRelatedActivitiesSection431" : "extendedEnumYesNoFossilGasRelatedActivitiesSection431"
+      },
+      "taxonomyAlignedDenominator" : {
+        "nuclearAndGasTaxonomyAlignedRevenueDenominator" : "extendedNuclearAndGasAlignedDenominatorComponentNuclearAndGasTaxonomyAlignedRevenueDenominator",
+        "nuclearAndGasTaxonomyAlignedCapexDenominator" : "extendedNuclearAndGasAlignedDenominatorComponentNuclearAndGasTaxonomyAlignedCapexDenominator"
+      },
+      "taxonomyAlignedNumerator" : {
+        "nuclearAndGasTaxonomyAlignedRevenueNumerator" : "extendedNuclearAndGasAlignedNumeratorComponentNuclearAndGasTaxonomyAlignedRevenueNumerator",
+        "nuclearAndGasTaxonomyAlignedCapexNumerator" : "extendedNuclearAndGasAlignedNumeratorComponentNuclearAndGasTaxonomyAlignedCapexNumerator"
+      },
+      "taxonomyEligibleButNotAligned" : {
+        "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue" : "extendedNuclearAndGasEligibleButNotAlignedComponentNuclearAndGasTaxonomyEligibleButNotAlignedRevenue",
+        "nuclearAndGasTaxonomyEligibleButNotAlignedCapex" : "extendedNuclearAndGasEligibleButNotAlignedComponentNuclearAndGasTaxonomyEligibleButNotAlignedCapex"
+      },
+      "taxonomyNonEligible" : {
+        "nuclearAndGasTaxonomyNonEligibleRevenue" : "extendedNuclearAndGasNonEligibleComponentNuclearAndGasTaxonomyNonEligibleRevenue",
+        "nuclearAndGasTaxonomyNonEligibleCapex" : "extendedNuclearAndGasNonEligibleComponentNuclearAndGasTaxonomyNonEligibleCapex"
+      }
+    }
+  }
+}
