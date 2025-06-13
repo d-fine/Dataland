@@ -137,40 +137,19 @@ describeIf(
       cy.ensureLoggedIn(reader_name, reader_pw);
     });
 
-    it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
+    it('Download data as CSV file, check for appropriate size and delete it afterwards', () => {
+      const frameworkLabel = getFrameworkLabel();
+      visitPageAndClickDownloadButton(ExportFileType.Csv.toString());
+      verifyDownloadedFile(`data-export-${frameworkLabel}`, ExportFileTypeInformation.CSV.fileExtension);
+    });
+
+    it('Download data as EXCEL file, check for appropriate size and delete it afterwards', () => {
       const frameworkLabel = getFrameworkLabel();
       visitPageAndClickDownloadButton(ExportFileType.Excel.toString());
       verifyDownloadedFile(`data-export-${frameworkLabel}`, ExportFileTypeInformation.EXCEL.fileExtension);
     });
 
-    it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
-      const exportFileType = ExportFileType.Excel;
-      const fileTypeInformation = ExportFileTypeInformation.EXCEL;
-
-      const availableFrameworks = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.map((framework) => ({
-        value: framework,
-        label: humanizeStringOrNumber(framework),
-      }));
-      const frameworkLabel = availableFrameworks.find((framework) => framework.value === dataType)?.label ?? dataType;
-
-      visitPageAndClickDownloadButton(exportFileType.toString());
-
-      const partialFileNamePrefix = `data-export-${frameworkLabel}`;
-      const fileExtension = fileTypeInformation.fileExtension;
-
-      cy.task('findFileByPrefix', {
-        folder: Cypress.config('downloadsFolder'),
-        prefix: partialFileNamePrefix,
-        extension: fileExtension,
-      }).then((filePath) => {
-        const filePathStr = filePath as string;
-        expect(filePathStr).to.exist;
-        checkThatFileExists(filePathStr);
-        checkFileSizeAndDeleteAfterwards(filePathStr);
-      });
-    });
-
-    it('Download data as json file, check for appropriate size and delete it afterwards', () => {
+    it('Download data as JSON file, check for appropriate size and delete it afterwards', () => {
       const frameworkLabel = getFrameworkLabel();
       visitPageAndClickDownloadButton(ExportFileType.Json.toString());
       verifyDownloadedFile(`data-export-${frameworkLabel}`, ExportFileTypeInformation.JSON.fileExtension);

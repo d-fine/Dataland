@@ -32,12 +32,18 @@ data class PortfolioEntity(
     @Column(name = "user_id")
     val userId: String,
     val creationTimestamp: Long,
-    var lastUpdateTimestamp: Long,
+    val lastUpdateTimestamp: Long,
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "company_ids", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "company_ids")
     @OrderBy("asc")
     val companyIds: MutableSet<String>,
+    val isMonitored: Boolean? = false,
+    val startingMonitoringPeriod: String?,
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
+    @Column(name = "frameworks")
+    val monitoredFrameworks: Set<String>?,
 ) {
     /**
      * create PortfolioResponse from entity
@@ -50,5 +56,8 @@ data class PortfolioEntity(
             creationTimestamp,
             lastUpdateTimestamp,
             companyIds,
+            isMonitored ?: false,
+            startingMonitoringPeriod,
+            monitoredFrameworks ?: emptySet(),
         )
 }

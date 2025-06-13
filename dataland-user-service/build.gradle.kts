@@ -30,6 +30,8 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
     implementation(libs.flyway.core)
     implementation(libs.jackson.kotlin)
     implementation(libs.json)
@@ -50,6 +52,7 @@ dependencies {
     runtimeOnly(libs.h2)
     runtimeOnly(libs.postgresql)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     testImplementation(Spring.boot.test)
     testImplementation(Spring.security.spring_security_test)
     kapt(Spring.boot.configurationProcessor)
@@ -94,13 +97,52 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
+    val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
+    input =
+        project
+            .file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
+            .path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/community-manager")
+            .get()
+            .toString(),
+    )
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "serializationLibrary" to "jackson",
+            "useTags" to "true",
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
+    description = "Generate all required clients"
     group = "clients"
     dependsOn("generateBackendClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
@@ -131,15 +173,11 @@ jacoco {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
 }
 
 ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }

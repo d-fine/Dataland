@@ -102,6 +102,7 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -121,7 +122,8 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
+  enrichedPortfolio.value = portfolio;
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
 });
 
 /**
@@ -182,6 +184,9 @@ async function savePortfolio(): Promise<void> {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
+      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
+      monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)

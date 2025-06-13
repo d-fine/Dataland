@@ -5,6 +5,7 @@ package org.dataland.datalanduserservice.controller
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
+import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -33,6 +34,7 @@ class PortfolioControllerTest {
     private val mockValidator = mock<Validator>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
+    private val mockPortfolioMonitoringService = mock<PortfolioMonitoringService>()
 
     private lateinit var mockAuthentication: DatalandAuthentication
     private lateinit var portfolioController: PortfolioController
@@ -42,16 +44,31 @@ class PortfolioControllerTest {
     private val dummyPortfolioId = UUID.randomUUID()
     private val dummyPortfolioName = "Test Portfolio"
     private val validCompanyId = "valid-company-id"
+    private val isMonitored = true
+    private val dummyStartingMonitoringPeriod = "2023"
+    private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
 
     private val validPortfolioUpload =
-        PortfolioUpload(dummyPortfolioName, setOf(validCompanyId))
+        PortfolioUpload(
+            dummyPortfolioName,
+            setOf(validCompanyId),
+            isMonitored,
+            dummyStartingMonitoringPeriod,
+            dummyMonitoredFrameworks,
+        )
 
     @BeforeEach
     fun setup() {
         reset(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
         this.resetSecurityContext()
         doNothing().whenever(mockValidator).validatePortfolioCreation(eq(validPortfolioUpload), any())
-        portfolioController = PortfolioController(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
+        portfolioController =
+            PortfolioController(
+                mockPortfolioService,
+                mockValidator,
+                mockPortfolioEnrichmentService,
+                mockPortfolioMonitoringService,
+            )
     }
 
     /**

@@ -13,4 +13,10 @@ data class PortfolioUpload(
     @field:JsonProperty(required = true)
     @field:NotEmpty(message = "Please provide at least one companyId.")
     override val companyIds: Set<String>,
+    @field:JsonProperty(required = false)
+    val isMonitored: Boolean = false,
+    @field:JsonProperty(required = false)
+    val startingMonitoringPeriod: String? = null,
+    @field:JsonProperty(required = false)
+    val monitoredFrameworks: Set<String> = emptySet(),
 ) : Portfolio

@@ -110,6 +110,19 @@ describe('Check the portfolio details view', function (): void {
       });
     });
   });
+
+  it('Check Monitoring Button', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'EDIT MONITORING').click();
+      });
+    });
+  });
 });
 
 /**

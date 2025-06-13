@@ -6,7 +6,9 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalanduserservice.api.PortfolioApi
+import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -51,6 +54,9 @@ class DatalandUserServiceSpringbootTest
         private val mockKeycloakUserService = mock<KeycloakUserService>()
 
         @MockitoBean
+        private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
+
+        @MockitoBean
         private val mockCompanyDataController = mock<CompanyDataControllerApi>()
 
         private val mockSecurityContext = mock<SecurityContext>()
@@ -61,17 +67,26 @@ class DatalandUserServiceSpringbootTest
         private val validCompanyId1 = "valid-company-id-1"
         private val validCompanyId2 = "valid-company-id-2"
         private val invalidCompanyId = "invalid-company-id"
+        private val isMonitored = false
+        private val dummyStartingMonitoringPeriod = "2023"
+        private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
 
         private val dummyPortfolioUpload1 =
             PortfolioUpload(
                 portfolioName = "Test Portfolio",
                 companyIds = setOf(validCompanyId1, validCompanyId2),
+                isMonitored,
+                dummyStartingMonitoringPeriod,
+                dummyMonitoredFrameworks,
             )
 
         private val dummyPortfolioUpload2 =
             PortfolioUpload(
                 portfolioName = "Second Test Portfolio",
                 companyIds = setOf(validCompanyId1),
+                isMonitored,
+                dummyStartingMonitoringPeriod,
+                dummyMonitoredFrameworks,
             )
 
         @BeforeEach
@@ -82,6 +97,7 @@ class DatalandUserServiceSpringbootTest
             doReturn(listOf("ROLE_USER")).whenever(mockKeycloakUserService).getUserRoleNames(userId)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
+            doNothing().whenever(mockPortfolioBulkDataRequestService).sendBulkDataRequestIfMonitored(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -130,6 +146,57 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(originalPortfolioResponse.creationTimestamp, portfolioResponse.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < portfolioResponse.lastUpdateTimestamp)
                 assertEquals(dummyPortfolioUpload2.companyIds, portfolioResponse.companyIds)
+            }
+
+            @Test
+            fun `test that patching monitoring of a portfolio updates monitoring fields correctly`() {
+                val originalPortfolioResponse =
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
+
+                val portfolioMonitoringPatch =
+                    PortfolioMonitoringPatch(
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2024",
+                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                    )
+                val patchedPortfolio =
+                    assertDoesNotThrow { portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch) }
+                        .body!!
+
+                assertEquals(originalPortfolioResponse.portfolioId, patchedPortfolio.portfolioId)
+                assertTrue(patchedPortfolio.isMonitored)
+                assertEquals(portfolioMonitoringPatch.startingMonitoringPeriod, patchedPortfolio.startingMonitoringPeriod)
+                assertEquals(portfolioMonitoringPatch.monitoredFrameworks, patchedPortfolio.monitoredFrameworks)
+                assertEquals(originalPortfolioResponse.creationTimestamp, patchedPortfolio.creationTimestamp)
+                assertTrue(originalPortfolioResponse.lastUpdateTimestamp < patchedPortfolio.lastUpdateTimestamp)
+            }
+
+            @Test
+            fun `test that patching monitoring triggers community manager bulk data request`() {
+                val originalPortfolioResponse =
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
+
+                val portfolioMonitoringPatch =
+                    PortfolioMonitoringPatch(
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2020",
+                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                    )
+
+                assertDoesNotThrow {
+                    portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch)
+                }
+
+                org.mockito.kotlin
+                    .verify(mockPortfolioBulkDataRequestService)
+                    .sendBulkDataRequestIfMonitored(
+                        org.mockito.kotlin.check {
+                            assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
+                            assertTrue(it.isMonitored)
+                            assertEquals("2020", it.startingMonitoringPeriod)
+                            assertEquals(setOf("sfdr", "eutaxonomy"), it.monitoredFrameworks)
+                        },
+                    )
             }
 
             @Test

@@ -24,6 +24,9 @@ class UserServiceTest {
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
             companyIds = companyIds,
+            isMonitored = false,
+            startingMonitoringPeriod = "2023",
+            monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
