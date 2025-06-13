@@ -183,7 +183,7 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      companyIds: new Set(portfolioCompanies.value.map((company) => company.companyId)),
+      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
       isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
       startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
       monitoredFrameworks: enrichedPortfolio.value?.monitoredFrameworks ?? new Set<string>(),
