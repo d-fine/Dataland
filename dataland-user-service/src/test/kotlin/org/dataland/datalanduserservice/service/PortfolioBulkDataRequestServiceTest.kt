@@ -11,13 +11,13 @@ import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.junit.jupiter.params.provider.ArgumentsSource
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
-import java.time.Year
 import java.util.stream.Stream
 
 class PortfolioBulkDataRequestServiceTest {
@@ -94,7 +94,7 @@ class PortfolioBulkDataRequestServiceTest {
     }
 
     @ParameterizedTest
-    @org.junit.jupiter.params.provider.ArgumentsSource(BasePortfolioArgumentProvider::class)
+    @ArgumentsSource(BasePortfolioArgumentProvider::class)
     fun `sendBulkDataRequest behaves correctly for various frameworks`(
         basePortfolio: BasePortfolio,
         expectedRequestCount: Int,
@@ -107,10 +107,12 @@ class PortfolioBulkDataRequestServiceTest {
         service.sendBulkDataRequestIfMonitored(basePortfolio)
 
         val expectedMonitoringPeriods =
-            (basePortfolio.startingMonitoringPeriod!!.toInt() until Year.now().value).map { it.toString() }.toSet()
+            (basePortfolio.startingMonitoringPeriod!!.toInt() until PortfolioBulkDataRequestService.UPPER_BOUND)
+                .map { it.toString() }
+                .toSet()
 
         val captor = argumentCaptor<BulkDataRequest>()
-        verify(requestControllerApi, times(expectedRequestCount)).postBulkDataRequest(captor.capture())
+        verify(requestControllerApi, times(expectedRequestCount)).postBulkDataRequest(captor.capture(), "123")
 
         val capturedRequests = captor.allValues
 
