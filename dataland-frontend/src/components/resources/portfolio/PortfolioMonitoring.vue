@@ -50,7 +50,6 @@
         class="primary-button my-2 mr-2"
         label="SAVE CHANGES"
         icon="pi pi-save"
-        title="Cancel (changes will not be saved)"
         @click="patchPortfolioMonitoring()"
       />
     </div>
@@ -137,12 +136,15 @@ async function patchPortfolioMonitoring(): Promise<void> {
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
   };
 
+  if (isMonitoringActive.value) {
+
   if (!selectedStartingYear.value) {
     showReportingPeriodsError.value = true;
   }
 
   if (selectedFrameworkOptions.value.length === 0) {
     showFrameworksError.value = true;
+  }
   }
 
   if (showReportingPeriodsError.value || showFrameworksError.value) {
@@ -180,11 +182,12 @@ function prefillModal(): void {
       selectedStartingYear.value = Number(portfolio.value.startingMonitoringPeriod);
     }
 
-    const monitoredFrameworks = portfolio.value.monitoredFrameworks as Set<string>;
+    const monitoredFrameworksRaw = portfolio.value.monitoredFrameworks as string[] | undefined;
+    const monitoredFrameworks = new Set(monitoredFrameworksRaw ?? []);
 
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
-      isActive: monitoredFrameworks?.has(option.value) ?? false,
+      isActive: monitoredFrameworks.has(option.value),
     }));
   } catch (error) {
     console.error('Error fetching and prefilling enriched portfolio:', error);
