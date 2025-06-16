@@ -10,7 +10,7 @@ import org.flywaydb.core.api.migration.Context
  * "extendedEnumYesNoIsNfrdMandatory" to only one data point, now called "extendedEnumYesNoIsNfrdMandatory"
  */
 @Suppress("ClassName")
-class V28__UnifyNfdrMandatoryField : BaseJavaMigration() {
+class V28__UnifyNfrdMandatoryField : BaseJavaMigration() {
     /**
      * Renames the dataPointType if it matches a specific legacy value.
      *
