@@ -128,17 +128,14 @@ async function patchPortfolioMonitoring(): Promise<void> {
   };
 
   if (isMonitoringActive.value) {
-    if (!selectedStartingYear.value) {
-      showReportingPeriodsError.value = true;
-    }
+    showReportingPeriodsError.value = !selectedStartingYear.value;
+    showFrameworksError.value = selectedFrameworkOptions.value.length === 0;
 
-    if (selectedFrameworkOptions.value.length === 0) {
-      showFrameworksError.value = true;
+    if (showReportingPeriodsError.value || showFrameworksError.value) {
+      return;
     }
-  }
-
-  if (showReportingPeriodsError.value || showFrameworksError.value) {
-    return;
+  } else {
+    resetErrors();
   }
 
   try {
@@ -244,6 +241,6 @@ label > div {
 }
 
 .wider-dropdown {
-  width: 250px;
+  width: 15rem;
 }
 </style>
