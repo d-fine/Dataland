@@ -12,6 +12,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * @param dataTypes contains the names of frameworks, for which the user wants to request framework data
  */
 data class BulkDataRequest(
+    @field:Schema(
+        description = "Only required if called from a service.",
+    )
+    @field:JsonProperty(required = false)
+    val userId: String? = null,
     @field:JsonProperty(required = true)
     @field:ArraySchema(
         arraySchema =

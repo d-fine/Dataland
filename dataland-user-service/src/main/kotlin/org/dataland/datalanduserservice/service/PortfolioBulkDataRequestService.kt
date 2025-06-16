@@ -46,12 +46,15 @@ class PortfolioBulkDataRequestService
                 .map { it.companyId }
                 .toSet()
 
-        private fun getFinancialsCompanyIds(portfolio: EnrichedPortfolio) = getCompanyIdsBySector(portfolio) { it == "financials" }
+        private fun getFinancialsCompanyIds(portfolio: EnrichedPortfolio) =
+            getCompanyIdsBySector(portfolio) {
+                it != null && it.lowercase() == "financials"
+            }
 
         private fun getUndefinedCompanyIds(portfolio: EnrichedPortfolio) = getCompanyIdsBySector(portfolio) { it == null }
 
         private fun getNonFinancialsCompanyIds(portfolio: EnrichedPortfolio) =
-            getCompanyIdsBySector(portfolio) { it != null && it != "financials" }
+            getCompanyIdsBySector(portfolio) { it != null && it.lowercase() != "financials" }
 
         private fun getAllCompanyIds(portfolio: EnrichedPortfolio): Set<String> = portfolio.entries.map { it.companyId }.toSet()
 
@@ -70,8 +73,14 @@ class PortfolioBulkDataRequestService
             selector: (EnrichedPortfolio) -> Set<String>,
             types: Set<BulkDataRequest.DataTypes>,
         ) {
+            val companyIds = selector(enrichedPortfolio)
+            if (companyIds.isEmpty()) {
+                return
+            }
+
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
+                    userId = enrichedPortfolio.userId,
                     companyIdentifiers = selector(enrichedPortfolio),
                     dataTypes = types,
                     reportingPeriods = monitoringPeriods,

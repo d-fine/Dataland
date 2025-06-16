@@ -1551,6 +1551,10 @@
         ],
         "type": "object",
         "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Only required if called from a service."
+          },
           "companyIdentifiers": {
             "uniqueItems": true,
             "type": "array",

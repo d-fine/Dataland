@@ -42,6 +42,8 @@ class BulkDataRequestManager(
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
 
+        val userId = bulkDataRequest.userId ?: DatalandAuthentication.fromContext().userId
+
         val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
             utils.performIdentifierValidation(bulkDataRequest.companyIdentifiers.toList())
 
@@ -66,6 +68,7 @@ class BulkDataRequestManager(
             rejectedIdentifiers = rejectedIdentifiers,
             notifyMeImmediately = bulkDataRequest.notifyMeImmediately,
             correlationId = correlationId,
+            userId = userId,
         )
     }
 
@@ -152,6 +155,7 @@ class BulkDataRequestManager(
      * @return list of data requests that already exist
      */
     private fun processExistingDataRequests(
+        userId: String,
         validDataDimensions: MutableList<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
@@ -162,6 +166,7 @@ class BulkDataRequestManager(
             val dimension = iterator.next()
             val existingRequestId =
                 utils.getRequestIdForDataRequestWithNonFinalStatus(
+                    userId,
                     dimension.companyId,
                     dimension.dataType,
                     dimension.reportingPeriod,
@@ -212,8 +217,8 @@ class BulkDataRequestManager(
         dimensionsToProcess: List<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
         notifyMeImmediately: Boolean,
+        userId: String,
     ): List<ResourceResponse> {
-        val userId = DatalandAuthentication.fromContext().userId
         val acceptedDataRequests = mutableListOf<ResourceResponse>()
 
         dimensionsToProcess.forEach {
@@ -296,11 +301,18 @@ class BulkDataRequestManager(
         rejectedIdentifiers: List<String>,
         notifyMeImmediately: Boolean,
         correlationId: String,
+        userId: String,
     ): BulkDataRequestResponse {
         val requestsToProcess = acceptedRequestCombinations.toMutableList()
         val existingNonFinalRequests =
-            processExistingDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
-        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName, notifyMeImmediately)
+            processExistingDataRequests(userId, requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
+        val acceptedRequests =
+            storeDataRequests(
+                requestsToProcess,
+                acceptedIdentifiersToCompanyIdAndName,
+                notifyMeImmediately,
+                userId,
+            )
         val existingDatasetsResponse =
             getAlreadyExistingDatasetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
 

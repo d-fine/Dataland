@@ -129,7 +129,7 @@ class BulkDataRequestManagerTest {
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
         whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
-        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
+        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), anyString(), any(), anyString()))
             .thenReturn(dummyRequestId)
 
         val bulkDataRequest =
