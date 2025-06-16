@@ -16,6 +16,7 @@
       :disabled="isCompaniesLoading"
     />
     <PrimeButton
+      type="button"
       label="Add Companies"
       icon="pi pi-plus"
       :loading="isCompaniesLoading"

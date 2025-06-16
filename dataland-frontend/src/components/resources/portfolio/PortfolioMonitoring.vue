@@ -46,6 +46,7 @@
 
     <div class="button-group-wrapper">
       <PrimeButton
+        type="button"
         data-test="saveChangesButton"
         class="primary-button my-2 mr-2"
         label="SAVE CHANGES"
