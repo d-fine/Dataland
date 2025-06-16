@@ -70,13 +70,13 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Is NFRD Mandatory?',
+        label: 'Is NFRD mandatory?',
         explanation: 'Is the NFRD mandatory for your company?',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatYesNoValueForDatatable(dataset.general?.isNfrdMandatory?.value),
-            'Is NFRD Mandatory?',
+            'Is NFRD mandatory?',
             dataset.general?.isNfrdMandatory
           ),
       },
