@@ -96,12 +96,12 @@ class PortfolioBulkDataRequestService
 
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(
-                    userId = enrichedPortfolio.userId,
                     companyIdentifiers = selector(enrichedPortfolio),
                     dataTypes = dataTypes,
                     reportingPeriods = monitoringPeriods,
                     notifyMeImmediately = false,
                 ),
+                enrichedPortfolio.userId,
             )
         }
 
