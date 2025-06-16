@@ -65,7 +65,7 @@ import PrimeButton from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import InputSwitch from 'primevue/inputswitch';
-import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
 type MonitoringOption = {
   value: string;
@@ -74,7 +74,6 @@ type MonitoringOption = {
 };
 
 const reportingYears = [2024, 2023, 2022, 2021, 2020, 2019];
-
 const reportingPeriodsOptions = reportingYears.map((year) => ({
   label: year.toString(),
   value: year,
@@ -99,14 +98,6 @@ const isMonitoringActive = ref(false);
 const selectedFrameworkOptions = computed(() => {
   return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
 });
-
-watch(
-  () => availableFrameworkMonitoringOptions.value,
-  () => {
-    console.log(availableFrameworkMonitoringOptions.value);
-  },
-  { immediate: true }
-);
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -137,14 +128,13 @@ async function patchPortfolioMonitoring(): Promise<void> {
   };
 
   if (isMonitoringActive.value) {
+    if (!selectedStartingYear.value) {
+      showReportingPeriodsError.value = true;
+    }
 
-  if (!selectedStartingYear.value) {
-    showReportingPeriodsError.value = true;
-  }
-
-  if (selectedFrameworkOptions.value.length === 0) {
-    showFrameworksError.value = true;
-  }
+    if (selectedFrameworkOptions.value.length === 0) {
+      showFrameworksError.value = true;
+    }
   }
 
   if (showReportingPeriodsError.value || showFrameworksError.value) {
@@ -153,7 +143,6 @@ async function patchPortfolioMonitoring(): Promise<void> {
 
   try {
     await portfolioControllerApi.patchMonitoring(portfolio.value!.portfolioId, portfolioMonitoringPatch);
-
     dialogRef?.value.close();
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
@@ -164,34 +153,30 @@ async function patchPortfolioMonitoring(): Promise<void> {
  * Prefills Modal based on database
  */
 function prefillModal(): void {
-  try {
-    if (!portfolio.value) return;
+  if (!portfolio.value) return;
 
-    isMonitoringActive.value = portfolio.value.isMonitored ?? false;
+  isMonitoringActive.value = portfolio.value.isMonitored ?? false;
 
-    if (!isMonitoringActive.value) {
-      selectedStartingYear.value = undefined;
-      availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
-        ...option,
-        isActive: false,
-      }));
-      return;
-    }
-
-    if (portfolio.value.startingMonitoringPeriod) {
-      selectedStartingYear.value = Number(portfolio.value.startingMonitoringPeriod);
-    }
-
-    const monitoredFrameworksRaw = portfolio.value.monitoredFrameworks as string[] | undefined;
-    const monitoredFrameworks = new Set(monitoredFrameworksRaw ?? []);
-
+  if (!isMonitoringActive.value) {
+    selectedStartingYear.value = undefined;
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
-      isActive: monitoredFrameworks.has(option.value),
+      isActive: false,
     }));
-  } catch (error) {
-    console.error('Error fetching and prefilling enriched portfolio:', error);
+    return;
   }
+
+  if (portfolio.value.startingMonitoringPeriod) {
+    selectedStartingYear.value = Number(portfolio.value.startingMonitoringPeriod);
+  }
+
+  const monitoredFrameworksRaw = portfolio.value.monitoredFrameworks as string[] | undefined;
+  const monitoredFrameworks = new Set(monitoredFrameworksRaw ?? []);
+
+  availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+    ...option,
+    isActive: monitoredFrameworks.has(option.value),
+  }));
 }
 </script>
 
