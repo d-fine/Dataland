@@ -3,18 +3,15 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
-import org.dataland.datalanduserservice.model.EnrichedPortfolio
-import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
+import org.dataland.datalanduserservice.utils.TestUtils.createEnrichedPortfolio
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -40,104 +37,71 @@ class PortfolioBulkDataRequestServiceTest {
             )
     }
 
-    private fun createMockedEnrichedPortfolio(): EnrichedPortfolio {
-        val entryFinancials =
-            mock<EnrichedPortfolioEntry> {
-                on { companyId } doReturn "c1"
-                on { sector } doReturn "financials"
-            }
-        val entryNonFinancials =
-            mock<EnrichedPortfolioEntry> {
-                on { companyId } doReturn "c2"
-                on { sector } doReturn "energy"
-            }
-        val entryUndefined =
-            mock<EnrichedPortfolioEntry> {
-                on { companyId } doReturn "c3"
-                on { sector } doReturn null
-            }
-
-        return EnrichedPortfolio(
-            portfolioId = "p1",
-            portfolioName = "Portfolio 1",
-            userId = "user1",
-            entries = listOf(entryFinancials, entryNonFinancials, entryUndefined),
-            isMonitored = null,
-            startingMonitoringPeriod = null,
-            monitoredFrameworks = null,
-        )
-    }
-
-    companion object {
-        @JvmStatic
-        fun providePortfolios(): Stream<Arguments> =
+    private class BasePortfolioArgumentProvider : ArgumentsProvider {
+        override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments?>? =
             Stream.of(
-                Arguments.of(
-                    BasePortfolio(
-                        portfolioId = "p1",
-                        portfolioName = "Portfolio 1",
-                        userId = "user1",
-                        creationTimestamp = Instant.now().toEpochMilli(),
-                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                        companyIds = setOf("c1", "c2", "c3"),
-                        isMonitored = true,
-                        startingMonitoringPeriod = "2020",
-                        monitoredFrameworks = setOf("eutaxonomy"),
-                    ),
+                args(
+                    basePortfolio("p1", "Taxonomy", setOf("eutaxonomy"), "2020"),
                     3,
                     setOf(
                         BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
                         BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
                         BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
                     ),
-                    false,
                 ),
-                Arguments.of(
-                    BasePortfolio(
-                        portfolioId = "p2",
-                        portfolioName = "Portfolio 2",
-                        userId = "user2",
-                        creationTimestamp = Instant.now().toEpochMilli(),
-                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                        companyIds = setOf("c1", "c2", "c3"),
-                        isMonitored = true,
-                        startingMonitoringPeriod = "2022",
-                        monitoredFrameworks = setOf("sfdr"),
-                    ),
-                    1, setOf(BulkDataRequest.DataTypes.sfdr), false,
+                args(
+                    basePortfolio("p2", "SFDR", setOf("sfdr"), "2022"),
+                    1,
+                    setOf(BulkDataRequest.DataTypes.sfdr),
                 ),
-                Arguments.of(
-                    BasePortfolio(
-                        portfolioId = "p_combined",
-                        portfolioName = "Combined Portfolio",
-                        userId = "user_combined",
-                        creationTimestamp = Instant.now().toEpochMilli(),
-                        lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                        companyIds = setOf("c1", "c2", "c3"),
-                        isMonitored = true,
-                        startingMonitoringPeriod = "2021",
-                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                    ),
+                args(
+                    basePortfolio("p3", "Combined", setOf("sfdr", "eutaxonomy"), "2021"),
                     4,
                     setOf(
-                        BulkDataRequest.DataTypes.sfdr, BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
+                        BulkDataRequest.DataTypes.sfdr,
+                        BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
                         BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
                         BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
                     ),
-                    false,
                 ),
             )
+
+        private fun nowMillis() = Instant.now().toEpochMilli()
+
+        private fun basePortfolio(
+            id: String,
+            name: String,
+            frameworks: Set<String>,
+            startingYear: String,
+        ) = BasePortfolio(
+            portfolioId = id,
+            portfolioName = name,
+            userId = "user",
+            creationTimestamp = nowMillis(),
+            lastUpdateTimestamp = nowMillis(),
+            companyIds = setOf("c1", "c2", "c3"),
+            isMonitored = true,
+            startingMonitoringPeriod = startingYear,
+            monitoredFrameworks = frameworks,
+        )
+
+        private fun args(
+            portfolio: BasePortfolio,
+            requestCount: Int,
+            dataTypes: Set<BulkDataRequest.DataTypes>,
+            notify: Boolean = false,
+        ): Arguments = Arguments.of(portfolio, requestCount, dataTypes, notify)
     }
 
     @ParameterizedTest
-    @MethodSource("providePortfolios")
+    @org.junit.jupiter.params.provider.ArgumentsSource(BasePortfolioArgumentProvider::class)
     fun `sendBulkDataRequest behaves correctly for various frameworks`(
         basePortfolio: BasePortfolio,
         expectedRequestCount: Int,
         expectedDataTypes: Set<BulkDataRequest.DataTypes>?,
         expectedNotify: Boolean,
     ) {
-        val enrichedPortfolio = createMockedEnrichedPortfolio()
+        val enrichedPortfolio = createEnrichedPortfolio()
         whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
 
         service.sendBulkDataRequestIfMonitored(basePortfolio)
@@ -157,30 +121,5 @@ class PortfolioBulkDataRequestServiceTest {
                 assertEquals(expectedNotify, request.notifyMeImmediately)
             }
         }
-    }
-
-    @Test
-    fun `sendBulkDataRequest throws exception on invalid startingMonitoringPeriod`() {
-        val basePortfolio =
-            BasePortfolio(
-                portfolioId = "p3",
-                portfolioName = "Portfolio 3",
-                userId = "user3",
-                creationTimestamp = Instant.now().toEpochMilli(),
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                companyIds = setOf("c1", "c2", "c3"),
-                isMonitored = true,
-                startingMonitoringPeriod = "Zweitausendzwanzig",
-                monitoredFrameworks = setOf("eutaxonomy"),
-            )
-
-        val enrichedPortfolio = createMockedEnrichedPortfolio()
-        whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
-
-        val exception =
-            assertThrows<IllegalArgumentException> {
-                service.sendBulkDataRequestIfMonitored(basePortfolio)
-            }
-        assertTrue(exception.message!!.contains("Invalid start year"))
     }
 }

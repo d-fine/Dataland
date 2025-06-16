@@ -7,7 +7,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
-import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
@@ -36,7 +35,6 @@ data class PortfolioEntity(
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "company_ids", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "company_ids")
-    @OrderBy("asc")
     val companyIds: MutableSet<String>,
     val isMonitored: Boolean? = false,
     val startingMonitoringPeriod: String?,

@@ -108,6 +108,16 @@
         "summary": "Send a bulk request",
         "description": "A bulk of data requests for specific frameworks and companies is being sent.",
         "operationId": "postBulkDataRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1551,10 +1561,6 @@
         ],
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "string",
-            "description": "Only required if called from a service."
-          },
           "companyIdentifiers": {
             "uniqueItems": true,
             "type": "array",
