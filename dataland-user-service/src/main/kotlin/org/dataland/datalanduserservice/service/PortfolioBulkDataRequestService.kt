@@ -19,7 +19,7 @@ class PortfolioBulkDataRequestService
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
     ) {
         companion object {
-            private const val UPPER_BOUND = 2025
+            const val UPPER_BOUND = 2025
         }
 
         /**

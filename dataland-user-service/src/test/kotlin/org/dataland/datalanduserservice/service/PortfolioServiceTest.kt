@@ -230,6 +230,7 @@ class PortfolioServiceTest {
 
         assertEquals(dummyPortfolio.portfolioId, portfolioEntityCaptor.firstValue.portfolioId.toString())
         assertEquals(dummyPortfolio.creationTimestamp, portfolioEntityCaptor.firstValue.creationTimestamp)
+        assertEquals(dummyPortfolio.isMonitored, portfolioEntityCaptor.firstValue.isMonitored)
     }
 
     @Test
