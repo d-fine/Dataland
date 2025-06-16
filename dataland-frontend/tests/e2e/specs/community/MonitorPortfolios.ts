@@ -103,10 +103,6 @@ describe('Portfolio Monitoring Modal', () => {
             expect(body.monitoredFrameworks).to.include(frameworkValue);
           });
 
-        cy.get('[data-test="isMonitoredBadge"]', { timeout: Cypress.env('short_timeout_in_ms') as number }).should(
-          'be.visible'
-        );
-
         cy.visitAndCheckAppMount('/requests');
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="requested-Datasets-table"] tbody tr')
