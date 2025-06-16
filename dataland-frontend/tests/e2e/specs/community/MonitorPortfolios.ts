@@ -16,12 +16,15 @@ describe('Portfolio Monitoring Modal', () => {
       const nonFinancialPortfolio = `nonFinancialPortfolio ${Date.now()}`;
       const financialPortfolio = `financialPortfolio ${Date.now()}`;
       const nonSectorPortfolio = `NonSectorPortfolio ${Date.now()}`;
+      const companyNameNonFinancial = `Test Co. NonFin ${Date.now()}`;
+      const companyNameFinancial = `Test Co. Fin ${Date.now()}`;
+      const companyNameNoSector = `Test Co. NoSec ${Date.now()}`;
 
       before(() => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-          const nonFinancialCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
-          const financialCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, 'financials');
-          const noSectorCompany = generateDummyCompanyInformation(`Test Co. ${Date.now()}`, '');
+          const nonFinancialCompany = generateDummyCompanyInformation(companyNameNonFinancial);
+          const financialCompany = generateDummyCompanyInformation(companyNameFinancial, 'financials');
+          const noSectorCompany = generateDummyCompanyInformation(companyNameNoSector, null as unknown as string);
 
           permIdNonFinancial = assertDefined(nonFinancialCompany.identifiers[IdentifierType.PermId][0]);
           await uploadCompanyViaApi(token, nonFinancialCompany);
@@ -42,22 +45,6 @@ describe('Portfolio Monitoring Modal', () => {
       });
 
       /**
-       * Checks bulk data request
-       * @param body response of request
-       * @param expectedDataTypes expected frameworks
-       * @param notExpectedDataTypes not expected frameworks
-       */
-      function assertBulkRequestBody(
-        body: { reportingPeriods: number[]; dataTypes: string[] },
-        expectedDataTypes: string[],
-        notExpectedDataTypes: string[]
-      ): void {
-        expect(body.reportingPeriods).to.include('2023');
-        expectedDataTypes.forEach((type) => expect(body.dataTypes).to.include(type));
-        notExpectedDataTypes.forEach((type) => expect(body.dataTypes).not.to.include(type));
-      }
-
-      /**
        * Test function for creating portfolio and monitor it
        * @param portfolioName name of portfolio
        * @param permId company ids to be monitored
@@ -65,19 +52,20 @@ describe('Portfolio Monitoring Modal', () => {
        * @param notExpectedDataTypes frameworks not expected in response
        * @param framework selected framework
        */
-      function testBulkDataRequest({
+      function testPatchMonitoring({
         portfolioName,
+        companyName,
         permId,
-        expectedDataTypes,
-        notExpectedDataTypes = [],
         frameworkValue,
+        frameworkTitle,
+        frameworkSubtitles,
       }: {
         portfolioName: string;
+        companyName: string;
         permId: string;
-        expectedDataTypes: string[];
-        notExpectedDataTypes?: string[];
-        framework: string;
         frameworkValue: string;
+        frameworkTitle: string;
+        frameworkSubtitles: string[];
       }): void {
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="addNewPortfolio"]').click({ force: true });
@@ -94,9 +82,11 @@ describe('Portfolio Monitoring Modal', () => {
           .within(() => {
             cy.get('[data-test="monitor-portfolio"]').click();
           });
+
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
         cy.get('.p-dropdown-item').contains('2023').click();
+
         cy.get('[data-test="frameworkSelection"]')
           .contains('EU Taxonomy')
           .parent()
@@ -113,20 +103,25 @@ describe('Portfolio Monitoring Modal', () => {
             expect(body.monitoredFrameworks).to.include(frameworkValue);
           });
 
-        cy.wait('@postBulkRequest')
-          .its('request.body')
-          .should((body) => {
-            assertBulkRequestBody(body, expectedDataTypes, notExpectedDataTypes);
-          });
+        cy.get('[data-test="isMonitoredBadge"]', { timeout: Cypress.env('short_timeout_in_ms') as number }).should(
+          'be.visible'
+        );
+
+        cy.visitAndCheckAppMount('/requests');
+        cy.wait(Cypress.env('short_timeout_in_ms') as number);
+        cy.get('[data-test="requested-Datasets-table"] tbody tr')
+          .filter(`:contains("${companyName}")`)
+          .as('companyRequestRows');
+
+        cy.get('@companyRequestRows').filter(`:contains("${frameworkTitle}")`).should('have.length.at.least', 1);
+
+        frameworkSubtitles.forEach((subtitle) => {
+          cy.get('@companyRequestRows').filter(`:contains("${subtitle}")`).should('have.length.at.least', 1);
+        });
+
+        cy.visitAndCheckAppMount('/portfolios');
         cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
 
-        cy.get(`[data-test="portfolio-${portfolioName}"]`)
-          .should('exist')
-          .then(($el) => {
-            cy.wrap($el)
-              .find('[data-test="isMonitoredBadge"]', { timeout: Cypress.env('short_timeout_in_ms') as number })
-              .should('be.visible');
-          });
         cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
         cy.get('[data-test="deleteButton"]').click();
@@ -134,34 +129,35 @@ describe('Portfolio Monitoring Modal', () => {
       }
 
       it('submits bulk data request when inputs are valid for non financial company', () => {
-        testBulkDataRequest({
+        testPatchMonitoring({
           portfolioName: nonFinancialPortfolio,
+          companyName: companyNameNonFinancial,
           permId: permIdNonFinancial,
-          expectedDataTypes: ['eutaxonomy-non-financials', 'nuclear-and-gas'],
-          notExpectedDataTypes: ['eutaxonomy-financials'],
-          framework: 'EU Taxonomy',
           frameworkValue: 'eutaxonomy',
+          frameworkTitle: 'EU Taxonomy',
+          frameworkSubtitles: ['for non-financial companies', 'Nuclear and Gas'],
         });
       });
 
       it('submits bulk data request when inputs are valid for financial company', () => {
-        testBulkDataRequest({
+        testPatchMonitoring({
           portfolioName: financialPortfolio,
+          companyName: companyNameFinancial,
           permId: permIdFinancial,
-          expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas'],
-          notExpectedDataTypes: ['eutaxonomy-non-financials'],
-          framework: 'EU Taxonomy',
           frameworkValue: 'eutaxonomy',
+          frameworkTitle: 'EU Taxonomy',
+          frameworkSubtitles: ['for financial companies', 'Nuclear and Gas'],
         });
       });
 
       it('submits bulk data request when inputs are valid for non sector company', () => {
-        testBulkDataRequest({
+        testPatchMonitoring({
           portfolioName: nonSectorPortfolio,
+          companyName: companyNameNoSector,
           permId: permIdNoSector,
-          expectedDataTypes: ['eutaxonomy-financials', 'nuclear-and-gas', 'eutaxonomy-non-financials'],
-          framework: 'EU Taxonomy',
           frameworkValue: 'eutaxonomy',
+          frameworkTitle: 'EU Taxonomy',
+          frameworkSubtitles: ['for financial companies', 'for non-financial companies', 'Nuclear and Gas'],
         });
       });
     }
