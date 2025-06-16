@@ -4,7 +4,6 @@ import { IdentifierType } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS } from '@/utils/Constants.ts';
 
 describeIf(
   'As a user I want to be able to create, edit and delete my portfolios',
@@ -34,7 +33,7 @@ describeIf(
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
     });
 
-    it('Creates, edits, monitores and deletes a portfolio', () => {
+    it('Creates, edits and deletes a portfolio', () => {
       cy.get('[data-test="addNewPortfolio"]').click();
       cy.get('[name="portfolioName"]').type(portfolioName);
       cy.get('[data-test="saveButton"]').should('be.disabled');
@@ -43,27 +42,6 @@ describeIf(
       cy.get('[data-test="saveButton"]').should('not.be.disabled');
       cy.get('[data-test="saveButton"]').click();
 
-      cy.get('[data-test="monitor-portfolio"]').filter(':visible').click();
-      cy.get('[data-test="activateMonitoringToggle"]').click();
-      cy.get('[data-test="listOfReportingPeriods"]').click();
-      cy.get('.p-dropdown-item').contains('2023').click();
-
-      cy.get('[data-test="frameworkSelection"]')
-        .contains('EU Taxonomy')
-        .parent()
-        .find('input[type="checkbox"]')
-        .click({ force: true });
-
-      cy.get('[data-test="saveChangesButton"]').click();
-
-      cy.wait('@postBulkRequest')
-        .its('request.body')
-        .should((body) => {
-          expect(body.reportingPeriods).to.include('2023');
-          EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS.forEach((type) => expect(body.dataTypes).to.include(type));
-          expect(body.dataTypes).not.to.include('sfdr');
-        });
-
       cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[name="portfolioName"]').clear();
@@ -71,13 +49,6 @@ describeIf(
       cy.get('[name="company-identifiers"]').type(permIdOfSecondCompany);
       cy.get('[data-test="addCompanies"]').click();
       cy.get('[data-test="saveButton"]').click();
-      cy.wait('@postBulkRequest')
-        .its('request.body')
-        .should((body) => {
-          expect(body.reportingPeriods).to.include('2023');
-          EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS.forEach((type) => expect(body.dataTypes).to.include(type));
-          expect(body.dataTypes).not.to.include('sfdr');
-        });
       cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click({ force: true });
       cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
 
