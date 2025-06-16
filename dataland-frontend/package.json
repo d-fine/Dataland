@@ -28,6 +28,7 @@
     "@formkit/themes": "^1.6.9",
     "@formkit/vue": "^1.6.9",
     "@ibm/plex": "^6.4.1",
+    "@primeuix/themes": "^1.1.1",
     "axios": "^1.9.0",
     "currency-codes": "^2.2.0",
     "i18n-iso-countries": "^7.14.0",

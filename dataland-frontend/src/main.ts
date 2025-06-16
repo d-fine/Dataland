@@ -1,3 +1,4 @@
+import { definePreset } from '@primeuix/themes';
 import { createApp } from 'vue';
 import App from './App.vue';
 
@@ -10,9 +11,26 @@ import '@formkit/themes/genesis';
 import { plugin, defaultConfig } from '@formkit/vue';
 import router from './router';
 import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura';
 import DialogService from 'primevue/dialogservice';
 import { createPinia, type PiniaPlugin } from 'pinia';
 import { PiniaSharedState } from 'pinia-shared-state';
+
+const DatalandPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: '#e67f3f',
+      100: '#e67f3f',
+      // 200: '#e67f3f',
+      // 300: '#e67f3f',
+      400: '#e67f3f',
+      500: '#e67f3f',
+      600: '#e67f3f',
+      700: '#e67f3f',
+      800: '#cc7139',
+    },
+  },
+});
 
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
@@ -29,7 +47,11 @@ function instantiateVueApp(): void {
   app.use(plugin, defaultConfig);
   app.use(DialogService);
   app.use(router);
-  app.use(PrimeVue);
+  app.use(PrimeVue, {
+    theme: {
+      preset: DatalandPreset,
+    },
+  });
   app.use(pinia);
 
   app.mount('#app');

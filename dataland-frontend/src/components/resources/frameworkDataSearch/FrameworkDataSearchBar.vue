@@ -83,6 +83,7 @@ export interface AutoCompleteInternalState {
 }
 
 // const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+// const { searchBarId, chunkSize, currentPage, filter,  }
 
 //TODO: Transfer to Composition API, use templateRef
 
