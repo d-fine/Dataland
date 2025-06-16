@@ -76,7 +76,7 @@
 					"comment": "connect back-end microchip",
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "624-651",
@@ -1691,7 +1691,7 @@
 					"comment": "compress wireless interface",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "399-1080",
@@ -3292,7 +3292,7 @@
 					"comment": "index 1080p sensor",
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "250-557",
@@ -5106,7 +5106,7 @@
 					"comment": "reboot open-source card",
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "600",

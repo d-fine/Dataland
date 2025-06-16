@@ -56,7 +56,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.general?.fiscalYearDeviation?.dataSource?.fileReference,
             dataset.general?.fiscalYearEnd?.dataSource?.fileReference,
             dataset.general?.scopeOfEntities?.dataSource?.fileReference,
-            dataset.general?.nfrdMandatory?.dataSource?.fileReference,
+            dataset.general?.isNfrdMandatory?.dataSource?.fileReference,
             dataset.general?.euTaxonomyActivityLevelReporting?.dataSource?.fileReference,
             dataset.general?.assurance?.dataSource?.fileReference,
             dataset.general?.numberOfEmployees?.dataSource?.fileReference,

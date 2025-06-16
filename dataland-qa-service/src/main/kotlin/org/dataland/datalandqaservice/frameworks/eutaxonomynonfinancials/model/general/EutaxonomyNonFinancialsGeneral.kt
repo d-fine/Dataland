@@ -21,7 +21,7 @@ data class EutaxonomyNonFinancialsGeneral(
     @field:Valid()
     val scopeOfEntities: QaReportDataPoint<ExtendedDataPointYesNoNa?>? = null,
     @field:Valid()
-    val nfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val isNfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val euTaxonomyActivityLevelReporting: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

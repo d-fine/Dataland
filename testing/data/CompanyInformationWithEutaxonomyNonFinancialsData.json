@@ -57,7 +57,7 @@
 					"comment": "bypass optical matrix",
 					"quality": "NoDataFound"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "1111-1184",
@@ -1644,7 +1644,7 @@
 					"comment": null,
 					"quality": null
 				},
-				"nfrdMandatory": null,
+				"isNfrdMandatory": null,
 				"euTaxonomyActivityLevelReporting": {
 					"value": "No",
 					"dataSource": null,
@@ -2720,7 +2720,7 @@
 					"comment": "input auxiliary interface",
 					"quality": "Estimated"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "1136-1191",
@@ -4075,7 +4075,7 @@
 				},
 				"fiscalYearEnd": null,
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "276-290",
@@ -5323,7 +5323,7 @@
 					"comment": "program neural driver",
 					"quality": null
 				},
-				"nfrdMandatory": null,
+				"isNfrdMandatory": null,
 				"euTaxonomyActivityLevelReporting": {
 					"value": "Yes",
 					"dataSource": {
@@ -6575,7 +6575,7 @@
 					"comment": "synthesize bluetooth monitor",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "811",
@@ -7918,7 +7918,7 @@
 					"comment": "compress open-source interface",
 					"quality": null
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "394-538",
@@ -9087,7 +9087,7 @@
 					"comment": "connect wireless panel",
 					"quality": "NoDataFound"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "1047-1125",
@@ -10465,7 +10465,7 @@
 					"comment": "back up online array",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "354",
@@ -11612,7 +11612,7 @@
 					"comment": "reboot optical system",
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "113",
@@ -12748,7 +12748,7 @@
 					"comment": "hack optical bandwidth",
 					"quality": "NoDataFound"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "357-528",
@@ -14227,7 +14227,7 @@
 				"fiscalYearDeviation": null,
 				"fiscalYearEnd": null,
 				"scopeOfEntities": null,
-				"nfrdMandatory": null,
+				"isNfrdMandatory": null,
 				"euTaxonomyActivityLevelReporting": {
 					"value": "Yes",
 					"dataSource": null,
@@ -15567,7 +15567,7 @@
 					"comment": "hack redundant circuit",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "454",
@@ -16864,7 +16864,7 @@
 					"comment": null,
 					"quality": null
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "715-923",
@@ -17962,7 +17962,7 @@
 					"quality": null
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "588",
@@ -19074,7 +19074,7 @@
 					"comment": null,
 					"quality": null
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "545",
@@ -20556,7 +20556,7 @@
 					"comment": "program back-end application",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "157-828",
@@ -21899,7 +21899,7 @@
 					"comment": "input redundant circuit",
 					"quality": "Estimated"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "244-722",
@@ -23181,7 +23181,7 @@
 					"comment": "parse redundant pixel",
 					"quality": "Estimated"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "630-1069",
@@ -24779,7 +24779,7 @@
 					"quality": "NoDataFound"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "887-1089",
@@ -26033,7 +26033,7 @@
 					"comment": "synthesize neural protocol",
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "1176",
@@ -27283,7 +27283,7 @@
 					"quality": "NoDataFound"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "308-380",
@@ -28503,7 +28503,7 @@
 					"quality": "Estimated"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "417-1072",
@@ -29480,7 +29480,7 @@
 					"comment": "synthesize haptic matrix",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "1026",
@@ -30642,7 +30642,7 @@
 					"comment": "index auxiliary application",
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "847-1113",
@@ -32098,7 +32098,7 @@
 					"comment": "hack multi-byte system",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "88-540",
@@ -33101,7 +33101,7 @@
 					"comment": null,
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": null,
 					"comment": "program wireless protocol",
@@ -34537,7 +34537,7 @@
 					"quality": "Reported"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "142-282",
@@ -35668,7 +35668,7 @@
 					"comment": null,
 					"quality": null
 				},
-				"nfrdMandatory": null,
+				"isNfrdMandatory": null,
 				"euTaxonomyActivityLevelReporting": {
 					"value": "No",
 					"dataSource": {
@@ -36799,7 +36799,7 @@
 					"comment": "input redundant pixel",
 					"quality": "Estimated"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "598",
@@ -38248,7 +38248,7 @@
 					"comment": "parse neural capacitor",
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "253",
@@ -39598,7 +39598,7 @@
 					"comment": "input redundant pixel",
 					"quality": "NoDataFound"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "896-1091",
@@ -40680,7 +40680,7 @@
 					"comment": null,
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "1095-1254",
@@ -41756,7 +41756,7 @@
 					"quality": null
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": null,
+				"isNfrdMandatory": null,
 				"euTaxonomyActivityLevelReporting": {
 					"value": "No",
 					"dataSource": {
@@ -43189,7 +43189,7 @@
 					"comment": null,
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "901-1282",
@@ -44598,7 +44598,7 @@
 					"comment": "transmit redundant transmitter",
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "1049",
@@ -45945,7 +45945,7 @@
 					"quality": "Incomplete"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "1085-1269",
@@ -47498,7 +47498,7 @@
 					"comment": "back up virtual hard drive",
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "198",
@@ -49016,7 +49016,7 @@
 					"comment": "calculate solid state application",
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "142-893",
@@ -50391,7 +50391,7 @@
 					"comment": "copy auxiliary card",
 					"quality": "Estimated"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": null,
 					"comment": null,
@@ -51445,7 +51445,7 @@
 					"comment": "generate wireless monitor",
 					"quality": "Audited"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "1077-1181",
@@ -52917,7 +52917,7 @@
 					"comment": "synthesize digital capacitor",
 					"quality": "Reported"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "699-841",
@@ -54106,7 +54106,7 @@
 					"comment": "reboot optical application",
 					"quality": null
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "341-1165",
@@ -55519,7 +55519,7 @@
 				},
 				"fiscalYearEnd": null,
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": null,
 					"comment": "calculate digital program",
@@ -56625,7 +56625,7 @@
 					"comment": "override cross-platform transmitter",
 					"quality": null
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "292-926",
@@ -58040,7 +58040,7 @@
 					"quality": "Estimated"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": null,
 					"dataSource": {
 						"page": "85-403",
@@ -59512,7 +59512,7 @@
 					"comment": null,
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "519-1248",
@@ -60652,7 +60652,7 @@
 					"quality": "Reported"
 				},
 				"scopeOfEntities": null,
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "1047-1110",
@@ -61772,7 +61772,7 @@
 					"comment": "input neural program",
 					"quality": "Incomplete"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "No",
 					"dataSource": {
 						"page": "893",
@@ -62811,7 +62811,7 @@
 					"comment": "transmit primary driver",
 					"quality": "NoDataFound"
 				},
-				"nfrdMandatory": {
+				"isNfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
 						"page": "847-914",

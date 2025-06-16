@@ -4482,7 +4482,7 @@
           "scopeOfEntities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNa"
           },
-          "nfrdMandatory": {
+          "isNfrdMandatory": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "euTaxonomyActivityLevelReporting": {

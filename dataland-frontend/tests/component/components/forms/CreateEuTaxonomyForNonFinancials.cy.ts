@@ -330,7 +330,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
           scopeOfEntities: {
             value: 'Yes',
           },
-          nfrdMandatory: {
+          isNfrdMandatory: {
             value: 'Yes',
           },
           euTaxonomyActivityLevelReporting: {
