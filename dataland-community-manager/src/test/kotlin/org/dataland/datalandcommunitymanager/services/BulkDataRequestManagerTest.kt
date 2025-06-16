@@ -39,8 +39,9 @@ class BulkDataRequestManagerTest {
     private val dummyRequestId = "request-id"
     private val dummyAdminComment = "dummyAdminComment"
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
-    private val dummyReportingPeriod = "2023-Q1"
+    private val dummyReportingPeriod = "2023"
     private val dummyUserProvidedCompanyId = "companyId1"
+    private val dummyUserId = "123"
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
@@ -116,7 +117,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
         assertEquals(expectedAcceptedDataRequest, response.acceptedDataRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingDatasets)
@@ -129,7 +130,7 @@ class BulkDataRequestManagerTest {
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
         whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
-        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), anyString(), any(), anyString()))
+        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(any(), any(), any(), any()))
             .thenReturn(dummyRequestId)
 
         val bulkDataRequest =
@@ -151,7 +152,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
         assertEquals(emptyList<ResourceResponse>(), response.acceptedDataRequests)
         assertEquals(expectedAlreadyExistingDataRequest, response.alreadyExistingNonFinalRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingDatasets)
@@ -198,7 +199,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
         assertEquals(emptyList<ResourceResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDatasets)
@@ -223,7 +224,7 @@ class BulkDataRequestManagerTest {
         val expectedRejectedCompanyIdentifiers =
             listOf(dummyUserProvidedCompanyId)
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
         assertEquals(emptyList<ResourceResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingDatasets)

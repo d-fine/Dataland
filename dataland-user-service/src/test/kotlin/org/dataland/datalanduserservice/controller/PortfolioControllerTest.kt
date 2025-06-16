@@ -2,20 +2,25 @@
 
 package org.dataland.datalanduserservice.controller
 
+import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
+import org.dataland.datalanduserservice.utils.TestUtils.createEnrichedPortfolio
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.reset
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
@@ -26,10 +31,14 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.time.Instant
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioControllerTest {
+    private lateinit var portfolioEnrichmentService: PortfolioEnrichmentService
+    private lateinit var service: PortfolioBulkDataRequestService
+
     private val mockPortfolioService = mock<PortfolioService>()
     private val mockValidator = mock<Validator>()
     private val mockSecurityContext = mock<SecurityContext>()
@@ -61,7 +70,13 @@ class PortfolioControllerTest {
     fun setup() {
         reset(mockPortfolioService, mockValidator, mockPortfolioEnrichmentService)
         this.resetSecurityContext()
+        portfolioEnrichmentService = mock()
         doNothing().whenever(mockValidator).validatePortfolioCreation(eq(validPortfolioUpload), any())
+        service =
+            PortfolioBulkDataRequestService(
+                requestControllerApi = mock(),
+                portfolioEnrichmentService = portfolioEnrichmentService,
+            )
         portfolioController =
             PortfolioController(
                 mockPortfolioService,
@@ -92,7 +107,13 @@ class PortfolioControllerTest {
     fun `test that replacing an existing portfolio by a valid portfolio returns 200 response`() {
         doReturn(true).whenever(mockPortfolioService).existsPortfolioForUser(eq(dummyPortfolioId.toString()), any())
 
-        val response = assertDoesNotThrow { portfolioController.replacePortfolio(dummyPortfolioId.toString(), validPortfolioUpload) }
+        val response =
+            assertDoesNotThrow {
+                portfolioController.replacePortfolio(
+                    dummyPortfolioId.toString(),
+                    validPortfolioUpload,
+                )
+            }
         assertEquals(HttpStatus.OK, response.statusCode)
     }
 
@@ -102,5 +123,30 @@ class PortfolioControllerTest {
         doReturn(portfolios).whenever(mockPortfolioService).getAllPortfolioNamesForCurrentUser()
         val response = assertDoesNotThrow { portfolioController.getAllPortfolioNamesForCurrentUser() }.body
         assertEquals(portfolios, response)
+    }
+
+    @Test
+    fun `sendBulkDataRequest throws exception on invalid startingMonitoringPeriod`() {
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "p3",
+                portfolioName = "Portfolio 3",
+                userId = "user3",
+                creationTimestamp = Instant.now().toEpochMilli(),
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = setOf("c1", "c2", "c3"),
+                isMonitored = true,
+                startingMonitoringPeriod = "Zweitausendzwanzig",
+                monitoredFrameworks = setOf("eutaxonomy"),
+            )
+
+        val enrichedPortfolio = createEnrichedPortfolio()
+        whenever(portfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
+
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                service.sendBulkDataRequestIfMonitored(basePortfolio)
+            }
+        assertTrue(exception.message!!.contains("Invalid start year"))
     }
 }

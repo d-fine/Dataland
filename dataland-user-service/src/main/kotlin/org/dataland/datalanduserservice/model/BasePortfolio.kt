@@ -60,21 +60,21 @@ data class BasePortfolio(
      */
     fun toPortfolioEntity(
         portfolioId: String? = null,
-        creationTimestamp: Long? = null,
-        lastUpdateTimestamp: Long? = null,
-        isMonitored: Boolean? = null,
+        creationTimestamp: Long = this.creationTimestamp,
+        lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
+        isMonitored: Boolean = this.isMonitored,
         startingMonitoringPeriod: String? = null,
-        monitoredFrameworks: Set<String>? = null,
+        monitoredFrameworks: Set<String> = this.monitoredFrameworks,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
             portfolioName = this.portfolioName,
             userId = this.userId,
-            creationTimestamp = creationTimestamp ?: this.creationTimestamp,
-            lastUpdateTimestamp = lastUpdateTimestamp ?: this.lastUpdateTimestamp,
+            creationTimestamp = creationTimestamp,
+            lastUpdateTimestamp = lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
-            isMonitored = isMonitored ?: this.isMonitored,
+            isMonitored = isMonitored,
             startingMonitoringPeriod = startingMonitoringPeriod ?: this.startingMonitoringPeriod,
-            monitoredFrameworks = monitoredFrameworks ?: this.monitoredFrameworks,
+            monitoredFrameworks = monitoredFrameworks,
         )
 }

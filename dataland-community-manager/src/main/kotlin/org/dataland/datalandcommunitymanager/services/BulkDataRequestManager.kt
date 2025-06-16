@@ -36,13 +36,16 @@ class BulkDataRequestManager(
      * @return relevant info to the user as a response after posting a bulk data request
      */
     @Transactional
-    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+    fun processBulkDataRequest(
+        bulkDataRequest: BulkDataRequest,
+        userId: String?,
+    ): BulkDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
 
-        val userId = bulkDataRequest.userId ?: DatalandAuthentication.fromContext().userId
+        val userId = userId ?: DatalandAuthentication.fromContext().userId
 
         val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
             utils.performIdentifierValidation(bulkDataRequest.companyIdentifiers.toList())
@@ -294,6 +297,7 @@ class BulkDataRequestManager(
         }
     }
 
+    @Suppress("LongParameterList")
     private fun createBulkDataRequests(
         acceptedRequestCombinations: List<DatasetDimensions>,
         acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,

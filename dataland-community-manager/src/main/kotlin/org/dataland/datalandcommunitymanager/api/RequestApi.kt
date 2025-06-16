@@ -60,6 +60,8 @@ interface RequestApi {
     fun postBulkDataRequest(
         @Valid @RequestBody
         bulkDataRequest: BulkDataRequest,
+        @RequestParam(required = false)
+        userId: String? = null,
     ): ResponseEntity<BulkDataRequestResponse>
 
     /** A method for users to get all their existing data requests.
