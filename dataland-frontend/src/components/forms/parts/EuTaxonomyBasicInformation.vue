@@ -82,9 +82,9 @@
       <!-- EU Taxonomy activity level reporting -->
       <div class="form-field">
         <YesNoFormField
-          :name="'nfrdMandatory'"
-          :description="euTaxonomyKpiInfoMappings.nfrdMandatory"
-          :label="euTaxonomyKpiNameMappings.nfrdMandatory"
+          :name="'isNfrdMandatory'"
+          :description="euTaxonomyKpiInfoMappings.isNfrdMandatory"
+          :label="euTaxonomyKpiNameMappings.isNfrdMandatory"
         />
       </div>
     </div>
