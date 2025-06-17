@@ -267,13 +267,14 @@ internal class CompanyDataControllerTest(
         ).whenever(dataPointMetaInformationRepository)
             .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), anyString())
 
-        Mockito.mockStatic(SharedFrameworkFieldsUtils::class.java).use {
-            it.whenever { SharedFrameworkFieldsUtils.getSharedFields() }.doReturn(setOf(testDataPointTypeName))
-            whenever(it)
-        }
+        Mockito.mockStatic(SharedFrameworkFieldsUtils::class.java).use { sharedFrameworkFielsUtilsMock ->
+            sharedFrameworkFielsUtilsMock
+                .`when`<Set<String>>(SharedFrameworkFieldsUtils::getSharedFields)
+                .doReturn(setOf(testDataPointTypeName))
 
-        val testCompanyId = UUID.randomUUID().toString()
-        val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
-        assertEquals(0, result?.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
+            val testCompanyId = UUID.randomUUID().toString()
+            val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
+            assertEquals(0, result?.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
+        }
     }
 }

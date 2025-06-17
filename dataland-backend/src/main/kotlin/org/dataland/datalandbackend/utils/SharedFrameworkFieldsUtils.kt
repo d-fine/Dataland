@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.utils
 
 object SharedFrameworkFieldsUtils {
     private val sharedFields =
-        setOf<String>(
+        setOf(
             "customEnumEuTaxonomyReportingAssurance",
             "extendedDateFiscalYearEnd",
             "extendedDecimalNumberOfEmployees",
@@ -16,5 +16,6 @@ object SharedFrameworkFieldsUtils {
     /**
      * Return a list of data point types that are not unique to a single framework.
      */
-    fun getSharedFields(): Set<String> = SharedFrameworkFieldsUtils.sharedFields
+    @JvmStatic
+    fun getSharedFields(): Set<String> = sharedFields
 }
