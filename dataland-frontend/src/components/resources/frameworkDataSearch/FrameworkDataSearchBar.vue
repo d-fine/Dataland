@@ -211,7 +211,7 @@ export default defineComponent({
      * Focuses the search bar
      */
     focusOnSearchBar() {
-      this.autocomplete?.$refs?.focusInput.focus();
+      // this.autocomplete?.$refs?.focusInput.focus();
     },
 
     /**
