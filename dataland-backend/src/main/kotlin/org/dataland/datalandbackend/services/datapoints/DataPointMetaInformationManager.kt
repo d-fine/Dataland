@@ -207,7 +207,7 @@ class DataPointMetaInformationManager
         fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
                 companyIds = dataDimensionFilter.companyIds,
-                dataPointTypes = dataDimensionFilter.dataTypesOrDataPointTypes,
+                dataPointTypes = dataDimensionFilter.dataTypes,
                 reportingPeriods = dataDimensionFilter.reportingPeriods,
             )
     }

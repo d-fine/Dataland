@@ -131,10 +131,10 @@ class DataPointUtils
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
             val frameworks =
-                if (dataDimensionFilter.dataTypesOrDataPointTypes.isNullOrEmpty()) {
+                if (dataDimensionFilter.dataTypes.isNullOrEmpty()) {
                     allAssembledFrameworks
                 } else {
-                    dataDimensionFilter.dataTypesOrDataPointTypes.filter { allAssembledFrameworks.contains(it) }
+                    dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
                 }
 
             for (framework in frameworks) {
@@ -142,7 +142,7 @@ class DataPointUtils
                     metaDataManager.getActiveDataPointMetaInformationList(
                         DataDimensionFilter(
                             companyIds = dataDimensionFilter.companyIds,
-                            dataTypesOrDataPointTypes = getRelevantDataPointTypes(framework).toList(),
+                            dataTypes = getRelevantDataPointTypes(framework).toList(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
