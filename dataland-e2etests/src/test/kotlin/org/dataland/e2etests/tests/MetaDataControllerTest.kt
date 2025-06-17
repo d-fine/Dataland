@@ -23,6 +23,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
+@Suppress("kotlin:S104")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MetaDataControllerTest {
     private val apiAccessor = ApiAccessor()
@@ -94,13 +95,12 @@ class MetaDataControllerTest {
                     numberOfDatasetsToPostPerCompany,
                 ).let { uploadInfos -> uploadInfos.map { it.actualStoredCompany.companyId }.distinct() }
 
-        var actualSizeOfDataMetaInfoSearchResult = 0
         Awaitility
             .await()
             .atMost(MAX_AWAITILITY_DURATION_MS, TimeUnit.MILLISECONDS)
             .pollDelay(AWAITILITY_POLL_DELAY_MS, TimeUnit.MILLISECONDS)
             .untilAsserted {
-                actualSizeOfDataMetaInfoSearchResult = getDataMetaInfoResultSize(companyIds)
+                val actualSizeOfDataMetaInfoSearchResult = getDataMetaInfoResultSize(companyIds)
                 assertEquals(
                     expectedSizeOfDataMetaInfoSearchResult,
                     actualSizeOfDataMetaInfoSearchResult,
@@ -121,8 +121,8 @@ class MetaDataControllerTest {
                         dataType = it,
                     )
                 }
-
-        val expectedSizeOfDataMetaInfoForUploadedDataType = initialNumberOfDataSets[dataTypeUploaded]!! + totalNumberOfDatasetsPerFramework
+        val expectedSizeOfDataMetaInfoForUploadedDataType =
+            initialNumberOfDataSets.getValue(dataTypeUploaded) + totalNumberOfDatasetsPerFramework
         postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
             dataType = dataTypeUploaded,
             expectedSizeOfDataMetaInfoSearchResult = expectedSizeOfDataMetaInfoForUploadedDataType,
@@ -224,7 +224,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy financials data and check that no non-financials data sets exist`() {
+    fun `post companies and eu taxonomy financials data and check that no non financials data sets exist`() {
         val initialNumberOfNonFinancialsDatasets =
             apiAccessor.getNumberOfDataMetaInfo(
                 dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
