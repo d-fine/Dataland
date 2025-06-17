@@ -1,0 +1,22 @@
+:root {
+    --font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial;
+
+     /* Formkit Style Override */
+    --fk-font-family: var(--font-family)
+}
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: unset;
+}
+
+body {
+  font-family: var(--font-family) sans-serif;
+  margin: 0;
+  padding: 0;
+}
