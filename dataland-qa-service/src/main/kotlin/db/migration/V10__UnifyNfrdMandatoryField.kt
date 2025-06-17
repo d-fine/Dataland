@@ -24,7 +24,6 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
     /**
      * Migrates all rows of backend tables corresponding to NFRD Mandatory Field
      * @context the context of the migration script
-     * @tableName the name of the table
      */
     fun migrateNfrdMandatoryField(context: Context) {
         val statement = context.connection.createStatement()
