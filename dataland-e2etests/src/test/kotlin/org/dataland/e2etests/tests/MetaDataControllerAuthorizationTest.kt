@@ -59,7 +59,7 @@ class MetaDataControllerAuthorizationTest {
     }
 
     @Test
-    fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
+    fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search fails`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
@@ -67,23 +67,13 @@ class MetaDataControllerAuthorizationTest {
             )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val expectedMetaInformation =
-            MetaDataUtils.buildAcceptedAndActiveDataMetaInformation(
-                dataId = testDataId,
-                companyId = testCompanyId,
-                testDataType = testDataType,
-                user = TechnicalUser.Admin,
-            )
-        val actualMetaInformation =
+        assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedMetaDataControllerApi
                 .getListOfDataMetaInfo(
                     companyId = testCompanyId,
                     dataType = testDataType,
                 ).filter { it.dataId == testDataId }
-        MetaDataUtils.assertDataMetaInfoMatches(
-            actualDataMetaInfo = actualMetaInformation.first(),
-            expectedDataMetaInfo = expectedMetaInformation,
-        )
+        }
     }
 
     @Test
