@@ -58,7 +58,7 @@ class V10__UnifyNfrdMandatoryFieldTest {
         migration.migrateNfrdMandatoryField(mockContext)
 
         verify(mockStatement).executeUpdate(
-            "UPDATE 'data_point_qa_review' SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
+            "UPDATE data_point_qa_review SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
                 "WHERE data_point_type = 'extendedEnumYesNoNfrdMandatory'",
         )
         verify(mockStatement).close()
