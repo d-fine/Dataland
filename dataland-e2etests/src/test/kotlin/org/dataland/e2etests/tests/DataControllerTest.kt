@@ -167,7 +167,6 @@ class DataControllerTest {
                 listOf(testDataEuTaxonomyNonFinancials),
                 apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
                 reportingPeriod = reportingPeriod,
-                ensureQaPassed = true,
             )
         val companyId = uploadInfo[0].actualStoredCompany.companyId
         val dataId = uploadInfo[0].actualStoredDataMetaInfo!!.dataId
@@ -183,9 +182,7 @@ class DataControllerTest {
             condition = { it == 1 },
         )
 
-        assertDoesNotThrow {
-            apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId)
-        }
+        assertDoesNotThrow { apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId) }
 
         assertThrows<ClientException> {
             apiAccessor.dataControllerApiForP2pData.getCompanyAssociatedP2pData(dataId)
@@ -194,9 +191,7 @@ class DataControllerTest {
         listOf(
             apiAccessor.dataControllerApiForEuTaxonomyFinancials::getAllCompanyEutaxonomyFinancialsData,
             apiAccessor.dataControllerApiForSfdrData::getAllCompanySfdrData,
-        ).forEach {
-            assertEquals(0, it(companyId, false, null).size)
-        }
+        ).forEach { getAllCompanyData -> assertEquals(0, getAllCompanyData(companyId, false, null).size) }
 
         apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(

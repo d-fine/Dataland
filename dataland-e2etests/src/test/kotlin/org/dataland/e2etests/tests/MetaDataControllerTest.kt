@@ -1,5 +1,3 @@
-@file:Suppress("kotlin:S104")
-
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -35,8 +33,7 @@ class MetaDataControllerTest {
 
     private val numberOfCompaniesToPostPerFramework = 4
     private val numberOfDatasetsToPostPerCompany = 5
-    private val totalNumberOfDatasetsPerFramework =
-        numberOfCompaniesToPostPerFramework * numberOfDatasetsToPostPerCompany
+    private val totalNumberOfDatasetsPerFramework = numberOfCompaniesToPostPerFramework * numberOfDatasetsToPostPerCompany
 
     private val listOfTestCompanyInformation =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
@@ -104,7 +101,7 @@ class MetaDataControllerTest {
         }
     }
 
-    @Suppress("UnusedPrivateMember")
+    @Suppress("UnusedPrivateMember", "kotlin:S1144")
     private fun metaInfoSearchTestDataProvider(): Stream<Arguments> =
         Stream.of(
             Arguments.of(false, totalNumberOfDatasetsPerFramework),
@@ -120,13 +117,12 @@ class MetaDataControllerTest {
         val dataTypeUploaded = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val dataTypeNotUploaded = DataTypeEnum.eutaxonomyMinusFinancials
         val initialNumberOfDataSets =
-            listOf(dataTypeUploaded, dataTypeNotUploaded)
-                .associateWith {
-                    apiAccessor.getNumberOfDataMetaInfo(
-                        showOnlyActive = showOnlyActive,
-                        dataType = it,
-                    )
-                }
+            listOf(dataTypeUploaded, dataTypeNotUploaded).associateWith {
+                apiAccessor.getNumberOfDataMetaInfo(
+                    showOnlyActive = showOnlyActive,
+                    dataType = it,
+                )
+            }
         val expectedSizeOfDataMetaInfoForUploadedDataType =
             initialNumberOfDataSets.getValue(dataTypeUploaded) + expectedDataMetaInfoSizeChange
         postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
@@ -144,10 +140,7 @@ class MetaDataControllerTest {
 
         assertEquals(
             initialNumberOfDataSets[dataTypeNotUploaded],
-            apiAccessor.getNumberOfDataMetaInfo(
-                dataType = dataTypeNotUploaded,
-                showOnlyActive = showOnlyActive,
-            ),
+            apiAccessor.getNumberOfDataMetaInfo(dataType = dataTypeNotUploaded, showOnlyActive = showOnlyActive),
         )
     }
 
