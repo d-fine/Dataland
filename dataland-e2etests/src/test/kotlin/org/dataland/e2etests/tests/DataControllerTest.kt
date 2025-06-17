@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests
 
-import org.awaitility.Awaitility
 import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -14,6 +13,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -172,13 +172,16 @@ class DataControllerTest {
         val companyId = uploadInfo[0].actualStoredCompany.companyId
         val dataId = uploadInfo[0].actualStoredDataMetaInfo!!.dataId
 
-        Awaitility.await().until {
-            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .getAllCompanyEutaxonomyNonFinancialsData(
-                    companyId = companyId,
-                    showOnlyActive = false,
-                ).size == 1
-        }
+        ApiAwait.waitForData(
+            supplier = {
+                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                    .getAllCompanyEutaxonomyNonFinancialsData(
+                        companyId = companyId,
+                        showOnlyActive = false,
+                    ).size
+            },
+            condition = { it == 1 },
+        )
 
         assertDoesNotThrow {
             apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId)

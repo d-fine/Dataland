@@ -127,6 +127,12 @@ class DataPointUtils
             return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
         }
 
+        /**
+         * Retrieve all active framework-based data dimensions using the given DataDimensionFilter. If no framework is specified,
+         * all frameworks are taken into account.
+         * @param dataDimensionFilter the filter to use when searching for active data dimensions
+         * @return a list of active framework data dimensions
+         */
         private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }

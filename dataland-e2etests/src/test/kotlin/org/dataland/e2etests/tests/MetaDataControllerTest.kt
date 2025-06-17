@@ -2,7 +2,6 @@
 
 package org.dataland.e2etests.tests
 
-import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -13,16 +12,20 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.MetaDataUtils
 import org.dataland.e2etests.utils.QaApiAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
-import java.util.concurrent.TimeUnit
+import java.util.stream.Stream
 import kotlin.math.abs
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -43,11 +46,6 @@ class MetaDataControllerTest {
     @BeforeAll
     fun postTestDocuments() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
-    }
-
-    companion object {
-        private const val MAX_AWAITILITY_DURATION_MS = 10000L
-        private const val AWAITILITY_POLL_DELAY_MS = 500L
     }
 
     @Test
@@ -96,43 +94,50 @@ class MetaDataControllerTest {
                     numberOfDatasetsToPostPerCompany,
                 ).let { uploadInfos -> uploadInfos.map { it.actualStoredCompany.companyId }.distinct() }
 
-        Awaitility
-            .await()
-            .atMost(MAX_AWAITILITY_DURATION_MS, TimeUnit.MILLISECONDS)
-            .pollDelay(AWAITILITY_POLL_DELAY_MS, TimeUnit.MILLISECONDS)
-            .untilAsserted {
-                val actualSizeOfDataMetaInfoSearchResult = getDataMetaInfoResultSize(companyIds)
-                assertEquals(
-                    expectedSizeOfDataMetaInfoSearchResult,
-                    actualSizeOfDataMetaInfoSearchResult,
-                    "$errorMessage The found size is $actualSizeOfDataMetaInfoSearchResult.",
-                )
-            }
+        ApiAwait.untilAsserted {
+            val actualSizeOfDataMetaInfoSearchResult = getDataMetaInfoResultSize(companyIds)
+            assertEquals(
+                expectedSizeOfDataMetaInfoSearchResult,
+                actualSizeOfDataMetaInfoSearchResult,
+                "$errorMessage The found size is $actualSizeOfDataMetaInfoSearchResult.",
+            )
+        }
     }
 
-    @Test
-    fun `post companies and eu taxonomy data and check meta info search including inactive datasets`() {
+    @Suppress("UnusedPrivateMember")
+    private fun metaInfoSearchTestDataProvider(): Stream<Arguments> =
+        Stream.of(
+            Arguments.of(false, totalNumberOfDatasetsPerFramework),
+            Arguments.of(true, numberOfCompaniesToPostPerFramework),
+        )
+
+    @ParameterizedTest
+    @MethodSource("metaInfoSearchTestDataProvider")
+    fun `post companies and eu taxonomy data and check meta info search`(
+        showOnlyActive: Boolean,
+        expectedDataMetaInfoSizeChange: Int,
+    ) {
         val dataTypeUploaded = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val dataTypeNotUploaded = DataTypeEnum.eutaxonomyMinusFinancials
         val initialNumberOfDataSets =
             listOf(dataTypeUploaded, dataTypeNotUploaded)
                 .associateWith {
                     apiAccessor.getNumberOfDataMetaInfo(
-                        showOnlyActive = false,
+                        showOnlyActive = showOnlyActive,
                         dataType = it,
                     )
                 }
         val expectedSizeOfDataMetaInfoForUploadedDataType =
-            initialNumberOfDataSets.getValue(dataTypeUploaded) + totalNumberOfDatasetsPerFramework
+            initialNumberOfDataSets.getValue(dataTypeUploaded) + expectedDataMetaInfoSizeChange
         postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
             dataType = dataTypeUploaded,
             expectedSizeOfDataMetaInfoSearchResult = expectedSizeOfDataMetaInfoForUploadedDataType,
             errorMessage =
                 "The list with all data meta info is expected to increase by " +
-                    "$totalNumberOfDatasetsPerFramework to $expectedSizeOfDataMetaInfoForUploadedDataType.",
+                    "$expectedDataMetaInfoSizeChange to $expectedSizeOfDataMetaInfoForUploadedDataType.",
         ) {
             apiAccessor.getNumberOfDataMetaInfo(
-                showOnlyActive = false,
+                showOnlyActive = showOnlyActive,
                 dataType = dataTypeUploaded,
             )
         }
@@ -141,32 +146,9 @@ class MetaDataControllerTest {
             initialNumberOfDataSets[dataTypeNotUploaded],
             apiAccessor.getNumberOfDataMetaInfo(
                 dataType = dataTypeNotUploaded,
-                showOnlyActive = false,
+                showOnlyActive = showOnlyActive,
             ),
         )
-    }
-
-    @Test
-    fun `post companies and eu taxonomy data and check meta info search excluding inactive datasets`() {
-        val usedDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val initialSizeOfDataMetaInfo =
-            apiAccessor.getNumberOfDataMetaInfo(
-                showOnlyActive = true,
-                dataType = usedDataType,
-            )
-        val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + numberOfCompaniesToPostPerFramework
-        postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
-            dataType = usedDataType,
-            expectedSizeOfDataMetaInfoSearchResult = expectedSizeOfDataMetaInfo,
-            errorMessage =
-                "The list with all data meta info is expected to increase by " +
-                    "$numberOfCompaniesToPostPerFramework to $expectedSizeOfDataMetaInfo.",
-        ) {
-            apiAccessor.getNumberOfDataMetaInfo(
-                showOnlyActive = true,
-                dataType = usedDataType,
-            )
-        }
     }
 
     @Test

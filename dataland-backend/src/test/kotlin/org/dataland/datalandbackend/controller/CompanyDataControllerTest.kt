@@ -15,7 +15,6 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DataPointUtils
-import org.dataland.datalandbackend.utils.SharedFrameworkFieldsUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
@@ -31,9 +30,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -250,14 +249,14 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `getAggregatedFrameworkDataSummary does not count datasets with only shared fields`() {
-        val testDataPointTypeName = "testDataPointType"
+        val testDataPointTypeName = "extendedDateFiscalYearEnd"
         mockSecurityContext()
         doReturn(
             mock<FrameworkSpecification> {
                 on { schema } doReturn
-                    "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"testDataPointType\",\"ref\":\"dummy\"}}}}"
+                    "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$testDataPointTypeName\",\"ref\":\"dummy\"}}}}"
             },
-        ).whenever(specificationClient).getFrameworkSpecification(anyString())
+        ).whenever(specificationClient).getFrameworkSpecification(any<String>())
         doReturn(
             listOf(
                 mock<DataPointMetaInformationEntity> {
@@ -265,16 +264,10 @@ internal class CompanyDataControllerTest(
                 },
             ),
         ).whenever(dataPointMetaInformationRepository)
-            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), anyString())
+            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), any<String>())
 
-        Mockito.mockStatic(SharedFrameworkFieldsUtils::class.java).use { sharedFrameworkFielsUtilsMock ->
-            sharedFrameworkFielsUtilsMock
-                .`when`<Set<String>>(SharedFrameworkFieldsUtils::getSharedFields)
-                .doReturn(setOf(testDataPointTypeName))
-
-            val testCompanyId = UUID.randomUUID().toString()
-            val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
-            assertEquals(0, result?.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
-        }
+        val testCompanyId = UUID.randomUUID().toString()
+        val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
+        assertEquals(0, result?.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
     }
 }
