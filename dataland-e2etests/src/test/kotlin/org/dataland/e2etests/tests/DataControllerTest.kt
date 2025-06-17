@@ -180,9 +180,13 @@ class DataControllerTest {
                 ).size == 1
         }
 
-        assertThrows<ClientException> {
+        assertDoesNotThrow {
             apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId)
-        }.let { assert(it.message!!.contains("code=404")) }
+        }
+
+        assertThrows<ClientException> {
+            apiAccessor.dataControllerApiForP2pData.getCompanyAssociatedP2pData(dataId)
+        }.let { assertEquals(400, it.statusCode) }
 
         apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .getAllCompanyEutaxonomyFinancialsData(
@@ -207,11 +211,11 @@ class DataControllerTest {
         apiAccessor.companyDataControllerApi
             .getAggregatedFrameworkDataSummary(
                 companyId = companyId,
-            ).forEach { framework, numberOfDatasets ->
+            ).forEach { framework, aggregatedFrameworkDataSummary ->
                 if (framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString()) {
-                    assertEquals(1, numberOfDatasets)
+                    assertEquals(1, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
                 } else {
-                    assertEquals(0, numberOfDatasets)
+                    assertEquals(0, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
                 }
             }
     }
