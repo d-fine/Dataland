@@ -319,8 +319,8 @@ internal class MetaDataControllerTest
                     ),
                 )
 
-            val allMatchesExpected = metaDataController.getAvailableDataDimensions(listOf(storedCompany.companyId), null, null).body
-            assertTrue(allMatchesExpected == allDimensions.subList(0, 2))
+            val retrievedMetaData = metaDataController.getAvailableDataDimensions(listOf(storedCompany.companyId), null, null).body
+            assertEquals(allDimensions, retrievedMetaData)
 
             val testFrameworkExpected = metaDataController.getAvailableDataDimensions(null, listOf(testFramework), null).body
             assertTrue(testFrameworkExpected == listOf(allDimensions.last()))
