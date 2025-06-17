@@ -131,7 +131,11 @@ class DataPointUtils
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
             val frameworks =
-                dataDimensionFilter.dataTypesOrDataPointTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+                if (dataDimensionFilter.dataTypesOrDataPointTypes.isNullOrEmpty()) {
+                    allAssembledFrameworks
+                } else {
+                    dataDimensionFilter.dataTypesOrDataPointTypes.filter { allAssembledFrameworks.contains(it) }
+                }
 
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
