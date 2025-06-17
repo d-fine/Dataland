@@ -5,18 +5,24 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.SharedFrameworkFieldsUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -25,14 +31,21 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import java.util.UUID
 import kotlin.reflect.jvm.javaMethod
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
@@ -47,6 +60,9 @@ internal class CompanyDataControllerTest(
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
+    @MockitoBean private val dataPointMetaInformationRepository = mock<DataPointMetaInformationRepository>()
+
+    @MockitoBean private val specificationClient = mock<SpecificationControllerApi>()
     lateinit var companyController: CompanyDataController
 
     @BeforeEach
@@ -230,5 +246,34 @@ internal class CompanyDataControllerTest(
 
         assertEquals(listOf("ze03VSQH8elRgYoZgV3c", "7tSuSlwbMYu2Po0aqlVm"), resultLEICodes)
         assertEquals(listOf("Company A", "Company B"), resultCompanyNames)
+    }
+
+    @Test
+    fun `getAggregatedFrameworkDataSummary does not count datasets with only shared fields`() {
+        val testDataPointTypeName = "testDataPointType"
+        mockSecurityContext()
+        doReturn(
+            mock<FrameworkSpecification> {
+                on { schema } doReturn
+                    "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"testDataPointType\",\"ref\":\"dummy\"}}}}"
+            },
+        ).whenever(specificationClient).getFrameworkSpecification(anyString())
+        doReturn(
+            listOf(
+                mock<DataPointMetaInformationEntity> {
+                    on { reportingPeriod } doReturn "2023"
+                },
+            ),
+        ).whenever(dataPointMetaInformationRepository)
+            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), anyString())
+
+        Mockito.mockStatic(SharedFrameworkFieldsUtils::class.java).use {
+            it.whenever { SharedFrameworkFieldsUtils.getSharedFields() }.doReturn(setOf(testDataPointTypeName))
+            whenever(it)
+        }
+
+        val testCompanyId = UUID.randomUUID().toString()
+        val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
+        assertEquals(0, result?.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
     }
 }

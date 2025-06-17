@@ -20,6 +20,7 @@ import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
+import org.dataland.datalandbackend.utils.SharedFrameworkFieldsUtils
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
@@ -359,7 +360,17 @@ class AssembledDataManager
             val dataPointIds =
                 dataPointDimensions.entries
                     .associate { (dataDimension, dataPointDimensionList) ->
-                        dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
+                        val availableDataPointIds = dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
+                        dataDimension to
+                            if (availableDataPointIds.keys
+                                    .map { it.dataPointType }
+                                    .subtract(SharedFrameworkFieldsUtils.getSharedFields())
+                                    .isNotEmpty()
+                            ) {
+                                availableDataPointIds.values.toList()
+                            } else {
+                                emptyList()
+                            }
                     }.filterNot { it.value.isEmpty() }
 
             return assembleDatasetsFromDataPointIds(dataPointIds, correlationId)

@@ -193,15 +193,11 @@ class DataPointManager
         /**
          * Retrieves the currently active data points for a list of specific data point dimensions
          * @param dataPointDimensions the data dimensions to retrieve the data points for
-         * @return the id of the currently active data point
+         * @return a map associating each available data point dimension with the id of the currently active data point
          */
         @Transactional(readOnly = true)
-        fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): List<String> {
-            val dataPointIds = mutableListOf<String>()
-            dataPointDimensions.forEach {
-                val dataPointId = metaDataManager.getCurrentlyActiveDataId(it) ?: return@forEach
-                dataPointIds.add(dataPointId)
-            }
-            return dataPointIds
-        }
+        fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): Map<BasicDataPointDimensions, String> =
+            dataPointDimensions
+                .associateWith { metaDataManager.getCurrentlyActiveDataId(it) ?: "" }
+                .filterValues { it.isNotEmpty() }
     }
