@@ -29,7 +29,7 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
         val statement = context.connection.createStatement()
         val count =
             statement.executeUpdate(
-                "UPDATE 'data_point_qa_review' SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
+                "UPDATE data_point_qa_review SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
                     "WHERE data_point_type = 'extendedEnumYesNoNfrdMandatory'",
             )
 
