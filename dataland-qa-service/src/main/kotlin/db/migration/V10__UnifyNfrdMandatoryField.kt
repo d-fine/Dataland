@@ -13,14 +13,11 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
-        logger.info("Starting migration V10__UnifyNfrdMandatoryField")
-
         val connection = context!!.connection
         val tableName = "data_point_qa_review"
         val reviewResultSet = connection.metaData.getTables(null, null, tableName, null)
 
         if (reviewResultSet.next()) {
-            logger.info("Calling migrate function migrateNfrdMandatoryField")
             migrateNfrdMandatoryField(context, tableName)
         }
     }
@@ -34,17 +31,6 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
         tableName: String,
     ) {
         val statement = context.connection.createStatement()
-
-        val preCheck =
-            statement.executeQuery(
-                "SELECT COUNT(*) FROM data_point_qa_review WHERE data_point_type = 'extendedEnumYesNoNfrdMandatory'",
-            )
-        if (preCheck.next()) {
-            val matching = preCheck.getInt(1)
-            logger.info("Pre-update: Found $matching matching rows to migrate.")
-        } else {
-            logger.info("Pre-update: Found no matching rows to migrate.")
-        }
 
         val count =
             statement.executeUpdate(
