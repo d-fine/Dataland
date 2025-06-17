@@ -81,7 +81,8 @@ class UserServiceTest {
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
             ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolioUpload) }
-            val portfolioResponse = assertDoesNotThrow { UserService.portfolioControllerApi.getAllPortfoliosForCurrentUser() }
+            val portfolioResponse =
+                assertDoesNotThrow { UserService.portfolioControllerApi.getAllPortfoliosForCurrentUser() }
             val enrichedPortfolio =
                 UserService.portfolioControllerApi.getEnrichedPortfolio(
                     portfolioResponse.maxBy { it.creationTimestamp }.portfolioId,
@@ -94,7 +95,11 @@ class UserServiceTest {
             storedCompanies.map { it.companyId }.forEach {
                 assertEquals(
                     null,
-                    getAvailableReportingPeriods(it, DataTypeEnum.additionalMinusCompanyMinusInformation, enrichedPortfolio),
+                    getAvailableReportingPeriods(
+                        it,
+                        DataTypeEnum.additionalMinusCompanyMinusInformation,
+                        enrichedPortfolio,
+                    ),
                 )
             }
             relevantPortfolioFrameworks.forEach {
