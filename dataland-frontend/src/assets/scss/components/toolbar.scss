@@ -2,7 +2,7 @@
 
 .dataland-toolbar {
   z-index: 1000;
-  background-color: variables.$white;
+  background-color: var(--default-neutral-white);
 
   &.sticky {
     top: 4rem;

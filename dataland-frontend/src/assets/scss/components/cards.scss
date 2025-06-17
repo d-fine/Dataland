@@ -31,7 +31,7 @@
   }
 }
 .d-card {
-  background: variables.$white;
+  background: var(--default-neutral-white);
   padding: variables.$spacing-sm;
   box-shadow: 0 0 3px 3px colors.$shadow-color;
   border-radius: units.$upload-form-radius;
@@ -57,7 +57,7 @@
 
 .p-progressbar {
   height: 2rem;
-  background: variables.$white;
+  background: var(--default-neutral-white);
   border: 1px solid variables.$gray-light;
   border-radius: 6px;
   .p-progressbar-value {
@@ -65,7 +65,7 @@
     background: variables.$orange-prime;
   }
   .p-progressbar-label {
-    color: variables.$white;
+    color: var(--default-neutral-white);
     line-height: 1.5rem;
   }
 }

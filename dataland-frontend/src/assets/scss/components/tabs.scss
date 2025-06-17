@@ -13,15 +13,15 @@
 }
 
 .p-tablist, .p-tablist-content, .p-tablist-tab-list {
-  background: variables.$white;
+  background: var(--default-neutral-white);
   border: 0;
   padding: 0;
   margin :0;
 
   .p-tab {
     border: 0 solid transparent;
-    border-bottom: 2px solid variables.$white;
-    background: variables.$white;
+    border-bottom: 2px solid var(--default-neutral-white);
+    background: var(--default-neutral-white);
     color: variables.$gray;
     padding: 1.25rem 0;
     margin: 0 1.25rem;
@@ -33,13 +33,13 @@
     transition: box-shadow 0.2s;
 
     &:not(.p-tab-active):hover {
-      background: variables.$white;
+      background: var(--default-neutral-white);
       border-color: variables.$gray-light;
       color: variables.$gray;
     }
 
     &.p-tab-active {
-      background: variables.$white;
+      background: var(--default-neutral-white);
       border-color: colors.$main-color;
       color: colors.$main-color;
     }

@@ -1,7 +1,7 @@
 @use 'variables';
 
 // buttons
-$btn-primary-color: variables.$white;
+$btn-primary-color: var(--default-neutral-white);
 $btn-primary-bg: variables.$orange-prime;
 $btn-danger-bg: variables.$red;
 $btn-success-bg: variables.$green;
@@ -9,7 +9,7 @@ $btn-disabled-color: variables.$gray;
 $btn-focus-border-color: variables.$blue-light;
 
 //table
-$table-background-color: variables.$white;
+$table-background-color: var(--default-neutral-white);
 $table-background-hover-color: variables.$gray-lighter;
 $table-background-hover-color-light: variables.$gray-lighter;
 $table-border: variables.$gray-light;
@@ -24,16 +24,13 @@ $pagination-bg-hover: variables.$gray-light;
 // typography
 $main-text-color: variables.$brown-dark;
 $main-color: variables.$orange-prime;
-$bg-text-primary: variables.$white;
+$bg-text-primary: var(--default-neutral-white);
 $text-color-secondary: variables.$gray;
-$text-color-third: variables.$brown-light;
 $menu-text-color: variables.$orange-prime;
 
 //cards
 $card-background: variables.$paper-white;
 $card-text: variables.$brown-dark;
-$progressbar-bg: variables.$surface-ground;
-$progressbar-color: variables.$orange-prime;
 $shadow-color: variables.$gray-lighter;
 
 //forms
@@ -46,10 +43,9 @@ $outline-dropdown-border: variables.$brown-light;
 $fill-dropdown-bg: variables.$brown-light;
 $fill-dropdown-hover-bg: variables.$gray-light;
 $fill-dropdown-hover-text: variables.$brown-light;
-$fill-dropdown-select-text-color: variables.$white;
+$fill-dropdown-select-text-color: var(--default-neutral-white);
 $fill-dropdown-select-bg-color: variables.$orange-prime;
-$fill-input-color: variables.$white;
-$upload-form-bg: variables.$white;
+$upload-form-bg: var(--default-neutral-white);
 $input-separator: variables.$gray-light;
 $el-list-item-bg: variables.$gray-light;
 $input-error: variables.$red;
@@ -66,15 +62,15 @@ $message-block-text: variables.$brown-dark;
 
 $message-info-bg: var(--blue-600);
 $message-info-border: var(--blue-800);
-$message-info-text: variables.$white;
+$message-info-text: var(--default-neutral-white);
 
-$message-bordered-success-bg: variables.$white;
+$message-bordered-success-bg: var(--default-neutral-white);
 $message-bordered-success-border: variables.$green;
 $message-bordered-success-text: variables.$brown-light;
 
 $message-success-bg: variables.$green;
 $message-success-border: variables.$green;
-$message-success-text: variables.$white;
+$message-success-text: var(--default-neutral-white);
 
 $message-warn-bg: var(--yellow-600);
 $message-warn-border: var(--yellow-800);
@@ -82,7 +78,7 @@ $message-warn-text: variables.$brown-dark;
 
 $message-error-bg: variables.$red;
 $message-error-border: variables.$red;
-$message-error-text: variables.$white;
+$message-error-text: var(--default-neutral-white);
 
 //navigation
 $jumpLinks-color: variables.$brown-lighter;
@@ -90,4 +86,3 @@ $jumpLinks-hover: variables.$orange-prime;
 
 //info-bar
 $info-bar-bg: variables.$gray-light;
-$info-bar-border: variables.$orange-prime;

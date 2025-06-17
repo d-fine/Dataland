@@ -18,7 +18,7 @@
 }
 
 body {
-  font-family: variables.$ibm-plex-sans;
+  font-family: var(--font-family);
   font-size: variables.$fs-base;
   font-weight: variables.$fw-normal;
   margin: 0;
@@ -214,7 +214,7 @@ body {
 // sections
 .third-section {
   background-color: variables.$brown-lighter;
-  color: variables.$white;
+  color: var(--default-neutral-white);
 }
 
 .second-section {
@@ -243,7 +243,7 @@ body {
 }
 
 .bg-white {
-  background-color: variables.$white !important;
+  background-color: var(--default-neutral-white) !important;
 }
 
 // --- //

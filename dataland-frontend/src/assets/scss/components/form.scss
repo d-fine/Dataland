@@ -37,7 +37,7 @@ form {
 }
 
 input {
-  font-family: variables.$ibm-plex-sans;
+  font-family: inherit;
   font-size: units.$input-text-fs;
   &[type='submit'],
   &[type='reset'] {
@@ -79,7 +79,7 @@ input[type='radio'] {
 }
 
 .p-inputtext {
-  font-family: variables.$ibm-plex-sans;
+  font-family: inherit;
   color: colors.$input-text-color;
   background: colors.$input-text-bg;
   padding: variables.$spacing-xs;
@@ -147,29 +147,29 @@ input[type='radio'] {
 }
 
 .fill-dropdown {
-  background: variables.$white;
+  background: var(--default-neutral-white);
   border-width: 2px;
   border-style: solid;
   border-color: colors.$fill-dropdown-bg;
   border-radius: 8px;
   &.always-fill {
     background: colors.$fill-dropdown-bg;
-    color: variables.$white;
+    color: var(--default-neutral-white);
     .p-inputtext {
-      color: variables.$white;
+      color: var(--default-neutral-white);
     }
     .p-dropdown-trigger {
-      color: variables.$white;
+      color: var(--default-neutral-white);
     }
   }
   &.p-inputwrapper-filled {
     background: colors.$fill-dropdown-bg;
-    color: variables.$white;
+    color: var(--default-neutral-white);
     .p-inputtext {
-      color: variables.$white;
+      color: var(--default-neutral-white);
     }
     .p-dropdown-trigger {
-      color: variables.$white;
+      color: var(--default-neutral-white);
     }
   }
   &.p-overlay-open {
@@ -197,7 +197,7 @@ input[type='radio'] {
 }
 
 .p-dropdown-panel {
-  background: variables.$white;
+  background: var(--default-neutral-white);
   .p-dropdown-items {
     .p-dropdown-item {
       margin: 0;
