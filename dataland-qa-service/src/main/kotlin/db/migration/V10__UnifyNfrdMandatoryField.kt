@@ -14,10 +14,12 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
         val connection = context!!.connection
-        val reviewResultSet = connection.metaData.getTables(null, null, "data_point_qa_review", null)
+        val tableName = "data_point_qa_review"
+        val reviewResultSet = connection.metaData.getTables(null, null, tableName, null)
 
         if (reviewResultSet.next()) {
-            migrateNfrdMandatoryField(context)
+            logger.info("Starting migration V10__UnifyNfrdMandatoryField")
+            migrateNfrdMandatoryField(context, tableName)
         }
     }
 
@@ -25,17 +27,32 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
      * Migrates all rows of backend tables corresponding to NFRD Mandatory Field
      * @context the context of the migration script
      */
-    fun migrateNfrdMandatoryField(context: Context) {
+    fun migrateNfrdMandatoryField(
+        context: Context,
+        tableName: String,
+    ) {
         val statement = context.connection.createStatement()
+
+        val preCheck =
+            statement.executeQuery(
+                "SELECT COUNT(*) FROM data_point_qa_review WHERE data_point_type = 'extendedEnumYesNoNfrdMandatory'",
+            )
+        if (preCheck.next()) {
+            val matching = preCheck.getInt(1)
+            logger.info("Pre-update: Found $matching matching rows to migrate.")
+        } else {
+            logger.info("Pre-update: Found no matching rows to migrate.")
+        }
+
         val count =
             statement.executeUpdate(
-                "UPDATE data_point_qa_review SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
+                "UPDATE $tableName SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
                     "WHERE data_point_type = 'extendedEnumYesNoNfrdMandatory'",
             )
 
         logger
             .info(
-                "Updated $count rows in \"data_point_qa_review\" from" +
+                "Updated $count rows in $tableName from" +
                     " \"extendedEnumYesNoNfrdMandatory\" to \"extendedEnumYesNoIsNfrdMandatory\"",
             )
 
