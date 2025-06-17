@@ -8,8 +8,10 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.UserService
 import org.dataland.userService.openApiClient.model.EnrichedPortfolio
+import org.dataland.userService.openApiClient.model.PortfolioMonitoringPatch
 import org.dataland.userService.openApiClient.model.PortfolioUpload
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -127,5 +129,60 @@ class UserServiceTest {
                 getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
             )
         }
+    }
+
+    @Test
+    fun `portfolio yields expected bulk requests after activating monitoring`() {
+        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val dummyReportingPeriod = "2024"
+        val portfolioUpload =
+            PortfolioUpload(
+                portfolioName = "Test Portfolio ${UUID.randomUUID()}",
+                companyIds = setOf(dummyCompanyId),
+                isMonitored = false,
+                startingMonitoringPeriod = null,
+                monitoredFrameworks = emptySet(),
+            )
+
+        val portfolio =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+                ApiAwait.waitForData { UserService.portfolioControllerApi.createPortfolio(portfolioUpload) }
+            }
+
+        assertEquals(portfolioUpload.portfolioName, portfolio.portfolioName)
+        assertEquals(false, portfolio.isMonitored)
+        assertEquals(emptySet<String>(), portfolio.monitoredFrameworks)
+        assertEquals(null, portfolio.startingMonitoringPeriod)
+
+        val portfolioId = portfolio.portfolioId
+
+        val patchedPortfolio =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+                ApiAwait.waitForData {
+                    UserService.portfolioControllerApi.patchMonitoring(
+                        portfolioId,
+                        PortfolioMonitoringPatch(
+                            isMonitored = true,
+                            startingMonitoringPeriod = dummyReportingPeriod,
+                            monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        ),
+                    )
+                }
+            }
+
+        assertEquals(true, patchedPortfolio.isMonitored)
+        assertEquals(dummyReportingPeriod, patchedPortfolio.startingMonitoringPeriod)
+        assertEquals(setOf("sfdr", "eutaxonomy"), patchedPortfolio.monitoredFrameworks)
+
+        val requests =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                ApiAwait.waitForData {
+                    apiAccessor.requestControllerApi.getDataRequests(datalandCompanyId = dummyCompanyId)
+                }
+            }
+
+        assertEquals(3, requests.size)
+        assertTrue(requests.all { it.userId == TechnicalUser.Reader.technicalUserId })
+        assertTrue(requests.all { it.reportingPeriod >= dummyReportingPeriod })
     }
 }
