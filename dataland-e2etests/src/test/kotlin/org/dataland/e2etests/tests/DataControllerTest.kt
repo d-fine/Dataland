@@ -188,17 +188,12 @@ class DataControllerTest {
             apiAccessor.dataControllerApiForP2pData.getCompanyAssociatedP2pData(dataId)
         }.let { assertEquals(400, it.statusCode) }
 
-        apiAccessor.dataControllerApiForEuTaxonomyFinancials
-            .getAllCompanyEutaxonomyFinancialsData(
-                companyId = companyId,
-                showOnlyActive = false,
-            ).let { assertEquals(0, it.size) }
-
-        apiAccessor.dataControllerApiForSfdrData
-            .getAllCompanySfdrData(
-                companyId = companyId,
-                showOnlyActive = false,
-            ).let { assertEquals(0, it.size) }
+        listOf(
+            apiAccessor.dataControllerApiForEuTaxonomyFinancials::getAllCompanyEutaxonomyFinancialsData,
+            apiAccessor.dataControllerApiForSfdrData::getAllCompanySfdrData,
+        ).forEach {
+            assertEquals(0, it(companyId, false, null).size)
+        }
 
         apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(

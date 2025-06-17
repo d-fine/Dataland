@@ -1,3 +1,5 @@
+@file:Suppress("kotlin:S104")
+
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
@@ -23,7 +25,6 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-@Suppress("kotlin:S104")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MetaDataControllerTest {
     private val apiAccessor = ApiAccessor()
