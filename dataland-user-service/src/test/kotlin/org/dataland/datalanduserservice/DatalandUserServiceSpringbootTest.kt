@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
-import org.mockito.kotlin.check // NOSONAR
+import org.mockito.kotlin.check
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -71,7 +71,7 @@ class DatalandUserServiceSpringbootTest
         private val invalidCompanyId = "invalid-company-id"
         private val isMonitored = false
         private val dummyStartingMonitoringPeriod = "2023"
-        private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
+        private val dummyMonitoredFrameworks = setOf("sfdr", "eutaxonomy")
 
         private val dummyPortfolioUpload1 =
             PortfolioUpload(

@@ -40,7 +40,7 @@ class PortfolioBulkDataRequestServiceTest {
     private class BasePortfolioArgumentProvider : ArgumentsProvider {
         override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments?>? =
             Stream.of(
-                args(
+                getArguments(
                     buildBasePortfolio("p1", "Taxonomy", setOf("eutaxonomy"), "2020"),
                     3,
                     setOf(
@@ -49,12 +49,12 @@ class PortfolioBulkDataRequestServiceTest {
                         BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
                     ),
                 ),
-                args(
+                getArguments(
                     buildBasePortfolio("p2", "SFDR", setOf("sfdr"), "2022"),
                     1,
                     setOf(BulkDataRequest.DataTypes.sfdr),
                 ),
-                args(
+                getArguments(
                     buildBasePortfolio("p3", "Combined", setOf("sfdr", "eutaxonomy"), "2021"),
                     4,
                     setOf(
@@ -83,7 +83,7 @@ class PortfolioBulkDataRequestServiceTest {
             monitoredFrameworks = frameworks,
         )
 
-        private fun args(
+        private fun getArguments(
             portfolio: BasePortfolio,
             requestCount: Int,
             dataTypes: Set<BulkDataRequest.DataTypes>,
