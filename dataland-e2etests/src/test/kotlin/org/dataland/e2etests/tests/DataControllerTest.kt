@@ -6,6 +6,7 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -202,6 +203,17 @@ class DataControllerTest {
                 fileFormat = ExportFileType.CSV,
                 keepValueFieldsOnly = false,
             ).let { assert(it.readBytes().isEmpty()) }
+
+        apiAccessor.companyDataControllerApi
+            .getAggregatedFrameworkDataSummary(
+                companyId = companyId,
+            ).forEach { framework, numberOfDatasets ->
+                if (framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString()) {
+                    assertEquals(1, numberOfDatasets)
+                } else {
+                    assertEquals(0, numberOfDatasets)
+                }
+            }
     }
 
     private fun uploadEuTaxoDataset(companyId: UUID) {
