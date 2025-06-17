@@ -13,12 +13,14 @@ class V10__UnifyNfrdMandatoryField : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
+        logger.info("Starting migration V10__UnifyNfrdMandatoryField")
+
         val connection = context!!.connection
         val tableName = "data_point_qa_review"
         val reviewResultSet = connection.metaData.getTables(null, null, tableName, null)
 
         if (reviewResultSet.next()) {
-            logger.info("Starting migration V10__UnifyNfrdMandatoryField")
+            logger.info("Calling migrate function migrateNfrdMandatoryField")
             migrateNfrdMandatoryField(context, tableName)
         }
     }
