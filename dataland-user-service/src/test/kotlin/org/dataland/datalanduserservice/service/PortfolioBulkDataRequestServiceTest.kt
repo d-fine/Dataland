@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -112,7 +113,7 @@ class PortfolioBulkDataRequestServiceTest {
                 .toSet()
 
         val captor = argumentCaptor<BulkDataRequest>()
-        verify(requestControllerApi, times(expectedRequestCount)).postBulkDataRequest(captor.capture(), "123")
+        verify(requestControllerApi, times(expectedRequestCount)).postBulkDataRequest(captor.capture(), eq("user1"))
 
         val capturedRequests = captor.allValues
 
