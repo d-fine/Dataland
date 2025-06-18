@@ -268,6 +268,6 @@ internal class CompanyDataControllerTest(
 
         val testCompanyId = UUID.randomUUID().toString()
         val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
-        assertEquals(0, result?.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
+        assertEquals(0, result.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
     }
 }
