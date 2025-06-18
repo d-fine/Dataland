@@ -85,7 +85,9 @@ class CompanyUploader(
         if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() == 0) return null to null
 
         val conflictingCompanyIds = conflictingIdentifiers.mapNotNull { it["companyId"]?.textValue() }.toSet()
+        logger.info("ConflictingCompanyID $conflictingCompanyIds")
         val conflictingIdentifierTypes = conflictingIdentifiers.mapNotNull { it["identifierType"]?.textValue() }.toSet()
+        logger.info("ConflictingIdentifierType $conflictingIdentifierTypes")
         logger.info("ConflictingCompanyID ${conflictingCompanyIds.size}")
         return if (conflictingCompanyIds.size != 1) {
             conflictingCompanyIds.first() to conflictingIdentifierTypes
@@ -140,6 +142,7 @@ class CompanyUploader(
                     patchCompanyId = conflictingCompanyId
                     allConflictingIdentifiers = conflictingIdentifiers
                 } else {
+                    logger.info("HUHUHUHUHUHUHU")
                     throw exception
                 }
             }
