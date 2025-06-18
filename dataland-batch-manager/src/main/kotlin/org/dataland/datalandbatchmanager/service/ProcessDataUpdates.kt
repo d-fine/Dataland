@@ -132,6 +132,9 @@ class ProcessDataUpdates
             if (flagFileGleif?.delete() == true) {
                 logger.info("Flag file $flagFileGleif deleted successfully.")
             }
+            if (!doFullGleifUpdate) {
+                return
+            }
 
             waitForBackend()
             gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullGleifUpdate)
