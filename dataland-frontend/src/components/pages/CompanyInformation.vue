@@ -174,19 +174,24 @@ async function fetchUserPortfolios(): Promise<void> {
  * Opens the modal for adding the company to which companyInformation refers to one or multiple
  * portfolios of the logged-in user.
  */
-async function openPortfolioModal(): Promise<void> {
-  await fetchUserPortfolios().then(() => {
-    dialog.open(AddCompanyToPortfoliosModal, {
-      props: {
-        header: 'Add company to a portfolio',
-        modal: true,
-      },
-      data: {
-        companyId: props.companyId,
-        allUserPortfolios: allUserPortfolios,
-      },
+function openPortfolioModal(): void {
+  fetchUserPortfolios()
+    .then(() => {
+      dialog.open(AddCompanyToPortfoliosModal, {
+        props: {
+          header: 'Add company to a portfolio',
+          modal: true,
+        },
+        data: {
+          companyId: props.companyId,
+          allUserPortfolios: allUserPortfolios,
+        },
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
     });
-  });
 }
 
 /**
