@@ -17,9 +17,9 @@
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
-          :name="'listOfReportingPeriods'"
+          name="listOfReportingPeriods"
           :options="allReportingPeriodOptions"
-          :availableOptions="allReportingPeriodOptions?.filter((option) => option.value)"
+          :availableOptions="allReportingPeriodOptions?.filter(option => option.value)"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
         />
@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef, watch } from 'vue';
+import { computed, onMounted, ref, toRef, watch } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
@@ -93,28 +93,24 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'closeDownloadModal'): void;
-  (
-    e: 'downloadDataset',
+  (emit: 'closeDownloadModal'): void;
+  (emit: 'downloadDataset',
     reportingPeriod: string[],
     fileType: string,
     keepValuesOnly: boolean,
-    includeAlias: boolean
+    includeAlias: boolean,
   ): void;
 }>();
 
-const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 const isDownloadModalOpen = toRef(props, 'isDownloadModalOpen');
 const selectedFileType = ref<string>('');
 const isModalVisible = ref<boolean>(false);
 const showReportingPeriodError = ref<boolean>(false);
 const showFileTypeError = ref<boolean>(false);
-const allReportingPeriodOptions = ref<ToggleChipInputType[]>(ALL_REPORTING_PERIODS.map((period) => ({
-  name: period.toString(),
-  value: period.toString() in props.availableReportingPeriods,
-})));
+const allReportingPeriodOptions = ref<ToggleChipInputType[]>();
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
+const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 
 const fileTypeSelectionOptions = computed(() => {
   return Object.entries(ExportFileTypeInformation).map(([type, info]) => ({
@@ -123,6 +119,15 @@ const fileTypeSelectionOptions = computed(() => {
   }));
 });
 
+onMounted(() => {
+  if (!props.availableReportingPeriods) {
+    return
+  }
+  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+    name: period.toString(),
+    value: props.availableReportingPeriods.includes(period.toString()),
+  }));
+});
 
 watch(isDownloadModalOpen, (newVal) => {
   isModalVisible.value = newVal ?? false;
