@@ -28,7 +28,6 @@
             <i class="pi pi-plus pr-2" />Add to a portfolio
           </PrimeButton>
           <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
-          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
 
@@ -37,7 +36,7 @@
         :company-name="companyInformation.companyName"
         :dialog-is-open="dialogIsOpen"
         :claim-is-submitted="claimIsSubmitted"
-        @claim-submitted="onClaimSubmitted"
+        @claim-submitted="claimIsSubmitted = true"
         @close-dialog="onCloseDialog"
       />
 
@@ -79,7 +78,6 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type CompanyIdAndName, type CompanyInformation, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import ContextMenuButton from '@/components/general/ContextMenuButton.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
@@ -89,7 +87,6 @@ import { CompanyRole } from '@clients/communitymanager';
 import PrimeButton from 'primevue/button';
 import router from '@/router';
 import AddCompanyToPortfoliosModal from '@/components/general/AddCompanyToPortfoliosModal.vue';
-import type { ReducedBasePortfolio } from '@/components/general/AddCompanyToPortfoliosModal.vue';
 import type { BasePortfolio } from '@clients/userservice';
 import { useDialog } from 'primevue/usedialog';
 import { type NavigationFailure } from 'vue-router';
@@ -110,7 +107,7 @@ const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
 const parentCompany = ref<CompanyIdAndName | null>(null);
 
-let allUserPortfolios: ReducedBasePortfolio[] = [];
+let allUserPortfolios: BasePortfolio[] = [];
 
 const displaySector = computed(() => {
   if (companyInformation.value?.sector) {
@@ -122,19 +119,6 @@ const displaySector = computed(() => {
 
 const displayLei = computed(() => {
   return companyInformation.value?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
-});
-
-const contextMenuItems = computed(() => {
-  const listOfItems = [];
-  if (!isUserCompanyOwner.value && authenticated) {
-    listOfItems.push({
-      label: 'Claim Company Dataset Ownership',
-      command: () => {
-        dialogIsOpen.value = true;
-      },
-    });
-  }
-  return listOfItems;
 });
 
 const props = defineProps({
@@ -174,26 +158,16 @@ function fetchDataForThisPage(): void {
 }
 
 /**
- * Converts the given BasePortfolio object into a ReducedBasePortfolio object, i.e., removes all
- * fields except portfolioId, portfolioName and companyIds.
- * @param basePortfolio
- */
-function convertToReducedBasePortfolio(basePortfolio: BasePortfolio): ReducedBasePortfolio {
-  return {
-    portfolioId: basePortfolio.portfolioId,
-    portfolioName: basePortfolio.portfolioName,
-    companyIds: Array.from(basePortfolio.companyIds),
-  };
-}
-
-/**
  * Get the list of all portfolios of the current user.
  */
 async function fetchUserPortfolios(): Promise<void> {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  allUserPortfolios = (
-    await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()
-  ).data.map(convertToReducedBasePortfolio);
+  try {
+    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+    allUserPortfolios = (await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()).data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 /**
@@ -204,7 +178,7 @@ async function openPortfolioModal(): Promise<void> {
   await fetchUserPortfolios().then(() => {
     dialog.open(AddCompanyToPortfoliosModal, {
       props: {
-        header: 'Add company to your portfolio(s)',
+        header: 'Add company to a portfolio',
         modal: true,
       },
       data: {
@@ -267,29 +241,28 @@ async function getParentCompany(parentCompanyLei: string): Promise<void> {
  * companyId object.
  */
 async function getCompanyInformation(): Promise<void> {
+  waitingForData.value = true;
+  if (props.companyId === undefined) return;
   try {
-    waitingForData.value = true;
-    if (props.companyId !== undefined) {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
-        .companyDataController;
-      companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
-      if (companyInformation.value.parentCompanyLei != null) {
-        getParentCompany(companyInformation.value.parentCompanyLei).catch(() => {
-          console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
-        });
-      } else {
-        hasParentCompany.value = false;
-      }
-      waitingForData.value = false;
-      emits('fetchedCompanyInformation', companyInformation.value);
+    const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
+      .companyDataController;
+    companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
+    if (companyInformation.value.parentCompanyLei != null) {
+      getParentCompany(companyInformation.value.parentCompanyLei).catch(() => {
+        console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
+      });
+    } else {
+      hasParentCompany.value = false;
     }
+    emits('fetchedCompanyInformation', companyInformation.value);
   } catch (error) {
     console.error(error);
     if (getErrorMessage(error).includes('404')) {
       companyIdDoesNotExist.value = true;
     }
-    waitingForData.value = false;
     companyInformation.value = null;
+  } finally {
+    waitingForData.value = false;
   }
 }
 
@@ -301,13 +274,6 @@ async function setCompanyOwnershipStatus(): Promise<void> {
   return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, props.companyId, getKeycloakPromise).then((result) => {
     isUserCompanyOwner.value = result;
   });
-}
-
-/**
- * Handles the emitted claim event
- */
-function onClaimSubmitted(): void {
-  claimIsSubmitted.value = true;
 }
 </script>
 

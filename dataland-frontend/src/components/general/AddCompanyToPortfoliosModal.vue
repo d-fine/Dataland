@@ -22,7 +22,7 @@
     @click="handleCompanyAddition"
     :data-test="'saveButton'"
   >
-    <span>Add company to portfolio(s)</span>
+    <span>Add company to portfolio</span>
   </PrimeButton>
 </template>
 
@@ -36,12 +36,7 @@ import Message from 'primevue/message';
 import type Keycloak from 'keycloak-js';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { AxiosError } from 'axios';
-
-export interface ReducedBasePortfolio {
-  portfolioId: string;
-  portfolioName: string;
-  companyIds: string[];
-}
+import { type BasePortfolio } from '@clients/userservice';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -50,19 +45,25 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 let companyId: string;
 
-const allUserPortfolios = ref<ReducedBasePortfolio[]>([]);
-const selectedPortfolios = ref<ReducedBasePortfolio[]>([]);
+const allUserPortfolios = ref<BasePortfolio[]>([]);
+const selectedPortfolios = ref<BasePortfolio[]>([]);
 
 const errorMessage = ref('');
 const isLoading = ref(false);
 
 onMounted(() => {
+  if (!data?.companyId) return;
   companyId = data.companyId;
   allUserPortfolios.value = data.allUserPortfolios;
   errorMessage.value = '';
 });
 
-const handleCompanyAddition = async (): Promise<void> => {
+/**
+ * Handles the addition of the company to the selected portfolio(s) and closes the dialog
+ * unless there is an error, in which case the modal stays open and the error message is
+ * displayed.
+ */
+async function handleCompanyAddition(): Promise<void> {
   if (selectedPortfolios.value.length === 0) return;
 
   isLoading.value = true;
@@ -75,6 +76,7 @@ const handleCompanyAddition = async (): Promise<void> => {
 
         return apiClientProvider.apiClients.portfolioController.replacePortfolio(selectedPortfolio.portfolioId, {
           portfolioName: selectedPortfolio.portfolioName,
+          // as unknown as Set<string> cast required to ensure proper json is created
           companyIds: updatedCompanyIds as unknown as Set<string>,
         });
       })
@@ -91,21 +93,24 @@ const handleCompanyAddition = async (): Promise<void> => {
   } finally {
     isLoading.value = false;
   }
-};
+}
 
-const closeDialog = (): void => {
+/**
+ * Resets selectedPortfolios and errorMessage to their initial values, then closes the dialog.
+ */
+function closeDialog(): void {
   selectedPortfolios.value = [];
   errorMessage.value = '';
   dialogRef?.value.close();
-};
+}
 </script>
 
 <style scoped lang="scss">
-@use '../../assets/scss/colors';
-@use '../../assets/scss/variables';
+@use '@/assets/scss/colors';
+@use '@/assets/scss/variables';
 
 :deep(.p-listbox-item) {
-  max-width: 300px;
+  max-width: 20rem;
   padding: 0 variables.$spacing-xxxs; // only horizontal padding
   border-top: variables.$spacing-xxxs solid transparent;
   border-bottom: variables.$spacing-xxxs solid transparent;
