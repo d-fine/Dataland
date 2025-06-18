@@ -124,19 +124,24 @@ class ProcessDataUpdates
         @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
-            if (flagFileGleif?.exists() == true) {
-                flagFileGleif.delete() // this will be removed for the final version
-                logger.info("Running scheduled update of GLEIF data.")
+            val doFullGleifUpdate = flagFileGleif?.exists() ?: false
 
-                waitForBackend()
-                gleifGoldenCopyIngestor.prepareGleifDeltaFile(true)
-                gleifGoldenCopyIngestor.processIsinMappingFile(true)
-                gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
-                // flagFileGleif.delete() ***this will be added after the scheduled is set to the real time
+            logger.info("Running ${if (doFullGleifUpdate) "full" else "scheduled"} update of GLEIF data")
+
+            // This will be deleted for the final version after the cron timer has been set to every Sunday at 3am
+            if (flagFileGleif?.delete() == true) {
+                logger.info("Flag file $flagFileGleif deleted successfully.")
+            }
+
+            waitForBackend()
+            gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullGleifUpdate)
+            gleifGoldenCopyIngestor.processIsinMappingFile(doFullGleifUpdate)
+            gleifGoldenCopyIngestor.processRelationshipFile(doFullGleifUpdate)
+
+            if (flagFileGleif?.delete() == true) {
+                logger.info("Flag file $flagFileGleif deleted successfully.")
             } else {
-                logger.info("Gleif flag path is set but file not found")
-                logger.info("allGleifCompaniesIngestUpdateFlagFilePath: $allGleifCompaniesIngestManualUpdateFlagFilePath")
-                logger.info("flagFileGleif: $flagFileGleif")
+                logger.error("Flag file $flagFileGleif could not be deleted.")
             }
         }
 

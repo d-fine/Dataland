@@ -191,7 +191,12 @@ class CompanyUploaderTest {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
-        assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation) }
+
+        if (numberOfPatchInvocations == 0) {
+            assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation) }
+        } else {
+            companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
+        }
 
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
             .patchCompanyById("violating-company-id", expectedPatch)

@@ -85,11 +85,8 @@ class CompanyUploader(
         if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() == 0) return null to null
 
         val conflictingCompanyIds = conflictingIdentifiers.mapNotNull { it["companyId"]?.textValue() }.toSet()
-        logger.info("ConflictingCompanyID $conflictingCompanyIds")
         val conflictingIdentifierTypes = conflictingIdentifiers.mapNotNull { it["identifierType"]?.textValue() }.toSet()
-        logger.info("ConflictingIdentifierType $conflictingIdentifierTypes")
-        logger.info("ConflictingCompanyID ${conflictingCompanyIds.size}")
-        return if (conflictingCompanyIds.size != 1) {
+        return if (conflictingCompanyIds.size == 1) {
             conflictingCompanyIds.first() to conflictingIdentifierTypes
         } else {
             logger.error("Found conflicting identifiers for two different companies $conflictingCompanyIds")
@@ -132,17 +129,12 @@ class CompanyUploader(
                 logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()} ")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
-                logger
-                    .info("CCCCCompany Data for Company ${companyInformation.getNameAndIdentifier()} already present on Dataland.")
                 val (conflictingCompanyId, conflictingIdentifiers) =
                     checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
-                logger.info("conflictingCompanyId $conflictingCompanyId, conflictingIdentifiers $conflictingIdentifiers")
                 if (conflictingCompanyId != null) {
-                    logger.info("Found conflicting company with id $conflictingCompanyId and identifiers $conflictingIdentifiers")
                     patchCompanyId = conflictingCompanyId
                     allConflictingIdentifiers = conflictingIdentifiers
                 } else {
-                    logger.info("HUHUHUHUHUHUHU")
                     throw exception
                 }
             }
