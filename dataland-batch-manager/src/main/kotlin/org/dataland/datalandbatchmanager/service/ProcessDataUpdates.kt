@@ -112,7 +112,6 @@ class ProcessDataUpdates
             if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
                 logger.info("Found flag file or force ingest flag for NorthData.")
                 logFlagFileFoundAndDelete(flagFileNorthData)
-
                 waitForBackend()
                 logger.info("Retrieving all company data available via NorthData.")
                 northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
@@ -126,8 +125,7 @@ class ProcessDataUpdates
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
             if (flagFileGleif?.exists() == true) {
-                flagFileGleif.delete()
-                allGleifCompaniesIngestManualUpdateFlagFilePath = null // this will be reemoved for the final version
+                flagFileGleif.delete() // this will be removed for the final version
                 logger.info("Running scheduled update of GLEIF data.")
 
                 waitForBackend()
