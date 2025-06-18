@@ -110,7 +110,7 @@ function closeDialog(): void {
 @use '@/assets/scss/variables';
 
 :deep(.p-listbox-item) {
-  max-width: 20rem;
+  max-width: 17rem;
   padding: 0 variables.$spacing-xxxs; // only horizontal padding
   border-top: variables.$spacing-xxxs solid transparent;
   border-bottom: variables.$spacing-xxxs solid transparent;

@@ -1,34 +1,55 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddCompanyToPortfoliosDialog from '@/components/general/AddCompanyToPortfoliosModal.vue';
-import type { ReducedBasePortfolio } from '@/components/general/AddCompanyToPortfoliosModal.vue';
+import { type BasePortfolio } from '@clients/userservice';
 
 describe('AddCompanyToPortfoliosDialog', () => {
   const companyId = 'COMP-123';
-  const mockPortfolios: ReducedBasePortfolio[] = [
-    { portfolioId: 'p1', portfolioName: 'One', companyIds: [] },
-    { portfolioId: 'p2', portfolioName: 'Two', companyIds: [] },
-    { portfolioId: 'p3', portfolioName: 'Three', companyIds: [] },
+  const mockPortfolios: BasePortfolio[] = [
+    {
+      portfolioId: 'p1',
+      portfolioName: 'One',
+      companyIds: new Set(),
+      userId: 'user-id',
+      creationTimestamp: 0,
+      lastUpdateTimestamp: 1,
+    },
+    {
+      portfolioId: 'p2',
+      portfolioName: 'Two',
+      companyIds: new Set(),
+      userId: 'user-id',
+      creationTimestamp: 0,
+      lastUpdateTimestamp: 1,
+    },
+    {
+      portfolioId: 'p3',
+      portfolioName: 'Three',
+      companyIds: new Set(),
+      userId: 'user-id',
+      creationTimestamp: 0,
+      lastUpdateTimestamp: 1,
+    },
   ];
 
   /**
    * Creates a mock dialogRef object for mounting the AddCompanyToPortfoliosDialog component in tests.
    *
-   * @param {Partial<ReducedBasePortfolio[]>} [override=mockPortfolios] - Optional override for the list of user portfolios.
+   * @param {Partial<BasePortfolio[]>} [override=mockPortfolios] - Optional override for the list of user portfolios.
    * This allows customizing the `allUserPortfolios` provided to the component.
    * @param {() => void} [closeStub] - Optional stub function to replace the default `dialogRef.close()` method.
    * Useful for assertions in tests that validate whether the dialog was closed.
    *
-   * @returns {{ value: { data: { companyId: string; allUserPortfolios: Partial<ReducedBasePortfolio[]> }; close: () => void } }}
+   * @returns {{ value: { data: { companyId: string; allUserPortfolios: Partial<BasePortfolio[]> }; close: () => void } }}
    * A mock dialogRef object structured as expected by the component.
    */
   const getMockDialogRef = (
-    override: Partial<ReducedBasePortfolio[]> = mockPortfolios,
+    override: Partial<BasePortfolio[]> = mockPortfolios,
     closeStub?: () => void
   ): {
     value: {
       data: {
         companyId: string;
-        allUserPortfolios: Partial<ReducedBasePortfolio[]>;
+        allUserPortfolios: Partial<BasePortfolio[]>;
       };
       close: () => void;
     };
@@ -91,7 +112,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
 
   it('calls replace API with correct data when adding a company', () => {
     const newCompanyId = 'NEW-COMPANY-ID';
-    const mockDialogRef = getMockDialogRef(mockPortfolios.map((p) => ({ ...p, companyIds: [] })));
+    const mockDialogRef = getMockDialogRef(mockPortfolios.map((p) => ({ ...p, companyIds: new Set() })));
 
     mockDialogRef.value.data.companyId = newCompanyId;
 
