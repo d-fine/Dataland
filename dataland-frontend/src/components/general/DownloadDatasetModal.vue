@@ -18,8 +18,8 @@
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
           name="listOfReportingPeriods"
-          :options="allReportingPeriodOptions"
-          :availableOptions="allReportingPeriodOptions?.filter(option => option.value)"
+          :options="selectableReportingPeriodOptions"
+          :availableOptions="allReportingPeriodOptions.filter(option => option.value)"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
         />
@@ -107,7 +107,8 @@ const selectedFileType = ref<string>('');
 const isModalVisible = ref<boolean>(false);
 const showReportingPeriodError = ref<boolean>(false);
 const showFileTypeError = ref<boolean>(false);
-const allReportingPeriodOptions = ref<ToggleChipInputType[]>();
+const allReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
+const selectableReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
 const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
@@ -126,6 +127,10 @@ onMounted(() => {
   allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
     value: props.availableReportingPeriods.includes(period.toString()),
+  }));
+  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+    name: period.toString(),
+    value: false,
   }));
 });
 
@@ -152,8 +157,8 @@ function onDownloadButtonClick(): void {
  * Extracts currently selected reporting periods
  */
 function getSelectedReportingPeriods(): string[] {
-  if (!allReportingPeriodOptions.value) return [];
-  return allReportingPeriodOptions.value.filter((period) => period.value).map((period) => period.name);
+  if (!selectableReportingPeriodOptions.value) return [];
+  return selectableReportingPeriodOptions.value.filter((period) => period.value).map((period) => period.name);
 }
 
 /**
