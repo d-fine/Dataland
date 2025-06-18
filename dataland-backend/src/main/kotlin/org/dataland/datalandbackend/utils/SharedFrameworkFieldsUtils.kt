@@ -7,6 +7,7 @@ object SharedFrameworkFieldsUtils {
             "extendedDateFiscalYearEnd",
             "extendedDecimalNumberOfEmployees",
             "extendedEnumFiscalYearDeviation",
+            "extendedEnumYesNoIsNfrdMandatory",
             "extendedEnumYesNoHumanRightsDueDiligence",
             "extendedEnumYesNoIloCoreLabourStandards",
             "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesCompliancePolicy",
