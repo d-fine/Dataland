@@ -56,7 +56,7 @@
             <DownloadDatasetModal
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               :isDownloadModalOpen="isDownloadModalOpen"
-              :reportingPeriods="availableReportingPeriodsForToggleChip"
+              :availableReportingPeriods="availableReportingPeriods"
               @closeDownloadModal="onCloseDownloadModal"
               @downloadDataset="handleDatasetDownload"
               data-test="downloadModal"
@@ -131,7 +131,7 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum, ExportFileType } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
-import { AxiosError } from 'axios';
+import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import InputSwitch from 'primevue/inputswitch';
@@ -140,7 +140,7 @@ import { computed, inject, onMounted, provide, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
-import { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
+import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 
 // Props
 const props = defineProps<{
@@ -194,14 +194,6 @@ const availableReportingPeriods = computed(() => {
   });
   return Array.from(set).sort();
 });
-
-const availableReportingPeriodsForToggleChip = computed(
-  () =>
-    availableReportingPeriods.value.map((period) => ({
-      name: period,
-      value: true,
-    })) as unknown as ToggleChipInputType[]
-);
 
 const isReviewableByCurrentUser = computed(
   () => hasUserReviewerRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
@@ -381,28 +373,40 @@ function onCloseDownloadModal(): void {
 
 /**
  *
- * @param selectedYear
+ * @param selectedYears
  * @param selectedFileType
+ * @param keepValuesOnly
+ * @param includeAlias
  */
-async function handleDatasetDownload(selectedYear: string, selectedFileType: string): Promise<void> {
+async function handleDatasetDownload(
+  selectedYears: string[],
+  selectedFileType: string,
+  keepValuesOnly: boolean,
+  includeAlias: boolean
+): Promise<void> {
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const frameworkDataApi = getFrameworkDataApiForIdentifier(props.dataType, apiClientProvider);
+    const frameworkDataApi = getFrameworkDataApiForIdentifier(
+      props.dataType,
+      apiClientProvider
+    ) as PublicFrameworkDataApi<FrameworkData>;
 
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-    const options = fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'EXCEL' ? { responseType: 'arraybuffer' } : undefined;
 
     const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === props.dataType);
     const filename = `data-export-${label ?? props.dataType}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
-    const response = await frameworkDataApi?.exportCompanyAssociatedDataByDimensions(
-      [selectedYear],
+    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
+      selectedYears,
       [props.companyID],
       exportFileType,
-      true,
+      keepValuesOnly,
+      includeAlias,
       options
     );
 

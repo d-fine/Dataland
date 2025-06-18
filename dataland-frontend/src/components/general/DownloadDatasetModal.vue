@@ -19,7 +19,7 @@
         <ToggleChipFormInputs
           :name="'listOfReportingPeriods'"
           :options="allReportingPeriodOptions"
-          :availableOptions="mappedReportingPeriods"
+          :availableOptions="allReportingPeriodOptions?.filter((option) => option.value)"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
         />
@@ -37,8 +37,33 @@
         data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
         placeholder="Select a file type"
+        @change="showFileTypeError=false"
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
+      <div class="flex align-content-start align-items-center">
+        <InputSwitch
+          v-model="keepValuesOnly"
+          class="form-field vertical-middle"
+          data-test="valuesOnlySwitch"
+          @change="!keepValuesOnly ? includeAlias = false : includeAlias"
+        />
+        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
+      </div>
+      <span class="gray-text font-italic text-xs ml-0 mb-3">
+        Download only data values. Turn off to include additional details, e.g. comment, data source, ...
+      </span>
+      <div class="flex align-content-start align-items-center">
+        <InputSwitch
+          v-model="includeAlias"
+          :disabled="!keepValuesOnly"
+          class="form-field vertical-middle"
+          data-test="includeAliasSwitch"
+        />
+        <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten Field Names </span>
+      </div>
+      <span class="gray-text font-italic text-xs ml-0 mb-3">
+        Use shorter aliases, e. g. CI_GAR_PCT in export. (Only Applicable if Values Only is selected)
+      </span>
     </FormKit>
 
     <div>
@@ -60,36 +85,36 @@ import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
+import InputSwitch from 'primevue/inputswitch';
 
 const props = defineProps<{
   isDownloadModalOpen?: boolean;
-  reportingPeriods: Array<ToggleChipInputType>;
+  availableReportingPeriods: string[];
 }>();
 
 const emit = defineEmits<{
   (e: 'closeDownloadModal'): void;
-  (e: 'downloadDataset', reportingPeriod: string[], fileType: string): void;
+  (
+    e: 'downloadDataset',
+    reportingPeriod: string[],
+    fileType: string,
+    keepValuesOnly: boolean,
+    includeAlias: boolean
+  ): void;
 }>();
 
+const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 const isDownloadModalOpen = toRef(props, 'isDownloadModalOpen');
 const selectedFileType = ref<string>('');
 const isModalVisible = ref<boolean>(false);
 const showReportingPeriodError = ref<boolean>(false);
 const showFileTypeError = ref<boolean>(false);
-const allReportingPeriodOptions = ref<ToggleChipInputType[] | undefined>();
-const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
-
-allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+const allReportingPeriodOptions = ref<ToggleChipInputType[]>(ALL_REPORTING_PERIODS.map((period) => ({
   name: period.toString(),
-  value: false,
-}));
-
-const mappedReportingPeriods = computed(() => {
-  return props.reportingPeriods.map((p) => ({
-    name: p.name ?? '',
-    value: p.value,
-  }));
-});
+  value: period.toString() in props.availableReportingPeriods,
+})));
+const keepValuesOnly = ref(true);
+const includeAlias = ref(true);
 
 const fileTypeSelectionOptions = computed(() => {
   return Object.entries(ExportFileTypeInformation).map(([type, info]) => ({
@@ -98,12 +123,9 @@ const fileTypeSelectionOptions = computed(() => {
   }));
 });
 
+
 watch(isDownloadModalOpen, (newVal) => {
   isModalVisible.value = newVal ?? false;
-});
-
-watch(selectedFileType, () => {
-  showFileTypeError.value = false;
 });
 
 /**
@@ -117,7 +139,7 @@ function onDownloadButtonClick(): void {
   if (showReportingPeriodError.value || showFileTypeError.value) {
     return;
   }
-  emit('downloadDataset', selectedReportingPeriods, selectedFileType.value);
+  emit('downloadDataset', selectedReportingPeriods, selectedFileType.value, keepValuesOnly.value, includeAlias.value);
   closeDialog();
 }
 
@@ -154,6 +176,7 @@ function resetProps(): void {
   showReportingPeriodError.value = false;
   showFileTypeError.value = false;
 }
+
 </script>
 
 <style scoped lang="scss">
