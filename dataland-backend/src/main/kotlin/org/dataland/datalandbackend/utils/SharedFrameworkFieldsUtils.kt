@@ -9,6 +9,7 @@ object SharedFrameworkFieldsUtils {
             "extendedEnumFiscalYearDeviation",
             "extendedEnumYesNoHumanRightsDueDiligence",
             "extendedEnumYesNoIloCoreLabourStandards",
+            "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesCompliancePolicy",
             "extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy",
             "general.general.referencedReports",
         )
