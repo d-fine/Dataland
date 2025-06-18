@@ -17,6 +17,7 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -100,7 +101,9 @@ class CompanyUploaderTest {
         `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_IMPLEMENTED.value()))
 
-        companyUploader.updateRelationships(finalParentMapping)
+        assertThrows<ClientException> {
+            companyUploader.updateRelationships(finalParentMapping)
+        }
 
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
             .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
@@ -159,7 +162,7 @@ class CompanyUploaderTest {
                 statusCode = UNAUTHORIZED_CODE,
             ),
         )
-        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1)
+        assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1) }
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES)).postCompany(
             dummyGleifCompanyInformation1.toCompanyPost(),
         )
@@ -188,7 +191,8 @@ class CompanyUploaderTest {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
+        assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation) }
+
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
             .patchCompanyById("violating-company-id", expectedPatch)
     }
