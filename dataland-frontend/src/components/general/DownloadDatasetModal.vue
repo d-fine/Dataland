@@ -15,14 +15,15 @@
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
-      <FormKit
-        v-model="selectedReportingPeriod"
-        type="select"
-        name="reportingYearSelector"
-        data-test="reportingYearSelector"
-        :options="reportingPeriods"
-        placeholder="Select a reporting year"
-      />
+      <div class="flex flex-wrap gap-2 py-2">
+        <ToggleChipFormInputs
+          :name="'listOfReportingPeriods'"
+          :options="allReportingPeriodOptions"
+          :availableOptions="mappedReportingPeriods"
+          data-test="listOfReportingPeriods"
+          class="toggle-chip-group"
+        />
+      </div>
       <p v-show="showReportingPeriodError" class="text-danger" data-test="reportingYearError">
         Please select a reporting period.
       </p>
@@ -53,98 +54,124 @@
   </PrimeDialog>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+<script setup lang="ts">
+import { computed, ref, toRef, watch } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
+import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
 
-export default defineComponent({
-  components: { PrimeDialog, PrimeButton },
-  name: 'DownloadDatasetModal',
-  props: {
-    isDownloadModalOpen: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    reportingPeriods: {
-      type: Array as PropType<Array<string>>,
-      required: true,
-    },
-  },
-  emits: ['closeDownloadModal', 'downloadDataset'],
-  data() {
-    return {
-      selectedReportingPeriod: '',
-      selectedFileType: '',
-      isModalVisible: false,
-      showReportingPeriodError: false,
-      showFileTypeError: false,
-    };
-  },
-  computed: {
-    fileTypeSelectionOptions() {
-      return Object.entries(ExportFileTypeInformation).map(([type, information]) => ({
-        value: type.toString(),
-        label: `${information.description} (.${information.fileExtension})`,
-      }));
-    },
-  },
+const props = defineProps<{
+  isDownloadModalOpen?: boolean;
+  reportingPeriods: Array<ToggleChipInputType>;
+}>();
 
-  watch: {
-    isDownloadModalOpen(newValue: boolean): void {
-      this.isModalVisible = newValue;
-    },
-    selectedReportingPeriod() {
-      this.showReportingPeriodError = false;
-    },
-    selectedFileType() {
-      this.showFileTypeError = false;
-    },
-  },
+const emit = defineEmits<{
+  (e: 'closeDownloadModal'): void;
+  (e: 'downloadDataset', reportingPeriod: string[], fileType: string): void;
+}>();
 
-  methods: {
-    /**
-     * Handle the clickEvent of the Download Button
-     */
-    onDownloadButtonClick() {
-      this.checkIfShowErrors();
+const isDownloadModalOpen = toRef(props, 'isDownloadModalOpen');
+const selectedFileType = ref<string>('');
+const isModalVisible = ref<boolean>(false);
+const showReportingPeriodError = ref<boolean>(false);
+const showFileTypeError = ref<boolean>(false);
+const allReportingPeriodOptions = ref<ToggleChipInputType[] | undefined>();
+const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 
-      if (this.showReportingPeriodError || this.showFileTypeError) {
-        return;
-      }
+allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+  name: period.toString(),
+  value: false,
+}));
 
-      this.$emit('downloadDataset', this.selectedReportingPeriod, this.selectedFileType);
-      this.closeDialog();
-    },
-
-    /**
-     * Validates the form's fields and displays errors if necessary
-     */
-    checkIfShowErrors() {
-      this.showReportingPeriodError = this.selectedReportingPeriod.length === 0;
-      this.showFileTypeError = this.selectedFileType.length === 0;
-    },
-
-    /**
-     * Resets selections and error messages and closes the download modal
-     */
-    closeDialog() {
-      this.resetProps();
-      this.isModalVisible = false;
-      this.$emit('closeDownloadModal');
-    },
-
-    /**
-     * Resets the props, e.g. the selections and error messages.
-     */
-    resetProps() {
-      this.selectedReportingPeriod = '';
-      this.selectedFileType = '';
-      this.showReportingPeriodError = false;
-      this.showFileTypeError = false;
-    },
-  },
+const mappedReportingPeriods = computed(() => {
+  return props.reportingPeriods.map((p) => ({
+    name: p.name ?? '',
+    value: p.value,
+  }));
 });
+
+const fileTypeSelectionOptions = computed(() => {
+  return Object.entries(ExportFileTypeInformation).map(([type, info]) => ({
+    value: type,
+    label: `${info.description} (.${info.fileExtension})`,
+  }));
+});
+
+watch(isDownloadModalOpen, (newVal) => {
+  isModalVisible.value = newVal ?? false;
+});
+
+watch(selectedFileType, () => {
+  showFileTypeError.value = false;
+});
+
+/**
+ * Handle the clickEvent of the Download Button
+ */
+function onDownloadButtonClick(): void {
+  const selectedReportingPeriods = getSelectedReportingPeriods();
+
+  checkIfShowErrors();
+
+  if (showReportingPeriodError.value || showFileTypeError.value) {
+    return;
+  }
+  emit('downloadDataset', selectedReportingPeriods, selectedFileType.value);
+  closeDialog();
+}
+
+/**
+ * Extracts currently selected reporting periods
+ */
+function getSelectedReportingPeriods(): string[] {
+  if (!allReportingPeriodOptions.value) return [];
+  return allReportingPeriodOptions.value.filter((period) => period.value).map((period) => period.name);
+}
+
+/**
+ * Validates the form's fields and displays errors if necessary
+ */
+function checkIfShowErrors(): void {
+  showReportingPeriodError.value = getSelectedReportingPeriods().length === 0;
+  showFileTypeError.value = selectedFileType.value.length === 0;
+}
+
+/**
+ * Resets selections and error messages and closes the download modal
+ */
+function closeDialog(): void {
+  resetProps();
+  isModalVisible.value = false;
+  emit('closeDownloadModal');
+}
+
+/**
+ * Resets the props, e.g. the selections and error messages.
+ */
+function resetProps(): void {
+  selectedFileType.value = '';
+  showReportingPeriodError.value = false;
+  showFileTypeError.value = false;
+}
 </script>
+
+<style scoped lang="scss">
+.toggle-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+
+  .chip {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    flex: 1 1 auto;
+    max-width: 5rem;
+    text-align: center;
+  }
+}
+</style>

@@ -51,13 +51,17 @@
         Download only data values. Turn off to include additional details, e.g. comment, data source, ...
       </span>
       <div class="flex align-content-start align-items-center">
-        <InputSwitch v-model="includeAlias" :disabled="!keepValuesOnly" class="form-field vertical-middle" data-test="includeAliasSwitch"
-        />   <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten Field Names </span>
+        <InputSwitch
+          v-model="includeAlias"
+          :disabled="!keepValuesOnly"
+          class="form-field vertical-middle"
+          data-test="includeAliasSwitch"
+        />
+        <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten Field Names </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
         Use shorter aliases, e. g. CI_GAR_PCT in export. (Only Applicable if Values Only is selected)
       </span>
-
     </FormKit>
     <Message v-if="portfolioErrors" severity="error" class="my-1 text-xs" :life="3000">
       {{ portfolioErrors }}
@@ -106,7 +110,7 @@ import PrimeButton from 'primevue/button';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import InputSwitch from 'primevue/inputswitch';
 import Message from 'primevue/message';
-import {computed, inject, onMounted, type Ref, ref} from 'vue';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -123,10 +127,10 @@ const includeAlias = computed({
     if (keepValuesOnly.value) {
       aliasExportDefault.value = val;
     } else {
-      aliasExportDefault.value = false
+      aliasExportDefault.value = false;
     }
-  }
-})
+  },
+});
 const showFileTypeError = ref(false);
 const showReportingPeriodsError = ref(false);
 const showFrameworksError = ref(false);
@@ -308,7 +312,7 @@ async function downloadPortfolio(): Promise<void> {
       selectedExportFileType,
       keepValuesOnly.value,
       includeAlias.value,
-      options,
+      options
     );
 
     if (dataResponse.status === 204) {
