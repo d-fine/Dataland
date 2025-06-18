@@ -89,7 +89,8 @@ class MetaDataControllerTest {
                 .uploadCompanyAndFrameworkDataForMultipleFrameworks(
                     mapOf(dataType to listOfTestCompanyInformation),
                     numberOfDatasetsToPostPerCompany,
-                ).let { uploadInfos -> uploadInfos.map { it.actualStoredCompany.companyId }.distinct() }
+                ).map { it.actualStoredCompany.companyId }
+                .distinct()
 
         ApiAwait.untilAsserted {
             val actualSizeOfDataMetaInfoSearchResult = getDataMetaInfoResultSize(companyIds)
@@ -214,14 +215,13 @@ class MetaDataControllerTest {
                 "The posted companies are expected to have a total number " +
                     "of $totalNumberOfDatasetsPerFramework datasets for eu taxonomy financials.",
         ) { companyIds ->
-            companyIds
-                .map {
-                    apiAccessor.getNumberOfDataMetaInfo(
-                        companyId = it,
-                        dataType = postedDataType,
-                        showOnlyActive = false,
-                    )
-                }.sum()
+            companyIds.sumOf {
+                apiAccessor.getNumberOfDataMetaInfo(
+                    companyId = it,
+                    dataType = postedDataType,
+                    showOnlyActive = false,
+                )
+            }
         }
 
         assertEquals(
@@ -294,9 +294,9 @@ class MetaDataControllerTest {
         val frameworkDataBeta =
             frameworkDataAlpha.copy(
                 general =
-                    frameworkDataAlpha.general!!.copy(
+                    frameworkDataAlpha.general.copy(
                         numberOfEmployees =
-                            frameworkDataAlpha.general!!.numberOfEmployees!!.copy(
+                            frameworkDataAlpha.general.numberOfEmployees.copy(
                                 value = newNumberOfEmployees,
                             ),
                     ),
