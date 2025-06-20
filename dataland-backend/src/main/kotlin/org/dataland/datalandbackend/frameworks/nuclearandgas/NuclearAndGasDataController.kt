@@ -10,8 +10,8 @@ import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController
 class NuclearAndGasDataController
     @Autowired
     constructor(
-        datasetStorageService: DataManager,
+        datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
         dataExportService: DataExportService,
         companyQueryManager: CompanyQueryManager,

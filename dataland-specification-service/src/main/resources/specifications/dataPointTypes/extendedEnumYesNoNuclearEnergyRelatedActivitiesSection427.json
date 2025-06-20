@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoNuclearEnergyRelatedActivitiesSection427",
+  "name" : "Nuclear Energy related Activities (Section 4.27)",
+  "businessDefinition" : "The undertaking carries out, funds, or has exposures to construction and safe operation of new nuclear installations to produce electricity or process heat, including for the purposes of district heating or industrial processes such as hydrogen production, as well as their safety upgrades, using best available technologies.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "nuclear-and-gas" ],
+  "constraints" : null
+}
