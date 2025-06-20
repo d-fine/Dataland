@@ -95,6 +95,7 @@ class PortfolioBulkDataRequestService
             if (companyIds.isEmpty()) {
                 return
             }
+
             publisher.publishPortfolioUpdate(
                 portfolioId,
                 companyIds,

@@ -11,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.data.PortfolioUpdatePayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.keycloakAdapter.auth.DatalandInternalAuthentication
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -69,6 +70,7 @@ class PortfolioUpdateListenerService
                         val companyIdentifiers = messagePayload.companyIds
                         val reportingPeriods = messagePayload.reportingPeriods
                         val userId = messagePayload.userId
+                        val datalandInternalAuthentication = DatalandInternalAuthentication(userId)
 
                         val dataTypes: Set<DataTypeEnum> =
                             messagePayload.monitoredFrameworks
@@ -82,7 +84,7 @@ class PortfolioUpdateListenerService
                                 reportingPeriods,
                                 false,
                             ),
-                            userId,
+                            datalandInternalAuthentication,
                         )
                     }
 

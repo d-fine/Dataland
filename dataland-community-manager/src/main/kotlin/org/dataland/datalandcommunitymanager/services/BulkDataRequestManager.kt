@@ -13,8 +13,10 @@ import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestE
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandInternalAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -38,14 +40,18 @@ class BulkDataRequestManager(
     @Transactional
     fun processBulkDataRequest(
         bulkDataRequest: BulkDataRequest,
-        userId: String?,
+        datalandInternalAuthentication: DatalandInternalAuthentication? = null,
     ): BulkDataRequestResponse {
         // utils.throwExceptionIfNotJwtAuth()
+        if (datalandInternalAuthentication != null) {
+            datalandInternalAuthentication.setAuthenticated(true)
+            SecurityContextHolder.getContext().authentication = datalandInternalAuthentication
+        }
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
 
-        val userId = userId ?: DatalandAuthentication.fromContext().userId
+        val userId = DatalandAuthentication.fromContext().userId
 
         val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
             utils.performIdentifierValidation(bulkDataRequest.companyIdentifiers.toList())
