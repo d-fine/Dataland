@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -30,8 +29,9 @@ import org.springframework.stereotype.Component
 class PortfolioUpdateListenerService
     @Autowired
     constructor(
-        private val requestApi: RequestApi,
+        private val requestManager: BulkDataRequestManager,
         private val objectMapper: ObjectMapper,
+        private val requestEmailManager: RequestEmailManager,
     ) {
         /**
          * Creates Bulk Data Requests from Portfolio Update Payloads.
@@ -75,7 +75,7 @@ class PortfolioUpdateListenerService
                                 .mapNotNull { key -> dataTypeEnumMap[key] }
                                 .toSet()
 
-                        requestApi.postBulkDataRequest(
+                        requestManager.processBulkDataRequest(
                             BulkDataRequest(
                                 companyIdentifiers,
                                 dataTypes,
