@@ -8,7 +8,7 @@
       "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
       "fiscalYearEnd" : "extendedDateFiscalYearEnd",
       "scopeOfEntities" : "extendedEnumYesNoNaScopeOfEntities",
-      "nfrdMandatory" : "extendedEnumYesNoNfrdMandatory",
+      "nfrdMandatory" : "extendedEnumYesNoIsNfrdMandatory",
       "euTaxonomyActivityLevelReporting" : "extendedEnumYesNoEuTaxonomyActivityLevelReporting",
       "assurance" : "customEnumEuTaxonomyReportingAssurance",
       "numberOfEmployees" : "extendedDecimalNumberOfEmployees",

@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
+import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -63,6 +64,16 @@ class EuTaxonomyNonFinancialsFramework :
                         this,
                         "Enum",
                         "extendedEnumFiscalYearDeviation",
+                    )
+                }
+            }
+            edit<YesNoComponent>("nfrdMandatory") {
+                specificationGenerator = { categoryBuilder ->
+                    val nfrdMandatoryComponent = this
+                    nfrdMandatoryComponent.label = "Is NFRD mandatory?"
+                    categoryBuilder.addDefaultDatapointAndSpecification(
+                        nfrdMandatoryComponent,
+                        "EnumYesNo",
                     )
                 }
             }
