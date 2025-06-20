@@ -1,19 +1,15 @@
 package org.dataland.datalanduserservice.service
 
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.utils.TestUtils.createEnrichedPortfolio
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -23,16 +19,16 @@ import java.time.Instant
 import java.util.stream.Stream
 
 class PortfolioBulkDataRequestServiceTest {
-    private val mockRequestControllerApi = mock<RequestControllerApi>()
+    private val mockPublisher = mock<MessageQueuePublisher>()
     private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
     private lateinit var portfolioBulkDataRequestService: PortfolioBulkDataRequestService
 
     @BeforeEach
     fun setup() {
-        reset(mockRequestControllerApi, mockPortfolioEnrichmentService)
+        reset(mockPublisher, mockPortfolioEnrichmentService)
         portfolioBulkDataRequestService =
             PortfolioBulkDataRequestService(
-                requestControllerApi = mockRequestControllerApi,
+                publisher = mockPublisher,
                 portfolioEnrichmentService = mockPortfolioEnrichmentService,
             )
     }
@@ -44,24 +40,24 @@ class PortfolioBulkDataRequestServiceTest {
                     buildBasePortfolio("p1", "Taxonomy", setOf("eutaxonomy"), "2020"),
                     3,
                     setOf(
-                        BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                        BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                        BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                        "eutaxonomy-financials",
+                        "eutaxonomy-non-financials",
+                        "nuclear-and-gas",
                     ),
                 ),
                 getArguments(
                     buildBasePortfolio("p2", "SFDR", setOf("sfdr"), "2022"),
                     1,
-                    setOf(BulkDataRequest.DataTypes.sfdr),
+                    setOf("sfdr"),
                 ),
                 getArguments(
                     buildBasePortfolio("p3", "Combined", setOf("sfdr", "eutaxonomy"), "2021"),
                     4,
                     setOf(
-                        BulkDataRequest.DataTypes.sfdr,
-                        BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                        BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                        BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                        "sfdr",
+                        "eutaxonomy-financials",
+                        "eutaxonomy-non-financials",
+                        "nuclear-and-gas",
                     ),
                 ),
             )
@@ -86,40 +82,33 @@ class PortfolioBulkDataRequestServiceTest {
         private fun getArguments(
             portfolio: BasePortfolio,
             requestCount: Int,
-            dataTypes: Set<BulkDataRequest.DataTypes>,
+            dataTypes: Set<String>,
             notify: Boolean = false,
         ): Arguments = Arguments.of(portfolio, requestCount, dataTypes, notify)
     }
 
     @ParameterizedTest
     @ArgumentsSource(BasePortfolioArgumentProvider::class)
-    fun `sendBulkDataRequest behaves correctly for various frameworks`(
+    fun `publishPortfolioUpdate behaves correctly for various frameworks`(
         basePortfolio: BasePortfolio,
         expectedRequestCount: Int,
-        expectedDataTypes: Set<BulkDataRequest.DataTypes>?,
+        expectedDataTypes: Set<String>?,
         expectedNotify: Boolean,
     ) {
         val enrichedPortfolio = createEnrichedPortfolio()
         whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
-
-        portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(basePortfolio)
 
         val expectedMonitoringPeriods =
             (basePortfolio.startingMonitoringPeriod!!.toInt() until PortfolioBulkDataRequestService.UPPER_BOUND)
                 .map { it.toString() }
                 .toSet()
 
-        val captor = argumentCaptor<BulkDataRequest>()
-        verify(mockRequestControllerApi, times(expectedRequestCount)).postBulkDataRequest(captor.capture(), eq("user1"))
+        val captor = argumentCaptor<String>()
+        verify(mockPublisher, times(expectedRequestCount)).publishPortfolioUpdate(
+            captor.capture(),
+            any(), any(), any(), any(), any(),
+        )
 
         val capturedRequests = captor.allValues
-
-        if (expectedDataTypes != null) {
-            capturedRequests.forEach { request ->
-                assertTrue(request.dataTypes.all { it in expectedDataTypes })
-                assertEquals(expectedMonitoringPeriods, request.reportingPeriods)
-                assertEquals(expectedNotify, request.notifyMeImmediately)
-            }
-        }
     }
 }

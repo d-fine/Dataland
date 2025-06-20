@@ -1,11 +1,10 @@
 package org.dataland.datalanduserservice.service
 
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.UUID.randomUUID
 
 /**
  * Service to create Bulk Data Requests upon Portfolio or Monitoring changes.
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service
 class PortfolioBulkDataRequestService
     @Autowired
     constructor(
-        private val requestControllerApi: RequestControllerApi,
+        private val publisher: MessageQueuePublisher,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
     ) {
         companion object {
@@ -79,34 +78,35 @@ class PortfolioBulkDataRequestService
         /**
          * Creates Bulk Data Request based on the company sector
          * @param enrichedPortfolio: enrichment of the given portfolio
-         * @param monitoringPeriods: the monitoring periods
+         * @param reportingPeriods: the monitoring periods
          * @param selector: the getter function for (non)-financial company Ids
-         * @param dataTypes: the chosen frameworks
+         * @param monitoredFrameworks: the chosen frameworks
          */
         private fun sendBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
-            monitoringPeriods: Set<String>,
+            reportingPeriods: Set<String>,
             selector: (EnrichedPortfolio) -> Set<String>,
-            dataTypes: Set<BulkDataRequest.DataTypes>,
+            monitoredFrameworks: Set<String>,
         ) {
+            val portfolioId = enrichedPortfolio.portfolioId
             val companyIds = selector(enrichedPortfolio)
+            val userId = enrichedPortfolio.userId
+            val correlationId = randomUUID().toString()
             if (companyIds.isEmpty()) {
                 return
             }
-
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    companyIdentifiers = selector(enrichedPortfolio),
-                    dataTypes = dataTypes,
-                    reportingPeriods = monitoringPeriods,
-                    notifyMeImmediately = false,
-                ),
-                enrichedPortfolio.userId,
+            publisher.publishPortfolioUpdate(
+                portfolioId,
+                companyIds,
+                monitoredFrameworks,
+                reportingPeriods,
+                correlationId,
+                userId,
             )
         }
 
         /**
-         * Creates Bulk Data Request for "financials" companies
+         * Creates EU Taxonomy Bulk Data Request for "financials" companies
          */
         private fun sendFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
@@ -114,13 +114,14 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
             setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "eutaxonomy-nuclear-and-gas",
             ),
         )
 
         /**
-         * Creates Bulk Data Request for non-"financials" companies
+         * Creates EU Taxonomy Bulk Data Request for non-"financials" companies
          */
         private fun sendNonFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
@@ -128,13 +129,13 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getNonFinancialsCompanyIds,
             setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                "eutaxonomy-non-minus-financials",
+                "nuclear-and-gas",
             ),
         )
 
         /**
-         * Creates Bulk Data Request for companies without sector
+         * Creates EU Taxonomy Bulk Data Request for companies without sector
          */
         private fun sendFinancialAndNonFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
@@ -142,11 +143,15 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getUnsectorizedCompanyIds,
             setOf(
-                BulkDataRequest.DataTypes.eutaxonomyMinusFinancials,
-                BulkDataRequest.DataTypes.eutaxonomyMinusNonMinusFinancials,
-                BulkDataRequest.DataTypes.nuclearMinusAndMinusGas,
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "nuclear-and-gas,",
             ),
         )
+
+        /**
+         * Creates SFDR Bulk Data Request for all companies
+         */
 
         private fun sendSfdrBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
@@ -154,7 +159,7 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getAllCompanyIds,
             setOf(
-                BulkDataRequest.DataTypes.sfdr,
+                "sfdr",
             ),
         )
     }

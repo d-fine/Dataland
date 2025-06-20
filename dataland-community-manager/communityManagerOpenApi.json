@@ -915,6 +915,19 @@
               }
             }
           },
+          "403": {
+            "description": "Only admins can impersonate another user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedStoredDataRequest"
+                  }
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
