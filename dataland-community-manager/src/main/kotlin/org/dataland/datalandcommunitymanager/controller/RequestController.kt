@@ -44,12 +44,9 @@ class RequestController(
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : RequestApi {
-    override fun postBulkDataRequest(
-        bulkDataRequest: BulkDataRequest,
-        userId: String?,
-    ): ResponseEntity<BulkDataRequestResponse> =
+    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
         ResponseEntity.ok(
-            bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, userId),
+            bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
         )
 
     override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =

@@ -66,9 +66,11 @@ class BulkDataRequestManager(
 
         val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
 
-        sendBulkDataRequestInternalEmailMessage(
-            bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
-        )
+        if (datalandInternalAuthentication == null) {
+            sendBulkDataRequestInternalEmailMessage(
+                bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
+            )
+        }
 
         return createBulkDataRequests(
             acceptedRequestCombinations = acceptedRequestCombinations,

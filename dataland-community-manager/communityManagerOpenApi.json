@@ -108,16 +108,6 @@
         "summary": "Send a bulk request",
         "description": "A bulk of data requests for specific frameworks and companies is being sent.",
         "operationId": "postBulkDataRequest",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -914,19 +904,6 @@
         "responses": {
           "200": {
             "description": "Successfully retrieved data requests for the user.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExtendedStoredDataRequest"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins can impersonate another user.",
             "content": {
               "application/json": {
                 "schema": {

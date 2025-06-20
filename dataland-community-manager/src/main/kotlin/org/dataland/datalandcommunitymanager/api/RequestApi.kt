@@ -61,8 +61,6 @@ interface RequestApi {
     fun postBulkDataRequest(
         @Valid @RequestBody
         bulkDataRequest: BulkDataRequest,
-        @RequestParam(required = false)
-        userId: String? = null,
     ): ResponseEntity<BulkDataRequestResponse>
 
     /** A method for users to get all their existing data requests.
@@ -75,7 +73,6 @@ interface RequestApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved data requests for the user."),
-            ApiResponse(responseCode = "403", description = "Only admins can impersonate another user."),
         ],
     )
     @GetMapping(
