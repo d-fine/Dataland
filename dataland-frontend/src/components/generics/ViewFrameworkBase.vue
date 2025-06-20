@@ -57,6 +57,8 @@
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               :isDownloadModalOpen="isDownloadModalOpen"
               :availableReportingPeriods="availableReportingPeriods"
+              :dataType="dataType"
+              :reportingPeriodsPerFramework="reportingPeriodsPerFramework"
               @closeDownloadModal="onCloseDownloadModal"
               @downloadDataset="handleDatasetDownload"
               data-test="downloadModal"
@@ -122,6 +124,7 @@ import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrame
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
@@ -140,9 +143,7 @@ import { computed, inject, onMounted, provide, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
-import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 
-// Props
 const props = defineProps<{
   companyID: string;
   dataType: DataTypeEnum;
@@ -176,7 +177,6 @@ provide(
   computed(() => mapOfReportingPeriodToActiveDataset.value)
 );
 
-// Computed
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
   for (const d of activeDataForCurrentCompanyAndFramework.value) {
@@ -208,12 +208,30 @@ const isEditableByCurrentUser = computed(
       props.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
 );
 
-/**
- *
- */
 const targetLinkForAddingNewDataset = computed(() => `/companies/${props.companyID}/frameworks/upload`);
 
-// Watchers
+const reportingPeriodsPerFramework = computed(() => {
+  const map = new Map<string, string[]>();
+  activeDataForCurrentCompanyAndFramework.value.forEach((item) => {
+    const framework = item.metaInfo.dataType;
+    const period = item.metaInfo.reportingPeriod;
+    console.log('FRAMEWORK', framework);
+    console.log('PERIOD', period);
+
+    if (!map.has(framework)) {
+      map.set(framework, []);
+    }
+
+    const periods = map.get(framework)!;
+    if (!periods.includes(period)) {
+      periods.push(period);
+    }
+    console.log('PERIODSSS with getter', map.get(framework));
+  });
+
+  return map;
+});
+
 watch(
   () => props.companyID,
   () => {
@@ -250,7 +268,6 @@ watch(isReviewableByCurrentUser, () => {
   hideEmptyFields.value = !hasUserReviewerRights.value;
 });
 
-// Lifecycle
 onMounted(async () => {
   if (dataId.value) {
     await getMetaData();
@@ -262,7 +279,6 @@ onMounted(async () => {
   await setViewPageAttributesForUser();
 });
 
-// Functions
 /**
  *
  */
@@ -386,7 +402,8 @@ async function handleDatasetDownload(
 ): Promise<void> {
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const frameworkDataApi = getFrameworkDataApiForIdentifier(
+    // DataExport Button does not exist for private frameworks, so cast is safe
+    const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       props.dataType,
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
@@ -396,7 +413,7 @@ async function handleDatasetDownload(
 
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
-      fileExtension === 'EXCEL' ? { responseType: 'arraybuffer' } : undefined;
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
     const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === props.dataType);
     const filename = `data-export-${label ?? props.dataType}-${getDateStringForDataExport(new Date())}.${fileExtension}`;

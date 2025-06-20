@@ -1,3 +1,5 @@
+OnMounted verions with openModal()
+
 <template>
   <PrimeDialog
     v-model:visible="isModalVisible"
@@ -11,7 +13,20 @@
     data-test="downloadModal"
     @after-hide="closeDialog"
   >
+    <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
     <FormKit type="form" class="formkit-wrapper" :actions="false">
+      <label for="fileTypeSelector">
+        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">Framework</b>
+      </label>
+      <FormKit
+        :options="frameworkOptions"
+        v-model="selectedFramework"
+        data-test="frameworkSelector"
+        type="select"
+        name="frameworkSelector"
+        :disabled="isFrameworkSelectorDisabled"
+        @change="onFrameworkChange"
+      />
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
@@ -19,7 +34,7 @@
         <ToggleChipFormInputs
           name="listOfReportingPeriods"
           :options="selectableReportingPeriodOptions"
-          :availableOptions="allReportingPeriodOptions.filter(option => option.value)"
+          :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
         />
@@ -37,7 +52,7 @@
         data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
         placeholder="Select a file type"
-        @change="showFileTypeError=false"
+        @change="showFileTypeError = false"
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
       <div class="flex align-content-start align-items-center">
@@ -45,7 +60,7 @@
           v-model="keepValuesOnly"
           class="form-field vertical-middle"
           data-test="valuesOnlySwitch"
-          @change="!keepValuesOnly ? includeAlias = false : includeAlias"
+          @change="!keepValuesOnly ? (includeAlias = false) : includeAlias"
         />
         <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
@@ -86,19 +101,23 @@ import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
 import InputSwitch from 'primevue/inputswitch';
+import type { DataTypeEnum } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 
 const props = defineProps<{
   isDownloadModalOpen?: boolean;
-  availableReportingPeriods: string[];
+  reportingPeriodsPerFramework: Map<string, string[]>;
 }>();
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
-  (emit: 'downloadDataset',
+  (
+    emit: 'downloadDataset',
     reportingPeriod: string[],
     fileType: string,
     keepValuesOnly: boolean,
-    includeAlias: boolean,
+    includeAlias: boolean
   ): void;
 }>();
 
@@ -106,12 +125,15 @@ const isDownloadModalOpen = toRef(props, 'isDownloadModalOpen');
 const selectedFileType = ref<string>('');
 const isModalVisible = ref<boolean>(false);
 const showReportingPeriodError = ref<boolean>(false);
+const showFrameworksError = ref<boolean>(false);
 const showFileTypeError = ref<boolean>(false);
 const allReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
 const selectableReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
+const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
 const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
+const isFrameworkSelectorDisabled = computed(() => frameworkOptions.value.length === 1);
 
 const fileTypeSelectionOptions = computed(() => {
   return Object.entries(ExportFileTypeInformation).map(([type, info]) => ({
@@ -120,26 +142,78 @@ const fileTypeSelectionOptions = computed(() => {
   }));
 });
 
-onMounted(() => {
-  if (!props.availableReportingPeriods) {
-    return
-  }
-  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
-    value: props.availableReportingPeriods.includes(period.toString()),
+const frameworkOptions = computed(() => {
+  const availableFrameworks = Array.from(props.reportingPeriodsPerFramework.keys());
+
+  const selectableFrameworks = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+    availableFrameworks.includes(framework)
+  ).map((framework) => ({
+    value: framework,
+    label: humanizeStringOrNumber(framework),
   }));
+
+  return selectableFrameworks.length > 1
+    ? [{ value: '', label: 'Select Framework', disabled: true }, ...selectableFrameworks]
+    : selectableFrameworks;
+});
+
+onMounted(() => {
   selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
     value: false,
   }));
+  if (selectedFramework.value) {
+    onFrameworkChange(selectedFramework.value);
+  }
 });
 
 watch(isDownloadModalOpen, (newVal) => {
   isModalVisible.value = newVal ?? false;
+
+  if(newVal) {
+    onModalOpen()
+  }
 });
 
 /**
- * Handle the clickEvent of the Download Button
+ * Handles changing framework selections
+ * @param framework selected framework by user
+ */
+function onFrameworkChange(framework: DataTypeEnum): void {
+  selectedFramework.value = framework;
+
+  if (!framework) {
+    allReportingPeriodOptions.value = [];
+    selectableReportingPeriodOptions.value = [];
+    return;
+  }
+
+  const reportingPeriod = props.reportingPeriodsPerFramework.get(framework) ?? [];
+
+  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+    name: period.toString(),
+    value: reportingPeriod.includes(period.toString()),
+  }));
+
+  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
+    name: period.toString(),
+    value: false,
+  }));
+}
+
+/**
+ * Sets predefined framework for default
+ */
+function onModalOpen(): void {
+  if (!selectedFramework.value) {
+    selectedFramework.value = frameworkOptions.value[0]?.value as DataTypeEnum | undefined;
+    if (selectedFramework.value) {
+      onFrameworkChange(selectedFramework.value);
+    }
+  }
+}
+/**
+ * Handles the clickEvent of the Download Button
  */
 function onDownloadButtonClick(): void {
   const selectedReportingPeriods = getSelectedReportingPeriods();
@@ -186,7 +260,6 @@ function resetProps(): void {
   showReportingPeriodError.value = false;
   showFileTypeError.value = false;
 }
-
 </script>
 
 <style scoped lang="scss">
