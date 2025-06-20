@@ -64,7 +64,7 @@ class PortfolioUpdateListenerService
                         MessageQueueUtils.validateMessageType(messageType, MessageType.PORTFOLIO_UPDATE)
                         val messagePayload =
                             MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload, objectMapper)
-                        MessageQueueUtils.validateDataId(messagePayload.portfolioId)
+                        // MessageQueueUtils.validateDataId(messagePayload.portfolioId)
 
                         val companyIdentifiers = messagePayload.companyIds
                         val reportingPeriods = messagePayload.reportingPeriods
