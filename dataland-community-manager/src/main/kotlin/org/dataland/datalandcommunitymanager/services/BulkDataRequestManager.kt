@@ -40,7 +40,7 @@ class BulkDataRequestManager(
         bulkDataRequest: BulkDataRequest,
         userId: String?,
     ): BulkDataRequestResponse {
-        utils.throwExceptionIfNotJwtAuth()
+        // utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
