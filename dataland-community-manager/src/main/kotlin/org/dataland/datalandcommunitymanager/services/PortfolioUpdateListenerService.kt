@@ -61,19 +61,28 @@ class PortfolioUpdateListenerService
             MessageQueueUtils.rejectMessageOnException {
                 when (receivedRoutingKey) {
                     RoutingKeyNames.PORTFOLIO_UPDATE -> {
-                        MessageQueueUtils.validateMessageType(messageType, MessageType.CLOUDEVENT)
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.PORTFOLIO_UPDATE)
                         val messagePayload =
                             MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload, objectMapper)
                         MessageQueueUtils.validateDataId(messagePayload.portfolioId)
 
+                        val companyIdentifiers = messagePayload.companyIds
+                        val reportingPeriods = messagePayload.reportingPeriods
+                        val userId = messagePayload.userId
+
+                        val dataTypes: Set<DataTypeEnum> =
+                            messagePayload.monitoredFrameworks
+                                .mapNotNull { key -> dataTypeEnumMap[key] }
+                                .toSet()
+
                         requestApi.postBulkDataRequest(
                             BulkDataRequest(
-                                messagePayload.companyIds,
-                                messagePayload.monitoredFrameworks.toDataTypeEnum(),
-                                messagePayload.reportingPeriods,
-                                notifyMeImmediately = false,
+                                companyIdentifiers,
+                                dataTypes,
+                                reportingPeriods,
+                                false,
                             ),
-                            userId = messagePayload.userId,
+                            userId,
                         )
                     }
 
@@ -92,6 +101,4 @@ class PortfolioUpdateListenerService
                 "eutaxonomy-non-financials" to DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
                 "nuclear-and-gas" to DataTypeEnum.nuclearMinusAndMinusGas,
             )
-
-        private fun Set<String>.toDataTypeEnum(): Set<DataTypeEnum> = this.mapNotNull { key -> dataTypeEnumMap[key] }.toSet()
     }

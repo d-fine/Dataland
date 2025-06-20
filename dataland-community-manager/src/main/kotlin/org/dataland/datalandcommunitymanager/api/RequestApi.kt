@@ -49,6 +49,7 @@ interface RequestApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully processed a bulk of data requests."),
+            ApiResponse(responseCode = "403", description = "Only admins can impersonate another user."),
         ],
     )
     @PostMapping(
