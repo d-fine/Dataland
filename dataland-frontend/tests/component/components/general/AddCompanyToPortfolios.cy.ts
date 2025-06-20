@@ -1,8 +1,8 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import AddCompanyToPortfoliosDialog from '@/components/general/AddCompanyToPortfoliosModal.vue';
+import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import { type BasePortfolio } from '@clients/userservice';
 
-describe('AddCompanyToPortfoliosDialog', () => {
+describe('AddCompanyToPortfolios', () => {
   const companyId = 'COMP-123';
   const mockPortfolios: BasePortfolio[] = [
     {
@@ -18,22 +18,21 @@ describe('AddCompanyToPortfoliosDialog', () => {
       portfolioName: 'Two',
       companyIds: new Set(),
       userId: 'user-id',
-      creationTimestamp: 0,
-      lastUpdateTimestamp: 1,
+      creationTimestamp: 123,
+      lastUpdateTimestamp: 456,
     },
     {
       portfolioId: 'p3',
       portfolioName: 'Three',
       companyIds: new Set(),
       userId: 'user-id',
-      creationTimestamp: 0,
-      lastUpdateTimestamp: 1,
+      creationTimestamp: 999,
+      lastUpdateTimestamp: 9999,
     },
   ];
 
   /**
-   * Creates a mock dialogRef object for mounting the AddCompanyToPortfoliosDialog component in tests.
-   *
+   * Creates a mock dialogRef object for mounting the AddCompanyToPortfolios component in tests.
    * @param {Partial<BasePortfolio[]>} [override=mockPortfolios] - Optional override for the list of user portfolios.
    * This allows customizing the `allUserPortfolios` provided to the component.
    * @param {() => void} [closeStub] - Optional stub function to replace the default `dialogRef.close()` method.
@@ -64,7 +63,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
   });
 
   /**
-   * Mounts the `AddCompanyToPortfoliosDialog` component with the provided dialogRef
+   * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
    * using Cypress and the default mocked authentication context.
    *
    * @param {object} dialogRef - The mock dialog reference to inject into the component.
@@ -74,7 +73,7 @@ describe('AddCompanyToPortfoliosDialog', () => {
    */
   function mountComponent(dialogRef: object): void {
     // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfoliosDialog, {
+    cy.mountWithPlugins(AddCompanyToPortfolios, {
       keycloak: minimalKeycloakMock({}),
       global: {
         provide: { dialogRef },

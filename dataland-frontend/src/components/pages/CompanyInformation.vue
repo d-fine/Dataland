@@ -86,7 +86,7 @@ import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/
 import { CompanyRole } from '@clients/communitymanager';
 import PrimeButton from 'primevue/button';
 import router from '@/router';
-import AddCompanyToPortfoliosModal from '@/components/general/AddCompanyToPortfoliosModal.vue';
+import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import type { BasePortfolio } from '@clients/userservice';
 import { useDialog } from 'primevue/usedialog';
 import { type NavigationFailure } from 'vue-router';
@@ -177,7 +177,7 @@ async function fetchUserPortfolios(): Promise<void> {
 function openPortfolioModal(): void {
   fetchUserPortfolios()
     .then(() => {
-      dialog.open(AddCompanyToPortfoliosModal, {
+      dialog.open(AddCompanyToPortfolios, {
         props: {
           header: 'Add company to a portfolio',
           modal: true,

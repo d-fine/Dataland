@@ -55,7 +55,6 @@ onMounted(() => {
   if (!data?.companyId) return;
   companyId = data.companyId;
   allUserPortfolios.value = data.allUserPortfolios;
-  errorMessage.value = '';
 });
 
 /**
@@ -67,7 +66,6 @@ async function handleCompanyAddition(): Promise<void> {
   if (selectedPortfolios.value.length === 0) return;
 
   isLoading.value = true;
-  errorMessage.value = '';
 
   try {
     await Promise.all(
