@@ -47,22 +47,11 @@
               class="uppercase p-button p-button-sm d-letters ml-3"
               aria-label="DOWNLOAD DATA"
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
-              @click="isDownloadModalOpen = true"
+              @click="downloadData()"
               data-test="downloadDataButton"
             >
               <span class="px-2 py-1">DOWNLOAD DATA</span>
             </PrimeButton>
-
-            <DownloadDatasetModal
-              v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
-              :isDownloadModalOpen="isDownloadModalOpen"
-              :availableReportingPeriods="availableReportingPeriods"
-              :dataType="dataType"
-              :reportingPeriodsPerFramework="reportingPeriodsPerFramework"
-              @closeDownloadModal="onCloseDownloadModal"
-              @downloadDataset="handleDatasetDownload"
-              data-test="downloadModal"
-            />
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
@@ -110,7 +99,7 @@
 <script setup lang="ts">
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
+import DownloadDataModal from '@/components/general/DownloadDataModal.vue';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
@@ -143,6 +132,7 @@ import { computed, inject, onMounted, provide, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
+import { useDialog } from 'primevue/usedialog';
 
 const props = defineProps<{
   companyID: string;
@@ -154,19 +144,19 @@ const props = defineProps<{
 const emit = defineEmits(['updateActiveDataMetaInfoForChosenFramework']);
 const router = useRouter();
 const route = useRoute();
+const dialog = useDialog();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const reportingPeriodsOverlayPanel = ref();
 
 const fetchedCompanyInformation = ref<CompanyInformation>({} as CompanyInformation);
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
 const activeDataForCurrentCompanyAndFramework = ref<Array<DataAndMetaInformation<FrameworkData>>>([]);
 const chosenDataTypeInDropdown = ref(props.dataType ?? '');
-const isDownloadModalOpen = ref(false);
 const isDataProcessedSuccessfully = ref(false);
 const hideEmptyFields = ref(true);
 const hasUserUploaderRights = ref(false);
 const hasUserReviewerRights = ref(false);
 const dataId = ref(route.params.dataId);
+const reportingPeriodsOverlayPanel = ref();
 
 provide(
   'hideEmptyFields',
@@ -215,8 +205,6 @@ const reportingPeriodsPerFramework = computed(() => {
   activeDataForCurrentCompanyAndFramework.value.forEach((item) => {
     const framework = item.metaInfo.dataType;
     const period = item.metaInfo.reportingPeriod;
-    console.log('FRAMEWORK', framework);
-    console.log('PERIOD', period);
 
     if (!map.has(framework)) {
       map.set(framework, []);
@@ -226,7 +214,6 @@ const reportingPeriodsPerFramework = computed(() => {
     if (!periods.includes(period)) {
       periods.push(period);
     }
-    console.log('PERIODSSS with getter', map.get(framework));
   });
 
   return map;
@@ -280,7 +267,7 @@ onMounted(async () => {
 });
 
 /**
- *
+ * Retrieves all data meta data available for current company
  */
 async function getMetaData(): Promise<void> {
   try {
@@ -294,7 +281,11 @@ async function getMetaData(): Promise<void> {
 }
 
 /**
- *
+ * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
+ * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
+ * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
+ * Instead, the metaData endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
+ * filled with retrieved metaData and empty data object.
  */
 async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
   try {
@@ -317,7 +308,7 @@ async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
 }
 
 /**
- *
+ * Get available metaData in case of either insufficient rights.
  */
 function setActiveDataForCurrentCompanyAndFramework(): void {
   if (dataMetaInformation.value) {
@@ -332,7 +323,8 @@ function setActiveDataForCurrentCompanyAndFramework(): void {
 }
 
 /**
- *
+ * Set if the user is allowed to upload data for the current company
+ * @returns a promise that resolves to void, so the successful execution of the function can be awaited
  */
 async function setViewPageAttributesForUser(): Promise<void> {
   hasUserReviewerRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise);
@@ -350,7 +342,10 @@ async function setViewPageAttributesForUser(): Promise<void> {
 }
 
 /**
- *
+ * Triggered on click on Edit button. In singleDatasetView, it triggers call to upload page with templateDataId. In
+ * datasetOverview with only one dataset available, it triggers call to upload page with reportingPeriod.
+ * In datasetOverview with multiple datasets available, a modal is opened to choose reportingPeriod to edit.
+ * @param event event
  */
 async function editDataset(event: Event): Promise<void> {
   if (props.singleDataMetaInfoToDisplay) {
@@ -363,16 +358,16 @@ async function editDataset(event: Event): Promise<void> {
 }
 
 /**
- *
- * @param dataId
+ * Navigates to the data update form by using templateDataId
+ * @param dataId dataId
  */
 async function goToUpdateFormByDataId(dataId: string): Promise<void> {
   await router.push(`/companies/${props.companyID}/frameworks/${props.dataType}/upload?templateDataId=${dataId}`);
 }
 
 /**
- *
- * @param reportingPeriod
+ * Navigates to the data update form by using reportingPeriod
+ * @param reportingPeriod reporting period
  */
 async function goToUpdateFormByReportingPeriod(reportingPeriod: string): Promise<void> {
   await router.push(
@@ -381,21 +376,16 @@ async function goToUpdateFormByReportingPeriod(reportingPeriod: string): Promise
 }
 
 /**
- *
- */
-function onCloseDownloadModal(): void {
-  isDownloadModalOpen.value = false;
-}
-
-/**
- *
- * @param selectedYears
- * @param selectedFileType
- * @param keepValuesOnly
- * @param includeAlias
+ * Download the dataset from the selected reporting period as a file in the selected format
+ * @param selectedYears selected reporting year
+ * @param selectedFileType selected export file type
+ * @param selectedFramework selected data type
+ * @param keepValuesOnly selected export of values only
+ * @param includeAlias selected type of field names
  */
 async function handleDatasetDownload(
   selectedYears: string[],
+  selectedFramework: DataTypeEnum,
   selectedFileType: string,
   keepValuesOnly: boolean,
   includeAlias: boolean
@@ -404,7 +394,7 @@ async function handleDatasetDownload(
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
-      props.dataType,
+      selectedFramework,
       apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
@@ -415,8 +405,8 @@ async function handleDatasetDownload(
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
-    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === props.dataType);
-    const filename = `data-export-${label ?? props.dataType}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
+    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === selectedFramework);
+    const filename = `data-export-${label ?? selectedFramework}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
     const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       selectedYears,
@@ -435,10 +425,41 @@ async function handleDatasetDownload(
 }
 
 /**
- *
- * @param info
+ * Saves the company information emitted by the CompanyInformation vue components event.
+ * @param info the company information for the current companyID
  */
 function handleFetchedCompanyInformation(info: CompanyInformation): void {
   fetchedCompanyInformation.value = info;
+}
+
+/**
+ * Opens the PortfolioDownload with the current portfolio's data for downloading.
+ * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ */
+function downloadData(): void {
+  const fullName = 'Download Data';
+
+  dialog.open(DownloadDataModal, {
+    props: {
+      modal: true,
+      header: fullName,
+      pt: {
+        title: {
+          style: {
+            maxWidth: '15em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
+      },
+    },
+    data: {
+      reportingPeriodsPerFramework: reportingPeriodsPerFramework,
+    },
+    emits: {
+      onDownloadDataset: handleDatasetDownload,
+    },
+  });
 }
 </script>

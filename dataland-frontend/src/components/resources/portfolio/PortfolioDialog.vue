@@ -123,7 +123,6 @@ onMounted(() => {
   portfolioName.value = portfolio.portfolioName;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
 });
-
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */

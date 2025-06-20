@@ -1,37 +1,24 @@
-OnMounted verions with openModal()
-
 <template>
-  <PrimeDialog
-    v-model:visible="isModalVisible"
-    style="text-align: center; width: 20em"
-    header="Download dataset"
-    :show-header="true"
-    :closable="true"
-    :dismissable-mask="true"
-    :modal="true"
-    :close-on-escape="true"
-    data-test="downloadModal"
-    @after-hide="closeDialog"
-  >
+  <div class="download-content d-flex flex-column align-items-center">
     <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
     <FormKit type="form" class="formkit-wrapper" :actions="false">
       <label for="fileTypeSelector">
         <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">Framework</b>
       </label>
       <FormKit
-        :options="frameworkOptions"
+        :options="availableFrameworks"
         v-model="selectedFramework"
         data-test="frameworkSelector"
         type="select"
         name="frameworkSelector"
-        :disabled="isFrameworkSelectorDisabled"
-        @change="onFrameworkChange"
+        @input="onFrameworkChange"
       />
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
+          :key="selectedFramework || 'no-framework'"
           name="listOfReportingPeriods"
           :options="selectableReportingPeriodOptions"
           :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
@@ -85,18 +72,16 @@ OnMounted verions with openModal()
       <PrimeButton
         data-test="downloadDataButtonInModal"
         @click="onDownloadButtonClick()"
-        style="width: 100%; justify-content: center"
         label="DOWNLOAD"
-        class="d-letters"
+        class="primary-button my-2"
       >
       </PrimeButton>
     </div>
-  </PrimeDialog>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, toRef, watch } from 'vue';
-import PrimeDialog from 'primevue/dialog';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
@@ -104,11 +89,7 @@ import InputSwitch from 'primevue/inputswitch';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
-
-const props = defineProps<{
-  isDownloadModalOpen?: boolean;
-  reportingPeriodsPerFramework: Map<string, string[]>;
-}>();
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -116,14 +97,14 @@ const emit = defineEmits<{
     emit: 'downloadDataset',
     reportingPeriod: string[],
     fileType: string,
+    selectedFramework: string,
     keepValuesOnly: boolean,
     includeAlias: boolean
   ): void;
 }>();
 
-const isDownloadModalOpen = toRef(props, 'isDownloadModalOpen');
+const portfolioErrors = ref('');
 const selectedFileType = ref<string>('');
-const isModalVisible = ref<boolean>(false);
 const showReportingPeriodError = ref<boolean>(false);
 const showFrameworksError = ref<boolean>(false);
 const showFileTypeError = ref<boolean>(false);
@@ -133,8 +114,8 @@ const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
 const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
 const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
-const isFrameworkSelectorDisabled = computed(() => frameworkOptions.value.length === 1);
-
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
+const reportingPeriodsPerFramework = ref<Map<string, string[]>>(new Map());
 const fileTypeSelectionOptions = computed(() => {
   return Object.entries(ExportFileTypeInformation).map(([type, info]) => ({
     value: type,
@@ -142,22 +123,21 @@ const fileTypeSelectionOptions = computed(() => {
   }));
 });
 
-const frameworkOptions = computed(() => {
-  const availableFrameworks = Array.from(props.reportingPeriodsPerFramework.keys());
+const availableFrameworks = computed(() => {
+  const frameworks = Array.from(reportingPeriodsPerFramework.value.keys());
 
-  const selectableFrameworks = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-    availableFrameworks.includes(framework)
-  ).map((framework) => ({
+  return MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
     value: framework,
     label: humanizeStringOrNumber(framework),
   }));
-
-  return selectableFrameworks.length > 1
-    ? [{ value: '', label: 'Select Framework', disabled: true }, ...selectableFrameworks]
-    : selectableFrameworks;
 });
 
 onMounted(() => {
+  const data = dialogRef?.value.data;
+  if (data?.reportingPeriodsPerFramework) {
+    reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
+  }
+
   selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
     value: false,
@@ -165,34 +145,41 @@ onMounted(() => {
   if (selectedFramework.value) {
     onFrameworkChange(selectedFramework.value);
   }
+  onModalOpen();
 });
 
-watch(isDownloadModalOpen, (newVal) => {
-  isModalVisible.value = newVal ?? false;
-
-  if(newVal) {
-    onModalOpen()
-  }
-});
+/**
+ * Reset errors when either framework, reporting period or file type changes
+ */
+function resetErrors(): void {
+  portfolioErrors.value = '';
+  showReportingPeriodError.value = false;
+  showFileTypeError.value = false;
+  showFrameworksError.value = false;
+}
 
 /**
  * Handles changing framework selections
  * @param framework selected framework by user
  */
-function onFrameworkChange(framework: DataTypeEnum): void {
-  selectedFramework.value = framework;
-
+function onFrameworkChange(framework: string | undefined): void {
+  resetErrors();
   if (!framework) {
     allReportingPeriodOptions.value = [];
     selectableReportingPeriodOptions.value = [];
     return;
   }
 
-  const reportingPeriod = props.reportingPeriodsPerFramework.get(framework) ?? [];
+  selectedFramework.value = framework as DataTypeEnum;
+  allReportingPeriodOptions.value?.forEach((option) => {
+    option.value = false;
+  });
+
+  const reportingPeriods = reportingPeriodsPerFramework.value.get(framework) ?? [];
 
   allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
-    value: reportingPeriod.includes(period.toString()),
+    value: reportingPeriods.includes(period.toString()),
   }));
 
   selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
@@ -206,7 +193,7 @@ function onFrameworkChange(framework: DataTypeEnum): void {
  */
 function onModalOpen(): void {
   if (!selectedFramework.value) {
-    selectedFramework.value = frameworkOptions.value[0]?.value as DataTypeEnum | undefined;
+    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
     if (selectedFramework.value) {
       onFrameworkChange(selectedFramework.value);
     }
@@ -223,8 +210,14 @@ function onDownloadButtonClick(): void {
   if (showReportingPeriodError.value || showFileTypeError.value) {
     return;
   }
-  emit('downloadDataset', selectedReportingPeriods, selectedFileType.value, keepValuesOnly.value, includeAlias.value);
-  closeDialog();
+  emit(
+    'downloadDataset',
+    selectedReportingPeriods,
+    selectedFileType.value,
+    selectedFramework.value ?? '',
+    keepValuesOnly.value,
+    includeAlias.value
+  );
 }
 
 /**
@@ -242,27 +235,20 @@ function checkIfShowErrors(): void {
   showReportingPeriodError.value = getSelectedReportingPeriods().length === 0;
   showFileTypeError.value = selectedFileType.value.length === 0;
 }
-
-/**
- * Resets selections and error messages and closes the download modal
- */
-function closeDialog(): void {
-  resetProps();
-  isModalVisible.value = false;
-  emit('closeDownloadModal');
-}
-
-/**
- * Resets the props, e.g. the selections and error messages.
- */
-function resetProps(): void {
-  selectedFileType.value = '';
-  showReportingPeriodError.value = false;
-  showFileTypeError.value = false;
-}
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables.scss';
+
+.download-content {
+  width: 20em;
+  height: 100%;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
 .toggle-chip-group {
   display: flex;
   flex-wrap: wrap;
