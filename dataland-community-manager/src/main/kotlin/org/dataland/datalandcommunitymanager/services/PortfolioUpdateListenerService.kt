@@ -32,7 +32,6 @@ class PortfolioUpdateListenerService
     constructor(
         private val requestManager: BulkDataRequestManager,
         private val objectMapper: ObjectMapper,
-        private val requestEmailManager: RequestEmailManager,
     ) {
         /**
          * Creates Bulk Data Requests from Portfolio Update Payloads.
