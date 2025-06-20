@@ -15,12 +15,12 @@ import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackend.utils.SharedFrameworkFieldsUtils
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
@@ -364,7 +364,7 @@ class AssembledDataManager
                         dataDimension to
                             if (availableDataPointIds.keys
                                     .map { it.dataPointType }
-                                    .subtract(SharedFrameworkFieldsUtils.getSharedFields())
+                                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
                                     .isNotEmpty()
                             ) {
                                 availableDataPointIds.values.toList()

@@ -104,7 +104,7 @@ class DataPointUtils
                 return emptySet()
             }
 
-            val relevantDataPoints = getRelevantDataPointTypes(framework).subtract(SharedFrameworkFieldsUtils.getSharedFields())
+            val relevantDataPoints = getRelevantDataPointTypes(framework).subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
 
             return metaDataManager
                 .getActiveDataPointMetaInformation(
@@ -154,7 +154,7 @@ class DataPointUtils
                     )
 
                 activeDataPointMetaInformation.groupBy { it.companyId }.values.forEach { metaInformationEntities ->
-                    if (SharedFrameworkFieldsUtils.containsSubstantialDataPoints(metaInformationEntities.map { it.dataPointType })) {
+                    if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(metaInformationEntities.map { it.dataPointType })) {
                         allRelevantDimensions.addAll(
                             metaInformationEntities.map {
                                 it.toBasicDataDimensions(framework)
