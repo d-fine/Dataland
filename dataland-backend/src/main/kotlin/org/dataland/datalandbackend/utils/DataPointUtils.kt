@@ -153,15 +153,21 @@ class DataPointUtils
                         ),
                     )
 
-                activeDataPointMetaInformation.groupBy { it.companyId }.values.forEach { metaInformationEntities ->
-                    if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(metaInformationEntities.map { it.dataPointType })) {
-                        allRelevantDimensions.addAll(
-                            metaInformationEntities.map {
-                                it.toBasicDataDimensions(framework)
-                            },
-                        )
+                activeDataPointMetaInformation
+                    .groupBy {
+                        Pair(it.companyId, it.reportingPeriod)
+                    }.values
+                    .forEach { metaInformationEntities ->
+                        if (DataAvailabilityIgnoredFieldsUtils
+                                .containsNonIgnoredDataPoints(metaInformationEntities.map { it.dataPointType })
+                        ) {
+                            allRelevantDimensions.addAll(
+                                metaInformationEntities.map {
+                                    it.toBasicDataDimensions(framework)
+                                },
+                            )
+                        }
                     }
-                }
             }
             return allRelevantDimensions.distinct()
         }
