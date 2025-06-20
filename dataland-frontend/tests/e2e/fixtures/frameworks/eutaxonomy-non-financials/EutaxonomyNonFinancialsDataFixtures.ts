@@ -45,7 +45,7 @@ export function generateEutaxonomyNonFinancialsData(
       ),
       fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
       scopeOfEntities: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNoNa()),
-      isNfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      nfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       euTaxonomyActivityLevelReporting: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
       numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),

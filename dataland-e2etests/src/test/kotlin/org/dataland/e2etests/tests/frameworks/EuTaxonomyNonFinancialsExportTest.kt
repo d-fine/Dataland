@@ -15,7 +15,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     private lateinit var fullTestData: EutaxonomyNonFinancialsData
     private lateinit var testDataWithNullField: EutaxonomyNonFinancialsData
     private lateinit var testDataWithNonNullField: EutaxonomyNonFinancialsData
-    private val nullFieldName = "isNfrdMandatory"
+    private val nullFieldName = "nfrdMandatory"
     private val nonNullFieldName = "fiscalYearDeviation"
 
     @BeforeAll
@@ -28,7 +28,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
             fullTestData.copy(
                 general =
                     fullTestData.general?.copy(
-                        isNfrdMandatory = null,
+                        nfrdMandatory = null,
                     ),
                 revenue = null,
                 capex = null,

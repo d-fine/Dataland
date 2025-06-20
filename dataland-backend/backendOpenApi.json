@@ -15883,7 +15883,7 @@
               }
             ]
           },
-          "isNfrdMandatory": {
+          "nfrdMandatory": {
             "nullable": true,
             "allOf": [
               {

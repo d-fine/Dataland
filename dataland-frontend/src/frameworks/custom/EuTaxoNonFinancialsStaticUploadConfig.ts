@@ -79,7 +79,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'isNfrdMandatory',
+            name: 'nfrdMandatory',
             label: 'NFRD Mandatory',
             description: 'Is the NFRD mandatory for your company?',
             unit: '',
