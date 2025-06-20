@@ -2,12 +2,12 @@
   <Listbox
     v-model="selectedPortfolios"
     :options="allUserPortfolios"
-    :virtual-scroller-options="{ itemSize: 30, scrollWidth: '100%', scrollHeight: '300px', autoSize: true }"
+    :virtual-scroller-options="virtualScrollerOptions"
     multiple
     :meta-key-selection="false"
     optionLabel="portfolioName"
     :disabled="isLoading"
-    data-test="'portfolioSelectionListbox'"
+    data-test="portfolioSelectionListbox"
   />
 
   <Message v-if="errorMessage" severity="error" class="my-3">
@@ -20,7 +20,7 @@
     :disabled="selectedPortfolios.length === 0 || isLoading"
     :loading="isLoading"
     @click="handleCompanyAddition"
-    :data-test="'saveButton'"
+    data-test="saveButton"
   >
     <span>Add company to portfolio</span>
   </PrimeButton>
@@ -50,6 +50,13 @@ const selectedPortfolios = ref<BasePortfolio[]>([]);
 
 const errorMessage = ref('');
 const isLoading = ref(false);
+
+const virtualScrollerOptions = {
+  itemSize: 30,
+  scrollWidth: '100%',
+  scrollHeight: '300px',
+  autoSize: true,
+};
 
 onMounted(() => {
   if (!data?.companyId) return;

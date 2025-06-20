@@ -95,6 +95,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const authenticated = inject<boolean>('authenticated');
 const dialog = useDialog();
 
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
 const emits = defineEmits(['fetchedCompanyInformation']);
 
 const companyInformation = ref<CompanyInformation | null>(null);
@@ -162,7 +164,6 @@ function fetchDataForThisPage(): void {
  */
 async function fetchUserPortfolios(): Promise<void> {
   try {
-    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     allUserPortfolios = (await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()).data;
   } catch (error) {
     console.error(error);
@@ -236,8 +237,8 @@ async function getParentCompany(parentCompanyLei: string): Promise<void> {
     } else {
       hasParentCompany.value = false;
     }
-  } catch (e) {
-    console.error(e);
+  } catch {
+    console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
   }
 }
 
@@ -249,15 +250,12 @@ async function getCompanyInformation(): Promise<void> {
   waitingForData.value = true;
   if (props.companyId === undefined) return;
   try {
-    const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
-      .companyDataController;
+    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
     companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
-    if (companyInformation.value.parentCompanyLei != null) {
-      getParentCompany(companyInformation.value.parentCompanyLei).catch(() => {
-        console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
-      });
-    } else {
+    if (companyInformation.value.parentCompanyLei == null) {
       hasParentCompany.value = false;
+    } else {
+      await getParentCompany(companyInformation.value.parentCompanyLei);
     }
     emits('fetchedCompanyInformation', companyInformation.value);
   } catch (error) {
