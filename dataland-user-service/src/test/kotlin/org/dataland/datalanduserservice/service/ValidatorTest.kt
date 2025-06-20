@@ -44,9 +44,18 @@ class ValidatorTest {
     private val dummyPortfolioName = "Test Portfolio"
     private val validCompanyId = "valid-company-id"
     private val invalidCompanyId = "invalid-company-id"
+    private val isMonitored = true
+    private val dummyStartingMonitoringPeriod = "2023"
+    private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
 
     private val validPortfolioUpload =
-        PortfolioUpload(dummyPortfolioName, setOf(validCompanyId))
+        PortfolioUpload(
+            dummyPortfolioName,
+            setOf(validCompanyId),
+            isMonitored,
+            dummyStartingMonitoringPeriod,
+            dummyMonitoredFrameworks,
+        )
 
     @BeforeEach
     fun setup() {
