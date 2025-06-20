@@ -47,7 +47,7 @@ class PortfolioUpdateListenerService
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                             ],
                         ),
-                    exchange = Exchange(ExchangeName.USER_SERVICE_EVENTS, declare = "true"),
+                    exchange = Exchange(ExchangeName.USER_SERVICE_EVENTS, declare = "false"),
                     key = [RoutingKeyNames.PORTFOLIO_UPDATE],
                 ),
             ],
@@ -61,7 +61,7 @@ class PortfolioUpdateListenerService
             MessageQueueUtils.rejectMessageOnException {
                 when (receivedRoutingKey) {
                     RoutingKeyNames.PORTFOLIO_UPDATE -> {
-                        MessageQueueUtils.validateMessageType(messageType, MessageType.PUBLIC_DATA_RECEIVED)
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.CLOUDEVENT)
                         val messagePayload =
                             MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload, objectMapper)
                         MessageQueueUtils.validateDataId(messagePayload.portfolioId)

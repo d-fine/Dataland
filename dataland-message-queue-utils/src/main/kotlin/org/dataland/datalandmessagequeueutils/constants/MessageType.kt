@@ -18,4 +18,5 @@ object MessageType {
     const val QA_STATUS_UPDATED = "QA status updated"
     const val DATA_NONSOURCEABLE = "Data non-sourceable"
     const val PORTFOLIO_UPDATE = "portfolio.update"
+    const val CLOUDEVENT = "cloudevent"
 }
