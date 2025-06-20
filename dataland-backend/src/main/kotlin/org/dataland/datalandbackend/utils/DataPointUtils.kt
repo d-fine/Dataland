@@ -152,12 +152,15 @@ class DataPointUtils
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
-                if (activeDataPointMetaInformation
-                        .map { it.dataPointType }
-                        .subtract(SharedFrameworkFieldsUtils.getSharedFields())
-                        .isNotEmpty()
-                ) {
-                    allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
+
+                activeDataPointMetaInformation.groupBy { it.companyId }.values.forEach { metaInformationEntities ->
+                    if (SharedFrameworkFieldsUtils.containsSubstantialDataPoints(metaInformationEntities.map { it.dataPointType })) {
+                        allRelevantDimensions.addAll(
+                            metaInformationEntities.map {
+                                it.toBasicDataDimensions(framework)
+                            },
+                        )
+                    }
                 }
             }
             return allRelevantDimensions.distinct()
