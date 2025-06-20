@@ -54,7 +54,7 @@ class V7__UnifyNfrdMandatoryFieldTest {
     }
 
     @Test
-    fun `check that extendedEnumYesNoNfrdMandatory is updated correctly in data_point_meta_information`() {
+    fun `check that extendedEnumYesNoNfrdMandatory is updated correctly in data point meta information table`() {
         whenever(mockConnection.createStatement()).thenReturn(mockStatement)
         whenever(mockStatement.executeUpdate(any<String>())).thenReturn(2)
 
@@ -72,7 +72,7 @@ class V7__UnifyNfrdMandatoryFieldTest {
     }
 
     @Test
-    fun `check that extendedEnumYesNoNfrdMandatory is updated correctly in data_point_uuid_map`() {
+    fun `check that extendedEnumYesNoNfrdMandatory is updated correctly in data point uuid map`() {
         whenever(mockConnection.createStatement()).thenReturn(mockStatement)
         whenever(mockStatement.executeUpdate(any<String>())).thenReturn(2)
 

@@ -1,6 +1,5 @@
 package db.migration
 
-import org.dataland.datalandqaservice.db.migration.V10__UnifyNfrdMandatoryField
 import org.flywaydb.core.api.migration.Context
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -55,7 +54,7 @@ class V10__UnifyNfrdMandatoryFieldTest {
         whenever(mockConnection.createStatement()).thenReturn(mockStatement)
         whenever(mockStatement.executeUpdate(any<String>())).thenReturn(2)
 
-        migration.migrateNfrdMandatoryField(mockContext)
+        migration.migrateNfrdMandatoryField(mockContext, "data_point_qa_review")
 
         verify(mockStatement).executeUpdate(
             "UPDATE data_point_qa_review SET data_point_type = 'extendedEnumYesNoIsNfrdMandatory' " +
