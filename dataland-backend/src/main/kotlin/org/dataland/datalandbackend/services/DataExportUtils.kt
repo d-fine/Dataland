@@ -126,6 +126,8 @@ class DataExportUtils
                     } else {
                         readableHeaders["data.$strippedField"] = fieldName
                     }
+                } else {
+                    readableHeaders["data.$strippedField"] = fieldName
                 }
             }
 

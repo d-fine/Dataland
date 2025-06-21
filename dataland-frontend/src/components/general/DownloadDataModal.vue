@@ -222,6 +222,9 @@ function onDownloadButtonClick(): void {
   if (showReportingPeriodError.value || showFileTypeError.value) {
     return;
   }
+  console.log("ALIAS: ",includeAlias.value)
+  console.log("VALUES: ",keepValuesOnly.value)
+
   emit(
     'downloadDataset',
     selectedReportingPeriods,
