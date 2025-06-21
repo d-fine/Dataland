@@ -94,7 +94,7 @@ import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/gen
 import InputSwitch from 'primevue/inputswitch';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 
@@ -135,7 +135,7 @@ const fileTypeSelectionOptions = computed(() => {
 const availableFrameworks = computed(() => {
   const frameworks = Array.from(reportingPeriodsPerFramework.value.keys());
 
-  return MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
+  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
     value: framework,
     label: humanizeStringOrNumber(framework),
   }));

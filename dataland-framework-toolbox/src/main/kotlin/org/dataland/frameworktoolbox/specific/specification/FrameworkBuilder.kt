@@ -7,7 +7,9 @@ import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBui
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 
 /**
- * A builder for a framework specification
+ * A builder class responsible for constructing the specification of a framework
+ *  * @param framework The framework instance to build upon.
+ *  * @param datalandRepository The repository providing access to specification data
  */
 open class FrameworkBuilder(
     val framework: Framework,

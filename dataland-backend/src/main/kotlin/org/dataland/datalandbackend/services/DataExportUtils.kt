@@ -3,8 +3,6 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.services.exportAliasesNonAssembledData.ExportAliasMapping
-import org.dataland.datalandbackend.services.exportAliasesNonAssembledData.SfdrExportAliasMapping
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.utils.JsonUtils
@@ -115,24 +113,19 @@ class DataExportUtils
                     emptyMap()
                 }
 
-            val hardcodedMap = getHardcodedAliasMapping(dataType)?.fieldNameToReadableName
-
             val readableHeaders = mutableMapOf<String, String>()
 
             nonEmptyHeaderFields.forEach { fieldName ->
                 val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
 
                 val aliasHeader = aliasExportMap[strippedField]
-                val hardcodedHeader = hardcodedMap?.get(strippedField)
 
                 if (includeAliases) {
                     if (isAssembledDataset) {
                         readableHeaders["data.$strippedField"] = aliasHeader ?: fieldName
                     } else {
-                        readableHeaders["data.$strippedField"] = hardcodedHeader ?: fieldName
+                        readableHeaders["data.$strippedField"] = fieldName
                     }
-                } else {
-                    readableHeaders["data.$strippedField"] = fieldName
                 }
             }
 
@@ -333,10 +326,4 @@ class DataExportUtils
             }
             return result
         }
-
-        private fun getHardcodedAliasMapping(dataType: DataType): ExportAliasMapping? =
-            when (dataType.toString().lowercase()) {
-                "sfdr" -> SfdrExportAliasMapping
-                else -> null
-            }
     }
