@@ -1,4 +1,4 @@
-<template>
+<template data-test="downloadModal">
   <div class="download-content d-flex flex-column align-items-center">
     <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
     <FormKit type="form" class="formkit-wrapper" :actions="false">
@@ -70,12 +70,12 @@
 
     <div>
       <template v-if="!isDownloading">
-      <PrimeButton
-        data-test="downloadDataButtonInModal"
-        @click="onDownloadButtonClick()"
-        label="DOWNLOAD"
-        class="primary-button my-2"
-      />
+        <PrimeButton
+          data-test="downloadDataButtonInModal"
+          @click="onDownloadButtonClick()"
+          label="DOWNLOAD"
+          class="primary-button my-2"
+        />
       </template>
       <template v-else>
         <div class="my-4" data-test="downloadSpinner">
@@ -111,7 +111,7 @@ const emit = defineEmits<{
 }>();
 
 const downloadProgress = ref<number | undefined>(undefined);
-const isDownloading = ref<boolean>(false)
+const isDownloading = ref<boolean>(false);
 const portfolioErrors = ref('');
 const selectedFileType = ref<string>('');
 const showReportingPeriodError = ref<boolean>(false);
@@ -221,7 +221,6 @@ function onDownloadButtonClick(): void {
 
   if (showReportingPeriodError.value || showFileTypeError.value) {
     return;
-
   }
   emit(
     'downloadDataset',
