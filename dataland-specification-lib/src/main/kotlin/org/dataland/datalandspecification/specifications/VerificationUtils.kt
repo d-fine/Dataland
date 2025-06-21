@@ -40,9 +40,10 @@ object VerificationUtils {
                     yieldAll(flattenSchema(value as ObjectNode, newPath))
                 } else if (value.isNull) {
                     yield(FrameworkSchemaEntry(newPath, null))
-                } else {
-                    assert(value.isTextual)
+                } else if (value.isTextual) {
                     yield(FrameworkSchemaEntry(newPath, value.asText()))
+                } else {
+                    throw IllegalArgumentException("Unsupported element type")
                 }
             }
         }
