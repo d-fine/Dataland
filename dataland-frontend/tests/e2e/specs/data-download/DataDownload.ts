@@ -59,17 +59,16 @@ describeIf(
       cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
 
       cy.get('button[data-test=downloadDataButton]').should('exist').click();
-      cy.get('[data-test=downloadModal]')
-        .should('exist')
-        .within(() => {
-          cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
-          const dropdownValue = fileTypeMap[fileType.toUpperCase()];
-          if (!dropdownValue) {
-            throw new Error(`Unsupported fileType: ${fileType}`);
-          }
-          cy.get('[data-test="fileTypeSelector"]').select(dropdownValue);
-          cy.get('button[data-test=downloadDataButtonInModal]').click();
-        });
+      cy.get('[data-test="listOfReportingPeriods"]')
+        .contains(reportingPeriod)
+        .should('be.visible')
+        .click({ force: true });
+      const dropdownValue = fileTypeMap[fileType.toUpperCase()];
+      if (!dropdownValue) {
+        throw new Error(`Unsupported fileType: ${fileType}`);
+      }
+      cy.get('[data-test="fileTypeSelector"]').select(dropdownValue);
+      cy.get('button[data-test=downloadDataButtonInModal]').click();
     }
 
     /**

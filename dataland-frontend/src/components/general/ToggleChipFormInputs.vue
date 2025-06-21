@@ -19,6 +19,11 @@ import ToggleChip from '@/components/general/ToggleChip.vue';
 
 export type ToggleChipInputType = { name: string; value: boolean };
 
+/**
+ * This component has two properties: options, and availableOptions. The meaning of the value field in options is
+ * "selected". If an entry in options has value=true, it is selected.
+ * The meaning of the value field in availableOptions is "available" aka "not disabled".
+ */
 export default defineComponent({
   name: 'ToggleChipFormInputs',
   emits: ['changed'],

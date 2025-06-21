@@ -51,6 +51,7 @@ export class EsgDatenkatalogApiClient implements PublicFrameworkDataApi<EsgDaten
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
+    includeAliases: boolean,
     keepValueFieldsOnly?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,6 +60,7 @@ export class EsgDatenkatalogApiClient implements PublicFrameworkDataApi<EsgDaten
       reportingPeriods,
       companyIds,
       fileFormat,
+      includeAliases,
       keepValueFieldsOnly,
       options
     );

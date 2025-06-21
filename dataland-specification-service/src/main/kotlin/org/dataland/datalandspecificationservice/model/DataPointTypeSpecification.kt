@@ -27,7 +27,7 @@ fun DataPointType.toDto(
         usedBy =
             database.frameworks.values
                 .filter {
-                    it.flattenedSchema.any { schemaEntry -> schemaEntry.dataPointId == this.id }
+                    it.flattenedSchema.any { schemaEntry -> schemaEntry.value == this.id }
                 }.map { it.getRef(baseUrl) },
         dataPointBaseType =
             database.dataPointBaseTypes[this.dataPointBaseTypeId]?.getRef(

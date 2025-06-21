@@ -69,9 +69,10 @@ class EutaxonomyFinancialsDataController
             companyIds: List<String>,
             exportFileType: ExportFileType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly)
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanyEutaxonomyFinancialsData")
         override fun getFrameworkDatasetsForCompany(
