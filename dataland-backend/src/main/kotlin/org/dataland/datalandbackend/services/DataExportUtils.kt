@@ -135,7 +135,7 @@ class DataExportUtils
                 if (isAssembledDataset) {
                     JsonUtils
                         .getLeafNodeFieldNames(
-                            frameworkTemplate ?: portfolioExportRows.first(),
+                            frameworkTemplate,
                             keepEmptyFields = true,
                             dropLastFieldName = true,
                         ).mapNotNull {
@@ -287,8 +287,8 @@ class DataExportUtils
                         !orderedHeaderFields.contains(it)
                     }.forEach { csvSchemaBuilder.addColumn(it) }
 
-                orderedHeaderFields.forEach { it ->
-                    csvSchemaBuilder.addColumn(it)
+                orderedHeaderFields.forEach { header ->
+                    csvSchemaBuilder.addColumn(header)
                 }
             } else {
                 orderedHeaderFields.forEach {

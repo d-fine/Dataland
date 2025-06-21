@@ -52,8 +52,8 @@ class DataExportServiceTest {
 
         val header = listOf(header1, header2, header3)
         val csvSchemaBuilder = CsvSchema.builder()
-        header.forEach { it ->
-            csvSchemaBuilder.addColumn(it)
+        header.forEach { column ->
+            csvSchemaBuilder.addColumn(column)
         }
         val csvSchema = csvSchemaBuilder.build().withHeader()
 

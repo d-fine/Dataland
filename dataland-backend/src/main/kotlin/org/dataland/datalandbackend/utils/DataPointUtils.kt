@@ -18,7 +18,6 @@ import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificat
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import kotlin.collections.emptyList
 
 /**
  * A utility class for working with data point specifications and data point metadata
