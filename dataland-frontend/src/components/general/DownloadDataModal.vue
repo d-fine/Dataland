@@ -69,13 +69,19 @@
     </FormKit>
 
     <div>
+      <template v-if="!isDownloading">
       <PrimeButton
         data-test="downloadDataButtonInModal"
         @click="onDownloadButtonClick()"
         label="DOWNLOAD"
         class="primary-button my-2"
-      >
-      </PrimeButton>
+      />
+      </template>
+      <template v-else>
+        <div class="my-4" data-test="downloadSpinner">
+          <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true" />
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -90,6 +96,7 @@ import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -103,6 +110,8 @@ const emit = defineEmits<{
   ): void;
 }>();
 
+const downloadProgress = ref<number | undefined>(undefined);
+const isDownloading = ref<boolean>(false)
 const portfolioErrors = ref('');
 const selectedFileType = ref<string>('');
 const showReportingPeriodError = ref<boolean>(false);
@@ -199,6 +208,7 @@ function onModalOpen(): void {
     }
   }
 }
+
 /**
  * Handles the clickEvent of the Download Button
  */
@@ -206,9 +216,12 @@ function onDownloadButtonClick(): void {
   const selectedReportingPeriods = getSelectedReportingPeriods();
 
   checkIfShowErrors();
+  isDownloading.value = true;
+  downloadProgress.value = 0;
 
   if (showReportingPeriodError.value || showFileTypeError.value) {
     return;
+
   }
   emit(
     'downloadDataset',

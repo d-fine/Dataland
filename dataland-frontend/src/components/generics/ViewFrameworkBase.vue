@@ -133,6 +133,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
 import { useDialog } from 'primevue/usedialog';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 const props = defineProps<{
   companyID: string;
@@ -157,6 +158,7 @@ const hasUserUploaderRights = ref(false);
 const hasUserReviewerRights = ref(false);
 const dataId = ref(route.params.dataId);
 const reportingPeriodsOverlayPanel = ref();
+const isDownloading = ref(false);
 
 provide(
   'hideEmptyFields',
@@ -385,11 +387,12 @@ async function goToUpdateFormByReportingPeriod(reportingPeriod: string): Promise
  */
 async function handleDatasetDownload(
   selectedYears: string[],
-  selectedFramework: DataTypeEnum,
   selectedFileType: string,
+  selectedFramework: DataTypeEnum,
   keepValuesOnly: boolean,
   includeAlias: boolean
 ): Promise<void> {
+  isDownloading.value = true;
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
@@ -405,8 +408,8 @@ async function handleDatasetDownload(
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
-    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === selectedFramework);
-    const filename = `data-export-${label ?? selectedFramework}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
+    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
+    const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
     const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
       selectedYears,
@@ -421,6 +424,8 @@ async function handleDatasetDownload(
     forceFileDownload(content, filename);
   } catch (err) {
     console.error(err);
+  } finally {
+    isDownloading.value = false;
   }
 }
 

@@ -389,8 +389,8 @@ async function handleDatasetDownload(
   keepValuesOnly: boolean,
   includeAlias: boolean
 ): Promise<void> {
+  isDownloading.value = true;
   try {
-    console.log(selectedFramework);
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
@@ -471,7 +471,6 @@ function downloadPortfolio(): void {
     },
     data: {
       reportingPeriodsPerFramework: reportingPeriodsPerFramework,
-      isDownloading: isDownloading,
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,
