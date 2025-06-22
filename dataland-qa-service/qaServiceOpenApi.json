@@ -1683,8 +1683,7 @@
                   "p2p",
                   "lksg",
                   "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog"
+                  "vsme"
                 ]
               }
             }
@@ -1779,8 +1778,7 @@
                   "p2p",
                   "lksg",
                   "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog"
+                  "vsme"
                 ]
               }
             }
@@ -6168,8 +6166,7 @@
               "p2p",
               "lksg",
               "additional-company-information",
-              "vsme",
-              "esg-datenkatalog"
+              "vsme"
             ]
           },
           "uploadTime": {

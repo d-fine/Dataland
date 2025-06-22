@@ -96,18 +96,6 @@ before(function () {
       RequestPriority.Low
     )
   );
-
-  mockDataRequests.push(
-    buildExtendedStoredDataRequest(
-      DataTypeEnum.EsgDatenkatalog,
-      '1021',
-      'a-company-that-will-always-be-sorted-to-top',
-      'someId',
-      RequestStatus.Answered,
-      AccessStatus.Pending,
-      RequestPriority.Low
-    )
-  );
 });
 describe('Component tests for the data requests search page', function (): void {
   it('Check sorting', function (): void {
@@ -245,7 +233,6 @@ describe('Component tests for the data requests search page', function (): void 
       'Pathways to Paris',
       'for financial companies',
       'for non-financial companies',
-      'ESG Datenkatalog',
       'für Corporate Schuldscheindarlehen',
     ];
 

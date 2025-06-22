@@ -9,13 +9,11 @@ import {
   uploadGenericFrameworkData,
   uploadVsmeFrameworkData,
 } from '@e2e/utils/FrameworkUpload';
-import { frameworkFixtureMap } from '@e2e/utils/FixtureMap';
 import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
 } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum, type VsmeData } from '@clients/backend';
-import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 
 const chunkSize = 15;
@@ -156,15 +154,6 @@ describe(
       );
     }
 
-    // Prepopulation for frameworks not implemented with the framework-toolbox
-    for (const [key, value] of Object.entries(frameworkFixtureMap)) {
-      const keyTyped = key as keyof typeof frameworkFixtureMap;
-      registerFrameworkFakeFixtureUpload(
-        keyTyped,
-        (config) => getUnifiedFrameworkDataControllerFromConfiguration(keyTyped, config),
-        value
-      );
-    }
 
     // Prepopulation for frameworks of the framework-registry
     for (const framework of getAllPublicFrameworkIdentifiers()) {

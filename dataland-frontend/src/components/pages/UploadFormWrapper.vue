@@ -17,7 +17,6 @@
 <script setup lang="ts">
 import CreateAdditionalCompanyInformationDataset from '@/components/forms/CreateAdditionalCompanyInformationDataset.vue';
 
-import CreateEsgDatenkatalogDataset from '@/components/forms/CreateEsgDatenkatalogDataset.vue';
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
@@ -52,8 +51,6 @@ const frameworkToUploadComponent = computed(() => {
       return CreateLksgDataset;
     case `${DataTypeEnum.Sfdr}`:
       return CreateSfdrDataset;
-    case `${DataTypeEnum.EsgDatenkatalog}`:
-      return CreateEsgDatenkatalogDataset;
     case `${DataTypeEnum.Vsme}`:
       return CreateVsmeDataset;
     case `${DataTypeEnum.NuclearAndGas}`:

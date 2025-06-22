@@ -731,11 +731,9 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
                   "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog"
+                  "vsme"
                 ]
               }
             }
@@ -958,11 +956,9 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
                   "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog"
+                  "vsme"
                 ]
               }
             }
@@ -1110,11 +1106,9 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
                   "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog"
+                  "vsme"
                 ]
               }
             }
@@ -1470,11 +1464,9 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
               "additional-company-information",
-              "vsme",
-              "esg-datenkatalog"
+              "vsme"
             ]
           },
           "reportingPeriods": {
@@ -1571,11 +1563,9 @@
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
-                "p2p",
                 "lksg",
                 "additional-company-information",
-                "vsme",
-                "esg-datenkatalog"
+                "vsme"
               ]
             }
           },
@@ -1961,11 +1951,9 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
               "additional-company-information",
-              "vsme",
-              "esg-datenkatalog"
+              "vsme"
             ]
           },
           "reportingPeriod": {

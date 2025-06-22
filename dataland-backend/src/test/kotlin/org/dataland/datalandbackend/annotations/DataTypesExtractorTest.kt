@@ -13,8 +13,6 @@ class DataTypesExtractorTest {
                 "lksg",
                 "sfdr",
                 "vsme",
-                "p2p",
-                "esg-datenkatalog",
                 "additional-company-information",
                 "nuclear-and-gas",
             )

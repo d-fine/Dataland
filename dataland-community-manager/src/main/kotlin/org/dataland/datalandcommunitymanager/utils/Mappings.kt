@@ -10,7 +10,5 @@ val readableFrameworkNameMapping: Map<DataTypeEnum, String> =
         DataTypeEnum.lksg to "LkSG",
         DataTypeEnum.sfdr to "SFDR",
         DataTypeEnum.vsme to "VSME",
-        DataTypeEnum.p2p to "WWF Pathways to Paris",
-        DataTypeEnum.esgMinusDatenkatalog to "ESG Datenkatalog",
         DataTypeEnum.additionalMinusCompanyMinusInformation to "Additional Company Information",
     )
