@@ -68,25 +68,21 @@
       </span>
     </FormKit>
     <div>
-      <div v-if="!isDownloading">
         <PrimeButton
           data-tesft="downloadDataButtonInModal"
           @click="onDownloadButtonClick()"
           label="DOWNLOAD"
           class="primary-button my-2"
+          icon="pi pi-download"
+          :loading="dialogRef?.data?.isDownloading"
+          style="width:100%"
         />
-      </div>
-      <div v-else>
-        <div class="my-4" data-test="downloadSpinner">
-          <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true" />
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
@@ -95,7 +91,6 @@ import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -139,17 +134,13 @@ const availableFrameworks = computed(() => {
   }));
 });
 
-const isDownloading = inject('isDownloading')
-
-watch(()=> isDownloading,() => {
-  console.log('isDownloading: ', isDownloading)
-})
-
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (data?.reportingPeriodsPerFramework) {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
+
+  console.log(data?.isDownloading)
 
   selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),

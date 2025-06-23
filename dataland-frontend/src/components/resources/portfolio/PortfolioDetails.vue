@@ -139,7 +139,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
-import {inject, onMounted, provide, ref, watch} from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
 import DownloadDataModal from '@/components/general/DownloadDataModal.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
@@ -204,7 +204,6 @@ const sectorOptions = ref<string[]>(new Array<string>());
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 let reportingPeriodsPerFramework: Map<string, string[]>;
-provide('isDownloading',isDownloading)
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -391,6 +390,7 @@ async function handleDatasetDownload(
   includeAlias: boolean
 ): Promise<void> {
   isDownloading.value = true;
+  console.log('is Downloading before download', isDownloading.value)
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
@@ -423,7 +423,8 @@ async function handleDatasetDownload(
   } catch (err) {
     console.error(err);
   } finally {
-    isDownloading.value = false
+    isDownloading.value = false;
+    console.log('is Downloading after download', isDownloading.value)
   }
 }
 
@@ -472,7 +473,7 @@ function downloadPortfolio(): void {
     },
     data: {
       reportingPeriodsPerFramework: reportingPeriodsPerFramework,
-      isDownloading: isDownloading
+      isDownloading: isDownloading,
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,
