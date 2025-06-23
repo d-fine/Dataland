@@ -6,6 +6,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.PortfolioUpdatePayload
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,6 +22,9 @@ class MessageQueuePublisher
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val objectMapper = defaultObjectMapper
+        val datalandAuthentication = DatalandAuthentication.fromContext()
+        val userId = datalandAuthentication.userId
+        val userRoles = datalandAuthentication.roles
 
         /**
          * Method to publish a portfolio update payload
@@ -37,7 +41,6 @@ class MessageQueuePublisher
             monitoredFrameworks: Set<String>,
             reportingPeriods: Set<String>,
             correlationId: String,
-            userId: String,
         ) {
             logger
                 .info(
@@ -52,6 +55,7 @@ class MessageQueuePublisher
                             monitoredFrameworks,
                             reportingPeriods,
                             userId,
+                            userRoles,
                         ),
                     ),
                 type = MessageType.PORTFOLIO_UPDATE,

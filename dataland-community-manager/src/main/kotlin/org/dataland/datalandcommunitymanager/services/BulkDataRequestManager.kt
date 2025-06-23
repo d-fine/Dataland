@@ -13,10 +13,8 @@ import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestE
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandInternalAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -38,16 +36,8 @@ class BulkDataRequestManager(
      * @return relevant info to the user as a response after posting a bulk data request
      */
     @Transactional
-    fun processBulkDataRequest(
-        bulkDataRequest: BulkDataRequest,
-        datalandInternalAuthentication: DatalandInternalAuthentication? = null,
-    ): BulkDataRequestResponse {
-        if (datalandInternalAuthentication != null) {
-            datalandInternalAuthentication.setAuthenticated(true)
-            SecurityContextHolder.getContext().authentication = datalandInternalAuthentication
-        } else {
-            utils.throwExceptionIfNotJwtAuth()
-        }
+    fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+        utils.throwExceptionIfNotJwtAuth()
 
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
@@ -68,11 +58,9 @@ class BulkDataRequestManager(
 
         val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
 
-        if (datalandInternalAuthentication == null) {
-            sendBulkDataRequestInternalEmailMessage(
-                bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
-            )
-        }
+        sendBulkDataRequestInternalEmailMessage(
+            bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
+        )
 
         return createBulkDataRequests(
             acceptedRequestCombinations = acceptedRequestCombinations,

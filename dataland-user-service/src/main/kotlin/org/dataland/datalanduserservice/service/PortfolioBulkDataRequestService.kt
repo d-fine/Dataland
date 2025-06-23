@@ -90,7 +90,6 @@ class PortfolioBulkDataRequestService
         ) {
             val portfolioId = enrichedPortfolio.portfolioId
             val companyIds = selector(enrichedPortfolio)
-            val userId = enrichedPortfolio.userId
             val correlationId = randomUUID().toString()
             if (companyIds.isEmpty()) {
                 return
@@ -102,7 +101,6 @@ class PortfolioBulkDataRequestService
                 monitoredFrameworks,
                 reportingPeriods,
                 correlationId,
-                userId,
             )
         }
 

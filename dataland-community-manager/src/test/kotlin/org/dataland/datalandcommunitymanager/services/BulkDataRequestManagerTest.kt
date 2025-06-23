@@ -41,7 +41,6 @@ class BulkDataRequestManagerTest {
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
     private val dummyReportingPeriod = "2023"
     private val dummyUserProvidedCompanyId = "companyId1"
-    private val dummyUserId = "123"
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
@@ -117,7 +116,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAcceptedDataRequest, response.acceptedDataRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingDatasets)
@@ -152,7 +151,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<ResourceResponse>(), response.acceptedDataRequests)
         assertEquals(expectedAlreadyExistingDataRequest, response.alreadyExistingNonFinalRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingDatasets)
@@ -199,7 +198,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<ResourceResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDatasets)
@@ -224,7 +223,7 @@ class BulkDataRequestManagerTest {
         val expectedRejectedCompanyIdentifiers =
             listOf(dummyUserProvidedCompanyId)
 
-        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, dummyUserId)
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<ResourceResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(emptyList<ResourceResponse>(), response.alreadyExistingDatasets)

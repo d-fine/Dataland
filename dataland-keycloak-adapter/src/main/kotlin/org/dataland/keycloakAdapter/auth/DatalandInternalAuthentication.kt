@@ -3,12 +3,17 @@ package org.dataland.keycloakAdapter.auth
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
+/**
+ * An Authentication class that instantiates a DatalandAuthentication out of a given payload.
+ */
 class DatalandInternalAuthentication(
     override val userId: String,
-    private val token: String = "internal",
-    private val grantedAuthorities: Collection<GrantedAuthority> = listOf(SimpleGrantedAuthority("ROLE_PREMIUM_USER")),
+    userRoles: Set<DatalandRealmRole>,
 ) : DatalandAuthentication() {
-    override fun getCredentials(): Any = token
+    private val grantedAuthorities: List<GrantedAuthority> =
+        userRoles.map { SimpleGrantedAuthority(it.toString()) }
 
-    override fun getAuthorities(): Collection<GrantedAuthority> = grantedAuthorities
+    override fun getAuthorities(): List<GrantedAuthority> = grantedAuthorities
+
+    override fun getCredentials(): Any = ""
 }

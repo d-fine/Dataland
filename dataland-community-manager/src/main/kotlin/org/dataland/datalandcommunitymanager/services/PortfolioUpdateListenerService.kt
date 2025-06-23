@@ -21,6 +21,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 /**
@@ -64,12 +65,20 @@ class PortfolioUpdateListenerService
                         MessageQueueUtils.validateMessageType(messageType, MessageType.PORTFOLIO_UPDATE)
                         val messagePayload =
                             MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload, objectMapper)
-                        // MessageQueueUtils.validateDataId(messagePayload.portfolioId)
 
                         val companyIdentifiers = messagePayload.companyIds
                         val reportingPeriods = messagePayload.reportingPeriods
                         val userId = messagePayload.userId
-                        val datalandInternalAuthentication = DatalandInternalAuthentication(userId)
+                        val userRoles = messagePayload.userRoles
+
+                        val datalandInternalAuthentication =
+                            DatalandInternalAuthentication(
+                                userId = userId,
+                                userRoles = userRoles,
+                            )
+
+                        datalandInternalAuthentication.setAuthenticated(true)
+                        SecurityContextHolder.getContext().authentication = datalandInternalAuthentication
 
                         val dataTypes: Set<DataTypeEnum> =
                             messagePayload.monitoredFrameworks
@@ -83,7 +92,6 @@ class PortfolioUpdateListenerService
                                 reportingPeriods,
                                 false,
                             ),
-                            datalandInternalAuthentication,
                         )
                     }
 
