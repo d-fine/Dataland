@@ -311,12 +311,12 @@ abstract class PavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-        compileDataModel(datalandProject)
-        compileQaModel(datalandProject)
-        compileViewModel(datalandProject)
-        compileUploadModel(datalandProject)
-        compileFixtureGenerator(datalandProject)
-        compileSpecifications(datalandProject)
+//        compileDataModel(datalandProject)
+//        compileQaModel(datalandProject)
+//        compileViewModel(datalandProject)
+//        compileUploadModel(datalandProject)
+//        compileFixtureGenerator(datalandProject)
+//        compileSpecifications(datalandProject)
         compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
