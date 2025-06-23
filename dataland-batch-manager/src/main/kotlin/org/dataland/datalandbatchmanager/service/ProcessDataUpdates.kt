@@ -141,7 +141,7 @@ class ProcessDataUpdates
             gleifGoldenCopyIngestor.processIsinMappingFile(doFullGleifUpdate)
             gleifGoldenCopyIngestor.processRelationshipFile(doFullGleifUpdate)
 
-            if (flagFileGleif?.delete() == true) {
+            if (flagFileGleif.delete()) {
                 logger.info("Flag file $flagFileGleif deleted successfully.")
             } else {
                 logger.error("Flag file $flagFileGleif could not be deleted.")

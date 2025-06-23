@@ -1,5 +1,9 @@
 package org.dataland.batchmanager.service
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.AppenderBase
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CsvParser
@@ -16,18 +20,20 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.MockedStatic
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
+import org.mockito.Mockito.never
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.File
-import java.io.PrintWriter
 import java.net.ConnectException
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
@@ -78,19 +84,9 @@ class ProcessDataUpdatesTest {
         """
 
     @BeforeEach
-    fun setup() {
-        oldContent.trimIndent()
-        newContent.trimIndent()
-//        create file oldFile
-        oldFile = File("oldFile.csv")
-        var printWriter = PrintWriter(oldFile)
-        printWriter.println(oldContent)
-        printWriter.close()
-//        create file newFile
-        newFile = File("newFile.csv")
-        printWriter = PrintWriter(newFile)
-        printWriter.println(newContent)
-        printWriter.close()
+    fun setupFiles() {
+        oldFile = writeTempCsv("oldFile.csv", oldContent)
+        newFile = writeTempCsv("newFile.csv", newContent)
     }
 
     @AfterAll
@@ -107,9 +103,23 @@ class ProcessDataUpdatesTest {
         reset(mockGleifGoldenCopyIngestorTest)
     }
 
-    @Test
-    fun `test ingestion is not executed if no flag file is provided`() {
-        val mockStaticFile = mockStatic(File::class.java)
+    private fun writeTempCsv(
+        fileName: String,
+        content: String,
+    ): File =
+        File(fileName).apply {
+            writeText(content.trimIndent())
+            deleteOnExit()
+        }
+
+    private fun initProcessDataUpdates(
+        flagFileGleif: String? = null,
+        flagFileGleifUpdate: String? = null,
+        flagFileNorthData: String? = null,
+        forceIngestGleif: Boolean = false,
+        forceIngestNorth: Boolean = false,
+        isinFile: File = oldFile,
+    ) {
         processDataUpdates =
             ProcessDataUpdates(
                 mockGleifApiAccessor,
@@ -119,9 +129,19 @@ class ProcessDataUpdatesTest {
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockCommunityActuatorApi,
-                false, false,
-                null, null, null, oldFile,
+                forceIngestGleif,
+                forceIngestNorth,
+                flagFileGleif,
+                flagFileGleifUpdate,
+                flagFileNorthData,
+                isinFile,
             )
+    }
+
+    @Test
+    fun `test ingestion is not executed if no flag file is provided`() {
+        val mockStaticFile = mockStatic(File::class.java)
+        initProcessDataUpdates()
         processDataUpdates.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
         mockStaticFile.close()
@@ -180,31 +200,94 @@ class ProcessDataUpdatesTest {
                 mockCommunityActuatorApi, false, false,
                 flagFileGleif.absolutePath, flagFileGleifUpdate.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
             )
-        val mockStaticFile = mockStatic(File::class.java)
-        return Pair(bufferedReader, mockStaticFile)
+        return Pair(bufferedReader, mockStatic(File::class.java))
     }
 
     @Test
     fun `waitForCommunityManager should stop on first successful health check`() {
-        val communityActuatorApi = mock(CommunityActuatorApi::class.java)
-
-        `when`(communityActuatorApi.health()).thenReturn(Any())
-
-        processDataUpdates =
-            ProcessDataUpdates(
-                mockGleifApiAccessor,
-                mockGleifGoldenCopyIngestorTest,
-                mockNorthDataAccessor,
-                mockNorthDataIngestorTest,
-                mockBackendActuatorApi,
-                mockRequestPriorityUpdater,
-                communityActuatorApi,
-                false, false,
-                null, null, null, oldFile,
-            )
-
+        `when`(mockCommunityActuatorApi.health()).thenReturn(Any())
+        initProcessDataUpdates()
         processDataUpdates.waitForCommunityManager()
+        verify(mockCommunityActuatorApi).health()
+    }
 
-        verify(communityActuatorApi, times(1)).health()
+    @Test
+    fun `logFlagFileFoundAndDelete logs success and deletes existing file`() {
+        val mockFile = mock(File::class.java)
+        `when`(mockFile.exists()).thenReturn(true)
+        `when`(mockFile.delete()).thenReturn(true)
+
+        initProcessDataUpdates()
+
+        val method = processDataUpdates.javaClass.getDeclaredMethod("logFlagFileFoundAndDelete", File::class.java)
+        method.isAccessible = true
+        method.invoke(processDataUpdates, mockFile)
+
+        verify(mockFile).delete()
+    }
+
+    @Test
+    fun `logFlagFileFoundAndDelete logs error if file cannot be deleted`() {
+        val mockFile = mock(File::class.java)
+        `when`(mockFile.exists()).thenReturn(true)
+        `when`(mockFile.delete()).thenReturn(false)
+
+        // Set up logger and attach our test appender
+        val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
+        val appender = TestLogAppender()
+        appender.start()
+        logger.addAppender(appender)
+
+        initProcessDataUpdates()
+
+        val method = processDataUpdates.javaClass.getDeclaredMethod("logFlagFileFoundAndDelete", File::class.java)
+        method.isAccessible = true
+        method.invoke(processDataUpdates, mockFile)
+
+        verify(mockFile).delete()
+        assert(appender.events.any { it.level == Level.ERROR && it.formattedMessage.contains("Unable to delete flag file") })
+    }
+
+    @Test
+    fun `processNorthDataFullGoldenCopyFileIfEnabled logs message when no flag or force ingest is set`() {
+        // Set up logger and attach test appender
+        val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
+        val appender = TestLogAppender()
+        initProcessDataUpdates(forceIngestNorth = false, flagFileNorthData = null)
+        appender.start()
+        logger.addAppender(appender)
+
+        // Run the method
+        processDataUpdates.processNorthDataFullGoldenCopyFileIfEnabled()
+
+        assert(
+            appender.events.any {
+                it.level == Level.INFO && it.formattedMessage.contains("NorthData flag file not present & no force update variable set")
+            },
+        )
+    }
+
+    @Test
+    fun `processUpdates does not trigger full update if flag file is missing`() {
+        val missingFlag = File("nonexistent.flag")
+        val dummyIsin = File.createTempFile("dummy", ".csv")
+
+        initProcessDataUpdates(flagFileGleifUpdate = missingFlag.absolutePath, isinFile = dummyIsin)
+
+        val method = processDataUpdates.javaClass.getDeclaredMethod("processUpdates")
+        method.isAccessible = true
+        method.invoke(processDataUpdates)
+
+        verify(mockGleifGoldenCopyIngestorTest, never()).prepareGleifDeltaFile(anyBoolean())
+        verify(mockGleifGoldenCopyIngestorTest, never()).processIsinMappingFile(anyBoolean())
+        verify(mockGleifGoldenCopyIngestorTest, never()).processRelationshipFile(anyBoolean())
+    }
+}
+
+class TestLogAppender : AppenderBase<ILoggingEvent>() {
+    val events = mutableListOf<ILoggingEvent>()
+
+    override fun append(eventObject: ILoggingEvent) {
+        events.add(eventObject)
     }
 }
