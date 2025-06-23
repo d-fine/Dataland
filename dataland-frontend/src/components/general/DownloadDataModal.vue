@@ -67,27 +67,26 @@
         Use shorter aliases, e. g. CI_GAR_PCT in export. (Only Applicable if Values Only is selected)
       </span>
     </FormKit>
-
     <div>
-      <template v-if="!isDownloading">
+      <div v-if="!isDownloading">
         <PrimeButton
-          data-test="downloadDataButtonInModal"
+          data-tesft="downloadDataButtonInModal"
           @click="onDownloadButtonClick()"
           label="DOWNLOAD"
           class="primary-button my-2"
         />
-      </template>
-      <template v-else>
+      </div>
+      <div v-else>
         <div class="my-4" data-test="downloadSpinner">
           <DownloadProgressSpinner :percentCompleted="downloadProgress" :white-spinner="true" />
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
@@ -111,7 +110,6 @@ const emit = defineEmits<{
 }>();
 
 const downloadProgress = ref<number | undefined>(undefined);
-const isDownloading = ref<boolean>(false);
 const portfolioErrors = ref('');
 const selectedFileType = ref<string>('');
 const showReportingPeriodError = ref<boolean>(false);
@@ -140,6 +138,12 @@ const availableFrameworks = computed(() => {
     label: humanizeStringOrNumber(framework),
   }));
 });
+
+const isDownloading = inject('isDownloading')
+
+watch(()=> isDownloading,() => {
+  console.log('isDownloading: ', isDownloading)
+})
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -216,14 +220,11 @@ function onDownloadButtonClick(): void {
   const selectedReportingPeriods = getSelectedReportingPeriods();
 
   checkIfShowErrors();
-  isDownloading.value = true;
   downloadProgress.value = 0;
 
   if (showReportingPeriodError.value || showFileTypeError.value) {
     return;
   }
-  console.log('ALIAS: ', includeAlias.value);
-  console.log('VALUES: ', keepValuesOnly.value);
 
   emit(
     'downloadDataset',
