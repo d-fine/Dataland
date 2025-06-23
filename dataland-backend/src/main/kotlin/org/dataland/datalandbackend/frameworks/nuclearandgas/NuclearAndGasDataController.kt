@@ -8,10 +8,10 @@ import org.dataland.datalandbackend.frameworks.nuclearandgas.model.NuclearAndGas
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -32,52 +32,58 @@ import org.springframework.web.bind.annotation.RestController
 class NuclearAndGasDataController
     @Autowired
     constructor(
-        datasetStorageService: DataManager,
-        dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
-        companyQueryManager: CompanyQueryManager,
-        objectMapper: ObjectMapper,
-    ) : DataController<NuclearAndGasData>(
-            datasetStorageService,
-            dataMetaInformationManager,
-            dataExportService,
-            objectMapper,
-            companyQueryManager,
-            NuclearAndGasData::class.java,
-        ) {
-        @Operation(operationId = "getCompanyAssociatedNuclearAndGasData")
-        override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
-            super.getCompanyAssociatedData(dataId)
-
-        @Operation(operationId = "getCompanyAssociatedNuclearAndGasDataByDimensions")
-        override fun getCompanyAssociatedDataByDimensions(
-            reportingPeriod: String,
-            companyId: String,
-        ): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
-
-        @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
-        override fun postCompanyAssociatedData(
-            companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,
-            bypassQa: Boolean,
-        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-
-        @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataByDimensions")
-        override fun exportCompanyAssociatedDataByDimensions(
-            reportingPeriods: List<String>,
-            companyIds: List<String>,
-            exportFileType: ExportFileType,
-            keepValueFieldsOnly: Boolean,
-            includeAliases: Boolean,
-        ): ResponseEntity<InputStreamResource> =
-            super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
-
-        @Operation(operationId = "getAllCompanyNuclearAndGasData")
-        override fun getFrameworkDatasetsForCompany(
-            companyId: String,
-            showOnlyActive: Boolean,
-            reportingPeriod: String?,
-        ): ResponseEntity<List<DataAndMetaInformation<NuclearAndGasData>>> =
-            super
-                .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    datasetStorageService: AssembledDataManager,
+    dataMetaInformationManager: DataMetaInformationManager,
+    dataExportService: DataExportService,
+    companyQueryManager: CompanyQueryManager,
+    objectMapper: ObjectMapper,
+) : DataController<NuclearAndGasData>(
+    datasetStorageService,
+    dataMetaInformationManager,
+    dataExportService,
+    objectMapper,
+    companyQueryManager,
+    NuclearAndGasData::class.java,
+) {
+    @Operation(operationId = "getCompanyAssociatedNuclearAndGasData")
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> {
+        return super.getCompanyAssociatedData(dataId)
     }
+
+    @Operation(operationId = "getCompanyAssociatedNuclearAndGasDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(reportingPeriod: String, companyId: String):
+        ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> {
+        return super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+    }
+
+    @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
+    override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,
+            bypassQa: Boolean
+        ):
+        ResponseEntity<DataMetaInformation> {
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+    }
+
+    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataByDimensions")
+    override fun exportCompanyAssociatedDataByDimensions(
+        reportingPeriods: List<String>,
+        companyIds: List<String>,
+        exportFileType: ExportFileType,
+        keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
+    ): ResponseEntity<InputStreamResource> {
+        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
+    }
+
+    @Operation(operationId = "getAllCompanyNuclearAndGasData")
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<NuclearAndGasData>>> {
+        return super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }
+}
