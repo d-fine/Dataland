@@ -99,7 +99,7 @@
 <script setup lang="ts">
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import DownloadDataModal from '@/components/general/DownloadDataModal.vue';
+import DownloadData from '@/components/general/DownloadData.vue';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
@@ -131,7 +131,7 @@ import OverlayPanel from 'primevue/overlaypanel';
 import { computed, inject, onMounted, provide, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
-import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
+import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
 import { useDialog } from 'primevue/usedialog';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
@@ -201,25 +201,11 @@ const isEditableByCurrentUser = computed(
 );
 
 const targetLinkForAddingNewDataset = computed(() => `/companies/${props.companyID}/frameworks/upload`);
-
-const reportingPeriodsPerFramework = computed(() => {
-  const map = new Map<string, string[]>();
-  activeDataForCurrentCompanyAndFramework.value.forEach((item) => {
-    const framework = item.metaInfo.dataType;
-    const period = item.metaInfo.reportingPeriod;
-
-    if (!map.has(framework)) {
-      map.set(framework, []);
-    }
-
-    const periods = map.get(framework)!;
-    if (!periods.includes(period)) {
-      periods.push(period);
-    }
-  });
-
-  return map;
-});
+const reportingPeriodsPerFramework =  computed(() =>
+  groupReportingPeriodsPerFrameworkForCompany(
+    dataMetaInformation.value.map((meta) => ({ metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod } }))
+  )
+);
 
 watch(
   () => props.companyID,
@@ -444,7 +430,7 @@ function handleFetchedCompanyInformation(info: CompanyInformation): void {
 function downloadData(): void {
   const fullName = 'Download Data';
 
-  dialog.open(DownloadDataModal, {
+  dialog.open(DownloadData, {
     props: {
       modal: true,
       header: fullName,

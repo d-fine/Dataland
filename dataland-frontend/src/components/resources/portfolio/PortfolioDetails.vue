@@ -140,14 +140,14 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
-import DownloadDataModal from '@/components/general/DownloadDataModal.vue';
+import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import type { AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
-import { forceFileDownload } from '@/utils/FileDownloadUtils.ts';
+import {forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio} from '@/utils/FileDownloadUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -309,7 +309,7 @@ function loadPortfolio(): void {
       enrichedPortfolio.value = response.data;
 
       portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-      reportingPeriodsPerFramework = groupAllReportingPeriodsByFramework();
+      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
     })
     .catch((reason) => {
       console.error(reason);
@@ -328,35 +328,6 @@ function resetFilters(): void {
   }
 }
 
-/**
- * Map reporting periods to frameworks for download
- */
-function groupAllReportingPeriodsByFramework(): Map<string, string[]> {
-  const map = new Map<string, string[]>();
-
-  enrichedPortfolio.value?.entries.forEach((entry) => {
-    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
-      const frameworkPeriods = entry.availableReportingPeriods[framework];
-      if (!frameworkPeriods) return;
-
-      const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
-
-      if (!map.has(framework)) {
-        map.set(framework, []);
-      }
-
-      const periods = map.get(framework)!;
-
-      for (const period of frameworkPeriodsCleaned) {
-        if (period && !periods.includes(period)) {
-          periods.push(period);
-        }
-      }
-    });
-  });
-
-  return map;
-}
 
 /**
  * Retrieve the array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
@@ -456,7 +427,7 @@ function editPortfolio(): void {
 function downloadPortfolio(): void {
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
-  dialog.open(DownloadDataModal, {
+  dialog.open(DownloadData, {
     props: {
       modal: true,
       header: fullName,

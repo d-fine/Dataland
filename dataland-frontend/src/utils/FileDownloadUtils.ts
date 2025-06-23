@@ -1,5 +1,8 @@
 // src/utils/FileDownloadUtils.ts
 
+import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { type EnrichedPortfolio } from '@clients/userservice';
+
 /**
  * Trigger a file download in the browser with proper handling for different file types
  * @param content - File content as a string, ArrayBuffer, Blob or other Blob-compatible data
@@ -36,4 +39,60 @@ export function forceFileDownload(content: string | ArrayBuffer | Blob | BlobPar
   link.click();
   link.remove();
   window.URL.revokeObjectURL(url);
+}
+
+/**
+ * Map reporting periods to frameworks for download for portfolio
+ */
+export function groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio: EnrichedPortfolio): Map<string, string[]> {
+  const map = new Map<string, string[]>();
+
+  enrichedPortfolio?.entries.forEach((entry) => {
+    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+      const frameworkPeriods = entry.availableReportingPeriods[framework];
+      if (!frameworkPeriods) return;
+
+      const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
+
+      if (!map.has(framework)) {
+        map.set(framework, []);
+      }
+
+      const periods = map.get(framework)!;
+
+      for (const period of frameworkPeriodsCleaned) {
+        if (period && !periods.includes(period)) {
+          periods.push(period);
+        }
+      }
+    });
+  });
+
+  return map;
+}
+
+
+/**
+ * Map reporting periods to frameworks for download for company
+ */
+export function groupReportingPeriodsPerFrameworkForCompany(
+  data: { metaInfo: { dataType: string; reportingPeriod: string } }[]
+): Map<string, string[]> {
+  const map = new Map<string, string[]>();
+
+  data.forEach((item) => {
+    const framework = item.metaInfo.dataType;
+    const period = item.metaInfo.reportingPeriod;
+
+    if (!map.has(framework)) {
+      map.set(framework, []);
+    }
+
+    const periods = map.get(framework)!;
+    if (!periods.includes(period)) {
+      periods.push(period);
+    }
+  });
+
+  return map;
 }

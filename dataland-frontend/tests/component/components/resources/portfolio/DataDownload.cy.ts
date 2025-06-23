@@ -3,7 +3,7 @@ import DownloadData from '@/components/general/DownloadData.vue';
 import { type EnrichedPortfolio } from '@clients/userservice';
 
 describe('Check the Portfolio Download view', function (): void {
-  describe('PortfolioDownload Component Tests', function () {
+  describe('DownloadData Component Tests', function () {
     let portfolioFixture: EnrichedPortfolio;
 
     before(function () {
