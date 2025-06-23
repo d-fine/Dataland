@@ -68,15 +68,15 @@
       </span>
     </FormKit>
     <div>
-        <PrimeButton
-          data-tesft="downloadDataButtonInModal"
-          @click="onDownloadButtonClick()"
-          label="DOWNLOAD"
-          class="primary-button my-2"
-          icon="pi pi-download"
-          :loading="dialogRef?.data?.isDownloading"
-          style="width:100%"
-        />
+      <PrimeButton
+        data-test="downloadDataButtonInModal"
+        @click="onDownloadButtonClick()"
+        label="DOWNLOAD"
+        class="primary-button my-2"
+        icon="pi pi-download"
+        :loading="dialogRef?.data?.isDownloading"
+        style="width: 100%"
+      />
     </div>
   </div>
 </template>
@@ -140,7 +140,7 @@ onMounted(() => {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
 
-  console.log(data?.isDownloading)
+  console.log(data?.isDownloading);
 
   selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
