@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.specifications.VerificationUtils.flattenSchema
 
 /**
- * Framework specification including its schema and related operations.
+ * Framework translation, meaning the mapping of the field names originally coming from JSON paths to
+ * human-readable names, including its schema and related operations.
  *
  * @property id The unique identifier of the framework.
  * @property schema The JSON schema of the framework as an ObjectNode.
@@ -23,7 +24,7 @@ data class FrameworkTranslation(
         get() = flattenSchema(schema, "").toList()
 
     /**
-     * Validates the integrity of the framework specification and
+     * Validates the integrity of the framework translation and
      * checks for duplicate export aliases in the flattened schema
      */
     fun validateIntegrity() {

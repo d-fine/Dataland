@@ -7,7 +7,8 @@ import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBui
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 
 /**
- * A builder class responsible for constructing the specification of a framework
+ * Base class for builder classes related to framework specifactions and translations.
+ * The class is intended to be extended by FrameworkSpecificationBuilder and FrameworkTranslationBuilder.
  *  * @param framework The framework instance to build upon.
  *  * @param datalandRepository The repository providing access to specification data
  */
