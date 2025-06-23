@@ -114,7 +114,7 @@ class PortfolioBulkDataRequestService
             enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
             setOf(
                 "eutaxonomy-financials",
-                "eutaxonomy-nuclear-and-gas",
+                "nuclear-and-gas",
             ),
         )
 
@@ -127,7 +127,7 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getNonFinancialsCompanyIds,
             setOf(
-                "eutaxonomy-non-minus-financials",
+                "eutaxonomy-non-financials",
                 "nuclear-and-gas",
             ),
         )
@@ -143,7 +143,7 @@ class PortfolioBulkDataRequestService
             setOf(
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
-                "nuclear-and-gas,",
+                "nuclear-and-gas",
             ),
         )
 

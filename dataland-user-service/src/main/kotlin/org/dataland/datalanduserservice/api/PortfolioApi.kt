@@ -122,6 +122,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully created a new portfolio."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PostMapping(
@@ -130,7 +131,7 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
@@ -146,6 +147,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully replaced existing portfolio."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PutMapping(
@@ -154,7 +156,7 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun replacePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
@@ -237,6 +239,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully updated monitoring."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PatchMapping(
@@ -244,7 +247,7 @@ interface PortfolioApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("(hasRole('ROLE_USER') and !#portfolioMonitoringPatch.isMonitored) or hasRole('ROLE_PREMIUM_USER')")
     fun patchMonitoring(
         @PathVariable("portfolioId") portfolioId: String,
         @Valid @RequestBody portfolioMonitoringPatch: PortfolioMonitoringPatch,

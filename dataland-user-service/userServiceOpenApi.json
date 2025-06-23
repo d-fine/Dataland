@@ -117,6 +117,16 @@
               }
             }
           },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -279,6 +289,16 @@
               }
             }
           },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -341,6 +361,16 @@
         "responses": {
           "200": {
             "description": "Successfully updated monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {

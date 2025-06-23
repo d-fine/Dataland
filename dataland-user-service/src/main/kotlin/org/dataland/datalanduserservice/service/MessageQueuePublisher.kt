@@ -22,9 +22,6 @@ class MessageQueuePublisher
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val objectMapper = defaultObjectMapper
-        val datalandAuthentication = DatalandAuthentication.fromContext()
-        val userId = datalandAuthentication.userId
-        val userRoles = datalandAuthentication.roles
 
         /**
          * Method to publish a portfolio update payload
@@ -33,7 +30,6 @@ class MessageQueuePublisher
          * @param monitoredFrameworks The set of requested frameworks
          * @param reportingPeriods The set of requested reporting periods
          * @param correlationId The correlation ID of the request initiating the event
-         * @param userId The ID of the user that initiates the request
          */
         fun publishPortfolioUpdate(
             portfolioId: String,
@@ -42,6 +38,10 @@ class MessageQueuePublisher
             reportingPeriods: Set<String>,
             correlationId: String,
         ) {
+            val datalandAuthentication = DatalandAuthentication.fromContext()
+            val userId = datalandAuthentication.userId
+            val userRoles = datalandAuthentication.roles.map { it.name }
+
             logger
                 .info(
                     "Publish the update payload of portfolio with ID '$portfolioId'. Correlation ID: '$correlationId'.",

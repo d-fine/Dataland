@@ -1,22 +1,21 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.datalanduserservice.model.BasePortfolio
-import org.dataland.datalanduserservice.utils.TestUtils.createEnrichedPortfolio
+import org.dataland.datalanduserservice.model.EnrichedPortfolio
+import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.extension.ExtensionContext
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.ArgumentsProvider
-import org.junit.jupiter.params.provider.ArgumentsSource
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
-import java.util.stream.Stream
 
 class PortfolioBulkDataRequestServiceTest {
     private val mockPublisher = mock<MessageQueuePublisher>()
@@ -33,82 +32,100 @@ class PortfolioBulkDataRequestServiceTest {
             )
     }
 
-    private class BasePortfolioArgumentProvider : ArgumentsProvider {
-        override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments?>? =
-            Stream.of(
-                getArguments(
-                    buildBasePortfolio("p1", "Taxonomy", setOf("eutaxonomy"), "2020"),
-                    3,
-                    setOf(
-                        "eutaxonomy-financials",
-                        "eutaxonomy-non-financials",
-                        "nuclear-and-gas",
-                    ),
-                ),
-                getArguments(
-                    buildBasePortfolio("p2", "SFDR", setOf("sfdr"), "2022"),
-                    1,
-                    setOf("sfdr"),
-                ),
-                getArguments(
-                    buildBasePortfolio("p3", "Combined", setOf("sfdr", "eutaxonomy"), "2021"),
-                    4,
-                    setOf(
-                        "sfdr",
-                        "eutaxonomy-financials",
-                        "eutaxonomy-non-financials",
-                        "nuclear-and-gas",
-                    ),
-                ),
-            )
-
-        private fun buildBasePortfolio(
-            id: String,
-            name: String,
-            frameworks: Set<String>,
-            startingYear: String,
-        ) = BasePortfolio(
-            portfolioId = id,
-            portfolioName = name,
-            userId = "user",
-            creationTimestamp = Instant.now().toEpochMilli(),
-            lastUpdateTimestamp = Instant.now().toEpochMilli(),
-            companyIds = setOf("c1", "c2", "c3"),
+    val basePortfolio =
+        BasePortfolio(
+            portfolioId = "123",
+            portfolioName = "abc",
+            userId = "xyz",
+            creationTimestamp = 456,
+            lastUpdateTimestamp = 789,
+            companyIds = setOf("c1", "c2"),
             isMonitored = true,
-            startingMonitoringPeriod = startingYear,
-            monitoredFrameworks = frameworks,
+            startingMonitoringPeriod = "2022",
+            monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
         )
 
-        private fun getArguments(
-            portfolio: BasePortfolio,
-            requestCount: Int,
-            dataTypes: Set<String>,
-            notify: Boolean = false,
-        ): Arguments = Arguments.of(portfolio, requestCount, dataTypes, notify)
+    val enrichedPortfolio =
+        EnrichedPortfolio(
+            basePortfolio.portfolioId,
+            basePortfolio.portfolioName,
+            basePortfolio.userId,
+            listOf(
+                EnrichedPortfolioEntry(
+                    companyId = "c1", "C1",
+                    sector = "financials", "Germany", "ref1",
+                    emptyMap(), emptyMap(),
+                ),
+                EnrichedPortfolioEntry(
+                    companyId = "c2", "C2",
+                    sector = "industry", "Sweden", "ref2",
+                    emptyMap(), emptyMap(),
+                ),
+                EnrichedPortfolioEntry(
+                    companyId = "c3", "C3",
+                    sector = null, "Italy", "ref3",
+                    emptyMap(), emptyMap(),
+                ),
+            ),
+            basePortfolio.isMonitored,
+            basePortfolio.startingMonitoringPeriod,
+            basePortfolio.monitoredFrameworks,
+        )
+
+    @Test
+    fun `publishPortfolioUpdate behaves correctly for various frameworks`() {
+        whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(basePortfolio))
+            .thenReturn(enrichedPortfolio)
+
+        whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(any()))
+            .thenReturn(enrichedPortfolio)
+
+        portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(basePortfolio)
+
+        val frameworksCaptor = argumentCaptor<Set<String>>()
+
+        verify(mockPublisher, times(4)).publishPortfolioUpdate(
+            eq(basePortfolio.portfolioId),
+            any(),
+            frameworksCaptor.capture(),
+            any(),
+            any(),
+        )
+
+        val allPublishedTypes = frameworksCaptor.allValues.toSet()
+        println("Captured frameworks: ${frameworksCaptor.allValues}")
+        assertEquals(
+            allPublishedTypes,
+            setOf(
+                setOf("eutaxonomy-financials", "nuclear-and-gas"),
+                setOf("eutaxonomy-non-financials", "nuclear-and-gas"),
+                setOf("eutaxonomy-financials", "eutaxonomy-non-financials", "nuclear-and-gas"),
+                setOf("sfdr"),
+            ),
+        )
     }
 
-    @ParameterizedTest
-    @ArgumentsSource(BasePortfolioArgumentProvider::class)
-    fun `publishPortfolioUpdate behaves correctly for various frameworks`(
-        basePortfolio: BasePortfolio,
-        expectedRequestCount: Int,
-        expectedDataTypes: Set<String>?,
-        expectedNotify: Boolean,
-    ) {
-        val enrichedPortfolio = createEnrichedPortfolio()
-        whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(basePortfolio)).thenReturn(enrichedPortfolio)
+    @Test
+    fun `sendBulkDataRequestIfMonitored does nothing when portfolio is not monitored`() {
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "non-monitored-id",
+                portfolioName = "Non-Monitored Portfolio",
+                userId = "user",
+                creationTimestamp = Instant.now().toEpochMilli(),
+                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                companyIds = setOf("c1", "c2"),
+                isMonitored = false,
+                startingMonitoringPeriod = "2023",
+                monitoredFrameworks = setOf("eutaxonomy", "sfdr"),
+            )
 
-        val expectedMonitoringPeriods =
-            (basePortfolio.startingMonitoringPeriod!!.toInt() until PortfolioBulkDataRequestService.UPPER_BOUND)
-                .map { it.toString() }
-                .toSet()
+        portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(basePortfolio)
 
-        val captor = argumentCaptor<String>()
-        verify(mockPublisher, times(expectedRequestCount)).publishPortfolioUpdate(
-            captor.capture(),
-            any(), any(), any(), any(), any(),
+        verify(mockPortfolioEnrichmentService, never()).getEnrichedPortfolio(any())
+        verify(mockPublisher, never()).publishPortfolioUpdate(
+            any(), any(),
+            any(), any(), any(),
         )
-
-        val capturedRequests = captor.allValues
     }
 }

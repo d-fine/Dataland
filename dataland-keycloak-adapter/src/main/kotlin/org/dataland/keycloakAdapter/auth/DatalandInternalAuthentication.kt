@@ -4,16 +4,15 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 /**
- * An Authentication class that instantiates a DatalandAuthentication out of a given payload.
+ * Authentication class to rebuild DatalandAuthentication after the message queue for Bulk Data Request
+ * triggered by Portfolio Monitoring.
  */
 class DatalandInternalAuthentication(
     override val userId: String,
-    userRoles: Set<DatalandRealmRole>,
+    private val token: String = "internal",
+    private val grantedAuthorities: Collection<SimpleGrantedAuthority>,
 ) : DatalandAuthentication() {
-    private val grantedAuthorities: List<GrantedAuthority> =
-        userRoles.map { SimpleGrantedAuthority(it.toString()) }
+    override fun getCredentials(): Any = token
 
-    override fun getAuthorities(): List<GrantedAuthority> = grantedAuthorities
-
-    override fun getCredentials(): Any = ""
+    override fun getAuthorities(): Collection<GrantedAuthority> = grantedAuthorities
 }

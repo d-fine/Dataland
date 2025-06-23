@@ -21,6 +21,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
@@ -74,7 +75,8 @@ class PortfolioUpdateListenerService
                         val datalandInternalAuthentication =
                             DatalandInternalAuthentication(
                                 userId = userId,
-                                userRoles = userRoles,
+                                token = "internal",
+                                grantedAuthorities = userRoles.map { SimpleGrantedAuthority(it) },
                             )
 
                         datalandInternalAuthentication.setAuthenticated(true)

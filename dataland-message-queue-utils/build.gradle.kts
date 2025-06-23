@@ -31,7 +31,6 @@ dependencies {
     implementation(libs.spring.amqp)
     implementation(libs.json)
     implementation(project(":dataland-backend-utils"))
-    implementation(project(":dataland-keycloak-adapter"))
 }
 
 tasks.bootJar {
