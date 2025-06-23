@@ -282,6 +282,41 @@ class ProcessDataUpdatesTest {
         verify(mockGleifGoldenCopyIngestorTest, never()).processIsinMappingFile(anyBoolean())
         verify(mockGleifGoldenCopyIngestorTest, never()).processRelationshipFile(anyBoolean())
     }
+
+    @Test
+    fun `processUpdates triggers full update and deletes flag file if present`() {
+        val flagFile = File.createTempFile("gleif_manual_update", ".flag")
+        flagFile.writeText("trigger")
+
+        assert(flagFile.exists())
+
+        val dummyIsin = File.createTempFile("dummy_isin", ".csv")
+        dummyIsin.writeText("LEI,ISIN\n1000,1111")
+
+        initProcessDataUpdates(flagFileGleifUpdate = flagFile.absolutePath, isinFile = dummyIsin)
+
+        val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
+        val appender = TestLogAppender()
+        appender.start()
+        logger.addAppender(appender)
+
+        val method = processDataUpdates.javaClass.getDeclaredMethod("processUpdates")
+        method.isAccessible = true
+        method.invoke(processDataUpdates)
+
+        verify(mockGleifGoldenCopyIngestorTest).prepareGleifDeltaFile(true)
+        verify(mockGleifGoldenCopyIngestorTest).processIsinMappingFile(true)
+        verify(mockGleifGoldenCopyIngestorTest).processRelationshipFile(true)
+
+        assert(!flagFile.exists())
+
+        assert(
+            appender.events.any {
+                it.level == Level.INFO &&
+                    it.formattedMessage.contains("deleted successfully")
+            },
+        )
+    }
 }
 
 class TestLogAppender : AppenderBase<ILoggingEvent>() {
