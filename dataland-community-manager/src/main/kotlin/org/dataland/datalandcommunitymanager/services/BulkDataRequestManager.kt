@@ -42,11 +42,13 @@ class BulkDataRequestManager(
         bulkDataRequest: BulkDataRequest,
         datalandInternalAuthentication: DatalandInternalAuthentication? = null,
     ): BulkDataRequestResponse {
-        // utils.throwExceptionIfNotJwtAuth()
         if (datalandInternalAuthentication != null) {
             datalandInternalAuthentication.setAuthenticated(true)
             SecurityContextHolder.getContext().authentication = datalandInternalAuthentication
+        } else {
+            utils.throwExceptionIfNotJwtAuth()
         }
+
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)

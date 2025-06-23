@@ -116,7 +116,6 @@ class PortfolioBulkDataRequestService
             enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
             setOf(
                 "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
                 "eutaxonomy-nuclear-and-gas",
             ),
         )
