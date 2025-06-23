@@ -147,7 +147,7 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import type { AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
-import {forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio} from '@/utils/FileDownloadUtils.ts';
+import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -327,7 +327,6 @@ function resetFilters(): void {
     filters.value[filterName].value = null;
   }
 }
-
 
 /**
  * Retrieve the array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry

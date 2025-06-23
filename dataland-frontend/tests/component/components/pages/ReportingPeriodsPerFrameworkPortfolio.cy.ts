@@ -17,11 +17,11 @@ describe('groupAllReportingPeriodsByFramework function', () => {
       expect(result instanceof Map).to.be.true;
       expect(result.has('sfdr')).to.be.true;
       expect(result.get('sfdr')).to.include('2024');
-      expect(result.get('sfdr')).to.not.include.members(['2019','2020', '2021', '2022','2023']);
+      expect(result.get('sfdr')).to.not.include.members(['2019', '2020', '2021', '2022', '2023']);
 
       expect(result.has('eutaxonomy-financials')).to.be.true;
       expect(result.get('eutaxonomy-financials')).to.include('2023');
-      expect(result.get('eutaxonomy-financials')).to.not.include.members(['2019','2020', '2021', '2022','2024']);
+      expect(result.get('eutaxonomy-financials')).to.not.include.members(['2019', '2020', '2021', '2022', '2024']);
     });
   });
 });

@@ -201,9 +201,11 @@ const isEditableByCurrentUser = computed(
 );
 
 const targetLinkForAddingNewDataset = computed(() => `/companies/${props.companyID}/frameworks/upload`);
-const reportingPeriodsPerFramework =  computed(() =>
+const reportingPeriodsPerFramework = computed(() =>
   groupReportingPeriodsPerFrameworkForCompany(
-    dataMetaInformation.value.map((meta) => ({ metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod } }))
+    dataMetaInformation.value.map((meta) => ({
+      metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod },
+    }))
   )
 );
 

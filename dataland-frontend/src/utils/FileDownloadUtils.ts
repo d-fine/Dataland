@@ -44,7 +44,9 @@ export function forceFileDownload(content: string | ArrayBuffer | Blob | BlobPar
 /**
  * Map reporting periods to frameworks for download for portfolio
  */
-export function groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio: EnrichedPortfolio): Map<string, string[]> {
+export function groupAllReportingPeriodsByFrameworkForPortfolio(
+  enrichedPortfolio: EnrichedPortfolio
+): Map<string, string[]> {
   const map = new Map<string, string[]>();
 
   enrichedPortfolio?.entries.forEach((entry) => {
@@ -70,7 +72,6 @@ export function groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfoli
 
   return map;
 }
-
 
 /**
  * Map reporting periods to frameworks for download for company
