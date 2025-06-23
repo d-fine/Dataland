@@ -732,7 +732,6 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
-                  "additional-company-information",
                   "vsme"
                 ]
               }
@@ -957,7 +956,6 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
-                  "additional-company-information",
                   "vsme"
                 ]
               }
@@ -1107,7 +1105,6 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
-                  "additional-company-information",
                   "vsme"
                 ]
               }
@@ -1458,14 +1455,13 @@
           },
           "dataType": {
             "type": "string",
-            "example": "p2p",
+            "example": "sfdr",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
-              "additional-company-information",
               "vsme"
             ]
           },
@@ -1553,7 +1549,7 @@
             "uniqueItems": true,
             "type": "array",
             "example": [
-              "p2p",
+              "sfdr",
               "vsme"
             ],
             "items": {
@@ -1564,7 +1560,6 @@
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
                 "lksg",
-                "additional-company-information",
                 "vsme"
               ]
             }
@@ -1952,7 +1947,6 @@
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
-              "additional-company-information",
               "vsme"
             ]
           },

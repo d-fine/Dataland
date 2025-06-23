@@ -75,14 +75,6 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Urgent
       ),
       generateExtendedStoredDataRequest(
-        mailBeta,
-        DataTypeEnum.P2p,
-        RequestStatus.Answered,
-        AccessStatus.Public,
-        commentBeta,
-        RequestPriority.Urgent
-      ),
-      generateExtendedStoredDataRequest(
         mailGamma,
         DataTypeEnum.Vsme,
         RequestStatus.Answered,
@@ -101,7 +93,7 @@ describe('Component test for the admin-requests-overview page', () => {
     ];
     mockRequestsLarge = [];
     for (let num = 1; num <= 104; num++) {
-      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.P2p, DataTypeEnum.Vsme]);
+      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.Vsme]);
       const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
       const requestStatus = faker.helpers.arrayElement([
         RequestStatus.Open,
@@ -210,7 +202,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via framework dropdown filter works as expected
    */
   function validateFrameworkFilter(): void {
-    const frameworkToFilterFor = DataTypeEnum.P2p;
+    const frameworkToFilterFor = DataTypeEnum.Sfdr;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
     const mockResponse = [mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;

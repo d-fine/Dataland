@@ -58,9 +58,7 @@ class DataRequestSummaryEmailBuilderTest {
             "eutaxonomy-financials;EU Taxonomy for financial companies",
             "euTaxonomy-non-financials;EU Taxonomy for non-financial companies",
             "nuclear-and-gas;EU Taxonomy Nuclear and Gas",
-            "p2p;WWF Pathways to Paris",
             "lksg;LkSG",
-            "additional-company-information;Additional Company Information",
             "vsme;VSME",
         ],
     )

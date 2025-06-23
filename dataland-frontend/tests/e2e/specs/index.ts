@@ -53,7 +53,6 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    */
   require('./user-authentication');
   require('./admin-tools');
-  require('./additional-company-information');
   require('./nuclear-and-gas');
 }
 

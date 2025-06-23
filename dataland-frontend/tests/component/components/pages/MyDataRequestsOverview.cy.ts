@@ -51,7 +51,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.P2p,
+      DataTypeEnum.Lksg,
       '2020',
       'companyAnswered',
       'compA',
@@ -230,10 +230,8 @@ describe('Component tests for the data requests search page', function (): void 
       'WWF',
       'SFDR',
       'EU Taxonomy',
-      'Pathways to Paris',
       'for financial companies',
       'for non-financial companies',
-      'für Corporate Schuldscheindarlehen',
     ];
 
     cy.intercept('**community/requests/user', {

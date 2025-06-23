@@ -95,7 +95,6 @@ sonar {
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
-                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
                 "dataland-reduced-local-stack/**",
         )
         property(
@@ -118,7 +117,6 @@ sonar {
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
-                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
@@ -126,7 +124,6 @@ sonar {
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/eutaxonomy-financials/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasTooltipMapping.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +

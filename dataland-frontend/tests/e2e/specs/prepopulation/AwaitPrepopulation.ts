@@ -2,7 +2,6 @@ import { countCompaniesAndDatasetsForDataType } from '@e2e/utils/GeneralApiUtils
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { reader_name, reader_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
-import { frameworkFixtureMap } from '@e2e/utils/FixtureMap';
 import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFrameworkRegistry';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 
@@ -16,14 +15,10 @@ describeIf(
     let prepopulatedDataTypes: string[] = [];
 
     before(function () {
-      const dataTypesWithoutToolboxSupport = Object.keys(frameworkFixtureMap);
-      const dataTypesWithToolboxSupport = getAllPublicFrameworkIdentifiers();
-      prepopulatedDataTypes = dataTypesWithoutToolboxSupport.concat(dataTypesWithToolboxSupport);
-      const fixtures = Object.values(frameworkFixtureMap).concat(
-        dataTypesWithToolboxSupport.map((dataType) =>
+      prepopulatedDataTypes = getAllPublicFrameworkIdentifiers();
+      const fixtures = prepopulatedDataTypes.map((dataType) =>
           `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace('-', '')
-        )
-      );
+        );
       fixtures.forEach((fixtureFile) => {
         cy.fixture(fixtureFile).then(function (companies: []) {
           expectedNumberOfCompanies += companies.length;
@@ -46,7 +41,7 @@ describeIf(
           .then(() => getKeycloakToken(reader_name, reader_pw))
           .then({ timeout: 120000 }, async (token) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
-              countCompaniesAndDatasetsForDataType(token, key as keyof typeof frameworkFixtureMap)
+              countCompaniesAndDatasetsForDataType(token, key)
             );
 
             const totalCompanies = (await Promise.all(responsePromises))

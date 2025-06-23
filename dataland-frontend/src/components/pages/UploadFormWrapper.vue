@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import CreateAdditionalCompanyInformationDataset from '@/components/forms/CreateAdditionalCompanyInformationDataset.vue';
 
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
@@ -55,8 +54,6 @@ const frameworkToUploadComponent = computed(() => {
       return CreateVsmeDataset;
     case `${DataTypeEnum.NuclearAndGas}`:
       return CreateNuclearAndGasDataset;
-    case `${DataTypeEnum.AdditionalCompanyInformation}`:
-      return CreateAdditionalCompanyInformationDataset;
     default:
       return null;
   }

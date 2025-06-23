@@ -11,7 +11,6 @@ import {
 } from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';

@@ -3,7 +3,6 @@ import {
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type LksgData,
-  type PathwaysToParisData,
   type SfdrData,
   type VsmeData,
 } from '@clients/backend';
@@ -48,5 +47,4 @@ export type FrameworkData =
   | EutaxonomyNonFinancialsData
   | LksgData
   | SfdrData
-  | VsmeData
-  | PathwaysToParisData;
+  | VsmeData;

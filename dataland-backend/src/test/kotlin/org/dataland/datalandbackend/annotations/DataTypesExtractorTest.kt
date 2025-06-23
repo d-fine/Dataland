@@ -13,7 +13,6 @@ class DataTypesExtractorTest {
                 "lksg",
                 "sfdr",
                 "vsme",
-                "additional-company-information",
                 "nuclear-and-gas",
             )
         val dataTypes = DataTypesExtractor().getAllDataTypes()
