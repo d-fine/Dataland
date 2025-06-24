@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 import type { Section } from '@/types/ContentTypes';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';

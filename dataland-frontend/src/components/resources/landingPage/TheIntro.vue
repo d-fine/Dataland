@@ -46,7 +46,7 @@
 import { computed, ref, watch, onUnmounted } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import router from '@/router';
 
 const props = defineProps<{ sections?: Section[] }>();

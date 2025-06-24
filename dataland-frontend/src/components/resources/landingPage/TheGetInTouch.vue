@@ -31,7 +31,7 @@
 import { computed } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import { openEmailClient } from '@/utils/Email';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 

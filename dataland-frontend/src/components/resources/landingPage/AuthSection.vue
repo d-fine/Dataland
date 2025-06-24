@@ -34,7 +34,7 @@
 import { inject, onMounted, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { useRouter } from 'vue-router';
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 

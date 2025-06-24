@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import AuthSection from '@/components/resources/newLandingPage/AuthSection.vue';
+import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 import type { Page } from '@/types/ContentTypes';
