@@ -449,6 +449,7 @@ function downloadData(): void {
     },
     data: {
       reportingPeriodsPerFramework: reportingPeriodsPerFramework,
+      isDownloading: isDownloading
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,

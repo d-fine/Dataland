@@ -360,7 +360,6 @@ async function handleDatasetDownload(
   includeAlias: boolean
 ): Promise<void> {
   isDownloading.value = true;
-  console.log('is Downloading before download', isDownloading.value);
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
@@ -394,7 +393,6 @@ async function handleDatasetDownload(
     console.error(err);
   } finally {
     isDownloading.value = false;
-    console.log('is Downloading after download', isDownloading.value);
   }
 }
 
