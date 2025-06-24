@@ -1,6 +1,7 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
 import { type EnrichedPortfolio } from '@clients/userservice';
+import { KEYCLOAK_ROLE_PREMIUM_USER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
 describe('Check the portfolio details view', function (): void {
   let portfolioFixture: EnrichedPortfolio;
@@ -111,11 +112,25 @@ describe('Check the portfolio details view', function (): void {
     });
   });
 
-  it('Check Monitoring Button', function (): void {
+  it('Check Monitoring Button for non premium user', function (): void {
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
     // @ts-ignore
     cy.mountWithPlugins(PortfolioDetails, {
       keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'EDIT MONITORING');
+      });
+    });
+  });
+  it('Check Monitoring Button for premium user', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({
+        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
+      }),
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {

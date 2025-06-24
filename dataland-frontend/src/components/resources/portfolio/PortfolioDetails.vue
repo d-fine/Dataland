@@ -22,8 +22,13 @@
         Portfolio actively monitored
       </div>
 
-      <div>
-        <PrimeButton class="primary-button" @click="openMonitoringModal()" data-test="monitor-portfolio">
+      <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
+        <PrimeButton
+          class="primary-button"
+          @click="openMonitoringModal()"
+          data-test="monitor-portfolio"
+          :disabled="!isPremiumUser"
+        >
           <i class="pi pi-bell pr-2" /> EDIT MONITORING
         </PrimeButton>
         <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
@@ -227,8 +232,10 @@ const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
+const isPremiumUser = ref(false);
 
 onMounted(() => {
+  void checkPremiumRole();
   loadPortfolio();
 });
 
@@ -256,6 +263,15 @@ watch([enrichedPortfolio], () => {
     );
   });
 });
+
+/**
+ * Checks whether the logged in User is premium user
+ */
+async function checkPremiumRole(): Promise<void> {
+  const keycloak = await assertDefined(getKeycloakPromise)();
+
+  isPremiumUser.value = keycloak.realmAccess?.roles.includes('ROLE_PREMIUM_USER') || false;
+}
 
 /**
  * Returns the width (in percent of the total screen width) of a portfolio datatable column
