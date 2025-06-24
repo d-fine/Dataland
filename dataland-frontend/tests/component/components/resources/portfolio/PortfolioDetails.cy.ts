@@ -1,7 +1,7 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
 import { type EnrichedPortfolio } from '@clients/userservice';
-import { KEYCLOAK_ROLE_PREMIUM_USER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_PREMIUM_USER } from '@/utils/KeycloakRoles.ts';
 
 describe('Check the portfolio details view', function (): void {
   let portfolioFixture: EnrichedPortfolio;
