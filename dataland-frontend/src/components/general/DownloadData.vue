@@ -1,6 +1,5 @@
 <template data-test="downloadModal">
   <div class="download-content d-flex flex-column align-items-center">
-    <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
     <FormKit type="form" class="formkit-wrapper" :actions="false">
       <label for="fileTypeSelector">
         <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">Framework</b>
@@ -13,6 +12,7 @@
         name="frameworkSelector"
         @input="onFrameworkChange"
       />
+      <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
       <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
@@ -20,7 +20,7 @@
         <ToggleChipFormInputs
           :key="selectedFramework || 'no-framework'"
           name="listOfReportingPeriods"
-          :options="selectableReportingPeriodOptions"
+          :selectedOptions="selectableReportingPeriodOptions"
           :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
@@ -168,18 +168,12 @@ function resetErrors(): void {
  */
 function onFrameworkChange(framework: string | undefined): void {
   resetErrors();
-  if (!framework) {
-    allReportingPeriodOptions.value = [];
-    selectableReportingPeriodOptions.value = [];
-    return;
-  }
+
+  const reportingPeriods = framework
+    ? reportingPeriodsPerFramework.value.get(framework) ?? []
+    : [];
 
   selectedFramework.value = framework as DataTypeEnum;
-  allReportingPeriodOptions.value?.forEach((option) => {
-    option.value = false;
-  });
-
-  const reportingPeriods = reportingPeriodsPerFramework.value.get(framework) ?? [];
 
   allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
@@ -198,10 +192,8 @@ function onFrameworkChange(framework: string | undefined): void {
 function onModalOpen(): void {
   if (!selectedFramework.value) {
     selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
-    if (selectedFramework.value) {
-      onFrameworkChange(selectedFramework.value);
-    }
   }
+  onFrameworkChange(selectedFramework.value);
 }
 
 /**

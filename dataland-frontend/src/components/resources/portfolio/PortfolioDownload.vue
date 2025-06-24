@@ -21,7 +21,7 @@
         <ToggleChipFormInputs
           :key="selectedFramework || 'no-framework'"
           :name="'listOfReportingPeriods'"
-          :options="allReportingPeriodOptions"
+          :selectedOptions="allReportingPeriodOptions"
           :availableOptions="availableReportingPeriods"
           data-test="listOfReportingPeriods"
           class="toggle-chip-group"
