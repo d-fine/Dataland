@@ -96,7 +96,6 @@ class DatalandUserServiceSpringbootTest
             reset(mockCompanyDataController, mockSecurityContext, mockKeycloakUserService)
             this.resetSecurityContext()
 
-            doReturn(listOf("ROLE_USER")).whenever(mockKeycloakUserService).getUserRoleNames(userId)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
             doNothing().whenever(mockPortfolioBulkDataRequestService).sendBulkDataRequestIfMonitored(any())
@@ -108,9 +107,9 @@ class DatalandUserServiceSpringbootTest
         /**
          * Setting the security context to use dataland dummy user with role ROLE_USER
          */
-        private fun resetSecurityContext() {
+        private fun resetSecurityContext(datalandRealmRole: DatalandRealmRole = DatalandRealmRole.ROLE_USER) {
             mockAuthentication =
-                AuthenticationMock.mockJwtAuthentication(username, userId, roles = setOf(DatalandRealmRole.ROLE_USER))
+                AuthenticationMock.mockJwtAuthentication(username, userId, roles = setOf(datalandRealmRole))
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
             SecurityContextHolder.setContext(mockSecurityContext)
         }
@@ -152,6 +151,8 @@ class DatalandUserServiceSpringbootTest
 
             @Test
             fun `test that patching monitoring of a portfolio updates monitoring fields correctly`() {
+                resetSecurityContext(DatalandRealmRole.ROLE_PREMIUM_USER)
+
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
 
@@ -175,6 +176,7 @@ class DatalandUserServiceSpringbootTest
 
             @Test
             fun `test that patching monitoring triggers community manager bulk data request`() {
+                resetSecurityContext(DatalandRealmRole.ROLE_PREMIUM_USER)
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
 

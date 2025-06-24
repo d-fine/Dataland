@@ -19,6 +19,10 @@ class PortfolioBulkDataRequestService
     ) {
         companion object {
             const val UPPER_BOUND = 2025
+            const val NUCLEAR_AND_GAS = "nuclear-and-gas"
+            const val EUTAXONOMY_FINANCIALS = "eutaxonomy-financials"
+            const val EUTAXONOMY_NON_FINANCIALS = "eutaxonomy-non-financials"
+            const val SFDR = "sfdr"
         }
 
         /**
@@ -113,8 +117,8 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
             setOf(
-                "eutaxonomy-financials",
-                "nuclear-and-gas",
+                EUTAXONOMY_FINANCIALS,
+                NUCLEAR_AND_GAS,
             ),
         )
 
@@ -127,8 +131,8 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getNonFinancialsCompanyIds,
             setOf(
-                "eutaxonomy-non-financials",
-                "nuclear-and-gas",
+                EUTAXONOMY_NON_FINANCIALS,
+                NUCLEAR_AND_GAS,
             ),
         )
 
@@ -141,9 +145,9 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getUnsectorizedCompanyIds,
             setOf(
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "nuclear-and-gas",
+                EUTAXONOMY_FINANCIALS,
+                EUTAXONOMY_NON_FINANCIALS,
+                NUCLEAR_AND_GAS,
             ),
         )
 
@@ -157,7 +161,7 @@ class PortfolioBulkDataRequestService
         ) = sendBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getAllCompanyIds,
             setOf(
-                "sfdr",
+                SFDR,
             ),
         )
     }

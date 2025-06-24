@@ -17,6 +17,11 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
 
+const val NUCLEAR_AND_GAS = "nuclear-and-gas"
+const val EUTAXONOMY_FINANCIALS = "eutaxonomy-financials"
+const val EUTAXONOMY_NON_FINANCIALS = "eutaxonomy-non-financials"
+const val SFDR = "sfdr"
+
 class PortfolioBulkDataRequestServiceTest {
     private val mockPublisher = mock<MessageQueuePublisher>()
     private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
@@ -97,10 +102,10 @@ class PortfolioBulkDataRequestServiceTest {
         assertEquals(
             allPublishedTypes,
             setOf(
-                setOf("eutaxonomy-financials", "nuclear-and-gas"),
-                setOf("eutaxonomy-non-financials", "nuclear-and-gas"),
-                setOf("eutaxonomy-financials", "eutaxonomy-non-financials", "nuclear-and-gas"),
-                setOf("sfdr"),
+                setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS),
+                setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS),
+                setOf(EUTAXONOMY_FINANCIALS, EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS),
+                setOf(SFDR),
             ),
         )
     }

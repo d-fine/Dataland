@@ -145,7 +145,7 @@ class UserServiceTest {
             )
 
         val portfolio =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 ApiAwait.waitForData { UserService.portfolioControllerApi.createPortfolio(portfolioUpload) }
             }
 
@@ -157,7 +157,7 @@ class UserServiceTest {
         val portfolioId = portfolio.portfolioId
 
         val patchedPortfolio =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 ApiAwait.waitForData {
                     UserService.portfolioControllerApi.patchMonitoring(
                         portfolioId,
@@ -170,7 +170,7 @@ class UserServiceTest {
                 }
             }
 
-        assertEquals(true, patchedPortfolio.isMonitored)
+        assertTrue(patchedPortfolio.isMonitored)
         assertEquals(dummyReportingPeriod, patchedPortfolio.startingMonitoringPeriod)
         assertEquals(setOf("sfdr", "eutaxonomy"), patchedPortfolio.monitoredFrameworks)
 
@@ -182,7 +182,7 @@ class UserServiceTest {
             }
 
         assertEquals(3, requests.size)
-        assertTrue(requests.all { it.userId == TechnicalUser.Reader.technicalUserId })
+        assertTrue(requests.all { it.userId == TechnicalUser.Admin.technicalUserId })
         assertTrue(requests.all { it.reportingPeriod >= dummyReportingPeriod })
     }
 }
