@@ -32,4 +32,12 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     var qaStatus: QaStatus,
     var ref: String? = null,
-)
+) {
+    /**
+     * Adds a reference URL to the data meta information points to the page displaying the specified dataset.
+     * @param proxyPrimaryUrl the primary URL of the proxy server
+     */
+    fun addRef(proxyPrimaryUrl: String) {
+        this.ref = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType/$dataId"
+    }
+}
