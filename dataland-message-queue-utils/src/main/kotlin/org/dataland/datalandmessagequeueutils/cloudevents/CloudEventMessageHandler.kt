@@ -19,7 +19,7 @@ import org.springframework.messaging.Message as MessageResult
  * @param rabbitTemplate
  */
 
-@Component
+@Component("CloudEventMessageHandler")
 class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate,
 ) {

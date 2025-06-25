@@ -1,5 +1,6 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
@@ -16,11 +17,6 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
-
-const val NUCLEAR_AND_GAS = "nuclear-and-gas"
-const val EUTAXONOMY_FINANCIALS = "eutaxonomy-financials"
-const val EUTAXONOMY_NON_FINANCIALS = "eutaxonomy-non-financials"
-const val SFDR = "sfdr"
 
 class PortfolioBulkDataRequestServiceTest {
     private val mockPublisher = mock<MessageQueuePublisher>()
@@ -85,7 +81,7 @@ class PortfolioBulkDataRequestServiceTest {
         whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(any()))
             .thenReturn(enrichedPortfolio)
 
-        portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(basePortfolio)
+        portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(basePortfolio)
 
         val frameworksCaptor = argumentCaptor<Set<String>>()
 
@@ -102,10 +98,14 @@ class PortfolioBulkDataRequestServiceTest {
         assertEquals(
             allPublishedTypes,
             setOf(
-                setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS),
-                setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS),
-                setOf(EUTAXONOMY_FINANCIALS, EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS),
-                setOf(SFDR),
+                setOf(DataTypeEnum.eutaxonomyMinusFinancials.value, DataTypeEnum.nuclearMinusAndMinusGas.value),
+                setOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value, DataTypeEnum.nuclearMinusAndMinusGas.value),
+                setOf(
+                    DataTypeEnum.eutaxonomyMinusFinancials.value,
+                    DataTypeEnum.nuclearMinusAndMinusGas.value,
+                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
+                ),
+                setOf(DataTypeEnum.sfdr.value),
             ),
         )
     }
@@ -125,7 +125,7 @@ class PortfolioBulkDataRequestServiceTest {
                 monitoredFrameworks = setOf("eutaxonomy", "sfdr"),
             )
 
-        portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(basePortfolio)
+        portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(basePortfolio)
 
         verify(mockPortfolioEnrichmentService, never()).getEnrichedPortfolio(any())
         verify(mockPublisher, never()).publishPortfolioUpdate(

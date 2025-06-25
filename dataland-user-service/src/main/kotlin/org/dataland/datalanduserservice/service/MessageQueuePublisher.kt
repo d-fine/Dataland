@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * Publisher Service for Portfolio Updates (Companies and Monitoring status) relevant for automatic Bulk Data Requests.
+ * Publisher Service for Portfolio Updates (Companies and Monitoring status).
  */
 @Service
 class MessageQueuePublisher

@@ -144,7 +144,7 @@ class PortfolioService
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
 
-            portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(portfolio)
+            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(portfolio)
 
             return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
@@ -177,7 +177,7 @@ class PortfolioService
                     portfolio.monitoredFrameworks,
                 )
 
-            portfolioBulkDataRequestService.sendBulkDataRequestIfMonitored(updatedPortfolioEntity.toBasePortfolio())
+            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(updatedPortfolioEntity.toBasePortfolio())
 
             return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }

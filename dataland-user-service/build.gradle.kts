@@ -30,8 +30,6 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
     implementation(libs.flyway.core)
     implementation(libs.jackson.kotlin)
     implementation(libs.json)
@@ -52,7 +50,6 @@ dependencies {
     runtimeOnly(libs.h2)
     runtimeOnly(libs.postgresql)
     testImplementation(libs.mockito.kotlin)
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     testImplementation(Spring.boot.test)
     testImplementation(Spring.security.spring_security_test)
     kapt(Spring.boot.configurationProcessor)
@@ -105,8 +102,6 @@ tasks.register("generateClients") {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
