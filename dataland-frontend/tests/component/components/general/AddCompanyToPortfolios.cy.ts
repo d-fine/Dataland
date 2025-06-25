@@ -84,34 +84,44 @@ describe('AddCompanyToPortfolios', () => {
   it('shows empty selection state for a new portfolio', () => {
     mountComponent(getMockDialogRef());
 
-    cy.get('.p-listbox').should('exist');
-    cy.get('.p-listbox-item.p-highlight').should('not.exist');
+    cy.get('.p-multiselect').should('exist').click();
+    cy.get('.p-multiselect-item.p-highlight').should('not.exist');
+    cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
   });
 
   it('disables button and shows "No available options" for empty portfolio list', () => {
     mountComponent(getMockDialogRef([]));
 
-    cy.get('.p-listbox').should('exist');
-    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options');
+    cy.get('.p-multiselect').should('exist').click();
+    cy.get('.p-multiselect-empty-message').should('be.visible').and('contain.text', 'No available options');
+    cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').should('be.disabled');
   });
 
   it('applies highlight and focus styles correctly when selecting multiple portfolios', () => {
     mountComponent(getMockDialogRef());
 
-    cy.get('.p-listbox-item').eq(0).click(); // One
-    cy.get('.p-listbox-item').eq(1).click(); // Two
-    cy.get('.p-listbox-item').eq(2).click(); // Three
+    cy.get('.p-multiselect').should('exist').click();
+    cy.get('.p-multiselect-item').eq(0).click(); // One
+    cy.get('.p-multiselect-item').eq(1).click(); // Two
+    cy.get('.p-multiselect-item').eq(2).click(); // Three
 
-    cy.get('.p-listbox-item').eq(2).should('have.class', 'p-highlight').and('have.class', 'p-focus');
-    cy.get('.p-listbox-item').eq(0).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
-    cy.get('.p-listbox-item').eq(1).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
+    cy.get('.p-multiselect-item').eq(2).should('have.class', 'p-highlight').and('have.class', 'p-focus');
+    cy.get('.p-multiselect-item').eq(0).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
+    cy.get('.p-multiselect-item').eq(1).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
+
+    cy.get('.p-multiselect').click();
+    cy.get('[data-test="saveButton"]').should('be.enabled');
   });
 
   it('calls replace API with correct data when adding a company', () => {
     const newCompanyId = 'NEW-COMPANY-ID';
-    const mockDialogRef = getMockDialogRef(mockPortfolios.map((p) => ({ ...p, companyIds: new Set() })));
+    const mockDialogRef = getMockDialogRef(
+      mockPortfolios.map((p) => {
+        return p.portfolioId === 'p2' ? { ...p, companyIds: new Set(newCompanyId) } : p;
+      })
+    );
 
     mockDialogRef.value.data.companyId = newCompanyId;
 
@@ -119,8 +129,10 @@ describe('AddCompanyToPortfolios', () => {
 
     mountComponent(mockDialogRef);
 
-    cy.get('.p-listbox-item').eq(0).click();
-    cy.get('.p-listbox-item').eq(1).click();
+    cy.get('.p-multiselect').should('exist').click();
+    cy.get('.p-multiselect-item').eq(0).click();
+    cy.get('.p-multiselect-item').eq(1).click();
+    cy.get('.p-multiselect').click();
 
     cy.get('[data-test="saveButton"]').click();
 
@@ -144,7 +156,9 @@ describe('AddCompanyToPortfolios', () => {
 
     mountComponent(getMockDialogRef());
 
-    cy.get('.p-listbox-item').first().click();
+    cy.get('.p-multiselect').should('exist').click();
+    cy.get('.p-multiselect-item').first().click();
+    cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').click();
     cy.wait('@replacePortfolio');
 
@@ -160,7 +174,9 @@ describe('AddCompanyToPortfolios', () => {
 
     mountComponent(getMockDialogRef(mockPortfolios, closeStub));
 
-    cy.get('.p-listbox-item').first().click();
+    cy.get('.p-multiselect').should('exist').click();
+    cy.get('.p-multiselect-item').first().click();
+    cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').click();
 
     cy.wait('@addCompany').then(() => {
