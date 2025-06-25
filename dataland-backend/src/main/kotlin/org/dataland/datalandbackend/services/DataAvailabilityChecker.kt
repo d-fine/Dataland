@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
+import java.util.UUID
 import javax.sql.DataSource
 
 /**
@@ -24,7 +25,7 @@ class DataAvailabilityChecker
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
         fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDataDimensions>): List<DataMetaInformation> {
-            // ToDo sanitize input dataDimensions to prevent SQL injection
+            assertBasicDataDimensionsAreWellFormed(dataDimensions)
             val formattedTuples =
                 dataDimensions.joinToString(", ") {
                     "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
@@ -49,5 +50,27 @@ class DataAvailabilityChecker
                     uploaderUserId = rs.getString("uploader_user_id"),
                 )
             }
+        }
+
+        private fun assertBasicDataDimensionsAreWellFormed(dataDimensions: List<BasicDataDimensions>) {
+            dataDimensions.forEach { dimensions ->
+                assertStringRepresentsCompanyId(dimensions.companyId)
+                assertStringRepresentsDataType(dimensions.dataType)
+                assertStringRepresentsReportingPeriod(dimensions.reportingPeriod)
+            }
+        }
+
+        private fun assertStringRepresentsReportingPeriod(reportingPeriod: String) {
+            if (!reportingPeriod.matches(Regex("\\d{4}"))) {
+                throw IllegalArgumentException("Invalid reporting period format: $reportingPeriod. Expected format: YYYY.")
+            }
+        }
+
+        private fun assertStringRepresentsCompanyId(companyId: String) {
+            UUID.fromString(companyId)
+        }
+
+        private fun assertStringRepresentsDataType(dataType: String) {
+            DataType.valueOf(dataType)
         }
     }
