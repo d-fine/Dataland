@@ -35,7 +35,7 @@
     </Message>
 
     <PrimeButton
-      :class="['primary-button', 'primary-button-in-modal']"
+      class="primary-button primary-button-in-modal"
       aria-label="Add Company"
       :disabled="selectedPortfolios.length === 0 || isLoading"
       :loading="isLoading"
