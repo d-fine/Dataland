@@ -121,7 +121,7 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        // TOODO: set to sunday at 3am for final version
+        // TODO: set to sunday at 3am for final version
         @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
@@ -129,11 +129,11 @@ class ProcessDataUpdates
 
             logger.info("Running ${if (doFullUpdate) "full" else "scheduled"} update of GLEIF data")
 
-            // TOODO: This will be deleted for the final version after the cron timer has been set to every Sunday at 3am
+            // TODO: This will be deleted for the final version after the cron timer has been set to every Sunday at 3am
             if (flagFileGleif?.delete() == true) {
                 logger.info("Flag file $flagFileGleif deleted successfully.")
             }
-            // TOODO: Remove for final version
+            // TODO: Remove for final version
             if (!doFullUpdate) {
                 return
             }
