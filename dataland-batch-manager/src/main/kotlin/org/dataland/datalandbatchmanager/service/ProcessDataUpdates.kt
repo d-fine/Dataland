@@ -121,30 +121,34 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        // TOODO: set to sunday at 3am for final version
         @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
-            val doFullGleifUpdate = flagFileGleif?.exists() ?: false
+            val doFullUpdate = flagFileGleif?.exists() ?: false
 
-            logger.info("Running ${if (doFullGleifUpdate) "full" else "scheduled"} update of GLEIF data")
+            logger.info("Running ${if (doFullUpdate) "full" else "scheduled"} update of GLEIF data")
 
-            // This will be deleted for the final version after the cron timer has been set to every Sunday at 3am
+            // TOODO: This will be deleted for the final version after the cron timer has been set to every Sunday at 3am
             if (flagFileGleif?.delete() == true) {
                 logger.info("Flag file $flagFileGleif deleted successfully.")
             }
-            if (!doFullGleifUpdate) {
+            // TOODO: Remove for final version
+            if (!doFullUpdate) {
                 return
             }
 
             waitForBackend()
-            gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullGleifUpdate)
-            gleifGoldenCopyIngestor.processIsinMappingFile(doFullGleifUpdate)
-            gleifGoldenCopyIngestor.processRelationshipFile(doFullGleifUpdate)
+            gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processIsinMappingFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processRelationshipFile(doFullUpdate)
 
-            if (flagFileGleif.delete()) {
-                logger.info("Flag file $flagFileGleif deleted successfully.")
-            } else {
-                logger.error("Flag file $flagFileGleif could not be deleted.")
+            flagFileGleif?.let { file ->
+                if (file.delete()) {
+                    logger.info("Flag file $flagFileGleif deleted successfully.")
+                } else {
+                    logger.error("Flag file $flagFileGleif could not be deleted.")
+                }
             }
         }
 

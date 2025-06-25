@@ -31,6 +31,7 @@ import org.mockito.Mockito.reset
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.File
@@ -85,8 +86,8 @@ class ProcessDataUpdatesTest {
 
     @BeforeEach
     fun setupFiles() {
-        oldFile = writeTempCsv("oldFile.csv", oldContent)
-        newFile = writeTempCsv("newFile.csv", newContent)
+        oldFile = writeTextToTemporaryFile("oldFile.csv", oldContent)
+        newFile = writeTextToTemporaryFile("newFile.csv", newContent)
     }
 
     @AfterAll
@@ -103,7 +104,7 @@ class ProcessDataUpdatesTest {
         reset(mockGleifGoldenCopyIngestorTest)
     }
 
-    private fun writeTempCsv(
+    private fun writeTextToTemporaryFile(
         fileName: String,
         content: String,
     ): File =
@@ -197,7 +198,7 @@ class ProcessDataUpdatesTest {
                 mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
                 companyIngestorNorthData, mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
-                mockCommunityActuatorApi, false, false,
+                mockCommunityActuatorApi, allGleifCompaniesForceIngest = false, allNorthDataCompaniesForceIngest = false,
                 flagFileGleif.absolutePath, flagFileGleifUpdate.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
             )
         return Pair(bufferedReader, mockStatic(File::class.java))
@@ -205,7 +206,7 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `waitForCommunityManager should stop on first successful health check`() {
-        `when`(mockCommunityActuatorApi.health()).thenReturn(Any())
+        whenever(mockCommunityActuatorApi.health()).thenReturn(Any())
         initProcessDataUpdates()
         processDataUpdates.waitForCommunityManager()
         verify(mockCommunityActuatorApi).health()
@@ -214,8 +215,8 @@ class ProcessDataUpdatesTest {
     @Test
     fun `logFlagFileFoundAndDelete logs success and deletes existing file`() {
         val mockFile = mock(File::class.java)
-        `when`(mockFile.exists()).thenReturn(true)
-        `when`(mockFile.delete()).thenReturn(true)
+        whenever(mockFile.exists()).thenReturn(true)
+        whenever(mockFile.delete()).thenReturn(true)
 
         initProcessDataUpdates()
 
@@ -229,8 +230,8 @@ class ProcessDataUpdatesTest {
     @Test
     fun `logFlagFileFoundAndDelete logs error if file cannot be deleted`() {
         val mockFile = mock(File::class.java)
-        `when`(mockFile.exists()).thenReturn(true)
-        `when`(mockFile.delete()).thenReturn(false)
+        whenever(mockFile.exists()).thenReturn(true)
+        whenever(mockFile.delete()).thenReturn(false)
 
         // Set up logger and attach our test appender
         val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger

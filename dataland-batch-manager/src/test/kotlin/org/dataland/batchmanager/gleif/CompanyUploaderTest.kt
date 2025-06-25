@@ -28,9 +28,9 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.whenever
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.HttpStatus
@@ -70,7 +70,7 @@ class CompanyUploaderTest {
         val deltaMap = mutableMapOf<String, Set<String>>()
         deltaMap["1000"] = setOf("1111", "1112", "1113")
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, "1000"))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, "1000"))
             .thenReturn(CompanyId("testCompanyId"))
 
         companyUploader.updateIsins(deltaMap)
@@ -103,7 +103,7 @@ class CompanyUploaderTest {
         val mockParentLei = "defg"
         finalParentMapping[mockLei] = mockParentLei
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
             .thenReturn(CompanyId(mockCompanyID))
 
         companyUploader.updateRelationships(finalParentMapping)
@@ -120,7 +120,7 @@ class CompanyUploaderTest {
         val mockLei = "abcd"
         finalParentMapping[mockLei] = "defg"
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_IMPLEMENTED.value()))
 
         assertThrows<ClientException> {
@@ -137,7 +137,7 @@ class CompanyUploaderTest {
         val mockLei = "abcd"
         finalParentMapping[mockLei] = "defg"
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
 
         companyUploader.updateRelationships(finalParentMapping)
@@ -157,7 +157,7 @@ class CompanyUploaderTest {
 
     @Test
     fun `check that the upload handles a socket timeout and terminates after MAX RETRIES tries`() {
-        `when`(
+        whenever(
             mockCompanyDataControllerApi
                 .postCompany(dummyGleifCompanyInformation1.toCompanyPost()),
         ).thenThrow(SocketTimeoutException())
@@ -168,7 +168,7 @@ class CompanyUploaderTest {
 
     @Test
     fun `check that the upload handles a server exception and terminates after MAX RETRIES tries`() {
-        `when`(
+        whenever(
             mockCompanyDataControllerApi
                 .postCompany(dummyGleifCompanyInformation1.toCompanyPost()),
         ).thenThrow(ServerException())
@@ -179,7 +179,7 @@ class CompanyUploaderTest {
 
     @Test
     fun `check that the upload handles a client exception and terminates after MAX RETRIES tries`() {
-        `when`(mockCompanyDataControllerApi.postCompany(dummyGleifCompanyInformation1.toCompanyPost())).thenThrow(
+        whenever(mockCompanyDataControllerApi.postCompany(dummyGleifCompanyInformation1.toCompanyPost())).thenThrow(
             ClientException(
                 statusCode = UNAUTHORIZED_CODE,
             ),
@@ -207,14 +207,15 @@ class CompanyUploaderTest {
     fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`(
         responseFilePath: String,
         numberOfPatchInvocations: Int,
+        shouldThrowClientException: Boolean,
         dummyCompanyInformation: ExternalCompanyInformation,
         expectedPatch: CompanyInformationPatch,
     ) {
-        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
+        whenever(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
 
-        if (numberOfPatchInvocations == 0) {
+        if (shouldThrowClientException) {
             assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation) }
         } else {
             companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
@@ -266,27 +267,27 @@ class CompanyUploaderTest {
             Stream.of(
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
-                    1, dummyGleifCompanyInformation1,
+                    1, false, dummyGleifCompanyInformation1,
                     dummyGleifCompanyInformation1.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
-                    1, dummyNorthDataCompanyInformation3,
+                    1, false, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json",
-                    1, dummyNorthDataCompanyInformation3,
+                    1, false, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(setOf("CompanyRegistrationNumber")),
                 ),
                 Arguments.of(
                     "/sampleResponseMultipleIdentifierAlreadyExists.json",
-                    0, dummyNorthDataCompanyInformation3,
+                    0, true, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json",
-                    1, dummyNorthDataCompanyInformation3,
+                    1, false, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
             )
@@ -299,7 +300,7 @@ class CompanyUploaderTest {
         val isins = setOf("ISIN1", "ISIN2")
         val mapping = mapOf(lei to isins)
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
             .thenReturn(CompanyId(companyId))
 
         companyUploader.updateIsins(mapping)
@@ -319,9 +320,9 @@ class CompanyUploaderTest {
         val mapping = mapOf(lei to isins)
         val mockStoredCompany = mock(StoredCompany::class.java)
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
             .thenReturn(CompanyId(companyId))
-        `when`(mockCompanyDataControllerApi.patchCompanyById(eq(companyId), any()))
+        whenever(mockCompanyDataControllerApi.patchCompanyById(eq(companyId), any()))
             .thenThrow(ClientException())
             .thenReturn(mockStoredCompany)
 
@@ -349,9 +350,9 @@ class CompanyUploaderTest {
         val mapping = mapOf(lei to isins)
         val patch = CompanyInformationPatch(identifiers = mapOf("Isin" to isins.toList()))
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
             .thenReturn(CompanyId(companyId))
-        `when`(mockCompanyDataControllerApi.patchCompanyById(companyId, patch))
+        whenever(mockCompanyDataControllerApi.patchCompanyById(companyId, patch))
             .thenThrow(ClientException("500"))
 
         companyUploader.updateIsins(mapping)
@@ -372,7 +373,7 @@ class CompanyUploaderTest {
         val isins = setOf("ISIN404")
         val mapping = mapOf(lei to isins)
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
+        whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
 
         companyUploader.updateIsins(mapping)

@@ -36,11 +36,12 @@ class GleifGoldenCopyIngestor(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Starting point for GLEIF delta file handling
+     * Starting point for GLEIF full or delta update file handling
+     * @param doFullGleifUpdate if true, processes full GLEIF file instead of delta file
      */
     fun prepareGleifDeltaFile(doFullGleifUpdate: Boolean = false) {
         logger.info("Starting Gleif company update cycle for latest ${if (doFullGleifUpdate) "full" else "delta"} file.")
-        val tempFile = File.createTempFile("gleif_update_delta", ".zip")
+        val tempFile = File.createTempFile("gleif_update", ".zip")
         val gleifFileSupplier =
             if (doFullGleifUpdate) {
                 gleifApiAccessor::getFullGoldenCopy
@@ -95,6 +96,7 @@ class GleifGoldenCopyIngestor(
 
     /**
      * Starting point for ISIN mapping file handling
+     * @param doFullIsinUpdate if true, processes full ISIN mapping file instead of using delta
      */
     @Synchronized
     fun processIsinMappingFile(doFullIsinUpdate: Boolean = false) {

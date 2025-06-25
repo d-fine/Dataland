@@ -31,11 +31,11 @@ class CompanyUploader(
 ) {
     companion object {
         const val MAX_RETRIES = 3
-        const val WAIT_DURATION: Long = 1
+        const val WAIT_DURATION_IN_SECONDS: Long = 1
         const val UNAUTHORIZED_CODE = 401
         const val LIMIT_FOR_PERIOD = 500
-        const val LIMIT_REFRESH_DURATION: Long = 1
-        const val TIMEOUT_DURATION: Long = 60
+        const val LIMIT_REFRESH_DURATION_IN_SECONDS: Long = 1
+        const val TIMEOUT_DURATION_IN_MINUTES: Long = 60
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -46,8 +46,8 @@ class CompanyUploader(
             RateLimiterConfig
                 .custom()
                 .limitForPeriod(LIMIT_FOR_PERIOD)
-                .limitRefreshPeriod(Duration.ofSeconds(LIMIT_REFRESH_DURATION))
-                .timeoutDuration(Duration.ofMinutes(TIMEOUT_DURATION))
+                .limitRefreshPeriod(Duration.ofSeconds(LIMIT_REFRESH_DURATION_IN_SECONDS))
+                .timeoutDuration(Duration.ofMinutes(TIMEOUT_DURATION_IN_MINUTES))
                 .build(),
         )
 
@@ -58,7 +58,7 @@ class CompanyUploader(
                 RetryConfig
                     .custom<Any>()
                     .maxAttempts(MAX_RETRIES)
-                    .waitDuration(Duration.ofSeconds(WAIT_DURATION))
+                    .waitDuration(Duration.ofSeconds(WAIT_DURATION_IN_SECONDS))
                     .retryExceptions(
                         SocketTimeoutException::class.java,
                         ClientException::class.java,
@@ -180,22 +180,22 @@ class CompanyUploader(
 
     private fun searchCompanyByLEI(lei: String): String? {
         var companyId: String? = null
-        var found404 = false
+        var companyNotFound = true
 
         executeWithRetryAndThrottling {
             logger.info("Searching for company with LEI: $lei")
             try {
                 companyId = companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
+                companyNotFound = false
             } catch (exception: ClientException) {
                 if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
                     logger.error("Could not find company with LEI: $lei")
-                    found404 = true
                 } else {
                     throw exception
                 }
             }
         }
-        return if (found404) null else companyId
+        return if (companyNotFound) null else companyId
     }
 
     /**
