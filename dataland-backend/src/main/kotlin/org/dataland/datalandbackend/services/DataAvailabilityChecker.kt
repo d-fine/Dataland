@@ -25,7 +25,7 @@ class DataAvailabilityChecker
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
         fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDataDimensions>): List<DataMetaInformation> {
-            assertBasicDataDimensionsAreWellFormed(dataDimensions)
+            filterOutInvalidDimensions(dataDimensions)
             val formattedTuples =
                 dataDimensions.joinToString(", ") {
                     "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
@@ -52,25 +52,24 @@ class DataAvailabilityChecker
             }
         }
 
-        private fun assertBasicDataDimensionsAreWellFormed(dataDimensions: List<BasicDataDimensions>) {
-            dataDimensions.forEach { dimensions ->
-                assertStringRepresentsCompanyId(dimensions.companyId)
-                assertStringRepresentsDataType(dimensions.dataType)
-                assertStringRepresentsReportingPeriod(dimensions.reportingPeriod)
+        private fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) {
+            dataDimensions.filter { dimensions ->
+                isCompanyId(dimensions.companyId) &&
+                isDataType(dimensions.dataType) &&
+                isReportingPeriod(dimensions.reportingPeriod)
             }
         }
 
-        private fun assertStringRepresentsReportingPeriod(reportingPeriod: String) {
-            if (!reportingPeriod.matches(Regex("\\d{4}"))) {
-                throw IllegalArgumentException("Invalid reporting period format: $reportingPeriod. Expected format: YYYY.")
+        private fun isReportingPeriod(testString: String) = testString.matches(Regex("\\d{4}"))
+
+        private fun isCompanyId(testString: String): Boolean {
+            try {
+                UUID.fromString(testString)
+                return true
+            } catch (ignore: Exception) {
+                return false
             }
         }
 
-        private fun assertStringRepresentsCompanyId(companyId: String) {
-            UUID.fromString(companyId)
-        }
-
-        private fun assertStringRepresentsDataType(dataType: String) {
-            DataType.valueOf(dataType)
-        }
+        private fun isDataType(testString: String) = DataType.values.any { it.toString() == testString }
     }
