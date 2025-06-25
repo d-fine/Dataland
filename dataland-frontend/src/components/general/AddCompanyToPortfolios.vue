@@ -1,36 +1,57 @@
 <template>
-  <Listbox
-    v-model="selectedPortfolios"
-    :options="allUserPortfolios"
-    :virtual-scroller-options="virtualScrollerOptions"
-    multiple
-    :meta-key-selection="false"
-    optionLabel="portfolioName"
-    :disabled="isLoading"
-    data-test="portfolioSelectionListbox"
-  />
+  <div class="add-company-to-portfolios-dialog-content">
+    <p class="gray-text font-italic text-base m-0">
+      Select one or multiple of your portfolios to add this company to. You can select portfolios to which the company
+      already belongs, but they will not be affected.
+    </p>
 
-  <Message v-if="errorMessage" severity="error" class="my-3">
-    {{ errorMessage }}
-  </Message>
+    <MultiSelect
+      v-model="selectedPortfolios"
+      :options="allUserPortfolios"
+      :filter="false"
+      :showToggleAll="false"
+      class="multiselect-in-modal"
+      panelClass="d-framework-data-search-dropdown"
+      optionLabel="portfolioName"
+      :disabled="isLoading"
+      data-test="portfolioSelectionMultiSelect"
+      @before-show="overlayVisible = true"
+      @before-hide="overlayVisible = false"
+    >
+      <template #dropdownicon>
+        <div :class="selectionButtonClasses">
+          <div class="selection-button-content">
+            Select Portfolios
+            <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
+              <polygon points="0,0 5,5 10,0" fill="currentColor" />
+            </svg>
+          </div>
+        </div>
+      </template>
+    </MultiSelect>
 
-  <PrimeButton
-    class="primary-button"
-    aria-label="Add Company"
-    :disabled="selectedPortfolios.length === 0 || isLoading"
-    :loading="isLoading"
-    @click="handleCompanyAddition"
-    data-test="saveButton"
-  >
-    <span>Add company to portfolio</span>
-  </PrimeButton>
+    <Message v-if="errorMessage" severity="error" class="my-3">
+      {{ errorMessage }}
+    </Message>
+
+    <PrimeButton
+      :class="['primary-button', 'primary-button-in-modal']"
+      aria-label="Add Company"
+      :disabled="selectedPortfolios.length === 0 || isLoading"
+      :loading="isLoading"
+      @click="handleCompanyAddition"
+      data-test="saveButton"
+    >
+      <span>Add company to portfolio</span>
+    </PrimeButton>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, type Ref, ref } from 'vue';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import Listbox from 'primevue/listbox';
+import MultiSelect from 'primevue/multiselect';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
 import type Keycloak from 'keycloak-js';
@@ -50,13 +71,17 @@ const selectedPortfolios = ref<BasePortfolio[]>([]);
 
 const errorMessage = ref('');
 const isLoading = ref(false);
+const overlayVisible = ref(false);
 
-const virtualScrollerOptions = {
-  itemSize: 30,
-  scrollWidth: '100%',
-  scrollHeight: '300px',
-  autoSize: true,
-};
+const selectionButtonClasses = computed(() => {
+  const classes = ['selection-button', 'flex', 'flex-row', 'align-items-center'];
+  if (overlayVisible.value) {
+    classes.push('overlayVisible');
+  } else if (selectedPortfolios.value.length > 0) {
+    classes.push('filterActive');
+  }
+  return classes;
+});
 
 onMounted(() => {
   if (!data?.companyId) return;
@@ -114,24 +139,57 @@ function closeDialog(): void {
 @use '@/assets/scss/colors';
 @use '@/assets/scss/variables';
 
-:deep(.p-listbox-item) {
-  max-width: 17rem;
-  padding: 0 variables.$spacing-xxxs; // only horizontal padding
-  border-top: variables.$spacing-xxxs solid transparent;
-  border-bottom: variables.$spacing-xxxs solid transparent;
-  background-clip: padding-box; // background color only applies to padding-box area, not the border
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.add-company-to-portfolios-dialog-content {
+  width: 28em;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 1.5rem;
+  align-items: center;
 }
 
-:deep(.p-listbox-item:hover) {
-  color: colors.$fill-dropdown-hover-text;
-  background-color: colors.$fill-dropdown-hover-bg;
+:deep(.primary-button-in-modal) {
+  width: 60%;
+  margin: 0 20%;
 }
 
-:deep(.p-listbox-item.p-highlight) {
-  color: colors.$fill-dropdown-select-text-color;
-  background-color: colors.$fill-dropdown-select-bg-color;
+:deep(.p-multiselect-label-container) {
+  display: none;
+}
+
+:deep(.p-badge) {
+  background: #fff;
+  color: #5a4f36;
+}
+
+:deep(.p-multiselect) {
+  background: none;
+  box-shadow: none;
+  width: 44%;
+  margin: variables.$spacing-sm 28%;
+}
+
+:deep(.p-multiselect-trigger) {
+  width: auto;
+}
+
+:deep(.selection-button) {
+  background: white;
+  color: #5a4f36;
+  border: 2px solid #5a4f36;
+  border-radius: 8px;
+  height: 2.5rem;
+
+  .selection-button-content {
+    margin: 0.5rem 1rem;
+  }
+
+  &.overlayVisible {
+    background: #e0dfde;
+  }
+
+  &.filterActive {
+    background: #5a4f36;
+    color: white;
+  }
 }
 </style>
