@@ -67,31 +67,18 @@ class PortfolioUpdateListenerService
                         val messagePayload =
                             MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload, objectMapper)
 
-                        val companyIdentifiers = messagePayload.companyIds
-                        val reportingPeriods = messagePayload.reportingPeriods
-                        val userId = messagePayload.userId
-                        val userRoles = messagePayload.userRoles
-
-                        val datalandInternalAuthentication =
-                            DatalandInternalAuthentication(
-                                userId = userId,
-                                token = "internal",
-                                grantedAuthorities = userRoles.map { SimpleGrantedAuthority(it) },
-                            )
-
-                        datalandInternalAuthentication.setAuthenticated(true)
-                        SecurityContextHolder.getContext().authentication = datalandInternalAuthentication
-
-                        val dataTypes: Set<DataTypeEnum> =
-                            messagePayload.monitoredFrameworks
-                                .mapNotNull { key -> dataTypeEnumMap[key] }
-                                .toSet()
+                        setDatalandInternalAuthentication(
+                            messagePayload.userId,
+                            messagePayload.userRoles.map { SimpleGrantedAuthority(it) },
+                        )
 
                         requestManager.processBulkDataRequest(
                             BulkDataRequest(
-                                companyIdentifiers,
-                                dataTypes,
-                                reportingPeriods,
+                                messagePayload.companyIds,
+                                messagePayload.monitoredFrameworks
+                                    .mapNotNull { DataTypeEnum.decode(it) }
+                                    .toSet(),
+                                messagePayload.reportingPeriods,
                                 false,
                             ),
                         )
@@ -105,11 +92,17 @@ class PortfolioUpdateListenerService
             }
         }
 
-        private val dataTypeEnumMap =
-            mapOf(
-                "sfdr" to DataTypeEnum.sfdr,
-                "eutaxonomy-financials" to DataTypeEnum.eutaxonomyMinusFinancials,
-                "eutaxonomy-non-financials" to DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-                "nuclear-and-gas" to DataTypeEnum.nuclearMinusAndMinusGas,
-            )
+        private fun setDatalandInternalAuthentication(
+            userId: String,
+            grantedAuthorities: Collection<SimpleGrantedAuthority>,
+        ) {
+            val datalandInternalAuthentication =
+                DatalandInternalAuthentication(
+                    userId = userId,
+                    token = "internal",
+                    grantedAuthorities = grantedAuthorities,
+                )
+            datalandInternalAuthentication.setAuthenticated(true)
+            SecurityContextHolder.getContext().authentication = datalandInternalAuthentication
+        }
     }

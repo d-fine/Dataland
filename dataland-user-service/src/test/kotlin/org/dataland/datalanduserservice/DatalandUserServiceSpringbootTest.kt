@@ -33,6 +33,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
+import org.springframework.security.authorization.AuthorizationDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.annotation.DirtiesContext
@@ -98,7 +99,7 @@ class DatalandUserServiceSpringbootTest
 
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
-            doNothing().whenever(mockPortfolioBulkDataRequestService).sendBulkDataRequestIfMonitored(any())
+            doNothing().whenever(mockPortfolioBulkDataRequestService).publishBulkDataRequestMessageIfMonitored(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -163,8 +164,12 @@ class DatalandUserServiceSpringbootTest
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                     )
                 val patchedPortfolio =
-                    assertDoesNotThrow { portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch) }
-                        .body!!
+                    assertDoesNotThrow {
+                        portfolioApi.patchMonitoring(
+                            originalPortfolioResponse.portfolioId,
+                            portfolioMonitoringPatch,
+                        )
+                    }.body!!
 
                 assertEquals(originalPortfolioResponse.portfolioId, patchedPortfolio.portfolioId)
                 assertTrue(patchedPortfolio.isMonitored)
@@ -192,7 +197,7 @@ class DatalandUserServiceSpringbootTest
                 }
 
                 verify(mockPortfolioBulkDataRequestService)
-                    .sendBulkDataRequestIfMonitored(
+                    .publishBulkDataRequestMessageIfMonitored(
                         check {
                             assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
                             assertTrue(it.isMonitored)
@@ -227,6 +232,29 @@ class DatalandUserServiceSpringbootTest
                 val portfolio = dummyPortfolioUpload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
 
                 assertThrows<ResourceNotFoundApiException> { portfolioApi.createPortfolio(portfolio) }
+            }
+
+            @Test
+            fun `test that patching portfolio with unauthorized user throws ClientException`() {
+                resetSecurityContext(DatalandRealmRole.ROLE_USER)
+
+                val originalPortfolioResponse =
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
+
+                val portfolioMonitoringPatch =
+                    PortfolioMonitoringPatch(
+                        isMonitored = true,
+                        startingMonitoringPeriod = "2024",
+                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                    )
+
+                assertThrows<AuthorizationDeniedException> {
+                    portfolioApi
+                        .patchMonitoring(
+                            originalPortfolioResponse.portfolioId,
+                            portfolioMonitoringPatch,
+                        )
+                }
             }
         }
     }
