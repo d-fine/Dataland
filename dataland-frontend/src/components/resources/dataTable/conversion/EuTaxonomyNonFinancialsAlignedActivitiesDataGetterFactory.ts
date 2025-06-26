@@ -26,20 +26,18 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  // Define type-specific labels for display
   const typeLabels = {
     revenue: 'Revenue',
     capex: 'CapEx',
     opex: 'OpEx',
   };
 
-  // Define column headers for aligned activities
   const columnHeadersBase = {
     activityName: 'Activity',
     naceCodes: 'NACE Code(s)',
     share: 'Share',
-    revenue: typeLabels[kpiType], // Use the appropriate label based on kpiType
-    revenuePercent: `${typeLabels[kpiType]} (%)`, // Use the appropriate label based on kpiType
+    revenue: typeLabels[kpiType],
+    revenuePercent: `${typeLabels[kpiType]} (%)`,
     substantialContributionToClimateChangeMitigationInPercent: 'Climate Change Mitigation',
     substantialContributionToClimateChangeAdaptationInPercent: 'Climate Change Adaptation',
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
@@ -61,12 +59,10 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     dnshCriteria: 'DNSH Criteria',
   };
 
-  // Create type for column headers that allows for dynamic keys
   type ColumnHeaders = typeof euTaxonomyNonFinancialsModalColumnHeaders & {
     [key: string]: typeof columnHeadersBase;
   };
 
-  // Map KPI types to table keys
   const tableKeyMap = {
     revenue: 'alignedActivities',
     capex: 'capexAlignedActivities',
@@ -75,12 +71,10 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
 
   const tableKey = tableKeyMap[kpiType];
 
-  // Create a clone of the original headers and cast to our extended type
   const customColumnHeaders = {
     ...euTaxonomyNonFinancialsModalColumnHeaders,
   } as ColumnHeaders;
 
-  // Add the appropriate headers for the KPI type
   customColumnHeaders[tableKey] = columnHeadersBase;
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{

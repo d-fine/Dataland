@@ -7,8 +7,6 @@ import {
 import { type EuTaxonomyActivity } from '@clients/backend';
 import NonAlignedActivitiesDataTable from '@/components/general/NonAlignedActivitiesDataTable.vue';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
-import { type EuTaxonomyAlignedActivity } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
-import AlignedActivitiesDataTable from '@/components/general/AlignedActivitiesDataTable.vue';
 
 const revenueColumnHeaders = {
   activityName: 'Activity',
@@ -118,4 +116,3 @@ export function formatNonAlignedActivitiesForDataTable(
     },
   };
 }
-
