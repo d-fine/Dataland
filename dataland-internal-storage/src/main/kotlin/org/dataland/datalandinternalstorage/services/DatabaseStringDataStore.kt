@@ -98,6 +98,7 @@ class DatabaseStringDataStore(
                                 objectMapper,
                             ).dataId
                     }
+
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
                         MessageQueueUtils
@@ -106,6 +107,7 @@ class DatabaseStringDataStore(
                                 objectMapper,
                             ).dataId
                     }
+
                     else -> throw MessageQueueRejectException(
                         "Routing Key '$receivedRoutingKey' unknown. " +
                             "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
@@ -186,7 +188,10 @@ class DatabaseStringDataStore(
             val allDataAndCorrelationIds =
                 messages.map {
                     MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
-                    Pair(it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId, it.getCorrelationId())
+                    Pair(
+                        it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId,
+                        it.getCorrelationId(),
+                    )
                 }
             val allContents =
                 temporarilyCachedDataClient.getBatchReceivedPublicData(
@@ -252,18 +257,7 @@ class DatabaseStringDataStore(
     fun selectDataPoints(
         dataIds: List<String>,
         correlationId: String,
-    ): Map<String, StorableDataPoint> {
-        val retrievedEntries = dataPointItemRepository.findAllById(dataIds)
-        val missingIdentifiers = dataIds.toSet() - retrievedEntries.map { it.dataPointId }.toSet()
-        if (missingIdentifiers.isNotEmpty()) {
-            logger.info("Data points with data IDs: $missingIdentifiers could not be found. Correlation ID: $correlationId.")
-            throw ResourceNotFoundApiException(
-                "Data points not found",
-                "No data points with the IDs: $missingIdentifiers could be found in the data store.",
-            )
-        }
-        return retrievedEntries.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) }
-    }
+    ): Map<String, StorableDataPoint> = selectDataPointsInChunks(dataIds, correlationId)
 
     /**
      * Reads data from a database
@@ -297,5 +291,28 @@ class DatabaseStringDataStore(
     ) {
         logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
         dataItemRepository.deleteById(dataId)
+    }
+
+    /**
+     * Reads data points from a database in chunks.
+     * @param dataIds the IDs of the data to be retrieved
+     * @param correlationId the correlation ID of the request
+     * @return a list of StorableDataPoint instances
+     */
+    fun selectDataPointsInChunks(
+        dataIds: List<String>,
+        correlationId: String,
+    ): Map<String, StorableDataPoint> {
+        val result = mutableMapOf<String, StorableDataPoint>()
+        dataIds.chunked(1000).forEach { chunk ->
+            val entries = dataPointItemRepository.findAllById(chunk)
+            val missing = chunk.toSet() - entries.map { it.dataPointId }.toSet()
+            if (missing.isNotEmpty()) {
+                logger.info("Missing: $missing. Correlation ID: $correlationId")
+                throw ResourceNotFoundApiException("Missing data points", "Missing: $missing")
+            }
+            result.putAll(entries.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) })
+        }
+        return result
     }
 }
