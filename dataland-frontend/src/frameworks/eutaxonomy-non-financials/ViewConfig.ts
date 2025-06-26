@@ -1578,7 +1578,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dataset.opex?.alignedActivities,
             'Aligned Activities',
-            'opex'
           ),
       },
       {
