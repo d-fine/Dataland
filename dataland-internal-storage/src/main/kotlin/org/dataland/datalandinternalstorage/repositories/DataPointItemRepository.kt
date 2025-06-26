@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param
  * A JPA repository for accessing the data point items
  */
 interface DataPointItemRepository : JpaRepository<DataPointItem, String> {
-    @Query(value = "SELECT * FROM data_point_item WHERE id = ANY(:ids)", nativeQuery = true)
+    @Query(value = "SELECT * FROM data_point_items WHERE data_point_id = ANY(:ids)", nativeQuery = true)
     fun findAllByIdArray(
         @Param("ids") ids: Array<String>,
     ): List<DataPointItem>
