@@ -1,7 +1,7 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle" />
+    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle" @update:modelValue="onMonitoringToggled" />
     <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
     <Dropdown
       v-model="selectedStartingYear"
@@ -95,6 +95,8 @@ const showFrameworksError = ref(false);
 const showReportingPeriodsError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
+const previousStartingYear = ref<number | undefined>(undefined);
+const previousFrameworks = ref<Set<string>>(new Set());
 
 const selectedFrameworkOptions = computed(() => {
   return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
@@ -109,6 +111,37 @@ onMounted(() => {
     dialogRef?.value.close();
   }
 });
+
+/**
+ * Handles toggling of the monitoring switch.
+ * Stores and restores selections when toggled on/off.
+ *
+ * @param newValue changed monitoring state.
+ */
+function onMonitoringToggled(newValue: boolean): void {
+  if (!newValue) {
+    previousStartingYear.value = selectedStartingYear.value;
+    previousFrameworks.value = new Set(
+      availableFrameworkMonitoringOptions.value
+        .filter((option) => option.isActive)
+        .map((option) => option.value)
+    );
+
+    selectedStartingYear.value = undefined;
+    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+      ...option,
+      isActive: false,
+    }));
+
+    resetErrors();
+  } else {
+    selectedStartingYear.value = previousStartingYear.value;
+    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+      ...option,
+      isActive: previousFrameworks.value.has(option.value),
+    }));
+  }
+}
 
 /**
  * Reset errors when either framework, reporting period or file type changes
