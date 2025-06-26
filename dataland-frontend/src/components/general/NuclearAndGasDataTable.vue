@@ -1,6 +1,12 @@
 <template>
   <DataTable data-test="dataTableTest" :value="listOfRowContents" class="activities-data-table">
-    <Column v-for="col of mainColumnDefinitions" :field="col.field" :key="col.field" :header="col.header">
+    <Column
+      v-for="col of mainColumnDefinitions"
+      :field="col.field"
+      :key="col.field"
+      :header="col.header"
+      :header-class="col.class"
+    >
       <template #body="{ data }">
         {{ data[col.field] }}
       </template>
@@ -64,14 +70,14 @@ export default defineComponent({
       if (isNonEligible(this.nuclearAndGasData)) {
         return [
           { field: 'economicActivity', header: 'Economic Activity' },
-          { field: 'proportion', header: 'Proportion' },
+          { field: 'proportion', header: 'Proportion', class: 'col-percentage' },
         ];
       } else {
         return [
           { field: 'economicActivity', header: 'Economic Activity' },
-          { field: 'mitigation', header: 'CCM' },
-          { field: 'adaptation', header: 'CCA' },
-          { field: 'mitigationAndAdaptation', header: 'CCM + CCA' },
+          { field: 'mitigation', header: 'CCM', class: 'col-percentage' },
+          { field: 'adaptation', header: 'CCA', class: 'col-percentage' },
+          { field: 'mitigationAndAdaptation', header: 'CCM + CCA', class: 'col-percentage' },
         ];
       }
     },
