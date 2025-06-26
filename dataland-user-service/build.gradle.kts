@@ -102,7 +102,6 @@ tasks.register("generateClients") {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
