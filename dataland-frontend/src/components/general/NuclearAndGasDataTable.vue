@@ -118,10 +118,6 @@ export default defineComponent({
           });
         }
       });
-
-      this.listOfRowContents = this.listOfRowContents.filter((item) => {
-        return item.proportion || item.mitigation || item.adaptation || item.mitigationAndAdaptation;
-      });
     },
   },
 });
