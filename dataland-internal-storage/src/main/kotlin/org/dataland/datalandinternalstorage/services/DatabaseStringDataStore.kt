@@ -1,6 +1,8 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
@@ -49,6 +51,7 @@ class DatabaseStringDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired private var dataPointItemRepository: DataPointItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    @PersistenceContext private var entitiyManager: EntityManager,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
 ) {
@@ -98,6 +101,7 @@ class DatabaseStringDataStore(
                                 objectMapper,
                             ).dataId
                     }
+
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
                         MessageQueueUtils
@@ -106,6 +110,7 @@ class DatabaseStringDataStore(
                                 objectMapper,
                             ).dataId
                     }
+
                     else -> throw MessageQueueRejectException(
                         "Routing Key '$receivedRoutingKey' unknown. " +
                             "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
@@ -186,7 +191,10 @@ class DatabaseStringDataStore(
             val allDataAndCorrelationIds =
                 messages.map {
                     MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
-                    Pair(it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId, it.getCorrelationId())
+                    Pair(
+                        it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId,
+                        it.getCorrelationId(),
+                    )
                 }
             val allContents =
                 temporarilyCachedDataClient.getBatchReceivedPublicData(
@@ -253,16 +261,21 @@ class DatabaseStringDataStore(
         dataIds: List<String>,
         correlationId: String,
     ): Map<String, StorableDataPoint> {
-        val retrievedEntries = dataPointItemRepository.findAllByIdArray(dataIds.toTypedArray())
-        val missingIdentifiers = dataIds.toSet() - retrievedEntries.map { it.dataPointId }.toSet()
-        if (missingIdentifiers.isNotEmpty()) {
-            logger.info("Data points with data IDs: $missingIdentifiers could not be found. Correlation ID: $correlationId.")
-            throw ResourceNotFoundApiException(
-                "Data points not found",
-                "No data points with the IDs: $missingIdentifiers could be found in the data store.",
-            )
-        }
-        return retrievedEntries.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) }
+        if (dataIds.isEmpty()) return emptyMap()
+        logger.info("Retrieving data points for DataIDs ${dataIds.joinToString()} from the backend. CorrelationId: $correlationId")
+        val connection = entitiyManager.unwrap(java.sql.Connection::class.java)
+        val sqlArray = connection.createArrayOf("varchar", dataIds.toTypedArray())
+
+        @Suppress("UNCHECKED_CAST")
+        val rows =
+            entitiyManager
+                .createNativeQuery(
+                    "SELECT * FROM public.data_point_items WHERE data_point_id = ANY(?)",
+                    DataPointItem::class.java,
+                ).setParameter(1, sqlArray)
+                .resultList as List<DataPointItem>
+
+        return rows.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) }
     }
 
     /**
