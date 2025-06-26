@@ -304,7 +304,7 @@ class DatabaseStringDataStore(
         correlationId: String,
     ): Map<String, StorableDataPoint> {
         val result = mutableMapOf<String, StorableDataPoint>()
-        dataIds.chunked(1000).forEach { chunk ->
+        dataIds.chunked(50000).forEach { chunk ->
             val entries = dataPointItemRepository.findAllById(chunk)
             val missing = chunk.toSet() - entries.map { it.dataPointId }.toSet()
             if (missing.isNotEmpty()) {
