@@ -5,7 +5,7 @@
       :field="col.field"
       :key="col.field"
       :header="col.header"
-      :header-class="col.class"
+      :headerClass="col.class"
     >
       <template #body="{ data }">
         {{ data[col.field] }}
@@ -69,12 +69,12 @@ export default defineComponent({
     mainColumnDefinitions() {
       if (isNonEligible(this.nuclearAndGasData)) {
         return [
-          { field: 'economicActivity', header: 'Economic Activity' },
+          { field: 'economicActivity', header: 'Economic Activity', class: null },
           { field: 'proportion', header: 'Proportion', class: 'col-percentage' },
         ];
       } else {
         return [
-          { field: 'economicActivity', header: 'Economic Activity' },
+          { field: 'economicActivity', header: 'Economic Activity', class: null },
           { field: 'mitigation', header: 'CCM', class: 'col-percentage' },
           { field: 'adaptation', header: 'CCA', class: 'col-percentage' },
           { field: 'mitigationAndAdaptation', header: 'CCM + CCA', class: 'col-percentage' },
