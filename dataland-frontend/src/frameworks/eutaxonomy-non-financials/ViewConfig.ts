@@ -723,7 +723,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dataset.revenue?.alignedActivities,
-            'Aligned Activities'
+            'Aligned Activities',
+            'revenue'
           ),
       },
       {
@@ -866,7 +867,11 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Absolute value and share of the CapEx per activity that is not taxonomy-aligned but eligible',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNonAlignedActivitiesForDataTable(dataset.capex?.nonAlignedActivities, 'Non-Aligned Activities'),
+          formatNonAlignedActivitiesForDataTable(
+            dataset.capex?.nonAlignedActivities,
+            'Non-Aligned Activities',
+            'capex'
+          ),
       },
       {
         type: 'section',
@@ -1297,7 +1302,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dataset.capex?.alignedActivities,
-            'Aligned Activities'
+            'Aligned Activities',
+            'capex'
           ),
       },
       {
@@ -1440,7 +1446,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities, 'Non-Aligned Activities'),
+          formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities, 'Non-Aligned Activities', 'opex'),
       },
       {
         type: 'section',
@@ -1571,7 +1577,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dataset.opex?.alignedActivities,
-            'Aligned Activities'
+            'Aligned Activities',
+            'opex'
           ),
       },
       {
