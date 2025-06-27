@@ -1,0 +1,12 @@
+{
+  "value": "Yes",
+  "quality": "Reported",
+  "comment": "The NFRD is mandatory for the company.",
+  "dataSource": {
+    "page": "120",
+    "tagName": "functionalities",
+    "fileName": "ESEFReport",
+    "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+    "publicationDate": "2023-12-02"
+  }
+}
