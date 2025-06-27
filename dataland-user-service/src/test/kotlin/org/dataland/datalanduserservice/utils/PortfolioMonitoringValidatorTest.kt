@@ -34,8 +34,8 @@ class PortfolioMonitoringValidatorTest {
         val monitoring =
             PortfolioMonitoringPatch(
                 isMonitored = true,
-                monitoredFrameworks = setOf("ESG"),
-                startingMonitoringPeriod = "2024-Q1",
+                monitoredFrameworks = setOf("sfdr"),
+                startingMonitoringPeriod = "2022",
             )
 
         val violations = validator.validate(monitoring)
@@ -48,7 +48,7 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = emptySet(),
-                startingMonitoringPeriod = "2024-Q1",
+                startingMonitoringPeriod = "2024",
             )
 
         val violations = validator.validate(monitoring)
@@ -60,7 +60,7 @@ class PortfolioMonitoringValidatorTest {
         val monitoring =
             PortfolioMonitoringPatch(
                 isMonitored = true,
-                monitoredFrameworks = setOf("ESG"),
+                monitoredFrameworks = setOf("eutaxonomy"),
                 startingMonitoringPeriod = "",
             )
 
@@ -74,7 +74,7 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = setOf("ESG"),
-                startingMonitoringPeriod = "2024-Q1",
+                startingMonitoringPeriod = "2023",
             )
 
         val violations = validator.validate(monitoring)

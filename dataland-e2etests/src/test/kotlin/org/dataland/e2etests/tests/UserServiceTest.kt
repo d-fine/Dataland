@@ -26,7 +26,7 @@ class UserServiceTest {
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
             companyIds = companyIds,
-            isMonitored = false,
+            isMonitored = true,
             startingMonitoringPeriod = "2023",
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
         )
