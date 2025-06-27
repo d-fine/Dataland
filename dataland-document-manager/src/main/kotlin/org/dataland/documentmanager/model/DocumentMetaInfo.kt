@@ -22,13 +22,13 @@ data class DocumentMetaInfo(
             "Name under which the document is saved on Dataland. " +
                 "Does not need to coincide with the name of the uploaded file, " +
                 "nor include the file type suffix (such as '.pdf').",
-        example = "\"Company_X_Annual_Report_2024\"",
+        example = "Company_X_Annual_Report_2024",
     )
     override val documentName: String,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = "The Dataland document category to which the document belongs.",
-        example = "\"AnnualReport\"",
+        example = "AnnualReport",
     )
     override val documentCategory: DocumentCategory,
     @field:JsonProperty(required = true)
@@ -44,12 +44,12 @@ data class DocumentMetaInfo(
         description =
             "The date on which this document was published by the responsible company, specified in format " +
                 "'yyyy-MM-dd'.",
-        example = "\"2024-02-13\"",
+        example = "2024-02-13",
     )
     override val publicationDate: LocalDate?,
     @field:Schema(
         description = "The reporting period, specified as a year number, for which this document provides information.",
-        example = "\"2023\"",
+        example = "2023",
     )
     override val reportingPeriod: String?,
 ) : BasicDocumentMetaInfo
