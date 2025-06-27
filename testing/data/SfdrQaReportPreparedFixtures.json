@@ -1,51 +1,51 @@
-[
-	{
-		"companyInformation": {
-			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Kirkland",
-			"headquartersPostalCode": "76207",
-			"sector": "markets",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"I9RUsovUXEmT"
-				],
-				"PermId": [
-					"K74wC4ngXt"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "KH",
-			"companyContactDetails": [
-				"Rick.Tremblay93@example.com",
-				"Helmer88@example.com",
-				"Adelia_Gutmann91@example.com",
-				"Wayne28@example.com"
-			],
-			"companyAlternativeNames": [
-				"Okuneva - Ritchie"
-			],
-			"companyLegalForm": null,
-			"website": "https://mindless-hydrolyse.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"environmental": {
-				"biodiversity": {
-					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"comment": "some comment",
-						"verdict": "QaInconclusive",
-						"correctedData": {
-							"value": "Yes",
-							"quality": "Estimated"
-						}
-					}
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	}
-]
+{
+  "data": {
+    "companyInformation": {
+      "companyName": "sfdr-qa-report-with-one-correction",
+      "headquarters": "Kirkland",
+      "headquartersPostalCode": "76207",
+      "sector": "markets",
+      "identifiers": {
+        "Lei": [],
+        "Isin": [
+          "I9RUsovUXEmT"
+        ],
+        "PermId": [
+          "K74wC4ngXt"
+        ],
+        "Ticker": [],
+        "Duns": [],
+        "VatNumber": [],
+        "CompanyRegistrationNumber": []
+      },
+      "countryCode": "KH",
+      "companyContactDetails": [
+        "Rick.Tremblay93@example.com",
+        "Helmer88@example.com",
+        "Adelia_Gutmann91@example.com",
+        "Wayne28@example.com"
+      ],
+      "companyAlternativeNames": [
+        "Okuneva - Ritchie"
+      ],
+      "companyLegalForm": null,
+      "website": "https://mindless-hydrolyse.com",
+      "isTeaserCompany": false
+    },
+    "t": {
+      "environmental": {
+        "biodiversity": {
+          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+            "comment": "some comment",
+            "verdict": "QaInconclusive",
+            "correctedData": {
+              "value": "Yes",
+              "quality": "Estimated"
+            }
+          }
+        }
+      }
+    },
+    "reportingPeriod": "2021"
+  }
+}
