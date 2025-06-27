@@ -416,7 +416,7 @@ function openMonitoringModal(): void {
       pt: {
         title: {
           style: {
-            maxWidth: '18em',
+            maxWidth: '18rem',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',

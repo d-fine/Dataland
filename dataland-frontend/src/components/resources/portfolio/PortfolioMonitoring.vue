@@ -1,7 +1,12 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle" @update:modelValue="onMonitoringToggled" />
+    <InputSwitch
+      class="form-field vertical-middle"
+      v-model="isMonitoringActive"
+      data-test="activateMonitoringToggle"
+      @update:modelValue="onMonitoringToggled"
+    />
     <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
     <Dropdown
       v-model="selectedStartingYear"
@@ -10,7 +15,6 @@
       option-value="value"
       data-test="listOfReportingPeriods"
       placeholder="Select Starting Period"
-      class="wider-dropdown"
       :disabled="!isMonitoringActive"
       @change="resetErrors"
     />
@@ -122,9 +126,7 @@ function onMonitoringToggled(newValue: boolean): void {
   if (!newValue) {
     previousStartingYear.value = selectedStartingYear.value;
     previousFrameworks.value = new Set(
-      availableFrameworkMonitoringOptions.value
-        .filter((option) => option.isActive)
-        .map((option) => option.value)
+      availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
     );
 
     selectedStartingYear.value = undefined;
@@ -220,7 +222,7 @@ function prefillModal(): void {
 }
 
 .portfolio-monitoring-content {
-  width: 20em;
+  width: 20rem;
   height: 100%;
   border-radius: 0.25rem;
   background-color: white;
@@ -235,15 +237,6 @@ label {
   margin-bottom: 1em;
   margin-top: 1em;
   padding: 0;
-}
-
-label > div {
-  text-align: left;
-}
-
-.button-wrapper {
-  width: 100%;
-  text-align: right;
 }
 
 .framework-switch-group {
@@ -264,17 +257,8 @@ label > div {
   height: 1.2rem;
 }
 
-.framework-switch-row :deep(.p-inputswitch-slider) {
-  height: 100%;
-  border-radius: 1rem;
-}
-
 .framework-label {
   margin: 0;
   cursor: pointer;
-}
-
-.wider-dropdown {
-  width: 15rem;
 }
 </style>
