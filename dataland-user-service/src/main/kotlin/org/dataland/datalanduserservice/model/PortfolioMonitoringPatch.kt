@@ -1,13 +1,13 @@
 package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalanduserservice.utils.MonitoringPatchIsValid
+import org.dataland.datalanduserservice.utils.MonitoringIsValid
 
 /**
  * --- API model ---
  * Portfolio Monitoring API model for PATCH method
  */
-@MonitoringPatchIsValid
+@MonitoringIsValid
 data class PortfolioMonitoringPatch(
     @field:JsonProperty(required = false)
     override val isMonitored: Boolean,
