@@ -1,7 +1,12 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch class="form-field vertical-middle" v-model="isMonitoringActive" data-test="activateMonitoringToggle" @update:modelValue="onMonitoringToggled" />
+    <InputSwitch
+      class="form-field vertical-middle"
+      v-model="isMonitoringActive"
+      data-test="activateMonitoringToggle"
+      @update:modelValue="onMonitoringToggled"
+    />
     <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
     <Dropdown
       v-model="selectedStartingYear"
@@ -122,9 +127,7 @@ function onMonitoringToggled(newValue: boolean): void {
   if (!newValue) {
     previousStartingYear.value = selectedStartingYear.value;
     previousFrameworks.value = new Set(
-      availableFrameworkMonitoringOptions.value
-        .filter((option) => option.isActive)
-        .map((option) => option.value)
+      availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
     );
 
     selectedStartingYear.value = undefined;
