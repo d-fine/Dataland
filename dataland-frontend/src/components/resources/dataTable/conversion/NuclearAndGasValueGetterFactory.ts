@@ -5,7 +5,6 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import NuclearAndGasDataTable from '@/components/general/NuclearAndGasDataTable.vue';
-import { isNonEligible } from '@/utils/NuclearAndGasUtils';
 import type {
   ExtendedDataPointNuclearAndGasAlignedDenominator,
   ExtendedDataPointNuclearAndGasAlignedNumerator,
@@ -46,20 +45,10 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
   if (!nuclearAndGasExtendedDataPoint?.value) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    let activityCount: number;
-
-    if (isNonEligible(nuclearAndGasExtendedDataPoint.value)) {
-      activityCount = Object.values(nuclearAndGasExtendedDataPoint.value).filter((value) => value !== null).length;
-    } else {
-      activityCount = Object.values(nuclearAndGasExtendedDataPoint.value).filter(
-        (field) => field && Object.values(field).some((value) => value !== null)
-      ).length;
-    }
-
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
       displayValue: {
-        label: `Show ${activityCount} activit${activityCount > 1 ? 'ies' : 'y'}`,
+        label: `Show Table`,
         modalComponent: NuclearAndGasDataTable,
         modalOptions: {
           props: {
