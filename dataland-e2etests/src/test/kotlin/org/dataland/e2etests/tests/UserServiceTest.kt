@@ -26,9 +26,9 @@ class UserServiceTest {
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
             companyIds = companyIds,
-            isMonitored = true,
-            startingMonitoringPeriod = "2023",
-            monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+            isMonitored = false,
+            startingMonitoringPeriod = "",
+            monitoredFrameworks = emptySet(),
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -38,7 +38,7 @@ class UserServiceTest {
 
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2023")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2023")
-            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.lksg, "2022")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2022")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2024")
 
             return storedCompanyInformation

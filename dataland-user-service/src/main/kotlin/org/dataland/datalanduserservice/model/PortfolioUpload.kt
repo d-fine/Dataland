@@ -2,11 +2,13 @@ package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotEmpty
+import org.dataland.datalanduserservice.utils.MonitoringIsValid
 
 /**
  * --- API model ---
  * Portfolio API model for GET/POST methods
  */
+@MonitoringIsValid
 data class PortfolioUpload(
     @field:JsonProperty(required = true)
     override val portfolioName: String,
