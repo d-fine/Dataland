@@ -203,28 +203,36 @@ class CompanyUploader(
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
     fun updateIsins(leiIsinMapping: Map<String, Set<String>>) {
-        val retryLeiIsinMappingQueue = mutableMapOf<String, Set<String>>()
+        val retryLeiIsinMappingQueue = handleLeiIsinMapping(
+            leiIsinMapping = leiIsinMapping,
+            retryLeiIsinMappingQueue = mutableMapOf(),
+            logMessageForPatching = "Patching",
+            logMessageForFailedPatching = "Initial Update"
+        ) ?: return
+        handleLeiIsinMapping( leiIsinMapping = retryLeiIsinMappingQueue,
+            logMessageForPatching = "Retrying to patch",
+            logMessageForFailedPatching = "Retry"
+        )
+    }
 
+    private fun handleLeiIsinMapping(
+        leiIsinMapping: Map<String, Set<String>>,
+        retryLeiIsinMappingQueue: MutableMap<String, Set<String>>? = null,
+        logMessageForPatching : String,
+        logMessageForFailedPatching: String
+    ): MutableMap<String, Set<String>>? {
         leiIsinMapping.forEach { (lei, newIsins) ->
             val companyId = searchCompanyByLEI(lei) ?: return@forEach
-            logger.info("Patching company with ID: $companyId and LEI: $lei")
-            try {
-                updateIsinsOfCompany(newIsins, companyId)
-            } catch (exception: ClientException) {
-                logger.warn("Initial update failed due to ${exception.message} for company with ID: $companyId and LEI: $lei")
-                retryLeiIsinMappingQueue[lei] = newIsins
-            }
-        }
+            logger.info("$logMessageForPatching company with ID: $companyId and LEI: $lei")
 
-        retryLeiIsinMappingQueue.forEach { (lei, newIsins) ->
-            val companyId = searchCompanyByLEI(lei) ?: return@forEach
-            logger.warn("Retrying to patch company with ID: $companyId and LEI: $lei")
             try {
                 updateIsinsOfCompany(newIsins, companyId)
             } catch (exception: ClientException) {
-                logger.error("Retry failed due to ${exception.message} for company with ID: $companyId and LEI: $lei")
+                logger.warn("$logMessageForFailedPatching failed due to ${exception.message} for company with ID: $companyId and LEI: $lei")
+                    retryLeiIsinMappingQueue?.put(lei, newIsins)
             }
         }
+        return retryLeiIsinMappingQueue
     }
 
     private fun updateIsinsOfCompany(

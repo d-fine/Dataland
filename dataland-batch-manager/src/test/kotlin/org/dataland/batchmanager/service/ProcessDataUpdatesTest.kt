@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.MockedStatic
-import org.mockito.Mockito.any
+import org.mockito.kotlin.any
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
@@ -220,9 +220,8 @@ class ProcessDataUpdatesTest {
 
         initProcessDataUpdates()
 
-        val method = processDataUpdates.javaClass.getDeclaredMethod("logFlagFileFoundAndDelete", File::class.java)
-        method.isAccessible = true
-        method.invoke(processDataUpdates, mockFile)
+        processDataUpdates.processNorthDataFullGoldenCopyFileIfEnabled()
+
 
         verify(mockFile).delete()
     }
@@ -279,9 +278,9 @@ class ProcessDataUpdatesTest {
         method.isAccessible = true
         method.invoke(processDataUpdates)
 
-        verify(mockGleifGoldenCopyIngestorTest, never()).prepareGleifDeltaFile(anyBoolean())
-        verify(mockGleifGoldenCopyIngestorTest, never()).processIsinMappingFile(anyBoolean())
-        verify(mockGleifGoldenCopyIngestorTest, never()).processRelationshipFile(anyBoolean())
+        verify(mockGleifGoldenCopyIngestorTest, never()).prepareGleifDeltaFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, never()).processIsinMappingFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, never()).processRelationshipFile(false)
     }
 
     @Test
