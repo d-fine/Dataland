@@ -118,7 +118,7 @@ class DataExportUtils
             nonEmptyHeaderFields.forEach { fieldName ->
                 val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
 
-                val aliasHeader = aliasExportMap[strippedField]
+                val aliasHeader = stripFieldNames(fieldName, aliasExportMap)
 
                 if (includeAliases) {
                     if (isAssembledDataset) {
@@ -327,5 +327,50 @@ class DataExportUtils
                 }
             }
             return result
+        }
+
+        /**
+         * Transforms a full field path like "data.revenue.nonAlignedActivities.value.0.share.absoluteShare.amount"
+         * into an alias format like "REV_NON_ALIGNED_ACTIVITIES_0_ABS", using aliasExportMap for the prefix.
+         */
+        private fun stripFieldNames(
+            fullFieldName: String,
+            aliasExportMap: Map<String, String?>,
+        ): String {
+            val coreField = fullFieldName.removePrefix("data.").removeSuffix(".value")
+
+            val parts = coreField.split(".")
+
+            var aliasPrefix: String? = null
+            var matchedKey: String? = null
+
+            for (i in parts.size downTo 1) {
+                val prefixCandidate = parts.subList(0, i).joinToString(".")
+                if (aliasExportMap.containsKey(prefixCandidate)) {
+                    aliasPrefix = aliasExportMap[prefixCandidate]
+                    matchedKey = prefixCandidate
+                    break
+                }
+            }
+
+            if (aliasPrefix == null) return fullFieldName
+
+            val suffixParts =
+                if (matchedKey!!.length < coreField.length) {
+                    coreField.removePrefix("$matchedKey.").split(".")
+                } else {
+                    emptyList()
+                }
+
+            val transformedSuffix =
+                suffixParts.mapNotNull { part ->
+                    when (part) {
+                        "share", "amount", "value" -> null
+                        "absoluteShare" -> "ABS"
+                        else -> part.uppercase()
+                    }
+                }
+
+            return (listOf(aliasPrefix) + transformedSuffix).joinToString("_")
         }
     }
