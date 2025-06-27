@@ -117,6 +117,16 @@
               }
             }
           },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -271,6 +281,96 @@
         "responses": {
           "201": {
             "description": "Successfully created a new portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/{portfolioId}/monitoring": {
+      "patch": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Patches the monitoring status of a portfolio.",
+        "description": "Updates the monitoring-related fields of an existing portfolio.",
+        "operationId": "patchMonitoring",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortfolioMonitoringPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {
@@ -735,6 +835,8 @@
       "PortfolioUpload": {
         "required": [
           "companyIds",
+          "isMonitored",
+          "monitoredFrameworks",
           "portfolioName"
         ],
         "type": "object",
@@ -748,6 +850,19 @@
             "items": {
               "type": "string"
             }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -755,7 +870,9 @@
         "required": [
           "companyIds",
           "creationTimestamp",
+          "isMonitored",
           "lastUpdateTimestamp",
+          "monitoredFrameworks",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -780,6 +897,41 @@
             "format": "int64"
           },
           "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PortfolioMonitoringPatch": {
+        "required": [
+          "isMonitored",
+          "monitoredFrameworks"
+        ],
+        "type": "object",
+        "properties": {
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -810,6 +962,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EnrichedPortfolioEntry"
+            }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

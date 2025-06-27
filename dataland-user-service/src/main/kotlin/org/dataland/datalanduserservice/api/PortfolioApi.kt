@@ -8,11 +8,13 @@ import jakarta.validation.Valid
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
+import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -120,6 +122,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully created a new portfolio."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PostMapping(
@@ -128,7 +131,7 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
@@ -144,6 +147,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully replaced existing portfolio."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PutMapping(
@@ -152,7 +156,7 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun replacePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
@@ -224,4 +228,28 @@ interface PortfolioApi {
     fun getEnrichedPortfolio(
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<EnrichedPortfolio>
+
+    /**
+     * Patches the monitoring of an existing portfolio.
+     */
+    @Operation(
+        summary = "Patches the monitoring status of a portfolio.",
+        description = "Updates the monitoring-related fields of an existing portfolio.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated monitoring."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/portfolios/{portfolioId}/monitoring"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("(hasRole('ROLE_USER') and !#portfolioMonitoringPatch.isMonitored) or hasRole('ROLE_PREMIUM_USER')")
+    fun patchMonitoring(
+        @PathVariable("portfolioId") portfolioId: String,
+        @Valid @RequestBody portfolioMonitoringPatch: PortfolioMonitoringPatch,
+    ): ResponseEntity<BasePortfolio>
 }

@@ -42,6 +42,7 @@ export async function patchDataRequest(
     throw error;
   }
 }
+
 /**
  * Defines the color of p-badge
  * @param requestStatus status of a request
@@ -65,6 +66,7 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return 'p-badge outline rounded';
   }
 }
+
 /**
  * Defines the color of p-badge
  * @param accessStatus access status of a request
