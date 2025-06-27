@@ -23,6 +23,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
+    @field:Schema(description = "The name of the company in Dataland", example = "Example Company")
     val companyName: String,
     val companyAlternativeNames: List<String>?,
     @field:Schema(example = "\n[\"Test@test.com\"\n]")
