@@ -23,25 +23,36 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
-    @field:Schema(description = "The name of the company in Dataland", example = "Example Company")
+    @field:Schema(description = "The official name of the company", example = "ABC Corporation")
     val companyName: String,
+    @field:Schema(description = "Any alternative names or abbreviations the company might be known by", example = "\n[\"ABC Corp.\"\n]")
     val companyAlternativeNames: List<String>?,
-    @field:Schema(example = "\n[\"Test@test.com\"\n]")
+    @field:Schema(description = "The email addresses of the company", example = "\n[\"contact@abccorp.com\"\n]")
     val companyContactDetails: List<String>?,
+    @field:Schema(description = "The legal structure or from under which the company operates", example = "Private Limited Company (Ltd)")
     val companyLegalForm: String?,
     @field:JsonProperty(required = true)
+    @field:Schema(description = "The city where the main office of the company is located", example = "Berlin")
     val headquarters: String,
+    @field:Schema(description = "The postal code of the headquarters", example = "10123")
     val headquartersPostalCode: String?,
+    @field:Schema(description = "The industry or sector in which the company operates", example = "Information Technology")
     val sector: String?,
+    @field:Schema(description = "The industry classification code according to the NACE compliant WZ method", example = "62.10.4")
     val sectorCodeWz: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
-        example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
+        description = "Unique identifiers associated with the company, such as LEI, PermId, ...",
+        example = "\n{\n\t\"Lei\": [\"5493001KJX4BT0IHAG73\"]\n}",
     )
     val identifiers: Map<IdentifierType, List<String>>,
     @field:JsonProperty(required = true)
+    @field:Schema(description = "The ISO 3166-1 alpha-2 code representing the country of origin", example = "DE")
     val countryCode: String,
+    @field:Schema(description = "A boolean indicating if the company is a teaser company", example = "true")
     val isTeaserCompany: Boolean?,
+    @field:Schema(description = "The official website URL of the company", example = "www.abccorp.com")
     val website: String?,
+    @field:Schema(description = "The LEI of the parent company, if applicable", example = "null")
     val parentCompanyLei: String?,
 )
