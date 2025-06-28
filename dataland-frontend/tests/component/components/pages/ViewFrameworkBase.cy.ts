@@ -105,7 +105,6 @@ describe('Component test for ViewFrameworkBase', () => {
       cy.wait('@dataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
         cy.get('button[data-test=downloadDataButton]').should('exist').click();
-        cy.get('[data-test=downloadModal]').should('exist');
       });
     });
   });

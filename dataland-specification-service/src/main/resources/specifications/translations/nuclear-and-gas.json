@@ -1,0 +1,32 @@
+{
+  "id" : "nuclear-and-gas",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "referencedReports" : "REFERENCED_REPORTS",
+        "nuclearEnergyRelatedActivitiesSection426" : "NUCLEAR_SECTION_4-26_RD",
+        "nuclearEnergyRelatedActivitiesSection427" : "NUCLEAR_SECTION_4-27_CONSTRUCTION",
+        "nuclearEnergyRelatedActivitiesSection428" : "NUCLEAR_SECTION_4-28_SAFE_OPERATION",
+        "fossilGasRelatedActivitiesSection429" : "FOSSIL_SECTION_4-29_CONSTRUCTION_ELECTRIC",
+        "fossilGasRelatedActivitiesSection430" : "FOSSIL_SECTION_4-30_RD_CONSTRUCTION_POWER",
+        "fossilGasRelatedActivitiesSection431" : "FOSSIL_SECTION_4-31_HEAT_GEN"
+      },
+      "taxonomyAlignedDenominator" : {
+        "nuclearAndGasTaxonomyAlignedRevenueDenominator" : "REV_ALIGNED_DENOMINATOR",
+        "nuclearAndGasTaxonomyAlignedCapexDenominator" : "CAPEX_ALIGNED_DENOMINATOR"
+      },
+      "taxonomyAlignedNumerator" : {
+        "nuclearAndGasTaxonomyAlignedRevenueNumerator" : "REV_ALIGNED_NUMERATOR",
+        "nuclearAndGasTaxonomyAlignedCapexNumerator" : "CAPEX_ALIGNED_NUMERATOR"
+      },
+      "taxonomyEligibleButNotAligned" : {
+        "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue" : "REV_NON_ALIGNED_ELIGIBLE",
+        "nuclearAndGasTaxonomyEligibleButNotAlignedCapex" : "CAPEX_NON_ALIGNED_ELIGIBLE"
+      },
+      "taxonomyNonEligible" : {
+        "nuclearAndGasTaxonomyNonEligibleRevenue" : "REV_NON_ELIGIBLE",
+        "nuclearAndGasTaxonomyNonEligibleCapex" : "CAPEX_NON_ELIGIBLE"
+      }
+    }
+  }
+}

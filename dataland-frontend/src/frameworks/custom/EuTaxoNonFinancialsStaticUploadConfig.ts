@@ -17,7 +17,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description: 'Does the fiscal year deviate from the calendar year?',
             unit: '',
             component: 'RadioButtonsExtendedDataPointFormField',
-            options: [
+            selectedOptions: [
               {
                 label: 'Deviation',
                 value: 'Deviation',

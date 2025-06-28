@@ -30,6 +30,7 @@ class VsmeFramework :
             FrameworkGenerationFeatures.allExcept(
                 FrameworkGenerationFeatures.QaModel,
                 FrameworkGenerationFeatures.DataPointSpecifications,
+                FrameworkGenerationFeatures.Translations,
             ),
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = VsmeComponentGenerationUtils()

@@ -1,6 +1,6 @@
 <template>
   <div data-test="toggleChipsFormInput">
-    <template v-for="option in options" :key="option.name">
+    <template v-for="option in selectedOptions" :key="option.name">
       <ToggleChip
         :label="option.name"
         :disabled="isDisabled(option.name)"
@@ -19,6 +19,11 @@ import ToggleChip from '@/components/general/ToggleChip.vue';
 
 export type ToggleChipInputType = { name: string; value: boolean };
 
+/**
+ * This component has two properties: options, and availableOptions. The meaning of the value field in options is
+ * "selected". If an entry in options has value=true, it is selected.
+ * The meaning of the value field in availableOptions is "available" aka "not disabled".
+ */
 export default defineComponent({
   name: 'ToggleChipFormInputs',
   emits: ['changed'],
@@ -31,7 +36,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    options: {
+    selectedOptions: {
       type: Array as () => Array<ToggleChipInputType>,
     },
     availableOptions: {
@@ -48,7 +53,7 @@ export default defineComponent({
 
   computed: {
     checkboxOptions() {
-      return this.options?.map((option) => option.name) ?? [];
+      return this.selectedOptions?.map((option) => option.name) ?? [];
     },
   },
 
@@ -73,7 +78,7 @@ export default defineComponent({
     onToggleChange(option: ToggleChipInputType, value: boolean) {
       if (!this.isDisabled(option.name)) {
         option.value = value;
-        this.value = this.options?.filter((option) => option.value).map((option) => option.name) ?? [];
+        this.value = this.selectedOptions?.filter((option) => option.value).map((option) => option.name) ?? [];
         this.$emit('changed');
       }
     },

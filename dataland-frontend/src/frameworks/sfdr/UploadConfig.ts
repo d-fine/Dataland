@@ -25,7 +25,7 @@ export const sfdrDataModel = [
             name: 'fiscalYearDeviation',
             label: 'Fiscal Year Deviation',
             description: 'Does the fiscal year deviate from the calendar year?',
-            options: [
+            selectedOptions: [
               {
                 label: 'Deviation',
                 value: 'Deviation',
