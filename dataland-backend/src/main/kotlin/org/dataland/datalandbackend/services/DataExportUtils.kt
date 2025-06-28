@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.NonFinancialsMapping
+import org.dataland.datalandbackend.utils.NuclearAndGasMapping
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,6 +31,12 @@ class DataExportUtils
             private const val PRIORITY_COMPANY_LEI = -2
             private const val PRIORITY_REPORTING_PERIOD = -1
             private const val PRIORITY_DEFAULT = 0
+            private val STATIC_ALIASES =
+                mapOf(
+                    "companyName" to "COMPANY_NAME",
+                    "companyLei" to "COMPANY_LEI",
+                    "reportingPeriod" to "REPORTING_PERIOD",
+                )
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -118,7 +126,7 @@ class DataExportUtils
             nonEmptyHeaderFields.forEach { fieldName ->
                 val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
 
-                val aliasHeader = stripFieldNames(fieldName, aliasExportMap)
+                val aliasHeader = STATIC_ALIASES[strippedField] ?: stripFieldNames(fieldName, aliasExportMap)
 
                 if (includeAliases) {
                     if (isAssembledDataset) {
@@ -367,7 +375,10 @@ class DataExportUtils
                     when (part) {
                         "share", "amount", "value" -> null
                         "absoluteShare" -> "ABS"
-                        else -> part.uppercase()
+                        else ->
+                            NonFinancialsMapping.aliasMap[part]
+                                ?: NuclearAndGasMapping.aliasMap[part]
+                                ?: part.uppercase()
                     }
                 }
 
