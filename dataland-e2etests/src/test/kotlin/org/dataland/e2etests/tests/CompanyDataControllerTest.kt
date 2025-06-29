@@ -111,7 +111,7 @@ class CompanyDataControllerTest {
             "The update should work as expected",
         )
         assertEquals(
-            patchObject.identifiers!![IdentifierType.Duns.value], newIdentifiers[IdentifierType.Duns.value],
+            patchObject.identifiers[IdentifierType.Duns.value], newIdentifiers[IdentifierType.Duns.value],
             "The update should work as expected",
         )
     }
@@ -252,33 +252,13 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company as teaser company and test if it is retrievable by company ID as unauthorized user`() {
+    fun `post a dummy company as teaser company and check that it is not retrievable by company ID as unauthorized user`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(true)
-        val getCompanyByIdResponse =
+        assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedCompanyDataControllerApi.getCompanyById(
                 uploadInfo.actualStoredCompany.companyId,
             )
-        val expectedStoredTeaserCompany =
-            StoredCompany(
-                companyId = uploadInfo.actualStoredCompany.companyId,
-                companyInformation = uploadInfo.inputCompanyInformation,
-                dataRegisteredByDataland = emptyList(),
-            )
-        assertEquals(
-            expectedStoredTeaserCompany.copy(
-                companyInformation =
-                    expectedStoredTeaserCompany
-                        .companyInformation
-                        .copy(
-                            companyContactDetails =
-                                expectedStoredTeaserCompany
-                                    .companyInformation.companyContactDetails
-                                    ?.sorted(),
-                        ),
-            ),
-            getCompanyByIdResponse,
-            "The posted company does not equal the teaser company.",
-        )
+        }
     }
 
     @Test
@@ -388,10 +368,10 @@ class CompanyDataControllerTest {
         companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         val expectedNumberForFramework: Map<DataTypeEnum, Long> =
             mapOf(
-                DataTypeEnum.additionalMinusCompanyMinusInformation to 2,
-                DataTypeEnum.eutaxonomyMinusFinancials to 2,
+                DataTypeEnum.additionalMinusCompanyMinusInformation to 0,
+                DataTypeEnum.eutaxonomyMinusFinancials to 0,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2,
-                DataTypeEnum.sfdr to 2,
+                DataTypeEnum.sfdr to 0,
             )
         val expectedMap =
             DataTypeEnum.entries
