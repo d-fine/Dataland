@@ -81,6 +81,12 @@ export function formatNonAlignedActivitiesForDataTable(
     return MLDTDisplayObjectForEmptyString;
   }
 
+  const typeLabels = {
+    revenue: 'Revenue',
+    capex: 'CapEx',
+    opex: 'OpEx',
+  };
+
   let tableKey: string;
 
   if (kpiType === 'capex') {
@@ -98,7 +104,7 @@ export function formatNonAlignedActivitiesForDataTable(
       modalComponent: NonAlignedActivitiesDataTable,
       modalOptions: {
         props: {
-          header: fieldLabel,
+          header: `${fieldLabel} (${typeLabels[kpiType]})`,
           modal: true,
           dismissableMask: true,
         },

@@ -32,37 +32,6 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     opex: 'OpEx',
   };
 
-  const columnHeadersBase = {
-    activityName: 'Activity',
-    naceCodes: 'NACE Code(s)',
-    share: 'Share',
-    revenue: typeLabels[kpiType],
-    revenuePercent: `${typeLabels[kpiType]} (%)`,
-    substantialContributionToClimateChangeMitigationInPercent: 'Climate Change Mitigation',
-    substantialContributionToClimateChangeAdaptationInPercent: 'Climate Change Adaptation',
-    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-      'Water and Marine Resources',
-    substantialContributionToTransitionToACircularEconomyInPercent: 'Circular Economy',
-    substantialContributionToPollutionPreventionAndControlInPercent: 'Pollution Prevention',
-    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-      'Biodiversity and Ecosystems',
-    dnshToClimateChangeMitigation: 'Climate Change Mitigation',
-    dnshToClimateChangeAdaptation: 'Climate Change Adaptation',
-    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: 'Water and Marine Resources',
-    dnshToTransitionToACircularEconomy: 'Circular Economy',
-    dnshToPollutionPreventionAndControl: 'Pollution Prevention',
-    dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: 'Biodiversity and Ecosystems',
-    minimumSafeguards: 'Minimum Safeguards',
-    enablingActivity: 'Enabling Activity',
-    transitionalActivity: 'Transitional Activity',
-    substantialContributionCriteria: 'Substantial Contribution Criteria',
-    dnshCriteria: 'DNSH Criteria',
-  };
-
-  type ColumnHeaders = typeof euTaxonomyNonFinancialsModalColumnHeaders & {
-    [key: string]: typeof columnHeadersBase;
-  };
-
   const tableKeyMap = {
     revenue: 'alignedActivities',
     capex: 'capexAlignedActivities',
@@ -71,16 +40,21 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
 
   const tableKey = tableKeyMap[kpiType];
 
+  const adjustedHeaders = {
+    ...euTaxonomyNonFinancialsModalColumnHeaders.alignedActivities,
+    revenue: typeLabels[kpiType],
+    revenuePercent: `${typeLabels[kpiType]} (%)`,
+  };
+
   const customColumnHeaders = {
     ...euTaxonomyNonFinancialsModalColumnHeaders,
-  } as ColumnHeaders;
-
-  customColumnHeaders[tableKey] = columnHeadersBase;
+    [tableKey]: adjustedHeaders,
+  };
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
-      label: `Show ${input.value?.length} activit${(input.value?.length ?? 0 > 1) ? 'ies' : 'y'}`,
+      label: `Show ${input.value?.length} activit${(input.value?.length ?? 0) > 1 ? 'ies' : 'y'}`,
       modalComponent: AlignedActivitiesDataTable,
       modalOptions: {
         props: {
