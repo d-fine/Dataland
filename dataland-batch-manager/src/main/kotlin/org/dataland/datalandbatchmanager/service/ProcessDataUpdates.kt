@@ -39,6 +39,8 @@ class ProcessDataUpdates
         private val allNorthDataCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
         private val allGleifCompaniesIngestFlagFilePath: String?,
+        @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies-for-manual-update.flag-file:#{null}}")
+        private var allGleifCompaniesIngestManualUpdateFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
         private val allNorthDataCompaniesIngestFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
@@ -119,13 +121,35 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 3 * * SUN")
+        // TODO: set to sunday at 3am for final version
+        @Scheduled(cron = "0 * * * * *")
         private fun processUpdates() {
-            logger.info("Running scheduled update of GLEIF data.")
+            val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
+            val doFullUpdate = flagFileGleif?.exists() ?: false
+
+            logger.info("Running ${if (doFullUpdate) "full" else "scheduled"} update of GLEIF data")
+
+            // TODO: This will be deleted for the final version after the cron timer has been set to every Sunday at 3am
+            if (flagFileGleif?.delete() == true) {
+                logger.info("Flag file $flagFileGleif deleted successfully.")
+            }
+            // TODO: Remove for final version
+            if (!doFullUpdate) {
+                return
+            }
+
             waitForBackend()
-            gleifGoldenCopyIngestor.prepareGleifDeltaFile()
-            gleifGoldenCopyIngestor.processIsinMappingFile()
-            gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
+            gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processIsinMappingFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processRelationshipFile(doFullUpdate)
+
+            flagFileGleif?.let { file ->
+                if (file.delete()) {
+                    logger.info("Flag file $flagFileGleif deleted successfully.")
+                } else {
+                    logger.error("Flag file $flagFileGleif could not be deleted.")
+                }
+            }
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function

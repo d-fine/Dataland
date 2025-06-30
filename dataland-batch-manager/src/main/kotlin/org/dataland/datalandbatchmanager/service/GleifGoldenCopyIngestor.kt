@@ -36,12 +36,19 @@ class GleifGoldenCopyIngestor(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Starting point for GLEIF delta file handling
+     * Starting point for GLEIF full or delta update file handling
+     * @param doFullGleifUpdate if true, processes full GLEIF file instead of delta file
      */
-    fun prepareGleifDeltaFile() {
-        logger.info("Starting Gleif company update cycle for latest delta file.")
-        val tempFile = File.createTempFile("gleif_update_delta", ".zip")
-        processGleifFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
+    fun prepareGleifDeltaFile(doFullGleifUpdate: Boolean = false) {
+        logger.info("Starting Gleif company update cycle for latest ${if (doFullGleifUpdate) "full" else "delta"} file.")
+        val tempFile = File.createTempFile("gleif_update", ".zip")
+        val gleifFileSupplier =
+            if (doFullGleifUpdate) {
+                gleifApiAccessor::getFullGoldenCopy
+            } else {
+                gleifApiAccessor::getLastMonthGoldenCopyDelta
+            }
+        processGleifFile(tempFile, gleifFileSupplier)
     }
 
     /**
@@ -89,16 +96,17 @@ class GleifGoldenCopyIngestor(
 
     /**
      * Starting point for ISIN mapping file handling
+     * @param doFullIsinUpdate if true, processes full ISIN mapping file instead of using delta
      */
     @Synchronized
-    fun processIsinMappingFile() {
+    fun processIsinMappingFile(doFullIsinUpdate: Boolean = false) {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
         val duration =
             measureTime {
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
                 val deltaMapping: Map<String, Set<String>> =
-                    if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
+                    if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L || doFullIsinUpdate) {
                         isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
                     } else {
                         isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
