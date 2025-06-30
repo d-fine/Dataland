@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.DocumentCategory
+import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
 import java.time.LocalDate
 
 /**
@@ -18,38 +19,31 @@ import java.time.LocalDate
 data class DocumentMetaInfo(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description =
-            "Name under which the document is saved on Dataland. " +
-                "Does not need to coincide with the name of the uploaded file, " +
-                "nor include the file type suffix (such as '.pdf').",
-        example = "Company_X_Annual_Report_2024",
+        description = OpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
+        example = OpenApiDescriptionsAndExamples.DOCUMENT_NAME_EXAMPLE,
     )
     override val documentName: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = "The Dataland document category to which the document belongs.",
-        example = "AnnualReport",
+        description = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
+        example = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_EXAMPLE,
     )
     override val documentCategory: DocumentCategory,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description =
-            "The set of Dataland company IDs of the companies using this document " +
-                "as a referenced report.",
-        example = "[\n\t\"72c5cbdc-4244-49dd-8368-be4e64b399ae\",\n\t\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"\n]",
+        description = OpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+        example = OpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
     )
     override val companyIds: Set<String>,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     @field:Schema(
-        description =
-            "The date on which this document was published by the responsible company, specified in format " +
-                "'yyyy-MM-dd'.",
-        example = "2024-02-13",
+        description = OpenApiDescriptionsAndExamples.PUBLICATION_DATE_DESCRIPTION,
+        example = OpenApiDescriptionsAndExamples.PUBLICATION_DATE_EXAMPLE,
     )
     override val publicationDate: LocalDate?,
     @field:Schema(
-        description = "The reporting period, specified as a year number, for which this document provides information.",
-        example = "2023",
+        description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     override val reportingPeriod: String?,
 ) : BasicDocumentMetaInfo
