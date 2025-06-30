@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -25,10 +26,24 @@ class CurrencyComponent(
 ) : NumberBaseComponent(identifier, parent) {
     var minimumValue: Long? = null
     var maximumValue: Long? = null
+    override var example: String? = """{
+        "value" : 100.5,
+        "currency" : "USD",
+        "quality" : "Reported",
+        "comment" : "The value is reported by the company.",
+        "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    }"""
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue) + ValidAnnotation
+
+        val annotations =
+            getMinMaxDatamodelAnnotations(minimumValue, maximumValue) + ValidAnnotation +
+                SuppressKtlintMaxLineLengthAnnotation + schemaAnnotation
 
         dataClassBuilder.addProperty(
             identifier,
