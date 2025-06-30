@@ -1297,8 +1297,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dataset.capex?.alignedActivities,
-            'Aligned Activities',
-            'capex'
+            'Aligned Activities'
           ),
       },
       {
