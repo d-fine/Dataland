@@ -35,7 +35,7 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
-    private val linkedQaReportDataFile = File("./build/resources/test/SfdrQaReportPreparedFixtures.json")
+    private val linkedQaReportDataFile = File("./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json")
     private val fakeFixtureProvider = FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java)
     private val apiAccessor = ApiAccessor()
     private val reportingPeriod = "2025"

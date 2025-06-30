@@ -36,7 +36,7 @@ class AssembledDatasetTest {
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val apiAccessor = ApiAccessor()
     private val linkedQaReportDataFile =
-        File("./build/resources/test/SfdrQaReportPreparedFixtures.json")
+        File("./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json")
     private val dummyReportingPeriod = "2025"
     private val testValue = 1.2345.toBigDecimal()
     private val testComment = "This is a specific test comment."
@@ -279,12 +279,12 @@ class AssembledDatasetTest {
         }
     }
 
-    private fun postExtendedCurrencyEquityDatapoint(
+    private fun postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(
         companyId: String,
         reportingPeriod: String,
     ) {
         val dummyDatapoint = """{"value": "$testValue", "currency": "EUR", "comment": "$testComment"}""".trimIndent()
-        val dummyDataPointType = "extendedCurrencyEquity"
+        val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
         val uploadedDataPoint =
             UploadedDataPoint(
                 dataPoint = dummyDatapoint,
@@ -309,7 +309,7 @@ class AssembledDatasetTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         ApiAwait.waitForSuccess { uploadDummySfdrDataset(companyId, bypassQa = true) }
 
-        this.postExtendedCurrencyEquityDatapoint(companyId, dummyReportingPeriod)
+        this.postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(companyId, dummyReportingPeriod)
 
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
             val activeSfdrDataset =
@@ -317,8 +317,8 @@ class AssembledDatasetTest {
 
             val currencyDataPoint =
                 activeSfdrDataset.data.social
-                    ?.socialAndEmployeeMatters
-                    ?.averageGrossHourlyEarningsFemaleEmployees
+                    ?.antiCorruptionAndAntiBribery
+                    ?.totalAmountOfReportedFinesOfBriberyAndCorruption
             assertNotNull(currencyDataPoint)
             assertEquals(currencyDataPoint?.value, testValue)
             assertEquals(currencyDataPoint?.comment, testComment)
@@ -329,15 +329,15 @@ class AssembledDatasetTest {
     fun `ensure that uploading only a single datapoint for a company renders the reporting period active`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        this.postExtendedCurrencyEquityDatapoint(companyId, dummyReportingPeriod)
+        this.postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(companyId, dummyReportingPeriod)
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
             val activeSfdrDataset =
                 this.getSfdrDataset(companyId, dummyReportingPeriod)
 
             val currencyDataPoint =
                 activeSfdrDataset.data.social
-                    ?.socialAndEmployeeMatters
-                    ?.averageGrossHourlyEarningsFemaleEmployees
+                    ?.antiCorruptionAndAntiBribery
+                    ?.totalAmountOfReportedFinesOfBriberyAndCorruption
             assertNotNull(currencyDataPoint)
             assertEquals(currencyDataPoint?.value, testValue)
             assertEquals(currencyDataPoint?.comment, testComment)
