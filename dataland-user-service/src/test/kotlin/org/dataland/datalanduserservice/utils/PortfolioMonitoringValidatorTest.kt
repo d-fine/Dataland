@@ -4,29 +4,21 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioMonitoringValidatorTest {
-    companion object {
-        private lateinit var validatorFactory: ValidatorFactory
-        private lateinit var validator: Validator
+    private lateinit var validatorFactory: ValidatorFactory
+    private lateinit var validator: Validator
 
-        @BeforeAll
-        @JvmStatic
-        fun setup() {
-            validatorFactory = Validation.buildDefaultValidatorFactory()
-            validator = validatorFactory.validator
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun teardown() {
-            validatorFactory.close()
-        }
+    @BeforeEach
+    fun setup() {
+        validatorFactory = Validation.buildDefaultValidatorFactory()
+        validator = validatorFactory.validator
     }
 
     @Test
