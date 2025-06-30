@@ -5,7 +5,9 @@ import org.dataland.frameworktoolbox.intermediate.components.basecomponents.Numb
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -27,13 +29,31 @@ class PercentageComponent(
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
     override var constantUnitSuffix: String? = "%"
+    val example = """{
+						"value": 13.52,
+						"dataSource": {
+							"page": "108",
+							"fileName": "AnnualReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "supply-chains",
+							"publicationDate": null
+						},"""
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
+                        "example = \"\"\"$example \"\"\"",
+                applicationTargetPrefix = "field",
+            )
+
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
             TypeReference("java.math.BigDecimal", isNullable),
-            listOf(),
+            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
         )
     }
 
