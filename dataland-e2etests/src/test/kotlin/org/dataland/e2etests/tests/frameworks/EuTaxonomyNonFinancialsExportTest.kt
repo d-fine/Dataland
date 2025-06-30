@@ -17,6 +17,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     private lateinit var testDataWithNonNullField: EutaxonomyNonFinancialsData
     private val nullFieldName = "nfrdMandatory"
     private val nonNullFieldName = "fiscalYearDeviation"
+    private val alias = "FISCAL_YEAR_DEVIATION"
 
     @BeforeAll
     fun setup() {
@@ -81,6 +82,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
     ): File =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
             .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
@@ -88,7 +90,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
                 keepValueFieldsOnly = keepValueFieldsOnly,
-                includeAliases = false,
+                includeAliases = includeAliases,
             )
 
     override fun exportDataAsExcel(
@@ -100,7 +102,6 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.EXCEL,
-                includeAliases = false,
             )
 
     override fun retrieveData(companyId: String): Any =
@@ -133,5 +134,10 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     @Test
     fun `test Excel export for both companies has null field column with correct values`() {
         testExcelExportForBothCompanies()
+    }
+
+    @Test
+    fun `test CSV export for both companies has alias with correct value`() {
+        testCsvExportIncludeAliasFlag("$alias")
     }
 }

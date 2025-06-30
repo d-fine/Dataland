@@ -37,6 +37,7 @@ class DataExportUtils
                     "companyLei" to "COMPANY_LEI",
                     "reportingPeriod" to "REPORTING_PERIOD",
                 )
+            private val SUFFIX = ".value"
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -124,18 +125,16 @@ class DataExportUtils
             val readableHeaders = mutableMapOf<String, String>()
 
             nonEmptyHeaderFields.forEach { fieldName ->
-                val strippedField = fieldName.removePrefix("data.").removeSuffix(".value")
+                val strippedField = fieldName.removePrefix("data.").removeSuffix(SUFFIX)
+                val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
 
                 val aliasHeader = STATIC_ALIASES[strippedField] ?: stripFieldNames(fieldName, aliasExportMap)
+                val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
 
                 if (includeAliases) {
-                    if (isAssembledDataset) {
-                        readableHeaders["data.$strippedField"] = aliasHeader ?: fieldName
-                    } else {
-                        readableHeaders["data.$strippedField"] = fieldName
-                    }
+                    readableHeaders[headerKey] = aliasHeader
                 } else {
-                    readableHeaders["data.$strippedField"] = fieldName
+                    readableHeaders[headerKey] = fieldName
                 }
             }
 
@@ -147,20 +146,26 @@ class DataExportUtils
                             keepEmptyFields = true,
                             dropLastFieldName = true,
                         ).mapNotNull {
-                            readableHeaders["data.$it"]
+                            readableHeaders[it] ?: readableHeaders["data.$it"]
                         }
                 } else {
                     LinkedHashSet(
-                        nonEmptyHeaderFields.sortedWith(
-                            compareBy<String> {
-                                when {
-                                    it.startsWith("companyName") -> PRIORITY_COMPANY_NAME
-                                    it.startsWith("companyLei") -> PRIORITY_COMPANY_LEI
-                                    it.startsWith("reportingPeriod") -> PRIORITY_REPORTING_PERIOD
-                                    else -> PRIORITY_DEFAULT
-                                }
-                            }.then(naturalOrder()),
-                        ),
+                        nonEmptyHeaderFields
+                            .sortedWith(
+                                compareBy<String> {
+                                    when {
+                                        it.startsWith("companyName") -> PRIORITY_COMPANY_NAME
+                                        it.startsWith("companyLei") -> PRIORITY_COMPANY_LEI
+                                        it.startsWith("reportingPeriod") -> PRIORITY_REPORTING_PERIOD
+                                        else -> PRIORITY_DEFAULT
+                                    }
+                                }.then(naturalOrder()),
+                            ).map {
+                                val strippedField = it.removePrefix("data.").removeSuffix(SUFFIX)
+                                val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
+                                val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
+                                readableHeaders[headerKey] ?: headerKey
+                            },
                     )
                 }
 
@@ -181,7 +186,7 @@ class DataExportUtils
         ): List<Map<String, String>> =
             csvData.map { originalMap ->
                 originalMap.mapKeys { (key, _) ->
-                    readableHeaders[key.removeSuffix(".value")] ?: key
+                    readableHeaders[key.removeSuffix(SUFFIX)] ?: key
                 }
             }
 
@@ -345,7 +350,7 @@ class DataExportUtils
             fullFieldName: String,
             aliasExportMap: Map<String, String?>,
         ): String {
-            val coreField = fullFieldName.removePrefix("data.").removeSuffix(".value")
+            val coreField = fullFieldName.removePrefix("data.").removeSuffix(SUFFIX)
 
             val parts = coreField.split(".")
 

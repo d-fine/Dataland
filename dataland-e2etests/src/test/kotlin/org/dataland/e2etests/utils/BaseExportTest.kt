@@ -39,12 +39,35 @@ abstract class BaseExportTest<T> {
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean = true,
+        includeAliases: Boolean = false,
     ): File
 
     private fun exportDataAsCsvWithMetadata(
         companyIds: List<String>,
         reportingPeriods: List<String>,
     ): File = exportDataAsCsv(companyIds, reportingPeriods, keepValueFieldsOnly = false)
+
+    private fun exportDataAsCsvWithAlias(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File =
+        exportDataAsCsv(
+            companyIds = companyIds,
+            reportingPeriods = reportingPeriods,
+            keepValueFieldsOnly = true,
+            includeAliases = true,
+        )
+
+    private fun exportDataAsCsvWithoutAlias(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File =
+        exportDataAsCsv(
+            companyIds = companyIds,
+            reportingPeriods = reportingPeriods,
+            keepValueFieldsOnly = true,
+            includeAliases = false,
+        )
 
     protected abstract fun exportDataAsExcel(
         companyIds: List<String>,
@@ -335,6 +358,62 @@ abstract class BaseExportTest<T> {
             companyWithNullFieldLei,
             companyWithNonNullFieldLei,
             exportType,
+        )
+    }
+
+    /**
+     * Tests the CSV export functionality with and without including data meta-information.
+     *
+     * This method verifies the behavior of the CSV export when the `includeDataMetaInformation`
+     * flag is set to `true` and `false`. Specifically, it ensures that:
+     * 1. The value of the specified field is present in both exports.
+     * 2. Quality-related headers for the specified field are included in the export when
+     *    `includeDataMetaInformation` is `true`, but omitted when it is `false`.
+     *
+     * @param fieldName the name of the field to be validated in the CSV export headers
+     */
+    protected fun testCsvExportIncludeAliasFlag(alias: String) {
+        // Export data with includeAlias=true
+        val exportWithAlias =
+            exportDataAsCsvWithAlias(
+                companyIds = listOf(companyWithNonNullFieldId),
+                reportingPeriods = listOf(reportingPeriod),
+            )
+
+        // Export data with default includeAlias=false
+        val exportWithoutAlias =
+            exportDataAsCsvWithoutAlias(
+                companyIds = listOf(companyWithNonNullFieldId),
+                reportingPeriods = listOf(reportingPeriod),
+            )
+
+        // Validate export files
+        ExportTestUtils.validateExportFile(exportWithAlias, "CSV export with alias")
+        ExportTestUtils.validateExportFile(exportWithoutAlias, "CSV export without alias")
+
+        // Read CSV headers from both exports
+        val headersWithAlias =
+            ExportTestUtils.readCsvHeaders(
+                ExportTestUtils.getReadableCsvFile(exportWithAlias),
+            )
+        val headersWithoutAlias =
+            ExportTestUtils.readCsvHeaders(
+                ExportTestUtils.getReadableCsvFile(exportWithoutAlias),
+            )
+
+        // 1. Verify that the field with a value appears in both exports
+        val valuePattern = "$alias"
+        ExportTestUtils.assertColumnPatternExists(
+            headers = headersWithAlias,
+            columnNamePart = valuePattern,
+            shouldExist = true,
+            contextMessage = "CSV export with includeAlias=true should include value of test field",
+        )
+        ExportTestUtils.assertColumnPatternExists(
+            headers = headersWithoutAlias,
+            columnNamePart = valuePattern,
+            shouldExist = false,
+            contextMessage = "CSV export with includeAlias=false should not include value of test field",
         )
     }
 }
