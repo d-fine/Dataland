@@ -9,7 +9,6 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
@@ -31,11 +30,6 @@ open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
 ) : TreeNode<FieldNodeParent> {
-    /**
-     * An example in json format for this component.
-     */
-    open var example: String? = null
-
     /**
      * The label of a component is a human-readable short title describing the component
      */
@@ -145,15 +139,6 @@ open class ComponentBase(
                     }
                 }.joinToString("") + identifier.capitalizeEn()
         }
-
-    val schemaAnnotation =
-        Annotation(
-            fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-            rawParameterSpec =
-                "description = \"${this.uploadPageExplanation}\", \n" +
-                    "example = \"\"\"$example \"\"\"",
-            applicationTargetPrefix = "field",
-        )
 
     /**
      * Build this component instance into the provided Kotlin DataClass using the default

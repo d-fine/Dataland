@@ -4,6 +4,7 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
@@ -26,7 +27,7 @@ class CurrencyComponent(
 ) : NumberBaseComponent(identifier, parent) {
     var minimumValue: Long? = null
     var maximumValue: Long? = null
-    override var example: String? = """{
+    var example: String? = """{
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
@@ -40,6 +41,14 @@ class CurrencyComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"${this.uploadPageExplanation}\", \n" +
+                        "example = \"\"\"$example \"\"\"",
+                applicationTargetPrefix = "field",
+            )
 
         val annotations =
             getMinMaxDatamodelAnnotations(minimumValue, maximumValue) + ValidAnnotation +
