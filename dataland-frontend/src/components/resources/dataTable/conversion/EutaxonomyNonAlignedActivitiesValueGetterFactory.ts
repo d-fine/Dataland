@@ -8,6 +8,30 @@ import { type EuTaxonomyActivity } from '@clients/backend';
 import NonAlignedActivitiesDataTable from '@/components/general/NonAlignedActivitiesDataTable.vue';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 
+const revenueColumnHeaders = {
+  activityName: 'Activity',
+  naceCodes: 'NACE Code(s)',
+  share: 'Share',
+  revenue: 'Revenue',
+  revenuePercent: 'Revenue (%)',
+};
+
+const capexColumnHeaders = {
+  activityName: 'Activity',
+  naceCodes: 'NACE Code(s)',
+  share: 'Share',
+  revenue: 'CapEx',
+  revenuePercent: 'CapEx (%)',
+};
+
+const opexColumnHeaders = {
+  activityName: 'Activity',
+  naceCodes: 'NACE Code(s)',
+  share: 'Share',
+  revenue: 'OpEx',
+  revenuePercent: 'OpEx (%)',
+};
+
 export const euTaxonomyNonFinancialsModalColumnHeaders = {
   alignedActivities: {
     activityName: 'Activity',
@@ -35,13 +59,9 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
     substantialContributionCriteria: 'Substantial Contribution Criteria',
     dnshCriteria: 'DNSH Criteria',
   },
-  nonAlignedActivities: {
-    activityName: 'Activity',
-    naceCodes: 'NACE Code(s)',
-    share: 'Share',
-    revenue: 'Revenue',
-    revenuePercent: 'Revenue (%)',
-  },
+  nonAlignedActivities: revenueColumnHeaders,
+  capexNonAlignedActivities: capexColumnHeaders,
+  opexNonAlignedActivities: opexColumnHeaders,
 };
 
 /**
@@ -49,14 +69,32 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
  * This list is behind the field "nonAlignedActivities" in the eutaxonomy-non-financials framework.
  * @param nonAlignedActivities the list of EuTaxonomyActivity objects
  * @param fieldLabel the label of the respective field in the framework
+ * @param kpiType the type of KPI (revenue, capex, opex) to determine the appropriate column headers
  * @returns the display object for the multi-layer-data-table to render a modal to display the non-aligned activities
  */
 export function formatNonAlignedActivitiesForDataTable(
   nonAlignedActivities: ExtendedDataPoint<EuTaxonomyActivity[]> | undefined | null,
-  fieldLabel: string
+  fieldLabel: string,
+  kpiType: 'revenue' | 'capex' | 'opex' = 'revenue'
 ): AvailableMLDTDisplayObjectTypes {
   if (!nonAlignedActivities) {
     return MLDTDisplayObjectForEmptyString;
+  }
+
+  const typeLabels = {
+    revenue: 'Revenue',
+    capex: 'CapEx',
+    opex: 'OpEx',
+  };
+
+  let tableKey: string;
+
+  if (kpiType === 'capex') {
+    tableKey = 'capexNonAlignedActivities';
+  } else if (kpiType === 'opex') {
+    tableKey = 'opexNonAlignedActivities';
+  } else {
+    tableKey = 'nonAlignedActivities';
   }
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
@@ -66,13 +104,13 @@ export function formatNonAlignedActivitiesForDataTable(
       modalComponent: NonAlignedActivitiesDataTable,
       modalOptions: {
         props: {
-          header: fieldLabel,
+          header: `${fieldLabel} (${typeLabels[kpiType]})`,
           modal: true,
           dismissableMask: true,
         },
         data: {
           listOfRowContents: nonAlignedActivities.value,
-          kpiKeyOfTable: 'nonAlignedActivities',
+          kpiKeyOfTable: tableKey,
           columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
           dataPointDisplay: {
             dataSource: nonAlignedActivities.dataSource,
