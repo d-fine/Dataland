@@ -5,7 +5,7 @@ import org.flywaydb.core.api.migration.Context
 import org.slf4j.LoggerFactory
 
 /**
- * This migration script unifies the previous called "extendedEnumYesNoNfrdMandatory" and
+ * This migration script unifies the previously called "extendedEnumYesNoNfrdMandatory" and
  * "extendedEnumYesNoIsNfrdMandatory" to only one data point, now called "extendedEnumYesNoIsNfrdMandatory"
  */
 @Suppress("ClassName")
