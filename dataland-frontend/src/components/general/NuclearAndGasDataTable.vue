@@ -72,13 +72,10 @@ const mainColumnDefinitions = computed(() => {
   }
 });
 
-const dialogRefData = computed(() => {
-  return (dialogRef?.value as DynamicDialogInstance).data as DialogRefData;
-});
-
 onMounted(() => {
-  nuclearAndGasData.value = dialogRefData.value.input;
-  columnHeaders.value = dialogRefData.value.columnHeaders;
+  const data = (dialogRef?.value as DynamicDialogInstance).data as DialogRefData;
+  nuclearAndGasData.value = data.input;
+  columnHeaders.value = data.columnHeaders;
   generateRowContents();
 });
 
@@ -97,6 +94,7 @@ function generateRowContents(): void {
   else if (isEligibleButNotAlignedNumerator(nuclearAndGasData.value))
     listOfActivities = nuclearAndGasActivityNames.eligibleButNotAligned;
   else if (isNonEligible(nuclearAndGasData.value)) listOfActivities = nuclearAndGasActivityNames.nonEligible;
+  else throw new Error('Unsupported nuclearAndGasData type');
 
   Object.keys(nuclearAndGasData.value).forEach((key, idx) => {
     if (isNonEligible(nuclearAndGasData.value)) {
