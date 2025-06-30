@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWith
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -43,6 +44,25 @@ open class NumberBaseComponent(
                 null
             }
         }
+
+    fun getAnnotationsWithMinMax(
+        example: String,
+        minimumValue: Long?,
+        maximumValue: Long?,
+    ): List<Annotation> {
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
+                        "example = \"\"\"$example \"\"\"",
+                applicationTargetPrefix = "field",
+            )
+        val annotations =
+            getMinMaxDatamodelAnnotations(minimumValue, maximumValue) +
+                listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation)
+        return annotations
+    }
 
     /**
      * Returns a list of datamodel annotations to enforce the minimum and maximum value constraints
