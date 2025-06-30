@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model.companies
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -23,36 +24,72 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
-    @field:Schema(description = "The official name of the company", example = "ABC Corporation")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+    )
     val companyName: String,
-    @field:Schema(description = "Any alternative names or abbreviations the company might be known by", example = "\n[\"ABC Corp.\"\n]")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
+    )
     val companyAlternativeNames: List<String>?,
-    @field:Schema(description = "The email addresses of the company", example = "\n[\"contact@abccorp.com\"\n]")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
+    )
     val companyContactDetails: List<String>?,
-    @field:Schema(description = "The legal structure or from under which the company operates", example = "Private Limited Company (Ltd)")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_LEGAL_FORM_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_LEGAL_FORM_EXAMPLE,
+    )
     val companyLegalForm: String?,
     @field:JsonProperty(required = true)
-    @field:Schema(description = "The city where the main office of the company is located", example = "Berlin")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_EXAMPLE,
+    )
     val headquarters: String,
-    @field:Schema(description = "The postal code of the headquarters", example = "10123")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_EXAMPLE,
+    )
     val headquartersPostalCode: String?,
-    @field:Schema(description = "The industry or sector in which the company operates", example = "Information Technology")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+    )
     val sector: String?,
-    @field:Schema(description = "The industry classification code according to the NACE compliant WZ method", example = "62.10.4")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.SECTOR_CODE_WZ_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.SECTOR_CODE_WZ_EXAMPLE,
+    )
     val sectorCodeWz: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = "Unique identifiers associated with the company, such as LEI, PermId, ...",
-        example = "\n{\n\t\"Lei\": [\"5493001KJX4BT0IHAG73\"]\n}",
+        description = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
     )
     val identifiers: Map<IdentifierType, List<String>>,
     @field:JsonProperty(required = true)
-    @field:Schema(description = "The ISO 3166-1 alpha-2 code representing the country of origin", example = "DE")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+    )
     val countryCode: String,
-    @field:Schema(description = "A boolean indicating if the company is a teaser company", example = "true")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.IS_TEASER_COMPANY_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.IS_TEASER_COMPANY_EXAMPLE,
+    )
     val isTeaserCompany: Boolean?,
-    @field:Schema(description = "The official website URL of the company", example = "www.abccorp.com")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.WEBSITE_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.WEBSITE_EXAMPLE,
+    )
     val website: String?,
-    @field:Schema(description = "The LEI of the parent company, if applicable", example = "null")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.PARENT_COMPANY_LEI_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
+    )
     val parentCompanyLei: String?,
 )
