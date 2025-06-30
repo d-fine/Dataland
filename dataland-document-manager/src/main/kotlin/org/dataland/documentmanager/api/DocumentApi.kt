@@ -185,26 +185,11 @@ interface DocumentApi {
                     Header(name = HttpHeaders.CONTENT_TYPE, schema = Schema(type = "string")),
                 ],
                 content = [
-                    Content(
-                        mediaType = "application/json",
-                        examples = [],
-                    ),
-                    Content(
-                        mediaType = "application/pdf",
-                        examples = [],
-                    ),
-                    Content(
-                        mediaType = "application/vnd.ms-excel",
-                        examples = [],
-                    ),
-                    Content(
-                        mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        examples = [],
-                    ),
-                    Content(
-                        mediaType = "application/vnd.oasis.opendocument.spreadsheet",
-                        examples = [],
-                    ),
+                    Content(mediaType = "application/json", examples = []),
+                    Content(mediaType = "application/pdf", examples = []),
+                    Content(mediaType = "application/vnd.ms-excel", examples = []),
+                    Content(mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", examples = []),
+                    Content(mediaType = "application/vnd.oasis.opendocument.spreadsheet", examples = []),
                 ],
             ),
         ],
@@ -259,7 +244,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocumentMetaInformation(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     ): ResponseEntity<DocumentMetaInfoEntity>
 
     /**

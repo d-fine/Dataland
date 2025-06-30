@@ -26,11 +26,23 @@ object OpenApiDescriptionsAndExamples {
     const val REPORTING_PERIOD_EXAMPLE = "2023"
 
     const val DOCUMENT_ID_DESCRIPTION =
-        "The ID under which the document is known on Dataland. Coincides " +
-            "with the SHA-256 value of the document file bytes array."
+        "The ID under which the document can be found on Dataland. It is contained in the HTTP response " +
+            "after posting a new document and is a SHA-256 value."
     const val DOCUMENT_ID_EXAMPLE =
         "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
 
     const val UPLOADER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the document."
     const val UPLOADER_ID_EXAMPLE = "814caf16-54de-4385-af6e-bd6b64b64634"
+
+    const val DOCUMENT_TYPE_DESCRIPTION = "The file type of the document."
+    const val DOCUMENT_TYPE_EXAMPLE = "Pdf"
+
+    const val UPLOAD_TIME_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
+    const val UPLOAD_TIME_EXAMPLE =
+        "1751291891271"
+
+    const val QA_STATUS_DESCRIPTION =
+        "The status of the document with regard to Dataland's Quality Assurance process."
+    const val QA_STATUS_EXAMPLE = "Accepted"
 }
