@@ -138,7 +138,7 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
 
 # JSON
-json = { group = "org.json", name = "json", version = "20250107" }
+json = { group = "org.json", name = "json", version = "20250517" }
 
 # Mailjet
 mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.6" }
