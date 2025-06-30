@@ -1,7 +1,9 @@
 package org.dataland.documentmanager.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -12,6 +14,7 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -150,7 +153,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     )
 
     /**
@@ -174,6 +184,13 @@ interface DocumentApi {
                     ),
                     Header(name = HttpHeaders.CONTENT_TYPE, schema = Schema(type = "string")),
                 ],
+                content = [
+                    Content(mediaType = "application/json", examples = []),
+                    Content(mediaType = "application/pdf", examples = []),
+                    Content(mediaType = "application/vnd.ms-excel", examples = []),
+                    Content(mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", examples = []),
+                    Content(mediaType = "application/vnd.oasis.opendocument.spreadsheet", examples = []),
+                ],
             ),
         ],
     )
@@ -189,7 +206,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     ): ResponseEntity<InputStreamResource>
 
     /**
@@ -220,7 +244,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocumentMetaInformation(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     ): ResponseEntity<DocumentMetaInfoEntity>
 
     /**
