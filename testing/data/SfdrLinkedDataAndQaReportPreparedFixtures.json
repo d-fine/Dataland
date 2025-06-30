@@ -1,98 +1,107 @@
 {
-	"data": {
-		"general": {
-			"general": {
-				"dataDate": "2024-09-28",
-				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2024-08-19",
-				"referencedReports": {
-					"SustainabilityReport": {
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "SustainabilityReport",
-						"publicationDate": "2023-04-22"
-					},
-					"AnnualReport": {
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"fileName": "AnnualReport",
-						"publicationDate": "2024-01-01"
-					}
-				}
-			}
-		},
-		"social": {
-			"humanRights": {
-				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 3701,
-					"dataSource": {
-						"page": "1167-1211",
-						"fileName": "SustainabilityReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "applications",
-						"publicationDate": null
-					},
-					"comment": "copy mobile microchip",
-					"quality": "Reported"
-				}
-			}
-		},
-		"environmental": {
-			"biodiversity": {
-				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-					"value": "No",
-					"dataSource": {
-						"page": "10",
-						"fileName": "AnnualReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "schemas",
-						"publicationDate": null
-					},
-					"comment": "reboot multi-byte firewall",
-					"quality": "Estimated"
-				},
-				"biodiversityProtectionPolicy": {
-					"value": "Yes",
-					"dataSource": {
-						"page": "515-1276",
-						"fileName": "AnnualReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "supply-chains",
-						"publicationDate": null
-					},
-					"comment": "synthesize mobile interface",
-					"quality": "Incomplete"
-				}
-			}
-		}
-	},
-	"qaReport": {
-		"social": {
-			"humanRights": {
-				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"comment": "data is wrong",
-					"verdict": "QaRejected",
-					"correctedData": {
-						"value": 5,
-						"quality": "Estimated"
-					}
-				}
-			}
-		},
-		"environmental": {
-			"biodiversity": {
-				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-					"comment": "some comment",
-					"verdict": "QaInconclusive",
-					"correctedData": {
-						"value": "Yes",
-						"quality": "Estimated"
-					}
-				},
-				"biodiversityProtectionPolicy": {
-					"comment": "data is correct",
-					"verdict": "QaAccepted",
-					"correctedData": {}
-				}
-			}
-		}
-	}
+  "data": {
+    "general": {
+      "general": {
+        "dataDate": "2024-09-28",
+        "fiscalYearDeviation": "Deviation",
+        "fiscalYearEnd": "2024-08-19",
+        "referencedReports": {
+          "SustainabilityReport": {
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "fileName": "SustainabilityReport",
+            "publicationDate": "2023-04-22"
+          },
+          "AnnualReport": {
+            "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+            "fileName": "AnnualReport",
+            "publicationDate": "2024-01-01"
+          }
+        }
+      }
+    },
+    "social": {
+      "humanRights": {
+        "numberOfReportedIncidentsOfHumanRightsViolations": {
+          "value": 3701,
+          "dataSource": {
+            "page": "1167-1211",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "tagName": "applications",
+            "publicationDate": null
+          },
+          "comment": "copy mobile microchip",
+          "quality": "Reported"
+        }
+      }
+    },
+    "environmental": {
+      "biodiversity": {
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+          "value": "No",
+          "dataSource": {
+            "page": "10",
+            "fileName": "AnnualReport",
+            "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+            "tagName": "schemas",
+            "publicationDate": null
+          },
+          "comment": "reboot multi-byte firewall",
+          "quality": "Estimated"
+        },
+        "biodiversityProtectionPolicy": {
+          "value": "Yes",
+          "dataSource": {
+            "page": "515-1276",
+            "fileName": "AnnualReport",
+            "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+            "tagName": "supply-chains",
+            "publicationDate": null
+          },
+          "comment": "synthesize mobile interface",
+          "quality": "Incomplete"
+        }
+      }
+    }
+  },
+  "qaReport": {
+    "social": {
+      "socialAndEmployeeMatters": {
+        "averageGrossHourlyEarningsFemaleEmployees": {
+          "comment": "data is correct",
+          "verdict": "QaAccepted",
+          "correctedData": {}
+        },
+        "averageGrossHourlyEarningsMaleEmployees": {
+          "comment": "qa for this data was inconclusive",
+          "verdict": "QaNotAttemped",
+          "correctedData": {}
+        },
+        "averageGrossHourlyEarningsTotalEmployees": {
+          "comment": "data is correct",
+          "verdict": "QaAccepted",
+          "correctedData": {
+            "value": 5
+          }
+        }
+      },
+      "environmental": {
+        "biodiversity": {
+          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+            "comment": "some comment",
+            "verdict": "QaInconclusive",
+            "correctedData": {
+              "value": "Yes",
+              "quality": "Estimated"
+            }
+          },
+          "biodiversityProtectionPolicy": {
+            "comment": "data is correct",
+            "verdict": "QaAccepted",
+            "correctedData": {}
+          }
+        }
+      }
+    }
+  }
 }
