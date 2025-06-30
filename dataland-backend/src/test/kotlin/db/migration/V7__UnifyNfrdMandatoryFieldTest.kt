@@ -20,11 +20,11 @@ class V7__UnifyNfrdMandatoryFieldTest {
     private val migration = V7__UnifyNfrdMandatoryField()
     private val mockContext = mock<Context>()
     private val mockConnection = mock<Connection>()
-    private val mockStatement = mock<PreparedStatement>()
     private val mockResultSet = mock<ResultSet>()
+    private val mockStatement = mock<PreparedStatement>()
 
     @BeforeEach
-    fun basicSetup() {
+    fun setup() {
         reset(mockContext, mockConnection, mockResultSet, mockStatement)
         whenever(mockContext.connection).thenReturn(mockConnection)
         whenever(mockConnection.metaData).thenReturn(mock<java.sql.DatabaseMetaData>())
