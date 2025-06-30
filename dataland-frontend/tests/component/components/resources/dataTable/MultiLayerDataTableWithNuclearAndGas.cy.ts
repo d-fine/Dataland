@@ -11,14 +11,17 @@ import { nuclearAndGasViewConfiguration } from '@/frameworks/nuclear-and-gas/Vie
 describe('Component Test for the nuclear and gas view Page with its components', () => {
   let preparedFixturesNuG: Array<FixtureData<NuclearAndGasData>>;
 
-  before(function() {
-    cy.fixture('CompanyInformationWithNuclearAndGasPreparedFixtures.json').then(function(jsonContent) {
+  before(function () {
+    cy.fixture('CompanyInformationWithNuclearAndGasPreparedFixtures.json').then(function (jsonContent) {
       preparedFixturesNuG = jsonContent as Array<FixtureData<NuclearAndGasData>>;
     });
   });
 
   it('Check that on the nuclear and gas view page the extended nuclearAndGas components work properly for aligned activities', () => {
-    const preparedFixture = getPreparedFixture('All-fields-defined-for-EU-NuclearAndGas-Framework', preparedFixturesNuG);
+    const preparedFixture = getPreparedFixture(
+      'All-fields-defined-for-EU-NuclearAndGas-Framework',
+      preparedFixturesNuG
+    );
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [
       preparedFixture,
     ]);
@@ -43,7 +46,10 @@ describe('Component Test for the nuclear and gas view Page with its components',
   });
 
   it('Check that on the nuclear and gas view page the extended nuclearAndGas components work properly for non aligned activities', () => {
-    const preparedFixture = getPreparedFixture('All-fields-defined-for-EU-NuclearAndGas-Framework', preparedFixturesNuG);
+    const preparedFixture = getPreparedFixture(
+      'All-fields-defined-for-EU-NuclearAndGas-Framework',
+      preparedFixturesNuG
+    );
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [
       preparedFixture,
     ]);
