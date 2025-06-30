@@ -24,4 +24,13 @@ object OpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIOD_DESCRIPTION = "The reporting period the document belongs to (e.g. a fiscal year)."
     const val REPORTING_PERIOD_EXAMPLE = "2023"
+
+    const val DOCUMENT_ID_DESCRIPTION =
+        "The ID under which the document is known on Dataland. Coincides " +
+            "with the SHA-256 value of the document file bytes array."
+    const val DOCUMENT_ID_EXAMPLE =
+        "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
+
+    const val UPLOADER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the document."
+    const val UPLOADER_ID_EXAMPLE = "814caf16-54de-4385-af6e-bd6b64b64634"
 }

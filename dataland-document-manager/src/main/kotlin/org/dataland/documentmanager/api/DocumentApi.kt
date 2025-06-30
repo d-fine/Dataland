@@ -1,6 +1,7 @@
 package org.dataland.documentmanager.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -12,6 +13,7 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -150,7 +152,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     )
 
     /**
