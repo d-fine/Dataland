@@ -95,7 +95,14 @@ interface DocumentApi {
             "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId))",
     )
     fun patchDocumentMetaInfo(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
         @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
     ): ResponseEntity<DocumentMetaInfoResponse>
 
@@ -128,7 +135,20 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDocumentMetaInfoCompanyIds(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
+        @Parameter(
+            name = "companyId",
+            description = OpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<DocumentMetaInfoResponse>
 
@@ -188,7 +208,10 @@ interface DocumentApi {
                     Content(mediaType = "application/json", examples = []),
                     Content(mediaType = "application/pdf", examples = []),
                     Content(mediaType = "application/vnd.ms-excel", examples = []),
-                    Content(mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", examples = []),
+                    Content(
+                        mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        examples = [],
+                    ),
                     Content(mediaType = "application/vnd.oasis.opendocument.spreadsheet", examples = []),
                 ],
             ),
@@ -291,10 +314,44 @@ interface DocumentApi {
         produces = ["application/json"],
     )
     fun searchForDocumentMetaInformation(
-        @RequestParam companyId: String? = null,
-        @RequestParam documentCategories: Set<DocumentCategory>? = null,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam chunkSize: Int = 100,
-        @RequestParam chunkIndex: Int = 0,
+        @Parameter(
+            name = "companyId",
+            description = OpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        companyId: String? = null,
+        @Parameter(
+            name = "documentCategories",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam
+        documentCategories: Set<DocumentCategory>? = null,
+        @Parameter(
+            name = "reportingPeriod",
+            description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        reportingPeriod: String? = null,
+        @Parameter(
+            name = "chunkSize",
+            description = OpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        chunkSize: Int = 100,
+        @Parameter(
+            name = "chunkIndex",
+            description = OpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        chunkIndex: Int = 0,
     ): ResponseEntity<List<DocumentMetaInfoResponse>>
 }
