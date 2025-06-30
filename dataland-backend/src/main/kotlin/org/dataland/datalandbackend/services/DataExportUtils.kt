@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.NonFinancialsMapping
 import org.dataland.datalandbackend.utils.NuclearAndGasMapping
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.utils.SfdrMapping
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -383,6 +384,7 @@ class DataExportUtils
                         else ->
                             NonFinancialsMapping.aliasMap[part]
                                 ?: NuclearAndGasMapping.aliasMap[part]
+                                ?: SfdrMapping.aliasMap[part]
                                 ?: part.uppercase()
                     }
                 }
