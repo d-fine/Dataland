@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
 import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -187,13 +186,24 @@ interface DocumentApi {
                 ],
                 content = [
                     Content(
-                        examples = [
-                            ExampleObject(
-                                summary = "summaryString",
-                                value = "valueString",
-                                description = "descriptionString",
-                            ),
-                        ],
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                    Content(
+                        mediaType = "application/pdf",
+                        examples = [],
+                    ),
+                    Content(
+                        mediaType = "application/vnd.ms-excel",
+                        examples = [],
+                    ),
+                    Content(
+                        mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        examples = [],
+                    ),
+                    Content(
+                        mediaType = "application/vnd.oasis.opendocument.spreadsheet",
+                        examples = [],
                     ),
                 ],
             ),
