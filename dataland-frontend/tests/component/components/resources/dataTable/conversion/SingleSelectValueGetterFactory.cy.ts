@@ -12,7 +12,7 @@ describe('Unit test for the SingleSelectValueGetterFactory', () => {
     description: 'Does the fiscal year deviate from the calendar year?',
     unit: '',
     component: 'RadioButtonsFormField',
-    selectedOptions: [
+    options: [
       {
         label: 'Deviation',
         value: 'Deviation',

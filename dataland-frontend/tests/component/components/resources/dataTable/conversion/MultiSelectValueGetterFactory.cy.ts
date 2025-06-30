@@ -12,7 +12,7 @@ describe('Unit test for the MultiSelectValueGetterFactory', () => {
     component: 'MultiSelectFormField',
     showIf: () => true,
     description: 'Test-Field',
-    selectedOptions: [
+    options: [
       {
         label: 'Option A Label',
         value: 'A',
