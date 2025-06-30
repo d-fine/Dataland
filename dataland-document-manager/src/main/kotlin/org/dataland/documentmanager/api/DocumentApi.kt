@@ -3,6 +3,8 @@ package org.dataland.documentmanager.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -183,6 +185,17 @@ interface DocumentApi {
                     ),
                     Header(name = HttpHeaders.CONTENT_TYPE, schema = Schema(type = "string")),
                 ],
+                content = [
+                    Content(
+                        examples = [
+                            ExampleObject(
+                                summary = "summaryString",
+                                value = "valueString",
+                                description = "descriptionString",
+                            ),
+                        ],
+                    ),
+                ],
             ),
         ],
     )
@@ -198,7 +211,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     ): ResponseEntity<InputStreamResource>
 
     /**
