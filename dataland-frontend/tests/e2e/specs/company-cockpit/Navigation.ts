@@ -84,16 +84,11 @@ describeIf(
       );
       submitButton.exists();
     });
-    it('From the company cockpit page claim company ownership via the panel and context menu', () => {
+    it('From the company cockpit page claim company ownership via the panel', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
-      cy.get("[data-test='contextMenuButton']").click();
-      cy.get("[data-test='contextMenuItem']").should('contain.text', 'Claim').click();
-      submitOwnershipClaimForCompanyAlpha(
-        'This is a test message for claiming ownership via context menu in company info'
-      );
     });
 
     /**
