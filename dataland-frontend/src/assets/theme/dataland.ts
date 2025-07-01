@@ -1,6 +1,11 @@
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
+/**
+ * In this file, we define the basic primeVue preset for Dataland.
+ * The Dataland design is derived from the Aura preset, and particular design tokens are overwritten. In particular, we
+ * overwrite the primitive colors 'orange' and 'blue'.
+ */
 export const DatalandPreset = definePreset(Aura, {
   primitive: {
     borderRadius: {
@@ -29,7 +34,7 @@ export const DatalandPreset = definePreset(Aura, {
       100: '#ddeaef',
       200: '#c9dde5',
       300: '#b5d1dc',
-      400: '#a1c5d3', //blue-light
+      400: '#a1c5d3',
       500: '#87adba',
       600: '#6d95a2',
       700: '#547e8b',
@@ -39,10 +44,6 @@ export const DatalandPreset = definePreset(Aura, {
     },
   },
   semantic: {
-    transitionDuration: '',
-    focusRing: {
-
-    },
     primary: {
       50: '{orange.50}',
       100: '{orange.100}',
@@ -55,6 +56,16 @@ export const DatalandPreset = definePreset(Aura, {
       800: '{orange.800}',
       900: '{orange.900}',
       950: '{orange.950}',
+    },
+    overlay: {
+      select: {
+        borderRadius: '{border.radius.none}',
+      },
+    },
+    list: {
+      option: {
+        borderRadius: '{border.radius.none}',
+      },
     },
     colorScheme: {
       light: {
@@ -74,26 +85,74 @@ export const DatalandPreset = definePreset(Aura, {
         },
         primary: {
           color: '{orange.400}',
-          contrastColor: '{neutral.50}',
+          contrastColor: '{neutral.900}',
           hoverColor: '{orange.500}',
           activeColor: '{orange.500}',
         },
         highlight: {
-          background: '{neutral.900}',
-          focusBackground: '{neutral.900}',
-          color: '{neutral.900}',
+          background: '{slate.900}',
+          focusBackground: '{slate.900}',
+          color: '{blue.300}',
           focusColor: '{neutral.900}',
+        },
+        content: {
+          borderColor: '{surface.200}',
+          extend: {
+            hoverBorderColor: '{surface.800}',
+          },
+        },
+        formField: {
+          filledHoverBackground: '{surface.100}',
+          filledFocusBackground: '{surface.100}',
+          borderColor: '{surface.100}',
+          hoverBorderColor: '{surface.0}',
+          focusBorderColor: '{blue.300}',
+          invalidBorderColor: '{surface.0}',
+          borderRadius: '{border.radius.none}',
+          shadow: 'none',
+          focusRing: {
+            width: '3px',
+            style: 'solid',
+            color: '{blue.200}',
+          },
         },
       },
     },
   },
   components: {
     tabs: {
+      tablist: {
+        borderWidth: '0',
+      },
+      tabpanel: {
+        padding: '0',
+      },
       tab: {
-        fontWeight: '700',
         padding: '1.25rem 0',
         margin: '0 1.25rem',
-      }
-    }
-  }
+        borderWidth: '0 0 2px 0',
+        borderColor: '{surface.0}',
+        hoverBorderColor: '{content.hoverBorderColor}',
+      },
+      activeBar: {
+        height: '0',
+        bottom: '0',
+      },
+    },
+    button: {
+      root: {
+        borderRadius: '{border.radius.none}',
+      },
+      colorScheme: {
+        light: {
+          root: {
+            primary: {
+              color: '{neutral.50}',
+              hoverColor: '{neutral.50}',
+            },
+          },
+        },
+      },
+    },
+  },
 });

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-header m-0 fixed top-0 surface-900 h-4rem w-full grid align-items-center">
+  <div class="dataland-header m-0 fixed top-0 h-4rem w-full grid align-items-center">
     <div class="col-4 text-left">
       <router-link to="/">
         <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland" class="pl-3" />
@@ -21,17 +21,11 @@
   <div class="h-4rem" />
 </template>
 
-<style lang="scss" scoped>
-@use '@/assets/scss/theme.scss';
-.surface-900 {
-  background-color: var(--surface-900) !important;
-}
-</style>
-
 <script lang="ts">
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
-import { inject, defineComponent } from 'vue';
-import AuthSection from '@/components/resources/newLandingPage/AuthSection.vue';
+import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
+import { defineComponent, inject } from 'vue';
+
 export default defineComponent({
   name: 'TheHeader',
   components: { AuthSection, UserProfileDropDown },
@@ -48,3 +42,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.dataland-header {
+  background-color: var(--p-highlight-background);
+  font-size: var(--font-size-sm);
+  z-index: 100;
+}
+</style>

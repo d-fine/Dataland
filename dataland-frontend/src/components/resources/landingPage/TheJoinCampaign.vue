@@ -59,7 +59,8 @@ const getInTouchSection = findSection('Get in touch');
     padding: 0 32px;
   }
 
-  &__title {
+  &__title,
+  &__title * {
     font-size: 100px;
     font-style: normal;
     font-weight: 700;
@@ -135,7 +136,8 @@ const getInTouchSection = findSection('Get in touch');
     font-weight: 400;
     line-height: 24px; /* 150% */
     letter-spacing: 0.25px;
-    &--icon {
+    &--icon,
+    &--icon * {
       color: var(--basic-dark);
       font-size: 32px;
       font-style: normal;

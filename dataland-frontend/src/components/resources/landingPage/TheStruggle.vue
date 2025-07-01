@@ -43,7 +43,8 @@ const struggleSection = computed(() => {
     width: 100%;
     padding: 0 32px;
   }
-  h2 {
+  h2,
+  h2 * {
     grid-column: 1 / -1;
     font-size: 100px;
     font-style: normal;

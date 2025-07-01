@@ -16,10 +16,10 @@
     />
 
     <h1 class="intro__text" v-show="!inputFocused || !isMobile">
-      <template v-for="(part, index) in introSection.text" :key="index">
-        <span v-if="index === 0 || index === 2">{{ part }}</span>
-        <template v-else>{{ part }}</template>
-      </template>
+      <span class="intro__text" v-for="(part, index) in introSection.text" :key="index">
+        {{ part }}
+        <br v-if="index === 1" />
+      </span>
     </h1>
     <div class="intro__blurred-overlay" v-if="inputFocused && isMobile"></div>
     <div v-if="inputFocused && isMobile" class="back-button" @click="handleInputBlur">Back</div>
@@ -108,11 +108,13 @@ const handleInputBlur = (): void => {
   max-width: 1007px;
   position: relative;
   z-index: 1;
+
   &__img {
     width: 85px;
     height: auto;
     margin-bottom: 42px;
   }
+
   &__text {
     color: var(--basic-dark);
     text-align: center;
@@ -125,6 +127,7 @@ const handleInputBlur = (): void => {
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
+
     span:last-of-type {
       display: block;
       font-size: 48px;
@@ -132,20 +135,24 @@ const handleInputBlur = (): void => {
       margin-top: 80px;
     }
   }
+
   .button-component.about__button {
     display: none;
   }
 }
+
 @media only screen and (max-width: newVariables.$large) {
   .intro {
     &__img {
       margin-bottom: 31px;
     }
+
     &__text {
       font-size: 64px;
       line-height: 78px;
       max-width: 750px;
       margin: 0 auto;
+
       span:last-of-type {
         font-size: 40px;
         font-weight: 600;
@@ -166,6 +173,7 @@ const handleInputBlur = (): void => {
       letter-spacing: unset;
       margin: 0 auto;
       font-weight: 600;
+
       span:last-of-type {
         font-size: 32px;
         line-height: 40px;
@@ -178,19 +186,23 @@ const handleInputBlur = (): void => {
   .intro {
     margin: 64px auto;
     padding-inline: 16px;
+
     &__img {
       width: 54px;
       margin-bottom: 48px;
     }
+
     &__text {
       font-size: 40px;
       line-height: 48px;
       max-width: 328px;
+
       span:last-of-type {
         font-size: 24px;
         line-height: 32px;
       }
     }
+
     .back-button {
       position: absolute;
       top: -44px;
@@ -204,6 +216,7 @@ const handleInputBlur = (): void => {
       font-weight: 600;
       line-height: 24px;
       letter-spacing: 0.25px;
+
       &::before {
         content: '';
         display: block;
@@ -216,20 +229,24 @@ const handleInputBlur = (): void => {
         transform: rotateY(180deg) translateY(-50%);
       }
     }
+
     .button-component.about__button {
       display: block;
       background-color: transparent;
       margin: 3em auto;
       color: var(--basic-dark);
       border-color: var(--basic-dark);
+
       &:hover {
         border-color: var(--primary-orange);
         color: var(--primary-orange);
       }
     }
+
     & .search {
       z-index: 20;
     }
+
     &__blurred-overlay {
       position: fixed;
       top: 0;
@@ -271,6 +288,7 @@ const handleInputBlur = (): void => {
     padding-left: 40px;
     background: transparent;
     font-weight: 600;
+
     &::placeholder {
       font-size: 16px;
       font-style: normal;
@@ -279,8 +297,10 @@ const handleInputBlur = (): void => {
       letter-spacing: 0.25px;
       color: var(--grey-tones-600);
     }
+
     &:focus {
       box-shadow: none !important;
+
       &::placeholder {
         color: var(--grey-tones-300);
       }
@@ -304,15 +324,18 @@ const handleInputBlur = (): void => {
       max-width: 701px !important;
       width: calc(100% + 52px) !important;
     }
+
     ul.p-autocomplete-items {
       max-height: calc(400px - 27px);
       overflow-y: auto;
       border-radius: 8px;
       border: 2px solid var(--grey-tones-100);
       background: var(--default-neutral-white);
+
       li.p-autocomplete-item {
         height: 4rem;
         position: relative;
+
         &:after {
           content: '';
           height: 2px;
@@ -322,17 +345,21 @@ const handleInputBlur = (): void => {
           bottom: 0;
           left: 1.5em;
         }
+
         &:last-child:after {
           content: none;
         }
+
         &:hover {
           background-color: var(--grey-tones-100) !important;
         }
+
         i.pi.pi-search.pl-3 {
           padding-left: 2em !important;
         }
       }
     }
+
     ul.p-autocomplete-items.pt-0 {
       display: none;
     }
@@ -343,12 +370,14 @@ const handleInputBlur = (): void => {
     pointer-events: none;
   }
 }
+
 @media only screen and (max-width: $large) {
   .search {
     margin-top: 31px;
     max-width: 701px;
   }
 }
+
 @media only screen and (max-width: $small) {
   .search__autocomplete {
     padding: 0;
@@ -361,13 +390,16 @@ const handleInputBlur = (): void => {
     box-shadow: none;
     backdrop-filter: unset;
     max-height: 100vw !important;
+
     ul.p-autocomplete-items {
       border-radius: 0;
       background: none;
       border: 0;
+
       li.p-autocomplete-item i.pi.pi-search.pl-3 {
         padding-left: 1.7em !important;
       }
+
       li.p-autocomplete-item:after {
         width: calc(100% - 3em);
         left: 1.5em;

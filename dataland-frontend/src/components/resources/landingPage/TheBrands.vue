@@ -3,7 +3,7 @@
     <div class="brands__wrap">
       <h2 id="brands-heading" aria-labelledby="brands-heading" class="brands__text">
         {{ brandsSection.text[0] }}
-        <span>{{ brandsSection.text[1] }}</span>
+        <span class="brands__text">{{ brandsSection.text[1] }}</span>
       </h2>
       <div class="brands__list" role="list">
         <div class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index" role="listitem">

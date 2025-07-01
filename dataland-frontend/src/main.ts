@@ -11,9 +11,9 @@ import 'primeicons/primeicons.css'; // use this for icons embedded in inputs and
 import 'material-icons/iconfont/material-icons.css'; // prefer these icons in most cases such as stand-alone or in buttons -> recommended by UI/UX
 import 'primeflex/primeflex.min.css';
 // import '@/assets/scss/global.scss';
-import '@/assets/theme/main.css';
 import '@/assets/fonts/ibm-plex-sans.scss';
-import '@formkit/themes/genesis';
+import '@/assets/theme/main.css';
+// import '@formkit/themes/genesis';
 import router from './router';
 
 /**

@@ -1,9 +1,14 @@
 <template>
   <template v-if="isLandingPage">
     <div v-if="isUserLoggedIn == true" data-test="backToPlatformLink">
-      <a class="fw-semi-bold vertical-middle cursor-pointer" @click="backToPlatform"
-        >BACK TO PLATFORM <i class="material-icons pl-1" aria-hidden="true" alt="arrow_forward">arrow_forward</i></a
-      >
+      <Button
+        variant="text"
+        severity="contrast"
+        label="BACK TO PLATFORM"
+        @click="backToPlatform"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+      />
     </div>
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
@@ -37,6 +42,7 @@ import type Keycloak from 'keycloak-js';
 import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { useRouter } from 'vue-router';
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import Button from 'primevue/button';
 
 const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -125,9 +131,11 @@ const register = (): void => {
         background-image: url('/static/icons/User.svg');
         background-size: cover;
       }
+
       &:hover {
         border-bottom: 2px solid var(--primary-orange);
         color: var(--primary-orange);
+
         &::before {
           background-image: url('/static/icons/User-hover.svg');
         }
@@ -135,6 +143,7 @@ const register = (): void => {
     }
   }
 }
+
 @media only screen and (max-width: newVariables.$small) {
   .header {
     padding: 16px;

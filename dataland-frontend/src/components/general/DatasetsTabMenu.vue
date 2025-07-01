@@ -110,10 +110,11 @@ function setVisibilityForAdminTab(): void {
 </script>
 
 <style scoped>
-.p-tab:disabled {
+.p-tab.p-disabled {
   display: none;
 }
 .p-tab a {
+  font-weight: var(--font-weight-bold);
   color: inherit;
   text-decoration: inherit;
 }

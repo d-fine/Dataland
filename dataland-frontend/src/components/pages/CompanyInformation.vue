@@ -307,9 +307,4 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
-
-.fs-sm {
-  font-size: variables.$fs-sm;
-  margin-right: 0.25rem;
-}
 </style>

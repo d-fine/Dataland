@@ -70,6 +70,7 @@ const getInTouchSection = computed(() => {
 
   &__image {
     grid-column: 5 / 8;
+
     img {
       width: 100%;
       max-height: 320px;
@@ -77,7 +78,9 @@ const getInTouchSection = computed(() => {
     }
   }
 
-  &__text {
+  &__text,
+  &__text-title,
+  &__text-text {
     grid-column: 8 / 14;
     text-align: left;
     font-size: 22.123px;
@@ -89,18 +92,22 @@ const getInTouchSection = computed(() => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     p {
       margin: 0;
     }
+
     &-text {
       color: var(--primary-orange);
     }
+
     &-button {
       margin-top: 32px;
       width: fit-content;
     }
   }
 }
+
 @media only screen and (max-width: newVariables.$large) {
   .getintouch {
     &__wrapper {
@@ -109,6 +116,7 @@ const getInTouchSection = computed(() => {
       padding: 0 22px;
       width: 100%;
     }
+
     &__title {
       grid-column: 3 /11;
     }
@@ -122,9 +130,11 @@ const getInTouchSection = computed(() => {
     }
   }
 }
+
 @media only screen and (max-width: newVariables.$medium) {
   .getintouch {
     padding: 80px 0;
+
     &__image {
       grid-column: 3 / 7;
     }
@@ -134,19 +144,23 @@ const getInTouchSection = computed(() => {
     }
   }
 }
+
 @media only screen and (max-width: newVariables.$small) {
   .getintouch {
     &__wrapper {
       gap: 24px 16px;
       padding: 0 16px;
     }
+
     &__title {
       grid-column: 1 / -1;
       font-size: 40px;
     }
+
     &__image {
       grid-column: 1 / -1;
       text-align: left;
+
       img {
         max-width: 320px;
       }

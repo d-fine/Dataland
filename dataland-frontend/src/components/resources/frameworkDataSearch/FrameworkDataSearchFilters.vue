@@ -1,57 +1,71 @@
 <template>
-  <div class="flex">
-    <div class="flex flex-column">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter by company</span>
-      <div class="next-to-each-other">
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedSectorsInt"
-          ref="sectorFilter"
-          :available-items="availableSectors"
-          filter-name="Sector"
-          filter-id="sector-filter"
-          filter-placeholder="Search sectors"
-        />
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedCountriesInt"
-          ref="countryFilter"
-          :available-items="availableCountries"
-          filter-name="Country"
-          filter-id="country-filter"
-          filter-placeholder="Search countries"
-          class="ml-3"
-        />
-      </div>
+  <div class="filter-container">
+    <div id="companyFilter">
+      <label for="companyFilter" class="d-section-heading mb-2" v-if="showHeading">Filter by company</label>
+      <FrameworkDataSearchDropdownFilter
+        v-model="selectedSectorsInt"
+        ref="sectorFilter"
+        :available-items="availableSectors"
+        filter-name="Sector"
+        filter-id="sector-filter"
+        filter-placeholder="Search sectors"
+      />
+      <FrameworkDataSearchDropdownFilter
+        v-model="selectedCountriesInt"
+        ref="countryFilter"
+        :available-items="availableCountries"
+        filter-name="Country"
+        filter-id="country-filter"
+        filter-placeholder="Search countries"
+        class="ml-3"
+      />
+      <Divider layout="vertical" />
     </div>
-    <div class="flex flex-column ml-3">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter for available data sets</span>
-      <div class="flex flex-row align-items-center">
-        <div class="d-separator-left" />
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedFrameworksInt"
-          ref="frameworkFilter"
-          :available-items="availableFrameworks"
-          filter-name="Framework"
-          filter-id="framework-filter"
-          filter-placeholder="Search frameworks"
-          class="ml-3"
-        />
-        <div class="d-separator-left ml-3" />
-        <span class="ml-3 cursor-pointer text-primary font-semibold d-letters" @click="resetFilters">RESET</span>
-      </div>
+    <div id="dataTypeFilter">
+      <label for="dataTypeFilter" class="d-section-heading mb-2" v-if="showHeading"
+        >Filter for available data sets</label
+      >
+      <FrameworkDataSearchDropdownFilter
+        v-model="selectedFrameworksInt"
+        ref="frameworkFilter"
+        :available-items="availableFrameworks"
+        filter-name="Framework"
+        filter-id="framework-filter"
+        filter-placeholder="Search frameworks"
+      />
+      <Divider layout="vertical" />
     </div>
+    <PrimeButton variant="link" class="justify-content-start" @click="resetFilters" label="RESET" />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.filter-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 5rem;
+  align-items: end;
+  width: 100%;
+
+  #companyFilter,
+  #dataTypeFilter {
+    display: grid;
+
+    label {
+      grid-row: 1;
+      grid-column-end: span 2;
+    }
+
+    :not(label) {
+      grid-row: 2;
+    }
+  }
+}
+
 .d-section-heading {
   text-align: left;
   font-size: 0.75rem;
   color: #5a4f36;
-}
-
-.d-separator-left {
-  height: 2rem;
-  border-left: 1px solid #5a4f36;
 }
 </style>
 
@@ -70,10 +84,12 @@ import {
   type SelectableItem,
 } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import PrimeButton from 'primevue/button';
+import Divider from 'primevue/divider';
 
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
-  components: { FrameworkDataSearchDropdownFilter },
+  components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
   emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
   setup() {
     return {
