@@ -13,6 +13,11 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
  * The data-model for the BasisForPreparation section
  */
 data class VsmeBasicBasisForPreparation(
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Has the sustainability report been prepared on a consolidated basis (i.e., the report includes information of the undertaking and its subsidiaries) or on an individual basis (i.e., the report is limited only to the information of the undertaking)?""",
+        example = """ "Yes"  """,
+    )
     @field:Valid()
     val reportingBasis: BaseDataPoint<YesNo>? = null,
     val subsidiary: List<VsmeSubsidiary?>? = null,

@@ -15,14 +15,49 @@ import java.util.EnumSet
  * The data-model for the ProductionSpecific section
  */
 data class LksgGeneralProductionSpecific(
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Is your company a manufacturing company?""",
+        example = """ "Yes"  """,
+    )
     val manufacturingCompany: YesNo? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Production capacity per year, e.g. quantity with units.""",
+        example = """ "This is a string"  """,
+    )
     val capacity: String? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Is the production done via subcontracting?""",
+        example = """ "Yes"  """,
+    )
     val productionViaSubcontracting: YesNo? = null,
     @field:Schema(example = JsonExampleFormattingConstants.SUBCONTRACTING_COMPANIES_DEFAULT_VALUE)
     val subcontractingCompaniesCountries: Map<String, List<String>>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Do you have production sites in your company?""",
+        example = """ "Yes"  """,
+    )
     val productionSites: YesNo? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """How many production sites are there?""",
+        example = """100.5 """,
+    )
     val numberOfProductionSites: BigDecimal? = null,
     val listOfProductionSites: List<LksgProductionSite?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Does your business focus predominantly on national or international markets?""",
+        example = """ "Option 1"  """,
+    )
     val market: LksgGeneralProductionspecificMarketOptions? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Does your company have one of the specific procurement models?""",
+        example = """ ["Option 1","Option 2"]  """,
+    )
     val specificProcurement: EnumSet<SpecificProcurementOptions>? = null,
 )
