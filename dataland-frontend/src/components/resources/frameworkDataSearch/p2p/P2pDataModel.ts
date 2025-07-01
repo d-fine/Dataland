@@ -28,7 +28,7 @@ export const p2pDataModel = [
             description: 'To which sectors does the company belong?',
             unit: '',
             component: 'MultiSelectFormField',
-            selectedOptions: [
+            options: [
               {
                 label: 'Ammonia',
                 value: 'Ammonia',
