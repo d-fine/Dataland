@@ -1,5 +1,5 @@
 <template>
-  <div v-if="displaySuccessMessage" class="add-company-to-portfolios-dialog-content">
+  <div v-if="!displaySuccessMessage" class="add-company-to-portfolios-dialog-content">
     <MultiSelect
       v-model="selectedPortfolios"
       :options="allUserPortfolios"
@@ -25,7 +25,7 @@
       </template>
     </MultiSelect>
 
-    <p class="gray-text font-italic text-sm m-0">
+    <p class="gray-text font-italic text-xs m-0 pb-2">
       Select one or multiple of your portfolios to add this company to. You can select portfolios to which the company
       already belongs, but they will not be affected.
     </p>
@@ -42,11 +42,12 @@
       @click="handleCompanyAddition"
       data-test="saveButton"
     >
+      <i class="pi pi-plus pr-2" />
       <span v-if="selectedPortfolios.length <= 1">Add company to portfolio</span>
       <span v-else>Add company to portfolios</span>
     </PrimeButton>
   </div>
-  <SuccessMessage v-else success-message="Successfully added!"></SuccessMessage>
+  <SuccessMessage v-else success-message="Successfully added!" :closable="false" />
 </template>
 
 <script setup lang="ts">
@@ -151,13 +152,13 @@ function closeDialog(): void {
   width: 28em;
   border-radius: 0.25rem;
   background-color: white;
-  padding: 1.5rem;
+  padding: 0 1.5rem 1rem;
   align-items: center;
 }
 
 :deep(.primary-button-in-modal) {
-  width: 60%;
-  margin: 0 20%;
+  width: 70%;
+  margin: 0 15%;
 }
 
 :deep(.p-multiselect-label-container) {
