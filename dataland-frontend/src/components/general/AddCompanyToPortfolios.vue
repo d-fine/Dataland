@@ -1,10 +1,5 @@
 <template>
-  <div class="add-company-to-portfolios-dialog-content">
-    <p class="gray-text font-italic text-base m-0">
-      Select one or multiple of your portfolios to add this company to. You can select portfolios to which the company
-      already belongs, but they will not be affected.
-    </p>
-
+  <div v-if="displaySuccessMessage" class="add-company-to-portfolios-dialog-content">
     <MultiSelect
       v-model="selectedPortfolios"
       :options="allUserPortfolios"
@@ -30,6 +25,11 @@
       </template>
     </MultiSelect>
 
+    <p class="gray-text font-italic text-sm m-0">
+      Select one or multiple of your portfolios to add this company to. You can select portfolios to which the company
+      already belongs, but they will not be affected.
+    </p>
+
     <Message v-if="errorMessage" severity="error" class="my-3">
       {{ errorMessage }}
     </Message>
@@ -42,9 +42,11 @@
       @click="handleCompanyAddition"
       data-test="saveButton"
     >
-      <span>Add company to portfolio</span>
+      <span v-if="selectedPortfolios.length <= 1">Add company to portfolio</span>
+      <span v-else>Add company to portfolios</span>
     </PrimeButton>
   </div>
+  <SuccessMessage v-else success-message="Successfully added!"></SuccessMessage>
 </template>
 
 <script setup lang="ts">
@@ -58,6 +60,7 @@ import type Keycloak from 'keycloak-js';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { AxiosError } from 'axios';
 import { type BasePortfolio } from '@clients/userservice';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -72,6 +75,7 @@ const selectedPortfolios = ref<BasePortfolio[]>([]);
 const errorMessage = ref('');
 const isLoading = ref(false);
 const overlayVisible = ref(false);
+const displaySuccessMessage = ref(false);
 
 const selectionButtonClasses = computed(() => {
   const classes = ['selection-button', 'flex', 'flex-row', 'align-items-center'];
@@ -126,12 +130,16 @@ async function handleCompanyAddition(): Promise<void> {
 }
 
 /**
- * Resets selectedPortfolios and errorMessage to their initial values, then closes the dialog.
+ * Resets selectedPortfolios and errorMessage to their initial values, displays a success message
+ * for 2 seconds, then closes the dialog.
  */
 function closeDialog(): void {
   selectedPortfolios.value = [];
   errorMessage.value = '';
-  dialogRef?.value.close();
+  displaySuccessMessage.value = true;
+  setTimeout(() => {
+    dialogRef?.value.close();
+  }, 2000);
 }
 </script>
 
