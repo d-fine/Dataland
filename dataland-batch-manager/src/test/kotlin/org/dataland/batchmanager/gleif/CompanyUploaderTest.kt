@@ -21,7 +21,6 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUT
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -123,9 +122,7 @@ class CompanyUploaderTest {
         whenever(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_IMPLEMENTED.value()))
 
-        assertThrows<ClientException> {
-            companyUploader.updateRelationships(finalParentMapping)
-        }
+        companyUploader.updateRelationships(finalParentMapping)
 
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
             .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
@@ -184,7 +181,7 @@ class CompanyUploaderTest {
                 statusCode = UNAUTHORIZED_CODE,
             ),
         )
-        assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1) }
+        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES)).postCompany(
             dummyGleifCompanyInformation1.toCompanyPost(),
         )
@@ -207,19 +204,13 @@ class CompanyUploaderTest {
     fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`(
         responseFilePath: String,
         numberOfPatchInvocations: Int,
-        shouldThrowClientException: Boolean,
         dummyCompanyInformation: ExternalCompanyInformation,
         expectedPatch: CompanyInformationPatch,
     ) {
         whenever(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
-
-        if (shouldThrowClientException) {
-            assertThrows<ClientException> { companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation) }
-        } else {
-            companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
-        }
+        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
 
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
             .patchCompanyById("violating-company-id", expectedPatch)
@@ -267,27 +258,27 @@ class CompanyUploaderTest {
             Stream.of(
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
-                    1, false, dummyGleifCompanyInformation1,
+                    1, dummyGleifCompanyInformation1,
                     dummyGleifCompanyInformation1.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
-                    1, false, dummyNorthDataCompanyInformation3,
+                    1, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json",
-                    1, false, dummyNorthDataCompanyInformation3,
+                    1, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(setOf("CompanyRegistrationNumber")),
                 ),
                 Arguments.of(
                     "/sampleResponseMultipleIdentifierAlreadyExists.json",
-                    0, true, dummyNorthDataCompanyInformation3,
+                    0, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json",
-                    1, false, dummyNorthDataCompanyInformation3,
+                    1, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
             )
