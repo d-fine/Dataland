@@ -70,10 +70,7 @@ interface DataApi<T> {
     )
     @ApiResponses(
         value = [
-            ApiResponse(
-                responseCode = "200", description = "Successfully retrieved dataset.",
-                content = [Content(mediaType = "application/json", examples = [])],
-            ),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(

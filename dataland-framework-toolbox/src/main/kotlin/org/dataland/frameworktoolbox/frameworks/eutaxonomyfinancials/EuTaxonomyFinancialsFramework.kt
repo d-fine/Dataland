@@ -7,10 +7,6 @@ import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComp
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
-import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
-import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.springframework.stereotype.Component
 import java.io.File
@@ -28,12 +24,8 @@ class EuTaxonomyFinancialsFramework :
         order = 2,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
-    override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
-        addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
-    }
-
     override fun customizeQaModel(dataModel: FrameworkQaModelBuilder) {
-        addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
+        super.addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
     }
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
@@ -52,36 +44,6 @@ class EuTaxonomyFinancialsFramework :
                     }
                 }
             }
-        }
-    }
-
-    private fun addSupressMaxLineLengthToPackageBuilder(packageBuilder: PackageBuilder) {
-        packageBuilder.childElements.forEach { dataModelElement ->
-            when (dataModelElement) {
-                is PackageBuilder -> {
-                    addSupressMaxLineLengthToPackageBuilder(dataModelElement)
-                }
-                is DataClassBuilder -> {
-                    addSuppressMaxLineLengthToDataClass(dataModelElement)
-                }
-                else -> {
-                    // Do nothing
-                }
-            }
-        }
-    }
-
-    private fun addSuppressMaxLineLengthToDataClass(dataModelElement: DataClassBuilder) {
-        val fullyQualifiedName = "Suppress"
-        val rawParameterSpec = "\"MaxLineLength\""
-
-        val index = dataModelElement.annotations.indexOfFirst { it.fullyQualifiedName == fullyQualifiedName }
-        if (index >= 0) {
-            val oldAnnotation = dataModelElement.annotations[index]
-            dataModelElement.annotations[index] =
-                Annotation(fullyQualifiedName, "${oldAnnotation.rawParameterSpec}, $rawParameterSpec")
-        } else {
-            dataModelElement.annotations.add(Annotation(fullyQualifiedName, rawParameterSpec))
         }
     }
 }

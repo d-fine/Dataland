@@ -5,6 +5,8 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedReportValidatorBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
@@ -117,7 +119,7 @@ abstract class PavedRoadFramework(
      * (to e.g, change the JVM type of certain fields)
      */
     open fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
-        // Empty as it's just a customization endpoint
+        addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
     }
 
     /**
@@ -207,6 +209,36 @@ abstract class PavedRoadFramework(
             into = datalandProject,
             assembledDataset = enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications),
         )
+    }
+
+    fun addSupressMaxLineLengthToPackageBuilder(packageBuilder: PackageBuilder) {
+        packageBuilder.childElements.forEach { dataModelElement ->
+            when (dataModelElement) {
+                is PackageBuilder -> {
+                    addSupressMaxLineLengthToPackageBuilder(dataModelElement)
+                }
+                is DataClassBuilder -> {
+                    addSuppressMaxLineLengthToDataClass(dataModelElement)
+                }
+                else -> {
+                    // Do nothing
+                }
+            }
+        }
+    }
+
+    private fun addSuppressMaxLineLengthToDataClass(dataModelElement: DataClassBuilder) {
+        val fullyQualifiedName = "Suppress"
+        val rawParameterSpec = "\"MaxLineLength\""
+
+        val index = dataModelElement.annotations.indexOfFirst { it.fullyQualifiedName == fullyQualifiedName }
+        if (index >= 0) {
+            val oldAnnotation = dataModelElement.annotations[index]
+            dataModelElement.annotations[index] =
+                Annotation(fullyQualifiedName, "${oldAnnotation.rawParameterSpec}, $rawParameterSpec")
+        } else {
+            dataModelElement.annotations.add(Annotation(fullyQualifiedName, rawParameterSpec))
+        }
     }
 
     private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
