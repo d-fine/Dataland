@@ -51,7 +51,7 @@
         />
         <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3"  style="margin-bottom: 2rem">
+      <span class="gray-text font-italic text-xs ml-0 mb-3" style="margin-bottom: 2rem; display: block">
         Download only data values. Turn off to include additional details, e.g. comment, data source, ...
       </span>
       <div class="flex align-content-start align-items-center">
