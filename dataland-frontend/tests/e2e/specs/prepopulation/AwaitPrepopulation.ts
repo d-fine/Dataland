@@ -4,6 +4,7 @@ import { reader_name, reader_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFrameworkRegistry';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
+import {DataTypeEnum} from "@clients/backend";
 
 describeIf(
   'I want to ensure that the prepopulation has finished before executing any further tests',
@@ -15,10 +16,13 @@ describeIf(
     let prepopulatedDataTypes: string[] = [];
 
     before(function () {
-      prepopulatedDataTypes = getAllPublicFrameworkIdentifiers();
-      const fixtures = prepopulatedDataTypes.map((dataType) =>
+      const dataTypesWithToolboxSupport = getAllPublicFrameworkIdentifiers();
+      prepopulatedDataTypes = dataTypesWithToolboxSupport;
+      const fixtures = Object.values(
+        dataTypesWithToolboxSupport.map((dataType) =>
           `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace('-', '')
-        );
+        )
+      );
       fixtures.forEach((fixtureFile) => {
         cy.fixture(fixtureFile).then(function (companies: []) {
           expectedNumberOfCompanies += companies.length;
@@ -41,7 +45,7 @@ describeIf(
           .then(() => getKeycloakToken(reader_name, reader_pw))
           .then({ timeout: 120000 }, async (token) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
-              countCompaniesAndDatasetsForDataType(token, key)
+              countCompaniesAndDatasetsForDataType(token, DataTypeEnum[key as keyof typeof DataTypeEnum])
             );
 
             const totalCompanies = (await Promise.all(responsePromises))

@@ -1,105 +1,93 @@
 {
-  "data": {
-    "general": {
-      "general": {
-        "dataDate": "2024-09-28",
-        "fiscalYearDeviation": "Deviation",
-        "fiscalYearEnd": "2024-08-19",
-        "referencedReports": {
-          "SustainabilityReport": {
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "fileName": "SustainabilityReport",
-            "publicationDate": "2023-04-22"
-          },
-          "AnnualReport": {
-            "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-            "fileName": "AnnualReport",
-            "publicationDate": "2024-01-01"
-          }
-        }
-      }
-    },
-    "social": {
-      "socialAndEmployeeMatters": {
-        "averageGrossHourlyEarningsMaleEmployees": {
-          "value": 8525619035.1,
-          "dataSource": {
-            "page": "973",
-            "fileName": "SustainabilityReport",
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "tagName": "synergies",
-            "publicationDate": null
-          },
-          "comment": "input primary card",
-          "quality": "Estimated",
-          "currency": "JOD"
-        },
-        "averageGrossHourlyEarningsFemaleEmployees": {
-          "value": 1014226825.96,
-          "dataSource": {
-            "page": "360",
-            "fileName": "AnnualReport",
-            "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-            "tagName": "interfaces",
-            "publicationDate": null
-          },
-          "comment": "copy online system",
-          "quality": "Incomplete",
-          "currency": "KZT"
-        }
-      },
-      "antiCorruptionAndAntiBribery": {
-        "totalAmountOfReportedFinesOfBriberyAndCorruption": {
-          "value": 2854213973.69,
-          "dataSource": {
-            "page": "996-1087",
-            "fileName": "SustainabilityReport",
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "tagName": "experiences",
-            "publicationDate": null
-          },
-          "comment": "connect bluetooth array",
-          "quality": "Reported",
-          "currency": "CHF"
-        }
-      }
-    }
-  },
-  "qaReport": {
-    "social": {
-      "socialAndEmployeeMatters": {
-        "averageGrossHourlyEarningsFemaleEmployees": {
-          "verdict": "QaAccepted",
-          "comment": "Equity is fine",
-          "correctedData": {
-          }
-        },
-        "averageGrossHourlyEarningsMaleEmployees": {
-          "verdict": "QaNotAttempted",
-          "comment": "Qa for debt was inconclusive",
-          "correctedData": {
-          }
-        }
-      },
-      "antiCorruptionAndAntiBribery": {
-        "totalAmountOfReportedFinesOfBriberyAndCorruption": {
-          "verdict": "QaRejected",
-          "comment": "EVIC is not correct",
-          "correctedData": {
-            "value": 9916165867.42,
-            "dataSource": {
-              "page": "549",
-              "fileName": "ESEFReport",
-              "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-              "tagName": "synergies",
-              "publicationDate": null
-            },
-            "comment": "parse virtual capacitor",
-            "quality": "Incomplete",
-            "currency": "BDT"
-          }
-        }
-      }
-    }
-  }
+	"data": {
+		"general": {
+			"general": {
+				"dataDate": "2024-06-25",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2024-07-26",
+				"referencedReports": {
+					"ESEFReport": {
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-05-25"
+					}
+				}
+			}
+		},
+		"social": {
+			"humanRights": {
+				"numberOfReportedIncidentsOfHumanRightsViolations": {
+					"value": 3312,
+					"dataSource": {
+						"page": "526-1202",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "schemas",
+						"publicationDate": null
+					},
+					"comment": "connect multi-byte array",
+					"quality": "NoDataFound"
+				}
+			}
+		},
+		"environmental": {
+			"biodiversity": {
+				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+					"value": "No",
+					"dataSource": {
+						"page": "1075",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "experiences",
+						"publicationDate": null
+					},
+					"comment": "navigate virtual bus",
+					"quality": "Incomplete"
+				},
+				"biodiversityProtectionPolicy": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "996-1087",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "experiences",
+						"publicationDate": null
+					},
+					"comment": "connect bluetooth array",
+					"quality": "Reported"
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"social": {
+			"humanRights": {
+				"numberOfReportedIncidentsOfHumanRightsViolations": {
+					"comment": "data is wrong",
+					"verdict": "QaRejected",
+					"correctedData": {
+						"value": 5,
+						"quality": "Estimated"
+					}
+				}
+			}
+		},
+		"environmental": {
+			"biodiversity": {
+				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+					"comment": "some comment",
+					"verdict": "QaInconclusive",
+					"correctedData": {
+						"value": "Yes",
+						"quality": "Estimated"
+					}
+				},
+				"biodiversityProtectionPolicy": {
+					"comment": "data is correct",
+					"verdict": "QaAccepted",
+					"correctedData": {}
+				}
+			}
+		}
+	}
 }
