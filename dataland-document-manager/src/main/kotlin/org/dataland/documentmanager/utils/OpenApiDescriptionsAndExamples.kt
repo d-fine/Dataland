@@ -45,4 +45,35 @@ object OpenApiDescriptionsAndExamples {
     const val QA_STATUS_DESCRIPTION =
         "The status of the document with regard to Dataland's Quality Assurance process."
     const val QA_STATUS_EXAMPLE = "Accepted"
+
+    const val ADDED_COMPANY_ID_DESCRIPTION =
+        "Dataland ID of the company to newly associate with the document."
+    const val ADDED_COMPANY_ID_EXAMPLE = "2dfff91b-18d8-489f-8abe-64febd8be9c4"
+
+    const val COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION =
+        "If specified, only returns meta information of documents associated with the company " +
+            "having this Dataland company ID."
+    const val COMPANY_ID_SEARCH_PARAMETER_EXAMPLE = "536a58ed-bbea-4a12-b9f8-b20508582a0e"
+
+    const val DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION =
+        "If specified, only returns meta information of documents having one of these document " +
+            "categories."
+
+    const val REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION =
+        "If specified, only returns meta information of documents associated with this reporting" +
+            "period (e.g., fiscal year)."
+    const val REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE = "2024"
+
+    const val CHUNK_SIZE_DESCRIPTION =
+        "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
+            "of a single chunk. All chunks except possibly the last will have that size. The default " +
+            "value is 100."
+    const val CHUNK_SIZE_EXAMPLE = "50"
+
+    const val CHUNK_INDEX_DESCRIPTION =
+        "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the " +
+            "returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by " +
+            "default, the first chunk (containing the meta information of the latest published documents) is " +
+            "returned."
+    const val CHUNK_INDEX_EXAMPLE = "0"
 }

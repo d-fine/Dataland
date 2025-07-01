@@ -4,6 +4,8 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -19,6 +21,29 @@ class DateComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SimpleKotlinBackedBaseComponent(identifier, parent, "java.time.LocalDate") {
+    val example = """{
+    "value" : "2007-03-05",
+    "quality" : "Reported",
+    "comment" : "The value is reported by the company.",
+    "dataSource" : {
+    "page" : "5-7",
+    "tagName" : "date",
+    "fileName" : "AnnualReport2020.pdf",
+    "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+}"""
+
+    override fun getAnnotations(): List<Annotation> {
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"\"\"${this.uploadPageExplanation}\"\"\", \n" +
+                        "example = \"\"\"$example \"\"\"",
+                applicationTargetPrefix = "field",
+            )
+        return listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation)
+    }
+
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,

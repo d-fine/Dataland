@@ -5,7 +5,9 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -39,8 +41,27 @@ open class SingleSelectComponent(
     var options: Set<SelectionOption> = mutableSetOf()
     private var enumName = "${camelCaseComponentIdentifier}Options"
     var uploadMode: UploadMode = UploadMode.Dropdown
+    var example = """{
+    "value" : "Option 1",
+    "quality" : "Reported",
+    "comment" : "The value is reported by the company.",
+    "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "date",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    }
+  }"""
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
+                        "example = \"\"\"$example \"\"\"",
+                applicationTargetPrefix = "field",
+            )
         val enum =
             dataClassBuilder.parentPackage.addEnum(
                 name = enumName,
@@ -51,6 +72,7 @@ open class SingleSelectComponent(
             documentSupport = documentSupport,
             name = identifier,
             type = enum.getTypeReference(isNullable),
+            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
         )
     }
 
