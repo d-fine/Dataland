@@ -421,7 +421,7 @@ interface CompanyApi {
         value = ["/teaser"],
         produces = ["application/json"],
     )
-    fun getTeaserCompanies(): List<CompanyId>
+    fun getTeaserCompanies(): List<String>
 
     /**
      * A method used to retrieve the aggregated data summary for all frameworks
@@ -564,6 +564,6 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
         @Valid @RequestBody(required = true)
-        identifiers: List<CompanyId>,
+        identifiers: List<String>,
     ): ResponseEntity<List<CompanyIdentifierValidationResult>>
 }

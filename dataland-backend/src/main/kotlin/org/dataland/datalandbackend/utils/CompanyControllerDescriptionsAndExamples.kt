@@ -38,7 +38,7 @@ object CompanyControllerDescriptionsAndExamples {
     const val WEBSITE_EXAMPLE = "www.abccorp.com test"
 
     const val PARENT_COMPANY_LEI_DESCRIPTION = "The LEI of the parent company, if applicable."
-    const val PARENT_COMPANY_LEI_EXAMPLE = "null"
+    const val PARENT_COMPANY_LEI_EXAMPLE = "5493001KJX4BT0IHAG72"
 
     const val COMPANY_ID_DESCRIPTION = "The ID under which the company can be found on Dataland."
     const val COMPANY_ID_EXAMPLE = "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
