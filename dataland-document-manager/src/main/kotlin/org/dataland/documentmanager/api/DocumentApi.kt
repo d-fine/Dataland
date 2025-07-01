@@ -81,8 +81,23 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to update the document's meta information.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
-            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document Id does not match any stored document.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
+            ),
         ],
     )
     @PatchMapping(
@@ -125,8 +140,23 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to update the companyIds field.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
-            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document Id does not match any stored document.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
+            ),
         ],
     )
     @PatchMapping(
@@ -256,6 +286,12 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "404",
                 description = "Document meta information could not be retrieved.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
         ],
     )
@@ -306,6 +342,12 @@ interface DocumentApi {
                 description =
                     "Bad request; make sure that at least one search parameter is non-null and " +
                         "that the chunk index is within bounds (when in doubt, use chunk index 0).",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
         ],
     )
