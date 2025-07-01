@@ -132,12 +132,12 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     }
 
     @Test
-    fun `test Excel export for both companies has null field column with correct values`() {
-        testExcelExportForBothCompanies()
+    fun `test CSV export for both companies has alias with correct value`() {
+        testCsvExportIncludeAliasFlag("$alias")
     }
 
     @Test
-    fun `test CSV export for both companies has alias with correct value`() {
-        testCsvExportIncludeAliasFlag("$alias")
+    fun `test Excel export for both companies has null field column with correct values`() {
+        testExcelExportForBothCompanies()
     }
 }
