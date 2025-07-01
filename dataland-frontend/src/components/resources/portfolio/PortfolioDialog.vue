@@ -16,6 +16,7 @@
       :disabled="isCompaniesLoading"
     />
     <PrimeButton
+      type="button"
       label="Add Companies"
       icon="pi pi-plus"
       :loading="isCompaniesLoading"
@@ -102,6 +103,7 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -121,7 +123,8 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
+  enrichedPortfolio.value = portfolio;
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
 });
 
 /**
@@ -181,7 +184,12 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
+      // as unknown as Set<string> cast required to ensure proper json is created
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
+      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
+      // as unknown as Set<string> cast required to ensure proper json is created
+      monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
