@@ -49,9 +49,9 @@
           data-test="valuesOnlySwitch"
           @change="!keepValuesOnly ? (includeAlias = false) : includeAlias"
         />
-        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"  style="margin-bottom: 1rem"> Values only </span>
+        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3">
+      <span class="gray-text font-italic text-xs ml-0 mb-3"  style="margin-bottom: 1rem">
         Download only data values. Turn off to include additional details, e.g. comment, data source, ...
       </span>
       <div class="flex align-content-start align-items-center">

@@ -141,14 +141,30 @@ class DataExportUtils
 
             val orderedHeaderFields =
                 if (isAssembledDataset) {
-                    JsonUtils
-                        .getLeafNodeFieldNames(
+                    val leafFields =
+                        JsonUtils.getLeafNodeFieldNames(
                             frameworkTemplate,
                             keepEmptyFields = true,
                             dropLastFieldName = true,
-                        ).mapNotNull {
-                            readableHeaders[it] ?: readableHeaders["data.$it"]
+                        )
+
+                    val mappedHeaders =
+                        leafFields
+                            .mapNotNull {
+                                readableHeaders[it] ?: readableHeaders["data.$it"]
+                            }.toMutableList()
+
+                    // Move COMPANY_LEI to position 3 (index 2)
+                    val companyLeiAlias = mappedHeaders.find { it.contains("COMPANY_LEI") }
+                    if (companyLeiAlias != null) {
+                        mappedHeaders.remove(companyLeiAlias) // remove if exists
+                        if (mappedHeaders.size >= 2) {
+                            mappedHeaders.add(2, companyLeiAlias) // insert at position 3 (index 2)
+                        } else {
+                            mappedHeaders.add(companyLeiAlias) // fallback: append
                         }
+                    }
+                    mappedHeaders
                 } else {
                     LinkedHashSet(
                         nonEmptyHeaderFields

@@ -256,6 +256,32 @@ class DataExportServiceTest {
         Assertions.assertEquals(expectedAlias, result)
     }
 
+    @Test
+    fun `prepareExportData maps numberOfEmployees correctly to alias`() {
+        val jsonString = """
+           {
+            "companyName": "ABC Ltd",
+            "companyLei": "5493000LKVGOO9PELI61",
+            "reportingPeriod": "2024"
+        }
+        """
+        val jsonNode = objectMapper.readTree(jsonString)
+        val (csvData, csvSchema, readableHeaders) =
+            dataExportUtils.prepareExportData(
+                listOf(jsonNode),
+                DataType.valueOf("eutaxonomy-non-financials"),
+                keepValueFieldsOnly = true,
+                includeAliases = true,
+            )
+
+        Assertions.assertEquals(1, csvData.size)
+        Assertions.assertTrue(csvData[0].keys.contains("companyName"))
+        Assertions.assertEquals("ABC Ltd", csvData[0]["companyName"])
+
+        Assertions.assertTrue(csvSchema.columnNames.contains("COMPANY_NAME"))
+        Assertions.assertEquals("COMPANY_NAME", readableHeaders["companyName"])
+    }
+
     /**
      * Creates a test JSON with a data point that has only a quality field (no value field)
      */
