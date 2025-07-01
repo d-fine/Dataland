@@ -17,6 +17,11 @@ open class SimpleKotlinBackedBaseComponent(
     parent: FieldNodeParent,
     var fullyQualifiedNameOfKotlinType: String,
 ) : ComponentBase(identifier, parent) {
+    /**
+     * Returns the annotations for this component, e.g..
+     * - schema annotation
+     * - suppres max line length annotation
+     */
     open fun getAnnotations(): List<Annotation> = emptyList()
 
     // This method has been marked final to prevent accidental overwriting of generateDefaultDataModel
