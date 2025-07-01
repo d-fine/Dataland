@@ -14,7 +14,7 @@
       />
       <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
       <label for="reportingYearSelector">
-        <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
+        <b style="margin-bottom: 8px; font-weight: normal">Reporting period</b>
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
@@ -49,7 +49,7 @@
           data-test="valuesOnlySwitch"
           @change="!keepValuesOnly ? (includeAlias = false) : includeAlias"
         />
-        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
+        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"  style="margin-top: 1rem; margin-bottom: 1.5rem;"> Values only </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
         Download only data values. Turn off to include additional details, e.g. comment, data source, ...
@@ -61,10 +61,10 @@
           class="form-field vertical-middle"
           data-test="includeAliasSwitch"
         />
-        <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten Field Names </span>
+        <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2" style="margin-top: 1rem; margin-bottom: 1.5rem;"> Shorten field names </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
-        Use shorter aliases, e. g. CI_GAR_PCT in export. (Only Applicable if Values Only is selected)
+        Use short aliases, e. g. REV_ELIGIBLE_ABS in export. (only applicable if values only is selected)
       </span>
     </FormKit>
     <div>
