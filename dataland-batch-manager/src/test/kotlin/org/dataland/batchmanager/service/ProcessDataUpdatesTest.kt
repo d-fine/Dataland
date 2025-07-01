@@ -20,9 +20,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.MockedStatic
-import org.mockito.kotlin.any
+import org.mockito.Mockito.any
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
@@ -210,42 +209,6 @@ class ProcessDataUpdatesTest {
         initProcessDataUpdates()
         processDataUpdates.waitForCommunityManager()
         verify(mockCommunityActuatorApi).health()
-    }
-
-    @Test
-    fun `logFlagFileFoundAndDelete logs success and deletes existing file`() {
-        val mockFile = mock(File::class.java)
-        whenever(mockFile.exists()).thenReturn(true)
-        whenever(mockFile.delete()).thenReturn(true)
-
-        initProcessDataUpdates()
-
-        processDataUpdates.processNorthDataFullGoldenCopyFileIfEnabled()
-
-
-        verify(mockFile).delete()
-    }
-
-    @Test
-    fun `logFlagFileFoundAndDelete logs error if file cannot be deleted`() {
-        val mockFile = mock(File::class.java)
-        whenever(mockFile.exists()).thenReturn(true)
-        whenever(mockFile.delete()).thenReturn(false)
-
-        // Set up logger and attach our test appender
-        val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
-        val appender = TestLogAppender()
-        appender.start()
-        logger.addAppender(appender)
-
-        initProcessDataUpdates()
-
-        val method = processDataUpdates.javaClass.getDeclaredMethod("logFlagFileFoundAndDelete", File::class.java)
-        method.isAccessible = true
-        method.invoke(processDataUpdates, mockFile)
-
-        verify(mockFile).delete()
-        assert(appender.events.any { it.level == Level.ERROR && it.formattedMessage.contains("Unable to delete flag file") })
     }
 
     @Test

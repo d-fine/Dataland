@@ -94,7 +94,17 @@ class CompanyUploader(
         }
     }
 
-    private fun executeWithRetryAndThrottling(task: () -> Unit) {
+    /**
+     * Executes a given task with retry and throttling mechanisms applied. The method ensures
+     * that the task is retried upon specific failures and respects the defined rate-limiting policy.
+     *
+     * @param task The task to execute, represented as a lambda function. This task contains
+     *             the logic to be executed with retry and throttling.
+     * @return A Boolean indicating the result of execution. Returns `true` if a client
+     *         exception occurred; otherwise, returns `false` regardless of other exceptions.
+     *         This will be used for identifying exception caused by duplicate Isins.
+     */
+    private fun executeWithRetryAndThrottling(task: () -> Unit): Boolean {
         val decoratedTask =
             Retry.decorateCheckedRunnable(retry) {
                 waitForPermission(rateLimiter)
@@ -105,7 +115,7 @@ class CompanyUploader(
             logger.info("Function executed successfully.")
         } catch (exception: ClientException) {
             logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
-            throw exception
+            return true
         } catch (exception: SocketTimeoutException) {
             logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
         } catch (exception: ServerException) {
@@ -113,6 +123,7 @@ class CompanyUploader(
         } catch (exception: RequestNotPermitted) {
             logger.error("Rate limit exceeded: ${exception.message}.")
         }
+        return false
     }
 
     /**
@@ -203,48 +214,45 @@ class CompanyUploader(
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
     fun updateIsins(leiIsinMapping: Map<String, Set<String>>) {
-        val retryLeiIsinMappingQueue = handleLeiIsinMapping(
-            leiIsinMapping = leiIsinMapping,
-            retryLeiIsinMappingQueue = mutableMapOf(),
-            logMessageForPatching = "Patching",
-            logMessageForFailedPatching = "Initial Update"
-        ) ?: return
-        handleLeiIsinMapping( leiIsinMapping = retryLeiIsinMappingQueue,
-            logMessageForPatching = "Retrying to patch",
-            logMessageForFailedPatching = "Retry"
-        )
-    }
+        val retryLeiIsinMappingQueue = mutableMapOf<String, Set<String>>()
 
-    private fun handleLeiIsinMapping(
-        leiIsinMapping: Map<String, Set<String>>,
-        retryLeiIsinMappingQueue: MutableMap<String, Set<String>>? = null,
-        logMessageForPatching : String,
-        logMessageForFailedPatching: String
-    ): MutableMap<String, Set<String>>? {
         leiIsinMapping.forEach { (lei, newIsins) ->
-            val companyId = searchCompanyByLEI(lei) ?: return@forEach
-            logger.info("$logMessageForPatching company with ID: $companyId and LEI: $lei")
-
-            try {
-                updateIsinsOfCompany(newIsins, companyId)
-            } catch (exception: ClientException) {
-                logger.warn("$logMessageForFailedPatching failed due to ${exception.message} for company with ID: $companyId and LEI: $lei")
-                    retryLeiIsinMappingQueue?.put(lei, newIsins)
+            if (handleLeiIsinPair(lei, newIsins, "Patching", "Initial Update")) {
+                retryLeiIsinMappingQueue.put(lei, newIsins)
             }
         }
-        return retryLeiIsinMappingQueue
+
+        retryLeiIsinMappingQueue.forEach { (lei, newIsins) ->
+            handleLeiIsinPair(lei, newIsins, "Retrying to patch", "Retry")
+        }
+    }
+
+    private fun handleLeiIsinPair(
+        lei: String,
+        newIsins: Set<String>,
+        logMessageForPatching: String,
+        logMessageForFailedPatching: String,
+    ): Boolean {
+        val companyId = searchCompanyByLEI(lei) ?: return false
+        logger.info("$logMessageForPatching company with ID: $companyId and LEI: $lei")
+
+        val duplicateIsinsExist = updateIsinsOfCompany(newIsins, companyId)
+        if (duplicateIsinsExist) {
+            logger.warn("$logMessageForFailedPatching failed due to duplicate Isins for company with ID: $companyId and LEI: $lei")
+        }
+        return duplicateIsinsExist
     }
 
     private fun updateIsinsOfCompany(
         isins: Set<String>,
         companyId: String,
-    ) {
+    ): Boolean {
         val updatedIdentifiers =
             mapOf(
                 IdentifierType.Isin.value to isins.toList(),
             )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
-        executeWithRetryAndThrottling {
+        return executeWithRetryAndThrottling {
             logger.info("Updating ISINs of company with ID: $companyId")
             companyDataControllerApi.patchCompanyById(companyId, companyPatch)
         }
