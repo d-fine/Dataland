@@ -1,12 +1,11 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { type EuTaxonomyActivity } from '@clients/backend';
 import NonAlignedActivitiesDataTable from '@/components/general/NonAlignedActivitiesDataTable.vue';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
+import { createModalDisplayObject } from '@/utils/CreateModalDisplayObject.ts';
 
 const revenueColumnHeaders = {
   activityName: 'Activity',
@@ -81,44 +80,23 @@ export function formatNonAlignedActivitiesForDataTable(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  const typeLabels = {
-    revenue: 'Revenue',
-    capex: 'CapEx',
-    opex: 'OpEx',
+  const tableKeyMap = {
+    revenue: 'nonAlignedActivities',
+    capex: 'capexNonAlignedActivities',
+    opex: 'opexNonAlignedActivities',
   };
 
-  let tableKey: string;
+  const tableKey = tableKeyMap[kpiType];
 
-  if (kpiType === 'capex') {
-    tableKey = 'capexNonAlignedActivities';
-  } else if (kpiType === 'opex') {
-    tableKey = 'opexNonAlignedActivities';
-  } else {
-    tableKey = 'nonAlignedActivities';
-  }
-
-  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
-    displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
-    displayValue: {
-      label: `Show ${nonAlignedActivities.value?.length} activit${(nonAlignedActivities.value?.length ?? 0 > 1) ? 'ies' : 'y'}`,
-      modalComponent: NonAlignedActivitiesDataTable,
-      modalOptions: {
-        props: {
-          header: `${fieldLabel} (${typeLabels[kpiType]})`,
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          listOfRowContents: nonAlignedActivities.value,
-          kpiKeyOfTable: tableKey,
-          columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
-          dataPointDisplay: {
-            dataSource: nonAlignedActivities.dataSource,
-            comment: nonAlignedActivities.comment,
-            quality: nonAlignedActivities.quality,
-          },
-        },
-      },
-    },
-  };
+  return createModalDisplayObject({
+    activities: nonAlignedActivities.value ?? [],
+    dataSource: nonAlignedActivities.dataSource,
+    comment: nonAlignedActivities.comment,
+    quality: nonAlignedActivities.quality,
+    fieldLabel,
+    kpiType,
+    tableKey,
+    columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
+    modalComponent: NonAlignedActivitiesDataTable,
+  });
 }
