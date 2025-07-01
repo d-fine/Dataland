@@ -113,6 +113,13 @@ class QueryDataRequestsTest {
                 ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, sfdrDataRequests.size)
 
+        val lksgDataRequests =
+            api
+                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsLksg), chunkSize = chunkSize)
+                .filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(1, lksgDataRequests.size)
+        assertEquals(DataTypeEnum.lksg.value, lksgDataRequests.first().dataType)
+
         val vsmeDataRequests =
             api
                 .getDataRequests(dataType = listOf(dataTypeGetDataRequestsVsme), chunkSize = chunkSize)

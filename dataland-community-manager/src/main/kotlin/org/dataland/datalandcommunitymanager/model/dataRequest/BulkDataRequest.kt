@@ -26,7 +26,7 @@ data class BulkDataRequest(
         arraySchema =
             Schema(
                 implementation = DataTypeEnum::class,
-                example = "[\"sfdr\", \"vsme\"]",
+                example = "[\"sfdr\", \"lksg\"]",
             ),
     )
     val dataTypes: Set<DataTypeEnum>,

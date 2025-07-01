@@ -110,7 +110,7 @@ class DataMigrationTest {
 
     @Test
     fun `ensure that nullish values get migrated correctly`() {
-        val fixture = fakeFixtureProvider.getByCompanyName("sfdr-dataset-with-nullish-fields").t
+        val fixture = fakeFixtureProvider.getByCompanyName("sfdr-a-lot-of-nulls").t
         val dataMetaInfo = uploadGenericDummyDataset(fixture, DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val downloadedDataset =
