@@ -63,8 +63,11 @@ object ExportTestUtils {
         val lines = content.replace("\\n", "\n").split("\n")
         val headerLine =
             lines.find {
-                it.contains("companyLei") && !it.contains("sep=")
-            } ?: return emptyList()
+                it.contains(",") && !it.contains("sep=")
+            } ?: lines.find {
+                it.contains(";") && !it.contains("sep=")
+            }
+                ?: return emptyList()
 
         // extract cleaned header values
         return headerLine
