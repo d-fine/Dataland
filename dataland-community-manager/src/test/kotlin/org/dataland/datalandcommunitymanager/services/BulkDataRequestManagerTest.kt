@@ -39,7 +39,7 @@ class BulkDataRequestManagerTest {
     private val dummyRequestId = "request-id"
     private val dummyAdminComment = "dummyAdminComment"
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
-    private val dummyReportingPeriod = "2023-Q1"
+    private val dummyReportingPeriod = "2023"
     private val dummyUserProvidedCompanyId = "companyId1"
 
     @BeforeEach
@@ -129,7 +129,7 @@ class BulkDataRequestManagerTest {
         whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
         whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
-        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
+        whenever(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(any(), any(), any()))
             .thenReturn(dummyRequestId)
 
         val bulkDataRequest =
