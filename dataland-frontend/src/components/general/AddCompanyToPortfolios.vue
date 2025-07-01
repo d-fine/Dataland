@@ -26,8 +26,7 @@
     </MultiSelect>
 
     <p class="gray-text font-italic text-xs m-0 pb-2">
-      Select one or multiple of your portfolios to add this company to. You can select portfolios to which the company
-      already belongs, but they will not be affected.
+      Choose one or more portfolios to add this company to. Portfolios already containing it will not be modified.
     </p>
 
     <Message v-if="errorMessage" severity="error" class="my-3">
