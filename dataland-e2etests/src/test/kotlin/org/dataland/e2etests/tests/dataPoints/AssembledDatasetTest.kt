@@ -241,7 +241,7 @@ class AssembledDatasetTest {
         val linkedQaReportMetaInfo = uploadSfdrWithLinkedQaReport()
         val expectedDataPointInformation =
             mapOf(
-                "extendedCurrencyFemale" to
+                "extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees" to
                     ExpectedDataForFact(
                         qaStatus = QaStatus.Accepted,
                         qaReport =
@@ -249,7 +249,7 @@ class AssembledDatasetTest {
                                 .socialAndEmployeeMatters!!
                                 .averageGrossHourlyEarningsFemaleEmployees!!,
                     ),
-                "extendedCurrencyMale" to
+                "extendedCurrencyAverageGrossHourlyEarningsMaleEmployees" to
                     ExpectedDataForFact(
                         qaStatus = QaStatus.Pending,
                         qaReport =
@@ -257,7 +257,7 @@ class AssembledDatasetTest {
                                 .socialAndEmployeeMatters!!
                                 .averageGrossHourlyEarningsMaleEmployees!!,
                     ),
-                "extendedCurrencyFines" to
+                "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption" to
                     ExpectedDataForFact(
                         qaStatus = QaStatus.Rejected,
                         qaReport =

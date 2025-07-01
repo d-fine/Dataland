@@ -20,46 +20,47 @@
       }
     },
     "social": {
-      "humanRights": {
-        "numberOfReportedIncidentsOfHumanRightsViolations": {
-          "value": 3701,
+      "socialAndEmployeeMatters": {
+        "averageGrossHourlyEarningsMaleEmployees": {
+          "value": 8525619035.1,
           "dataSource": {
-            "page": "1167-1211",
+            "page": "973",
             "fileName": "SustainabilityReport",
             "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "tagName": "applications",
+            "tagName": "synergies",
             "publicationDate": null
           },
-          "comment": "copy mobile microchip",
-          "quality": "Reported"
-        }
-      }
-    },
-    "environmental": {
-      "biodiversity": {
-        "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-          "value": "No",
-          "dataSource": {
-            "page": "10",
-            "fileName": "AnnualReport",
-            "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-            "tagName": "schemas",
-            "publicationDate": null
-          },
-          "comment": "reboot multi-byte firewall",
-          "quality": "Estimated"
+          "comment": "input primary card",
+          "quality": "Estimated",
+          "currency": "JOD"
         },
-        "biodiversityProtectionPolicy": {
-          "value": "Yes",
+        "averageGrossHourlyEarningsFemaleEmployees": {
+          "value": 1014226825.96,
           "dataSource": {
-            "page": "515-1276",
+            "page": "360",
             "fileName": "AnnualReport",
             "fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-            "tagName": "supply-chains",
+            "tagName": "interfaces",
             "publicationDate": null
           },
-          "comment": "synthesize mobile interface",
-          "quality": "Incomplete"
+          "comment": "copy online system",
+          "quality": "Incomplete",
+          "currency": "KZT"
+        }
+      },
+      "antiCorruptionAndAntiBribery": {
+        "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+          "value": 2854213973.69,
+          "dataSource": {
+            "page": "996-1087",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "tagName": "experiences",
+            "publicationDate": null
+          },
+          "comment": "connect bluetooth array",
+          "quality": "Reported",
+          "currency": "CHF"
         }
       }
     }
@@ -68,37 +69,34 @@
     "social": {
       "socialAndEmployeeMatters": {
         "averageGrossHourlyEarningsFemaleEmployees": {
-          "comment": "data is correct",
           "verdict": "QaAccepted",
-          "correctedData": {}
+          "comment": "Equity is fine",
+          "correctedData": {
+          }
         },
         "averageGrossHourlyEarningsMaleEmployees": {
-          "comment": "qa for this data was inconclusive",
-          "verdict": "QaNotAttemped",
-          "correctedData": {}
-        },
-        "averageGrossHourlyEarningsTotalEmployees": {
-          "comment": "data is correct",
-          "verdict": "QaAccepted",
+          "verdict": "QaNotAttempted",
+          "comment": "Qa for debt was inconclusive",
           "correctedData": {
-            "value": 5
           }
         }
       },
-      "environmental": {
-        "biodiversity": {
-          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-            "comment": "some comment",
-            "verdict": "QaInconclusive",
-            "correctedData": {
-              "value": "Yes",
-              "quality": "Estimated"
-            }
-          },
-          "biodiversityProtectionPolicy": {
-            "comment": "data is correct",
-            "verdict": "QaAccepted",
-            "correctedData": {}
+      "antiCorruptionAndAntiBribery": {
+        "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+          "verdict": "QaRejected",
+          "comment": "EVIC is not correct",
+          "correctedData": {
+            "value": 9916165867.42,
+            "dataSource": {
+              "page": "549",
+              "fileName": "ESEFReport",
+              "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+              "tagName": "synergies",
+              "publicationDate": null
+            },
+            "comment": "parse virtual capacitor",
+            "quality": "Incomplete",
+            "currency": "BDT"
           }
         }
       }
