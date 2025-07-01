@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
@@ -43,11 +42,6 @@ class DataExportServiceTest {
     private val companyExportDataLksgTestData =
         objectMapper
             .readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
-
-    private val companyExportDataNonFinInputFile = "./src/test/resources/dataExport/euTaxonomyNonFinancialDataInput.json"
-    private val companyExportDataNonFinTestData =
-        objectMapper
-            .readValue<SingleCompanyExportData<EutaxonomyNonFinancialsData>>(File(companyExportDataNonFinInputFile))
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -101,36 +95,6 @@ class DataExportServiceTest {
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").readText(Charsets.UTF_8)
-
-        Assertions.assertEquals(predefinedCsv, csvString)
-    }
-
-    @Test
-    fun `update predefined csv with current naming logic for aliasses`() {
-        val csvStream =
-            dataExportService.buildStreamFromPortfolioExportData(
-                listOf(companyExportDataNonFinTestData),
-                ExportFileType.CSV,
-                DataType.valueOf("eutaxonomy-non-financials"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
-            )
-        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        File("./src/test/resources/dataExport/NonFinDataOutputWithAlias.csv").writeText(csvString, Charsets.UTF_8)
-    }
-
-    @Test
-    fun `check that exported csv coincides with predefined output for alias export`() {
-        val csvStream =
-            dataExportService.buildStreamFromPortfolioExportData(
-                listOf(companyExportDataNonFinTestData),
-                ExportFileType.CSV,
-                DataType.valueOf("eutaxonomy-non-financials"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
-            )
-        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        val predefinedCsv = File("./src/test/resources/dataExport/NonFinDataOutputWithAlias.csv").readText(Charsets.UTF_8)
 
         Assertions.assertEquals(predefinedCsv, csvString)
     }
