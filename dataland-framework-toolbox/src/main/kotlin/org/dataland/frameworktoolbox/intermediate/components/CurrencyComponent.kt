@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_EXTENDED_CURRENCY_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -24,14 +25,10 @@ class CurrencyComponent(
 ) : NumberBaseComponent(identifier, parent) {
     var minimumValue: Long? = null
     var maximumValue: Long? = null
-    val examplePlainData = """{
-        "value" : 100.5,
-        "currency" : "USD"
-    """
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val annotations = getAnnotationsWithMinMax(getExample(examplePlainData), minimumValue, maximumValue)
+        val annotations = getAnnotationsWithMinMax(EXAMPLE_EXTENDED_CURRENCY_COMPONENT, minimumValue, maximumValue)
 
         dataClassBuilder.addProperty(
             identifier,

@@ -3,7 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
-import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_EXTENDED_DOCUMENT_SUPPORT
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.exampleExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -33,9 +33,9 @@ open class ComponentBase(
 ) : TreeNode<FieldNodeParent> {
     fun getExample(examplePlainData: String): String =
         if (documentSupport == ExtendedDocumentSupport) {
-            "$examplePlainData, $EXAMPLE_EXTENDED_DOCUMENT_SUPPORT}"
+            exampleExtendedDocumentSupport(examplePlainData)
         } else {
-            "$examplePlainData}"
+            examplePlainData
         }
 
     /**
