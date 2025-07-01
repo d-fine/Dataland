@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -11,6 +12,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPat
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
@@ -58,12 +60,44 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getListOfDataMetaInfo(
-        @RequestParam companyId: String? = null,
-        @RequestParam dataType: DataType? = null,
-        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam uploaderUserIds: Set<UUID>? = null,
-        @RequestParam qaStatus: QaStatus? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        companyId: String? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataType: DataType? = null,
+        @RequestParam(defaultValue = "true")
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
+            required = false,
+        )
+        showOnlyActive: Boolean,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = false,
+        )
+        reportingPeriod: String? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.ALL_UPLOADER_USER_IDS_DESCRIPTION,
+            required = false,
+        )
+        uploaderUserIds: Set<UUID>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = false,
+        )
+        qaStatus: QaStatus? = null,
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
@@ -112,6 +146,12 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getDataMetaInfo(
+        @Parameter(
+            name = "dataId",
+            description = CompanyControllerDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.DATA_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable dataId: String,
     ): ResponseEntity<DataMetaInformation>
 
@@ -137,6 +177,12 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataMetaInfo(
+        @Parameter(
+            name = "dataId",
+            description = CompanyControllerDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.DATA_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("dataId") dataId: String,
         @Valid @RequestBody(required = true)
         dataMetaInformationPatch: DataMetaInformationPatch,
@@ -162,6 +208,12 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getContainedDataPoints(
+        @Parameter(
+            name = "dataId",
+            description = CompanyControllerDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.DATA_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<Map<String, String>>
 
@@ -190,10 +242,34 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getInfoOnNonSourceabilityOfDatasets(
-        @RequestParam companyId: String? = null,
-        @RequestParam dataType: DataType? = null,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam nonSourceable: Boolean? = null,
+        @RequestParam
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        companyId: String? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataType: DataType? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = false,
+        )
+        reportingPeriod: String? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.IS_NON_SOURCEABLE_EXAMPLE,
+            required = false,
+        )
+        nonSourceable: Boolean? = null,
     ): ResponseEntity<List<SourceabilityInfoResponse>>
 
     /**
@@ -247,8 +323,25 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isDataNonSourceable(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
+        @Parameter(
+            name = "dataType",
+            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("dataType") dataType: DataType,
+        @Parameter(
+            name = "reportingPeriod",
+            description = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = true,
+        )
         @PathVariable("reportingPeriod") reportingPeriod: String,
     )
 
@@ -272,8 +365,26 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAvailableDataDimensions(
-        @RequestParam companyIds: List<String>? = null,
-        @RequestParam frameworksOrDataPointTypes: List<String>? = null,
-        @RequestParam reportingPeriods: List<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        companyIds: List<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        frameworksOrDataPointTypes: List<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = false,
+        )
+        reportingPeriods: List<String>? = null,
     ): ResponseEntity<List<BasicDataDimensions>>
 }

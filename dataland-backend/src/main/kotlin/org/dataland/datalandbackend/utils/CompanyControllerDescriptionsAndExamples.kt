@@ -46,9 +46,9 @@ object CompanyControllerDescriptionsAndExamples {
     const val DATA_ID_DESCRIPTION = "The unique identifier to identify the data in the data store."
     const val DATA_ID_EXAMPLE = "1e63a842-1e65-43ed-b78a-5e7cec155c28"
 
-    const val DATA_TYPE_DESCRIPTION = "The type of the data."
+    const val DATA_TYPE_DESCRIPTION = "The framework of the dataset on Dataland."
 
-    const val CURRENTLY_ACTIVE_DESCRIPTION = "The period - e.g. a year or a specific quarter in a year - for which the data is valid"
+    const val CURRENTLY_ACTIVE_DESCRIPTION = "Boolean flag whether the dataset is currently active."
     const val CURRENTLY_ACTIVE_EXAMPLE = "true"
 
     const val QA_STATUS_DESCRIPTION =
@@ -65,7 +65,6 @@ object CompanyControllerDescriptionsAndExamples {
     const val SINGLE_IDENTIFIER_EXAMPLE = "5493001KJX4BT0IHAG73"
 
     const val IDENTIFIER_TYPE_DESCRIPTION = "The type of identifier that is used."
-    const val IDENTIFIER_TYPE_EXAMPLE = "Lei"
 
     const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_DESCRIPTION = "The number of reporting periods that are used."
     const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_EXAMPLE = "2"
@@ -82,10 +81,8 @@ object CompanyControllerDescriptionsAndExamples {
     const val UPLOADER_USER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the document."
     const val UPLOADER_USER_ID_EXAMPLE = "814caf16-54de-4385-af6e-bd6b64b64634"
 
-    const val UPLOAD_TIME_DESCRIPTION =
-        "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
-    const val UPLOAD_TIME_EXAMPLE =
-        "1751291891271"
+    const val UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
+    const val UPLOAD_TIME_EXAMPLE = "1751291891271"
 
     const val CHUNK_SIZE_DESCRIPTION =
         "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
@@ -97,4 +94,22 @@ object CompanyControllerDescriptionsAndExamples {
             "returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by " +
             "default, the first chunk (containing the meta information of the latest published documents) is " +
             "returned."
+
+    const val IS_NON_SOURCEABLE_DESCRIPTION =
+        "If true, the method only returns meta info for datasets which are" +
+            "non-sourceable and if false, it returns sourceable data."
+    const val IS_NON_SOURCEABLE_EXAMPLE = "true"
+
+    const val REASON_DESCRIPTION = "The reason why there is no source available"
+    const val REASON_EXAMPLE = "null"
+
+    const val CREATION_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was created."
+    const val CREATION_TIME_EXAMPLE = "1751291891271"
+
+    const val IS_ONLY_ACTIVE_DESCRIPTION = "Boolean flag whether the dataset is currently the only active dataset."
+    const val IS_ONLY_ACTIVE_EXAMPLE = "true"
+
+    const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
+
+    const val SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean parameter. If set to true, the results will only display active datasets."
 }
