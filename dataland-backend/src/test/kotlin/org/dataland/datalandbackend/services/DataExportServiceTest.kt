@@ -228,6 +228,68 @@ class DataExportServiceTest {
         Assertions.assertEquals(expectedAlias, result)
     }
 
+    @Test
+    fun `stripFieldNames handling with suffix abs transformation`() {
+        val aliasExportMap =
+            mapOf(
+                "finance.alignedActivities" to "FIN_ALIGNED_ACTIVITIES",
+            )
+
+        val fieldPath = "data.finance.alignedActivities.value.absoluteShare"
+        val expectedAlias = "FIN_ALIGNED_ACTIVITIES_ABS"
+
+        val result = dataExportUtils.stripFieldNames(fieldPath, aliasExportMap)
+        Assertions.assertEquals(expectedAlias, result)
+    }
+
+    @Test
+    fun `stripFieldNames handles unknown suffixes and mapping`() {
+        val aliasExportMap =
+            mapOf(
+                "environmentalImpact" to "ENV_IMPACT",
+            )
+
+        val fieldPath = "data.environmentalImpact.value.unknownSuffix"
+        val expectedAlias = "ENV_IMPACT_UNKNOWNSUFFIX"
+
+        val result = dataExportUtils.stripFieldNames(fieldPath, aliasExportMap)
+        Assertions.assertEquals(expectedAlias, result)
+    }
+
+    @Test
+    fun `prepareExportData with alias inclusion`() {
+        val includeAliases = true
+        val jsonString = """
+        {
+            "companyName": "Alias Company",
+            "companyLei": "ALIAS_LEI",
+            "reportingPeriod": "2025",
+            "data": {
+                "impact": {
+                    "value": "456"
+                }
+            }
+        }
+        """
+        val jsonNode = objectMapper.readTree(jsonString)
+        val (csvData, csvSchema, readableHeaders) =
+            dataExportUtils.prepareExportData(
+                listOf(jsonNode),
+                DataType.valueOf("sfdr"),
+                keepValueFieldsOnly = true,
+                includeAliases = includeAliases,
+            )
+
+        Assertions.assertEquals(1, csvData.size)
+        Assertions.assertTrue(csvData[0].keys.contains("impact.value"))
+
+        Assertions.assertEquals("456", csvData[0]["impact.value"])
+
+        // Assuming alias mapping for impact.value results in "IMPACT_METRIC"
+        Assertions.assertTrue(csvSchema.columnNames.contains("IMPACT_METRIC"))
+        Assertions.assertEquals("IMPACT_METRIC", readableHeaders["data.impact"])
+    }
+
     /**
      * Creates a test JSON with a data point that has only a quality field (no value field)
      */

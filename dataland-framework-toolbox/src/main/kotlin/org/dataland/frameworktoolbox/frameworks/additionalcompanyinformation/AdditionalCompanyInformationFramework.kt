@@ -21,7 +21,10 @@ class AdditionalCompanyInformationFramework :
         explanation = "Additional Company Information",
         File("./dataland-framework-toolbox/inputs/additional-company-information/additional-company-information.xlsx"),
         order = 6,
-        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.Translations,
+            ),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {
