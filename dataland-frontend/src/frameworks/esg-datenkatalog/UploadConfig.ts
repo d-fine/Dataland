@@ -721,7 +721,7 @@ export const esgDatenkatalogDataModel = [
             name: 'existenzVonRichtlinienZuSpezifischenThemen',
             label: 'Existenz von Richtlinien zu spezifischen Themen',
             description: 'Zu welchen der genannten Themen verfügt das Unternehmen über Richtlinien?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Diversität & Inklusion',
                 value: 'DiversitaetAndInklusion',
@@ -1057,7 +1057,7 @@ export const esgDatenkatalogDataModel = [
             name: 'physischeKlimaUndUmweltrisiken',
             label: 'Physische Klima- und Umweltrisiken',
             description: 'Welchen physischen Klima- und Umweltrisiken ist das Unternehmen ausgesetzt?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Dürren & Hitzewellen',
                 value: 'DuerrenAndHitzewellen',
@@ -1638,7 +1638,7 @@ export const esgDatenkatalogDataModel = [
             name: 'einbindungVonBeschaeftigtenInEntscheidungen',
             label: 'Einbindung von Beschäftigten in Entscheidungen',
             description: 'Sind Beschäftigte in betriebliche Entscheidungen des Unternehmens eingebunden?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Ja',
                 value: 'Ja',
@@ -1662,7 +1662,7 @@ export const esgDatenkatalogDataModel = [
             label: 'Einbindung von Beschäftigten in Gremien',
             description:
               'In welche Gremien sind Beschäftigte bei betrieblichen Entscheidungen des Unternehmens eingebunden?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Betriebsrat / gesetzliche Vertretungsorgane',
                 value: 'BetriebsratGesetzlicheVertretungsorgane',
@@ -1775,7 +1775,7 @@ export const esgDatenkatalogDataModel = [
             name: 'umfangDesTopManagementImUnternehmen',
             label: 'Umfang des Top-Management im Unternehmen',
             description: 'Welche Ebenen des Management werden in ihrem Unternehmen zum Top-Management gezählt?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Vorstand sowie 1. Ebene',
                 value: 'VorstandSowie1Ebene',

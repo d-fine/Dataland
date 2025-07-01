@@ -169,9 +169,7 @@ function resetErrors(): void {
 function onFrameworkChange(framework: string | undefined): void {
   resetErrors();
 
-  const reportingPeriods = framework
-    ? reportingPeriodsPerFramework.value.get(framework) ?? []
-    : [];
+  const reportingPeriods = framework ? (reportingPeriodsPerFramework.value.get(framework) ?? []) : [];
 
   selectedFramework.value = framework as DataTypeEnum;
 

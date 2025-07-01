@@ -347,7 +347,7 @@ class DataExportUtils
          * Transforms a full field path like "data.revenue.nonAlignedActivities.value.0.share.absoluteShare.amount"
          * into an alias format like "REV_NON_ALIGNED_ACTIVITIES_0_ABS", using aliasExportMap for the prefix.
          */
-        private fun stripFieldNames(
+        fun stripFieldNames(
             fullFieldName: String,
             aliasExportMap: Map<String, String?>,
         ): String {

@@ -16,7 +16,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'fiscalYearDeviation',
             label: 'Fiscal Year Deviation',
             description: 'Does the fiscal year deviate from the calendar year?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Deviation',
                 value: 'Deviation',

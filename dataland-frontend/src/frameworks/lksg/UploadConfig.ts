@@ -84,7 +84,7 @@ export const lksgDataModel = [
             name: 'shareOfTemporaryWorkers',
             label: 'Share of Temporary Workers',
             description: 'What share of the total number of employees in your company is made up by temporary workers?',
-            selectedOptions: [
+            options: [
               {
                 label: '<10%',
                 value: 'Smaller10',
@@ -200,7 +200,7 @@ export const lksgDataModel = [
             name: 'market',
             label: 'Market',
             description: 'Does your business focus predominantly on national or international markets?',
-            selectedOptions: [
+            options: [
               {
                 label: 'National',
                 value: 'National',
@@ -223,7 +223,7 @@ export const lksgDataModel = [
             name: 'specificProcurement',
             label: 'Specific Procurement',
             description: 'Does your company have one of the specific procurement models?',
-            selectedOptions: [
+            options: [
               {
                 label: 'Short-lived and changing business relationships',
                 value: 'ShortLivedAndChangingBusinessRelationships',
@@ -910,7 +910,7 @@ export const lksgDataModel = [
             name: 'highRiskCountriesRawMaterialsLocation',
             label: 'High Risk Countries Raw Materials Location',
             description: 'From which conflict/high-risk regions do you source your raw materials?',
-            selectedOptions: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: 'MultiSelectFormField',
             required: false,
@@ -931,7 +931,7 @@ export const lksgDataModel = [
             name: 'highRiskCountries',
             label: 'High Risk Countries',
             description: 'Which ones?',
-            selectedOptions: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: 'MultiSelectFormField',
             required: false,
@@ -952,7 +952,7 @@ export const lksgDataModel = [
             name: 'highRiskCountriesProcurementName',
             label: 'High Risk Countries Procurement Name',
             description: 'Which ones?',
-            selectedOptions: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: 'MultiSelectFormField',
             required: false,
