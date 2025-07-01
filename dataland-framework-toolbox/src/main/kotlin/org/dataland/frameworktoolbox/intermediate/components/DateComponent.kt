@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_DATE_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -21,24 +22,13 @@ class DateComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SimpleKotlinBackedBaseComponent(identifier, parent, "java.time.LocalDate") {
-    val example = """{
-    "value" : "2007-03-05",
-    "quality" : "Reported",
-    "comment" : "The value is reported by the company.",
-    "dataSource" : {
-    "page" : "5-7",
-    "tagName" : "date",
-    "fileName" : "AnnualReport2020.pdf",
-    "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-}"""
-
     override fun getAnnotations(): List<Annotation> {
         val schemaAnnotation =
             Annotation(
                 fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                 rawParameterSpec =
                     "description = \"\"\"${this.uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$example \"\"\"",
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_DATE_COMPONENT)} \"\"\"",
                 applicationTargetPrefix = "field",
             )
         return listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation)

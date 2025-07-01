@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_SINGLE_SELECT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -41,17 +42,6 @@ open class SingleSelectComponent(
     var options: Set<SelectionOption> = mutableSetOf()
     private var enumName = "${camelCaseComponentIdentifier}Options"
     var uploadMode: UploadMode = UploadMode.Dropdown
-    var example = """{
-    "value" : "Option 1",
-    "quality" : "Reported",
-    "comment" : "The value is reported by the company.",
-    "dataSource" : {
-      "page" : "5-7",
-      "tagName" : "date",
-      "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    }
-  }"""
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val schemaAnnotation =
@@ -59,7 +49,7 @@ open class SingleSelectComponent(
                 fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                 rawParameterSpec =
                     "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$example \"\"\"",
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_SINGLE_SELECT_COMPONENT)} \"\"\"",
                 applicationTargetPrefix = "field",
             )
         val enum =

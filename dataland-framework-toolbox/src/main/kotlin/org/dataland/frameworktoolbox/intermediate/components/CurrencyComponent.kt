@@ -24,21 +24,14 @@ class CurrencyComponent(
 ) : NumberBaseComponent(identifier, parent) {
     var minimumValue: Long? = null
     var maximumValue: Long? = null
-    var example = """{
+    val examplePlainData = """{
         "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    }"""
+        "currency" : "USD"
+    """
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val annotations = getAnnotationsWithMinMax(example, minimumValue, maximumValue)
+        val annotations = getAnnotationsWithMinMax(getExample(examplePlainData), minimumValue, maximumValue)
 
         dataClassBuilder.addProperty(
             identifier,

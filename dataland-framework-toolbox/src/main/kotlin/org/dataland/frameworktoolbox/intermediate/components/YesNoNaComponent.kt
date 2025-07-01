@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_YES_NO_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -25,25 +26,13 @@ class YesNoNaComponent(
         identifier, parent,
         "org.dataland.datalandbackend.model.enums.commons.YesNoNa",
     ) {
-    val example = """{
-    "value" : "Yes",
-    "quality" : "Reported",
-    "comment" : "The value is reported by the company.",
-    "dataSource" : {
-      "page" : "5-7",
-      "tagName" : "date",
-      "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    }
-  }"""
-
     override fun getAnnotations(): List<Annotation> {
         val schemaAnnotation =
             Annotation(
                 fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                 rawParameterSpec =
                     "description = \"\"\"${this.uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$example \"\"\"",
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_YES_NO_COMPONENT)} \"\"\"",
                 applicationTargetPrefix = "field",
             )
         return listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation)

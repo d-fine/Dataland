@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_LIST_OF_STRING_BASE_DATA_POINT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -24,22 +25,6 @@ class ListOfStringBaseDataPointComponent(
 ) : ComponentBase(identifier, parent) {
     var descriptionColumnHeader: String = "Description"
     var documentColumnHeader: String = "Document"
-    val example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					]"""
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val schemaAnnotation =
@@ -47,7 +32,7 @@ class ListOfStringBaseDataPointComponent(
                 fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                 rawParameterSpec =
                     "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$example \"\"\"",
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_LIST_OF_STRING_BASE_DATA_POINT_COMPONENT)} \"\"\"",
                 applicationTargetPrefix = "field",
             )
         dataClassBuilder.addProperty(
