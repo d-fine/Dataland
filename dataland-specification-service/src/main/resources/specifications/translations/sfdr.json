@@ -1,0 +1,146 @@
+{
+  "id" : "sfdr",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "dataDate" : "DATA_DATE",
+        "fiscalYearDeviation" : "FISCAL_YEAR_DEVIATION",
+        "fiscalYearEnd" : "FISCAL_YEAR_END",
+        "referencedReports" : "REFERENCED_REPORTS"
+      }
+    },
+    "environmental" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "SCOPE_1_GHG_EMISSIONS_IN_T",
+        "scope2GhgEmissionsInTonnes" : "SCOPE_2_GHG_EMISSIONS_IN_T",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "SCOPE_2_GHG_EMISSIONS_LOCATION_IN_T",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "SCOPE_2_GHG_EMISSIONS_MARKET_IN_T",
+        "scope1And2GhgEmissionsInTonnes" : "SCOPE_1_2_GHG_EMISSIONS_IN_T",
+        "scope1And2GhgEmissionsLocationBasedInTonnes" : "SCOPE_1_2_GHG_EMISSIONS_LOCATION_IN_T",
+        "scope1And2GhgEmissionsMarketBasedInTonnes" : "SCOPE_1_2_GHG_EMISSIONS_MARKET_IN_T",
+        "scope3GhgEmissionsInTonnes" : "SCOPE_3_GHG_EMISSIONS_IN_T",
+        "scope3UpstreamGhgEmissionsInTonnes" : "SCOPE_3_UPSTREAM_GHG_EMISSIONS_IN_T",
+        "scope3DownstreamGhgEmissionsInTonnes" : "SCOPE_3_DOWNSTREAM_GHG_EMISSIONS_IN_T",
+        "scope1And2And3GhgEmissionsInTonnes" : "SCOPE_1_2_3_GHG_EMISSIONS_IN_T",
+        "scope1And2And3GhgEmissionsLocationBasedInTonnes" : "SCOPE_1_2_3_GHG_EMISSIONS_LOCATION_IN_T",
+        "scope1And2And3GhgEmissionsMarketBasedInTonnes" : "SCOPE_1_2_3_GHG_EMISSIONS_MARKET_IN_T",
+        "scope4GhgEmissionsInTonnes" : "SCOPE_4_GHG_EMISSIONS_IN_T",
+        "enterpriseValueInEUR" : "ENTERPRISE_VALUE_IN_EUR",
+        "totalRevenueInEUR" : "TOTAL_REVENUE_IN_EUR",
+        "carbonFootprintInTonnesPerMillionEUREnterpriseValue" : "CARBON_FOOTPRINT_IN_T_PER_MIO_EUR_ENTERPRISE_VALUE",
+        "ghgIntensityInTonnesPerMillionEURRevenue" : "GHG_INTENSITY_IN_T_PER_MIO_EUR_REVENUE",
+        "ghgIntensityScope1InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_1_IN_T_PER_MIO_EUR_REVENUE",
+        "ghgIntensityScope2InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_2_IN_T_PER_MIO_EUR_REVENUE",
+        "ghgIntensityScope3InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_3_IN_T_PER_MIO_EUR_REVENUE",
+        "ghgIntensityScope4InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_4_IN_T_PER_MIO_EUR_REVENUE",
+        "fossilFuelSectorExposure" : "FOSSIL_FUEL_SECTOR_EXPOSURE",
+        "financedScope1AndScope2Emissions" : "FINANCED_SCOPE_1_2_EMISSIONS_IN_T",
+        "financedScope3Emissions" : "FINANCED_SCOPE_3_EMISSIONS_IN_T"
+      },
+      "energyPerformance" : {
+        "renewableEnergyProductionInGWh" : "RENEWABLE_ENERGY_PROD_IN_GWH",
+        "renewableEnergyConsumptionInGWh" : "RENEWABLE_ENERGY_CONS_IN_GWH",
+        "nonRenewableEnergyProductionInGWh" : "NON_RENEWABLE_ENERGY_PROD_IN_GWH",
+        "relativeNonRenewableEnergyProductionInPercent" : "REL_NON_RENEWABLE_ENERGY_PROD_PCT",
+        "nonRenewableEnergyConsumptionInGWh" : "NON_RENEWABLE_ENERGY_CONS_IN_GWH",
+        "relativeNonRenewableEnergyConsumptionInPercent" : "REL_NON_RENEWABLE_ENERGY_CONS_PCT",
+        "applicableHighImpactClimateSectors" : "APPLICABLE_HIGH_IMPACT_CLIMATE_SECTORS",
+        "totalHighImpactClimateSectorEnergyConsumptionInGWh" : "TOTAL_HIGH_IMPACT_CLIMATE_SECTOR_ENERGY_CONS_IN_GWH",
+        "nonRenewableEnergyConsumptionFossilFuelsInGWh" : "NON_RENEWABLE_ENERGY_CONS_FOSSIL_FUELS_IN_GWH",
+        "nonRenewableEnergyConsumptionCrudeOilInGWh" : "NON_RENEWABLE_ENERGY_CONS_CRUDE_OIL_IN_GWH",
+        "nonRenewableEnergyConsumptionNaturalGasInGWh" : "NON_RENEWABLE_ENERGY_CONS_NATURAL_GAS_IN_GWH",
+        "nonRenewableEnergyConsumptionLigniteInGWh" : "NON_RENEWABLE_ENERGY_CONS_LIGNITE_IN_GWH",
+        "nonRenewableEnergyConsumptionCoalInGWh" : "NON_RENEWABLE_ENERGY_CONS_COAL_IN_GWH",
+        "nonRenewableEnergyConsumptionNuclearEnergyInGWh" : "NON_RENEWABLE_ENERGY_CONS_NUCLEAR_ENERGY_IN_GWH",
+        "nonRenewableEnergyConsumptionOtherInGWh" : "NON_RENEWABLE_ENERGY_CONS_OTHER_IN_GWH"
+      },
+      "biodiversity" : {
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure" : "PRIMARY_FOREST_AND_WOODED_LAND_OF_NATIVE_SPECIES_EXPOSURE",
+        "protectedAreasExposure" : "PROTECTED_AREAS_EXPOSURE",
+        "rareOrEndangeredEcosystemsExposure" : "RARE_OR_ENDANGERED_ECOSYSTEMS_EXPOSURE",
+        "highlyBiodiverseGrasslandExposure" : "HIGHLY_BIODIVERSE_GRASSLAND_EXPOSURE",
+        "manufactureOfAgrochemicalPesticidesProducts" : "MANUFACTURE_OF_AGROCHEMICAL_PESTICIDES_PRODUCTS",
+        "landDegradationDesertificationSoilSealingExposure" : "LAND_DEGRADATION_DESERTIFICATION_SOIL_SEALING_EXPOSURE",
+        "sustainableAgriculturePolicy" : "SUSTAINABLE_AGRICULTURE_POLICY",
+        "sustainableOceansAndSeasPolicy" : "SUSTAINABLE_OCEANS_AND_SEAS_POLICY",
+        "threatenedSpeciesExposure" : "THREATENED_SPECIES_EXPOSURE",
+        "biodiversityProtectionPolicy" : "BIODIVERSITY_PROTECTION_POLICY",
+        "deforestationPolicy" : "DEFORESTATION_POLICY"
+      },
+      "water" : {
+        "emissionsToWaterInTonnes" : "EMISSIONS_TO_WATER_IN_T",
+        "waterConsumptionInCubicMeters" : "WATER_CONS_IN_M3",
+        "waterReusedInCubicMeters" : "WATER_REUSED_IN_M3",
+        "relativeWaterUsageInCubicMetersPerMillionEURRevenue" : "REL_WATER_USAGE_IN_M3_PER_MIO_EUR_REVENUE",
+        "waterManagementPolicy" : "WATER_MANAGEMENT_POLICY",
+        "highWaterStressAreaExposure" : "HIGH_WATER_STRESS_AREA_EXPOSURE"
+      },
+      "waste" : {
+        "hazardousAndRadioactiveWasteInTonnes" : "HAZARDOUS_AND_RADIOACTIVE_WASTE_IN_T",
+        "nonRecycledWasteInTonnes" : "NON_RECYCLED_WASTE_IN_T"
+      },
+      "emissions" : {
+        "emissionsOfInorganicPollutantsInTonnes" : "EMISSIONS_OF_INORGANIC_POLLUTANTS_IN_T",
+        "emissionsOfAirPollutantsInTonnes" : "EMISSIONS_OF_AIR_POLLUTANTS_IN_T",
+        "emissionsOfOzoneDepletionSubstancesInTonnes" : "EMISSIONS_OF_OZONE_DEPLETION_SUBSTANCES_IN_T",
+        "carbonReductionInitiatives" : "CARBON_REDUCTION_INITIATIVES"
+      }
+    },
+    "social" : {
+      "socialAndEmployeeMatters" : {
+        "humanRightsLegalProceedings" : "HUMAN_RIGHTS_LEGAL_PROCEEDINGS",
+        "iloCoreLabourStandards" : "ILO_CORE_LABOUR_STANDARDS",
+        "environmentalPolicy" : "ENVIRONMENTAL_POLICY",
+        "corruptionLegalProceedings" : "CORRUPTION_LEGAL_PROCEEDINGS",
+        "transparencyDisclosurePolicy" : "TRANSPARENCY_DISCLOSURE_POLICY",
+        "humanRightsDueDiligencePolicy" : "HUMAN_RIGHTS_DUE_DILIGENCE_POLICY",
+        "policyAgainstChildLabour" : "POLICY_AGAINST_CHILD_LABOUR",
+        "policyAgainstForcedLabour" : "POLICY_AGAINST_FORCED_LABOUR",
+        "policyAgainstDiscriminationInTheWorkplace" : "POLICY_AGAINST_DISCRIMINATION_IN_THE_WORKPLACE",
+        "iso14001Certificate" : "ISO_14001_CERTIFICATE",
+        "policyAgainstBriberyAndCorruption" : "POLICY_AGAINST_BRIBERY_AND_CORRUPTION",
+        "fairBusinessMarketingAdvertisingPolicy" : "FAIR_BUSINESS_MARKETING_ADVERTISING_POLICY",
+        "technologiesExpertiseTransferPolicy" : "TECHNOLOGIES_EXPERTISE_TRANSFER_POLICY",
+        "fairCompetitionPolicy" : "FAIR_COMPETITION_POLICY",
+        "violationOfTaxRulesAndRegulation" : "VIOLATION_OF_TAX_RULES_AND_REGULATION",
+        "unGlobalCompactPrinciplesCompliancePolicy" : "UNGC_PRINCIPLES_COMPLIANCE_POLICY",
+        "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling" : "OECD_GUIDELINES_GRIEVANCE_HANDLING",
+        "averageGrossHourlyEarningsMaleEmployees" : "AVG_GROSS_HOURLY_EARNINGS_MALE_EMPLOYEES",
+        "averageGrossHourlyEarningsFemaleEmployees" : "AVG_GROSS_HOURLY_EARNINGS_FEMALE_EMPLOYEES",
+        "unadjustedGenderPayGapInPercent" : "UNADJUSTED_GENDER_PAY_GAP_PCT",
+        "femaleBoardMembersSupervisoryBoard" : "FEMALE_BOARD_MEMBERS_SUPERVISORY_BOARD",
+        "femaleBoardMembersBoardOfDirectors" : "FEMALE_BOARD_MEMBERS_BOARD_OF_DIRECTORS",
+        "maleBoardMembersSupervisoryBoard" : "MALE_BOARD_MEMBERS_SUPERVISORY_BOARD",
+        "maleBoardMembersBoardOfDirectors" : "MALE_BOARD_MEMBERS_BOARD_OF_DIRECTORS",
+        "boardGenderDiversitySupervisoryBoardInPercent" : "BOARD_GENDER_DIVERSITY_SUPERVISORY_BOARD_PCT",
+        "boardGenderDiversityBoardOfDirectorsInPercent" : "BOARD_GENDER_DIVERSITY_BOARD_OF_DIRECTORS_PCT",
+        "controversialWeaponsExposure" : "CONTROVERSIAL_WEAPONS_EXPOSURE",
+        "workplaceAccidentPreventionPolicy" : "WORKPLACE_ACCIDENT_PREVENTION_POLICY",
+        "rateOfAccidents" : "RATE_OF_ACCIDENTS",
+        "workdaysLostInDays" : "WORKDAYS_LOST",
+        "supplierCodeOfConduct" : "SUPPLIER_CODE_OF_CONDUCT",
+        "grievanceHandlingMechanism" : "GRIEVANCE_HANDLING_MECHANISM",
+        "whistleblowerProtectionPolicy" : "WHISTLEBLOWER_PROTECTION_POLICY",
+        "reportedIncidentsOfDiscrimination" : "REPORTED_INCIDENTS_OF_DISCRIMINATION",
+        "sanctionedIncidentsOfDiscrimination" : "SANCTIONED_INCIDENTS_OF_DISCRIMINATION",
+        "excessiveCeoPayRatio" : "EXCESSIVE_CEO_PAY_RATIO"
+      },
+      "greenSecurities" : {
+        "securitiesNotCertifiedAsGreen" : "SECURITIES_NOT_CERTIFIED_AS_GREEN"
+      },
+      "humanRights" : {
+        "humanRightsPolicy" : "HUMAN_RIGHTS_POLICY",
+        "humanRightsDueDiligence" : "HUMAN_RIGHTS_DUE_DILIGENCE",
+        "traffickingInHumanBeingsPolicy" : "TRAFFICKING_IN_HUMAN_BEINGS_POLICY",
+        "reportedChildLabourIncidents" : "REPORTED_CHILD_LABOUR_INCIDENTS",
+        "reportedForcedOrCompulsoryLabourIncidents" : "REPORTED_FORCED_OR_COMPULSORY_LABOUR_INCIDENTS",
+        "numberOfReportedIncidentsOfHumanRightsViolations" : "NO_OF_REPORTED_INCIDENTS_OF_HUMAN_RIGHTS_VIOLATIONS"
+      },
+      "antiCorruptionAndAntiBribery" : {
+        "casesOfInsufficientActionAgainstBriberyAndCorruption" : "CASES_OF_INSUFFICIENT_ACTION_AGAINST_BRIBERY_AND_CORRUPTION",
+        "reportedConvictionsOfBriberyAndCorruption" : "REPORTED_CONVICTIONS_OF_BRIBERY_AND_CORRUPTION",
+        "totalAmountOfReportedFinesOfBriberyAndCorruption" : "TOTAL_AMOUNT_OF_REPORTED_FINES_OF_BRIBERY_AND_CORRUPTION"
+      }
+    }
+  }
+}

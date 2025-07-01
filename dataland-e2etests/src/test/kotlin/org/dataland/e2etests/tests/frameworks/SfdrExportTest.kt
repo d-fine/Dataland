@@ -91,6 +91,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
+        includeAlias: Boolean,
     ): File =
         apiAccessor.dataControllerApiForSfdrData
             .exportCompanyAssociatedSfdrDataByDimensions(

@@ -31,7 +31,7 @@
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
-                          :options="reportingPeriodOptions"
+                          :selectedOptions="reportingPeriodOptions"
                           :available-options="reportingPeriodOptions"
                           @changed="selectedReportingPeriodsError = false"
                         />
