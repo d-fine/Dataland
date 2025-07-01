@@ -16,16 +16,17 @@ data class SfdrEnvironmentalEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of emissions by inorganic pollutants. Inorganic pollutants include those resulting from radiant energy, noise, heat, or light, as well as substances like arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, fluorides, and water contaminants such as arsenic, fluoride, iron, nitrate, and heavy metals. See Regulation (EU) 2022/1288, Annex I, top (27) and table 2, indicator nr. 1.""",
-        example = """{
-        "value" : 100.5,
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
+        example = """
+            {
+            "value" : 100.5, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
             "page" : "5-7",
             "tagName" : "monetaryAmount",
             "fileName" : "AnnualReport2020.pdf",
             "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
+            }
     } """,
     )
     @field:Valid()
@@ -34,16 +35,17 @@ data class SfdrEnvironmentalEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of emissions by air pollutants. Emissions by air pollutants include direct sulphur oxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions and direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead). See Regulation (EU) 2022/1288, Annex I, top (28) and table 2, indicator nr. 2 and Directive (EU) 2016/2284, Article 3, points (5)-(8) and Annex I, table A.""",
-        example = """{
-        "value" : 100.5,
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
+        example = """
+            {
+            "value" : 100.5, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
             "page" : "5-7",
             "tagName" : "monetaryAmount",
             "fileName" : "AnnualReport2020.pdf",
             "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
+            }
     } """,
     )
     @field:Valid()
@@ -52,16 +54,17 @@ data class SfdrEnvironmentalEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of ozone depletion substances, chemicals that destroy the earth's protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl), hydrofluorocarbons (HFCs). See Regulation (EU) 2022/1288, Annex I, top (29) and table 2, indicator nr. 3 and the Montreal Protocol on Substances that Deplete the Ozone Layer.""",
-        example = """{
-        "value" : 100.5,
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
+        example = """
+            {
+            "value" : 100.5, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
             "page" : "5-7",
             "tagName" : "monetaryAmount",
             "fileName" : "AnnualReport2020.pdf",
             "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
+            }
     } """,
     )
     @field:Valid()
@@ -69,17 +72,18 @@ data class SfdrEnvironmentalEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.) If yes, please share the relevant documents with us.""",
-        example = """{
-    "value" : "Yes",
-    "quality" : "Reported",
-    "comment" : "The value is reported by the company.",
-    "dataSource" : {
-      "page" : "5-7",
-      "tagName" : "date",
-      "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    }
-  } """,
+        example = """
+            {
+            "value" :  "Yes" , 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val carbonReductionInitiatives: ExtendedDataPoint<YesNo?>? = null,

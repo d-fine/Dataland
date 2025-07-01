@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.exampleExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -30,6 +31,13 @@ open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
 ) : TreeNode<FieldNodeParent> {
+    fun getExample(examplePlainData: String): String =
+        if (documentSupport == ExtendedDocumentSupport) {
+            exampleExtendedDocumentSupport(examplePlainData)
+        } else {
+            examplePlainData
+        }
+
     /**
      * The label of a component is a human-readable short title describing the component
      */

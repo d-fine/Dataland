@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_INTEGER_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -22,19 +23,8 @@ open class IntegerComponent(
     var minimumValue: Long? = null
     var maximumValue: Long? = null
 
-    val example = """ {
-    "value" : 100,
-    "quality" : "Reported",
-    "comment" : "The value is reported by the company.",
-    "dataSource" : {
-      "page" : "5-7",
-      "tagName" : "monetaryAmount",
-      "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    }"""
-
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val annotations = getAnnotationsWithMinMax(example, minimumValue, maximumValue)
+        val annotations = getAnnotationsWithMinMax(getExample(EXAMPLE_PLAIN_INTEGER_COMPONENT), minimumValue, maximumValue)
 
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,

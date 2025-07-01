@@ -14,32 +14,37 @@ data class EutaxonomyNonFinancialsOpexEligibleShare(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Relative share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val relativeShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Absolute value of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective""",
-        example = """{
+        example = """
+        {
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
+        "comment" : "The value is reported by the company."
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
         "fileName" : "AnnualReport2020.pdf",
         "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    } """,
+        }
+     """,
     )
     val absoluteShare: CurrencyDataPoint? = null,
 )

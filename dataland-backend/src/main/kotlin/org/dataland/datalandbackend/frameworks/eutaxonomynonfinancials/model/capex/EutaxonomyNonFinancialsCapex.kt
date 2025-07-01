@@ -25,17 +25,19 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology """,
-        example = """{
+        example = """
+        {
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
+        "comment" : "The value is reported by the company."
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
         "fileName" : "AnnualReport2020.pdf",
         "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    } """,
+        }
+     """,
     )
     val totalAmount: CurrencyDataPoint? = null,
     @field:Valid()
@@ -51,150 +53,180 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of CapEx substantially contributing to climate change mitigation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of CapEx substantially contributing to climate change mitigation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change mitigation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentTransitionalShare: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of CapEx substantially contributing to climate change adaptation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
@@ -202,15 +234,18 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
@@ -218,15 +253,18 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds:
@@ -234,15 +272,18 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
@@ -250,135 +291,162 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of CapEx substantially contributing to circular economy""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of CapEx substantially contributing to circular economy""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to circular economy""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
@@ -386,15 +454,18 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
@@ -402,15 +473,18 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds:
@@ -418,15 +492,18 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
@@ -436,30 +513,36 @@ data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val enablingShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average""",
-        example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						}, """,
+        example = """
+            {
+            "value" : 13.52, 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
     )
     @field:Valid()
     val transitionalShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
