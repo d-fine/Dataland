@@ -11,24 +11,24 @@ const revenueColumnHeaders = {
   activityName: 'Activity',
   naceCodes: 'NACE Code(s)',
   share: 'Share',
-  revenue: 'Revenue',
-  revenuePercent: 'Revenue (%)',
+  kpi: 'Revenue',
+  kpiPercent: 'Revenue (%)',
 };
 
 const capexColumnHeaders = {
   activityName: 'Activity',
   naceCodes: 'NACE Code(s)',
   share: 'Share',
-  revenue: 'CapEx',
-  revenuePercent: 'CapEx (%)',
+  kpi: 'CapEx',
+  kpiPercent: 'CapEx (%)',
 };
 
 const opexColumnHeaders = {
   activityName: 'Activity',
   naceCodes: 'NACE Code(s)',
   share: 'Share',
-  revenue: 'OpEx',
-  revenuePercent: 'OpEx (%)',
+  kpi: 'OpEx',
+  kpiPercent: 'OpEx (%)',
 };
 
 export const euTaxonomyNonFinancialsModalColumnHeaders = {
@@ -36,8 +36,8 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
     activityName: 'Activity',
     naceCodes: 'NACE Code(s)',
     share: 'Share',
-    revenue: 'Revenue',
-    revenuePercent: 'Revenue (%)',
+    kpi: 'Revenue',
+    kpiPercent: 'Revenue (%)',
     substantialContributionToClimateChangeMitigationInPercent: 'Climate Change Mitigation',
     substantialContributionToClimateChangeAdaptationInPercent: 'Climate Change Adaptation',
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
@@ -89,10 +89,7 @@ export function formatNonAlignedActivitiesForDataTable(
   const tableKey = tableKeyMap[kpiType];
 
   return createModalDisplayObject({
-    activities: nonAlignedActivities.value ?? [],
-    dataSource: nonAlignedActivities.dataSource,
-    comment: nonAlignedActivities.comment,
-    quality: nonAlignedActivities.quality,
+    activities: nonAlignedActivities,
     fieldLabel,
     kpiType,
     tableKey,

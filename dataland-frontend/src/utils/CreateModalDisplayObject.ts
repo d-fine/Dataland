@@ -3,14 +3,11 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import { type ExtendedDocumentReference, type QualityOptions } from '@clients/backend';
 import { type Component } from 'vue';
+import { type ExtendedDataPoint } from '@/utils/DataPoint.ts';
 
 type CreateModalDisplayObject<T> = {
-  activities: T[];
-  dataSource?: ExtendedDocumentReference | null | undefined;
-  comment?: string | null | undefined
-  quality?: QualityOptions | null | undefined;
+  activities: ExtendedDataPoint<T[]>;
   fieldLabel: string;
   kpiType: 'revenue' | 'capex' | 'opex';
   tableKey: string;
@@ -22,8 +19,6 @@ type CreateModalDisplayObject<T> = {
  * Helper function to create a modal display object for MLDT
  *  @param activities - list of activity objects to be displayed in the modal.
  *  @param dataSource - source metadata for the data point (e.g., 'Reported by company').
- *  @param comment -  user or system comment explaining the data point.
- *  @param quality -  data quality indicator.
  *  @param fieldLabel - label of the field as shown in the modal title (e.g., "Non-Aligned Activities").
  *  @param kpiType - KPI category this data belongs to; affects labels and column headers ('revenue' | 'capex' | 'opex').
  *  @param tableKey - key identifying the specific column header set in the `columnHeaders` map.
@@ -32,9 +27,6 @@ type CreateModalDisplayObject<T> = {
  */
 export function createModalDisplayObject<T>({
   activities,
-  dataSource,
-  comment,
-  quality,
   fieldLabel,
   kpiType,
   tableKey,
@@ -46,11 +38,12 @@ export function createModalDisplayObject<T>({
     capex: 'CapEx',
     opex: 'OpEx',
   };
+  const activityList = activities.value ?? [];
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
-      label: `Show ${activities.length} activit${activities.length > 1 ? 'ies' : 'y'}`,
+      label: `Show ${activityList.length} activit${activityList.length !== 1 ? 'ies' : 'y'}`,
       modalComponent,
       modalOptions: {
         props: {
@@ -59,13 +52,13 @@ export function createModalDisplayObject<T>({
           dismissableMask: true,
         },
         data: {
-          listOfRowContents: activities,
+          listOfRowContents: activityList,
           kpiKeyOfTable: tableKey,
           columnHeaders,
           dataPointDisplay: {
-            dataSource,
-            comment,
-            quality,
+            dataSource: activities.dataSource,
+            comment: activities.comment,
+            quality: activities.quality,
           },
           kpiType,
         },

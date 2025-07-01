@@ -7,7 +7,7 @@ import { type EuTaxonomyAlignedActivity } from '@clients/backend';
 import AlignedActivitiesDataTable from '@/components/general/AlignedActivitiesDataTable.vue';
 import { euTaxonomyNonFinancialsModalColumnHeaders } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
-import {createModalDisplayObject} from "@/utils/CreateModalDisplayObject.ts";
+import { createModalDisplayObject } from '@/utils/CreateModalDisplayObject.ts';
 
 /**
  * Formats a EuTaxonomyAlignedActivities component for display in the table using a modal
@@ -17,9 +17,9 @@ import {createModalDisplayObject} from "@/utils/CreateModalDisplayObject.ts";
  * @returns the display-value for the table
  */
 export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
-    alignedActivities: ExtendedDataPoint<EuTaxonomyAlignedActivity[]> | null | undefined,
-    fieldLabel: string,
-    kpiType: 'revenue' | 'capex' | 'opex' = 'revenue'
+  alignedActivities: ExtendedDataPoint<EuTaxonomyAlignedActivity[]> | null | undefined,
+  fieldLabel: string,
+  kpiType: 'revenue' | 'capex' | 'opex' = 'revenue'
 ): AvailableMLDTDisplayObjectTypes {
   if (!alignedActivities) {
     return MLDTDisplayObjectForEmptyString;
@@ -41,8 +41,8 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
 
   const adjustedHeaders = {
     ...euTaxonomyNonFinancialsModalColumnHeaders.alignedActivities,
-    revenue: typeLabels[kpiType],
-    revenuePercent: `${typeLabels[kpiType]} (%)`,
+    kpi: typeLabels[kpiType],
+    kpiPercent: `${typeLabels[kpiType]} (%)`,
   };
 
   const customColumnHeaders = {
@@ -51,10 +51,7 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
   };
 
   return createModalDisplayObject({
-    activities: alignedActivities.value ?? [],
-    dataSource: alignedActivities.dataSource,
-    comment: alignedActivities.comment,
-    quality: alignedActivities.quality,
+    activities: alignedActivities,
     fieldLabel,
     kpiType,
     tableKey,
@@ -62,4 +59,3 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     modalComponent: AlignedActivitiesDataTable,
   });
 }
-

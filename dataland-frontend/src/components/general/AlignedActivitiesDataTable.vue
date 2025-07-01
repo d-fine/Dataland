@@ -152,9 +152,22 @@ export default defineComponent({
       { field: 'naceCodes', header: this.humanizeHeaderName('naceCodes'), frozen: true, group: '_frozen' },
     ];
 
+    const kpiField = this.kpiKeyOfTable;
+    const kpiPercentField = `${kpiField}Percent`;
+
     this.mainColumnDefinitions = [
-      { field: 'revenue', header: this.humanizeHeaderName('revenue'), group: '_revenue', groupIndex: 0 },
-      { field: 'revenuePercent', header: this.humanizeHeaderName('revenuePercent'), group: '_revenue', groupIndex: 1 },
+      {
+        field: kpiField,
+        header: this.humanizeHeaderName(kpiField),
+        group: '_revenue',
+        groupIndex: 0,
+      },
+      {
+        field: kpiPercentField,
+        header: this.humanizeHeaderName(kpiPercentField),
+        group: '_revenue',
+        groupIndex: 1,
+      },
 
       ...this.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       ...this.makeGroupColumns('dnshCriteria', 'dnsh'),
@@ -186,7 +199,7 @@ export default defineComponent({
 
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
-        ...createRevenueGroupData(col),
+        ...createRevenueGroupData(col, this.kpiKeyOfTable),
         ...createActivityGroupData<number>(
           col.activityName as string,
           'substantialContributionCriteria',
@@ -335,19 +348,25 @@ export default defineComponent({
  * @param activity targeted activity object
  * @returns list of revenue data items
  */
-function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+function createRevenueGroupData(
+  activity: EuTaxonomyAlignedActivity,
+  kpiKey: 'revenue' | 'capex' | 'opex'
+): ActivityFieldValueObject[] {
+  const value = activity.share?.absoluteShare;
+  const percent = activity.share?.relativeShareInPercent;
+
   return [
     {
       activity: activity.activityName,
       group: '_revenue',
-      field: 'revenue',
-      content: formatAmountWithCurrency(activity.share?.absoluteShare),
+      field: kpiKey,
+      content: formatAmountWithCurrency(value),
     },
     {
       activity: activity.activityName,
       group: '_revenue',
-      field: 'revenuePercent',
-      content: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
+      field: `${kpiKey}Percent`,
+      content: formatPercentageNumberAsString(percent),
     },
   ];
 }
