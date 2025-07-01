@@ -20,7 +20,7 @@ object CompanyControllerDescriptionsAndExamples {
     const val HEADQUARTERS_POSTAL_CODE_EXAMPLE = "10123"
 
     const val SECTOR_DESCRIPTION = "The industry or sector in which the company operates."
-    const val SECTOR_EXAMPLE = "Information Technology"
+    const val SECTOR_EXAMPLE = "web services"
 
     const val SECTOR_CODE_WZ_DESCRIPTION = "The industry classification code according to the NACE compliant WZ method."
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
@@ -35,11 +35,66 @@ object CompanyControllerDescriptionsAndExamples {
     const val IS_TEASER_COMPANY_EXAMPLE = "true"
 
     const val WEBSITE_DESCRIPTION = "The official website URL of the company."
-    const val WEBSITE_EXAMPLE = "www.abccorp.com"
+    const val WEBSITE_EXAMPLE = "www.abccorp.com test"
 
     const val PARENT_COMPANY_LEI_DESCRIPTION = "The LEI of the parent company, if applicable."
     const val PARENT_COMPANY_LEI_EXAMPLE = "null"
 
     const val COMPANY_ID_DESCRIPTION = "The ID under which the company can be found on Dataland."
-    const val COMPANY_ID_EXAMPLE = "string"
+    const val COMPANY_ID_EXAMPLE = "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+
+    const val DATA_ID_DESCRIPTION = "The unique identifier to identify the data in the data store."
+    const val DATA_ID_EXAMPLE = "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+
+    const val DATA_TYPE_DESCRIPTION = "The type of the data."
+
+    const val CURRENTLY_ACTIVE_DESCRIPTION = "The period - e.g. a year or a specific quarter in a year - for which the data is valid"
+    const val CURRENTLY_ACTIVE_EXAMPLE = "true"
+
+    const val QA_STATUS_DESCRIPTION =
+        "The status of the document with regard to Dataland's Quality Assurance process. " +
+            "Possible values are: Pending, Accepted, Rejected."
+
+    const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
+    const val REF_EXAMPLE = "null"
+
+    const val LEI_DESCRIPTION = "The LEI of the company."
+    const val LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
+
+    const val SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
+    const val SINGLE_IDENTIFIER_EXAMPLE = "5493001KJX4BT0IHAG73"
+
+    const val IDENTIFIER_TYPE_DESCRIPTION = "The type of identifier that is used."
+    const val IDENTIFIER_TYPE_EXAMPLE = "Lei"
+
+    const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_DESCRIPTION = "The number of reporting periods that are used."
+    const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_EXAMPLE = "2"
+
+    const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
+    const val LIST_OF_COUNTRY_CODES_EXAMPLE = "\n[\"$COUNTRY_CODE_EXAMPLE\"\n]"
+
+    const val LIST_OF_SECTORS_DESCRIPTION = "The list of sectors."
+    const val LIST_OF_SECTORS_EXAMPLE = "\n[\"$SECTOR_EXAMPLE\"\n]"
+
+    const val REPORTING_PERIOD_DESCRIPTION = "The reporting period the document belongs to (e.g. a fiscal year)."
+    const val REPORTING_PERIOD_EXAMPLE = "2023"
+
+    const val UPLOADER_USER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the document."
+    const val UPLOADER_USER_ID_EXAMPLE = "814caf16-54de-4385-af6e-bd6b64b64634"
+
+    const val UPLOAD_TIME_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
+    const val UPLOAD_TIME_EXAMPLE =
+        "1751291891271"
+
+    const val CHUNK_SIZE_DESCRIPTION =
+        "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
+            "of a single chunk. All chunks except possibly the last will have that size. The default " +
+            "value is 100."
+
+    const val CHUNK_INDEX_DESCRIPTION =
+        "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the " +
+            "returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by " +
+            "default, the first chunk (containing the meta information of the latest published documents) is " +
+            "returned."
 }

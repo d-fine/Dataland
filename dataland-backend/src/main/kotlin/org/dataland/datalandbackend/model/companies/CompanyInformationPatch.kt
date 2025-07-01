@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model.companies
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -22,23 +23,72 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param parentCompanyLei the lei of the parent company
  */
 data class CompanyInformationPatch(
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+    )
     val companyName: String? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
+    )
     val companyAlternativeNames: List<String>? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
+    )
     val companyContactDetails: List<String>? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COMPANY_LEGAL_FORM_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COMPANY_LEGAL_FORM_EXAMPLE,
+    )
     val companyLegalForm: String? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_EXAMPLE,
+    )
     val headquarters: String? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_EXAMPLE,
+    )
     val headquartersPostalCode: String? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+    )
     val sector: String? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.SECTOR_CODE_WZ_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.SECTOR_CODE_WZ_EXAMPLE,
+    )
     val sectorCodeWz: String?,
     @field:Schema(
-        example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
+        description = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
     )
     val identifiers: Map<IdentifierType, List<String>>? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+    )
     val countryCode: String? = null,
     // The following annotation is required (including the value field) due to a known issue with the openApi generator
     // for boolean fields starting with is
     @field:JsonProperty(value = "isTeaserCompany")
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.IS_TEASER_COMPANY_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.IS_TEASER_COMPANY_EXAMPLE,
+    )
     val isTeaserCompany: Boolean? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.WEBSITE_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.WEBSITE_EXAMPLE,
+    )
     val website: String? = null,
+    @field:Schema(
+        description = CompanyControllerDescriptionsAndExamples.PARENT_COMPANY_LEI_DESCRIPTION,
+        example = CompanyControllerDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
+    )
     val parentCompanyLei: String? = null,
 )

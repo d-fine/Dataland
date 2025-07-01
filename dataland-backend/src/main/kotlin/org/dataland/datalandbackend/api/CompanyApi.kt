@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationR
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -96,11 +97,40 @@ interface CompanyApi {
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
-        @RequestParam dataTypes: Set<DataType>? = null,
-        @RequestParam countryCodes: Set<String>? = null,
-        @RequestParam sectors: Set<String>? = null,
-        @RequestParam chunkSize: Int? = null,
-        @RequestParam chunkIndex: Int? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataTypes: Set<DataType>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+            required = false,
+        )
+        countryCodes: Set<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+            required = false,
+        )
+        sectors: Set<String>? = null,
+        @RequestParam(defaultValue = "100")
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+//            example = CompanyControllerDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
+            required = false,
+        )
+        chunkSize: Int? = null,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+//            example = CompanyControllerDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
+            required = false,
+        )
+        chunkIndex: Int? = null,
     ): ResponseEntity<List<BasicCompanyInformation>>
 
     /**
@@ -135,9 +165,26 @@ interface CompanyApi {
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
-        @RequestParam dataTypes: Set<DataType>? = null,
-        @RequestParam countryCodes: Set<String>? = null,
-        @RequestParam sectors: Set<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataTypes: Set<DataType>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+            required = false,
+        )
+        countryCodes: Set<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+            required = false,
+        )
+        sectors: Set<String>? = null,
     ): ResponseEntity<Int>
 
     /**
@@ -188,7 +235,18 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun existsIdentifier(
+        @Parameter(
+            name = "identifierType",
+            description = CompanyControllerDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("identifierType") identifierType: IdentifierType,
+        @Parameter(
+            name = "identifier",
+            description = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            required = true,
+        )
         @PathVariable("identifier") identifier: String,
     )
 
@@ -213,7 +271,18 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyIdByIdentifier(
+        @Parameter(
+            name = "identifierType",
+            description = CompanyControllerDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("identifierType") identifierType: IdentifierType,
+        @Parameter(
+            name = "identifier",
+            description = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            required = true,
+        )
         @PathVariable("identifier") identifier: String,
     ): ResponseEntity<CompanyId>
 
@@ -257,6 +326,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyById(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<StoredCompany>
 
@@ -285,6 +360,12 @@ interface CompanyApi {
             "@CompanyRoleChecker.canUserPatchFieldsForCompany(#companyInformationPatch, #companyId)",
     )
     fun patchCompanyById(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
         companyInformationPatch: CompanyInformationPatch,
@@ -312,6 +393,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putCompanyById(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
         companyInformation: CompanyInformation,
@@ -334,7 +421,7 @@ interface CompanyApi {
         value = ["/teaser"],
         produces = ["application/json"],
     )
-    fun getTeaserCompanies(): List<String>
+    fun getTeaserCompanies(): List<CompanyId>
 
     /**
      * A method used to retrieve the aggregated data summary for all frameworks
@@ -355,6 +442,12 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getAggregatedFrameworkDataSummary(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 
@@ -377,6 +470,12 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompanyInfo(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<CompanyInformation>
 
@@ -406,6 +505,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isCompanyIdValid(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     )
 
@@ -429,6 +534,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanySubsidiariesByParentId(
+        @Parameter(
+            name = "companyId",
+            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<List<BasicCompanyInformation>>
 
@@ -452,7 +563,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
-        @Valid @RequestBody
-        identifiers: List<String>,
+        @Valid @RequestBody(required = true)
+        identifiers: List<CompanyId>,
     ): ResponseEntity<List<CompanyIdentifierValidationResult>>
 }
