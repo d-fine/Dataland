@@ -470,7 +470,7 @@ export const vsmeDataModel = [
             label: 'Measure Waste',
             description:
               'Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.',
-            selectedOptions: [
+            options: [
               {
                 label: 'Weight (preferred)',
                 value: 'WeightPreferred',
@@ -505,7 +505,7 @@ export const vsmeDataModel = [
             label: 'Measure Employees',
             description:
               'You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.',
-            selectedOptions: [
+            options: [
               {
                 label: 'Full-Time Equivalents',
                 value: 'FullTimeEquivalents',
@@ -897,7 +897,7 @@ export const vsmeDataModel = [
             label: 'Pay Gap Basis',
             description:
               'Please, in the following provide pay rates and work hours. On which basis do you prefer to report?',
-            selectedOptions: [
+            options: [
               {
                 label: 'annual',
                 value: 'Annual',
