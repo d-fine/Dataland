@@ -6,8 +6,8 @@ object OpenApiDescriptionsAndExamples {
     const val BYPASS_QA_EXAMPLE = "false"
 
     const val DATA_ID_DESCRIPTION =
-        "The ID under which the data set can be found on Dataland. It is contained in the HTTP response " +
-            "after posting a new data set. It is not available for data points that are not posted as part of a data set."
+        "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response " +
+            "after posting a new dataset. It is not available for data points that are not posted as part of a dataset."
     const val DATA_ID_EXAMPLE =
         "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
 
