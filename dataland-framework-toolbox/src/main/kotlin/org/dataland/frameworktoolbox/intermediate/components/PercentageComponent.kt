@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_PERCENTAGE_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -29,15 +30,6 @@ class PercentageComponent(
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
     override var constantUnitSuffix: String? = "%"
-    val example = """{
-						"value": 13.52,
-						"dataSource": {
-							"page": "108",
-							"fileName": "AnnualReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						},"""
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val schemaAnnotation =
@@ -45,7 +37,7 @@ class PercentageComponent(
                 fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                 rawParameterSpec =
                     "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$example \"\"\"",
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT)} \"\"\"",
                 applicationTargetPrefix = "field",
             )
 
