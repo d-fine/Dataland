@@ -621,11 +621,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -690,11 +692,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -759,11 +763,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -828,11 +834,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -897,11 +905,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -966,11 +976,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -1035,11 +1047,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -1104,11 +1118,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -1173,11 +1189,13 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "Boolean to decide whether data is sent to QA or not.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "example": false
           }
         ],
         "requestBody": {
@@ -2864,21 +2882,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -2922,41 +2938,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -3018,27 +3049,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -3096,18 +3133,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -3162,21 +3203,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -3220,41 +3259,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -3316,27 +3370,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -3394,18 +3454,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -3460,21 +3524,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -3518,41 +3580,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -3614,27 +3691,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -3692,18 +3775,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -3758,21 +3845,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -3816,41 +3901,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -3912,27 +4012,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -3990,18 +4096,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -4056,21 +4166,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataHeimathafenData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -4114,41 +4222,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -4210,27 +4333,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -4288,18 +4417,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -4354,21 +4487,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -4412,41 +4543,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -4508,27 +4654,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -4586,18 +4738,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -4652,21 +4808,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -4710,41 +4864,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -4806,27 +4975,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -4884,18 +5059,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -4950,21 +5129,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgDatenkatalogData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -5008,41 +5185,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -5104,27 +5296,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -5182,18 +5380,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
@@ -5248,21 +5450,19 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The ID under which the dataset can be found on Dataland. It is contained in the HTTP response after posting a new dataset. It is not available for data points that are not posted as part of a dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "3e35a2fa-b1d4-4c2c-b5b7-44f2b12865c2"
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -5306,41 +5506,56 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2020",
+              "2022",
+              "2023"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "536a58ed-bbea-4a12-b9f8-b20508582a0e",
+              "90ffd580-b99c-47f2-8955-dc5ff28549fe"
+            ]
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
-            }
+            },
+            "example": "CSV"
           },
           {
             "name": "keepValueFieldsOnly",
             "in": "query",
+            "description": "true, if data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -5402,27 +5617,33 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "If set to true, only active datasets will be returned (e.g. no outdated ones).",
             "required": false,
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "example": true
           },
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           }
         ],
         "responses": {
@@ -5480,18 +5701,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period associated with the data (e.g. fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2022
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "A unique ID for the company within Dataland (not the LEI).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "536a58ed-bbea-4a12-b9f8-b20508582a0e"
           }
         ],
         "responses": {
