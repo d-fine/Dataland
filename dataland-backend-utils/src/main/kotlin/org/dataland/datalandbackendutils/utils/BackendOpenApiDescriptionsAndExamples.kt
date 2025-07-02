@@ -112,7 +112,9 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
 
-    const val SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean parameter. If set to true, the results will only display active datasets."
+    const val SHOW_ONLY_ACTIVE_DESCRIPTION =
+        "Boolean parameter. If set to true or empty, only metadata of QA reports " +
+            "are returned that are active. If set to false, all QA reports will be returned regardless of their active status."
 
     const val DATA_POINT_ID_DESCRIPTION = "The unique identifier to identify the datapoint."
     const val DATA_POINT_ID_EXAMPLE = "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
@@ -152,4 +154,16 @@ object BackendOpenApiDescriptionsAndExamples {
             "    \"numberOfProvidedReportingPeriods\":0" +
             "  }" +
             "}"
+
+    const val COMMENT_DESCRIPTION = "Optional comment to explain the QA review status change."
+    const val COMMENT_EXAMPLE = "comment"
+
+    const val OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION =
+        "Boolean flag. If true, the QA status of the data points are overwritten."
+
+    const val REVIEWER_ID_DESCRIPTION = "The unique ID of the user who uploaded the review."
+    const val REVIEWER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+
+    const val REVIEW_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was reviewed."
+    const val REVIEW_TIMESTAMP_EXAMPLE = UPLOAD_TIME_EXAMPLE
 }
