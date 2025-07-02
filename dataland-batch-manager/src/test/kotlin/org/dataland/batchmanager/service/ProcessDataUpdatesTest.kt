@@ -25,7 +25,6 @@ import org.mockito.Mockito.any
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
-import org.mockito.Mockito.never
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -241,9 +240,9 @@ class ProcessDataUpdatesTest {
         method.isAccessible = true
         method.invoke(processDataUpdates)
 
-        verify(mockGleifGoldenCopyIngestorTest, never()).prepareGleifDeltaFile(false)
-        verify(mockGleifGoldenCopyIngestorTest, never()).processIsinMappingFile(false)
-        verify(mockGleifGoldenCopyIngestorTest, never()).processRelationshipFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, times(1)).prepareGleifDeltaFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, times(1)).processIsinMappingFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, times(1)).processRelationshipFile(false)
     }
 
     @Test
