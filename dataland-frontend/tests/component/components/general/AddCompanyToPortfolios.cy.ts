@@ -12,6 +12,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       userId: 'user-id',
       creationTimestamp: 0,
       lastUpdateTimestamp: 1,
+      isMonitored: true,
+      startingMonitoringPeriod: '2024',
+      monitoredFrameworks: new Set('sfdr'),
     },
     {
       portfolioId: 'p2',
@@ -20,6 +23,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       userId: 'user-id',
       creationTimestamp: 123,
       lastUpdateTimestamp: 456,
+      isMonitored: false,
+      startingMonitoringPeriod: undefined,
+      monitoredFrameworks: new Set(),
     },
     {
       portfolioId: 'p3',
@@ -28,6 +34,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       userId: 'user-id',
       creationTimestamp: 999,
       lastUpdateTimestamp: 9999,
+      isMonitored: true,
+      startingMonitoringPeriod: '2020',
+      monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
     },
   ];
 

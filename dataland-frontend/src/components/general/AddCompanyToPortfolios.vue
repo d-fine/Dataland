@@ -75,7 +75,7 @@ const isLoading = ref(false);
 const displaySuccessMessage = ref(false);
 
 const selectedItemsLabel = computed(() => {
-  return `{0} item ${selectedPortfolios.value.length > 1 ? 's' : ''} selected`;
+  return `{0} item${selectedPortfolios.value.length > 1 ? 's' : ''} selected`;
 });
 
 onMounted(() => {
@@ -103,6 +103,9 @@ async function handleCompanyAddition(): Promise<void> {
           portfolioName: selectedPortfolio.portfolioName,
           // as unknown as Set<string> cast required to ensure proper json is created
           companyIds: updatedCompanyIds as unknown as Set<string>,
+          isMonitored: selectedPortfolio.isMonitored,
+          startingMonitoringPeriod: selectedPortfolio.startingMonitoringPeriod,
+          monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
         });
       })
     );
@@ -162,7 +165,8 @@ function closeDialog(): void {
   margin: variables.$spacing-sm 28%;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  border: 3px solid black;
+  color: variables.$brown-light;
+  border: 2px solid variables.$brown-light;
 }
 
 :deep(.p-multiselect-trigger) {
