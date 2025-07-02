@@ -22,25 +22,25 @@ kotlin = "2.0.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.18.0"
-junit-jupiter = "5.12.2"
-log4j = "2.24.3"
+junit-jupiter = "5.13.2"
+log4j = "2.25.0"
 jackson = "2.18.4"
 logback = "1.5.18"
-flyway = "11.8.2"
+flyway = "11.10.0"
 cloudevents = "4.0.1"
 itext = "9.2.0"
 tika = "3.2.0"
 poi = "5.4.1"
 jodconverter = "4.4.9"
 spring-boot = "3.5.3"
-spring-framework = "6.2.7"
+spring-framework = "6.2.8"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
 
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.1" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.2" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
@@ -92,13 +92,13 @@ spring-security-crypto = { module = "org.springframework.security:spring-securit
 spring-security-web = { module = "org.springframework.security:spring-security-web" }
 
 # Spring-related
-spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.2.1" }
+spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.3.0" }
 springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.5" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
 # PostgreSQL
-postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.5" }
+postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.7" }
 
 # H2
 h2 = { group = "com.h2database", name = "h2", version = "2.3.232" }
@@ -140,10 +140,10 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
 
 # JSON
-json = { group = "org.json", name = "json", version = "20250107" }
+json = { group = "org.json", name = "json", version = "20250517" }
 
 # Mailjet
-mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.6" }
+mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "6.0.0" }
 
 # Flyway
 flyway = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }

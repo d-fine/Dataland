@@ -14,7 +14,8 @@
       v-if="
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
-        frameworkIdentifier == DataTypeEnum.Sfdr
+        frameworkIdentifier == DataTypeEnum.Sfdr ||
+        frameworkIdentifier == DataTypeEnum.NuclearAndGas
       "
       :reporting-periods="sortedReportingPeriods"
       :reports="sortedReports"
@@ -68,6 +69,7 @@ import {
   DataTypeEnum,
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
+  type NuclearAndGasData,
   type SfdrData,
 } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -128,6 +130,14 @@ const sortedReports = computed(() => {
     case DataTypeEnum.Sfdr: {
       return sortedDataAndMetaInfo.value
         .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports)
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+    }
+    case DataTypeEnum.NuclearAndGas: {
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports
+        )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     default: {
