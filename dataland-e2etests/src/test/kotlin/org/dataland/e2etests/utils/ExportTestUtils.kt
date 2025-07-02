@@ -212,7 +212,7 @@ object ExportTestUtils {
      * @param contextMessage Context information for the error message
      * @return The index of the first matching column or -1 if none found
      */
-    fun assertColumnPatternExists(
+    fun assertColumnPatternExistsOrNot(
         headers: List<String>,
         columnNamePart: String,
         shouldExist: Boolean,
