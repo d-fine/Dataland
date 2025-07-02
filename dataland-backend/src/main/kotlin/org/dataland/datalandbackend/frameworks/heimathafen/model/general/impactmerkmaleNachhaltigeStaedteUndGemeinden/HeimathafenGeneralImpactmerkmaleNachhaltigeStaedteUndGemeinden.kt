@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the ImpactmerkmaleNachhaltigeStaedteUndGemeinden section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

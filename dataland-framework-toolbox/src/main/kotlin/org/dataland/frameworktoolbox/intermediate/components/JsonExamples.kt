@@ -4,6 +4,10 @@ package org.dataland.frameworktoolbox.intermediate.components
  * Stores constants which do not seem fit to be defined at point of use
  */
 object JsonExamples {
+    /**
+     * Obtain an example with extended document support
+     * @param examplePlainData an example for the component without extended document support
+     */
     fun exampleExtendedDocumentSupport(plainTextExample: String) =
         """
             {
@@ -23,7 +27,7 @@ object JsonExamples {
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

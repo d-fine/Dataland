@@ -11,6 +11,7 @@ import java.math.BigInteger
 /**
  * The data-model for the HumanRights section
  */
+@Suppress("MaxLineLength")
 data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

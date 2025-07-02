@@ -31,13 +31,6 @@ open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
 ) : TreeNode<FieldNodeParent> {
-    fun getExample(examplePlainData: String): String =
-        if (documentSupport == ExtendedDocumentSupport) {
-            exampleExtendedDocumentSupport(examplePlainData)
-        } else {
-            examplePlainData
-        }
-
     /**
      * The label of a component is a human-readable short title describing the component
      */
@@ -116,6 +109,17 @@ open class ComponentBase(
      * Specifies which kind of document-support (Datapoint-type) is desired for this component
      */
     var documentSupport: DocumentSupport = NoDocumentSupport
+
+    /**
+     * Obtain an example for this component
+     * @param examplePlainData an example for this component without extended document support
+     */
+    fun getExample(examplePlainData: String): String =
+        if (documentSupport == ExtendedDocumentSupport) {
+            exampleExtendedDocumentSupport(examplePlainData)
+        } else {
+            examplePlainData
+        }
 
     /**
      * Obtain a list of all parents of this node until the root node

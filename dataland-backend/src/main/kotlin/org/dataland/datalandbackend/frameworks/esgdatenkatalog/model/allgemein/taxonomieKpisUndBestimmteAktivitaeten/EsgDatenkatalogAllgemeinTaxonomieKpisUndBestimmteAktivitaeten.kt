@@ -9,6 +9,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the TaxonomieKpisUndBestimmteAktivitaeten section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogAllgemeinTaxonomieKpisUndBestimmteAktivitaeten(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

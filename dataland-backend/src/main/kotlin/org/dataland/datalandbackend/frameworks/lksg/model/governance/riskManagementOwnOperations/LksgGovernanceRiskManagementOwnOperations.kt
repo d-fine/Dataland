@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the RiskManagementOwnOperations section
  */
+@Suppress("MaxLineLength")
 data class LksgGovernanceRiskManagementOwnOperations(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

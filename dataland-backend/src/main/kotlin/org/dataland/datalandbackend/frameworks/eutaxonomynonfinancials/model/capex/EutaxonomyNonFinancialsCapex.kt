@@ -21,6 +21,7 @@ import kotlin.collections.MutableList
 /**
  * The data-model for the Capex section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancialsCapex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -30,7 +31,7 @@ data class EutaxonomyNonFinancialsCapex(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

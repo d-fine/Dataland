@@ -18,6 +18,7 @@ import java.time.LocalDate
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancialsGeneral(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

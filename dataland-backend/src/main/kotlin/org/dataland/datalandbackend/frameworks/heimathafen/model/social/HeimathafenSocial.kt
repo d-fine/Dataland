@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr.Hei
 /**
  * The data-model for the Social section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenSocial(
     @field:Valid()
     val nachhaltigskeitsrisiken: HeimathafenSocialNachhaltigskeitsrisiken? = null,

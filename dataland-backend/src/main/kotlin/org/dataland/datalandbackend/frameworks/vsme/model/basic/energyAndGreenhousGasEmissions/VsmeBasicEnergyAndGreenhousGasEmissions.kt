@@ -9,6 +9,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the EnergyAndGreenhousGasEmissions section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicEnergyAndGreenhousGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

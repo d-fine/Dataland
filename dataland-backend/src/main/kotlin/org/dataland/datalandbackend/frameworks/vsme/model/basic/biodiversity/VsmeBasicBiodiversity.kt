@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Biodiversity section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicBiodiversity(
     val sitesAndAreas: List<VsmeSiteAndArea?>? = null,
     @Suppress("ktlint:standard:max-line-length")

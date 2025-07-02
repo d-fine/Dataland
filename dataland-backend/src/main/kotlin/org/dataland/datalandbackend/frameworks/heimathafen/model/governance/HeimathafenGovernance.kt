@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.good
 /**
  * The data-model for the Governance section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenGovernance(
     @field:Valid()
     val goodGovernance: HeimathafenGovernanceGoodGovernance? = null,

@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 /**
  * The data-model for the BasisForPreparation section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicBasisForPreparation(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

@@ -23,7 +23,14 @@ data class BasePortfolio(
     val lastUpdateTimestamp: Long,
     @field:JsonProperty(required = true)
     override val companyIds: Set<String>,
-) : Portfolio {
+    @field:JsonProperty(required = false)
+    override val isMonitored: Boolean,
+    @field:JsonProperty(required = false)
+    override val startingMonitoringPeriod: String?,
+    @field:JsonProperty(required = false)
+    override val monitoredFrameworks: Set<String>,
+) : Portfolio,
+    PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
         portfolioName = portfolioUpload.portfolioName,
@@ -31,23 +38,43 @@ data class BasePortfolio(
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = portfolioUpload.companyIds,
+        isMonitored = portfolioUpload.isMonitored,
+        startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod,
+        monitoredFrameworks = portfolioUpload.monitoredFrameworks,
+    )
+
+    constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
+        portfolioId = UUID.randomUUID().toString(),
+        portfolioName = "",
+        userId = DatalandAuthentication.fromContext().userId,
+        creationTimestamp = Instant.now().toEpochMilli(),
+        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+        companyIds = emptySet(),
+        isMonitored = portfolioMonitoringPatch.isMonitored,
+        startingMonitoringPeriod = portfolioMonitoringPatch.startingMonitoringPeriod,
+        monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
     )
 
     /**
-     * Creates portfolio entity object from BasePortfolio.
-     * In case of replacing an existing portfolio (PUT), provide portfolioId and creationTimestamp of portfolio to be
-     * replaced in order to keep them (and not replace them).
+     * Creates portfolio entity object from BasePortfolio. If parameters are null, the given values remain.
      */
     fun toPortfolioEntity(
         portfolioId: String? = null,
-        creationTimestamp: Long? = null,
+        creationTimestamp: Long = this.creationTimestamp,
+        lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
+        isMonitored: Boolean = this.isMonitored,
+        startingMonitoringPeriod: String? = null,
+        monitoredFrameworks: Set<String> = this.monitoredFrameworks,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
             portfolioName = this.portfolioName,
             userId = this.userId,
-            creationTimestamp = creationTimestamp ?: this.creationTimestamp,
-            lastUpdateTimestamp = this.lastUpdateTimestamp,
+            creationTimestamp = creationTimestamp,
+            lastUpdateTimestamp = lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
+            isMonitored = isMonitored,
+            startingMonitoringPeriod = startingMonitoringPeriod ?: this.startingMonitoringPeriod,
+            monitoredFrameworks = monitoredFrameworks,
         )
 }

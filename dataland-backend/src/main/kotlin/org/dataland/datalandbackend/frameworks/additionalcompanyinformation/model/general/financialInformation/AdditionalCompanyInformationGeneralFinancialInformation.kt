@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 /**
  * The data-model for the FinancialInformation section
  */
+@Suppress("MaxLineLength")
 data class AdditionalCompanyInformationGeneralFinancialInformation(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -16,7 +17,7 @@ data class AdditionalCompanyInformationGeneralFinancialInformation(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -34,7 +35,7 @@ data class AdditionalCompanyInformationGeneralFinancialInformation(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -52,7 +53,7 @@ data class AdditionalCompanyInformationGeneralFinancialInformation(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -70,7 +71,7 @@ data class AdditionalCompanyInformationGeneralFinancialInformation(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

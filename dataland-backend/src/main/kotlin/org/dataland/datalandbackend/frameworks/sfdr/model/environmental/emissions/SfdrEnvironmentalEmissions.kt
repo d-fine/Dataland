@@ -11,6 +11,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Emissions section
  */
+@Suppress("MaxLineLength")
 data class SfdrEnvironmentalEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")

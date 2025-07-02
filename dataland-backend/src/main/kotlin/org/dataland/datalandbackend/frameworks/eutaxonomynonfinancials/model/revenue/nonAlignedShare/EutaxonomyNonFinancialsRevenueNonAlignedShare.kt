@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the NonAlignedShare section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancialsRevenueNonAlignedShare(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -37,7 +38,7 @@ data class EutaxonomyNonFinancialsRevenueNonAlignedShare(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

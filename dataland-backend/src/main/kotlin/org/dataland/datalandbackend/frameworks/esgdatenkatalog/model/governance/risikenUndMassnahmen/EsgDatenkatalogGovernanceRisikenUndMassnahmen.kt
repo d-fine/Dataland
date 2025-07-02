@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 /**
  * The data-model for the RisikenUndMassnahmen section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogGovernanceRisikenUndMassnahmen(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

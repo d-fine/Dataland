@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the RisikenUndMassnahmen section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogSozialesRisikenUndMassnahmen(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

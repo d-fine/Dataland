@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 /**
  * The data-model for the TaxonomyEligibleButNotAligned section
  */
+@Suppress("MaxLineLength")
 data class NuclearAndGasGeneralTaxonomyEligibleButNotAligned(
     @field:Valid()
     val nuclearAndGasTaxonomyEligibleButNotAlignedRevenue: ExtendedDataPoint<NuclearAndGasEligibleButNotAligned?>? = null,

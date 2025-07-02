@@ -9,6 +9,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Water section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

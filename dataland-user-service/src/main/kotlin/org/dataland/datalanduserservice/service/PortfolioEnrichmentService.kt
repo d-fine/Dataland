@@ -3,10 +3,9 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,11 +17,9 @@ import org.springframework.transaction.annotation.Transactional
 class PortfolioEnrichmentService
     @Autowired
     constructor(
-        private val portfolioService: PortfolioService,
         private val metaDataControllerApi: MetaDataControllerApi,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
-        private val logger = LoggerFactory.getLogger(PortfolioEnrichmentService::class.java)
         private val majorFrameworks =
             listOf("sfdr", "eutaxonomy-financials", "eutaxonomy-non-financials", "nuclear-and-gas")
 
@@ -92,13 +89,17 @@ class PortfolioEnrichmentService
         ): List<EnrichedPortfolioEntry> {
             val companyValidationResults = companyDataControllerApi.postCompanyValidation(companyIdList)
             val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
-                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(companyIdList, frameworkList)
+                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
+                    companyIdList,
+                    frameworkList,
+                )
             val enrichedEntries = mutableListOf<EnrichedPortfolioEntry>()
 
             companyValidationResults.forEach { validationResult ->
                 val companyInformation = validationResult.companyInformation ?: return@forEach
                 val mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
-                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId] ?: mapOf()
+                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId]
+                        ?: mapOf()
                 enrichedEntries.add(
                     getEnrichedEntry(
                         companyInformation,
@@ -118,17 +119,12 @@ class PortfolioEnrichmentService
         }
 
         /**
-         * Retrieve an enriched portfolio for a given portfolio ID
-         * @param portfolioId the portfolio identifier
+         * Retrieve an enriched portfolio for a given portfolio.
          */
         @Transactional(readOnly = true)
-        fun getEnrichedPortfolio(portfolioId: String): EnrichedPortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
-            logger.info("Retrieve enriched portfolio with portfolioId: $portfolioId for user with userId: $userId.")
-
-            val portfolio = portfolioService.getPortfolio(portfolioId)
-            return EnrichedPortfolio(
-                portfolioId = portfolioId,
+        fun getEnrichedPortfolio(portfolio: BasePortfolio): EnrichedPortfolio =
+            EnrichedPortfolio(
+                portfolioId = portfolio.portfolioId,
                 portfolioName = portfolio.portfolioName,
                 userId = portfolio.userId,
                 entries =
@@ -136,6 +132,8 @@ class PortfolioEnrichmentService
                         portfolio.companyIds.toList(),
                         majorFrameworks,
                     ),
+                isMonitored = portfolio.isMonitored,
+                startingMonitoringPeriod = portfolio.startingMonitoringPeriod,
+                monitoredFrameworks = portfolio.monitoredFrameworks,
             )
-        }
     }
