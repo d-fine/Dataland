@@ -50,4 +50,8 @@ main {
     margin-top: 82px;
   }
 }
+
+.w-10 {
+  width: 10vw;
+}
 </style>

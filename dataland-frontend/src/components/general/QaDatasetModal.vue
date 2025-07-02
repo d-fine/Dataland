@@ -113,3 +113,17 @@ pre#dataset-container {
   border: 1px solid var(--red-700);
 }
 </style>
+
+<style scoped>
+.w-30 {
+  width: 30vw;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

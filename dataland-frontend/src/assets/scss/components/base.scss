@@ -25,11 +25,11 @@ body {
   padding: 0;
 }
 
-.w-10 {
+/*.w-10 {
   width: 10vw;
-}
+}*/
 
-.w-30 {
+/*.w-30 {
   width: 30vw;
 }
 
@@ -39,19 +39,19 @@ body {
 
 .flex-direction-column {
   flex-direction: column;
-}
+}*/
 
-.p-component {
+/*.p-component {
   &:disabled {
     opacity: 0.8;
   }
-}
+}*/
 
-.d-content {
+/*.d-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
+}*/
 
 .p-badge {
   color: colors.$btn-primary-color;
@@ -130,22 +130,22 @@ body {
   }
 }
 
-.d-center-div {
+/*.d-center-div {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
+}*/
 
-.d-letters {
+/*.d-letters {
   letter-spacing: 0.05em;
-}
+}*/
 
 // sections
-.paper-section {
+/*.paper-section {
   background-color: variables.$paper-white;
-}
+}*/
 
 // We want this classes to always overwrite styles to main colors
 .text-primary,

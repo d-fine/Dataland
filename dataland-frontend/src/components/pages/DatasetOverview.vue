@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section relative">
+    <TheContent class="relative">
       <DatasetsTabMenu :initial-tab-index="1">
         <div class="col-12 flex flex-row justify-content-between align-items-end">
           <NewDatasetButton v-if="hasUserUploaderRights" />

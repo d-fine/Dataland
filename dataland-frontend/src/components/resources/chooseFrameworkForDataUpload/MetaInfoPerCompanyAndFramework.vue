@@ -169,3 +169,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

@@ -116,7 +116,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 #search-result-framework-data tr:hover {
   cursor: pointer;
 }
@@ -127,5 +127,13 @@ export default defineComponent({
 
 #search-result-framework-data .d-justify-content-end-inner > div {
   justify-content: end;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
 }
 </style>

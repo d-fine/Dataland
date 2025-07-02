@@ -335,4 +335,8 @@ export default defineComponent({
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
 </style>

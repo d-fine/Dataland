@@ -1,33 +1,31 @@
 <template>
   <TheHeader v-if="!useMobileView" />
-  <TheContent class="paper-section flex">
+  <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="grid-container">
-      <div class="paper-section">
-        <div class="card">
-          <div class="card__title">Latest Documents</div>
-          <div class="card__separator" />
-          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
-            <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
-            <div v-if="getDocumentData(category).length === 0">-</div>
-            <div v-else>
-              <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                <DocumentDownloadLink
-                  :document-download-info="{
-                    downloadName: documentNameOrId(document),
-                    fileReference: document.documentId,
-                  }"
-                  :label="documentNameOrId(document)"
-                  :suffix="documentPublicationDateOrEmpty(document)"
-                  show-icon
-                />
-              </div>
+      <div class="card">
+        <div class="card__title">Latest Documents</div>
+        <div class="card__separator" />
+        <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
+          <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
+          <div v-if="getDocumentData(category).length === 0">-</div>
+          <div v-else>
+            <div v-for="document in getDocumentData(category)" :key="document.documentId">
+              <DocumentDownloadLink
+                :document-download-info="{
+                  downloadName: documentNameOrId(document),
+                  fileReference: document.documentId,
+                }"
+                :label="documentNameOrId(document)"
+                :suffix="documentPublicationDateOrEmpty(document)"
+                show-icon
+              />
             </div>
           </div>
-          <a :href="`/companies/${companyId}/documents`" class="tertiary-button">
-            VIEW ALL DOCUMENTS <span class="material-icons">arrow_forward_ios</span>
-          </a>
         </div>
+        <a :href="`/companies/${companyId}/documents`" class="tertiary-button">
+          VIEW ALL DOCUMENTS <span class="material-icons">arrow_forward_ios</span>
+        </a>
       </div>
       <div>
         <div class="card-grid" :data-test="'summaryPanels'">
@@ -228,7 +226,7 @@ export default defineComponent({
     /**
      * Checks if the user is allowed to upload datasets for the framework
      * @param framework to check for
-     * @returns a boolean as result of this check
+     * @returns a boolean as the result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
       return this.isUserCompanyOwnerOrUploader || (isFrameworkPublic(framework) && this.isUserKeycloakUploader);
@@ -351,5 +349,9 @@ export default defineComponent({
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
 }
 </style>

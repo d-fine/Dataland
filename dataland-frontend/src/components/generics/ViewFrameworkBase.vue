@@ -1,6 +1,6 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
-  <TheContent class="paper-section min-h-screen">
+  <TheContent class="min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
@@ -490,3 +490,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

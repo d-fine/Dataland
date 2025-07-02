@@ -124,7 +124,7 @@
         </div>
       </PrimeDialog>
 
-      <div class="py-4 paper-section">
+      <div class="py-4">
         <div class="grid col-9 justify-content-around">
           <div class="col-4">
             <div class="card" data-test="card_requestDetails">
@@ -656,5 +656,13 @@ export default defineComponent({
   -webkit-columns: 2;
   -moz-columns: 2;
   list-style-type: none;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
 }
 </style>

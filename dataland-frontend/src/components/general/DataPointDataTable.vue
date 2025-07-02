@@ -103,4 +103,10 @@ export default defineComponent({
 .width-auto {
   width: auto;
 }
+
+.p-component {
+  &:disabled {
+    opacity: 0.8;
+  }
+}
 </style>

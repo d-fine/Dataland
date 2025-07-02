@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="4">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div
             id="searchBarAndFiltersContainer"
@@ -417,5 +417,23 @@ export default defineComponent({
 <style scoped>
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
+}
+
+.p-component {
+  &:disabled {
+    opacity: 0.8;
+  }
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
 }
 </style>

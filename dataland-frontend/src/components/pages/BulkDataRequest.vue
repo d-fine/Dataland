@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section no-ui-message">
+    <TheContent class="no-ui-message">
       <div class="col-12 mb-2 bg-white">
         <div class="text-left company-details px-4">
           <h1 data-test="headerLabel">Bulk Data Request</h1>
@@ -469,5 +469,9 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.paper-section {
+  background-color: variables.$paper-white;
 }
 </style>

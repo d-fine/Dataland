@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="0">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <div
           id="searchBarAndFiltersContainer"
           class="w-full pt-4 pl-4"
@@ -417,15 +417,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.d-search-toggle {
-  z-index: 99;
-  top: 4rem;
-}
-
 .search-filters-panel {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
 }
 </style>

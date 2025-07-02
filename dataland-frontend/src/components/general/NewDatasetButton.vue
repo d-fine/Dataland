@@ -15,3 +15,8 @@ export default defineComponent({
   components: { PrimeButton },
 });
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

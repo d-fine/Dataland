@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="2">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <Tabs value="addNewPortfolio" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
           <TabList>
             <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
@@ -107,7 +107,7 @@ watch(
       void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
     }
   },
-  { flush: 'post' },
+  { flush: 'post' }
 );
 
 /**
@@ -120,7 +120,7 @@ watch(
     if (newIndex !== -1) {
       currentIndex.value = newIndex;
     }
-  },
+  }
 );
 
 /**
@@ -186,7 +186,7 @@ function addNewPortfolio(): void {
       if (portfolioName) {
         void getPortfolios().then(() => {
           currentIndex.value = portfolioNames.value.findIndex(
-            (portfolio) => portfolio.portfolioId == portfolioName.portfolioId,
+            (portfolio) => portfolio.portfolioId == portfolioName.portfolioId
           );
         });
       }

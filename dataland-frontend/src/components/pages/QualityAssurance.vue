@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="3">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
           <div
             id="searchBarAndFiltersContainer"
@@ -355,5 +355,17 @@ export default defineComponent({
 <style>
 #qa-data-result tr:hover {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
 }
 </style>

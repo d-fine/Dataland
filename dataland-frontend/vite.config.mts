@@ -101,5 +101,14 @@ export default defineConfig({
       ignored: ['**/coverage/**'],
       usePolling: process.env.POLLING === 'true',
     },
+    proxy: {
+      '^/(api|documents|qa|community|users|specifications)': {
+        target: 'https://dev2.dataland.com',
+        changeOrigin: true,
+        headers: {
+          authorization: 'Bearer MTM2YTkzOTQtNDg3My00YTYxLWEyNWItNjViMWU4ZTdjYzJm_d3a39f57023758d116a5aa5b6eae3322cd4fe144c0aef85bc60c989cb3686ddcab30a9ee3a0be72d_1862309878',
+        },
+      },
+    },
   },
 });

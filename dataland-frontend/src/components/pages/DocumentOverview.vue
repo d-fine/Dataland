@@ -23,7 +23,7 @@
       <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
     </div>
 
-    <TheContent class="paper-section flex flex-col p-3">
+    <TheContent class="flex flex-col p-3">
       <DataTable
         v-if="documentsFiltered && documentsFiltered.length > 0"
         data-test="documents-overview-table"

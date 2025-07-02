@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
 
-    <TheContent class="paper-section flex">
+    <TheContent class="flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
         <h1>{{ pageTitle }}</h1>
@@ -55,7 +55,7 @@
               <template #text-info>
                 <div class="col-12">Make sure to copy your API Key now. You will not be able to access it again.</div>
                 <div class="my-2">
-                  <div class="p-input-icon-right border-round-sm paper-section pl-1 col-10 fs-lg">
+                  <div class="p-input-icon-right border-round-sm pl-1 col-10 fs-lg">
                     <PrimeTextarea
                       ref="newKeyHolderRef"
                       @focus="($event.target as HTMLTextAreaElement).select()"
@@ -347,6 +347,12 @@ export default defineComponent({
         text-decoration: underline;
       }
     }
+  }
+}
+
+.p-component {
+  &:disabled {
+    opacity: 0.8;
   }
 }
 </style>

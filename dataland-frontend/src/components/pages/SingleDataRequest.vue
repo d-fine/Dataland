@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section no-ui-message">
+    <TheContent class="no-ui-message">
       <CompanyInfoSheet
         :company-id="companyIdentifier"
         @fetched-company-information="handleFetchedCompanyInformation"
@@ -572,5 +572,9 @@ export default defineComponent({
   color: black;
   border-color: black;
   font-weight: bold;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
 }
 </style>

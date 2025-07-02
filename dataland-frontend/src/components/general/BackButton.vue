@@ -44,4 +44,8 @@ export default defineComponent({
     padding-bottom: 0.5rem;
   }
 }
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
 </style>

@@ -101,3 +101,8 @@ async function submitDataRequestsForSelection(): Promise<void> {
   }
 }
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

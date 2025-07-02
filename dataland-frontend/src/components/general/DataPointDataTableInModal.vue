@@ -111,4 +111,10 @@ export default defineComponent({
     }
   }
 }
+
+.p-component {
+  &:disabled {
+    opacity: 0.8;
+  }
+}
 </style>
