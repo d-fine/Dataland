@@ -15,4 +15,10 @@ data class EnrichedPortfolio(
     val userId: String,
     @field:JsonProperty(required = true)
     val entries: List<EnrichedPortfolioEntry>,
+    @field:JsonProperty(required = false)
+    val isMonitored: Boolean?,
+    @field:JsonProperty(required = false)
+    val startingMonitoringPeriod: String?,
+    @field:JsonProperty(required = false)
+    val monitoredFrameworks: Set<String>?,
 )
