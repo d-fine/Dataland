@@ -7,6 +7,7 @@ import java.math.BigInteger
 /**
  * The data-model for the Unternehmen section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenGeneralUnternehmen(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

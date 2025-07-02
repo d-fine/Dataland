@@ -8,6 +8,7 @@ import java.math.BigInteger
 /**
  * The data-model for the WorkforceHealthAndSafety section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicWorkforceHealthAndSafety(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

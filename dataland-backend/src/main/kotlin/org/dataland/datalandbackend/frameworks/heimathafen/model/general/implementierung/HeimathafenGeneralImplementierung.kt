@@ -11,6 +11,7 @@ import java.time.LocalDate
 /**
  * The data-model for the Implementierung section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenGeneralImplementierung(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

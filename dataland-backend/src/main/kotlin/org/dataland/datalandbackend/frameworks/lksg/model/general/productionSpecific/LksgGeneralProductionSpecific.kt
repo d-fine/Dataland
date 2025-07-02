@@ -14,6 +14,7 @@ import java.util.EnumSet
 /**
  * The data-model for the ProductionSpecific section
  */
+@Suppress("MaxLineLength")
 data class LksgGeneralProductionSpecific(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

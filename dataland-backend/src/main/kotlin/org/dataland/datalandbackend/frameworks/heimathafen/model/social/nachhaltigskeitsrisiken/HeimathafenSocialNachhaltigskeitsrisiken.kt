@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the Nachhaltigskeitsrisiken section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenSocialNachhaltigskeitsrisiken(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

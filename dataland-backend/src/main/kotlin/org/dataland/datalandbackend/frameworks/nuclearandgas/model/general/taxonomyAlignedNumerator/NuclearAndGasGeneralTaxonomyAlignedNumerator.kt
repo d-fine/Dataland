@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 /**
  * The data-model for the TaxonomyAlignedNumerator section
  */
+@Suppress("MaxLineLength")
 data class NuclearAndGasGeneralTaxonomyAlignedNumerator(
     @field:Valid()
     val nuclearAndGasTaxonomyAlignedRevenueNumerator: ExtendedDataPoint<NuclearAndGasAlignedNumerator?>? = null,

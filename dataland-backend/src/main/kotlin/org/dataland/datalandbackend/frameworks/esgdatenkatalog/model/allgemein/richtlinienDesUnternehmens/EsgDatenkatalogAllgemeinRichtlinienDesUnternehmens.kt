@@ -9,6 +9,7 @@ import java.util.EnumSet
 /**
  * The data-model for the RichtlinienDesUnternehmens section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogAllgemeinRichtlinienDesUnternehmens(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

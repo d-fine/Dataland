@@ -14,6 +14,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.soziales.ri
 /**
  * The data-model for the Soziales section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogSoziales(
     @field:Valid()
     val beschaeftigtenprofilUndEntlohnung: EsgDatenkatalogSozialesBeschaeftigtenprofilUndEntlohnung? = null,

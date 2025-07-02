@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Abfall section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogUmweltAbfall(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")

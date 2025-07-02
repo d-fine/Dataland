@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 /**
  * The data-model for the TaxonomyNonEligible section
  */
+@Suppress("MaxLineLength")
 data class NuclearAndGasGeneralTaxonomyNonEligible(
     @field:Valid()
     val nuclearAndGasTaxonomyNonEligibleRevenue: ExtendedDataPoint<NuclearAndGasNonEligible?>? = null,

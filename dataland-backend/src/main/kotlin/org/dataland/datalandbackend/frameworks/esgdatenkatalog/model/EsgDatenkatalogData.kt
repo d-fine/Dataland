@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.EsgD
 /**
  * The root data-model for the Esg-datenkatalog Framework
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 @DataType("esg-datenkatalog", 8)
 data class EsgDatenkatalogData(
     @field:Valid()

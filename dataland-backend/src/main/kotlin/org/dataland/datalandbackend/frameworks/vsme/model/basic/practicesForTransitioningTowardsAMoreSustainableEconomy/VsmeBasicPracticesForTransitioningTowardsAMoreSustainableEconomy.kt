@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 /**
  * The data-model for the PracticesForTransitioningTowardsAMoreSustainableEconomy section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy(
     @field:Valid()
     @Suppress("ktlint:standard:max-line-length")

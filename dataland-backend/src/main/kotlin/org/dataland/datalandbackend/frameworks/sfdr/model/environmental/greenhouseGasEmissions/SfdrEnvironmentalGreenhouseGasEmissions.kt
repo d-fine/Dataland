@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the GreenhouseGasEmissions section
  */
+@Suppress("MaxLineLength")
 data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

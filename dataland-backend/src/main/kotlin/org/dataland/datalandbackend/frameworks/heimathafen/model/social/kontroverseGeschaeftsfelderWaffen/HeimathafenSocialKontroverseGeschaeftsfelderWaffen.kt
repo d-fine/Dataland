@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the KontroverseGeschaeftsfelderWaffen section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenSocialKontroverseGeschaeftsfelderWaffen(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

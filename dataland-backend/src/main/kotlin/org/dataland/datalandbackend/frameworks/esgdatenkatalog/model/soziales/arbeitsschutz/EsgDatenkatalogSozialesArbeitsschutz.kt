@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Arbeitsschutz section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogSozialesArbeitsschutz(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

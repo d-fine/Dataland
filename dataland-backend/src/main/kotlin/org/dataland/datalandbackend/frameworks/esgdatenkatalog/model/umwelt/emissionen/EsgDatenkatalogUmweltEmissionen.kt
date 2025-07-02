@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Emissionen section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogUmweltEmissionen(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")

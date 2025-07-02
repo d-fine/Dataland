@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 /**
  * The data-model for the KontroverseGeschaeftsfelder section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenSocialKontroverseGeschaeftsfelder(
     @field:Valid()
     @Suppress("ktlint:standard:max-line-length")

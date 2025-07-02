@@ -333,11 +333,11 @@ abstract class PavedRoadFramework(
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
         compileDataModel(datalandProject)
-        compileQaModel(datalandProject)
+        /*compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
-        compileSpecifications(datalandProject)
+        compileSpecifications(datalandProject)*/
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))

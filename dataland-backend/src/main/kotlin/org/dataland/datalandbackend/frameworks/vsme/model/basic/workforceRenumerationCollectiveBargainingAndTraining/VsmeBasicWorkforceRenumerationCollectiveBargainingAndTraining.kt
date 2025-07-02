@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the WorkforceRenumerationCollectiveBargainingAndTraining section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

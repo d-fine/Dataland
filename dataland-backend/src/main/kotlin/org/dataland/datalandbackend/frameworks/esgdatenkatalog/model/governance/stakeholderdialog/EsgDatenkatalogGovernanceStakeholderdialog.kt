@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the Stakeholderdialog section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogGovernanceStakeholderdialog(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

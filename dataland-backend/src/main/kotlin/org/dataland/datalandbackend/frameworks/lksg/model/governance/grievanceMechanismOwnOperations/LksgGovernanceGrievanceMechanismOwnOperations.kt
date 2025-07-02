@@ -12,6 +12,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the GrievanceMechanismOwnOperations section
  */
+@Suppress("MaxLineLength")
 data class LksgGovernanceGrievanceMechanismOwnOperations(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

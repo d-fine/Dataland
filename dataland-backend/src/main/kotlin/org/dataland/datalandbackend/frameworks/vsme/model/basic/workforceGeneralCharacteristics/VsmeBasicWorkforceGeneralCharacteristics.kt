@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the WorkforceGeneralCharacteristics section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicWorkforceGeneralCharacteristics(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
