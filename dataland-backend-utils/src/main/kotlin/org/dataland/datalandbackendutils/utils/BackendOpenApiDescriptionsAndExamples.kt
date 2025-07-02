@@ -1,6 +1,6 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandbackendutils.utils
 
-object CompanyControllerDescriptionsAndExamples {
+object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_NAME_DESCRIPTION = "The official name of the company."
     const val COMPANY_NAME_EXAMPLE = "ABC Corporation"
 
@@ -47,6 +47,7 @@ object CompanyControllerDescriptionsAndExamples {
     const val DATA_ID_EXAMPLE = "1e63a842-1e65-43ed-b78a-5e7cec155c28"
 
     const val DATA_TYPE_DESCRIPTION = "The framework of the dataset on Dataland."
+    const val DATA_TYPE_EXAMPLE = "sfdr"
 
     const val CURRENTLY_ACTIVE_DESCRIPTION = "Boolean flag whether the dataset is currently active."
     const val CURRENTLY_ACTIVE_EXAMPLE = "true"
@@ -123,4 +124,20 @@ object CompanyControllerDescriptionsAndExamples {
             ":\"03eedebf-f882-4d2d-b481-0e233dc641fb\"," +
             "\"...\":\"...\"" +
             "}"
+
+    const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
+        "{" +
+                "\"sfdr\":{" +
+                "\"numberOfProvidedReportingPeriods\":0" +
+                "}," +
+                "  \"eutaxonomy-financials\":{" +
+                "    \"numberOfProvidedReportingPeriods\":0" +
+                "  }," +
+                "  \"eutaxonomy-non-financials\":{" +
+                "    \"numberOfProvidedReportingPeriods\":1" +
+                "  }," +
+                "  \"nuclear-and-gas\":{" +
+                "    \"numberOfProvidedReportingPeriods\":0" +
+                "  }" +
+                "}"
 }

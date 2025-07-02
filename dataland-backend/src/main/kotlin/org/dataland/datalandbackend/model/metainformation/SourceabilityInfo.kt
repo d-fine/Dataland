@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.metainformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -17,31 +17,31 @@ import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExampl
 data class SourceabilityInfo(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     val companyId: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
     )
     val dataType: DataType,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.IS_NON_SOURCEABLE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_EXAMPLE,
     )
     val isNonSourceable: Boolean,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.REASON_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.REASON_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.REASON_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REASON_EXAMPLE,
     )
     val reason: String,
 )

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.companies
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -25,71 +25,71 @@ import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExampl
 data class CompanyInformation(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
     )
     val companyAlternativeNames: List<String>?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
     )
     val companyContactDetails: List<String>?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_LEGAL_FORM_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_LEGAL_FORM_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_LEGAL_FORM_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_LEGAL_FORM_EXAMPLE,
     )
     val companyLegalForm: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_EXAMPLE,
     )
     val headquarters: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_EXAMPLE,
     )
     val headquartersPostalCode: String?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
     )
     val sector: String?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.SECTOR_CODE_WZ_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.SECTOR_CODE_WZ_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.SECTOR_CODE_WZ_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.SECTOR_CODE_WZ_EXAMPLE,
     )
     val sectorCodeWz: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
     )
     val identifiers: Map<IdentifierType, List<String>>,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
     )
     val countryCode: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.IS_TEASER_COMPANY_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.IS_TEASER_COMPANY_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.IS_TEASER_COMPANY_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IS_TEASER_COMPANY_EXAMPLE,
     )
     val isTeaserCompany: Boolean?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.WEBSITE_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.WEBSITE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.WEBSITE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.WEBSITE_EXAMPLE,
     )
     val website: String?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.PARENT_COMPANY_LEI_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
     )
     val parentCompanyLei: String?,
 )

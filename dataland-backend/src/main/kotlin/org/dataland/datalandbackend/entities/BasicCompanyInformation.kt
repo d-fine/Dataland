@@ -1,40 +1,40 @@
 package org.dataland.datalandbackend.entities
 
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 
 /**
  * Just the basic data regarding a company stored in dataland
  */
 data class BasicCompanyInformation(
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     val companyId: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.HEADQUARTERS_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_EXAMPLE,
     )
     val headquarters: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
     )
     val countryCode: String,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
     )
     val sector: String?,
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.LEI_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.LEI_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.LEI_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.LEI_EXAMPLE,
     )
     val lei: String?,
 )

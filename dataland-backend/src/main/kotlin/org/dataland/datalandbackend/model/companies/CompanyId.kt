@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.model.companies
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 
 /**
  * API-Model
@@ -11,8 +11,8 @@ import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExampl
 data class CompanyId(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     val companyId: String,
 )

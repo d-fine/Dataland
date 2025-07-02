@@ -19,8 +19,8 @@ import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationR
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -101,35 +101,33 @@ interface CompanyApi {
         searchString: String? = null,
         @RequestParam
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
             required = false,
         )
         dataTypes: Set<DataType>? = null,
         @RequestParam
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
             required = false,
         )
         countryCodes: Set<String>? = null,
         @RequestParam
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
             required = false,
         )
         sectors: Set<String>? = null,
         @RequestParam(defaultValue = "100")
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
-//            example = CompanyControllerDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         chunkSize: Int? = null,
         @RequestParam(defaultValue = "0")
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
-//            example = CompanyControllerDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         chunkIndex: Int? = null,
@@ -169,21 +167,21 @@ interface CompanyApi {
         searchString: String? = null,
         @RequestParam
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
             required = false,
         )
         dataTypes: Set<DataType>? = null,
         @RequestParam
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
             required = false,
         )
         countryCodes: Set<String>? = null,
         @RequestParam
         @Parameter(
-            description = CompanyControllerDescriptionsAndExamples.SECTOR_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.SECTOR_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
             required = false,
         )
         sectors: Set<String>? = null,
@@ -239,14 +237,14 @@ interface CompanyApi {
     fun existsIdentifier(
         @Parameter(
             name = "identifierType",
-            description = CompanyControllerDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
+            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
             required = true,
         )
         @PathVariable("identifierType") identifierType: IdentifierType,
         @Parameter(
             name = "identifier",
-            description = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
             required = true,
         )
         @PathVariable("identifier") identifier: String,
@@ -275,14 +273,14 @@ interface CompanyApi {
     fun getCompanyIdByIdentifier(
         @Parameter(
             name = "identifierType",
-            description = CompanyControllerDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
+            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
             required = true,
         )
         @PathVariable("identifierType") identifierType: IdentifierType,
         @Parameter(
             name = "identifier",
-            description = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
             required = true,
         )
         @PathVariable("identifier") identifier: String,
@@ -330,8 +328,8 @@ interface CompanyApi {
     fun getCompanyById(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -364,8 +362,8 @@ interface CompanyApi {
     fun patchCompanyById(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -397,8 +395,8 @@ interface CompanyApi {
     fun putCompanyById(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -422,7 +420,7 @@ interface CompanyApi {
                     Content(
                         mediaType = "application/json",
                         examples = [
-                            ExampleObject(value = "[\n\t\"${CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"\n]"),
+                            ExampleObject(value = "[\n\t\"${BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"\n]"),
                         ],
                     ),
                 ],
@@ -446,7 +444,17 @@ interface CompanyApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved values."),
+            ApiResponse(
+                responseCode = "200", description = "Successfully retrieved values.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [
+                            ExampleObject(value = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE),
+                        ],
+                    ),
+                ],
+            ),
         ],
     )
     @GetMapping(
@@ -456,8 +464,8 @@ interface CompanyApi {
     fun getAggregatedFrameworkDataSummary(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -484,8 +492,8 @@ interface CompanyApi {
     fun getCompanyInfo(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -519,8 +527,8 @@ interface CompanyApi {
     fun isCompanyIdValid(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -548,8 +556,8 @@ interface CompanyApi {
     fun getCompanySubsidiariesByParentId(
         @Parameter(
             name = "companyId",
-            description = CompanyControllerDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CompanyControllerDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -577,13 +585,13 @@ interface CompanyApi {
     fun postCompanyValidation(
         @io.swagger.v3.oas.annotations.parameters.RequestBody(
             required = true,
-            description = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
             content = [
                 Content(
                     mediaType = "application/json",
                     examples = [
                         ExampleObject(
-                            value = CompanyControllerDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+                            value = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
                         ),
                     ],
                 ),

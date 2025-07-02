@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.model.metainformation
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -12,8 +12,8 @@ import org.dataland.datalandbackend.utils.CompanyControllerDescriptionsAndExampl
 data class DataMetaInformationPatch(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CompanyControllerDescriptionsAndExamples.UPLOADER_USER_ID_DESCRIPTION,
-        example = CompanyControllerDescriptionsAndExamples.UPLOADER_USER_ID_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.UPLOADER_USER_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.UPLOADER_USER_ID_EXAMPLE,
     )
     val uploaderUserId: String,
 )
