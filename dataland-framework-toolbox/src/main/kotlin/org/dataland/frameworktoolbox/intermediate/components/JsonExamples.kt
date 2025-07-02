@@ -74,4 +74,90 @@ object JsonExamples {
     const val EXAMPLE_PLAIN_MULTI_SELECT_COMPONENT = """ ["Option 1","Option 2"] """
 
     const val EXAMPLE_PLAIN_NACE_CODES_COMPONENT = """ ["47.23", "47.78"] """
+
+    const val EXAMPLE_PLAIN_EU_TAXONOMY_ALIGNED_ACTIVITIES_COMPONENT = """ [ {
+      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+      "naceCodes" : [ "E.38.11" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      },
+      "substantialContributionToClimateChangeMitigationInPercent" : 10,
+      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
+      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
+      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
+      "dnshToClimateChangeMitigation" : "Yes",
+      "dnshToClimateChangeAdaptation" : "Yes",
+      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
+      "dnshToTransitionToACircularEconomy" : "Yes",
+      "dnshToPollutionPreventionAndControl" : "Yes",
+      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "Yes",
+      "minimumSafeguards" : "Yes",
+      "enablingActivity" : "No",
+      "transitionalActivity" : "Yes"
+    }, {
+      "activityName" : "InfrastructureForRailTransport",
+      "naceCodes" : [ "C27.9", "C30.20" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      },
+      "substantialContributionToClimateChangeMitigationInPercent" : 7,
+      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
+      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
+      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
+      "dnshToClimateChangeMitigation" : "Yes",
+      "dnshToClimateChangeAdaptation" : "Yes",
+      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
+      "dnshToTransitionToACircularEconomy" : "Yes",
+      "dnshToPollutionPreventionAndControl" : "Yes",
+      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "No",
+      "minimumSafeguards" : "Yes",
+      "enablingActivity" : "No",
+      "transitionalActivity" : "Yes"
+    } ] """
+
+    const val EXAMPLE_PLAIN_EU_TAXONOMY_NON_ALIGNED_ACTIVITIES_COMPONENT = """  [ {
+      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+      "naceCodes" : [ "E.38.11" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    }, {
+      "activityName" : "InfrastructureForRailTransport",
+      "naceCodes" : [ "C27.9", "C30.20" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    }, {
+      "activityName" : "LowCarbonAirportInfrastructure",
+      "naceCodes" : [ "F41.20", "F42.99" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    } ] """
+
+    const val EXAMPLE_PLAIN_EU_TAXONOMY_REPORTING_ASSURANCE_COMPONENT = """ "LimitedAssurance" """
 }
