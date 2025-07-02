@@ -141,12 +141,12 @@ class DataExportUtils
             }
 
             val orderedHeaderFields =
-                getOrderedHeaderFields(
-                    isAssembledDataset,
-                    frameworkTemplate,
-                    nonEmptyHeaderFields.toList(),
-                    readableHeaders,
-                )
+                nonEmptyHeaderFields.toList().map { field ->
+                    val strippedField = field.removePrefix("data.").removeSuffix(SUFFIX)
+                    val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
+                    val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
+                    readableHeaders[headerKey] ?: headerKey
+                }
 
             val csvSchema = createCsvSchemaBuilder(readableHeaders.values.toSet(), orderedHeaderFields, isAssembledDataset)
 
