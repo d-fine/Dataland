@@ -3,12 +3,15 @@ package org.dataland.frameworktoolbox.frameworks.nuclearandgas.custom
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_NUCLEAR_AND_GAS_ALIGNED_NUMERATOR_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -30,10 +33,19 @@ class NuclearAndGasAlignedNumeratorComponent(
         "org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedNumerator"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"\"\"${this.uploadPageExplanation}\"\"\", \n" +
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_NUCLEAR_AND_GAS_ALIGNED_NUMERATOR_COMPONENT)} \"\"\"",
+                applicationTargetPrefix = "field",
+            )
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
             TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
         )
     }
 
