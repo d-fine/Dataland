@@ -82,7 +82,7 @@ export default defineComponent({
     ];
 
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
-      activityName: activity.activityName as string,
+      activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
       kpi: formatAmountWithCurrency(activity.share?.absoluteShare),
       kpiPercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
