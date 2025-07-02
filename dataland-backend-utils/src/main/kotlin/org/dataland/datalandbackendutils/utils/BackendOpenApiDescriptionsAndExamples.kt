@@ -114,6 +114,18 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean parameter. If set to true, the results will only display active datasets."
 
+    const val DATA_POINT_ID_DESCRIPTION = "The unique identifier to identify the datapoint."
+    const val DATA_POINT_ID_EXAMPLE = "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+
+    const val DATA_POINT_DESCRIPTION = "The content of the data point as a JSON string."
+    const val DATA_POINT_EXAMPLE =
+        "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\"," +
+            "\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\"," +
+            "\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
+
+    const val DATA_POINT_TYPE_DESCRIPTION = "Which data point the provided content is associated to."
+    const val DATA_POINT_TYPE_EXAMPLE = "extendedEnumYesNoNfrdMandatory"
+
     const val LIST_OF_DATA_POINT_IDS_EXAMPLE =
         "{" +
             "\"extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentEnablingShare\"" +
@@ -127,17 +139,17 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
         "{" +
-                "\"sfdr\":{" +
-                "\"numberOfProvidedReportingPeriods\":0" +
-                "}," +
-                "  \"eutaxonomy-financials\":{" +
-                "    \"numberOfProvidedReportingPeriods\":0" +
-                "  }," +
-                "  \"eutaxonomy-non-financials\":{" +
-                "    \"numberOfProvidedReportingPeriods\":1" +
-                "  }," +
-                "  \"nuclear-and-gas\":{" +
-                "    \"numberOfProvidedReportingPeriods\":0" +
-                "  }" +
-                "}"
+            "\"sfdr\":{" +
+            "\"numberOfProvidedReportingPeriods\":0" +
+            "}," +
+            "  \"eutaxonomy-financials\":{" +
+            "    \"numberOfProvidedReportingPeriods\":0" +
+            "  }," +
+            "  \"eutaxonomy-non-financials\":{" +
+            "    \"numberOfProvidedReportingPeriods\":1" +
+            "  }," +
+            "  \"nuclear-and-gas\":{" +
+            "    \"numberOfProvidedReportingPeriods\":0" +
+            "  }" +
+            "}"
 }

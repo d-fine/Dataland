@@ -1,9 +1,11 @@
 package org.dataland.datalandbackend.model.datapoints
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackendutils.interfaces.DataPointInstance
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 import java.time.Instant
 
 /**
@@ -17,12 +19,28 @@ import java.time.Instant
 
 data class UploadedDataPoint(
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_EXAMPLE,
+    )
     override val dataPoint: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_EXAMPLE,
+    )
     override val dataPointType: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    )
     override val companyId: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
     override val reportingPeriod: String,
 ) : DataPointInstance {
     /**
