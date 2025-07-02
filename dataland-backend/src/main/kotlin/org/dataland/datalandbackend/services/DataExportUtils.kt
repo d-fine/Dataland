@@ -144,7 +144,7 @@ class DataExportUtils
                 getOrderedHeaderFields(
                     isAssembledDataset,
                     frameworkTemplate,
-                    nonEmptyHeaderFields as List<String>,
+                    nonEmptyHeaderFields.toList(),
                     readableHeaders,
                 )
 
@@ -167,7 +167,7 @@ class DataExportUtils
             frameworkTemplate: JsonNode?,
             nonEmptyHeaderFields: List<String>,
             readableHeaders: Map<String, String>,
-        ): MutableCollection<String> =
+        ): Collection<String?> {
             if (isAssembledDataset && frameworkTemplate != null) {
                 val leafFields =
                     JsonUtils.getLeafNodeFieldNames(
@@ -178,9 +178,8 @@ class DataExportUtils
 
                 val mappedHeaders =
                     leafFields
-                        .mapNotNull {
-                            readableHeaders[it] ?: readableHeaders["data.$it"]
-                        }.toMutableList()
+                        .mapNotNull { readableHeaders[it] ?: readableHeaders["data.$it"] }
+                        .toMutableList()
 
                 // Move COMPANY_LEI to position 3 (index 2)
                 val companyLeiAlias = mappedHeaders.find { it.contains("COMPANY_LEI") }
@@ -192,27 +191,27 @@ class DataExportUtils
                         mappedHeaders.add(companyLeiAlias)
                     }
                 }
-                mappedHeaders
+
+                return mappedHeaders
             } else {
-                LinkedHashSet(
-                    nonEmptyHeaderFields
-                        .sortedWith(
-                            compareBy<String> {
-                                when {
-                                    it.startsWith("companyName") -> PRIORITY_COMPANY_NAME
-                                    it.startsWith("companyLei") -> PRIORITY_COMPANY_LEI
-                                    it.startsWith("reportingPeriod") -> PRIORITY_REPORTING_PERIOD
-                                    else -> PRIORITY_DEFAULT
-                                }
-                            }.then(naturalOrder()),
-                        ).map {
-                            val strippedField = it.removePrefix("data.").removeSuffix(SUFFIX)
-                            val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
-                            val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
-                            readableHeaders[headerKey] ?: headerKey
-                        },
-                )
+                return nonEmptyHeaderFields
+                    .sortedWith(
+                        compareBy<String> {
+                            when {
+                                it.startsWith("companyName") -> PRIORITY_COMPANY_NAME
+                                it.startsWith("companyLei") -> PRIORITY_COMPANY_LEI
+                                it.startsWith("reportingPeriod") -> PRIORITY_REPORTING_PERIOD
+                                else -> PRIORITY_DEFAULT
+                            }
+                        }.then(naturalOrder()),
+                    ).map {
+                        val strippedField = it.removePrefix("data.").removeSuffix(SUFFIX)
+                        val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
+                        val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
+                        readableHeaders[headerKey] ?: headerKey
+                    }
             }
+        }
 
         /**
          * Replaces the old header names (json paths) with human-readable header names
