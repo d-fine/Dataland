@@ -14,6 +14,7 @@ import java.util.EnumSet
 /**
  * The data-model for the RisikenUndMassnahmenKlima section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogUmweltRisikenUndMassnahmenKlima(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

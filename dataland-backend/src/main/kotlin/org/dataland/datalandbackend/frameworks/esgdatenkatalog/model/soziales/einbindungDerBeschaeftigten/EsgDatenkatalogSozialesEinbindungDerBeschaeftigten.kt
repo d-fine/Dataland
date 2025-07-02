@@ -11,6 +11,7 @@ import java.util.EnumSet
 /**
  * The data-model for the EinbindungDerBeschaeftigten section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogSozialesEinbindungDerBeschaeftigten(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

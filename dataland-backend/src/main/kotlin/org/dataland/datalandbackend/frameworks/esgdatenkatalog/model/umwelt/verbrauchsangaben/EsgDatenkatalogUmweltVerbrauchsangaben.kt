@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Verbrauchsangaben section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogUmweltVerbrauchsangaben(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")

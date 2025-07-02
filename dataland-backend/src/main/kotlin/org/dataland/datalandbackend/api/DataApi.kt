@@ -70,10 +70,7 @@ interface DataApi<T> {
     )
     @ApiResponses(
         value = [
-            ApiResponse(
-                responseCode = "200", description = "Successfully retrieved dataset.",
-                content = [Content(mediaType = "application/json", examples = [])],
-            ),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(
@@ -188,7 +185,7 @@ interface DataApi<T> {
             name = "keepValueFieldsOnly",
             description = OpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
             example = OpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_EXAMPLE,
-            required = true,
+            required = false,
         )
         @RequestParam(
             value = "keepValueFieldsOnly",
@@ -239,7 +236,7 @@ interface DataApi<T> {
             name = "reportingPeriod",
             description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
             example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = true,
+            required = false,
         )
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>

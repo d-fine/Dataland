@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 /**
  * The data-model for the RisikenUndMassnahmenBiodiversitaetUndOekosysteme section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

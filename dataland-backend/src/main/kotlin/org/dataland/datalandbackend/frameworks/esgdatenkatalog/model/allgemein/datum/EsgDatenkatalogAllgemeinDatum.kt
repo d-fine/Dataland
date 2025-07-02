@@ -7,6 +7,7 @@ import java.time.LocalDate
 /**
  * The data-model for the Datum section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogAllgemeinDatum(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

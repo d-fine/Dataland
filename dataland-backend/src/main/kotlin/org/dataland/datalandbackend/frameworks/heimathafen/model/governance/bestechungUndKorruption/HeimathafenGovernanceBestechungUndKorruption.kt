@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 /**
  * The data-model for the BestechungUndKorruption section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenGovernanceBestechungUndKorruption(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

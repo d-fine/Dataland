@@ -13,6 +13,7 @@ import java.time.LocalDate
 /**
  * The data-model for the MasterData section
  */
+@Suppress("MaxLineLength")
 data class LksgGeneralMasterData(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

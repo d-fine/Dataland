@@ -9,6 +9,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the WorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers(
     @field:Valid()
     @Suppress("ktlint:standard:max-line-length")

@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 /**
  * The data-model for the TransaktionenMitNachhaltigkeitskomponenten section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogAllgemeinTransaktionenMitNachhaltigkeitskomponenten(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

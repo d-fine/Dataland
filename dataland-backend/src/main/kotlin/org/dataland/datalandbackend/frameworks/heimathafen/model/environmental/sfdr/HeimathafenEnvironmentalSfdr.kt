@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 /**
  * The data-model for the Sfdr section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenEnvironmentalSfdr(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

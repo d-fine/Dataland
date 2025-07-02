@@ -12,6 +12,7 @@ import java.math.BigInteger
 /**
  * The data-model for the Vorstandsprofil section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogGovernanceVorstandsprofil(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

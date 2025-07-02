@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 /**
  * The data-model for the WithholdingAdequateWages section
  */
+@Suppress("MaxLineLength")
 data class LksgSocialWithholdingAdequateWages(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

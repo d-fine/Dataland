@@ -11,6 +11,7 @@ import java.math.BigInteger
 /**
  * The data-model for the AntiCorruptionAndAntiBribery section
  */
+@Suppress("MaxLineLength")
 data class SfdrSocialAntiCorruptionAndAntiBribery(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
@@ -59,7 +60,7 @@ data class SfdrSocialAntiCorruptionAndAntiBribery(
         "value" : 100.5,
         "currency" : "USD",
         "quality" : "Reported",
-        "comment" : "The value is reported by the company."
+        "comment" : "The value is reported by the company.",
         "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

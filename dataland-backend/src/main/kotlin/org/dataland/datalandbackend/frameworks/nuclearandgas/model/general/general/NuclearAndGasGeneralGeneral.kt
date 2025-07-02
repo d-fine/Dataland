@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class NuclearAndGasGeneralGeneral(
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()

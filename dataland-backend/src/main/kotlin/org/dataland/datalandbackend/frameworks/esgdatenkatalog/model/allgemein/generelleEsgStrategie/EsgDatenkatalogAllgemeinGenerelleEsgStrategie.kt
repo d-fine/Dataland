@@ -11,6 +11,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the GenerelleEsgStrategie section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogAllgemeinGenerelleEsgStrategie(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

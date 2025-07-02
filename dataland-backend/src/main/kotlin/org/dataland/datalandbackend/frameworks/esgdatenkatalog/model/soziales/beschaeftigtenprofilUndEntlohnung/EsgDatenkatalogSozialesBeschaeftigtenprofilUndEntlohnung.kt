@@ -9,6 +9,7 @@ import java.math.BigInteger
 /**
  * The data-model for the BeschaeftigtenprofilUndEntlohnung section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogSozialesBeschaeftigtenprofilUndEntlohnung(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
