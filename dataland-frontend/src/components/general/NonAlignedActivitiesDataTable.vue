@@ -77,15 +77,15 @@ export default defineComponent({
     this.mainColumnDefinitions = [
       { field: 'activity', header: this.humanizeHeaderName('activityName') },
       { field: 'naceCodes', header: this.humanizeHeaderName('naceCodes') },
-      { field: 'revenue', header: this.humanizeHeaderName('revenue') },
-      { field: 'revenuePercent', header: this.humanizeHeaderName('revenuePercent') },
+      { field: 'kpi', header: this.humanizeHeaderName('kpi') },
+      { field: 'kpiPercent', header: this.humanizeHeaderName('kpiPercent') },
     ];
 
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
-      activity: activity.activityName as string,
+      activityName: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
-      revenue: formatAmountWithCurrency(activity.share?.absoluteShare),
-      revenuePercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
+      kpi: formatAmountWithCurrency(activity.share?.absoluteShare),
+      kpiPercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
