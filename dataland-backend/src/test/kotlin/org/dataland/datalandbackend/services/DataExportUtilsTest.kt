@@ -2,13 +2,11 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
-import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 
 class DataExportUtilsTest {
-    private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val dataExportUtils = DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils)

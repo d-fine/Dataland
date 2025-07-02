@@ -29,10 +29,6 @@ class DataExportUtils
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
         companion object {
-            private const val PRIORITY_COMPANY_NAME = -3
-            private const val PRIORITY_COMPANY_LEI = -2
-            private const val PRIORITY_REPORTING_PERIOD = -1
-            private const val PRIORITY_DEFAULT = 0
             private val STATIC_ALIASES =
                 mapOf(
                     "companyName" to "COMPANY_NAME",
