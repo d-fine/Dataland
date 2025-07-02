@@ -263,11 +263,36 @@
               }
             },
             "content": {
-              "application/json": {},
-              "application/pdf": {},
-              "application/vnd.ms-excel": {},
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {},
-              "application/vnd.oasis.opendocument.spreadsheet": {}
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.ms-excel": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.oasis.opendocument.spreadsheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
             }
           },
           "default": {
