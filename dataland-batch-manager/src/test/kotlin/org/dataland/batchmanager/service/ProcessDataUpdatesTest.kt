@@ -58,7 +58,7 @@ class ProcessDataUpdatesTest {
     private lateinit var oldFile: File
     private lateinit var newFile: File
 
-    val oldContent = """
+    private val oldContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -70,7 +70,7 @@ class ProcessDataUpdatesTest {
             6000,6667
         """
 
-    val newContent = """
+    private val newContent = """
             LEI,ISIN
             1000,1111
             1000,1112

@@ -102,7 +102,6 @@ class CompanyUploader(
      *             the logic to be executed with retry and throttling.
      * @return A Boolean indicating the result of execution. Returns `true` if a client
      *         exception occurred; otherwise, returns `false` regardless of other exceptions.
-     *         This will be used for identifying exception caused by duplicate Isins.
      */
     private fun executeWithRetryAndThrottling(task: () -> Unit): Boolean {
         val decoratedTask =
@@ -112,7 +111,6 @@ class CompanyUploader(
             }
         try {
             decoratedTask.run()
-            logger.info("Function executed successfully.")
         } catch (exception: ClientException) {
             logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
             return true
