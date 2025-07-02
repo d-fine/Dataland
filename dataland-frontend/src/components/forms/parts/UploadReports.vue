@@ -292,4 +292,8 @@ export default defineComponent({
   height: 1rem;
   padding: 12px;
 }
+
+.display-contents {
+  display: contents;
+}
 </style>

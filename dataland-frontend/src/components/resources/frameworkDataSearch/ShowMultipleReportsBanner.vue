@@ -111,3 +111,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+</style>

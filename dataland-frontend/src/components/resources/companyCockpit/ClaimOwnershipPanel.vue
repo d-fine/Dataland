@@ -135,4 +135,9 @@ export default defineComponent({
   font-size: 18px;
   font-weight: 600;
 }
+
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
 </style>
