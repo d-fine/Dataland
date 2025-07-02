@@ -26,7 +26,7 @@
           "document-controller"
         ],
         "summary": "Search for document meta information.",
-        "description": "Search for document meta information by company ID, document categories and reporting period. Results are returned sorted by publication date in reverse chronological order. Only resultswith QA status \u0027Accepted\u0027 are returned.",
+        "description": "Search for document metainformation by company ID, document categories and reporting period. Results are returned sorted by publication date in reverse chronological order. Only resultswith QA status \u0027Accepted\u0027 are returned.",
         "operationId": "searchForDocumentMetaInformation",
         "parameters": [
           {
@@ -108,14 +108,7 @@
           "400": {
             "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0).",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                  }
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -152,8 +145,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Upload a document and metadata.",
-        "description": "Upload a document and meta information.",
+        "summary": "Upload a document and its metainformation.",
+        "description": "Upload a document and (optionally) its metainformation. When specifying the metainformation, the fields \u0027publicationDate\u0027 and \u0027reportingPeriod\u0027 are optional.",
         "operationId": "postDocument",
         "requestBody": {
           "content": {
@@ -385,8 +378,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Update the metadata info of a document.",
-        "description": "Update the metadata info of a document.",
+        "summary": "Update the metainformation of a document.",
+        "description": "Update the metainformation of a document. All fields are optional, and only mentioned fields will be overwritten.",
         "operationId": "patchDocumentMetaInfo",
         "parameters": [
           {
@@ -412,7 +405,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully updated the document\u0027s meta information.",
+            "description": "Successfully updated the document\u0027s metainformation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -422,23 +415,15 @@
             }
           },
           "403": {
-            "description": "You do not have the right to update the document\u0027s meta information.",
+            "description": "You do not have the right to update the document\u0027s metainformation.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
+              "application/json": {}
             }
           },
           "404": {
-            "description": "Document Id does not match any stored document.",
+            "description": "Document ID does not match any stored document.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -477,8 +462,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Extend the list of companyIds related to a document.",
-        "description": "Extend the list of companyIds related to a document by a single company id.",
+        "summary": "Extend the list of company IDs related to a document.",
+        "description": "Extend the list of company IDs related to a document by a single company id.",
         "operationId": "patchDocumentMetaInfoCompanyIds",
         "parameters": [
           {
@@ -516,21 +501,13 @@
           "403": {
             "description": "You do not have the right to update the companyIds field.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
+              "application/json": {}
             }
           },
           "404": {
-            "description": "Document Id does not match any stored document.",
+            "description": "Document ID does not match any stored document.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -569,8 +546,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Receive meta information for a document.",
-        "description": "Receive meta information for a document by its ID from internal storage.",
+        "summary": "Receive metainformation for a document.",
+        "description": "Receive metainformation for a document by its ID from internal storage.",
         "operationId": "getDocumentMetaInformation",
         "parameters": [
           {
@@ -598,11 +575,7 @@
           "404": {
             "description": "Document meta information could not be retrieved.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoEntity"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
