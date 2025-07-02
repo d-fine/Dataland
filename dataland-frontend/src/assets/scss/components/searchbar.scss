@@ -32,13 +32,6 @@
         color: colors.$input-text-color;
       }
     }
-
-    span {
-      max-width: 25rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
   .p-multiselect-close {
     display: none;

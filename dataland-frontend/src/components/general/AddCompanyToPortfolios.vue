@@ -1,24 +1,24 @@
 <template>
-  <div v-if="!displaySuccessMessage" class="add-company-to-portfolios-dialog-content">
+  <div v-if="!displaySuccessMessage" class="container">
     <MultiSelect
-        v-model="selectedPortfolios"
-        :options="allUserPortfolios"
-        optionLabel="portfolioName"
-        placeholder="Select Portfolios"
-        :showToggleAll="false"
-        :disabled="isLoading"
-        data-test="portfolioSelectionMultiSelect"
-        :max-selected-labels="0"
-        :selected-items-label="selectedItemsLabel"
-        :pt="{
-          option: {
-            style: 'max-width: 15rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'
-          },
-        }"
+      v-model="selectedPortfolios"
+      :options="allUserPortfolios"
+      optionLabel="portfolioName"
+      placeholder="Select Portfolios"
+      :showToggleAll="false"
+      :disabled="isLoading"
+      data-test="portfolioSelectionMultiSelect"
+      :max-selected-labels="0"
+      :selected-items-label="selectedItemsLabel"
+      :pt="{
+        option: {
+          style: 'max-width: 15rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;',
+        },
+      }"
     >
       <template #dropdownicon>
         <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
-              <polygon points="0,0 5,5 10,0" fill="currentColor"/>
+          <polygon points="0,0 5,5 10,0" fill="currentColor" />
         </svg>
       </template>
     </MultiSelect>
@@ -32,32 +32,32 @@
     </Message>
 
     <PrimeButton
-        class="primary-button primary-button-in-modal"
-        aria-label="Add Company"
-        :disabled="selectedPortfolios.length === 0 || isLoading"
-        :loading="isLoading"
-        @click="handleCompanyAddition"
-        data-test="saveButton"
+      class="primary-button primary-button-in-modal"
+      aria-label="Add Company"
+      :disabled="selectedPortfolios.length === 0 || isLoading"
+      :loading="isLoading"
+      @click="handleCompanyAddition"
+      data-test="saveButton"
     >
-      <i class="pi pi-plus pr-2"/>
+      <i class="pi pi-plus pr-2" />
       <span v-if="selectedPortfolios.length <= 1">Add company to portfolio</span>
       <span v-else>Add company to portfolios</span>
     </PrimeButton>
   </div>
-  <SuccessMessage v-else success-message="Successfully added!" :closable="false"/>
+  <SuccessMessage v-else success-message="Successfully added!" :closable="false" />
 </template>
 
 <script setup lang="ts">
-import {computed, inject, onMounted, type Ref, ref} from 'vue';
-import {ApiClientProvider} from '@/services/ApiClients.ts';
-import {assertDefined} from '@/utils/TypeScriptUtils.ts';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import MultiSelect from 'primevue/multiselect';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
 import type Keycloak from 'keycloak-js';
-import type {DynamicDialogInstance} from 'primevue/dynamicdialogoptions';
-import {AxiosError} from 'axios';
-import {type BasePortfolio} from '@clients/userservice';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import { AxiosError } from 'axios';
+import { type BasePortfolio } from '@clients/userservice';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -72,22 +72,11 @@ const selectedPortfolios = ref<BasePortfolio[]>([]);
 
 const errorMessage = ref('');
 const isLoading = ref(false);
-const overlayVisible = ref(false);
 const displaySuccessMessage = ref(false);
 
-const selectionButtonClasses = computed(() => {
-  const classes = ['selection-button', 'flex', 'flex-row', 'align-items-center'];
-  if (overlayVisible.value) {
-    classes.push('overlayVisible');
-  } else if (selectedPortfolios.value.length > 0) {
-    classes.push('filterActive');
-  }
-  return classes;
-});
-
 const selectedItemsLabel = computed(() => {
-  return `{0} item ${selectedPortfolios.value.length > 1 ? 's' : ''} selected`
-})
+  return `{0} item ${selectedPortfolios.value.length > 1 ? 's' : ''} selected`;
+});
 
 onMounted(() => {
   if (!data?.companyId) return;
@@ -107,15 +96,15 @@ async function handleCompanyAddition(): Promise<void> {
 
   try {
     await Promise.all(
-        selectedPortfolios.value.map((selectedPortfolio) => {
-          const updatedCompanyIds = [...new Set([...selectedPortfolio.companyIds, companyId])];
+      selectedPortfolios.value.map((selectedPortfolio) => {
+        const updatedCompanyIds = [...new Set([...selectedPortfolio.companyIds, companyId])];
 
-          return apiClientProvider.apiClients.portfolioController.replacePortfolio(selectedPortfolio.portfolioId, {
-            portfolioName: selectedPortfolio.portfolioName,
-            // as unknown as Set<string> cast required to ensure proper json is created
-            companyIds: updatedCompanyIds as unknown as Set<string>,
-          });
-        }),
+        return apiClientProvider.apiClients.portfolioController.replacePortfolio(selectedPortfolio.portfolioId, {
+          portfolioName: selectedPortfolio.portfolioName,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          companyIds: updatedCompanyIds as unknown as Set<string>,
+        });
+      })
     );
 
     closeDialog();
@@ -149,7 +138,7 @@ function closeDialog(): void {
 @use '@/assets/scss/colors';
 @use '@/assets/scss/variables';
 
-.add-company-to-portfolios-dialog-content {
+.container {
   width: 28em;
   border-radius: 0.25rem;
   background-color: white;
@@ -161,10 +150,6 @@ function closeDialog(): void {
   width: 70%;
   margin: 0 15%;
 }
-
-//:deep(.p-multiselect-label-container) {
-//  display: none;
-//}
 
 :deep(.p-badge) {
   background: #fff;
