@@ -111,6 +111,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.EXCEL,
+                includeAliases = false,
             )
 
     override fun retrieveData(companyId: String): Any =
