@@ -42,8 +42,10 @@ interface DocumentApi {
      * @return returns a documentMetaInfoResponse containing documentId and metadata
      */
     @Operation(
-        summary = "Upload a document and metadata.",
-        description = "Upload a document and meta information.",
+        summary = "Upload a document and its metainformation.",
+        description =
+            "Upload a document and (optionally) its metainformation. When specifying the metainformation, " +
+                "the fields 'publicationDate' and 'reportingPeriod' are optional.",
     )
     @ApiResponses(
         value = [
@@ -68,18 +70,20 @@ interface DocumentApi {
      * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to patch.
      */
     @Operation(
-        summary = "Update the metadata info of a document.",
-        description = "Update the metadata info of a document.",
+        summary = "Update the metainformation of a document.",
+        description =
+            "Update the metainformation of a document. All fields are optional, and only mentioned " +
+                "fields will be overwritten.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully updated the document's meta information.",
+                description = "Successfully updated the document's metainformation.",
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "You do not have the right to update the document's meta information.",
+                description = "You do not have the right to update the document's metainformation.",
                 content = [
                     Content(
                         mediaType = "application/json",
@@ -89,7 +93,7 @@ interface DocumentApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Document Id does not match any stored document.",
+                description = "Document ID does not match any stored document.",
                 content = [
                     Content(
                         mediaType = "application/json",
@@ -121,14 +125,14 @@ interface DocumentApi {
     ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**
-     * Patch the company id list in the stored metainformation of a given document by adding
+     * Patch the company ID list in the stored metainformation of a given document by adding
      * a single new company id.
      * @param documentId the id of the document whose metainfo shall be patched.
      * @param companyId the company id to add.
      */
     @Operation(
-        summary = "Extend the list of companyIds related to a document.",
-        description = "Extend the list of companyIds related to a document by a single company id.",
+        summary = "Extend the list of company IDs related to a document.",
+        description = "Extend the list of company IDs related to a document by a single company id.",
     )
     @ApiResponses(
         value = [
@@ -148,7 +152,7 @@ interface DocumentApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Document Id does not match any stored document.",
+                description = "Document ID does not match any stored document.",
                 content = [
                     Content(
                         mediaType = "application/json",
@@ -263,8 +267,8 @@ interface DocumentApi {
      * @param documentId the ID for which to retrieve meta information
      */
     @Operation(
-        summary = "Receive meta information for a document.",
-        description = "Receive meta information for a document by its ID from internal storage.",
+        summary = "Receive metainformation for a document.",
+        description = "Receive metainformation for a document by its ID from internal storage.",
     )
     @ApiResponses(
         value = [
@@ -316,7 +320,7 @@ interface DocumentApi {
     @Operation(
         summary = "Search for document meta information.",
         description =
-            "Search for document meta information by company ID, document categories and reporting period. " +
+            "Search for document metainformation by company ID, document categories and reporting period. " +
                 "Results are returned sorted by publication date in reverse chronological order. Only results" +
                 "with QA status 'Accepted' are returned.",
     )
