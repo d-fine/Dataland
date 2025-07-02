@@ -56,7 +56,7 @@ object CompanyControllerDescriptionsAndExamples {
             "Possible values are: Pending, Accepted, Rejected."
 
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
-    const val REF_EXAMPLE = "null"
+    const val REF_EXAMPLE = "https://dataland.com/companies/$COMPANY_ID_EXAMPLE/frameworks/eutaxonomy-non-financials/$DATA_ID_EXAMPLE"
 
     const val LEI_DESCRIPTION = "The LEI of the company."
     const val LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
@@ -101,7 +101,7 @@ object CompanyControllerDescriptionsAndExamples {
     const val IS_NON_SOURCEABLE_EXAMPLE = "true"
 
     const val REASON_DESCRIPTION = "The reason why there is no source available"
-    const val REASON_EXAMPLE = "null"
+    const val REASON_EXAMPLE = "Parent Uploaded"
 
     const val CREATION_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was created."
     const val CREATION_TIME_EXAMPLE = "1751291891271"
@@ -112,4 +112,15 @@ object CompanyControllerDescriptionsAndExamples {
     const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean parameter. If set to true, the results will only display active datasets."
+
+    const val LIST_OF_DATA_POINT_IDS_EXAMPLE =
+        "{" +
+            "\"extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentEnablingShare\"" +
+            ":\"68c9ced1-47cb-4240-9014-90234f1ad6d6\"," +
+            "\"extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentEnablingShare\"" +
+            ":\"56607e79-1caf-4448-aadd-1823583de314\"," +
+            "\"extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentEligible\"" +
+            ":\"03eedebf-f882-4d2d-b481-0e233dc641fb\"," +
+            "\"...\":\"...\"" +
+            "}"
 }
