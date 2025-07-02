@@ -99,6 +99,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
                 keepValueFieldsOnly = keepValueFieldsOnly,
+                includeAliases = false,
             )
 
     override fun exportDataAsExcel(
