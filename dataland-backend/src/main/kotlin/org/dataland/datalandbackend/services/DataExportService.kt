@@ -119,7 +119,9 @@ class DataExportService
 
             val csvWithReadableHeaders =
                 dataExportUtils.mapReadableHeadersToCsvData(csvData, readableHeaders)
-            csvMapper.writer(csvSchema).writeValues(outputStream).writeAll(csvWithReadableHeaders)
+            val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
+            val rawCsv = csvWriter.writeValueAsString(csvWithReadableHeaders)
+            outputStream.write(rawCsv.toByteArray())
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 

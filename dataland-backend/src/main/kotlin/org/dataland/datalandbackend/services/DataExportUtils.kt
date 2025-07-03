@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.collections.map
 import kotlin.text.contains
+import kotlin.text.get
+import kotlin.toString
 
 /**
  * The class holds methods which are used in the data export. Mainly it contains functions to map the
@@ -109,12 +111,12 @@ class DataExportUtils
             includeAliases: Boolean = true,
         ): PreparedExportData {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-            val isAssembledDataset = (frameworkTemplate != null)
+            val isAssembledDatasetParam = (frameworkTemplate != null)
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
             val aliasExportMap =
-                if (isAssembledDataset) {
+                if (isAssembledDatasetParam) {
                     extractAliasExportFields(frameworkTemplate)
                 } else {
                     emptyMap()
@@ -137,16 +139,57 @@ class DataExportUtils
             }
 
             val orderedHeaderFields =
-                nonEmptyHeaderFields.toList().map { field ->
-                    val strippedField = field.removePrefix("data.").removeSuffix(SUFFIX)
-                    val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
-                    val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
-                    readableHeaders[headerKey] ?: headerKey
-                }
+                getOrderedHeaderFieldsFromTemplate(dataType, portfolioExportRows, nonEmptyHeaderFields, readableHeaders)
 
-            val csvSchema = createCsvSchemaBuilder(readableHeaders.values.toSet(), orderedHeaderFields, isAssembledDataset)
+            nonEmptyHeaderFields.toList().forEach { field ->
+                val strippedField = field.removePrefix("data.").removeSuffix(SUFFIX)
+                val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
+                val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
+                readableHeaders[headerKey] ?: headerKey
+            }
+
+            val csvSchema = createCsvSchemaBuilder(readableHeaders.values.toSet(), orderedHeaderFields, isAssembledDatasetParam)
 
             return PreparedExportData(csvData, csvSchema, readableHeaders)
+        }
+
+        private fun isAssembledDataset(dataType: DataType): Boolean {
+            val frameworkTemplate = getFrameworkTemplate(dataType.toString())
+            return (frameworkTemplate != null)
+        }
+
+        private fun getOrderedHeaderFieldsFromTemplate(
+            dataType: DataType,
+            portfolioExportRows: List<JsonNode>,
+            nonEmptyHeaderFields: Set<String>,
+            readableHeaders: MutableMap<String, String>,
+        ): List<String> {
+            val staticColumns = STATIC_ALIASES.keys
+            val columnsFromTemplate =
+                if (isAssembledDataset(dataType)) {
+                    JsonUtils.getLeafNodeFieldNames(
+                        getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
+                        keepEmptyFields = true,
+                        dropLastFieldName = true,
+                    )
+                } else {
+                    LinkedHashSet(
+                        nonEmptyHeaderFields.sortedWith(
+                            compareBy<String> {
+                                @Suppress("MagicNumber")
+                                when {
+                                    it.startsWith("companyName") -> -3
+                                    it.startsWith("companyLei") -> -2
+                                    it.startsWith("reportingPeriod") -> -1
+                                    else -> 0
+                                }
+                            }.then(naturalOrder()),
+                        ),
+                    )
+                }
+            return (staticColumns + columnsFromTemplate.map { value -> "data.$value" }).map { value ->
+                readableHeaders[value] ?: value
+            }
         }
 
         /**
@@ -262,7 +305,7 @@ class DataExportUtils
          */
         private fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
-            orderedHeaderFields: Collection<String?>,
+            orderedHeaderFields: Collection<String>,
             isAssembledDataset: Boolean,
         ): CsvSchema {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
@@ -270,13 +313,13 @@ class DataExportUtils
             val csvSchemaBuilder = CsvSchema.builder()
 
             if (isAssembledDataset) {
-                usedHeaderFields
-                    .filter {
-                        !orderedHeaderFields.contains(it)
-                    }.forEach { csvSchemaBuilder.addColumn(it) }
-
-                orderedHeaderFields.forEach { header ->
-                    csvSchemaBuilder.addColumn(header)
+                orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField.startsWith(orderedHeaderFieldsEntry)
+                        }.forEach {
+                            csvSchemaBuilder.addColumn(it)
+                        }
                 }
             } else {
                 orderedHeaderFields.forEach {
