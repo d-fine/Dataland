@@ -37,18 +37,19 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     opex: 'OpEx',
   };
 
-  const tableKey = tableKeyMap[kpiType];
+  const tableKey = kpiType; // use 'revenue', 'capex', or 'opex' directly
 
   const adjustedHeaders = {
     ...euTaxonomyNonFinancialsModalColumnHeaders.alignedActivities,
-    kpi: typeLabels[kpiType],
-    kpiPercent: `${typeLabels[kpiType]} (%)`,
+    [kpiType]: typeLabels[kpiType],
+    [`${kpiType}Percent`]: `${typeLabels[kpiType]} (%)`,
   };
 
   const customColumnHeaders = {
     ...euTaxonomyNonFinancialsModalColumnHeaders,
     [tableKey]: adjustedHeaders,
   };
+
 
   return createModalDisplayObject({
     activities: alignedActivities,
