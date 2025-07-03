@@ -8,14 +8,13 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div
-            class="p-badge badge-light-green outline rounded"
-            data-test="verifiedCompanyOwnerBadge"
+          <Tag
             v-if="hasCompanyOwner"
-          >
-            <span class="material-icons-outlined fs-sm">verified</span>
-            Verified Company Owner
-          </div>
+            data-test="verifiedCompanyOwnerBadge"
+            value="Verified Company Owner"
+            icon="pi pi-check-circle"
+            severity="success"
+          ></Tag>
         </div>
         <div class="right-elements">
           <PrimeButton
@@ -85,6 +84,7 @@ import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
 import PrimeButton from 'primevue/button';
+import Tag from 'primevue/tag';
 import router from '@/router';
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import type { BasePortfolio } from '@clients/userservice';
@@ -329,5 +329,9 @@ async function setCompanyOwnershipStatus(): Promise<void> {
 .right-elements {
   display: flex;
   align-items: center;
+
+  h1 {
+    margin-right: var(--spacing-sm);
+  }
 }
 </style>
