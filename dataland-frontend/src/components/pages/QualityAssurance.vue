@@ -9,17 +9,19 @@
             class="w-full bg-white pt-4 justify-between"
             ref="searchBarAndFiltersContainer"
           >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="companyNameSearchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
+            <div class="align-content-start flex items-center justify-start">
+              <div class="w-3 p-input-icon-left" style="margin: 15px">
+                <IconField>
+                  <InputIcon class="pi pi-search" />
+                  <InputText
+                    data-test="companyNameSearchbar"
+                    v-model="searchBarInput"
+                    placeholder="Search by company name"
+                    class="w-12 pl-6 pr-6"
+                  />
+                </IconField>
+              </div>
+              <div class="w-3 p-input-icon-left" style="margin: 15px">
                 <DatePicker
                   data-test="reportingPeriod"
                   v-model="availableReportingPeriods"
@@ -31,7 +33,7 @@
                   selectionMode="multiple"
                   class="w-12 pl-6 pr-6"
                 />
-              </span>
+              </div>
               <FrameworkDataSearchDropdownFilter
                 v-model="selectedFrameworks"
                 ref="frameworkFilter"
@@ -57,7 +59,7 @@
               <div class="flex align-items-center ml-auto" style="margin: 15px">
                 <span>{{ numberOfUnreviewedDatasets }}</span>
               </div>
-            </span>
+            </div>
             <div class="pb-2 ml-3 flex justify-content-start">
               <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
             </div>
@@ -156,6 +158,8 @@ import type Keycloak from 'keycloak-js';
 import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import { defineComponent, inject } from 'vue';
 
@@ -172,6 +176,8 @@ export default defineComponent({
     DataTable,
     Column,
     InputText,
+    InputIcon,
+    IconField,
     DatePicker,
   },
   setup() {

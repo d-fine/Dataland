@@ -97,6 +97,7 @@ export const DatalandPreset = definePreset(Aura, {
         },
         content: {
           borderColor: '{surface.200}',
+          borderRadius: '{borderRadius.none}',
           extend: {
             hoverBorderColor: '{surface.800}',
           },
@@ -153,6 +154,13 @@ export const DatalandPreset = definePreset(Aura, {
           },
         },
       },
+    },
+    tag: {
+      css: ({ dt }) => `
+      .p-tag.p-tag-success {
+      border: 1px solid ${dt('green.200')};
+      }
+      `,
     },
   },
 });
