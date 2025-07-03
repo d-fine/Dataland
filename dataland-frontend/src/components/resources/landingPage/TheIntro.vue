@@ -28,7 +28,6 @@
       @select-company="router.push(`/companies/${$event.companyId}`)"
       wrapper-class-additions="search"
       input-class="h-3rem search__field"
-      icon-class="pi pi-search search__icon"
       @focus="handleInputFocus"
       @blur="handleInputBlur"
     />
