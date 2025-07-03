@@ -255,9 +255,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-@use '@/assets/scss/variables';
-
 .inline-loading {
   width: 450px;
 }
@@ -279,7 +276,7 @@ export default defineComponent({
   }
 
   &__separator {
-    @media only screen and (max-width: newVariables.$small) {
+    @media only screen and (max-width: var(--breakpoint-small)) {
       width: 100%;
       border-bottom: #e0dfde 1px solid;
       margin-bottom: 0.5rem;
@@ -289,14 +286,14 @@ export default defineComponent({
   &__info-holder {
     display: flex;
     flex-direction: row;
-    @media only screen and (max-width: newVariables.$small) {
+    @media only screen and (max-width: var(--breakpoint-small)) {
       flex-direction: column;
     }
   }
 
   &__info {
     padding-top: 0.3rem;
-    @media only screen and (min-width: newVariables.$small) {
+    @media only screen and (min-width: var(--breakpoint-small)) {
       padding-right: 40px;
     }
   }

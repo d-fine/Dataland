@@ -1,6 +1,3 @@
-@use '../colors';
-@use '../variables';
-
 .p-message {
   .p-message-wrapper {
     padding: 1rem 1.5rem;
@@ -20,52 +17,52 @@
   border-width: 0 0 0 4px;
   &.p-message-light-error {
     background: var(--default-neutral-white);
-    border: 1px solid colors.$message-error-border;
-    color: colors.$main-text-color;
+    border: 1px solid var(--message-error-border);
+    color: var(--main-text-color);
   }
   &.p-message-light-success {
     background: var(--default-neutral-white);
-    border: 1px solid colors.$message-success-border;
-    color: colors.$main-text-color;
+    border: 1px solid var(--message-success-border);
+    color: var(--main-text-color);
   }
   &.p-message-block {
-    background: colors.$message-block-bg;
-    border: solid colors.$message-block-border;
-    color: colors.$message-block-text;
+    background: var(--message-block-bg);
+    border: solid var(--message-block-border);
+    color: var(--message-block-text);
   }
   &.p-message-info {
-    background: colors.$message-info-bg;
-    border: solid colors.$message-info-border;
-    color: colors.$message-info-text;
+    background: var(--message-info-bg);
+    border: solid var(--message-info-border);
+    color: var(--message-info-text);
   }
   &.p-message-bordered-success {
-    background: colors.$message-bordered-success-bg;
-    border: solid colors.$message-bordered-success-border;
-    color: colors.$message-bordered-success-text;
+    background: var(--message-bordered-success-bg);
+    border: solid var(--message-bordered-success-border);
+    color: var(--message-bordered-success-text);
   }
   &.p-message-success {
-    background: colors.$message-success-bg;
-    border: solid colors.$message-success-border;
-    color: colors.$message-success-text;
+    background: var(--message-success-bg);
+    border: solid var(--message-success-border);
+    color: var(--message-success-text);
   }
   &.p-message-warn {
-    background: colors.$message-warn-bg;
-    border: solid colors.$message-warn-border;
-    color: colors.$message-warn-text;
+    background: var(--message-warn-bg);
+    border: solid var(--message-warn-border);
+    color: var(--message-warn-text);
   }
   &.p-message-error {
-    background: colors.$message-error-bg;
-    border: solid colors.$message-error-border;
-    color: colors.$message-error-text;
+    background: var(--message-error-bg);
+    border: solid var(--message-error-border);
+    color: var(--message-error-text);
   }
   .p-message-text {
-    font-size: variables.$fs-base;
-    font-weight: variables.$fw-medium;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
     overflow-wrap: break-word;
     max-width: 100%;
   }
   .p-message-icon {
-    font-size: variables.$fs-xl;
+    font-size: var(--font-size-xl);
     margin-right: 1rem;
   }
   h4 {
@@ -74,13 +71,13 @@
 }
 
 .info-bar {
-  background: colors.$bg-text-primary;
-  border-color: colors.$info-bar-bg;
+  background: var(--bg-text-primary);
+  border-color: var(--info-bar-bg);
   border-style: solid;
   border-width: 1px;
-  box-shadow: inset 0 0 24px -20px variables.$gray;
+  box-shadow: inset 0 0 24px -20px var(--gray);
   text-transform: uppercase;
-  color: colors.$main-color;
+  color: var(--main-color);
   font-weight: bold;
   margin: 0.5rem 0;
   align-items: center;

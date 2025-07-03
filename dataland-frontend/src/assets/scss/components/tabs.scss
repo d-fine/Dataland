@@ -1,10 +1,7 @@
-@use '../colors';
-@use '../variables';
-
 :root {
   --p-tabs-tablist-border-width: 0;
-  --p-tabs-tab-hover-border-color: variables.$gray;
-  --p-tabs-tab-hover-color: variables.$gray;
+  --p-tabs-tab-hover-border-color: var(--gray);
+  --p-tabs-tab-hover-color: var(--gray);
 }
 
 .p-tabs {
@@ -22,7 +19,7 @@
     border: 0 solid transparent;
     border-bottom: 2px solid var(--default-neutral-white);
     background: var(--default-neutral-white);
-    color: variables.$gray;
+    color: var(--gray);
     padding: 1.25rem 0;
     margin: 0 1.25rem;
     font-weight: 700;
@@ -34,14 +31,14 @@
 
     &:not(.p-tab-active):hover {
       background: var(--default-neutral-white);
-      border-color: variables.$gray-light;
-      color: variables.$gray;
+      border-color: var(--gray-light);
+      color: var(--gray);
     }
 
     &.p-tab-active {
       background: var(--default-neutral-white);
-      border-color: colors.$main-color;
-      color: colors.$main-color;
+      border-color: var(--main-color);
+      color: var(--main-color);
     }
   }
 }

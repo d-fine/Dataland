@@ -58,8 +58,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables';
-
 .about-principles {
   padding: 200px 0;
   background-color: var(--grey-tones-100);
@@ -196,7 +194,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(203, 203, 203, 0.24);
-    background-color: #fff;
+    background-color: var(--default-neutral-white);
     cursor: pointer;
 
     &:hover {
@@ -227,7 +225,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .about-principles {
     &__title {
       font-size: 40px;
@@ -235,7 +233,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .about-principles {
     padding: 0 0 80px;
     &__wrapper {

@@ -72,7 +72,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 :deep(.p-badge) {
-  background: #fff;
+  background: var(--default-neutral-white);
   color: #5a4f36;
 }
 

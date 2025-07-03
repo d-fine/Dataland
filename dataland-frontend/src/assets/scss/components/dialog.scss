@@ -1,7 +1,3 @@
-@use 'sass:color';
-@use '../colors';
-@use '../variables';
-
 .dataland-dialog {
   padding: 0.1rem 1.5rem 1rem;
   background-color: white;
@@ -17,7 +13,7 @@
   border-radius: 0;
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.1);
   border: 0 none;
-  background: colors.$card-background;
+  background: var(--card-background);
   max-width: 80%;
 
   .p-dialog-header {
@@ -31,9 +27,9 @@
     .p-dialog-header-icon {
       width: 1.5rem;
       height: 1.5rem;
-      color: colors.$card-background;
+      color: var(--card-background);
       border: none;
-      background: variables.$brown-lighter;
+      background: var(--brown-lighter);
       transition:
         background-color 0.2s,
         color 0.2s,
@@ -42,7 +38,7 @@
       border-radius: 1rem;
 
       &:enabled:hover {
-        background: color.adjust(variables.$brown-lighter, $lightness: -20%);
+        background: hsl(from var(--brown-lighter) h s calc(l - 20));
       }
 
       &:focus {
@@ -89,7 +85,7 @@
   background: var(--default-neutral-white);
   border: 0 none;
   border-radius: 0;
-  box-shadow: 0 0 3px 3px colors.$shadow-color;
+  box-shadow: 0 0 3px 3px var(--shadow-color);
   padding: 1rem;
 
   .title {

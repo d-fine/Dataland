@@ -1,15 +1,12 @@
-@use '../colors';
-@use '../units';
-
 .p-menu {
   padding: 0.25rem 0;
   background: var(--surface-900);
-  color: colors.$menu-text-color;
+  color: var(--menu-text-color);
   border: 1px solid #dee2e6;
   border-radius: 0;
   transform: translate(0, 1rem);
   width: 14.5rem;
-  font-weight: units.$light-bold-weight;
+  font-weight: var(--font-weight-medium);
 
   .p-menuitem-link {
     padding: 1rem;
@@ -32,13 +29,13 @@
 
 .p-menu-white {
   padding: 0.25rem 0;
-  background: colors.$bg-text-primary;
-  color: colors.$main-text-color;
+  background: var(--bg-text-primary);
+  color: var(--main-text-color);
   border: 1px solid #dee2e6;
   border-radius: 0;
   transform: translate(0, 1rem);
   width: 14.5rem;
-  font-weight: units.$light-bold-weight;
+  font-weight: var(--font-weight-medium);
 
   .p-menuitem-link {
     padding: 1rem;
@@ -72,11 +69,11 @@
       margin: 0.5rem 0;
 
       a {
-        color: colors.$jumpLinks-color;
+        color: var(--jumpLinks-color);
         text-decoration: none;
 
         &:hover {
-          color: colors.$jumpLinks-hover;
+          color: var(--jumpLinks-hover);
           cursor: pointer;
         }
       }

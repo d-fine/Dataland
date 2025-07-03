@@ -403,8 +403,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
-
 .uploadFormWrapper {
   min-height: calc(100vh - 200px);
 
@@ -462,7 +460,7 @@ export default defineComponent({
 }
 
 .info-color-text {
-  color: variables.$orange-prime;
+  color: var(--p-primary-color);
 }
 
 .no-framework {
@@ -472,7 +470,7 @@ export default defineComponent({
 }
 
 .paper-section {
-  background-color: variables.$paper-white;
+  background-color: var(--paper-white);
 }
 
 .radius-xxs {

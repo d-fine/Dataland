@@ -28,6 +28,7 @@ import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
+
 const props = defineProps<{ sections?: Section[] }>();
 
 const aboutIntroSection = computed(() => {
@@ -50,17 +51,17 @@ const register = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .about-intro {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 187px 0 243px;
   gap: 75px;
+
   &__backlink {
     display: none;
   }
+
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -68,8 +69,11 @@ const register = (): void => {
     width: 100%;
     padding: 0 32px;
   }
-  h2 {
+
+  h2,
+  span {
     font-style: normal;
+    font-weight: var(--font-weight-bold);
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
@@ -80,13 +84,14 @@ const register = (): void => {
     letter-spacing: 0.25px;
     margin: 0 auto;
     max-width: 900px;
+
     span {
-      color: var(--primary-orange);
+      color: var(--p-primary-color);
     }
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .about-intro {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -96,7 +101,7 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .about-intro {
     padding: 32px 0 40px;
     background-color: var(--grey-tones-100);
@@ -105,6 +110,7 @@ const register = (): void => {
     button {
       display: none;
     }
+
     &__wrap-backlink {
       background-color: white;
       width: 100%;
@@ -112,8 +118,9 @@ const register = (): void => {
       text-align: left;
       margin: -2em auto;
     }
+
     &__backlink {
-      color: var(--basic-dark);
+      color: var(--p-primary-contrast-color);
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
@@ -126,6 +133,7 @@ const register = (): void => {
       position: relative;
       border-bottom: 2px solid transparent;
       width: fit-content;
+
       &::before {
         content: '';
         position: absolute;
@@ -137,18 +145,22 @@ const register = (): void => {
         background-image: url('/static/icons/Arrow--right.svg');
         background-size: cover;
       }
+
       &:hover {
-        border-bottom: 2px solid var(--primary-orange);
-        color: var(--primary-orange);
+        border-bottom: 2px solid var(--p-primary-color);
+        color: var(--p-primary-color);
+
         &::before {
           filter: invert(44%) sepia(83%) saturate(1846%) hue-rotate(351deg) brightness(101%) contrast(101%);
         }
       }
     }
+
     &__wrapper {
       gap: 56px 16px;
       padding: 0 16px;
     }
+
     h2 {
       grid-column: 1 / -1;
       font-size: 32px;

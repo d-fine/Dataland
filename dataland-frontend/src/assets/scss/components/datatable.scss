@@ -1,30 +1,26 @@
-@use 'sass:color';
-@use '../colors';
-@use '../units';
-
 .p-datatable,
 .p-datatable.p-datatable-scrollable {
   border-radius: 0;
-  background: colors.$table-background-color;
-  color: colors.$main-text-color;
+  background: var(--table-background-color);
+  color: var(--main-text-color);
 
   .border-left {
-    border-left: 1px solid colors.$table-border;
+    border-left: 1px solid var(--table-border);
   }
 
   .border-right {
-    border-right: 1px solid colors.$table-border;
+    border-right: 1px solid var(--table-border);
   }
 
   .border-bottom {
-    border-bottom: 1px solid colors.$table-border;
+    border-bottom: 1px solid var(--table-border);
   }
 
   .horizontal-headers-size {
-    background-color: #fff;
+    background-color: var(--default-neutral-white);
 
     &:first-of-type {
-      width: units.$first-table-column-width;
+      width: var(--first-table-column-width);
     }
   }
   .onlyHeaders {
@@ -42,11 +38,11 @@
   tr {
     &:not(.p-rowgroup-header) {
       td {
-        border-bottom: 1px solid colors.$table-border;
+        border-bottom: 1px solid var(--table-border);
       }
     }
     &:hover {
-      background: colors.$table-background-hover-color;
+      background: var(--table-background-hover-color);
     }
     th,
     td {
@@ -56,7 +52,7 @@
   }
   .p-datatable-tbody {
     tr {
-      border-color: color.adjust(colors.$table-border-dark, $lightness: 45%);
+      border-color: hsl(from var(--table-border-dark) h s 45);
     }
     .info-icon {
       float: right;
@@ -69,36 +65,36 @@
   }
   .p-sortable-column {
     .p-sortable-column-icon {
-      color: colors.$table-icon-color;
+      color: var(--table-icon-color);
       margin-left: 0.5rem;
     }
     &.p-highlight {
-      background: colors.$table-background-color;
-      color: colors.$main-color;
+      background: var(--table-background-color);
+      color: var(--main-color);
       .p-sortable-column-icon {
-        color: colors.$main-color;
+        color: var(--main-color);
       }
     }
   }
   .headers-bg {
-    background-color: colors.$tables-headers-bg;
+    background-color: var(--tables-headers-bg);
     display: table-cell;
-    width: units.$first-table-column-width;
+    width: var(--first-table-column-width);
   }
   .auto-headers-size {
     width: auto;
   }
   .p-rowgroup-header {
-    background-color: colors.$table-background-hover-color-light;
+    background-color: var(--table-background-hover-color-light);
     cursor: pointer;
 
     &.p-topmost-header {
-      background-color: colors.$tables-headers-bg;
+      background-color: var(--tables-headers-bg);
     }
 
     td {
       position: relative;
-      width: units.$first-table-column-width;
+      width: var(--first-table-column-width);
       button {
         position: absolute;
         right: 1rem;
@@ -113,7 +109,7 @@
     tr {
       box-shadow: none;
       &:hover {
-        background: colors.$table-background-color;
+        background: var(--table-background-color);
       }
     }
   }
@@ -122,24 +118,24 @@
     $col-activity-width: 300px;
     $col-nace-codes-width: 70px;
     .group-row-header {
-      background-color: colors.$tables-headers-bg;
-      border-bottom: 1px solid colors.$table-border;
+      background-color: var(--tables-headers-bg);
+      border-bottom: 1px solid var(--table-border);
       .p-column-header-content {
         justify-content: center;
       }
       &:not(:first-of-type) {
-        border-left: 1px solid colors.$table-border;
+        border-left: 1px solid var(--table-border);
       }
     }
     .first-group-column:not(:first-of-type) {
-      border-left: 1px solid colors.$table-border;
+      border-left: 1px solid var(--table-border);
     }
     .non-frozen-header {
       vertical-align: top;
     }
     .frozen-row-header {
       vertical-align: top;
-      background-color: colors.$tables-headers-bg;
+      background-color: var(--tables-headers-bg);
     }
     .col-activity {
       width: $col-activity-width;
@@ -148,7 +144,7 @@
     .col-nace-codes {
       width: $col-nace-codes-width;
       min-width: $col-nace-codes-width;
-      border-right: 1px solid colors.$table-border;
+      border-right: 1px solid var(--table-border);
     }
     .col-value {
       width: 160px;
@@ -158,8 +154,8 @@
 }
 
 .p-paginator {
-  background: #fff;
-  color: colors.$pagination-color;
+  background: var(--default-neutral-white);
+  color: var(--pagination-color);
   padding: 0.5rem 1rem;
   .p-paginator-first,
   .p-paginator-prev,
@@ -171,7 +167,7 @@
     &:not(.p-disabled) {
       &:not(.p-highlight) {
         &:hover {
-          background: colors.$pagination-bg-hover;
+          background: var(--pagination-bg-hover);
         }
       }
     }
@@ -189,14 +185,14 @@
       margin: 0.143rem;
     }
     .p-paginator-page.p-highlight {
-      background: colors.$main-color;
-      border-color: colors.$main-color;
-      color: colors.$bg-text-primary;
+      background: var(--main-color);
+      border-color: var(--main-color);
+      color: var(--bg-text-primary);
     }
   }
 }
 .border-bottom-table {
-  border-bottom: 1px solid colors.$table-border;
+  border-bottom: 1px solid var(--table-border);
 }
 
 .table-cell-alignment {

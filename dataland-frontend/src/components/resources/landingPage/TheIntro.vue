@@ -100,8 +100,6 @@ const handleInputBlur = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .intro {
   text-align: center;
   margin: 140px auto;
@@ -116,7 +114,7 @@ const handleInputBlur = (): void => {
   }
 
   &__text {
-    color: var(--basic-dark);
+    color: var(--p-primary-contrast-color);
     text-align: center;
     font-size: 100px;
     font-style: normal;
@@ -141,7 +139,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$large) {
+@media only screen and (max-width: var(--breakpoint-large)) {
   .intro {
     &__img {
       margin-bottom: 31px;
@@ -164,7 +162,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .intro {
     &__text {
       font-size: 48px;
@@ -182,7 +180,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .intro {
     margin: 64px auto;
     padding-inline: 16px;
@@ -234,12 +232,12 @@ const handleInputBlur = (): void => {
       display: block;
       background-color: transparent;
       margin: 3em auto;
-      color: var(--basic-dark);
-      border-color: var(--basic-dark);
+      color: var(--p-primary-contrast-color);
+      border-color: var(--p-primary-contrast-color);
 
       &:hover {
-        border-color: var(--primary-orange);
-        color: var(--primary-orange);
+        border-color: var(--p-primary-color);
+        color: var(--p-primary-color);
       }
     }
 
@@ -261,8 +259,6 @@ const handleInputBlur = (): void => {
 </style>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables' as *;
-
 .search {
   position: relative;
   margin: 80px auto 0;
@@ -320,7 +316,7 @@ const handleInputBlur = (): void => {
     background: var(--default-neutral-white);
     box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
-    @media only screen and (max-width: $large) {
+    @media only screen and (max-width: var(--breakpoint-large)) {
       max-width: 701px !important;
       width: calc(100% + 52px) !important;
     }
@@ -371,14 +367,14 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: $large) {
+@media only screen and (max-width: var(--breakpoint-large)) {
   .search {
     margin-top: 31px;
     max-width: 701px;
   }
 }
 
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .search__autocomplete {
     padding: 0;
     top: 47px !important;

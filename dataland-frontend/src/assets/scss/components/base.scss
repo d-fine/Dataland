@@ -1,7 +1,3 @@
-@use '../colors';
-@use '../units';
-@use '../variables';
-
 * {
   box-sizing: border-box;
 }
@@ -10,7 +6,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: variables.$brown-dark;
+  color: var(--p-primary-contrast-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,46 +15,18 @@
 
 body {
   font-family: var(--font-family);
-  font-size: variables.$fs-base;
-  font-weight: variables.$fw-normal;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
   margin: 0;
   padding: 0;
 }
 
-/*.w-10 {
-  width: 10vw;
-}*/
-
-/*.w-30 {
-  width: 30vw;
-}
-
-.w-100 {
-  width: 100vw;
-}
-
-.flex-direction-column {
-  flex-direction: column;
-}*/
-
-/*.p-component {
-  &:disabled {
-    opacity: 0.8;
-  }
-}*/
-
-/*.d-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}*/
-
 .p-badge {
-  color: colors.$btn-primary-color;
-  background: colors.$btn-primary-bg;
-  font-size: variables.$fs-sm;
-  font-weight: variables.$fw-semibold;
-  margin: variables.$spacing-xxxs;
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--spacing-xxs);
   text-align: center;
   min-width: 1.5rem;
   height: 1.5rem;
@@ -115,7 +83,7 @@ body {
   }
 
   &.badge-brown {
-    color: variables.$brown-light;
+    color: var(--brown-light);
     background: #e2d9c5;
   }
 
@@ -130,111 +98,54 @@ body {
   }
 }
 
-/*.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}*/
-
-/*.d-letters {
-  letter-spacing: 0.05em;
-}*/
-
-// sections
-/*.paper-section {
-  background-color: variables.$paper-white;
-}*/
 
 // We want this classes to always overwrite styles to main colors
 .text-primary,
 .primary-color {
-  color: colors.$main-color !important;
+  color: var(--main-color);
 }
 
 .text-danger {
   color: var(--fk-color-error);
-  font-size: variables.$fs-xs;
+  font-size: var(--font-size-xs);
 }
 
 .bg-primary {
-  color: colors.$bg-text-primary !important;
-  background-color: colors.$main-color !important;
+  color: var(--bg-text-primary);
+  background-color: var(--main-color);
 }
 
 .bg-white {
-  background-color: var(--default-neutral-white) !important;
+  background-color: var(--default-neutral-white);
 }
-
-// --- //
-
 
 // Typography //
 .gray-text {
-  color: variables.$gray;
+  color: var(--gray);
 }
 
 .red-text {
-  color: variables.$red;
+  color: var(--red);
 }
 
 .green-text {
-  color: variables.$green;
+  color: var(--green);
 }
 
 // Radius //
 .radius-1 {
-  border-radius: variables.$radius-xxxs;
+  border-radius: var(--p-border-radius-xs);
 }
 
 // Home Page
 
-/*.middle-center-div {
-  flex: 1;
-  align-items: center;
-  align-content: center;
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-}*/
-
-/*.vertical-middle {
-  display: flex;
-  align-items: center;
-}*/
-
-/*.p-disabled,
-.p-component:disabled {
-  opacity: 0.5;
-}*/
-
-/*.d-cursor-pointer {
-  cursor: pointer;
-}*/
-
-/*ul.unstyled-ul-list {
-  padding: 0;
-  margin: 0;
-
-  li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-}*/
-
-/*.next-to-each-other {
-  display: flex;
-  gap: 1rem;
-}*/
 
 .grid-2-form-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
 
   > div:nth-child(even) {
-    border-left: 1px solid colors.$table-border;
+    border-left: 1px solid var(--table-border);
     padding: 0 0 0 20px;
   }
 
@@ -263,12 +174,3 @@ body {
   }
 }
 
-/*.grid3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 10px;
-}*/
-
-/*.display-contents {
-  display: contents;
-}*/

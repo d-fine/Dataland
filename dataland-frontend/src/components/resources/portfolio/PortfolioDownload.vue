@@ -312,8 +312,6 @@ async function downloadPortfolio(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables.scss';
-
 .portfolio-download-content {
   width: 20em;
   height: 100%;
@@ -343,8 +341,8 @@ async function downloadPortfolio(): Promise<void> {
 }
 
 .formkit-help {
-  color: variables.$gray;
-  font-size: variables.$fs-xs;
+  color: var(--gray);
+  font-size: var(--font-size-xs) xs;
   font-style: italic;
 }
 

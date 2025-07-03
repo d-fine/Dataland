@@ -10,6 +10,7 @@
         iconPos="right"
       />
     </div>
+
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
       <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
@@ -98,8 +99,6 @@ const register = (): void => {
 };
 </script>
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .header {
   &__authsection {
     display: flex;
@@ -109,7 +108,7 @@ const register = (): void => {
     &-login {
       position: relative;
       text-decoration: none;
-      color: var(--basic-dark);
+      color: var(--p-primary-contrast-color);
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
@@ -133,8 +132,8 @@ const register = (): void => {
       }
 
       &:hover {
-        border-bottom: 2px solid var(--primary-orange);
-        color: var(--primary-orange);
+        border-bottom: 2px solid var(--p-primary-color);
+        color: var(--p-primary-color);
 
         &::before {
           background-image: url('/static/icons/User-hover.svg');
@@ -144,7 +143,7 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .header {
     padding: 16px;
     margin: 0;
@@ -158,15 +157,15 @@ const register = (): void => {
 .login-button {
   padding: 10px 38px;
   border-radius: 0;
-  color: var(--primary-orange);
-  background-color: var(--basic-dark);
-  border: 2px solid var(--primary-orange);
+  color: var(--p-primary-color);
+  background-color: var(--p-highlight-background);
+  border: 2px solid var(--p-primary-color);
   text-transform: uppercase;
   cursor: pointer;
 
   &:hover {
     border: 2px solid var(--default-neutral-white);
-    background-color: var(--basic-dark);
+    background-color: var(--p-highlight-background);
     color: var(--default-neutral-white);
   }
 }
@@ -174,14 +173,14 @@ const register = (): void => {
 .registration-button {
   padding: 10px 38px;
   border-radius: 0;
-  background-color: var(--primary-orange);
+  background-color: var(--p-primary-color);
   color: var(--default-neutral-white);
-  border: 2px solid var(--primary-orange);
+  border: 2px solid var(--p-primary-color);
   text-transform: uppercase;
   cursor: pointer;
 
   &:hover {
-    color: var(--basic-dark);
+    color: var(--p-primary-contrast-color);
     background-color: var(--default-neutral-white);
   }
 }

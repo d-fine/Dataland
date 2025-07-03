@@ -18,17 +18,17 @@ export const DatalandPreset = definePreset(Aura, {
       xl: '3rem',
     },
     orange: {
-      50: '#fae7db',
-      100: '#f8cdb2',
-      200: '#f4b38a',
-      300: '#ee9963',
-      400: '#e67f3f', // orange-prime
-      500: '#cc7139', // orange-prime-dark
-      600: '#a45b2f',
-      700: '#7d4626',
-      800: '#58321d',
-      900: '#361f13',
-      950: '#170b03',
+      50: '#ffefe5',
+      100: '#ffd0b1',
+      200: '#ffb07f',
+      300: '#ff8f4d',
+      400: '#ff6813', // orange-prime
+      500: '#d55818', // orange-prime-dark
+      600: '#ac4718',
+      700: '#843716',
+      800: '#5e2813',
+      900: '#5e2813',
+      950: '#1a0900',
     },
     blue: {
       50: '#f1f6f8',

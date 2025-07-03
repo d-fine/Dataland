@@ -34,8 +34,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 .static-content {
   display: flex;
   flex-direction: column;
@@ -46,7 +44,7 @@ export default defineComponent({
 main {
   margin-top: 122px;
   margin-bottom: 52px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     margin-top: 82px;
   }
 }
