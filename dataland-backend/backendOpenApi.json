@@ -1592,11 +1592,6 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              "example": {
-                "Lei": [
-                  "5493001KJX4BT0IHAG73"
-                ]
               }
             }
           },
@@ -2316,7 +2311,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
-            "description": "Boolean parameter. If set to true, the results will only display active datasets.",
+            "description": "Boolean parameter. If set to true or empty, only metadata of QA reports are returned that are active. If set to false, all QA reports will be returned regardless of their active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -6136,18 +6131,10 @@
             "description": "Successfully retrieved values.",
             "content": {
               "application/json": {
-                "example": {
-                  "sfdr": {
-                    "numberOfProvidedReportingPeriods": 0
-                  },
-                  "eutaxonomy-financials": {
-                    "numberOfProvidedReportingPeriods": 0
-                  },
-                  "eutaxonomy-non-financials": {
-                    "numberOfProvidedReportingPeriods": 1
-                  },
-                  "nuclear-and-gas": {
-                    "numberOfProvidedReportingPeriods": 0
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
                   }
                 }
               }
@@ -6197,9 +6184,12 @@
             "description": "Successfully returned teaser companies.",
             "content": {
               "application/json": {
-                "example": [
-                  "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-                ]
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
@@ -22917,6 +22907,20 @@
           },
           "data": {
             "$ref": "#/components/schemas/AdditionalCompanyInformationData"
+          }
+        }
+      },
+      "AggregatedFrameworkDataSummary": {
+        "required": [
+          "numberOfProvidedReportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "numberOfProvidedReportingPeriods": {
+            "type": "integer",
+            "description": "The number of reporting periods that are used.",
+            "format": "int64",
+            "example": 2
           }
         }
       },
