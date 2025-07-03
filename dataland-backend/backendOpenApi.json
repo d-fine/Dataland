@@ -98,18 +98,16 @@
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "companyInformation",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CompanyInformation"
+            }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyInformation"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Successfully updated company information.",
@@ -1587,11 +1585,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
-                "items": {
-                  "type": "string"
-                }
+                "$ref": "#/components/schemas/identifiers"
               }
             }
           },
@@ -22399,6 +22393,20 @@
             "description": "Which data point the provided content is associated to.",
             "example": "extendedEnumYesNoNfrdMandatory"
           }
+        }
+      },
+      "identifiers": {
+        "type": "array",
+        "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+        "example": {
+          "Lei": [
+            "5493001KJX4BT0IHAG73"
+          ]
+        },
+        "items": {
+          "type": "string",
+          "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+          "example": "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
         }
       },
       "BasicCompanyInformation": {
