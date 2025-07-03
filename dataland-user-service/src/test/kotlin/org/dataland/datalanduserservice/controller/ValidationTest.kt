@@ -16,6 +16,9 @@ class ValidationTest {
             PortfolioUpload(
                 portfolioName = "Invalid Portfolio",
                 companyIds = emptySet(),
+                isMonitored = true,
+                startingMonitoringPeriod = "2023",
+                monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
             )
         val violations = validator.validate(portfolio)
         assertEquals(1, violations.size)

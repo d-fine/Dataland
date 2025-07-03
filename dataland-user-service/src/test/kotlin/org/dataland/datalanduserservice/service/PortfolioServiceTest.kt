@@ -36,6 +36,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
+    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
@@ -61,7 +62,7 @@ class PortfolioServiceTest {
         doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
         doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
     }
 
     /**
@@ -229,6 +230,7 @@ class PortfolioServiceTest {
 
         assertEquals(dummyPortfolio.portfolioId, portfolioEntityCaptor.firstValue.portfolioId.toString())
         assertEquals(dummyPortfolio.creationTimestamp, portfolioEntityCaptor.firstValue.creationTimestamp)
+        assertEquals(dummyPortfolio.isMonitored, portfolioEntityCaptor.firstValue.isMonitored)
     }
 
     @Test
@@ -263,13 +265,15 @@ class PortfolioServiceTest {
         portfolioId: String? = null,
         portfolioName: String,
         userId: String,
-        companyIds: MutableSet<String>? = null,
     ) = BasePortfolio(
         portfolioId = portfolioId ?: UUID.randomUUID().toString(),
         portfolioName = portfolioName,
         userId = userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
+        companyIds = setOf(dummyCompanyId),
+        isMonitored = false,
+        startingMonitoringPeriod = null,
+        monitoredFrameworks = emptySet(),
     )
 }
