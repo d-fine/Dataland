@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExam
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 
 /**
@@ -47,6 +46,7 @@ fun interface DataDeletionApi {
             ")",
     )
     fun deleteCompanyAssociatedData(
+        // @RequestBody
         @Parameter(
             name = "dataId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
@@ -55,7 +55,6 @@ fun interface DataDeletionApi {
         )
         @PathVariable("dataId")
         @Valid
-        @RequestBody
         dataId: String,
     )
 }

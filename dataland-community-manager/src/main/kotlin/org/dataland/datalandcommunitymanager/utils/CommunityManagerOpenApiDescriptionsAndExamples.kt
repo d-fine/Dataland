@@ -10,7 +10,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val BULK_REQUEST_DATA_TYPES_DESCRIPTION =
         "A set of framework names. Use kebab-case names such as \"eutaxonomy-financials\". Using a framework " +
-            "name that cannot be identified will result in an error."
+            "name that cannot be identified will result in an error, and no requests will be created."
     const val BULK_REQUEST_DATA_TYPES_EXAMPLE =
         "[\"sfdr\",\"eutaxonomy-financials\",\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"vsme\"]"
 

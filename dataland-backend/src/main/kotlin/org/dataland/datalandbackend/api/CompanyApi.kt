@@ -565,9 +565,14 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
-        @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            required = true,
+        @Parameter(
+            name = "identifiers",
             description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+            required = true,
+        )
+        @RequestBody(
+            required = true,
         )
         @Valid
         identifiers: List<String>,

@@ -1584,11 +1584,11 @@
         "description": "Checks if companies exists based on a list of provided identifiers. Duplicated results are removed.",
         "operationId": "postCompanyValidation",
         "requestBody": {
-          "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
           "content": {
             "application/json": {
               "schema": {
                 "type": "array",
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
                 "items": {
                   "type": "string"
                 }
@@ -22931,15 +22931,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },

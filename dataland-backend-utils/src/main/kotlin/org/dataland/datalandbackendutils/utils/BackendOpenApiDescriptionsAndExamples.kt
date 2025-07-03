@@ -26,7 +26,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
 
     const val IDENTIFIERS_DESCRIPTION = "Unique identifiers associated with the company, such as LEI, PermId, ..."
-    const val IDENTIFIERS_EXAMPLE = "\n{\n\t\"Lei\": [\"5493001KJX4BT0IHAG73\"]\n}"
+    const val IDENTIFIERS_EXAMPLE = "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
 
     const val COUNTRY_CODE_DESCRIPTION = "The ISO 3166-1 alpha-2 code representing the country of origin."
     const val COUNTRY_CODE_EXAMPLE = "DE"
