@@ -1,3 +1,8 @@
+@import '@/assets/scss/theme.scss';
+@import '@/assets/scss/colors.scss';
+@import '@/assets/scss/units.scss';
+/*@import '@/assets/scss/mixins.scss';*/
+
 :root {
     --font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial;
 
@@ -12,6 +17,12 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
+
+    --spacing-xxs: 0.25rem;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
 
     /* Formkit Style Override */
     --fk-font-family: var(--font-family)
@@ -30,11 +41,11 @@
 * {
     box-sizing: border-box;
     font-family: var(--font-family) sans-serif;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-normal);
 }
 
 body {
     margin: 0;
     padding: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
 }

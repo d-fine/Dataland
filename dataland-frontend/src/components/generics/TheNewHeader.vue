@@ -34,8 +34,6 @@ const isActiveAbout = computed(() => route.path === '/about');
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -66,7 +64,7 @@ const isActiveAbout = computed(() => route.path === '/about');
   }
 
   &__link {
-    color: var(--basic-dark);
+    color: var(--p-primary-contrast-color);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -77,12 +75,12 @@ const isActiveAbout = computed(() => route.path === '/about');
     border-bottom: 2px solid transparent;
     &:hover,
     &.active-link {
-      color: var(--primary-orange);
-      border-bottom: 2px solid var(--primary-orange);
+      color: var(--p-primary-color);
+      border-bottom: 2px solid var(--p-primary-color);
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .header {
     padding: 16px;
     margin: 0;

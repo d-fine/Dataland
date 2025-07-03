@@ -1,68 +1,63 @@
-@use '../colors';
-@use '../units';
-@use '../variables';
-
 .p-card {
-  background: colors.$card-background;
-  color: colors.$card-text;
+  background: var(--card-background);
+  color: var(--card-text);
   &.page-wrapper-card {
     .p-card-title {
       text-align: left;
       padding: 1rem 0;
       margin: 1rem 0;
-      border-bottom: 1px solid colors.$input-separator;
+      border-bottom: 1px solid var(--input-separator);
     }
   }
   .p-card-title {
-    font-size: variables.$fs-xl;
-    font-weight: variables.$fw-bold;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
   }
   .p-card-subtitle {
-    font-weight: variables.$fw-bold;
-    margin-bottom: variables.$spacing-xxs;
-    color: variables.$gray;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+    color: var(--gray);
   }
   .p-card-content {
-    padding: variables.$spacing-sm 0;
-    color: variables.$aquamarine-dark;
+    padding: var(--spacing-md) 0;
+    color: var(--p-blue-950);
   }
   .p-card-footer {
-    padding: variables.$spacing-sm 0 0 0;
+    padding: var(--spacing-md) 0 0 0;
   }
 }
 .d-card {
   background: var(--default-neutral-white);
-  padding: variables.$spacing-sm;
-  box-shadow: 0 0 3px 3px colors.$shadow-color;
-  border-radius: units.$upload-form-radius;
+  padding: var(--spacing-md);
+  box-shadow: 0 0 3px 3px var(--shadow-color);
 }
 
 .top-border-section {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid colors.$input-separator;
+  border-top: 1px solid var(--input-separator);
 }
 
 .bottom-border-section {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid colors.$input-separator;
+  border-bottom: 1px solid var(--input-separator);
 }
 
 .bottom-border-section-dots {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px dotted colors.$input-separator;
+  border-bottom: 1px dotted var(--input-separator);
 }
 
 .p-progressbar {
   height: 2rem;
   background: var(--default-neutral-white);
-  border: 1px solid variables.$gray-light;
+  border: 1px solid var(--gray-light);
   border-radius: 6px;
   .p-progressbar-value {
     margin: 0;
-    background: variables.$orange-prime;
+    background: var(--p-primary-color);
   }
   .p-progressbar-label {
     color: var(--default-neutral-white);
@@ -71,20 +66,20 @@
 }
 
 .progressbar-finished p {
-  color: variables.$green;
+  color: var(--green);
 }
 
 .progressbar-finished .p-progressbar-value {
-  background-color: variables.$green;
+  background-color: var(--green);
 }
 
 .progressbar-window-indication {
-  border-color: variables.$red;
+  border-color: var(--red);
   border-radius: 4px;
-  color: variables.$red;
+  color: var(--red);
 }
 .p-fileupload .p-fileupload-content {
-  background: #fff;
+  background: var(--default-neutral-white);
   padding: 2rem 1rem;
   border: 1px dashed #958d7c;
   border-radius: 8px;

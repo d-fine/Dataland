@@ -1,15 +1,13 @@
-@use 'variables';
+:root{
+  //forms
+  --input-text-fs: var(--font-size-base);
+  --button-fw: var(--font-weight-semibold);
+  --upload-form-padding: var(--spacing-lg);
 
-//forms
-$input-text-fs: variables.$fs-base;
-$button-fw: variables.$fw-semibold;
-$upload-form-radius: variables.$radius-xxs;
-$upload-form-padding: variables.$spacing-md;
+  //typography
+  --light-bold-weight: var(--font-weight-medium); // 500
+  --semi-bold-weight: var(--font-weight-semibold); // 600
 
-//typography
-$normal-weight: variables.$fw-normal; // 400
-$light-bold-weight: variables.$fw-medium; // 500
-$semi-bold-weight: variables.$fw-semibold; // 600
-
-//table
-$first-table-column-width: 30vw;
+  //table
+  --first-table-column-width: 30vw;
+}

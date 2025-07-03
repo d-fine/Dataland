@@ -136,8 +136,6 @@ const sections = [
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
-
 .border-bottom {
   border-bottom: 1px solid #dadada;
 }
@@ -167,7 +165,7 @@ div.summary-section {
 }
 
 .info-color {
-  color: variables.$orange-prime;
+  color: var(--p-primary-color);
 }
 
 .bold-text {

@@ -261,15 +261,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 .card-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     padding: 24px 17px;
   }
 }
@@ -279,7 +277,7 @@ export default defineComponent({
   grid-template-columns: 3fr 6fr 30px;
   padding: 40px;
   gap: 40px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
     padding: 24px 3%;
@@ -293,10 +291,10 @@ export default defineComponent({
   gap: 40px;
   flex-wrap: wrap;
   justify-content: space-between;
-  @media only screen and (max-width: newVariables.$medium) {
+  @media only screen and (max-width: var(--breakpoint-medium)) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
   }
@@ -313,7 +311,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     margin-left: 0;
     margin-right: 0;

@@ -1,88 +1,88 @@
-@use 'variables';
+:root {
+  // buttons
+  --btn-primary-color: var(--default-neutral-white);
+  --btn-primary-bg: var(--p-primary-color);
+  --btn-danger-bg: var(--red);
+  --btn-success-bg: var(--green);
+  --btn-disabled-color: var(--gray);
+  --btn-focus-border-color: var(--p-hightlight-color);
 
-// buttons
-$btn-primary-color: var(--default-neutral-white);
-$btn-primary-bg: variables.$orange-prime;
-$btn-danger-bg: variables.$red;
-$btn-success-bg: variables.$green;
-$btn-disabled-color: variables.$gray;
-$btn-focus-border-color: variables.$blue-light;
+  //table
+  --table-background-color: var(--default-neutral-white);
+  --table-background-hover-color: var(--gray-lighter);
+  --table-background-hover-color-light: var(--gray-lighter);
+  --table-border: var(--gray-light);
+  --table-border-dark: var(--gray);
+  --table-icon-color: var(--gray);
+  --tables-headers-bg: var(--surface-ground);
 
-//table
-$table-background-color: var(--default-neutral-white);
-$table-background-hover-color: variables.$gray-lighter;
-$table-background-hover-color-light: variables.$gray-lighter;
-$table-border: variables.$gray-light;
-$table-border-dark: variables.$gray;
-$table-icon-color: variables.$gray;
-$tables-headers-bg: variables.$surface-ground;
+  //pagination
+  --pagination-color: var(--gray);
+  --pagination-bg-hover: var(--gray-light);
 
-//pagination
-$pagination-color: variables.$gray;
-$pagination-bg-hover: variables.$gray-light;
+  // typography
+  --main-text-color: var(--p-primary-contrast-color);
+  --main-color: var(--p-primary-color);
+  --bg-text-primary: var(--default-neutral-white);
+  --text-color-secondary: var(--gray);
+  --menu-text-color: var(--p-primary-color);
 
-// typography
-$main-text-color: variables.$brown-dark;
-$main-color: variables.$orange-prime;
-$bg-text-primary: var(--default-neutral-white);
-$text-color-secondary: variables.$gray;
-$menu-text-color: variables.$orange-prime;
+  //cards
+  --card-background: var(--paper-white);
+  --card-text: var(--p-primary-contrast-color);
+  --shadow-color: var(--gray-lighter);
 
-//cards
-$card-background: variables.$paper-white;
-$card-text: variables.$brown-dark;
-$shadow-color: variables.$gray-lighter;
+  //forms
+  --input-text-color: var(--p-primary-contrast-color);
+  --input-label-color: var(--p-blue-950);
+  --input-text-bg: var(--gray-lighter);
+  --input-text-border: var(--brown-lighter);
+  --input-text-border-hover: var(--p-primary-color);
+  --outline-dropdown-border: var(--brown-light);
+  --fill-dropdown-bg: var(--brown-light);
+  --fill-dropdown-hover-bg: var(--gray-light);
+  --fill-dropdown-hover-text: var(--brown-light);
+  --fill-dropdown-select-text-color: var(--default-neutral-white);
+  --fill-dropdown-select-bg-color: var(--p-primary-color);
+  --upload-form-bg: var(--default-neutral-white);
+  --input-separator: var(--gray-light);
+  --el-list-item-bg: var(--gray-light);
+  --input-error: var(--red);
+  --input-checked-color: var(--p-primary-color);
+  --dropdown-options-bg: var(--surface-hover);
+  --toggleswitch-slider-bg: var(--p-primary-color);
+  --toggleswitch-slider-bg-off: var(--gray-light);
+  --toggleswitch-singlecolor-slider-bg: var(--gray-light);
 
-//forms
-$input-text-color: variables.$brown-dark;
-$input-label-color: variables.$aquamarine-dark;
-$input-text-bg: variables.$gray-lighter;
-$input-text-border: variables.$brown-lighter;
-$input-text-border-hover: variables.$orange-prime;
-$outline-dropdown-border: variables.$brown-light;
-$fill-dropdown-bg: variables.$brown-light;
-$fill-dropdown-hover-bg: variables.$gray-light;
-$fill-dropdown-hover-text: variables.$brown-light;
-$fill-dropdown-select-text-color: var(--default-neutral-white);
-$fill-dropdown-select-bg-color: variables.$orange-prime;
-$upload-form-bg: var(--default-neutral-white);
-$input-separator: variables.$gray-light;
-$el-list-item-bg: variables.$gray-light;
-$input-error: variables.$red;
-$input-checked-color: variables.$orange-prime;
-$dropdown-options-bg: var(--surface-hover);
-$toggleswitch-slider-bg: variables.$orange-prime;
-$toggleswitch-slider-bg-off: variables.$gray-light;
-$toggleswitch-singlecolor-slider-bg: variables.$gray-light;
+  //messages
+  --message-block-bg: var(--p-primary-100);
+  --message-block-border: var(--p-primary-color);
+  --message-block-text: var(--p-primary-contrast-color);
 
-//messages
-$message-block-bg: var(--primary-color-100);
-$message-block-border: variables.$orange-prime;
-$message-block-text: variables.$brown-dark;
+  --message-info-bg: var(--blue-600);
+  --message-info-border: var(--blue-800);
+  --message-info-text: var(--default-neutral-white);
 
-$message-info-bg: var(--blue-600);
-$message-info-border: var(--blue-800);
-$message-info-text: var(--default-neutral-white);
+  --message-bordered-success-bg: var(--default-neutral-white);
+  --message-bordered-success-border: var(--green);
+  --message-bordered-success-text: var(--brown-light);
 
-$message-bordered-success-bg: var(--default-neutral-white);
-$message-bordered-success-border: variables.$green;
-$message-bordered-success-text: variables.$brown-light;
+  --message-success-bg: var(--green);
+  --message-success-border: var(--green);
+  --message-success-text: var(--default-neutral-white);
 
-$message-success-bg: variables.$green;
-$message-success-border: variables.$green;
-$message-success-text: var(--default-neutral-white);
+  --message-warn-bg: var(--yellow-600);
+  --message-warn-border: var(--yellow-800);
+  --message-warn-text: var(--p-primary-contrast-color);
 
-$message-warn-bg: var(--yellow-600);
-$message-warn-border: var(--yellow-800);
-$message-warn-text: variables.$brown-dark;
+  --message-error-bg: var(--red);
+  --message-error-border: var(--red);
+  --message-error-text: var(--default-neutral-white);
 
-$message-error-bg: variables.$red;
-$message-error-border: variables.$red;
-$message-error-text: var(--default-neutral-white);
+  //navigation
+  --jumpLinks-color: var(--brown-lighter);
+  --jumpLinks-hover: var(--p-primary-color);
 
-//navigation
-$jumpLinks-color: variables.$brown-lighter;
-$jumpLinks-hover: variables.$orange-prime;
-
-//info-bar
-$info-bar-bg: variables.$gray-light;
+  //info-bar
+  --info-bar-bg: var(--gray-light);
+}

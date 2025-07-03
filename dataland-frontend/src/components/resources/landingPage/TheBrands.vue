@@ -26,8 +26,6 @@ const brandsSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .brands {
   display: flex;
   flex-direction: column;
@@ -83,7 +81,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$large) {
+@media only screen and (max-width: var(--breakpoint-large)) {
   .brands {
     &__wrap {
       grid-template-columns: repeat(12, 1fr);
@@ -101,7 +99,7 @@ const brandsSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .brands {
     padding: 32px 0 80px;
     gap: 24px;
@@ -130,7 +128,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .brands {
     &__wrap {
       gap: 24px 16px;

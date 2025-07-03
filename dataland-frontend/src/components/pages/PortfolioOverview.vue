@@ -133,10 +133,14 @@ watch(portfolioNames, (newPortfolios) => {
     if (!name) {
       name = localStorage.getItem('lastPortfolioName') ?? '';
     }
+
     const matchedIndex = newPortfolios.findIndex((p) => decodeURI(p.portfolioName) === name);
+
     if (matchedIndex !== -1) {
-      currentIndex.value = matchedIndex;
-      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
+      if (currentIndex.value !== matchedIndex) {
+        currentIndex.value = matchedIndex;
+        void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
+      }
     } else {
       currentIndex.value = 0;
       const fallbackName = decodeURI(newPortfolios[0].portfolioName);

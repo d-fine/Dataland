@@ -1,7 +1,3 @@
-@use '../colors';
-@use '../units';
-@use '../variables';
-
 .d-framework-searchbar-input-icon {
   padding-left: 0.75rem !important;
 }
@@ -13,23 +9,23 @@
 
 .d-framework-data-search-dropdown {
   .p-multiselect-item {
-    color: colors.$input-text-color;
+    color: var(--input-text-color);
     border: none;
     font-weight: 400;
 
     &.p-highlight {
-      background: colors.$table-background-color;
-      color: colors.$main-color;
+      background: var(--table-background-color);
+      color: var(--main-color);
     }
 
     &.p-disabled {
-      color: variables.$brown-lighter;
+      color: var(--brown-lighter);
 
       &::after {
         content: '(Not available)';
         margin-left: 0.2rem;
-        font-weight: units.$light-bold-weight;
-        color: colors.$input-text-color;
+        font-weight: var(--font-weight-medium);
+        color: var(--input-text-color);
       }
     }
   }
@@ -42,7 +38,7 @@
   // this important is to overwrite styles injected to panel directly
   max-height: 50vh !important;
   .p-autocomplete-items {
-    background: colors.$input-text-bg;
+    background: var(--input-text-bg);
     padding: 0;
     .p-autocomplete-item {
       height: 3.5rem;
@@ -51,11 +47,11 @@
       align-content: center;
       align-items: center;
       &:not(.p-disabled):hover {
-        background: colors.$dropdown-options-bg;
+        background: var(--dropdown-options-bg);
       }
       &.p-focus {
-        color: colors.$fill-dropdown-select-text-color;
-        background-color: colors.$fill-dropdown-select-bg-color;
+        color: var(--fill-dropdown-select-text-color);
+        background-color: var(--fill-dropdown-select-bg-color);
       }
     }
   }

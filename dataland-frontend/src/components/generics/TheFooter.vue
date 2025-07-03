@@ -168,8 +168,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 * {
   margin: 0;
   font-style: normal;
@@ -178,7 +176,7 @@ onUnmounted(() => {
 }
 
 .footer {
-  background-color: var(--basic-dark);
+  background-color: var(--p-gray-950);
   color: var(--default-neutral-white);
   padding: 6rem 4rem 3rem;
 
@@ -364,7 +362,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .footer {
     &__row--top {
       display: flex;
@@ -378,7 +376,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .footer {
     padding: 4rem 1.5rem 2.5rem;
 

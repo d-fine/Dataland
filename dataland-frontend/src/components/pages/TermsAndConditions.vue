@@ -1,13 +1,13 @@
 <template>
   <LegalPage>
     <div class="flex justify-content-start align-items-center">
-      <img src="/public/static/icons/uk_flag.jpg" height="20" alt="English" />
+      <img src="/static/icons/uk_flag.jpg" alt="English" />
       <ToggleSwitch
         data-test="terms-language-toggle-button"
         v-model="languageGerman"
         style="margin-left: 10px; margin-right: 10px"
       />
-      <img src="/public/static/icons/germany_flag.png" height="20" alt="German" />
+      <img src="/static/icons/germany_flag.png" alt="German" />
     </div>
 
     <div v-if="!languageGerman">
@@ -1236,5 +1236,9 @@ p::before {
 h3 ~ p:not(:only-of-type)::before {
   counter-increment: subsubsection;
   content: counter(section) '.' counter(subsection) '.' counter(subsubsection) '. ';
+}
+
+img {
+  height: 20px;
 }
 </style>

@@ -1,8 +1,3 @@
-@use 'sass:color';
-@use '../colors';
-@use '../units';
-@use '../variables';
-
 .input-group {
   position: relative;
   margin-top: 3em;
@@ -15,16 +10,16 @@ form {
   [data-type='number'],
   [data-type='textarea'] {
     .formkit-inner {
-      font-size: units.$input-text-fs;
+      font-size: var(--input-text-fs);
       border-radius: 0;
-      background: colors.$input-text-bg;
+      background: var(--input-text-bg);
       border-style: solid;
       border-width: 0 0 1px 0;
-      border-color: colors.$input-text-border;
+      border-color: var(--input-text-border);
       box-shadow: none;
       &:focus-within {
         outline: none;
-        border-bottom: 1px solid colors.$input-text-border-hover;
+        border-bottom: 1px solid var(--input-text-border-hover);
       }
       .formkit-input {
         line-height: normal;
@@ -38,11 +33,7 @@ form {
 
 input {
   font-family: inherit;
-  font-size: units.$input-text-fs;
-  &[type='submit'],
-  &[type='reset'] {
-    border-radius: variables.$radius-none;
-  }
+  font-size: var(--input-text-fs);
 }
 
 input[type='checkbox'],
@@ -51,19 +42,18 @@ input[type='radio'] {
   place-content: center;
   -webkit-appearance: none;
   appearance: none;
-  margin: 0;
   height: 25px;
   width: 25px;
-  margin-right: 0.5rem;
-  background-color: colors.$input-text-bg;
-  border: 3px solid colors.$input-text-border-hover;
+  margin: 0 0.5rem 0 0;
+  background-color: var(--input-text-bg);
+  border: 3px solid var(--input-text-border-hover);
   border-radius: 50%;
   cursor: pointer;
   &::before {
     content: '';
     width: 5px;
     height: 10px;
-    border: solid colors.$input-text-border-hover;
+    border: solid var(--input-text-border-hover);
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
     display: none;
@@ -80,9 +70,9 @@ input[type='radio'] {
 
 .p-inputtext {
   font-family: inherit;
-  color: colors.$input-text-color;
-  background: colors.$input-text-bg;
-  padding: variables.$spacing-xs;
+  color: var(--input-text-color);
+  background: var(--input-text-bg);
+  padding: var(--spacing-sm);
   border: 0;
   margin: 0;
   transition:
@@ -91,26 +81,25 @@ input[type='radio'] {
     border-color 0.2s,
     box-shadow 0.2s;
   appearance: none;
-  border-radius: variables.$radius-none;
   &:enabled:hover {
-    border-color: colors.$input-text-border-hover;
+    border-color: var(--input-text-border-hover);
   }
   &:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem #bfd1f6;
-    border-color: colors.$input-text-border-hover;
+    border-color: var(--input-text-border-hover);
   }
   &.p-invalid.p-component {
     border-color: #ced4da #ced4da #ced4da #e4677e;
   }
   &.p-inputtext-sm {
-    font-size: variables.$fs-sm;
-    padding: variables.$spacing-xxs;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
   }
   &.p-inputtext-lg {
-    font-size: variables.$fs-lg;
-    padding: variables.$spacing-xs;
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-sm);
   }
 }
 
@@ -127,10 +116,10 @@ input[type='radio'] {
 }
 
 .p-dropdown {
-  background: colors.$input-text-bg;
+  background: var(--input-text-bg);
   .p-dropdown-trigger {
     background: transparent;
-    color: variables.$brown-dark;
+    color: var(--p-primary-contrast-color);
     width: 2.357rem;
   }
 }
@@ -139,7 +128,7 @@ input[type='radio'] {
   background: transparent;
   border-width: 2px;
   border-style: solid;
-  border-color: colors.$outline-dropdown-border;
+  border-color: var(--outline-dropdown-border);
   border-radius: 8px;
   .p-inputtext {
     background: transparent;
@@ -150,10 +139,10 @@ input[type='radio'] {
   background: var(--default-neutral-white);
   border-width: 2px;
   border-style: solid;
-  border-color: colors.$fill-dropdown-bg;
+  border-color: var(--fill-dropdown-bg);
   border-radius: 8px;
   &.always-fill {
-    background: colors.$fill-dropdown-bg;
+    background: var(--fill-dropdown-bg);
     color: var(--default-neutral-white);
     .p-inputtext {
       color: var(--default-neutral-white);
@@ -163,7 +152,7 @@ input[type='radio'] {
     }
   }
   &.p-inputwrapper-filled {
-    background: colors.$fill-dropdown-bg;
+    background: var(--fill-dropdown-bg);
     color: var(--default-neutral-white);
     .p-inputtext {
       color: var(--default-neutral-white);
@@ -173,12 +162,12 @@ input[type='radio'] {
     }
   }
   &.p-overlay-open {
-    background: colors.$fill-dropdown-hover-bg;
+    background: var(--fill-dropdown-hover-bg);
     .p-inputtext {
-      color: colors.$fill-dropdown-hover-text;
+      color: var(--fill-dropdown-hover-text);
     }
     .p-dropdown-trigger {
-      color: colors.$fill-dropdown-hover-text;
+      color: var(--fill-dropdown-hover-text);
     }
   }
   &.p-focus {
@@ -189,10 +178,10 @@ input[type='radio'] {
   .p-inputtext {
     background: transparent;
     padding: 0.5rem 0.75rem;
-    color: colors.$fill-dropdown-hover-text;
+    color: var(--fill-dropdown-hover-text);
   }
   .p-dropdown-trigger {
-    color: colors.$fill-dropdown-hover-text;
+    color: var(--fill-dropdown-hover-text);
   }
 }
 
@@ -202,8 +191,8 @@ input[type='radio'] {
     .p-dropdown-item {
       margin: 0;
       padding: 0.5rem 1rem;
-      border: 0.1em solid colors.$dropdown-options-bg;
-      color: colors.$input-text-color;
+      border: 0.1em solid var(--dropdown-options-bg);
+      color: var(--input-text-color);
       background: transparent;
       transition:
         background-color 0.2s,
@@ -211,11 +200,11 @@ input[type='radio'] {
         box-shadow 0.2s;
       border-radius: 0;
       &:not(.p-highlight):not(.p-disabled):hover {
-        background: colors.$dropdown-options-bg;
+        background: var(--dropdown-options-bg);
       }
       &.p-highlight {
-        color: colors.$input-text-bg;
-        background: colors.$input-text-border-hover;
+        color: var(--input-text-bg);
+        background: var(--input-text-border-hover);
       }
     }
   }
@@ -228,15 +217,15 @@ input[type='radio'] {
 
 .p-datepicker {
   padding: 0.5rem;
-  background: colors.$card-background;
-  color: colors.$card-text;
+  background: var(--card-background);
+  color: var(--card-text);
   border-radius: 0;
   &:not(.p-datepicker-inline) {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
   }
   .p-datepicker-header {
     padding: 0.5rem;
-    font-weight: units.$semi-bold-weight;
+    font-weight: var(--semi-bold-weight);
     margin: 0;
     border-bottom: 1px solid #dee2e6;
     .p-datepicker-prev,
@@ -264,10 +253,10 @@ input[type='radio'] {
       line-height: 2rem;
       .p-datepicker-year,
       .p-datepicker-month {
-        font-size: units.$input-text-fs;
-        font-weight: units.$light-bold-weight;
+        font-size: var(--input-text-fs);
+        font-weight: var(--font-weight-medium);
         &:enabled:hover {
-          color: colors.$main-color;
+          color: var(--main-color);
         }
       }
       .p-datepicker-month {
@@ -282,11 +271,11 @@ input[type='radio'] {
     .p-monthpicker-month {
       padding: 0.5rem;
       &.p-highlight {
-        color: colors.$btn-primary-color;
-        background: colors.$btn-primary-bg;
+        color: var(--btn-primary-color);
+        background: var(--btn-primary-bg);
       }
       &:not(.p-disabled):not(.p-highlight):hover {
-        background: variables.$gray-light;
+        background: var(--gray-light);
       }
     }
   }
@@ -311,23 +300,23 @@ input[type='radio'] {
           box-shadow 0.2s;
         border: 1px solid transparent;
         &.p-highlight {
-          color: colors.$btn-primary-color;
-          background: colors.$btn-primary-bg;
+          color: var(--btn-primary-color);
+          background: var(--btn-primary-bg);
           &:hover {
-            color: colors.$btn-primary-color;
-            background: colors.$btn-primary-bg;
+            color: var(--btn-primary-color);
+            background: var(--btn-primary-bg);
           }
         }
         &:hover {
-          background: variables.$gray-light;
+          background: var(--gray-light);
         }
         &.p-disabled {
           opacity: 0.3;
         }
       }
       &.p-datepicker-today > span {
-        background: variables.$gray-light;
-        color: variables.$full-dark;
+        background: var(--gray-light);
+        color: var(--p-blue-950);
       }
     }
   }
@@ -338,8 +327,8 @@ input[type='radio'] {
 }
 
 .p-multiselect-panel {
-  background: colors.$bg-text-primary;
-  color: colors.$main-text-color;
+  background: var(--bg-text-primary);
+  color: var(--main-text-color);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
   .p-multiselect-header {
     padding: 0.5rem 1rem;
@@ -369,11 +358,11 @@ input[type='radio'] {
     .p-multiselect-item {
       padding: 0.5rem 1rem;
       &.p-highlight {
-        color: colors.$bg-text-primary;
-        background: colors.$main-color;
+        color: var(--bg-text-primary);
+        background: var(--main-color);
       }
       &:not(.p-highlight):not(.p-disabled):hover {
-        background: colors.$input-text-bg;
+        background: var(--input-text-bg);
       }
       .p-checkbox {
         margin-right: 0.5rem;
@@ -386,7 +375,7 @@ input[type='radio'] {
   width: 2.1rem;
   height: 1.2rem;
   .p-toggleswitch-slider {
-    background: colors.$toggleswitch-slider-bg-off;
+    background: var(--toggleswitch-slider-bg-off);
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -394,19 +383,20 @@ input[type='radio'] {
       box-shadow 0.2s;
     border-radius: 30px;
     &::before {
-      background: colors.$bg-text-primary;
+      background: var(--bg-text-primary);
       width: 1rem;
       height: 1rem;
       margin-top: -0.5rem;
+      left: 0;
       border-radius: 50%;
       transition-duration: 0.2s;
     }
   }
   &.p-toggleswitch-checked {
     .p-toggleswitch-slider {
-      background: colors.$toggleswitch-slider-bg;
+      background: var(--toggleswitch-slider-bg);
       &::before {
-        background: colors.$bg-text-primary;
+        background: var(--bg-text-primary);
         transform: translateX(1rem);
       }
     }
@@ -417,7 +407,7 @@ input[type='radio'] {
   width: 2.1rem;
   height: 1.2rem;
   .p-toggleswitch-slider {
-    background: colors.$toggleswitch-singlecolor-slider-bg;
+    background: var(--toggleswitch-singlecolor-slider-bg);
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -425,7 +415,7 @@ input[type='radio'] {
       box-shadow 0.2s;
     border-radius: 30px;
     &::before {
-      background: colors.$bg-text-primary;
+      background: var(--bg-text-primary);
       width: 1rem;
       height: 1rem;
       margin-top: -0.5rem;
@@ -435,9 +425,9 @@ input[type='radio'] {
   }
   &.p-toggleswitch-checked {
     .p-toggleswitch-slider {
-      background: colors.$toggleswitch-singlecolor-slider-bg;
+      background: var(--toggleswitch-singlecolor-slider-bg);
       &::before {
-        background: colors.$bg-text-primary;
+        background: var(--bg-text-primary);
         transform: translateX(1rem);
       }
     }
@@ -446,37 +436,37 @@ input[type='radio'] {
 
 .p-tooltip {
   .p-tooltip-text {
-    background: colors.$input-label-color;
-    color: colors.$bg-text-primary;
+    background: var(--input-label-color);
+    color: var(--bg-text-primary);
     padding: 0.5rem;
     border-radius: 0;
     width: max-content;
     max-width: 300px;
   }
   &.p-tooltip-right .p-tooltip-arrow {
-    border-right-color: colors.$input-label-color;
+    border-right-color: var(--input-label-color);
   }
   &.p-tooltip-left .p-tooltip-arrow {
-    border-left-color: colors.$input-label-color;
+    border-left-color: var(--input-label-color);
   }
   &.p-tooltip-top .p-tooltip-arrow {
-    border-top-color: colors.$input-label-color;
+    border-top-color: var(--input-label-color);
   }
   &.p-tooltip-bottom .p-tooltip-arrow {
-    border-bottom-color: colors.$input-label-color;
+    border-bottom-color: var(--input-label-color);
   }
 }
 .d-nace-textinput {
   width: 33%;
   border-radius: 0;
-  background: colors.$input-text-bg;
+  background: var(--input-text-bg);
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-color: colors.$input-text-border;
+  border-color: var(--input-text-border);
   box-shadow: none;
 }
 .formListSection {
-  border: 1px solid colors.$input-text-border;
+  border: 1px solid var(--input-text-border);
   padding: 1rem;
   border-radius: 0.5rem;
   margin: 2rem 0;
@@ -500,24 +490,23 @@ input[type='radio'] {
   input[type='radio'] {
     display: grid;
     place-content: center;
-    margin: 0;
     height: 18px;
     width: 18px;
     cursor: pointer;
-    margin-right: 10px;
+    margin: 0 10px 0 0;
   }
   input[type='checkbox'] {
-    background-color: colors.$input-text-bg;
-    border: 2px solid colors.$input-checked-color;
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
     border-radius: 2px;
   }
   input[type='checkbox']:not(.p-radiobutton):checked {
-    background-color: colors.$input-checked-color;
+    background-color: var(--input-checked-color);
   }
   input[type='radio'],
   input.p-radiobutton {
     background-color: white;
-    border: 2px solid colors.$input-label-color;
+    border: 2px solid var(--input-label-color);
     border-radius: 15px;
     cursor: pointer;
     margin-right: 10px;
@@ -525,7 +514,7 @@ input[type='radio'] {
   input.p-radiobutton:hover,
   input.p-radiobutton:active,
   input.p-radiobutton:checked {
-    border: 3px solid colors.$input-label-color;
+    border: 3px solid var(--input-label-color);
   }
   input[type='checkbox']::before,
   input[type='radio']::before {
@@ -539,12 +528,12 @@ input[type='radio'] {
   }
   input[type='checkbox']::before {
     border-style: solid;
-    border-color: colors.$input-text-bg;
+    border-color: var(--input-text-bg);
   }
   input[type='radio']::before,
   input.p-radiobutton::before {
     border-style: solid;
-    border-color: colors.$input-label-color;
+    border-color: var(--input-label-color);
   }
   input[type='checkbox']:checked::before,
   input[type='radio']:checked::before {
@@ -557,29 +546,29 @@ input[type='radio'] {
     }
   }
   .p-multiselect {
-    font-size: units.$input-text-fs;
+    font-size: var(--input-text-fs);
     border-radius: 0;
-    background: colors.$input-text-bg;
+    background: var(--input-text-bg);
     border-style: solid;
     border-width: 0 0 1px 0;
-    border-color: colors.$input-text-border;
+    border-color: var(--input-text-border);
     box-shadow: none;
     width: 100%;
 
     &:focus-within {
       outline: none;
-      border-bottom: 1px solid colors.$input-text-border-hover;
+      border-bottom: 1px solid var(--input-text-border-hover);
     }
     .p-multiselect-label {
       padding: 0.75rem;
       &.p-placeholder {
-        color: colors.$text-color-secondary;
+        color: var(--text-color-secondary);
       }
     }
     .p-multiselect-trigger {
       width: 2.5rem;
       .p-multiselect-trigger-icon {
-        color: colors.$text-color-secondary;
+        color: var(--text-color-secondary);
         font-size: 0.75rem;
       }
     }
@@ -632,7 +621,7 @@ input[type='radio'] {
     padding-bottom: 1rem;
     .form-field-label {
       h5 {
-        font-size: variables.$fs-base;
+        font-size: var(--font-size-base);
       }
     }
   }
@@ -672,9 +661,8 @@ input[type='radio'] {
     }
   }
   .formFields {
-    background: colors.$upload-form-bg;
-    border-radius: units.$upload-form-radius;
-    padding: units.$upload-form-padding;
+    background: var(--upload-form-bg);
+    padding: var(--upload-form-padding);
     margin-left: auto;
     margin-bottom: 1rem;
   }
@@ -683,7 +671,7 @@ input[type='radio'] {
       text-align: center;
       width: 100%;
       padding: 2rem;
-      border: 1px solid colors.$input-error;
+      border: 1px solid var(--input-error);
     }
   }
   .hidden-input {
@@ -693,23 +681,23 @@ input[type='radio'] {
     }
   }
   .form-list-item {
-    color: colors.$input-label-color;
-    background: colors.$el-list-item-bg;
-    font-size: variables.$fs-sm;
-    font-weight: variables.$fw-semibold;
-    margin: variables.$spacing-xxxs;
+    color: var(--input-label-color);
+    background: var(--el-list-item-bg);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--spacing-xxs);
     text-align: center;
     min-width: 1.5rem;
     border-radius: 1rem;
     padding: 0.25rem 1rem;
-    border: 1px solid colors.$input-label-color;
+    border: 1px solid var(--input-label-color);
     display: inline-flex;
     align-items: center;
     em {
       margin-left: 0.5rem;
       cursor: pointer;
       &:hover {
-        color: color.adjust(colors.$input-label-color, $lightness: -20%);
+        color: hsl(from var(--input-label-color) h s calc(l - 20));
       }
     }
   }
@@ -721,7 +709,7 @@ input[type='radio'] {
     .form-field:not(:last-child) {
       margin: 0 0 1rem 0;
       padding: 0 0 1rem 0;
-      border-bottom: 1px solid colors.$input-separator;
+      border-bottom: 1px solid var(--input-separator);
     }
   }
   .uploaded-files {
@@ -772,7 +760,7 @@ input[type='radio'] {
 
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
   transition-duration: 0.2s;
-  color: #fff;
+  color: var(--default-neutral-white);
   font-size: 14px;
 }
 
@@ -788,18 +776,17 @@ input[type='radio'] {
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
   border-color: #cb6b29;
   background: #cb6b29;
-  color: #fff;
+  color: var(--default-neutral-white)
 }
 
 .button-disabled {
   opacity: 0.4;
-  background: colors.$btn-primary-bg !important;
+  background: var(--btn-primary-bg) !important;
   border: 0 !important;
 }
 
 .bordered-box {
-  border: 2px dotted colors.$input-separator;
-  border-radius: units.$upload-form-radius;
+  border: 2px dotted var(--input-separator);
   padding: 16px;
 }
 
@@ -816,11 +803,11 @@ input[type='radio'] {
     box-shadow 0.2s;
   &:not(.p-disabled) {
     &.p-focus {
-      border-color: colors.$btn-primary-bg;
+      border-color: var(--btn-primary-bg);
     }
     &:not(.p-highlight) {
       &:hover {
-        border-color: colors.$btn-primary-bg;
+        border-color: var(--btn-primary-bg);
       }
     }
   }
@@ -828,7 +815,7 @@ input[type='radio'] {
     width: 12px;
     height: 12px;
     transition-duration: 0.2s;
-    background-color: #fff;
+    background-color: var(--default-neutral-white)
   }
 }
 .p-radiobutton .p-radiobutton-box.p-highlight {
@@ -838,7 +825,7 @@ input[type='radio'] {
 .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
   border-color: #cb6b29;
   background: #cb6b29;
-  color: #fff;
+  color: var(--default-neutral-white)
 }
 .p-radiobutton.p-invalid > .p-radiobutton-box {
   border-color: #ced4da #ced4da #ced4da #e4677e;
@@ -862,5 +849,5 @@ p.header-separator {
   border-top: 1px solid #e0dfde;
 }
 .red-border {
-  border: 1px solid colors.$input-error;
+  border: 1px solid var(--input-error);
 }

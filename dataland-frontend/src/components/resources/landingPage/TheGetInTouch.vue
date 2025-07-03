@@ -41,8 +41,6 @@ const getInTouchSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .getintouch {
   padding: 140px 0 200px;
   align-items: center;
@@ -98,7 +96,7 @@ const getInTouchSection = computed(() => {
     }
 
     &-text {
-      color: var(--primary-orange);
+      color: var(--p-primary-color);
     }
 
     &-button {
@@ -108,7 +106,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$large) {
+@media only screen and (max-width: var(--breakpoint-large)) {
   .getintouch {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -131,7 +129,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .getintouch {
     padding: 80px 0;
 
@@ -145,7 +143,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .getintouch {
     &__wrapper {
       gap: 24px 16px;
