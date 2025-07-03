@@ -4,17 +4,20 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type CompanyInformation, type VsmeData } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type StoredDataRequest } from '@clients/communitymanager';
-let vsmeFixtureForTest: FixtureData<VsmeData>;
 import router from '@/router';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the company info sheet', function (): void {
-  let companyInformationForTest: CompanyInformation;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const dummyParentCompanyLei = 'dummyParentLei';
   const dummyParentCompanyId = 'dummyParentCompanyId';
   const dummyParentCompanyName = 'dummyParent Company';
   const dummyCompanyLei = 'dummyCompanyLei';
+
+  let companyInformationForTest: CompanyInformation;
   let mockedStoredDataRequests: StoredDataRequest[];
+  let vsmeFixtureForTest: FixtureData<VsmeData>;
+
   before(function () {
     cy.fixture('CompanyInformationWithVsmePreparedFixtures').then(function (jsonContent) {
       const preparedFixturesSme = jsonContent as Array<FixtureData<VsmeData>>;
@@ -37,10 +40,10 @@ describe('Component tests for the company info sheet', function (): void {
     cy.intercept(`**/api/companies/${dummyCompanyId}/info`, {
       body: companyInformationForTest,
       times: 1,
-    }).as('fetchCompanyInfo');
+    });
     cy.intercept(`**/community/requests/user`, {
       body: mockedStoredDataRequests,
-    }).as('fetchUserRequests');
+    });
 
     cy.intercept(`**/api/companies/names?searchString=${dummyParentCompanyLei}**`, {
       body: [
@@ -49,7 +52,24 @@ describe('Component tests for the company info sheet', function (): void {
           companyName: dummyParentCompanyName,
         },
       ],
-    }).as('getParentCompanyId');
+    });
+  }
+
+  /**
+   * Mounts the CompanyInformation component with a mocked authentication state.
+   * @param authenticated - Whether the user is authenticated.
+   */
+  function mountComponentWithAuth(authenticated: boolean): void {
+    const mountingFunction = getMountingFunction({
+      keycloak: minimalKeycloakMock({ authenticated }),
+      router,
+    });
+
+    mountingFunction(CompanyInformationComponent, {
+      props: {
+        companyId: dummyCompanyId,
+      },
+    });
   }
 
   it('Check visibility of company information', function () {
@@ -57,17 +77,28 @@ describe('Component tests for the company info sheet', function (): void {
     cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
-      router: router,
+      router,
     }).then((mounted) => {
       void mounted.wrapper.setProps({
         companyId: dummyCompanyId,
       });
-      cy.wait('@getParentCompanyId');
       cy.get('[data-test="lei-visible"]').should('have.text', companyInformationForTest.identifiers['Lei'][0]);
       cy.get('[data-test="headquarter-visible"]').should('have.text', companyInformationForTest.headquarters);
       cy.get('[data-test="sector-visible"]').should('have.text', companyInformationForTest.sector);
       cy.get('[data-test="parent-visible"]').should('have.text', dummyParentCompanyName).click();
       cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyParentCompanyId}`);
     });
+  });
+
+  it('should not show "Add to portfolio" button when user is not authenticated', function () {
+    mockRequestsOnMounted();
+    mountComponentWithAuth(false);
+    cy.get('[data-test="addCompanyToPortfoliosButton"]').should('not.exist');
+  });
+
+  it('should show "Add to portfolio" button when user is authenticated', function () {
+    mockRequestsOnMounted();
+    mountComponentWithAuth(true);
+    cy.get('[data-test="addCompanyToPortfoliosButton"]').should('exist');
   });
 });
