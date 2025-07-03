@@ -25,7 +25,7 @@ class EuTaxonomyFinancialsFramework :
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun customizeQaModel(dataModel: FrameworkQaModelBuilder) {
-        super.addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
+        super.addSupressAnnotationToPackageBuilder(dataModel.rootPackageBuilder, "\"MaxLineLength\"", null)
     }
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
