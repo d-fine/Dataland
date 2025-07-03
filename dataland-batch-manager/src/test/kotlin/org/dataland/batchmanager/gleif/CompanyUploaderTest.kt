@@ -350,7 +350,7 @@ class CompanyUploaderTest {
 
         val errorLog =
             logAppender.events.find {
-                it.level.toString() == "ERROR" &&
+                it.level.toString() == "WARN" &&
                     it.message.contains("Retry failed due to") &&
                     it.message.contains(companyId)
             }
