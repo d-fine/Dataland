@@ -7,7 +7,7 @@
         :value="tabs.indexOf(tab)"
         :disabled="!(tabs.indexOf(tab) == currentTabIndex || (tab.isVisible ?? true))"
       >
-        <router-link :to="tab.route">{{ tab.label }}</router-link>
+        <router-link :to="tab.route" class="tab-as-router-link">{{ tab.label }}</router-link>
       </Tab>
     </TabList>
     <TabPanels>
@@ -110,11 +110,9 @@ function setVisibilityForAdminTab(): void {
 </script>
 
 <style scoped>
-.p-tab.p-disabled {
-  display: none;
-}
-.p-tab a {
+.tab-as-router-link {
   font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
   color: inherit;
   text-decoration: inherit;
 }

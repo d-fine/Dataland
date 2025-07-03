@@ -139,6 +139,10 @@ export const DatalandPreset = definePreset(Aura, {
         height: '0',
         bottom: '0',
       },
+      css: () => `
+      .p-tab.p-disabled {
+        display: none;
+}`,
     },
     button: {
       root: {

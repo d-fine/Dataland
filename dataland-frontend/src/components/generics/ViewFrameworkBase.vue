@@ -499,4 +499,18 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
+.dataland-toolbar {
+  z-index: 1000;
+  background-color: var(--default-neutral-white);
+
+  &.sticky {
+    top: 4rem;
+    border-bottom: 1px solid var(--gray-light);
+
+    .d-search-filters-panel {
+      padding: 0 9px 0 0;
+    }
+  }
+}
 </style>
