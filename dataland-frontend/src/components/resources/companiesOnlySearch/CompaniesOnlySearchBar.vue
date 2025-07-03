@@ -1,36 +1,38 @@
 <template>
   <div :class="wrapperClassBaseClasses + wrapperClassAdditions">
-    <i :class="iconClass" aria-hidden="true" />
-    <AutoComplete
-      class="w-full"
-      input-id="company_search_bar_standard"
-      id="autocomplete"
-      v-model="searchBarInput"
-      :suggestions="autocompleteArray"
-      :min-length="3"
-      option-label="companyName"
-      :auto-option-focus="false"
-      placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
-      :input-class="inputClass"
-      panel-class="d-framework-searchbar-panel search__autocomplete"
-      append-to="self"
-      @complete="searchCompanyName($event)"
-      @item-select="$emit('selectCompany', $event.value)"
-      @focus="$emit('focus')"
-      @blur="$emit('blur')"
-    >
-      <template #option="slotProps">
-        <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-        <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
-      </template>
-      <template #footer>
-        <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= resultLimit">
-          <li class="p-autocomplete-item">
-            <span class="font-medium pl-3"> Only showing {{ resultLimit }} results, please refine your query.</span>
-          </li>
-        </ul>
-      </template>
-    </AutoComplete>
+    <IconField class="col-12">
+      <InputIcon class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+      <AutoComplete
+        input-id="company_search_bar_standard"
+        id="autocomplete"
+        v-model="searchBarInput"
+        fluid
+        :suggestions="autocompleteArray"
+        :min-length="3"
+        option-label="companyName"
+        :auto-option-focus="false"
+        placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
+        :input-class="inputClass"
+        panel-class="d-framework-searchbar-panel"
+        append-to="self"
+        @complete="searchCompanyName($event)"
+        @item-select="$emit('selectCompany', $event.value)"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
+      >
+        <template #option="slotProps">
+          <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+          <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+        </template>
+        <template #footer>
+          <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= resultLimit">
+            <li class="p-autocomplete-item">
+              <span class="font-medium pl-3"> Only showing {{ resultLimit }} results, please refine your query.</span>
+            </li>
+          </ul>
+        </template>
+      </AutoComplete>
+    </IconField>
   </div>
   <div class="mt-2">
     <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
@@ -45,6 +47,8 @@ import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import AutoComplete, { type AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import { defineComponent, inject } from 'vue';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 export default defineComponent({
   setup() {
@@ -53,7 +57,7 @@ export default defineComponent({
     };
   },
   name: 'CompaniesOnlySearchBar',
-  components: { AutoComplete, SearchResultHighlighter },
+  components: { AutoComplete, SearchResultHighlighter, IconField, InputIcon },
   mounted() {
     if (window.innerWidth > 768) {
       const inputElement = document.getElementById('autocomplete')?.querySelector('.p-inputtext') as HTMLInputElement;
@@ -82,10 +86,6 @@ export default defineComponent({
     inputClass: {
       type: String,
       default: 'h-3rem d-framework-searchbar-input w-full',
-    },
-    iconClass: {
-      type: String,
-      default: 'pi pi-search d-framework-searchbar-input-icon search-icon',
     },
   },
 
