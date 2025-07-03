@@ -14,7 +14,7 @@ import java.math.BigInteger
 /**
  * The data-model for the SocialAndEmployeeMatters section
  */
-@Suppress("MaxLineLength")
+@Suppress("LargeClass", "MaxLineLength")
 data class SfdrSocialSocialAndEmployeeMatters(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

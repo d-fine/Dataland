@@ -73,7 +73,7 @@ open class NumberBaseComponent(
     /**
      * Returns a list of datamodel annotations to enforce the minimum and maximum value constraints
      */
-    fun getMinMaxDatamodelAnnotations(
+    private fun getMinMaxDatamodelAnnotations(
         minimumValue: Long?,
         maximumValue: Long?,
     ): List<Annotation> {

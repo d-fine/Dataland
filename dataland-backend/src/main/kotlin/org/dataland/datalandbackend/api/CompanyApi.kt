@@ -2,8 +2,6 @@ package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -416,14 +414,6 @@ interface CompanyApi {
         value = [
             ApiResponse(
                 responseCode = "200", description = "Successfully returned teaser companies.",
-                content = [
-                    Content(
-                        mediaType = "application/json",
-                        examples = [
-                            ExampleObject(value = "[\n\t\"${BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"\n]"),
-                        ],
-                    ),
-                ],
             ),
         ],
     )
@@ -446,14 +436,6 @@ interface CompanyApi {
         value = [
             ApiResponse(
                 responseCode = "200", description = "Successfully retrieved values.",
-                content = [
-                    Content(
-                        mediaType = "application/json",
-                        examples = [
-                            ExampleObject(value = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE),
-                        ],
-                    ),
-                ],
             ),
         ],
     )
@@ -586,16 +568,6 @@ interface CompanyApi {
         @io.swagger.v3.oas.annotations.parameters.RequestBody(
             required = true,
             description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
-            content = [
-                Content(
-                    mediaType = "application/json",
-                    examples = [
-                        ExampleObject(
-                            value = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
-                        ),
-                    ],
-                ),
-            ],
         )
         @Valid
         @RequestBody(required = true)

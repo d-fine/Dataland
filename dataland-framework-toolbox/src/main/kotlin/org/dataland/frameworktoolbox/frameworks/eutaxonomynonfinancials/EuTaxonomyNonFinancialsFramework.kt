@@ -5,9 +5,13 @@ import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
+import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.springframework.stereotype.Component
 import java.io.File
@@ -29,6 +33,40 @@ class EuTaxonomyNonFinancialsFramework :
             FrameworkGenerationFeatures
                 .allExcept(FrameworkGenerationFeatures.UploadPage),
     ) {
+    override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
+        addSupressLargeClassToPackageBuilder(dataModel.rootPackageBuilder)
+    }
+
+    private fun addSupressLargeClassToPackageBuilder(packageBuilder: PackageBuilder) {
+        packageBuilder.childElements.forEach { dataModelElement ->
+            when (dataModelElement) {
+                is PackageBuilder -> {
+                    addSupressLargeClassToPackageBuilder(dataModelElement)
+                }
+
+                is DataClassBuilder -> {
+                    addSuppressLargeClassLengthToDataClass(dataModelElement)
+                }
+
+                else -> {
+                    // Do nothing
+                }
+            }
+        }
+    }
+
+    private fun addSuppressLargeClassLengthToDataClass(dataModelElement: DataClassBuilder) {
+        val tooLargeClasses =
+            listOf(
+                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.EutaxonomyNonFinancialsCapex",
+                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.EutaxonomyNonFinancialsRevenue",
+            )
+        if (tooLargeClasses.contains(dataModelElement.fullyQualifiedName)) {
+            val rawParameterSpec = "\"LargeClass\""
+            addSuppressAnnotation(dataModelElement, rawParameterSpec)
+        }
+    }
+
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
             viewPageExpandOnPageLoad = true
@@ -63,6 +101,16 @@ class EuTaxonomyNonFinancialsFramework :
                         this,
                         "Enum",
                         "extendedEnumFiscalYearDeviation",
+                    )
+                }
+            }
+            edit<YesNoComponent>("nfrdMandatory") {
+                specificationGenerator = { categoryBuilder ->
+                    val nfrdMandatoryComponent = this
+                    nfrdMandatoryComponent.label = "Is NFRD mandatory?"
+                    categoryBuilder.addDefaultDatapointAndSpecification(
+                        nfrdMandatoryComponent,
+                        "EnumYesNo",
                     )
                 }
             }

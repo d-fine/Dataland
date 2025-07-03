@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 
 /**
@@ -8,14 +10,49 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Qa
  * This class is used for the GET Response.
  */
 data class QaReviewResponse(
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+    )
     val dataId: String,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    )
     val companyId: String,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+    )
     val companyName: String,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+    )
     val framework: String,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
     val reportingPeriod: String,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_EXAMPLE,
+    )
     val timestamp: Long,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+    )
     var qaStatus: QaStatus,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
+    )
     val comment: String?,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
+    )
     val triggeringUserId: String?,
 )
 

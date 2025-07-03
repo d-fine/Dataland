@@ -47,6 +47,52 @@ data class EutaxonomyNonFinancialsOpex(
     val eligibleShare: EutaxonomyNonFinancialsOpexEligibleShare? = null,
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsOpexNonAlignedShare? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible""",
+        example = """
+            {
+            "value" :   [ {
+      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+      "naceCodes" : [ "E.38.11" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    }, {
+      "activityName" : "InfrastructureForRailTransport",
+      "naceCodes" : [ "C27.9", "C30.20" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    }, {
+      "activityName" : "LowCarbonAirportInfrastructure",
+      "naceCodes" : [ "F41.20", "F42.99" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      }
+    } ] , 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
+    )
     @field:Valid()
     val nonAlignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyActivity>?>? = null,
     @field:Valid()
@@ -161,6 +207,72 @@ data class EutaxonomyNonFinancialsOpex(
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
         ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Absolute value and share of taxonomy-aligned OpEx for the activity from total OpEx. """,
+        example = """
+            {
+            "value" :  [ {
+      "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+      "naceCodes" : [ "E.38.11" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      },
+      "substantialContributionToClimateChangeMitigationInPercent" : 10,
+      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
+      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
+      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
+      "dnshToClimateChangeMitigation" : "Yes",
+      "dnshToClimateChangeAdaptation" : "Yes",
+      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
+      "dnshToTransitionToACircularEconomy" : "Yes",
+      "dnshToPollutionPreventionAndControl" : "Yes",
+      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "Yes",
+      "minimumSafeguards" : "Yes",
+      "enablingActivity" : "No",
+      "transitionalActivity" : "Yes"
+    }, {
+      "activityName" : "InfrastructureForRailTransport",
+      "naceCodes" : [ "C27.9", "C30.20" ],
+      "share" : {
+        "relativeShareInPercent" : 25,
+        "absoluteShare" : {
+          "amount" : 100.5,
+          "currency" : "EUR"
+        }
+      },
+      "substantialContributionToClimateChangeMitigationInPercent" : 7,
+      "substantialContributionToClimateChangeAdaptationInPercent" : 5,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : 35,
+      "substantialContributionToTransitionToACircularEconomyInPercent" : 70,
+      "substantialContributionToPollutionPreventionAndControlInPercent" : 2,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : 1,
+      "dnshToClimateChangeMitigation" : "Yes",
+      "dnshToClimateChangeAdaptation" : "Yes",
+      "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "Yes",
+      "dnshToTransitionToACircularEconomy" : "Yes",
+      "dnshToPollutionPreventionAndControl" : "Yes",
+      "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "No",
+      "minimumSafeguards" : "Yes",
+      "enablingActivity" : "No",
+      "transitionalActivity" : "Yes"
+    } ] , 
+            "quality" : "Reported",
+            "comment" : "The value is reported by the company."
+            "dataSource" : {
+            "page" : "5-7",
+            "tagName" : "monetaryAmount",
+            "fileName" : "AnnualReport2020.pdf",
+            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+            }
+    } """,
+    )
     @field:Valid()
     val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
     @Suppress("ktlint:standard:max-line-length")

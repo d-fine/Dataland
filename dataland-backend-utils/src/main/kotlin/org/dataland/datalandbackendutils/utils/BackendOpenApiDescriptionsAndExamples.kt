@@ -112,7 +112,9 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
 
-    const val SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean parameter. If set to true, the results will only display active datasets."
+    const val SHOW_ONLY_ACTIVE_DESCRIPTION =
+        "Boolean parameter. If set to true or empty, only metadata of QA reports " +
+            "are returned that are active. If set to false, all QA reports will be returned regardless of their active status."
 
     const val DATA_POINT_ID_DESCRIPTION = "The unique identifier to identify the datapoint."
     const val DATA_POINT_ID_EXAMPLE = "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
@@ -152,4 +154,50 @@ object BackendOpenApiDescriptionsAndExamples {
             "    \"numberOfProvidedReportingPeriods\":0" +
             "  }" +
             "}"
+
+    const val COMMENT_DESCRIPTION = "Optional comment to explain the QA review status change."
+    const val COMMENT_EXAMPLE = "comment"
+
+    const val OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION =
+        "Boolean flag. If true, the QA status of the data points are overwritten."
+
+    const val REVIEWER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the review."
+    const val REVIEWER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+
+    const val REVIEW_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was reviewed."
+    const val REVIEW_TIMESTAMP_EXAMPLE = UPLOAD_TIME_EXAMPLE
+
+    const val QA_REPORT_ID_DESCRIPTION = "The unique identifier of the QA report"
+    const val QA_REPORT_ID_EXAMPLE = "3f87b4ac-b3e2-4f7d-95d3-8e20c9ad6f1e"
+
+    const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded this QA report."
+    const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+
+    const val QA_REPORT_UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the QA report was uploaded."
+    const val QA_REPORT_UPLOAD_TIME_EXAMPLE = UPLOAD_TIME_EXAMPLE
+
+    const val IS_REPORT_ACTIVE_DESCRIPTION = "Boolean flag. True if and only if the QA report is marked as active."
+    const val IS_REPORT_ACTIVE_EXAMPLE = "true"
+
+    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION =
+        "The quality decision of this qa report. " +
+            "Possible values are: QaAccepted, QaRejected, QaInconclusive, QaNotAttempted."
+
+    const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "If rejected, contains suggested data corrections for the data point."
+    const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
+
+    const val QA_REPORT_COMMENT_DESCRIPTION = "A comment explaining the verdict."
+    const val QA_REPORT_COMMENT_EXAMPLE = "comment"
+
+    const val QA_REPORT_SHOW_INACTIVE_DESCRIPTION = "Boolean flag to indicate if inactive QA reports should be included in the response."
+
+    const val QA_REPORT_SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean flag. If true, only active QA reports are included in the response."
+
+    const val QA_REPORT_MIN_UPLOAD_DATE_DESCRIPTION =
+        "If set, only metadata of reports are returned that were uploaded after the minUploadDate."
+    const val QA_REPORT_MIN_UPLOAD_DATE_EXAMPLE = "01-01-2024"
+
+    const val QA_REPORT_MAX_UPLOAD_DATE_DESCRIPTION =
+        "If set, only metadata of reports are returned that were uploaded before the maxUploadDate."
+    const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
 }
