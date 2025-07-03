@@ -32,10 +32,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -90,10 +92,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "requestBody": {
@@ -158,10 +162,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -212,10 +218,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "requestBody": {
@@ -282,14 +290,17 @@
           {
             "name": "companyId",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -298,18 +309,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "nonSourceable",
             "in": "query",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable and if false, it returns sourceable data.",
             "required": false,
             "schema": {
               "type": "boolean"
-            }
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -1396,6 +1411,7 @@
           {
             "name": "dataTypes",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1408,6 +1424,7 @@
           {
             "name": "countryCodes",
             "in": "query",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1415,11 +1432,13 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "DE"
           },
           {
             "name": "sectors",
             "in": "query",
+            "description": "The industry or sector in which the company operates.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1427,24 +1446,29 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "web services"
           },
           {
             "name": "chunkSize",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size. The default value is 100.",
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
             }
           },
           {
             "name": "chunkIndex",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 0
             }
           }
         ],
@@ -1560,6 +1584,7 @@
         "description": "Checks if companies exists based on a list of provided identifiers. Duplicated results are removed.",
         "operationId": "postCompanyValidation",
         "requestBody": {
+          "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
           "content": {
             "application/json": {
               "schema": {
@@ -1567,6 +1592,11 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "example": {
+                "Lei": [
+                  "5493001KJX4BT0IHAG73"
+                ]
               }
             }
           },
@@ -1804,10 +1834,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier to identify the data in the data store.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -1862,10 +1894,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier to identify the data in the data store.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -1932,14 +1966,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "path",
+            "description": "The framework of the dataset on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -1948,10 +1985,12 @@
           {
             "name": "reportingPeriod",
             "in": "path",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -2004,6 +2043,7 @@
           {
             "name": "identifierType",
             "in": "path",
+            "description": "The type of identifier that is used.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/IdentifierType"
@@ -2012,10 +2052,12 @@
           {
             "name": "identifier",
             "in": "path",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -2080,6 +2122,7 @@
           {
             "name": "identifierType",
             "in": "path",
+            "description": "The type of identifier that is used.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/IdentifierType"
@@ -2088,10 +2131,12 @@
           {
             "name": "identifier",
             "in": "path",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -2144,10 +2189,12 @@
           {
             "name": "userId",
             "in": "path",
+            "description": "The Dataland user ID of the user who uploaded the document.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "responses": {
@@ -2250,14 +2297,17 @@
           {
             "name": "companyId",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -2266,6 +2316,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true, the results will only display active datasets.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2275,14 +2326,17 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "uploaderUserIds",
             "in": "query",
+            "description": "A set of Dataland user IDs of the users who uploaded the document.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -2296,6 +2350,7 @@
           {
             "name": "qaStatus",
             "in": "query",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2359,10 +2414,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier to identify the data in the data store.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -2422,35 +2479,41 @@
           {
             "name": "companyIds",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "frameworksOrDataPointTypes",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -5809,10 +5872,12 @@
           {
             "name": "dataPointId",
             "in": "path",
+            "description": "The unique identifier to identify the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
           }
         ],
         "responses": {
@@ -5869,10 +5934,12 @@
           {
             "name": "dataPointId",
             "in": "path",
+            "description": "The unique identifier to identify the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
           }
         ],
         "responses": {
@@ -5929,10 +5996,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -5992,10 +6061,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -6052,10 +6123,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -6063,10 +6136,18 @@
             "description": "Successfully retrieved values.",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
+                "example": {
+                  "sfdr": {
+                    "numberOfProvidedReportingPeriods": 0
+                  },
+                  "eutaxonomy-financials": {
+                    "numberOfProvidedReportingPeriods": 0
+                  },
+                  "eutaxonomy-non-financials": {
+                    "numberOfProvidedReportingPeriods": 1
+                  },
+                  "nuclear-and-gas": {
+                    "numberOfProvidedReportingPeriods": 0
                   }
                 }
               }
@@ -6116,12 +6197,9 @@
             "description": "Successfully returned teaser companies.",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
+                "example": [
+                  "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+                ]
               }
             }
           },
@@ -6178,6 +6256,7 @@
           {
             "name": "dataTypes",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -6190,6 +6269,7 @@
           {
             "name": "countryCodes",
             "in": "query",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -6197,11 +6277,13 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "DE"
           },
           {
             "name": "sectors",
             "in": "query",
+            "description": "The industry or sector in which the company operates.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -6209,7 +6291,8 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "web services"
           }
         ],
         "responses": {
@@ -6563,10 +6646,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier to identify the data in the data store.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -6618,80 +6703,109 @@
         "properties": {
           "companyName": {
             "type": "string",
-            "description": "The name of the company in Dataland",
-            "example": "Example Company"
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "companyAlternativeNames": {
             "type": "array",
+            "description": "Any alternative names or abbreviations the company might be known by.",
             "nullable": true,
+            "example": [
+              "ABC Corp."
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Any alternative names or abbreviations the company might be known by.",
+              "example": "[\"ABC Corp.\"]"
             }
           },
           "companyContactDetails": {
             "type": "array",
+            "description": "The email addresses of the company.",
             "nullable": true,
             "example": [
-              "Test@test.com"
+              "contact@abccorp.com"
             ],
             "items": {
               "type": "string",
-              "example": "[\"Test@test.com\"]"
+              "description": "The email addresses of the company.",
+              "example": "[\"contact@abccorp.com\"]"
             }
           },
           "companyLegalForm": {
             "type": "string",
-            "nullable": true
+            "description": "The legal structure under which the company operates.",
+            "nullable": true,
+            "example": "Private Limited Company (Ltd)"
           },
           "headquarters": {
-            "type": "string"
+            "type": "string",
+            "description": "The city where the registered office of the company is located.",
+            "example": "Berlin"
           },
           "headquartersPostalCode": {
             "type": "string",
-            "nullable": true
+            "description": "The postal code of the headquarters.",
+            "nullable": true,
+            "example": "10123"
           },
           "sector": {
             "type": "string",
-            "nullable": true
+            "description": "The industry or sector in which the company operates.",
+            "nullable": true,
+            "example": "web services"
           },
           "sectorCodeWz": {
             "type": "string",
-            "nullable": true
+            "description": "The industry classification code according to the NACE compliant WZ method.",
+            "nullable": true,
+            "example": "62.10.4"
           },
           "identifiers": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
+              "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
               "example": {
                 "Lei": [
-                  "ExampleLei"
+                  "5493001KJX4BT0IHAG73"
                 ]
               },
               "items": {
                 "type": "string",
-                "example": "{\"Lei\":[\"ExampleLei\"]}"
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+                "example": "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
               }
             },
+            "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
             "example": {
               "Lei": [
-                "ExampleLei"
+                "5493001KJX4BT0IHAG73"
               ]
             }
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "example": "DE"
           },
           "isTeaserCompany": {
             "type": "boolean",
-            "nullable": true
+            "description": "A boolean indicating if the company is a teaser company.",
+            "nullable": true,
+            "example": true
           },
           "website": {
             "type": "string",
-            "nullable": true
+            "description": "The official website URL of the company.",
+            "nullable": true,
+            "example": "www.abccorp.com test"
           },
           "parentCompanyLei": {
             "type": "string",
-            "nullable": true
+            "description": "The LEI of the parent company, if applicable.",
+            "nullable": true,
+            "example": "5493001KJX4BT0IHAG72"
           }
         }
       },
@@ -6708,39 +6822,54 @@
         "type": "object",
         "properties": {
           "dataId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier to identify the data in the data store.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "uploaderUserId": {
             "type": "string",
-            "nullable": true
+            "description": "The Dataland user ID of the user who uploaded the document.",
+            "nullable": true,
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "currentlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag whether the dataset is currently active.",
+            "example": true
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
           "ref": {
             "type": "string",
-            "nullable": true
+            "description": "The direct link to the page displaying the specified dataset.",
+            "nullable": true,
+            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/eutaxonomy-non-financials/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
       "QaStatus": {
         "type": "string",
+        "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
         "enum": [
           "Pending",
           "Accepted",
@@ -6756,7 +6885,9 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyInformation": {
             "$ref": "#/components/schemas/CompanyInformation"
@@ -6780,19 +6911,27 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "isNonSourceable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable and if false, it returns sourceable data.",
+            "example": true
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason why there is no source available",
+            "example": "Parent Uploaded"
           }
         }
       },
@@ -6804,7 +6943,9 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "nullable": true
+            "description": "The ID under which the company can be found on Dataland.",
+            "nullable": true,
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "nullable": true,
@@ -6816,17 +6957,24 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "nullable": true
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "nullable": true,
+            "example": "2023"
           },
           "onlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag whether the dataset is currently the only active dataset.",
+            "example": true
           },
           "uploaderUserIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A set of Dataland user IDs of the users who uploaded the document.",
             "nullable": true,
+            "example": true,
             "items": {
               "type": "string",
+              "description": "A set of Dataland user IDs of the users who uploaded the document.",
               "format": "uuid"
             }
           },
@@ -22155,16 +22303,24 @@
         "type": "object",
         "properties": {
           "dataPoint": {
-            "type": "string"
+            "type": "string",
+            "description": "The content of the data point as a JSON string.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "Which data point the provided content is associated to.",
+            "example": "extendedEnumYesNoNfrdMandatory"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -22182,26 +22338,40 @@
         "type": "object",
         "properties": {
           "dataPointId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier to identify the datapoint.",
+            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
           },
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "Which data point the provided content is associated to.",
+            "example": "extendedEnumYesNoNfrdMandatory"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the document.",
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "currentlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag whether the dataset is currently active.",
+            "example": true
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
@@ -22216,10 +22386,14 @@
         "type": "object",
         "properties": {
           "dataPoint": {
-            "type": "string"
+            "type": "string",
+            "description": "The content of the data point as a JSON string.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "Which data point the provided content is associated to.",
+            "example": "extendedEnumYesNoNfrdMandatory"
           }
         }
       },
@@ -22233,24 +22407,36 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "headquarters": {
-            "type": "string"
+            "type": "string",
+            "description": "The city where the registered office of the company is located.",
+            "example": "Berlin"
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "example": "DE"
           },
           "sector": {
             "type": "string",
-            "nullable": true
+            "description": "The industry or sector in which the company operates.",
+            "nullable": true,
+            "example": "web services"
           },
           "lei": {
             "type": "string",
-            "nullable": true
+            "description": "The LEI of the company.",
+            "nullable": true,
+            "example": "5493001KJX4BT0IHAG73"
           }
         }
       },
@@ -22261,7 +22447,9 @@
         "type": "object",
         "properties": {
           "identifier": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique identifier to find a company.",
+            "example": "5493001KJX4BT0IHAG73"
           },
           "companyInformation": {
             "nullable": true,
@@ -22302,7 +22490,9 @@
         "type": "object",
         "properties": {
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the document.",
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         }
       },
@@ -22311,78 +22501,113 @@
         "properties": {
           "companyName": {
             "type": "string",
-            "nullable": true
+            "description": "The official name of the company.",
+            "nullable": true,
+            "example": "ABC Corporation"
           },
           "companyAlternativeNames": {
             "type": "array",
+            "description": "Any alternative names or abbreviations the company might be known by.",
             "nullable": true,
+            "example": [
+              "ABC Corp."
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Any alternative names or abbreviations the company might be known by.",
+              "example": "[\"ABC Corp.\"]"
             }
           },
           "companyContactDetails": {
             "type": "array",
+            "description": "The email addresses of the company.",
             "nullable": true,
+            "example": [
+              "contact@abccorp.com"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "The email addresses of the company.",
+              "example": "[\"contact@abccorp.com\"]"
             }
           },
           "companyLegalForm": {
             "type": "string",
-            "nullable": true
+            "description": "The legal structure under which the company operates.",
+            "nullable": true,
+            "example": "Private Limited Company (Ltd)"
           },
           "headquarters": {
             "type": "string",
-            "nullable": true
+            "description": "The city where the registered office of the company is located.",
+            "nullable": true,
+            "example": "Berlin"
           },
           "headquartersPostalCode": {
             "type": "string",
-            "nullable": true
+            "description": "The postal code of the headquarters.",
+            "nullable": true,
+            "example": "10123"
           },
           "sector": {
             "type": "string",
-            "nullable": true
+            "description": "The industry or sector in which the company operates.",
+            "nullable": true,
+            "example": "web services"
           },
           "sectorCodeWz": {
             "type": "string",
-            "nullable": true
+            "description": "The industry classification code according to the NACE compliant WZ method.",
+            "nullable": true,
+            "example": "62.10.4"
           },
           "identifiers": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
+              "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
               "example": {
                 "Lei": [
-                  "ExampleLei"
+                  "5493001KJX4BT0IHAG73"
                 ]
               },
               "items": {
                 "type": "string",
-                "example": "{\"Lei\":[\"ExampleLei\"]}"
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+                "example": "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
               }
             },
+            "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
             "nullable": true,
             "example": {
               "Lei": [
-                "ExampleLei"
+                "5493001KJX4BT0IHAG73"
               ]
             }
           },
           "countryCode": {
             "type": "string",
-            "nullable": true
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "nullable": true,
+            "example": "DE"
           },
           "isTeaserCompany": {
             "type": "boolean",
-            "nullable": true
+            "description": "A boolean indicating if the company is a teaser company.",
+            "nullable": true,
+            "example": true
           },
           "website": {
             "type": "string",
-            "nullable": true
+            "description": "The official website URL of the company.",
+            "nullable": true,
+            "example": "www.abccorp.com test"
           },
           "parentCompanyLei": {
             "type": "string",
-            "nullable": true
+            "description": "The LEI of the parent company, if applicable.",
+            "nullable": true,
+            "example": "5493001KJX4BT0IHAG72"
           }
         }
       },
@@ -22411,30 +22636,42 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier to identify the data in the data store.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "qualityStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
           "currentlyActive": {
             "type": "boolean",
-            "nullable": true
+            "description": "Boolean flag whether the dataset is currently active.",
+            "nullable": true,
+            "example": true
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           }
         }
       },
@@ -22451,26 +22688,38 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "isNonSourceable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable and if false, it returns sourceable data.",
+            "example": true
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason why there is no source available",
+            "example": "Parent Uploaded"
           },
           "creationTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the dataset was created.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the document.",
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         }
       },
@@ -22483,13 +22732,19 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -22651,18 +22906,6 @@
           }
         }
       },
-      "AggregatedFrameworkDataSummary": {
-        "required": [
-          "numberOfProvidedReportingPeriods"
-        ],
-        "type": "object",
-        "properties": {
-          "numberOfProvidedReportingPeriods": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "CompanyIdAndName": {
         "required": [
           "companyId",
@@ -22671,10 +22914,14 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
@@ -22688,15 +22935,27 @@
           "countryCodes": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The list of country codes in ISO 3166-1 alpha-2 format.",
+            "example": [
+              "DE"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "The list of country codes in ISO 3166-1 alpha-2 format.",
+              "example": "[\"DE\"]"
             }
           },
           "sectors": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The list of sectors.",
+            "example": [
+              "web services"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "The list of sectors.",
+              "example": "[\"web services\"]"
             }
           }
         }
@@ -22708,7 +22967,9 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
