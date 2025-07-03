@@ -111,6 +111,11 @@ data class EutaxonomyNonFinancialsGeneral(
     @field:Valid()
     val euTaxonomyActivityLevelReporting: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)""",
+        example = """ "LimitedAssurance"  """,
+    )
     val assurance: AssuranceDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")

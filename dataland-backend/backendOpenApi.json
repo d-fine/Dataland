@@ -10927,7 +10927,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Denominator of the applicable KPI - CapEx-based",
+        "example": "\n            {\n            \"value\" :  {\n      \"taxonomyAlignedShareDenominatorNAndG426\" : {\n        \"mitigationAndAdaptation\" : 0.2,\n        \"mitigation\" : 0.3,\n        \"adaptation\" : 0.1\n      },\n      \"taxonomyAlignedShareDenominatorNAndG427\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 0.4,\n        \"adaptation\" : 0.2\n      },\n      \"taxonomyAlignedShareDenominatorNAndG428\" : {\n        \"mitigationAndAdaptation\" : 1,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareDenominatorNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareDenominatorNAndG430\" : {\n        \"mitigationAndAdaptation\" : 0.3,\n        \"mitigation\" : 2.4,\n        \"adaptation\" : 0.5\n      },\n      \"taxonomyAlignedShareDenominatorNAndG431\" : {\n        \"mitigationAndAdaptation\" : 0.2,\n        \"mitigation\" : 0.5,\n        \"adaptation\" : 0.6\n      },\n      \"taxonomyAlignedShareDenominatorOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 1.1,\n        \"mitigation\" : 1.4,\n        \"adaptation\" : 1.1\n      },\n      \"taxonomyAlignedShareDenominator\" : {\n        \"mitigationAndAdaptation\" : 4,\n        \"mitigation\" : 5,\n        \"adaptation\" : 2.5\n      }\n    }, \n            \"quality\" : \"Reported\",\n            \"comment\" : \"The value is reported by the company.\"\n            \"dataSource\" : {\n            \"page\" : \"5-7\",\n            \"tagName\" : \"monetaryAmount\",\n            \"fileName\" : \"AnnualReport2020.pdf\",\n            \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n            }\n    } "
       },
       "ExtendedDataPointNuclearAndGasAlignedNumerator": {
         "type": "object",
@@ -10960,7 +10962,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - CapEx-based",
+        "example": "\n            {\n            \"value\" : {\n      \"taxonomyAlignedShareNumeratorNAndG426\" : {\n        \"mitigationAndAdaptation\" : 5,\n        \"mitigation\" : 6,\n        \"adaptation\" : 4\n      },\n      \"taxonomyAlignedShareNumeratorNAndG427\" : {\n        \"mitigationAndAdaptation\" : 30,\n        \"mitigation\" : 8,\n        \"adaptation\" : 8\n      },\n      \"taxonomyAlignedShareNumeratorNAndG428\" : {\n        \"mitigationAndAdaptation\" : 25,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareNumeratorNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareNumeratorNAndG430\" : {\n        \"mitigationAndAdaptation\" : 7.5,\n        \"mitigation\" : 48,\n        \"adaptation\" : 20\n      },\n      \"taxonomyAlignedShareNumeratorNAndG431\" : {\n        \"mitigationAndAdaptation\" : 5,\n        \"mitigation\" : 10,\n        \"adaptation\" : 24\n      },\n      \"taxonomyAlignedShareNumeratorOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 27.5,\n        \"mitigation\" : 28,\n        \"adaptation\" : 44\n      },\n      \"taxonomyAlignedShareNumerator\" : {\n        \"mitigationAndAdaptation\" : 100,\n        \"mitigation\" : 100,\n        \"adaptation\" : 100\n      }\n    }, \n            \"quality\" : \"Reported\",\n            \"comment\" : \"The value is reported by the company.\"\n            \"dataSource\" : {\n            \"page\" : \"5-7\",\n            \"tagName\" : \"monetaryAmount\",\n            \"fileName\" : \"AnnualReport2020.pdf\",\n            \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n            }\n    } "
       },
       "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
         "type": "object",
@@ -10993,7 +10997,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based",
+        "example": "\n            {\n            \"value\" :   {\n      \"taxonomyEligibleButNotAlignedShareNAndG426\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 1.3,\n        \"adaptation\" : 1.1\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG427\" : {\n        \"mitigationAndAdaptation\" : 2.2,\n        \"mitigation\" : 1.4,\n        \"adaptation\" : 1.2\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG428\" : {\n        \"mitigationAndAdaptation\" : 2,\n        \"mitigation\" : 1,\n        \"adaptation\" : 1\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG430\" : {\n        \"mitigationAndAdaptation\" : 1.3,\n        \"mitigation\" : 3.4,\n        \"adaptation\" : 1.5\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG431\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 1.5,\n        \"adaptation\" : 1.6\n      },\n      \"taxonomyEligibleButNotAlignedShareOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 2.2,\n        \"mitigation\" : 2.1,\n        \"adaptation\" : 2\n      },\n      \"taxonomyEligibleButNotAlignedShare\" : {\n        \"mitigationAndAdaptation\" : 10.1,\n        \"mitigation\" : 10.7,\n        \"adaptation\" : 8.4\n      }\n    } , \n            \"quality\" : \"Reported\",\n            \"comment\" : \"The value is reported by the company.\"\n            \"dataSource\" : {\n            \"page\" : \"5-7\",\n            \"tagName\" : \"monetaryAmount\",\n            \"fileName\" : \"AnnualReport2020.pdf\",\n            \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n            }\n    } "
       },
       "ExtendedDataPointNuclearAndGasNonEligible": {
         "type": "object",
@@ -11026,7 +11032,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based",
+        "example": "\n            {\n            \"value\" :  {\n      \"taxonomyNonEligibleShareNAndG426\" : 1.1,\n      \"taxonomyNonEligibleShareNAndG427\" : 1.2,\n      \"taxonomyNonEligibleShareNAndG428\" : 0.6,\n      \"taxonomyNonEligibleShareNAndG429\" : 0.5,\n      \"taxonomyNonEligibleShareNAndG430\" : 2.8,\n      \"taxonomyNonEligibleShareNAndG431\" : 1.2,\n      \"taxonomyNonEligibleShareOtherActivities\" : 1.9,\n      \"taxonomyNonEligibleShare\" : 9.3\n    } , \n            \"quality\" : \"Reported\",\n            \"comment\" : \"The value is reported by the company.\"\n            \"dataSource\" : {\n            \"page\" : \"5-7\",\n            \"tagName\" : \"monetaryAmount\",\n            \"fileName\" : \"AnnualReport2020.pdf\",\n            \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n            }\n    } "
       },
       "NuclearAndGasAlignedDenominator": {
         "type": "object",
@@ -16977,7 +16985,9 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "description": "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
+        "example": "LimitedAssurance"
       },
       "CompanyAssociatedDataEutaxonomyNonFinancialsData": {
         "required": [
@@ -18293,7 +18303,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible",
+        "example": "\n            {\n            \"value\" :   [ {\n      \"activityName\" : \"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions\",\n      \"naceCodes\" : [ \"E.38.11\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }, {\n      \"activityName\" : \"InfrastructureForRailTransport\",\n      \"naceCodes\" : [ \"C27.9\", \"C30.20\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }, {\n      \"activityName\" : \"LowCarbonAirportInfrastructure\",\n      \"naceCodes\" : [ \"F41.20\", \"F42.99\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    } ] , \n            \"quality\" : \"Reported\",\n            \"comment\" : \"The value is reported by the company.\"\n            \"dataSource\" : {\n            \"page\" : \"5-7\",\n            \"tagName\" : \"monetaryAmount\",\n            \"fileName\" : \"AnnualReport2020.pdf\",\n            \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n            }\n    } "
       },
       "ExtendedDataPointListEuTaxonomyAlignedActivity": {
         "type": "object",
@@ -18325,7 +18337,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Absolute value and share of taxonomy-aligned OpEx for the activity from total OpEx. ",
+        "example": "\n            {\n            \"value\" :  [ {\n      \"activityName\" : \"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions\",\n      \"naceCodes\" : [ \"E.38.11\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      },\n      \"substantialContributionToClimateChangeMitigationInPercent\" : 10,\n      \"substantialContributionToClimateChangeAdaptationInPercent\" : 5,\n      \"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent\" : 35,\n      \"substantialContributionToTransitionToACircularEconomyInPercent\" : 70,\n      \"substantialContributionToPollutionPreventionAndControlInPercent\" : 2,\n      \"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent\" : 1,\n      \"dnshToClimateChangeMitigation\" : \"Yes\",\n      \"dnshToClimateChangeAdaptation\" : \"Yes\",\n      \"dnshToSustainableUseAndProtectionOfWaterAndMarineResources\" : \"Yes\",\n      \"dnshToTransitionToACircularEconomy\" : \"Yes\",\n      \"dnshToPollutionPreventionAndControl\" : \"Yes\",\n      \"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems\" : \"Yes\",\n      \"minimumSafeguards\" : \"Yes\",\n      \"enablingActivity\" : \"No\",\n      \"transitionalActivity\" : \"Yes\"\n    }, {\n      \"activityName\" : \"InfrastructureForRailTransport\",\n      \"naceCodes\" : [ \"C27.9\", \"C30.20\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      },\n      \"substantialContributionToClimateChangeMitigationInPercent\" : 7,\n      \"substantialContributionToClimateChangeAdaptationInPercent\" : 5,\n      \"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent\" : 35,\n      \"substantialContributionToTransitionToACircularEconomyInPercent\" : 70,\n      \"substantialContributionToPollutionPreventionAndControlInPercent\" : 2,\n      \"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent\" : 1,\n      \"dnshToClimateChangeMitigation\" : \"Yes\",\n      \"dnshToClimateChangeAdaptation\" : \"Yes\",\n      \"dnshToSustainableUseAndProtectionOfWaterAndMarineResources\" : \"Yes\",\n      \"dnshToTransitionToACircularEconomy\" : \"Yes\",\n      \"dnshToPollutionPreventionAndControl\" : \"Yes\",\n      \"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems\" : \"No\",\n      \"minimumSafeguards\" : \"Yes\",\n      \"enablingActivity\" : \"No\",\n      \"transitionalActivity\" : \"Yes\"\n    } ] , \n            \"quality\" : \"Reported\",\n            \"comment\" : \"The value is reported by the company.\"\n            \"dataSource\" : {\n            \"page\" : \"5-7\",\n            \"tagName\" : \"monetaryAmount\",\n            \"fileName\" : \"AnnualReport2020.pdf\",\n            \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n            }\n    } "
       },
       "ExtendedDataPointLocalDate": {
         "type": "object",
@@ -22913,15 +22927,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The ID under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

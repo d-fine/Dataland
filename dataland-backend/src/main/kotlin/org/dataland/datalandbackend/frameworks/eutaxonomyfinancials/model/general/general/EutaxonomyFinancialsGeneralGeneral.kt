@@ -114,5 +114,10 @@ data class EutaxonomyFinancialsGeneralGeneral(
     @field:Valid()
     val isNfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)""",
+        example = """ "LimitedAssurance"  """,
+    )
     val assurance: AssuranceDataPoint? = null,
 )

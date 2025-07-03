@@ -53,7 +53,9 @@ class SfdrFramework :
     }
 
     private fun addSuppressLargeClassLengthToDataClass(dataModelElement: DataClassBuilder) {
-        if (dataModelElement.fullyQualifiedName == "SfdrSocialSocialAndEmployeeMatters") {
+        if (dataModelElement.fullyQualifiedName
+            == "org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmployeeMatters.SfdrSocialSocialAndEmployeeMatters"
+        ) {
             val rawParameterSpec = "\"LargeClass\""
             addSuppressAnnotation(dataModelElement, rawParameterSpec)
         }
