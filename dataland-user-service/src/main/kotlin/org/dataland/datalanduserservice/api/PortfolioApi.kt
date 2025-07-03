@@ -1,10 +1,13 @@
 package org.dataland.datalanduserservice.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.UsersOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
@@ -67,6 +70,11 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun getPortfolio(
+        @Parameter(
+            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<BasePortfolio>
 
@@ -88,6 +96,11 @@ interface PortfolioApi {
         "hasRole('ROLE_ADMIN')",
     )
     fun getPortfoliosForUser(
+        @Parameter(
+            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_DESCRIPTION,
+            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("userId") userId: String,
     ): ResponseEntity<List<BasePortfolio>>
 
@@ -109,8 +122,18 @@ interface PortfolioApi {
         "hasRole('ROLE_ADMIN')",
     )
     fun getAllPortfolios(
-        @RequestParam(defaultValue = "100") chunkSize: Int,
-        @RequestParam(defaultValue = "0") chunkIndex: Int,
+        @RequestParam(defaultValue = "100")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int,
     ): ResponseEntity<List<BasePortfolio>>
 
     /**
@@ -159,6 +182,11 @@ interface PortfolioApi {
         "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun replacePortfolio(
+        @Parameter(
+            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable(name = "portfolioId") portfolioId: String,
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
     ): ResponseEntity<BasePortfolio>
@@ -183,6 +211,11 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun deletePortfolio(
+        @Parameter(
+            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable(name = "portfolioId") portfolioId: String,
     ): ResponseEntity<Unit>
 
@@ -226,6 +259,11 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun getEnrichedPortfolio(
+        @Parameter(
+            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<EnrichedPortfolio>
 
@@ -249,6 +287,11 @@ interface PortfolioApi {
     )
     @PreAuthorize("(hasRole('ROLE_USER') and !#portfolioMonitoringPatch.isMonitored) or hasRole('ROLE_PREMIUM_USER')")
     fun patchMonitoring(
+        @Parameter(
+            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("portfolioId") portfolioId: String,
         @Valid @RequestBody portfolioMonitoringPatch: PortfolioMonitoringPatch,
     ): ResponseEntity<BasePortfolio>
