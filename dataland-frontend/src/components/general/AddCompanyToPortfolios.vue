@@ -138,9 +138,6 @@ function closeDialog(): void {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/colors';
-@use '@/assets/scss/variables';
-
 .container {
   width: 28em;
   border-radius: 0.25rem;
@@ -162,11 +159,11 @@ function closeDialog(): void {
 :deep(.p-multiselect) {
   background: none;
   box-shadow: none;
-  margin: variables.$spacing-sm 28%;
+  margin: var(--spacing-sm) 28%;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  color: variables.$brown-light;
-  border: 2px solid variables.$brown-light;
+  color: var(--brown-light);
+  border: 2px solid var(--brown-light);
 }
 
 :deep(.p-multiselect-trigger) {
