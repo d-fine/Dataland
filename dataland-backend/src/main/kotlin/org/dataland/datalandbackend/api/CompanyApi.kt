@@ -570,7 +570,6 @@ interface CompanyApi {
             description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
         )
         @Valid
-        @RequestBody(required = true)
         identifiers: List<String>,
     ): ResponseEntity<List<CompanyIdentifierValidationResult>>
 }
