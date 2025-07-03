@@ -494,4 +494,9 @@ export default defineComponent({
 .d-letters {
   letter-spacing: 0.05em;
 }
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
 </style>

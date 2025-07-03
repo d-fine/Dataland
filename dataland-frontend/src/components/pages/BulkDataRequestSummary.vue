@@ -179,4 +179,13 @@ div.summary-section {
   grid-template-columns: 2fr 4fr 2fr 4fr 2fr;
   gap: 1px;
 }
+
+.middle-center-div {
+  flex: 1;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
 </style>

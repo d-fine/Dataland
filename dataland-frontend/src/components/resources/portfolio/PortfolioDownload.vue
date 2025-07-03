@@ -347,4 +347,9 @@ async function downloadPortfolio(): Promise<void> {
   font-size: variables.$fs-xs;
   font-style: italic;
 }
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
 </style>

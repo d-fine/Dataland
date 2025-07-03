@@ -423,3 +423,15 @@ function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity
   ];
 }
 </script>
+<style scoped>
+ul.unstyled-ul-list {
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+</style>

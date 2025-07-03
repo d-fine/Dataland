@@ -1,5 +1,5 @@
 <template>
-  <div :data-test="dataTest" class="basic-form-section bg-white radius-1 p-4">
+  <div :data-test="dataTest" class="basic-form-section radius-xxs bg-white p-4">
     <h4 class="p-0 pb-4 mt-2 border-bottom">{{ header }}</h4>
     <div class="content p-0 m-0"><slot /></div>
   </div>
@@ -38,5 +38,9 @@ div.basic-form-section {
 
 .content {
   padding-block: inherit;
+}
+
+.radius-xxs {
+  border-radius: var(--border-radius-xxs);
 }
 </style>

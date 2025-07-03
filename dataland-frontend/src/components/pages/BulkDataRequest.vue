@@ -109,7 +109,7 @@
                         }"
                         :outer-class="{ 'hidden-input': true }"
                       />
-                      <div data-test="addedFrameworks" class="radius-1 w-full">
+                      <div data-test="addedFrameworks" class="radius-xxs w-full">
                         <span v-if="!selectedFrameworks.length" class="gray-text no-framework"
                           >No Frameworks added yet</span
                         >
@@ -473,5 +473,9 @@ export default defineComponent({
 
 .paper-section {
   background-color: variables.$paper-white;
+}
+
+.radius-xxs {
+  border-radius: var(--border-radius-xxs);
 }
 </style>

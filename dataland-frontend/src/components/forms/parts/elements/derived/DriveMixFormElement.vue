@@ -69,3 +69,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

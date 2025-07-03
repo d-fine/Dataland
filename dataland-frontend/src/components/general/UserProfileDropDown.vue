@@ -208,4 +208,12 @@ export default defineComponent({
 .p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-submenu-icon {
   color: #e67f3fff;
 }
+
+.d-cursor-pointer {
+  cursor: pointer;
+}
+
+.p-disabled {
+  opacity: 0.5;
+}
 </style>

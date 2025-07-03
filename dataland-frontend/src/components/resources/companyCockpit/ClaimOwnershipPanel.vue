@@ -140,4 +140,9 @@ export default defineComponent({
   display: flex;
   gap: 1rem;
 }
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
 </style>
