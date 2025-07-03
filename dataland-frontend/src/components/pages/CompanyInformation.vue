@@ -18,8 +18,16 @@
           </div>
         </div>
         <div class="right-elements">
+          <PrimeButton
+            v-if="authenticated"
+            class="primary-button"
+            aria-label="Add company to your portfolios"
+            @click="openPortfolioModal"
+            data-test="addCompanyToPortfoliosButton"
+          >
+            <i class="pi pi-plus pr-2" />Add to a portfolio
+          </PrimeButton>
           <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
-          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
 
@@ -28,7 +36,7 @@
         :company-name="companyInformation.companyName"
         :dialog-is-open="dialogIsOpen"
         :claim-is-submitted="claimIsSubmitted"
-        @claim-submitted="onClaimSubmitted"
+        @claim-submitted="claimIsSubmitted = true"
         @close-dialog="onCloseDialog"
       />
 
@@ -64,194 +72,212 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients';
-import { defineComponent, inject } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type CompanyIdAndName, type CompanyInformation, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import ContextMenuButton from '@/components/general/ContextMenuButton.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
+import PrimeButton from 'primevue/button';
 import router from '@/router';
+import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
+import type { BasePortfolio } from '@clients/userservice';
+import { useDialog } from 'primevue/usedialog';
+import { type NavigationFailure } from 'vue-router';
 
-export default defineComponent({
-  name: 'CompanyInformation',
-  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      authenticated: inject<boolean>('authenticated'),
-    };
-  },
-  emits: ['fetchedCompanyInformation'],
-  data() {
-    return {
-      companyInformation: null as CompanyInformation | null,
-      waitingForData: true,
-      companyIdDoesNotExist: false,
-      isUserCompanyOwner: false,
-      hasCompanyOwner: false,
-      dialogIsOpen: false,
-      claimIsSubmitted: false,
-      hasParentCompany: undefined as boolean | undefined,
-      parentCompany: null as CompanyIdAndName | null,
-    };
-  },
-  computed: {
-    displaySector() {
-      if (this.companyInformation?.sector) {
-        return this.companyInformation?.sector;
-      } else {
-        return '—';
-      }
-    },
-    displayLei() {
-      return this.companyInformation?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
-    },
-    contextMenuItems() {
-      const listOfItems = [];
-      if (!this.isUserCompanyOwner && this.authenticated) {
-        listOfItems.push({
-          label: 'Claim Company Dataset Ownership',
-          command: () => {
-            this.dialogIsOpen = true;
-          },
-        });
-      }
-      return listOfItems;
-    },
-  },
-  props: {
-    companyId: {
-      type: String,
-      required: true,
-    },
-    showSingleDataRequestButton: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  mounted() {
-    this.fetchDataForThisPage();
-  },
-  watch: {
-    companyId() {
-      this.fetchDataForThisPage();
-    },
-  },
-  methods: {
-    /**
-     * A complete fetch of all data that is relevant for UI elements of this page
-     */
-    fetchDataForThisPage() {
-      try {
-        void this.getCompanyInformation();
-        void this.setCompanyOwnershipStatus();
-        void this.updateHasCompanyOwner();
-        this.claimIsSubmitted = false;
-      } catch (error) {
-        console.error('Error fetching data for new company:', error);
-      }
-    },
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const authenticated = inject<boolean>('authenticated');
+const dialog = useDialog();
 
-    /**
-     * triggers route push to parent company if the parent company exists
-     * @returns route push
-     */
-    async visitParentCompany() {
-      if (this.parentCompany) {
-        const parentCompanyUrl = `/companies/${this.parentCompany.companyId}`;
-        return router.push(parentCompanyUrl);
-      }
-    },
-    /**
-     * Updates the hasCompanyOwner in an async way
-     */
-    async updateHasCompanyOwner() {
-      this.hasCompanyOwner = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
-    },
-    /**
-     * Handles the close button click event of the dialog
-     */
-    onCloseDialog() {
-      this.dialogIsOpen = false;
-    },
-    /**
-     * Gets the parent company based on the lei
-     * @param parentCompanyLei lei of the parent company
-     */
-    async getParentCompany(parentCompanyLei: string) {
-      try {
-        const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-          parentCompanyLei,
-          assertDefined(this.getKeycloakPromise)(),
-          1
-        );
-        if (companyIdAndNames.length > 0) {
-          this.parentCompany = companyIdAndNames[0];
-          this.hasParentCompany = true;
-        } else {
-          this.hasParentCompany = false;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    /**
-     * Uses the dataland API to retrieve information about the company identified by the local
-     * companyId object.
-     */
-    async getCompanyInformation() {
-      try {
-        this.waitingForData = true;
-        if (this.companyId !== undefined) {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
-          if (this.companyInformation.parentCompanyLei != null) {
-            this.getParentCompany(this.companyInformation.parentCompanyLei).catch(() => {
-              console.error(`Unable to find company with LEI: ${this.companyInformation?.parentCompanyLei}`);
-            });
-          } else {
-            this.hasParentCompany = false;
-          }
-          this.waitingForData = false;
-          this.$emit('fetchedCompanyInformation', this.companyInformation);
-        }
-      } catch (error) {
-        console.error(error);
-        if (getErrorMessage(error).includes('404')) {
-          this.companyIdDoesNotExist = true;
-        }
-        this.waitingForData = false;
-        this.companyInformation = null;
-      }
-    },
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-    /**
-     * Set the company-ownership status of current user
-     * @returns a void promise so that the setter-function can be awaited
-     */
-    async setCompanyOwnershipStatus(): Promise<void> {
-      return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
-        (result) => {
-          this.isUserCompanyOwner = result;
-        }
-      );
-    },
-    /**
-     * Handles the emitted claim event
-     */
-    onClaimSubmitted() {
-      this.claimIsSubmitted = true;
-    },
+const emits = defineEmits(['fetchedCompanyInformation']);
+
+const companyInformation = ref<CompanyInformation | null>(null);
+const waitingForData = ref<boolean>(true);
+const companyIdDoesNotExist = ref<boolean>(false);
+const isUserCompanyOwner = ref<boolean>(false);
+const hasCompanyOwner = ref<boolean>(false);
+const dialogIsOpen = ref<boolean>(false);
+const claimIsSubmitted = ref<boolean>(false);
+const hasParentCompany = ref<boolean | undefined>(undefined);
+const parentCompany = ref<CompanyIdAndName | null>(null);
+
+let allUserPortfolios: BasePortfolio[] = [];
+
+const displaySector = computed(() => {
+  if (companyInformation.value?.sector) {
+    return companyInformation.value?.sector;
+  } else {
+    return '—';
+  }
+});
+
+const displayLei = computed(() => {
+  return companyInformation.value?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
+});
+
+const props = defineProps({
+  companyId: {
+    type: String,
+    required: true,
+  },
+  showSingleDataRequestButton: {
+    type: Boolean,
+    default: false,
   },
 });
+
+onMounted(() => {
+  fetchDataForThisPage();
+});
+
+watch(
+  () => props.companyId,
+  () => {
+    fetchDataForThisPage();
+  }
+);
+
+/**
+ * A complete fetch of all data that is relevant for UI elements of this page
+ */
+function fetchDataForThisPage(): void {
+  try {
+    void getCompanyInformation();
+    void setCompanyOwnershipStatus();
+    void updateHasCompanyOwner();
+    claimIsSubmitted.value = false;
+  } catch (error) {
+    console.error('Error fetching data for new company:', error);
+  }
+}
+
+/**
+ * Get the list of all portfolios of the current user.
+ */
+async function fetchUserPortfolios(): Promise<void> {
+  try {
+    allUserPortfolios = (await apiClientProvider.apiClients.portfolioController.getAllPortfoliosForCurrentUser()).data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+/**
+ * Opens the modal for adding the company to which companyInformation refers to one or multiple
+ * portfolios of the logged-in user.
+ */
+function openPortfolioModal(): void {
+  fetchUserPortfolios()
+    .then(() => {
+      dialog.open(AddCompanyToPortfolios, {
+        props: {
+          header: 'Add company to a portfolio',
+          modal: true,
+        },
+        data: {
+          companyId: props.companyId,
+          allUserPortfolios: allUserPortfolios,
+        },
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+}
+
+/**
+ * triggers route push to parent company if the parent company exists
+ * @returns route push
+ */
+async function visitParentCompany(): Promise<void | NavigationFailure> {
+  if (parentCompany.value) {
+    const parentCompanyUrl = `/companies/${parentCompany.value.companyId}`;
+    return router.push(parentCompanyUrl);
+  }
+}
+
+/**
+ * Updates the hasCompanyOwner in an async way
+ */
+async function updateHasCompanyOwner(): Promise<void> {
+  hasCompanyOwner.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
+}
+
+/**
+ * Handles the close button click event of the dialog
+ */
+function onCloseDialog(): void {
+  dialogIsOpen.value = false;
+}
+
+/**
+ * Gets the parent company based on the lei
+ * @param parentCompanyLei lei of the parent company
+ */
+async function getParentCompany(parentCompanyLei: string): Promise<void> {
+  try {
+    const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+      parentCompanyLei,
+      assertDefined(getKeycloakPromise)(),
+      1
+    );
+    if (companyIdAndNames.length > 0) {
+      parentCompany.value = companyIdAndNames[0];
+      hasParentCompany.value = true;
+    } else {
+      hasParentCompany.value = false;
+    }
+  } catch {
+    console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
+  }
+}
+
+/**
+ * Uses the dataland API to retrieve information about the company identified by the local
+ * companyId object.
+ */
+async function getCompanyInformation(): Promise<void> {
+  waitingForData.value = true;
+  if (props.companyId === undefined) return;
+  try {
+    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
+    companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
+    if (companyInformation.value.parentCompanyLei == null) {
+      hasParentCompany.value = false;
+    } else {
+      await getParentCompany(companyInformation.value.parentCompanyLei);
+    }
+    emits('fetchedCompanyInformation', companyInformation.value);
+  } catch (error) {
+    console.error(error);
+    if (getErrorMessage(error).includes('404')) {
+      companyIdDoesNotExist.value = true;
+    }
+    companyInformation.value = null;
+  } finally {
+    waitingForData.value = false;
+  }
+}
+
+/**
+ * Set the company-ownership status of current user
+ * @returns a void promise so that the setter-function can be awaited
+ */
+async function setCompanyOwnershipStatus(): Promise<void> {
+  return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, props.companyId, getKeycloakPromise).then((result) => {
+    isUserCompanyOwner.value = result;
+  });
+}
 </script>
 
 <style scoped lang="scss">
