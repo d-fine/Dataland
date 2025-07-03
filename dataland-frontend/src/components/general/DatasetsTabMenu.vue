@@ -6,6 +6,13 @@
         :key="tab.label"
         :value="tabs.indexOf(tab)"
         :disabled="!(tabs.indexOf(tab) == currentTabIndex || (tab.isVisible ?? true))"
+        :pt="{
+          root: ({ props }) => {
+            return {
+              style: props.disabled ? 'display: none' : '',
+            };
+          },
+        }"
       >
         <router-link :to="tab.route" class="tab-as-router-link">{{ tab.label }}</router-link>
       </Tab>
