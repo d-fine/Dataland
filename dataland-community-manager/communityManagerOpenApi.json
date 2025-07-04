@@ -26,16 +26,18 @@
           "request-controller"
         ],
         "summary": "Send a single request",
-        "description": "A single of data requests for specific frameworks and companies is being sent.",
+        "description": "A single data request for a specific framework and company and one or multiple reporting periods is sent.",
         "operationId": "postSingleDataRequest",
         "parameters": [
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "requestBody": {
@@ -62,11 +64,7 @@
           "403": {
             "description": "Only admins can impersonate another user.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SingleDataRequestResponse"
-                }
-              }
+              "application/json": {}
             }
           },
           "default": {
@@ -172,6 +170,7 @@
           {
             "name": "role",
             "in": "path",
+            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -180,20 +179,24 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The ID of the user who created this data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "responses": {
@@ -248,6 +251,7 @@
           {
             "name": "role",
             "in": "path",
+            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -256,20 +260,24 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The ID of the user who created this data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "responses": {
@@ -317,6 +325,7 @@
           {
             "name": "role",
             "in": "path",
+            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -325,20 +334,24 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The ID of the user who created this data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "responses": {
@@ -391,19 +404,23 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "comment",
             "in": "query",
+            "description": "An accompanying comment to a company ownership request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "I am the CEO of this company, please make me its owner on Dataland."
           }
         ],
         "responses": {
@@ -451,11 +468,13 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -508,11 +527,13 @@
           {
             "name": "dataRequestId",
             "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
           }
         ],
         "responses": {
@@ -567,11 +588,13 @@
           {
             "name": "dataRequestId",
             "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
           }
         ],
         "requestBody": {
@@ -638,36 +661,44 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "path",
+            "description": "The framework of the dataset on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "sfdr"
           },
           {
             "name": "reportingPeriod",
             "in": "path",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The ID of the user who created this data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "responses": {
@@ -720,6 +751,7 @@
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -744,30 +776,37 @@
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           },
           {
             "name": "emailAddress",
             "in": "query",
+            "description": "The email address of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "test@example.com"
           },
           {
             "name": "adminComment",
             "in": "query",
+            "description": "The admin comment of the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Should be processed with high priority."
           },
           {
             "name": "requestStatus",
             "in": "query",
+            "description": "The current status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -780,6 +819,7 @@
           {
             "name": "accessStatus",
             "in": "query",
+            "description": "The current status of the access to the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -792,6 +832,7 @@
           {
             "name": "requestPriority",
             "in": "query",
+            "description": "The priority of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -804,22 +845,27 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "datalandCompanyId",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "chunkSize",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -830,6 +876,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -948,6 +995,7 @@
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -972,30 +1020,37 @@
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           },
           {
             "name": "emailAddress",
             "in": "query",
+            "description": "The email address of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "test@example.com"
           },
           {
             "name": "adminComment",
             "in": "query",
+            "description": "The admin comment of the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Should be processed with high priority."
           },
           {
             "name": "requestStatus",
             "in": "query",
+            "description": "The current status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1008,6 +1063,7 @@
           {
             "name": "accessStatus",
             "in": "query",
+            "description": "The current status of the access to the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1020,6 +1076,7 @@
           {
             "name": "requestPriority",
             "in": "query",
+            "description": "The priority of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1032,18 +1089,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "datalandCompanyId",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -1101,6 +1162,7 @@
           {
             "name": "dataTypes",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1125,14 +1187,17 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "aggregatedPriority",
             "in": "query",
+            "description": "The aggregated data request priority.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/AggregatedRequestPriority"
@@ -1196,6 +1261,7 @@
           {
             "name": "role",
             "in": "query",
+            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -1204,20 +1270,24 @@
           {
             "name": "companyId",
             "in": "query",
+            "description": "The ID under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         ],
         "responses": {
@@ -1463,11 +1533,12 @@
         "properties": {
           "companyIdentifier": {
             "type": "string",
-            "example": "enterValidIdentifier"
+            "description": "Unique identifier to find a company.",
+            "example": "5493001KJX4BT0IHAG73"
           },
           "dataType": {
             "type": "string",
-            "example": "p2p",
+            "description": "The framework of the dataset on Dataland.",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -1484,9 +1555,10 @@
           "reportingPeriods": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A set of strings which identify reporting periods on Dataland, such as year numbers. Requests will be posted for all specified reporting periods.",
             "example": [
-              "2022",
-              "2023"
+              "2023",
+              "2024"
             ],
             "items": {
               "type": "string"
@@ -1495,6 +1567,7 @@
           "contacts": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
               "testuser@example.com"
             ],
@@ -1503,10 +1576,14 @@
             }
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Contains a text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "example": true
           }
         }
       },
@@ -1520,22 +1597,38 @@
         "type": "object",
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Contains a text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
           },
           "reportingPeriodsOfStoredDataRequests": {
             "type": "array",
+            "description": "Reporting periods corresponding to the accepted and stored data requests.",
+            "example": [
+              "2023",
+              "2024"
+            ],
             "items": {
               "type": "string"
             }
           },
           "reportingPeriodsOfDuplicateDataRequests": {
             "type": "array",
+            "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
+            "example": [
+              "2022"
+            ],
             "items": {
               "type": "string"
             }
           },
           "reportingPeriodsOfStoredAccessRequests": {
             "type": "array",
+            "description": "Reporting periods corresponding to the accepted and stored access requests.",
+            "example": [
+              "2023",
+              "2024"
+            ],
             "items": {
               "type": "string"
             }
@@ -1622,24 +1715,31 @@
         "properties": {
           "acceptedDataRequests": {
             "type": "array",
+            "description": "Contains information about all accepted data requests",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "alreadyExistingNonFinalRequests": {
             "type": "array",
+            "description": "Contains information about all already existing non-final data requests",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "alreadyExistingDatasets": {
             "type": "array",
+            "description": "Contains information about all already existing data sets",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
             "type": "array",
+            "description": "Contains all company identifiers that were rejected by Dataland",
+            "example": [
+              "5493001KJX4BT0IHAG73"
+            ],
             "items": {
               "type": "string"
             }
@@ -1657,22 +1757,34 @@
         "type": "object",
         "properties": {
           "userProvidedIdentifier": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifier (e.g., Dataland company ID or LEI) through which the user specified the respective company.",
+            "example": "5493001KJX4BT0IHAG73"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "framework": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "resourceId": {
-            "type": "string"
+            "type": "string",
+            "description": "A unique identifier for identifying a resource on Dataland. In case of newly created or duplicate open requests, it identifies the newly created or original open request. In case of a request for an already existing dataset, it identifies that dataset.",
+            "example": "d796f874-7a7e-457c-aa41-2cb73d4e9529"
           },
           "resourceUrl": {
-            "type": "string"
+            "type": "string",
+            "description": "A URL pointing to the resource identified by resourceId.",
+            "example": "https://dataland.com/requests/d796f874-7a7e-457c-aa41-2cb73d4e9529"
           }
         }
       },
@@ -1697,15 +1809,20 @@
             "$ref": "#/components/schemas/CompanyRole"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created this data request.",
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           }
         }
       },
       "AccessStatus": {
         "type": "string",
+        "description": "The current status of the access to the data request.",
         "enum": [
           "Declined",
           "Granted",
@@ -1726,6 +1843,7 @@
           "contacts": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
               "testuser@example.com"
             ],
@@ -1734,24 +1852,33 @@
             }
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Contains a text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "example": true
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "The admin comment of the data request.",
+            "example": "Should be processed with high priority."
           },
           "requestStatusChangeReason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason for the status change.",
+            "example": "The company has not published data for this reporting period yet."
           }
         }
       },
       "RequestPriority": {
         "type": "string",
+        "description": "The priority of the data request.",
         "enum": [
           "Low",
           "Baseline",
@@ -1761,6 +1888,7 @@
       },
       "RequestStatus": {
         "type": "string",
+        "description": "The current status of the data request.",
         "enum": [
           "Open",
           "Answered",
@@ -1789,32 +1917,49 @@
         "type": "object",
         "properties": {
           "dataRequestId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data request on Dataland.",
+            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created this data request.",
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           },
           "userEmailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "example": true
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the user created the data request.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "datalandCompanyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "messageHistory": {
             "type": "array",
+            "description": "The list of objects documenting the history of messages sent to company contacts regarding the data request.",
             "items": {
               "$ref": "#/components/schemas/StoredDataRequestMessageObject"
             }
@@ -1827,7 +1972,9 @@
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the data request has been modified the last time.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -1839,7 +1986,9 @@
             "$ref": "#/components/schemas/RequestPriority"
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "The admin comment of the data request.",
+            "example": "Should be processed with high priority."
           }
         }
       },
@@ -1853,18 +2002,27 @@
           "contacts": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company contact email addresses specified by the user creating the request.",
+            "example": [
+              "testuser@example.com"
+            ],
             "items": {
               "type": "string"
             }
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "A message specified by the user creating the request to be sent to the company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the message object was created.",
+            "format": "int64",
+            "example": 1751291892373
           }
-        }
+        },
+        "description": "The list of objects documenting the history of messages sent to company contacts regarding the data request."
       },
       "StoredDataRequestStatusObject": {
         "required": [
@@ -1879,16 +2037,22 @@
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the status object was created.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
           },
           "requestStatusChangeReason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason for the status change.",
+            "example": "The company has not published data for this reporting period yet."
           },
           "answeringDataId": {
-            "type": "string"
+            "type": "string",
+            "description": "The data ID of the data set that answered the request.",
+            "example": "9a73f4cd-2b68-401e-a8c5-d01b57e8f924"
           }
         }
       },
@@ -1909,33 +2073,51 @@
         "type": "object",
         "properties": {
           "dataRequestId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data request on Dataland.",
+            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created this data request.",
+            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
           },
           "userEmailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the user created the data request.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "datalandCompanyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the data request has been modified the last time.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -1947,7 +2129,9 @@
             "$ref": "#/components/schemas/RequestPriority"
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "The admin comment of the data request.",
+            "example": "Should be processed with high priority."
           }
         }
       },
@@ -1972,6 +2156,7 @@
         "properties": {
           "dataType": {
             "type": "string",
+            "description": "The framework of the dataset on Dataland.",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -1986,17 +2171,23 @@
             ]
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "datalandCompanyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "aggregatedPriority": {
             "$ref": "#/components/schemas/AggregatedRequestPriority"
           },
           "count": {
             "type": "integer",
-            "format": "int64"
+            "description": "The count of existing data requests for this framework, reporting period, company and priority.",
+            "format": "int64",
+            "example": 23
           }
         }
       },

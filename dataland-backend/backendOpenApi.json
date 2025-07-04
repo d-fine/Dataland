@@ -1452,7 +1452,7 @@
           {
             "name": "chunkSize",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size. The default value is 100.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -22937,15 +22937,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The ID under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
