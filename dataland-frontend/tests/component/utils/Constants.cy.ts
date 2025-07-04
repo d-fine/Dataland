@@ -4,7 +4,7 @@ import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFramewo
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
-    it('Check framework order of esg datenkatalog, heimathafen, and additional company information', () => {
+    it('Check for the correct order of the frameworks', () => {
         expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 6]).to.equal(
             DataTypeEnum.Sfdr
         );

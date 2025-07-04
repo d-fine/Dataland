@@ -22,7 +22,7 @@ describe('Component tests for the Quality Assurance page', () => {
   before(function () {
     cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
       const preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      LksgFixture = getPreparedFixture('Lksg-date-2023-04-18', preparedLksgFixtures);
+      LksgFixture = getPreparedFixture('LkSG-date-2023-04-18', preparedLksgFixtures);
       cy.fixture('MetaInfoDataMocksForOneCompany.json').then((metaInfos: Array<DataMetaInformation>) => {
         mockDataMetaInfoForActiveDataset = metaInfos[0];
       });
