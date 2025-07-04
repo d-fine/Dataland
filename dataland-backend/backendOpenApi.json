@@ -2422,6 +2422,10 @@
                   "type": "object",
                   "additionalProperties": {
                     "type": "string"
+                  },
+                  "description": "A map from data point IDs to the associated technical IDs.",
+                  "example": {
+                    "extendedEnumFiscalYearDeviation": "d4e2b1f3-9132-4c62-b653-7ecf394215f4"
                   }
                 }
               }
@@ -22933,15 +22937,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
