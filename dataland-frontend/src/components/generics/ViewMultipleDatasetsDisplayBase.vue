@@ -62,7 +62,7 @@
 <script lang="ts">
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { defineComponent, inject, type PropType } from 'vue';
-import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';

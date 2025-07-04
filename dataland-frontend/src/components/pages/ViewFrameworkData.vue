@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import { DataTypeEnum } from '@clients/backend';
+import type { DataTypeEnum } from '@clients/backend';
 import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { getAllFrameworkIdentifiers } from '@/frameworks/FrontendFrameworkRegistry';
