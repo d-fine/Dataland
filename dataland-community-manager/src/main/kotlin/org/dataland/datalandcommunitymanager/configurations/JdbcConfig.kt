@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.configurations
+package org.dataland.datalandcommunitymanager.configurations
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -190,6 +190,7 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   e2etests:
@@ -544,6 +545,8 @@ services:
       POSTGRES_USER: community_manager
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
+    command:
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   specification-service:

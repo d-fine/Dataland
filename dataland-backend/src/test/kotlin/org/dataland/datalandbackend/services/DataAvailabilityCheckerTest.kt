@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.services
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -18,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import javax.sql.DataSource
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -28,11 +29,11 @@ class DataAvailabilityCheckerTest {
     companion object {
         private const val REPORTING_PERIOD = "2023"
         private const val DATA_TYPE = "sfdr"
-        private const val COMPANY_ID = "12345-67890-12345-67890"
+        private const val COMPANY_ID = "46b5374b-a720-43e6-9c5e-9dd92bd95b33"
     }
 
-    @Autowired
-    private lateinit var dataSource: DataSource
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
 
     @Autowired
     private lateinit var dataMetaInformationRepository: DataMetaInformationRepository
@@ -40,6 +41,8 @@ class DataAvailabilityCheckerTest {
     @Autowired
     private lateinit var storedCompanyRepository: StoredCompanyRepository
     private lateinit var dataAvailabilityChecker: DataAvailabilityChecker
+
+    private val baseDimension = BasicDataDimensions(companyId = COMPANY_ID, dataType = DATA_TYPE, reportingPeriod = REPORTING_PERIOD)
 
     private val dummyCompany =
         StoredCompanyEntity(
@@ -62,7 +65,7 @@ class DataAvailabilityCheckerTest {
 
     @BeforeEach
     fun setUp() {
-        dataAvailabilityChecker = DataAvailabilityChecker(dataSource)
+        dataAvailabilityChecker = DataAvailabilityChecker(entityManager)
         storedCompanyRepository.saveAndFlush(dummyCompany)
     }
 
@@ -70,7 +73,7 @@ class DataAvailabilityCheckerTest {
     @CsvSource(
         "1234, $DATA_TYPE, $REPORTING_PERIOD",
         "$COMPANY_ID, dummy, $REPORTING_PERIOD",
-        "$COMPANY_ID, $DATA_TYPE, 1234",
+        "$COMPANY_ID, $DATA_TYPE, 12345",
     )
     fun `check that data dimensions are filtered out correctly`(
         companyId: String,
@@ -94,19 +97,11 @@ class DataAvailabilityCheckerTest {
     @Test
     fun `check that the availability check returns active datasets as expected`() {
         storeMetaData()
-        storeMetaData(currentlyActive = false)
-        val results =
-            dataAvailabilityChecker.getMetaDataOfActiveDatasets(
-                listOf(
-                    BasicDataDimensions(
-                        companyId = COMPANY_ID,
-                        dataType = DATA_TYPE,
-                        reportingPeriod = REPORTING_PERIOD,
-                    ),
-                ),
-            )
-        assert(results.isNotEmpty()) { "Results should not be empty" }
-        assert(results.size == 1) { "Results should not be empty" }
+        storeMetaData(currentlyActive = null)
+        val results = dataAvailabilityChecker.getMetaDataOfActiveDatasets(listOf(baseDimension))
+        assert(results.size == 1) { "There should be exactly one result." }
+        val resultingDimensions = results.map { BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
+        assert(resultingDimensions.first() == baseDimension) { "The result should be the provided example." }
     }
 
     @Test
@@ -114,14 +109,14 @@ class DataAvailabilityCheckerTest {
         val year = "2024"
         val framework = "lksg"
         storeMetaData()
-        storeMetaData(currentlyActive = false)
+        storeMetaData(currentlyActive = null)
         storeMetaData(reportingPeriod = year)
         storeMetaData(dataType = framework)
         storeMetaData(dataType = framework, reportingPeriod = year, currentlyActive = false)
 
         val expectedDimensions =
             listOf(
-                BasicDataDimensions(companyId = COMPANY_ID, dataType = DATA_TYPE, reportingPeriod = REPORTING_PERIOD),
+                baseDimension,
                 BasicDataDimensions(companyId = COMPANY_ID, dataType = DATA_TYPE, reportingPeriod = year),
                 BasicDataDimensions(companyId = COMPANY_ID, dataType = framework, reportingPeriod = REPORTING_PERIOD),
             )
@@ -135,9 +130,9 @@ class DataAvailabilityCheckerTest {
 
         val results = dataAvailabilityChecker.getMetaDataOfActiveDatasets(expectedDimensions + unexpectedDimensions)
 
-        assert(results.size == 3) { "Incorrect number of datasets found." }
+        assert(results.size == expectedDimensions.size) { "Incorrect number of datasets found." }
         val resultingDimensions = results.map { BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
-        assert(resultingDimensions == expectedDimensions)
+        assert(expectedDimensions.containsAll(resultingDimensions))
     }
 
     private fun storeMetaData(
@@ -151,7 +146,7 @@ class DataAvailabilityCheckerTest {
                 company = dummyCompany,
                 dataType = dataType ?: DATA_TYPE,
                 reportingPeriod = reportingPeriod ?: REPORTING_PERIOD,
-                currentlyActive = currentlyActive ?: true,
+                currentlyActive = currentlyActive,
                 uploadTime = System.currentTimeMillis(),
                 qaStatus = QaStatus.Accepted,
                 uploaderUserId = UUID.randomUUID().toString(),
