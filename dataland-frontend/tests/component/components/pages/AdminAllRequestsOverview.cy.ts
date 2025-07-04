@@ -75,6 +75,14 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Urgent
       ),
       generateExtendedStoredDataRequest(
+          mailBeta,
+          DataTypeEnum.EutaxonomyFinancials,
+          RequestStatus.Answered,
+          AccessStatus.Declined,
+          commentGamma,
+          RequestPriority.High
+      ),
+      generateExtendedStoredDataRequest(
         mailGamma,
         DataTypeEnum.Vsme,
         RequestStatus.Answered,

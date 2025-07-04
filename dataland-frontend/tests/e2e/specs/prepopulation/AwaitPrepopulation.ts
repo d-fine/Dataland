@@ -16,10 +16,10 @@ describeIf(
     let prepopulatedDataTypes: string[] = [];
 
     before(function () {
-      const dataTypesWithToolboxSupport = getAllPublicFrameworkIdentifiers();
-      prepopulatedDataTypes = dataTypesWithToolboxSupport;
+      const publicDataTypesWithToolboxSupport = getAllPublicFrameworkIdentifiers();
+      prepopulatedDataTypes = publicDataTypesWithToolboxSupport;
       const fixtures = Object.values(
-        dataTypesWithToolboxSupport.map((dataType) =>
+        publicDataTypesWithToolboxSupport.map((dataType) =>
           `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace('-', '')
         )
       );
