@@ -36,16 +36,20 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         roles: keycloakRoles,
         userId: dummyUserId,
       }),
-    })(DatasetsTabMenu, {
-      global: {
-        provide: {
-          companyRoleAssignments: companyRoleAssignments,
+    })(
+      //@ts-ignore
+      DatasetsTabMenu,
+      {
+        global: {
+          provide: {
+            companyRoleAssignments: companyRoleAssignments,
+          },
         },
-      },
-      props: {
-        initialTabIndex: 0,
-      },
-    });
+        props: {
+          initialTabIndex: 0,
+        },
+      }
+    );
     assertCompaniesTabIsHighlighted();
   }
 

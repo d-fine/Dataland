@@ -194,11 +194,7 @@ export const DatalandPreset = definePreset(Aura, {
       },
     },
     tag: {
-      css: ({ dt }) => `
-        .p-tag.p-tag-success {
-        border: 1px solid ${dt('tag.success.color')};
-        }
-        `,
+      css: () => '.p-tag { border: 1px solid inherit }',
     },
     tooltip: {
       root: {
