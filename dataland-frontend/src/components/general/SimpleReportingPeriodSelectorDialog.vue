@@ -27,3 +27,25 @@ function onReportingPeriodSelection(reportingPeriod: string): void {
   emits('selectedReportingPeriod', reportingPeriod);
 }
 </script>
+<style scoped>
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+</style>
