@@ -362,7 +362,7 @@ describeIf(
         cy.get('[data-test=toggleShowAll]').scrollIntoView();
         cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
         validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
-        validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 1, true);
+        validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
         validateChosenFramework(DataTypeEnum.Lksg);
         selectFrameworkInDropdown(DataTypeEnum.Sfdr);
