@@ -1,5 +1,8 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
+
 /**
  * --- API model ---
  * Contains info about a stored message object on Dataland.
@@ -8,7 +11,19 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  * @param creationTimestamp the creation time of the message object
  */
 data class StoredDataRequestMessageObject(
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_EXAMPLE,
+    )
     var contacts: Set<String>,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.MESSAGE_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.MESSAGE_EXAMPLE,
+    )
     val message: String?,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.MESSAGE_CREATION_TIMESTAMP_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.MESSAGE_CREATION_TIMESTAMP_EXAMPLE,
+    )
     val creationTimestamp: Long,
 )
