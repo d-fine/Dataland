@@ -1,7 +1,7 @@
 <template>
   <div class="filter-container">
     <div id="companyFilter">
-      <label for="companyFilter" class="d-section-heading mb-2" v-if="showHeading">Filter by company</label>
+      <label for="companyFilter" v-if="showHeading">Filter by company</label>
       <FrameworkDataSearchDropdownFilter
         v-model="selectedSectorsInt"
         ref="sectorFilter"
@@ -22,9 +22,7 @@
       <Divider layout="vertical" />
     </div>
     <div id="dataTypeFilter">
-      <label for="dataTypeFilter" class="d-section-heading mb-2" v-if="showHeading"
-        >Filter for available data sets</label
-      >
+      <label for="dataTypeFilter" v-if="showHeading">Filter for available data sets</label>
       <FrameworkDataSearchDropdownFilter
         v-model="selectedFrameworksInt"
         ref="frameworkFilter"
@@ -35,39 +33,9 @@
       />
       <Divider layout="vertical" />
     </div>
-    <PrimeButton variant="link" class="justify-content-start" @click="resetFilters" label="RESET" />
+    <PrimeButton variant="link" @click="resetFilters" label="RESET" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.filter-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  height: 5rem;
-  align-items: end;
-  width: 100%;
-
-  #companyFilter,
-  #dataTypeFilter {
-    display: grid;
-
-    label {
-      grid-row: 1;
-      grid-column-end: span 2;
-    }
-
-    :not(label) {
-      grid-row: 2;
-    }
-  }
-}
-
-.d-section-heading {
-  text-align: left;
-  font-size: 0.75rem;
-  color: #5a4f36;
-}
-</style>
 
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue';
@@ -242,3 +210,29 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.filter-container {
+  display: flex;
+  height: 5rem;
+  align-items: end;
+  width: 100%;
+
+  #companyFilter,
+  #dataTypeFilter {
+    display: grid;
+
+    label {
+      grid-row: 1;
+      grid-column-end: span 2;
+      margin-bottom: var(--spacing-xs);
+      text-align: left;
+      font-size: var(--font-size-xs);
+    }
+
+    :not(label) {
+      grid-row: 2;
+    }
+  }
+}
+</style>
