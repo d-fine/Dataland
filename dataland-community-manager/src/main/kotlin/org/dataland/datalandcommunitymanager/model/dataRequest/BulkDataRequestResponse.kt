@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 
@@ -14,27 +15,40 @@ import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescri
  */
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.ACCEPTED_DATA_REQUESTS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.ACCEPTED_DATA_REQUESTS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = ResourceResponse::class,
+                description = CommunityManagerOpenApiDescriptionsAndExamples.ACCEPTED_DATA_REQUESTS_DESCRIPTION,
+            ),
     )
     val acceptedDataRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_NON_FINAL_REQUESTS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = ResourceResponse::class,
+                description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION,
+            ),
     )
     val alreadyExistingNonFinalRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_DATASETS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_DATASETS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = ResourceResponse::class,
+                description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_DATASETS_DESCRIPTION,
+            ),
     )
     val alreadyExistingDatasets: List<ResourceResponse>,
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.REJECTED_COMPANY_IDENTIFIERS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.REJECTED_COMPANY_IDENTIFIERS_EXAMPLE,
+            ),
     )
     val rejectedCompanyIdentifiers: List<String>,
 )

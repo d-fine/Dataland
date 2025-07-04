@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -130,12 +131,15 @@ interface RequestApi {
      */
     @Operation(
         summary = "Send a single request",
-        description = "A single of data requests for specific frameworks and companies is being sent.",
+        description = "A single data request for a specific framework and company and one or multiple reporting periods is sent.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully processed a single data request."),
-            ApiResponse(responseCode = "403", description = "Only admins can impersonate another user."),
+            ApiResponse(
+                responseCode = "403", description = "Only admins can impersonate another user.",
+                content = [Content(mediaType = "application/json", examples = [])],
+            ),
         ],
     )
     @PostMapping(

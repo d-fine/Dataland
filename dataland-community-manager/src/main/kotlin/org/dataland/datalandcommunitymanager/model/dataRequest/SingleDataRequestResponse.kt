@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 
@@ -19,21 +20,33 @@ data class SingleDataRequestResponse(
     )
     val message: String,
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE,
+            ),
     )
     val reportingPeriodsOfStoredDataRequests: List<String>,
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_EXAMPLE,
+            ),
     )
     val reportingPeriodsOfDuplicateDataRequests: List<String>,
     @field:JsonProperty(required = true)
-    @Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE,
+            ),
     )
     val reportingPeriodsOfStoredAccessRequests: List<String>,
 )
