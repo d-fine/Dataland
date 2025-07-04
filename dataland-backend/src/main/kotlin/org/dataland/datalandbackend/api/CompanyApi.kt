@@ -401,6 +401,7 @@ interface CompanyApi {
         @PathVariable("companyId")
         companyId: String,
         @Valid
+        @RequestBody
         companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
