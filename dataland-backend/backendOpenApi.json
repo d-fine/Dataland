@@ -98,16 +98,18 @@
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "companyInformation",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/CompanyInformation"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInformation"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successfully updated company information.",
@@ -6698,9 +6700,7 @@
               "ABC Corp."
             ],
             "items": {
-              "type": "string",
-              "description": "Any alternative names or abbreviations the company might be known by.",
-              "example": "[\"ABC Corp.\"]"
+              "type": "string"
             }
           },
           "companyContactDetails": {
@@ -6711,9 +6711,7 @@
               "contact@abccorp.com"
             ],
             "items": {
-              "type": "string",
-              "description": "The email addresses of the company.",
-              "example": "[\"contact@abccorp.com\"]"
+              "type": "string"
             }
           },
           "companyLegalForm": {
@@ -22525,9 +22523,7 @@
               "ABC Corp."
             ],
             "items": {
-              "type": "string",
-              "description": "Any alternative names or abbreviations the company might be known by.",
-              "example": "[\"ABC Corp.\"]"
+              "type": "string"
             }
           },
           "companyContactDetails": {
@@ -22538,9 +22534,7 @@
               "contact@abccorp.com"
             ],
             "items": {
-              "type": "string",
-              "description": "The email addresses of the company.",
-              "example": "[\"contact@abccorp.com\"]"
+              "type": "string"
             }
           },
           "companyLegalForm": {
@@ -22939,15 +22933,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The ID under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
@@ -22966,9 +22960,7 @@
               "DE"
             ],
             "items": {
-              "type": "string",
-              "description": "The list of country codes in ISO 3166-1 alpha-2 format.",
-              "example": "[\"DE\"]"
+              "type": "string"
             }
           },
           "sectors": {
@@ -22979,9 +22971,7 @@
               "web services"
             ],
             "items": {
-              "type": "string",
-              "description": "The list of sectors.",
-              "example": "[\"web services\"]"
+              "type": "string"
             }
           }
         }
