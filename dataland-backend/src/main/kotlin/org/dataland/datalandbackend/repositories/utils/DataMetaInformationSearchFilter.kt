@@ -1,8 +1,10 @@
 package org.dataland.datalandbackend.repositories.utils
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 import java.util.UUID
 
 /**
@@ -10,11 +12,33 @@ import java.util.UUID
  * convenient usage of SEPL instructions in the query
  */
 data class DataMetaInformationSearchFilter(
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    )
     val companyId: String? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+    )
     val dataType: DataType? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
     val reportingPeriod: String? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.IS_ONLY_ACTIVE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IS_ONLY_ACTIVE_EXAMPLE,
+    )
     val onlyActive: Boolean,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.ALL_UPLOADER_USER_IDS_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IS_ONLY_ACTIVE_EXAMPLE,
+    )
     val uploaderUserIds: Set<UUID>? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+    )
     val qaStatus: QaStatus? = null,
 ) {
     @get:JsonIgnore

@@ -1,7 +1,9 @@
 package org.dataland.documentmanager.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -12,6 +14,7 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -40,8 +43,10 @@ interface DocumentApi {
      * @return returns a documentMetaInfoResponse containing documentId and metadata
      */
     @Operation(
-        summary = "Upload a document and metadata.",
-        description = "Upload a document and meta information.",
+        summary = "Upload a document and its metainformation.",
+        description =
+            "Upload a document and (optionally) its metainformation. When specifying the metainformation, " +
+                "the fields 'publicationDate' and 'reportingPeriod' are optional.",
     )
     @ApiResponses(
         value = [
@@ -66,20 +71,37 @@ interface DocumentApi {
      * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to patch.
      */
     @Operation(
-        summary = "Update the metadata info of a document.",
-        description = "Update the metadata info of a document.",
+        summary = "Update the metainformation of a document.",
+        description =
+            "Update the metainformation of a document. All fields are optional, and only mentioned " +
+                "fields will be overwritten.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully updated the document's meta information.",
+                description = "Successfully updated the document's metainformation.",
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "You do not have the right to update the document's meta information.",
+                description = "You do not have the right to update the document's metainformation.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
-            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document ID does not match any stored document.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
+            ),
         ],
     )
     @PatchMapping(
@@ -92,19 +114,26 @@ interface DocumentApi {
             "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId))",
     )
     fun patchDocumentMetaInfo(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
         @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
     ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**
-     * Patch the company id list in the stored metainformation of a given document by adding
+     * Patch the company ID list in the stored metainformation of a given document by adding
      * a single new company id.
      * @param documentId the id of the document whose metainfo shall be patched.
      * @param companyId the company id to add.
      */
     @Operation(
-        summary = "Extend the list of companyIds related to a document.",
-        description = "Extend the list of companyIds related to a document by a single company id.",
+        summary = "Extend the list of company IDs related to a document.",
+        description = "Extend the list of company IDs related to a document by a single company id.",
     )
     @ApiResponses(
         value = [
@@ -115,8 +144,23 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to update the companyIds field.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
-            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document ID does not match any stored document.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
+            ),
         ],
     )
     @PatchMapping(
@@ -125,7 +169,20 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDocumentMetaInfoCompanyIds(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
+        @Parameter(
+            name = "companyId",
+            description = OpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<DocumentMetaInfoResponse>
 
@@ -150,7 +207,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     )
 
     /**
@@ -189,7 +253,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     ): ResponseEntity<InputStreamResource>
 
     /**
@@ -197,8 +268,8 @@ interface DocumentApi {
      * @param documentId the ID for which to retrieve meta information
      */
     @Operation(
-        summary = "Receive meta information for a document.",
-        description = "Receive meta information for a document by its ID from internal storage.",
+        summary = "Receive metainformation for a document.",
+        description = "Receive metainformation for a document by its ID from internal storage.",
     )
     @ApiResponses(
         value = [
@@ -209,6 +280,12 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "404",
                 description = "Document meta information could not be retrieved.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
         ],
     )
@@ -220,7 +297,14 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocumentMetaInformation(
-        @PathVariable("documentId") documentId: String,
+        @Parameter(
+            name = "documentId",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
     ): ResponseEntity<DocumentMetaInfoEntity>
 
     /**
@@ -237,7 +321,7 @@ interface DocumentApi {
     @Operation(
         summary = "Search for document meta information.",
         description =
-            "Search for document meta information by company ID, document categories and reporting period. " +
+            "Search for document metainformation by company ID, document categories and reporting period. " +
                 "Results are returned sorted by publication date in reverse chronological order. Only results" +
                 "with QA status 'Accepted' are returned.",
     )
@@ -252,6 +336,12 @@ interface DocumentApi {
                 description =
                     "Bad request; make sure that at least one search parameter is non-null and " +
                         "that the chunk index is within bounds (when in doubt, use chunk index 0).",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        examples = [],
+                    ),
+                ],
             ),
         ],
     )
@@ -260,10 +350,44 @@ interface DocumentApi {
         produces = ["application/json"],
     )
     fun searchForDocumentMetaInformation(
-        @RequestParam companyId: String? = null,
-        @RequestParam documentCategories: Set<DocumentCategory>? = null,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam chunkSize: Int = 100,
-        @RequestParam chunkIndex: Int = 0,
+        @Parameter(
+            name = "companyId",
+            description = OpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        companyId: String? = null,
+        @Parameter(
+            name = "documentCategories",
+            description = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam
+        documentCategories: Set<DocumentCategory>? = null,
+        @Parameter(
+            name = "reportingPeriod",
+            description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        reportingPeriod: String? = null,
+        @Parameter(
+            name = "chunkSize",
+            description = OpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        chunkSize: Int = 100,
+        @Parameter(
+            name = "chunkIndex",
+            description = OpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            example = OpenApiDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
+            required = false,
+        )
+        @RequestParam
+        chunkIndex: Int = 0,
     ): ResponseEntity<List<DocumentMetaInfoResponse>>
 }

@@ -24,6 +24,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.u
 /**
  * The data-model for the Allgemein section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogAllgemein(
     @field:Valid()
     val datum: EsgDatenkatalogAllgemeinDatum? = null,

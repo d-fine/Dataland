@@ -1,11 +1,13 @@
 package org.dataland.datalandcommunitymanager.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -51,8 +53,22 @@ interface CompanyRolesApi {
             "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
     )
     fun assignCompanyRole(
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("role") companyRole: CompanyRole,
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: UUID,
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("userId") userId: UUID,
     ): ResponseEntity<CompanyRoleAssignment>
 
@@ -86,9 +102,26 @@ interface CompanyRolesApi {
             "@SecurityUtilsService.isUserRequestingForOwnId(#userId)",
     )
     fun getCompanyRoleAssignments(
-        @RequestParam("role") companyRole: CompanyRole? = null,
-        @RequestParam("companyId") companyId: UUID? = null,
-        @RequestParam("userId") userId: UUID? = null,
+        @RequestParam("role")
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
+            required = false,
+        )
+        companyRole: CompanyRole? = null,
+        @RequestParam("companyId")
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        companyId: UUID? = null,
+        @RequestParam("userId")
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            required = false,
+        )
+        userId: UUID? = null,
     ): ResponseEntity<List<CompanyRoleAssignment>>
 
     /**
@@ -118,8 +151,22 @@ interface CompanyRolesApi {
             "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
     )
     fun removeCompanyRole(
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("role") companyRole: CompanyRole,
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: UUID,
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("userId") userId: UUID,
     )
 
@@ -156,8 +203,22 @@ interface CompanyRolesApi {
             "or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)",
     )
     fun hasUserCompanyRole(
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("role") companyRole: CompanyRole,
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: UUID,
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("userId") userId: UUID,
     )
 
@@ -181,8 +242,19 @@ interface CompanyRolesApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyOwnershipRequest(
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: UUID,
-        @RequestParam comment: String? = null,
+        @RequestParam
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.OWNERSHIP_COMMENT_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.OWNERSHIP_COMMENT_EXAMPLE,
+            required = false,
+        )
+        comment: String? = null,
     )
 
     /**
@@ -209,6 +281,11 @@ interface CompanyRolesApi {
         value = ["/company-ownership/{companyId}"],
     )
     fun hasCompanyAtLeastOneOwner(
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: UUID,
     )
 }

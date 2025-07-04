@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.general.general.SfdrGe
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class SfdrGeneral(
     @field:Valid()
     val general: SfdrGeneralGeneral? = null,

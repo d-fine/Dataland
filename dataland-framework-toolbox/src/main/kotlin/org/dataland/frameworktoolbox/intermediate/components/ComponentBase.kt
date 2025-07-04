@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.exampleExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -108,6 +109,17 @@ open class ComponentBase(
      * Specifies which kind of document-support (Datapoint-type) is desired for this component
      */
     var documentSupport: DocumentSupport = NoDocumentSupport
+
+    /**
+     * Obtain an example for this component
+     * @param examplePlainData an example for this component without extended document support
+     */
+    fun getExample(examplePlainData: String): String =
+        if (documentSupport == ExtendedDocumentSupport) {
+            exampleExtendedDocumentSupport(examplePlainData)
+        } else {
+            examplePlainData
+        }
 
     /**
      * Obtain a list of all parents of this node until the root node

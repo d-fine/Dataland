@@ -23,6 +23,7 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.s
 /**
  * The data-model for the Environmental section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenEnvironmental(
     @field:Valid()
     val nachhaltigskeitsrisiken: HeimathafenEnvironmentalNachhaltigskeitsrisiken? = null,

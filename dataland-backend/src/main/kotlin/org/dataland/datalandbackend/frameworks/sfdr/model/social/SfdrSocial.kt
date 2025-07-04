@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmploy
 /**
  * The data-model for the Social section
  */
+@Suppress("MaxLineLength")
 data class SfdrSocial(
     @field:Valid()
     val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,

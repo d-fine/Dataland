@@ -49,6 +49,7 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.general.unterne
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class HeimathafenGeneral(
     @field:Valid()
     val unternehmen: HeimathafenGeneralUnternehmen? = null,

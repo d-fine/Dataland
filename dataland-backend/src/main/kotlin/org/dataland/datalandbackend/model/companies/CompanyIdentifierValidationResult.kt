@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.model.companies
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 
 /**
  * API-Model
@@ -9,6 +11,10 @@ import org.dataland.datalandbackend.entities.BasicCompanyInformation
  */
 data class CompanyIdentifierValidationResult(
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+    )
     val identifier: String,
     val companyInformation: BasicCompanyInformation? = null,
 ) {

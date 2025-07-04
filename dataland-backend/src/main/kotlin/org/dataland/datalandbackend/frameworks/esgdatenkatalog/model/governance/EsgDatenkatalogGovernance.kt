@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.governance.
 /**
  * The data-model for the Governance section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogGovernance(
     @field:Valid()
     val vorstandsprofil: EsgDatenkatalogGovernanceVorstandsprofil? = null,

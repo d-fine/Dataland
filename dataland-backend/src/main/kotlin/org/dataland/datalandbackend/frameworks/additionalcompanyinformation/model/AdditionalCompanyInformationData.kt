@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mode
 /**
  * The root data-model for the Additional-company-information Framework
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 @DataType("additional-company-information", 6)
 @ReferencedReportsListValidator()
 data class AdditionalCompanyInformationData(

@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.frameworks.nuclearandgas.model.validator.Ref
 /**
  * The root data-model for the Nuclear-and-gas Framework
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 @DataType("nuclear-and-gas", 4)
 @ReferencedReportsListValidator()
 data class NuclearAndGasData(

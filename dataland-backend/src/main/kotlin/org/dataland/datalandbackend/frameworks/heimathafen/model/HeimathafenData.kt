@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.Heimatha
 /**
  * The root data-model for the Heimathafen Framework
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 @DataType("heimathafen", 9)
 data class HeimathafenData(
     @field:Valid()

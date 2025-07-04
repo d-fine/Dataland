@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedRe
 /**
  * The root data-model for the Sfdr Framework
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 @DataType("sfdr", 1)
 @ReferencedReportsListValidator()
 data class SfdrData(

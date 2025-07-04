@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -18,6 +19,7 @@ import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
+import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -96,11 +98,38 @@ interface CompanyApi {
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
-        @RequestParam dataTypes: Set<DataType>? = null,
-        @RequestParam countryCodes: Set<String>? = null,
-        @RequestParam sectors: Set<String>? = null,
-        @RequestParam chunkSize: Int? = null,
-        @RequestParam chunkIndex: Int? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataTypes: Set<DataType>? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+            required = false,
+        )
+        countryCodes: Set<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
+            required = false,
+        )
+        sectors: Set<String>? = null,
+        @RequestParam(defaultValue = "100")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int? = null,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int? = null,
     ): ResponseEntity<List<BasicCompanyInformation>>
 
     /**
@@ -135,9 +164,26 @@ interface CompanyApi {
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
-        @RequestParam dataTypes: Set<DataType>? = null,
-        @RequestParam countryCodes: Set<String>? = null,
-        @RequestParam sectors: Set<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataTypes: Set<DataType>? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+            required = false,
+        )
+        countryCodes: Set<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
+            required = false,
+        )
+        sectors: Set<String>? = null,
     ): ResponseEntity<Int>
 
     /**
@@ -188,7 +234,18 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun existsIdentifier(
+        @Parameter(
+            name = "identifierType",
+            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("identifierType") identifierType: IdentifierType,
+        @Parameter(
+            name = "identifier",
+            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            required = true,
+        )
         @PathVariable("identifier") identifier: String,
     )
 
@@ -213,7 +270,18 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyIdByIdentifier(
+        @Parameter(
+            name = "identifierType",
+            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("identifierType") identifierType: IdentifierType,
+        @Parameter(
+            name = "identifier",
+            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            required = true,
+        )
         @PathVariable("identifier") identifier: String,
     ): ResponseEntity<CompanyId>
 
@@ -257,6 +325,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyById(
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<StoredCompany>
 
@@ -285,6 +359,12 @@ interface CompanyApi {
             "@CompanyRoleChecker.canUserPatchFieldsForCompany(#companyInformationPatch, #companyId)",
     )
     fun patchCompanyById(
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
         companyInformationPatch: CompanyInformationPatch,
@@ -312,8 +392,16 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putCompanyById(
-        @PathVariable("companyId") companyId: String,
-        @Valid @RequestBody
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("companyId")
+        companyId: String,
+        @Valid
+        @RequestBody
         companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
@@ -327,7 +415,9 @@ interface CompanyApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully returned teaser companies."),
+            ApiResponse(
+                responseCode = "200", description = "Successfully returned teaser companies.",
+            ),
         ],
     )
     @GetMapping(
@@ -347,7 +437,9 @@ interface CompanyApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved values."),
+            ApiResponse(
+                responseCode = "200", description = "Successfully retrieved values.",
+            ),
         ],
     )
     @GetMapping(
@@ -355,6 +447,12 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getAggregatedFrameworkDataSummary(
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 
@@ -377,6 +475,12 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompanyInfo(
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<CompanyInformation>
 
@@ -406,6 +510,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isCompanyIdValid(
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     )
 
@@ -429,6 +539,12 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanySubsidiariesByParentId(
+        @Parameter(
+            name = "companyId",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<List<BasicCompanyInformation>>
 
@@ -452,7 +568,16 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
-        @Valid @RequestBody
+        @Schema(
+            name = "identifiers",
+            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+            required = true,
+        )
+        @RequestBody(
+            required = true,
+        )
+        @Valid
         identifiers: List<String>,
     ): ResponseEntity<List<CompanyIdentifierValidationResult>>
 }

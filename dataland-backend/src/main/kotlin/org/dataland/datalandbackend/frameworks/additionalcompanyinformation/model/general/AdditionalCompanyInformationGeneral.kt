@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mode
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class AdditionalCompanyInformationGeneral(
     @field:Valid()
     val general: AdditionalCompanyInformationGeneralGeneral? = null,

@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.verb
 /**
  * The data-model for the Umwelt section
  */
+@Suppress("MaxLineLength")
 data class EsgDatenkatalogUmwelt(
     @field:Valid()
     val emissionen: EsgDatenkatalogUmweltEmissionen? = null,

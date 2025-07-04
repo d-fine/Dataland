@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.governance.riskManagem
 /**
  * The data-model for the Governance section
  */
+@Suppress("MaxLineLength")
 data class LksgGovernance(
     @field:Valid()
     val riskManagementOwnOperations: LksgGovernanceRiskManagementOwnOperations? = null,

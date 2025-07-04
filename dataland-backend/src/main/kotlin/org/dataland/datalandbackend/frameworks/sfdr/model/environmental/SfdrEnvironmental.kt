@@ -14,6 +14,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.environmental.water.Sf
 /**
  * The data-model for the Environmental section
  */
+@Suppress("MaxLineLength")
 data class SfdrEnvironmental(
     @field:Valid()
     val greenhouseGasEmissions: SfdrEnvironmentalGreenhouseGasEmissions? = null,

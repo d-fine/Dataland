@@ -1,11 +1,14 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_PERCENTAGE_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -29,11 +32,20 @@ class PercentageComponent(
     override var constantUnitSuffix: String? = "%"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        val schemaAnnotation =
+            Annotation(
+                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+                rawParameterSpec =
+                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
+                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT)} \"\"\"",
+                applicationTargetPrefix = "field",
+            )
+
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
             TypeReference("java.math.BigDecimal", isNullable),
-            listOf(),
+            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
         )
     }
 
