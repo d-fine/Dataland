@@ -204,3 +204,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.d-nace-treeview-container {
+  height: 400px;
+  min-width: 200px;
+  overflow: auto;
+}
+</style>

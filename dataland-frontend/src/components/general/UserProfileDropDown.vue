@@ -1,219 +1,118 @@
 <template>
-  <div
-    class="flex align-items-center d-cursor-pointer"
-    id="profile-picture-dropdown-toggle"
-    @click="toggleDropdownMenu"
-  >
-    <img
-      ref="profile-picture"
-      class="d-profile-picture"
-      :src="profilePictureSource"
-      alt="User profile"
-      referrerpolicy="no-referrer"
-      @error="handleProfilePicError"
-    />
+  <div class="user-menu-container" @click="toggleDropdown">
+    <Button variant="outlined" severity="contrast" rounded icon="pi pi-user" />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
-  <PrimeMenu data-test="profileMenu" ref="menu" :model="dropdownMenuItems" :popup="true">
-    <template #item="{ item }">
-      <a
-        v-if="hasRole(item.role)"
-        class="p-menuitem-link"
-        role="menuitem"
-        tabindex="0"
-        @click="item.clickAction()"
-        :id="item.id"
-      >
-        <span class="p-menuitem-icon material-icons">{{ item.icon }}</span>
-        <span class="p-menuitem-text">{{ item.label }}</span>
-      </a>
-    </template>
-  </PrimeMenu>
+
+  <PrimeMenu
+    data-test="profileMenu"
+    ref="menu"
+    :model="menuItems"
+    :popup="true"
+    :pt="{
+      root: {
+        style: 'top: 4rem;',
+      },
+    }"
+  />
 </template>
 
-<script lang="ts">
-import defaultProfilePicture from '@/assets/images/elements/default_user_icon.svg';
+<script setup lang="ts">
 import router from '@/router';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
+import Button from 'primevue/button';
 import PrimeMenu from 'primevue/menu';
-import { defineComponent, inject, ref } from 'vue';
+import { type MenuItem } from 'primevue/menuitem';
+import { computed, inject, onMounted, type Ref, ref, useTemplateRef } from 'vue';
 
-export default defineComponent({
-  name: 'UserProfileDropDown',
-  components: { PrimeMenu },
-  emits: ['profilePictureLoadingError', 'profilePictureObtained'],
-  setup() {
-    const menu = ref<typeof PrimeMenu | undefined>();
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const menu = useTemplateRef('menu');
 
-    /**
-     * Toggles the dropdown menu (shows/hides it) on a mouse click.
-     * Used as an event handler by the dropdown-toggle UI element.
-     * @param event the event of the click
-     */
-    function toggleDropdownMenu(event: Event): void {
-      if (menu.value !== undefined) {
-        menu.value.toggle(event);
-      }
-    }
-    /**
-     * Hides the dropdown menu.
-     * Used as an event handler through the on scroll event.
-     */
-    function hideDropdownMenu(): void {
-      assertDefined(menu.value).hide();
-    }
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      menu,
-      toggleDropdownMenu,
-      hideDropdownMenu,
-    };
-  },
-  data() {
-    return {
-      dropdownMenuItems: [
-        {
-          label: 'USER SETTINGS',
-          icon: 'settings',
-          id: 'profile-picture-dropdown-settings-button',
-          clickAction: this.goToUserSettings,
-        },
-        {
-          label: 'API KEY',
-          icon: 'key',
-          id: 'profile-api-generate-key-button',
-          clickAction: this.goToApiKeysPage,
-        },
-        {
-          label: 'DATA REQUEST',
-          icon: 'mail',
-          id: 'profile-picture-dropdown-data-request-button',
-          clickAction: this.goToDataRequest,
-        },
-        {
-          label: 'QUALITY ASSURANCE',
-          icon: 'add_moderator',
-          id: 'profile-picture-dropdown-qa-services-anchor',
-          clickAction: this.goToQualityAssurance,
-          role: KEYCLOAK_ROLE_REVIEWER,
-        },
-        {
-          label: 'LOG OUT',
-          icon: 'logout',
-          id: 'profile-picture-dropdown-logout-anchor',
-          clickAction: this.logoutViaDropdown,
-        },
-      ],
-      profilePictureSource: defaultProfilePicture,
-      hasRole: ((role: string) => !role) as (role: string) => boolean,
-    };
-  },
-  mounted() {
-    window.addEventListener('scroll', this.hideDropdownMenu);
-  },
-  unmounted() {
-    window.removeEventListener('scroll', this.hideDropdownMenu);
-  },
-  methods: {
-    /**
-     * Logs the user out and redirects him to the dataland homepage
-     */
-    logoutViaDropdown() {
-      assertDefined(this.getKeycloakPromise)()
-        .then((keycloak) => {
-          logoutAndRedirectToUri(keycloak, '');
-        })
-        .catch((error) => console.log(error));
-    },
-    /**
-     * Redirects the user to the keycloak user settings page
-     */
-    goToUserSettings() {
-      assertDefined(this.getKeycloakPromise)()
-        .then((keycloak) => {
-          return keycloak.accountManagement();
-        })
-        .catch((error) => console.log(error));
-    },
-    /**
-     * Redirects the user to the data-request/invite screen
-     */
-    async goToDataRequest() {
-      await router.push('/bulkdatarequest');
-    },
-    /**
-     * Redirects the user to the api-key management interface
-     */
-    async goToApiKeysPage() {
-      await router.push('/api-key');
-    },
-    /**
-     * Redirects the user to the QA Services page
-     */
-    async goToQualityAssurance() {
-      await router.push('/qualityassurance');
-    },
-    /**
-     * Called when the profile picture could not load. Propagates the event and sets the profile picture
-     * to a default image
-     */
-    handleProfilePicError() {
-      if (this.profilePictureSource !== defaultProfilePicture) {
-        this.$emit('profilePictureLoadingError');
-        this.profilePictureSource = defaultProfilePicture;
-      }
-    },
-  },
-  created() {
-    assertDefined(this.getKeycloakPromise)()
-      .then((keycloak) => {
-        if (keycloak.authenticated) {
-          this.hasRole = (role: string | undefined): boolean => (!role ? true : keycloak.hasRealmRole(role));
+const userIsReviewer = ref(false);
 
-          if (keycloak.idTokenParsed?.picture) {
-            const profilePictureUrl = keycloak.idTokenParsed.picture as string;
-            this.$emit('profilePictureObtained', profilePictureUrl);
-            this.profilePictureSource = profilePictureUrl;
-          }
-        }
-      })
-      .catch((error) => console.log(error));
-  },
+onMounted(() => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      userIsReviewer.value = keycloak.hasRealmRole(KEYCLOAK_ROLE_REVIEWER);
+    })
+    .catch((error) => console.log(error));
 });
+
+/**
+ * Toggles Menu as Popup
+ * @param event
+ */
+function toggleDropdown(event: Event): void {
+  menu?.value?.toggle(event);
+}
+
+/**
+ * Redirects the user to the keycloak user settings page
+ */
+function goToUserSettings(): void {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => keycloak.accountManagement())
+    .catch((error) => console.log(error));
+}
+
+/**
+ * Logs the user out and redirects him to the dataland homepage
+ */
+function logoutViaDropdown(): void {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => logoutAndRedirectToUri(keycloak, ''))
+    .catch((error) => console.log(error));
+}
+
+const menuItems: Ref<MenuItem[]> = computed(() => [
+  {
+    label: 'USER SETTINGS',
+    icon: 'pi pi-cog',
+    id: 'profile-picture-dropdown-settings-button',
+    command: goToUserSettings,
+  },
+  {
+    label: 'API KEY',
+    icon: 'pi pi-key',
+    id: 'profile-api-generate-key-button',
+    command: (): void => void router.push('/api-key'),
+  },
+  {
+    label: 'DATA REQUEST',
+    icon: 'pi pi-envelope',
+    id: 'profile-picture-dropdown-data-request-button',
+    command: (): void => void router.push('/bulkdatarequest'),
+  },
+  {
+    label: 'QUALITY ASSURANCE',
+    icon: 'pi pi-shield',
+    id: 'profile-picture-dropdown-qa-services-anchor',
+    command: (): void => void router.push('/qualityassurance'),
+    disabled: !userIsReviewer.value,
+  },
+  {
+    label: 'LOG OUT',
+    icon: 'pi pi-sign-out',
+    id: 'profile-picture-dropdown-logout-anchor',
+    command: logoutViaDropdown,
+  },
+]);
 </script>
 
 <style scoped>
-.p-menuitem-link {
-  background-color: #0b191f;
-}
-
-.d-profile-picture {
-  border-radius: 50%;
-  height: 2.5rem;
+.user-menu-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .d-triangle-down {
   width: 0.625rem;
   margin-left: 0.5rem;
   margin-right: 1rem;
-}
-
-.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
-  color: #e67f3fff;
-}
-.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-icon,
-.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-submenu-icon {
-  color: #e67f3fff;
-}
-
-.d-cursor-pointer {
-  cursor: pointer;
-}
-
-.p-disabled {
-  opacity: 0.5;
 }
 </style>

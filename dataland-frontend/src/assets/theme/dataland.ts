@@ -57,13 +57,21 @@ export const DatalandPreset = definePreset(Aura, {
       900: '{orange.900}',
       950: '{orange.950}',
     },
+    content: {
+      borderRadius: '{border.radius.none}',
+    },
+    list: {
+      option: {
+        borderRadius: '{border.radius.none}',
+      },
+    },
     overlay: {
       select: {
         borderRadius: '{border.radius.none}',
       },
     },
-    list: {
-      option: {
+    navigation: {
+      item: {
         borderRadius: '{border.radius.none}',
       },
     },
@@ -89,18 +97,18 @@ export const DatalandPreset = definePreset(Aura, {
           hoverColor: '{orange.500}',
           activeColor: '{orange.500}',
         },
-        highlight: {
-          background: '{slate.900}',
-          focusBackground: '{slate.900}',
-          color: '{blue.300}',
-          focusColor: '{neutral.900}',
-        },
         content: {
           borderColor: '{surface.200}',
           borderRadius: '{border.radius.xs}',
           extend: {
             hoverBorderColor: '{surface.800}',
           },
+        },
+        highlight: {
+          background: '{slate.900}',
+          focusBackground: '{slate.900}',
+          color: '{blue.300}',
+          focusColor: '{neutral.900}',
         },
         formField: {
           filledHoverBackground: '{surface.100}',
@@ -115,6 +123,17 @@ export const DatalandPreset = definePreset(Aura, {
             width: '3px',
             style: 'solid',
             color: '{blue.200}',
+          },
+        },
+        navigation: {
+          item: {
+            padding: 'var(--spacing-md)',
+            color: '{primary.color}',
+            focusColor: '{primary.color}',
+            icon: {
+              color: '{primary.color}',
+              focusColor: '{primary.color}',
+            },
           },
         },
       },
@@ -148,11 +167,30 @@ export const DatalandPreset = definePreset(Aura, {
         light: {
           root: {
             primary: {
-              color: '{neutral.50}',
-              hoverColor: '{neutral.50}',
+              color: '{surface.50}',
+              hoverColor: '{surface.50}',
+            },
+          },
+          text: {
+            secondary: {
+              color: '{surface.800}',
+            },
+          },
+          outlined: {
+            contrast: {
+              color: '{surface.50}',
+              borderColor: '{surface.50}',
+              hoverBackground: '{surface.700}',
+              activeBackground: '{surface.700}',
             },
           },
         },
+      },
+    },
+    menu: {
+      root: {
+        background: '{highlight.background}',
+        borderRadius: '{border.radius.none}',
       },
     },
     tag: {

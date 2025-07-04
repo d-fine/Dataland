@@ -2,7 +2,7 @@
   <div class="dataland-header m-0 fixed top-0 h-4rem w-full grid align-items-center">
     <div class="col-4 text-left">
       <router-link to="/">
-        <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland" class="pl-3" />
+        <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland" />
       </router-link>
     </div>
 
@@ -48,5 +48,10 @@ export default defineComponent({
   background-color: var(--p-highlight-background);
   font-size: var(--font-size-sm);
   z-index: 100;
+
+  img {
+    padding-left: var(--spacing-md);
+    height: 1.5rem;
+  }
 }
 </style>

@@ -3,7 +3,7 @@
     <div v-if="isUserLoggedIn == true" data-test="backToPlatformLink">
       <Button
         variant="text"
-        severity="contrast"
+        severity="secondary"
         label="BACK TO PLATFORM"
         @click="backToPlatform"
         icon="pi pi-arrow-right"
