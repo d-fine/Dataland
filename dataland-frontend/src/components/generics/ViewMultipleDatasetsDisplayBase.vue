@@ -70,7 +70,6 @@ import { type AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
-import { convertDataModelToMLDTConfig } from '@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
   type FrameworkViewConfiguration,
@@ -121,8 +120,7 @@ export default defineComponent({
       humanizeString: humanizeStringOrNumber,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
-      humanizedDataDescription: humanizeStringOrNumber(this.dataType),
-      DataTypeEnum,
+      humanizedDataDescription: humanizeStringOrNumber(this.dataType)
     };
   },
   setup() {
@@ -162,7 +160,6 @@ export default defineComponent({
   },
 
   methods: {
-    convertDataModelToMLDTConfig,
     /**
      * Method to set flags that indicate found data
      */
