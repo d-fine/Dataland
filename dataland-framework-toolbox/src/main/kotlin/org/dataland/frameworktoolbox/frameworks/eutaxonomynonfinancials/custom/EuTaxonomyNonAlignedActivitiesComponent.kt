@@ -81,8 +81,10 @@ class EuTaxonomyNonAlignedActivitiesComponent(
             FrameworkDisplayValueLambda(
                 "formatNonAlignedActivitiesForDataTable(" +
                     "${this.getTypescriptFieldAccessor()}," +
-                    "\"${StringEscapeUtils.escapeEcmaScript(label)}\"," +
-                    ")",
+                    "\"${StringEscapeUtils.escapeEcmaScript(
+                        label,
+                    )
+                    }\", \"" + getTypescriptFieldAccessor().split(".")[1].dropLast(1) + "\")",
                 setOf(
                     TypeScriptImport(
                         "formatNonAlignedActivitiesForDataTable",
