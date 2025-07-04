@@ -152,9 +152,22 @@ export default defineComponent({
       { field: 'naceCodes', header: this.humanizeHeaderName('naceCodes'), frozen: true, group: '_frozen' },
     ];
 
+    const kpiField = this.kpiKeyOfTable;
+    const kpiPercentField = `${kpiField}Percent`;
+
     this.mainColumnDefinitions = [
-      { field: 'revenue', header: this.humanizeHeaderName('revenue'), group: '_revenue', groupIndex: 0 },
-      { field: 'revenuePercent', header: this.humanizeHeaderName('revenuePercent'), group: '_revenue', groupIndex: 1 },
+      {
+        field: kpiField,
+        header: this.humanizeHeaderName(kpiField),
+        group: '_kpi',
+        groupIndex: 0,
+      },
+      {
+        field: kpiPercentField,
+        header: this.humanizeHeaderName(kpiPercentField),
+        group: '_kpi',
+        groupIndex: 1,
+      },
 
       ...this.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       ...this.makeGroupColumns('dnshCriteria', 'dnsh'),
@@ -186,7 +199,7 @@ export default defineComponent({
 
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
-        ...createRevenueGroupData(col),
+        ...createKpiGroupData(col, this.kpiKeyOfTable),
         ...createActivityGroupData<number>(
           col.activityName as string,
           'substantialContributionCriteria',
@@ -228,7 +241,7 @@ export default defineComponent({
       .flat();
 
     this.mainColumnGroups = [
-      { key: '_revenue', label: '', colspan: this.findMaxColspanForGroup('_revenue') },
+      { key: '_kpi', label: '', colspan: this.findMaxColspanForGroup('_kpi') },
       {
         key: 'substantialContributionCriteria',
         label: this.humanizeHeaderName('substantialContributionCriteria'),
@@ -253,7 +266,7 @@ export default defineComponent({
     findMaxColspanForGroup(groupName: string): number {
       const environmentalObjectivesLength = euTaxonomyObjectives.length;
       const colspans: { [groupName: string]: number } = {
-        _revenue: 2,
+        _kpi: 2,
         substantialContributionCriteria: environmentalObjectivesLength,
         dnshCriteria: environmentalObjectivesLength,
         _minimumSafeguards: 1,
@@ -333,21 +346,28 @@ export default defineComponent({
 
 /**
  * @param activity targeted activity object
- * @returns list of revenue data items
+ * @param kpiKey key of displayed kpi
+ * @returns list of kpi data items
  */
-function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+function createKpiGroupData(
+  activity: EuTaxonomyAlignedActivity,
+  kpiKey: 'revenue' | 'capex' | 'opex'
+): ActivityFieldValueObject[] {
+  const value = activity.share?.absoluteShare;
+  const percent = activity.share?.relativeShareInPercent;
+
   return [
     {
       activity: activity.activityName,
-      group: '_revenue',
-      field: 'revenue',
-      content: formatAmountWithCurrency(activity.share?.absoluteShare),
+      group: '_kpi',
+      field: kpiKey,
+      content: formatAmountWithCurrency(value),
     },
     {
       activity: activity.activityName,
-      group: '_revenue',
-      field: 'revenuePercent',
-      content: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
+      group: '_kpi',
+      field: `${kpiKey}Percent`,
+      content: formatPercentageNumberAsString(percent),
     },
   ];
 }
