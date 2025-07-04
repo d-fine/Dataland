@@ -200,5 +200,33 @@ export const DatalandPreset = definePreset(Aura, {
         }
         `,
     },
+    tooltip: {
+      css: () => `
+      .p-tooltip .p-tooltip-text {
+        background: var(--input-label-color);
+        color: var(--bg-text-primary);
+        padding: 0.5rem;
+        border-radius: 0;
+        width: max-content;
+        max-width: 300px;
+      }
+
+      .p-tooltip.p-tooltip-right .p-tooltip-arrow {
+        border-right-color: var(--input-label-color);
+      }
+
+      .p-tooltip.p-tooltip-left .p-tooltip-arrow {
+        border-left-color: var(--input-label-color);
+      }
+
+      .p-tooltip.p-tooltip-top .p-tooltip-arrow {
+        border-top-color: var(--input-label-color);
+      }
+
+      .p-tooltip.p-tooltip-bottom .p-tooltip-arrow {
+        border-bottom-color: var(--input-label-color);
+      }
+    `,
+    },
   },
 });

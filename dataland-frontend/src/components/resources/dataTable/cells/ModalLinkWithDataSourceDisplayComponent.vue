@@ -85,4 +85,9 @@ export default defineComponent({
     box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
   }
 }
+
+.table-cell-alignment {
+  display: flex;
+  flex-direction: column;
+}
 </style>

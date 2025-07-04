@@ -88,4 +88,15 @@ a:link {
     box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
   }
 }
+
+.dataland-dialog {
+  padding: 0.1rem 1.5rem 1rem;
+  background-color: white;
+}
+
+.dataland-dialog-sm {
+  min-width: 360px;
+  max-width: 360px;
+  width: 360px;
+}
 </style>

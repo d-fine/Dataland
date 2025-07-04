@@ -554,4 +554,10 @@ export default defineComponent({
   border: 1px solid var(--btn-primary-bg);
   margin: 0;
 }
+
+.no-ui-message {
+  [data-message-type='ui'] {
+    display: none;
+  }
+}
 </style>

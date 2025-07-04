@@ -618,4 +618,196 @@ a:after {
   background: none;
   border: none;
 }
+
+.p-datatable {
+  border-radius: 0;
+  background: var(--table-background-color);
+  color: var(--main-text-color);
+
+  .border-left {
+    border-left: 1px solid var(--table-border);
+  }
+
+  .border-right {
+    border-right: 1px solid var(--table-border);
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid var(--table-border);
+  }
+
+  .horizontal-headers-size {
+    background-color: var(--default-neutral-white);
+
+    &:first-of-type {
+      width: var(--first-table-column-width);
+    }
+  }
+  .onlyHeaders {
+    tr {
+      display: flex;
+      width: calc(100vw - 58px);
+    }
+    tr th:not(.first-horizontal-headers-size) {
+      flex: 1;
+    }
+    .p-datatable-tbody {
+      display: none;
+    }
+  }
+  tr {
+    &:not(.p-rowgroup-header) {
+      td {
+        border-bottom: 1px solid var(--table-border);
+      }
+    }
+    &:hover {
+      background: var(--table-background-hover-color);
+    }
+    th,
+    td {
+      text-align: left;
+      padding: 1rem;
+    }
+  }
+  .p-datatable-tbody {
+    tr {
+      border-color: hsl(from var(--table-border-dark) h s 45);
+    }
+    .info-icon {
+      float: right;
+      max-width: 20%;
+    }
+    .table-left-label {
+      float: left;
+      max-width: 80%;
+    }
+  }
+  .p-sortable-column {
+    .p-sortable-column-icon {
+      color: var(--table-icon-color);
+      margin-left: 0.5rem;
+    }
+    &.p-highlight {
+      background: var(--table-background-color);
+      color: var(--main-color);
+      .p-sortable-column-icon {
+        color: var(--main-color);
+      }
+    }
+  }
+  .headers-bg {
+    background-color: var(--tables-headers-bg);
+    display: table-cell;
+    width: var(--first-table-column-width);
+  }
+  .auto-headers-size {
+    width: auto;
+  }
+  .p-rowgroup-header {
+    background-color: var(--table-background-hover-color-light);
+    cursor: pointer;
+
+    &.p-topmost-header {
+      background-color: var(--tables-headers-bg);
+    }
+
+    td {
+      position: relative;
+      width: var(--first-table-column-width);
+      button {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        margin-top: -7px;
+      }
+    }
+  }
+
+  .p-datatable-thead {
+    z-index: 1;
+    tr {
+      box-shadow: none;
+      &:hover {
+        background: var(--table-background-color);
+      }
+    }
+  }
+
+  &.activities-data-table {
+    $col-activity-width: 300px;
+    $col-nace-codes-width: 70px;
+    .group-row-header {
+      background-color: var(--tables-headers-bg);
+      border-bottom: 1px solid var(--table-border);
+      .p-column-header-content {
+        justify-content: center;
+      }
+      &:not(:first-of-type) {
+        border-left: 1px solid var(--table-border);
+      }
+    }
+    .first-group-column:not(:first-of-type) {
+      border-left: 1px solid var(--table-border);
+    }
+    .non-frozen-header {
+      vertical-align: top;
+    }
+    .frozen-row-header {
+      vertical-align: top;
+      background-color: var(--tables-headers-bg);
+    }
+    .col-activity {
+      width: $col-activity-width;
+      min-width: $col-activity-width;
+    }
+    .col-nace-codes {
+      width: $col-nace-codes-width;
+      min-width: $col-nace-codes-width;
+      border-right: 1px solid var(--table-border);
+    }
+    .col-value {
+      width: 160px;
+      min-width: 160px;
+    }
+    .col-percentage {
+      min-width: 6rem;
+    }
+  }
+}
+
+.p-inputtext {
+  font-family: inherit;
+  color: var(--input-text-color);
+  background: var(--input-text-bg);
+  padding: var(--spacing-sm);
+  border: 0;
+  margin: 0;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  appearance: none;
+  &:enabled:hover {
+    border-color: var(--input-text-border-hover);
+  }
+  &:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #bfd1f6;
+    border-color: var(--input-text-border-hover);
+  }
+  &.p-invalid.p-component {
+    border-color: #ced4da #ced4da #ced4da #e4677e;
+  }
+  &.p-inputtext-sm {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
+  }
+  &.p-inputtext-lg {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-sm);
+  }
+}
 </style>
