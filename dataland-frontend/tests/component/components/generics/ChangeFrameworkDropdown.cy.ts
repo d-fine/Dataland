@@ -36,7 +36,7 @@ describe('Component test for ChangeFrameworkDropdown', () => {
     {
       dataId: 'dummy-dataId-4',
       companyId: companyId,
-      dataType: DataTypeEnum.AdditionalCompanyInformation,
+      dataType: DataTypeEnum.Sfdr,
       uploadTime: 123,
       reportingPeriod: '2022',
       currentlyActive: true,
@@ -79,9 +79,6 @@ describe('Component test for ChangeFrameworkDropdown', () => {
       cy.get('[data-test="chooseFrameworkList"]').children().should('have.length', numberOfEntries);
 
       // Check hyperlinks
-      cy.get('[data-test="chooseFrameworkList"]')
-        .contains('Additional Company Information')
-        .should('have.attr', 'href', '/companies/dummy-companyId/frameworks/additional-company-information');
       cy.get('[data-test="chooseFrameworkList"]')
         .contains('LkSG')
         .should('have.attr', 'href', '/companies/dummy-companyId/frameworks/lksg');

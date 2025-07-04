@@ -51,7 +51,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.P2p,
+      DataTypeEnum.Lksg,
       '2020',
       'companyAnswered',
       'compA',
@@ -99,7 +99,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.EsgDatenkatalog,
+      DataTypeEnum.Sfdr,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
@@ -239,14 +239,10 @@ describe('Component tests for the data requests search page', function (): void 
 
   it('Check filter functionality and reset button', function (): void {
     const expectedFrameworks = [
-      'WWF',
       'SFDR',
       'EU Taxonomy',
-      'Pathways to Paris',
       'for financial companies',
       'for non-financial companies',
-      'ESG Datenkatalog',
-      'für Corporate Schuldscheindarlehen',
     ];
 
     cy.intercept('**community/requests/user', {

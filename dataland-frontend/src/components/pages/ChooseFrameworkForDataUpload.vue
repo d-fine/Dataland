@@ -47,16 +47,6 @@
                 <div :id="dataType + 'Label'" class="col-3 p-3">
                   <h3>{{ humanizeString(dataType) }}</h3>
                   <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
-                  <p v-if="dataType === DataTypeEnum.P2p">
-                    Framework based on:
-                    <a
-                      href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {{ humanizeString(dataType) }}</a
-                    >
-                  </p>
                 </div>
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework

@@ -52,7 +52,7 @@ class DataRequestUpdateUtilsTest {
         dummyDataRequestEntity =
             DataRequestEntity(
                 userId = "",
-                dataType = "p2p",
+                dataType = "sfdr",
                 notifyMeImmediately = true,
                 reportingPeriod = "",
                 datalandCompanyId = "",

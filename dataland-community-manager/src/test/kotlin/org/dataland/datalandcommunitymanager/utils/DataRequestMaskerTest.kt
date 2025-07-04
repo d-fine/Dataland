@@ -33,7 +33,7 @@ class DataRequestMaskerTest {
             userId = "",
             userEmailAddress = "",
             creationTimestamp = 0,
-            dataType = "p2p",
+            dataType = "sfdr",
             reportingPeriod = "",
             datalandCompanyId = "",
             lastModifiedDate = 0,
@@ -70,7 +70,7 @@ class DataRequestMaskerTest {
         val dummyDataRequestEntity =
             DataRequestEntity(
                 userId = "",
-                dataType = "p2p",
+                dataType = "sfdr",
                 notifyMeImmediately = false,
                 reportingPeriod = "",
                 creationTimestamp = 0,

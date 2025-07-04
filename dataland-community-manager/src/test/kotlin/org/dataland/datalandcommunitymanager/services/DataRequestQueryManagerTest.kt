@@ -78,7 +78,7 @@ class DataRequestQueryManagerTest {
 
     private val filterWithoutEmailAddress =
         DataRequestsFilter(
-            dataType = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            dataType = setOf(DataTypeEnum.sfdr, DataTypeEnum.lksg),
             datalandCompanyIds = setOf(testCompanyId),
             reportingPeriod = testReportingPeriod,
             requestStatus = setOf(RequestStatus.Open),
@@ -88,7 +88,7 @@ class DataRequestQueryManagerTest {
 
     private val filterWithEmailAddressBeta =
         DataRequestsFilter(
-            dataType = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            dataType = setOf(DataTypeEnum.sfdr, DataTypeEnum.lksg),
             emailAddress = emailAddressSubstring,
             datalandCompanyIds = setOf(testCompanyId),
             reportingPeriod = testReportingPeriod,
@@ -119,7 +119,7 @@ class DataRequestQueryManagerTest {
         dataRequestEntityAlpha =
             DataRequestEntity(
                 userId = keycloakUserAlpha.userId,
-                dataType = DataTypeEnum.p2p.value,
+                dataType = DataTypeEnum.sfdr.value,
                 notifyMeImmediately = false,
                 reportingPeriod = testReportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),

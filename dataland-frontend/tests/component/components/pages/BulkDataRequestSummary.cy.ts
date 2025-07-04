@@ -29,7 +29,7 @@ describe('Component tests for the BulkDataRequestSummary page', () => {
               companyName: 'Company B',
               resourceId: 'request-1',
               reportingPeriod: '2022',
-              framework: 'p2p',
+              framework: 'lksg',
               resourceUrl: 'https://dataland.com/request-1',
             },
           ],

@@ -138,7 +138,7 @@ describe('Tests for the MultiLayerDataTable component', () => {
 
   const baseMetaInfo = {
     companyId: 'not-relevant-for-test',
-    dataType: DataTypeEnum.Heimathafen,
+    dataType: DataTypeEnum.lksg,
     uploadTime: 111111111,
     currentlyActive: true,
     qaStatus: QaStatus.Accepted,

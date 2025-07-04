@@ -11,22 +11,10 @@
 	"nuclear-and-gas": {
 		"numberOfProvidedReportingPeriods": 24
 	},
-	"p2p": {
+	"lksg": {
 		"numberOfProvidedReportingPeriods": 30
 	},
-	"lksg": {
-		"numberOfProvidedReportingPeriods": 22
-	},
-	"additional-company-information": {
-		"numberOfProvidedReportingPeriods": 20
-	},
 	"vsme": {
-		"numberOfProvidedReportingPeriods": 26
-	},
-	"esg-datenkatalog": {
-		"numberOfProvidedReportingPeriods": 13
-	},
-	"heimathafen": {
-		"numberOfProvidedReportingPeriods": 11
+		"numberOfProvidedReportingPeriods": 22
 	}
 }

@@ -731,12 +731,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -959,12 +955,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1112,12 +1104,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1467,18 +1455,14 @@
           },
           "dataType": {
             "type": "string",
-            "example": "p2p",
+            "example": "sfdr",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "reportingPeriods": {
@@ -1565,8 +1549,8 @@
             "uniqueItems": true,
             "type": "array",
             "example": [
-              "p2p",
-              "vsme"
+              "sfdr",
+              "lksg"
             ],
             "items": {
               "type": "string",
@@ -1575,12 +1559,8 @@
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
-                "p2p",
                 "lksg",
-                "additional-company-information",
-                "vsme",
-                "esg-datenkatalog",
-                "heimathafen"
+                "vsme"
               ]
             }
           },
@@ -1966,12 +1946,8 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "reportingPeriod": {

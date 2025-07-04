@@ -21,7 +21,7 @@ describe('Component test for the landing page', () => {
       validateQuotesSection();
       validateHowItWorksSection();
 
-      assertFrameworkPanelExists('Pathways to Paris');
+      assertFrameworkPanelExists('VSME');
       assertFrameworkPanelExists('LkSG');
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');

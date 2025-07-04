@@ -21,7 +21,7 @@ data class SingleDataRequest(
     @field:JsonProperty(required = true)
     @field:Schema(
         implementation = DataTypeEnum::class,
-        example = "p2p",
+        example = "sfdr",
     )
     val dataType: DataTypeEnum,
     @field:JsonProperty(required = true)

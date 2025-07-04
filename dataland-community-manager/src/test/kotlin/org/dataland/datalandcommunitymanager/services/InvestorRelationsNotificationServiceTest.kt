@@ -60,7 +60,7 @@ class InvestorRelationsNotificationServiceTest {
             DataMetaInformation(
                 UUID.randomUUID().toString(),
                 companyUUID.toString(),
-                DataTypeEnum.p2p,
+                DataTypeEnum.sfdr,
                 123,
                 "2024",
                 false,
@@ -73,7 +73,7 @@ class InvestorRelationsNotificationServiceTest {
                 userId = null,
                 isProcessed = false,
                 companyId = companyUUID,
-                framework = DataTypeEnum.p2p,
+                framework = DataTypeEnum.sfdr,
                 reportingPeriod = "2024",
             )
 
@@ -97,7 +97,7 @@ class InvestorRelationsNotificationServiceTest {
                 userId = null,
                 isProcessed = false,
                 companyId = companyUUID,
-                framework = DataTypeEnum.p2p,
+                framework = DataTypeEnum.sfdr,
                 reportingPeriod = "2024",
             )
         doReturn(listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyUUID.toString(), "123")))

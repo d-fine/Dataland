@@ -8,13 +8,11 @@ import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataCo
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -22,7 +20,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
-import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
@@ -116,21 +113,6 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForP2pData = FrameworkTestDataProvider.forFrameworkFixtures(PathwaysToParisData::class.java)
-
-    fun p2pUploaderFunction(
-        companyId: String,
-        p2pData: PathwaysToParisData,
-        reportingPeriod: String,
-        bypassQa: Boolean = true,
-    ): DataMetaInformation {
-        val companyAssociatedP2pData = CompanyAssociatedDataPathwaysToParisData(companyId, reportingPeriod, p2pData)
-        return dataControllerApiForP2pData.postCompanyAssociatedP2pData(
-            companyAssociatedP2pData, bypassQa,
-        )
-    }
-
     val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData = FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
 
@@ -220,8 +202,6 @@ class ApiAccessor {
                 uploadDataset(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
             DataTypeEnum.eutaxonomyMinusFinancials ->
                 uploadDataset(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
-            DataTypeEnum.p2p ->
-                uploadDataset(testDataProviderForP2pData, this::p2pUploaderFunction)
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }
@@ -261,8 +241,6 @@ class ApiAccessor {
                 uploadCompaniesAndDatasets(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
             DataTypeEnum.eutaxonomyMinusFinancials ->
                 uploadCompaniesAndDatasets(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
-            DataTypeEnum.p2p ->
-                uploadCompaniesAndDatasets(testDataProviderForP2pData, this::p2pUploaderFunction)
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }

@@ -3,7 +3,7 @@ import { exit } from 'process';
 import { readdir } from 'fs/promises';
 import { setupDeterministicFakerEnvironmentForFramework } from '@e2e/fixtures/ReproducibilityConfiguration';
 
-export const FAKE_FIXTURES_PER_FRAMEWORK = 50;
+export const FAKE_FIXTURES_PER_FRAMEWORK = 100;
 
 interface FrameworkFixtureModule {
   default: () => void;
