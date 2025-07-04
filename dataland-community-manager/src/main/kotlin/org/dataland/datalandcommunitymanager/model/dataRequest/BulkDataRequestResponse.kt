@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -12,11 +14,27 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
+    @Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.ACCEPTED_DATA_REQUESTS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.ACCEPTED_DATA_REQUESTS_EXAMPLE,
+    )
     val acceptedDataRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
+    @Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_NON_FINAL_REQUESTS_EXAMPLE,
+    )
     val alreadyExistingNonFinalRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
+    @Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_DATASETS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_DATASETS_EXAMPLE,
+    )
     val alreadyExistingDatasets: List<ResourceResponse>,
     @field:JsonProperty(required = true)
+    @Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.REJECTED_COMPANY_IDENTIFIERS_EXAMPLE,
+    )
     val rejectedCompanyIdentifiers: List<String>,
 )

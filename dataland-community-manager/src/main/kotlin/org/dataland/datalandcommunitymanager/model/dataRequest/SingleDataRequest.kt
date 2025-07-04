@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -16,12 +17,15 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  */
 data class SingleDataRequest(
     @field:JsonProperty(required = true)
-    @field:Schema(example = "enterValidIdentifier")
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_IDENTIFIER_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_IDENTIFIER_EXAMPLE,
+    )
     val companyIdentifier: String,
     @field:JsonProperty(required = true)
     @field:Schema(
         implementation = DataTypeEnum::class,
-        example = "p2p",
+        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
     )
     val dataType: DataTypeEnum,
     @field:JsonProperty(required = true)
@@ -29,7 +33,8 @@ data class SingleDataRequest(
         arraySchema =
             Schema(
                 type = "string",
-                example = "[\"2022\", \"2023\"]",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_EXAMPLE,
             ),
     )
     val reportingPeriods: Set<String>,
@@ -37,11 +42,20 @@ data class SingleDataRequest(
         arraySchema =
             Schema(
                 type = "string",
-                example = "[\"testuser@example.com\"]",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_EXAMPLE,
             ),
     )
     val contacts: Set<String>?,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.POST_MESSAGE_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.POST_MESSAGE_EXAMPLE,
+    )
     val message: String?,
     @field:JsonProperty(required = false)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_EXAMPLE,
+    )
     val notifyMeImmediately: Boolean = false,
 )
