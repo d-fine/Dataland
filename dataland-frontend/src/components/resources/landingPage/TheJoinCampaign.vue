@@ -102,7 +102,7 @@ const getInTouchSection = findSection('Get in touch');
     width: fit-content;
     &:hover {
       background-color: var(--default-neutral-white);
-      color: var(--p-primary-contrast-color);
+      color: var(--p-highlight-color);
     }
   }
 
@@ -136,7 +136,7 @@ const getInTouchSection = findSection('Get in touch');
     letter-spacing: 0.25px;
     &--icon,
     &--icon * {
-      color: var(--p-primary-contrast-color);
+      color: var(--p-highlight-color);
       font-size: 32px;
       font-style: normal;
       font-weight: 600;

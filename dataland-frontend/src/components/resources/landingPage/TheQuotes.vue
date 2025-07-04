@@ -383,7 +383,7 @@ const register = (): void => {
     cursor: pointer;
     &:hover {
       background-color: var(--default-neutral-white);
-      color: var(--p-primary-contrast-color);
+      color: var(--p-highlight-color);
     }
   }
 }

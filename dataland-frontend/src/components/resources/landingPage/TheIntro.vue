@@ -113,7 +113,7 @@ const handleInputBlur = (): void => {
   }
 
   &__text {
-    color: var(--p-primary-contrast-color);
+    color: var(--p-highlight-color);
     text-align: center;
     font-size: 100px;
     font-style: normal;
@@ -231,7 +231,7 @@ const handleInputBlur = (): void => {
       display: block;
       background-color: transparent;
       margin: 3em auto;
-      color: var(--p-primary-contrast-color);
+      color: var(--p-highlight-color);
       border-color: var(--p-primary-contrast-color);
 
       &:hover {

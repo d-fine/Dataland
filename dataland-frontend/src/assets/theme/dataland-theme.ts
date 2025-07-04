@@ -93,7 +93,7 @@ export const DatalandPreset = definePreset(Aura, {
         },
         primary: {
           color: '{orange.400}',
-          contrastColor: '{neutral.900}',
+          contrastColor: '{neutral.50}',
           hoverColor: '{orange.500}',
           activeColor: '{orange.500}',
         },
@@ -107,23 +107,18 @@ export const DatalandPreset = definePreset(Aura, {
         highlight: {
           background: '{slate.900}',
           focusBackground: '{slate.900}',
-          color: '{surface.50}',
-          focusColor: '{surface.50}',
+          color: '{surface.900}',
+          focusColor: '{surface.900}',
         },
         formField: {
           filledHoverBackground: '{surface.100}',
           filledFocusBackground: '{surface.100}',
           borderColor: '{surface.100}',
-          hoverBorderColor: '{surface.0}',
-          focusBorderColor: '{blue.300}',
+          hoverBorderColor: '{surface.300}',
+          focusBorderColor: '{primary.color}',
           invalidBorderColor: '{surface.0}',
           borderRadius: '{border.radius.none}',
           shadow: 'none',
-          focusRing: {
-            width: '3px',
-            style: 'solid',
-            color: '{blue.200}',
-          },
         },
         navigation: {
           item: {
@@ -165,12 +160,6 @@ export const DatalandPreset = definePreset(Aura, {
       },
       colorScheme: {
         light: {
-          root: {
-            primary: {
-              color: '{surface.50}',
-              hoverColor: '{surface.50}',
-            },
-          },
           text: {
             secondary: {
               color: '{surface.800}',

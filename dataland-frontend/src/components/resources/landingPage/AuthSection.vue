@@ -108,7 +108,7 @@ const register = (): void => {
     &-login {
       position: relative;
       text-decoration: none;
-      color: var(--p-primary-contrast-color);
+      color: var(--p-highlight-color);
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
@@ -180,7 +180,7 @@ const register = (): void => {
   cursor: pointer;
 
   &:hover {
-    color: var(--p-primary-contrast-color);
+    color: var(--p-highlight-color);
     background-color: var(--default-neutral-white);
   }
 }

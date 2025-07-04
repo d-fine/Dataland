@@ -64,7 +64,7 @@ const isActiveAbout = computed(() => route.path === '/about');
   }
 
   &__link {
-    color: var(--p-primary-contrast-color);
+    color: var(--p-highlight-color);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
