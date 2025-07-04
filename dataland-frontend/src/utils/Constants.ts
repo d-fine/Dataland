@@ -20,6 +20,19 @@ export const ALL_FRAMEWORKS_IN_DISPLAYED_ORDER = [...MAIN_FRAMEWORKS_IN_ENUM_CLA
 ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(
   ...ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => !MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.includes(framework))
 );
+export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const LATEST_PERIOD: number = 2024;
 
 // - Keycloak and session management related settings
 

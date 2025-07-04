@@ -40,7 +40,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved portfolios.",
+            "description": "Successfully retrieved portfolio.",
             "content": {
               "application/json": {
                 "schema": {
@@ -109,6 +109,16 @@
         "responses": {
           "200": {
             "description": "Successfully replaced existing portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {
@@ -279,6 +289,96 @@
               }
             }
           },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/{portfolioId}/monitoring": {
+      "patch": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Patches the monitoring status of a portfolio.",
+        "description": "Updates the monitoring-related fields of an existing portfolio.",
+        "operationId": "patchMonitoring",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortfolioMonitoringPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only premium users can activate portfolio monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -369,6 +469,68 @@
         ]
       }
     },
+    "/portfolios/users/{userId}": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get portfolios by userId.",
+        "operationId": "getPortfoliosForUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved portfolios.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/names": {
       "get": {
         "tags": [
@@ -386,6 +548,80 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BasePortfolioName"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/all": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get a segment of all portfolios for the given chunk size and index.",
+        "operationId": "getAllPortfolios",
+        "parameters": [
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the requested chunk of portfolios.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolio"
                   }
                 }
               }
@@ -599,6 +835,8 @@
       "PortfolioUpload": {
         "required": [
           "companyIds",
+          "isMonitored",
+          "monitoredFrameworks",
           "portfolioName"
         ],
         "type": "object",
@@ -612,6 +850,19 @@
             "items": {
               "type": "string"
             }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -619,7 +870,9 @@
         "required": [
           "companyIds",
           "creationTimestamp",
+          "isMonitored",
           "lastUpdateTimestamp",
+          "monitoredFrameworks",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -644,6 +897,41 @@
             "format": "int64"
           },
           "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PortfolioMonitoringPatch": {
+        "required": [
+          "isMonitored",
+          "monitoredFrameworks"
+        ],
+        "type": "object",
+        "properties": {
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -674,6 +962,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EnrichedPortfolioEntry"
+            }
+          },
+          "isMonitored": {
+            "type": "boolean"
+          },
+          "startingMonitoringPeriod": {
+            "type": "string"
+          },
+          "monitoredFrameworks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

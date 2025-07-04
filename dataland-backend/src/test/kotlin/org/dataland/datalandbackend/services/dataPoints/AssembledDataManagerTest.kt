@@ -69,7 +69,7 @@ class AssembledDataManagerTest {
             companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities(defaultObjectMapper)
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val dataPointUtils =
         DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
 
@@ -89,7 +89,7 @@ class AssembledDataManagerTest {
     private val reportingPeriod = "2022"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
-    private val dataPointType = "extendedEnumFiscalYearDeviation"
+    private val dataPointType = "extendedEnumFiscalYearDeviationDummy"
     private val dataPointId = "test-data-point-1"
     private val frameworkSpecification =
         TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
@@ -112,7 +112,7 @@ class AssembledDataManagerTest {
     @Test
     fun `check that processing a dataset works as expected`() {
         val expectedDataPointTypes =
-            listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
+            listOf("extendedEnumFiscalYearDeviationDummy", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         whenever(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())

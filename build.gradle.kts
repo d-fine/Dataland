@@ -95,7 +95,10 @@ sonar {
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
-                "dataland-reduced-local-stack/**",
+                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
+                "dataland-reduced-local-stack/**," +
+                "dataland-backend/src/main/kotlin/db/migration/utils/**," +
+                "dataland-internal-storage/src/main/kotlin/db/migration/utils/**",
         )
         property(
             "sonar.sources",
@@ -130,6 +133,7 @@ sonar {
                 "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
+                "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
@@ -145,7 +149,10 @@ sonar {
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
                 "custom/NuclearAndGasNonEligibleComponent.kt," +
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
-                "custom/NuclearAndGasAlignedDenominatorComponent.kt",
+                "custom/NuclearAndGasAlignedDenominatorComponent.kt," +
+
+                // qa service
+                "dataland-qa-service/src/test/kotlin/db/migration/V10__UnifyNfrdMandatoryFieldTest.kt",
         )
         property(
             "sonar.exclusions",

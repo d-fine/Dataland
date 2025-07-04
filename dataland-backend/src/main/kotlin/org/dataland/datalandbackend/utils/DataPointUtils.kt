@@ -88,6 +88,10 @@ class DataPointUtils
 
         /**
          * Retrieves all reporting periods with at least on active data point for a specific company and framework
+         *
+         * Generic data points (company "meta" information like "Number of Employees") are excluded to return only
+         * reporting periods with actual data.
+         *
          * @param companyId the ID of the company
          * @param framework the name of the framework
          * @return a set of all reporting periods with active data points or an empty set if none exist
@@ -95,15 +99,20 @@ class DataPointUtils
         fun getAllReportingPeriodsWithActiveDataPoints(
             companyId: String,
             framework: String,
-        ): Set<String> =
+        ): Set<String> {
             if (getFrameworkSpecificationOrNull(framework) == null) {
-                emptySet()
-            } else {
-                metaDataManager.getReportingPeriodsWithActiveDataPoints(
-                    dataPointTypes = getRelevantDataPointTypes(framework),
-                    companyId = companyId,
-                )
+                return emptySet()
             }
+
+            val relevantDataPoints = getRelevantDataPointTypes(framework).subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
+
+            return metaDataManager
+                .getActiveDataPointMetaInformation(
+                    dataPointTypes = relevantDataPoints,
+                    companyId = companyId,
+                ).map { it.reportingPeriod }
+                .toSet()
+        }
 
         /**
          * Retrieves all active data dimensions in regard to data points given the filter parameters
@@ -118,21 +127,47 @@ class DataPointUtils
             return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
         }
 
+        /**
+         * Retrieve all active framework-based data dimensions using the given DataDimensionFilter. If no framework is specified,
+         * all frameworks are taken into account.
+         * @param dataDimensionFilter the filter to use when searching for active data dimensions
+         * @return a list of active framework data dimensions
+         */
         private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
             val frameworks =
-                dataDimensionFilter.dataTypesOrDataPointTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+                if (dataDimensionFilter.dataTypes.isNullOrEmpty()) {
+                    allAssembledFrameworks
+                } else {
+                    dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
+                }
+
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
                     metaDataManager.getActiveDataPointMetaInformationList(
                         DataDimensionFilter(
                             companyIds = dataDimensionFilter.companyIds,
-                            dataTypesOrDataPointTypes = getRelevantDataPointTypes(framework).toList(),
+                            dataTypes = getRelevantDataPointTypes(framework).toList(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
-                allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
+
+                activeDataPointMetaInformation
+                    .groupBy {
+                        Pair(it.companyId, it.reportingPeriod)
+                    }.values
+                    .forEach { metaInformationEntities ->
+                        if (DataAvailabilityIgnoredFieldsUtils
+                                .containsNonIgnoredDataPoints(metaInformationEntities.map { it.dataPointType })
+                        ) {
+                            allRelevantDimensions.addAll(
+                                metaInformationEntities.map {
+                                    it.toBasicDataDimensions(framework)
+                                },
+                            )
+                        }
+                    }
             }
             return allRelevantDimensions.distinct()
         }
@@ -156,7 +191,7 @@ class DataPointUtils
          * Get basic data point dimensions (companyId, dataPointType, reportingPeriod) for given
          * data dimensions (companyId, framework, reportingPeriod).
          * @param dataDimensionsSet a set of data dimensions
-         * @return
+         * @return a map associating each passed data dimension with a list of corresponding data point dimensions
          */
         fun getBasicDataPointDimensionsForDataDimensions(
             dataDimensionsSet: Set<BasicDataDimensions>,

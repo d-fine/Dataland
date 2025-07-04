@@ -40,6 +40,7 @@ class DataPointValidatorTest {
     private val invalidCurrencyDataPoint = "./dataPointValidation/invalidCurrencyDataPoint.json"
     private val currencyDataPointWithUnknownProperty = "./dataPointValidation/currencyDataPointWithUnknownProperty.json"
     private val currencyDataPointWithBrokenEnum = "./dataPointValidation/currencyDataPointWithBrokenEnum.json"
+    private val activityDataPoint = "./dataPointValidation/activityDataPoint.json"
 
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
 
@@ -143,6 +144,42 @@ class DataPointValidatorTest {
                 correlationId,
                 listOf("between:0,100", "invalid constraint", "max:200"),
             )
+        }
+    }
+
+    @Test
+    fun `verify that data points with array are not seen as empty`() {
+        val activityValidationClass =
+            "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util." +
+                "List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>>"
+        val dataPointId = "someAlignedActivityDataPoint"
+        val dataPointBaseTypeId = "extendedEuTaxonomyAlignedActivitiesComponent"
+
+        doReturn(
+            DataPointTypeSpecification(
+                dataPointBaseType = IdWithRef(id = dataPointBaseTypeId, ref = "dummy"),
+                dataPointType = IdWithRef(id = dataPointId, ref = "dummy"),
+                name = "dummy",
+                businessDefinition = "dummy",
+                usedBy = emptyList(),
+            ),
+        ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
+
+        doReturn(
+            mock<DataPointBaseTypeSpecification> {
+                on { validatedBy } doReturn activityValidationClass
+            },
+        ).whenever(specificationClient).getDataPointBaseType(dataPointBaseTypeId)
+
+        val dataPoint =
+            JsonSpecificationLeaf(
+                dataPointId = dataPointId,
+                jsonPath = "dummy",
+                content = getJsonNode(activityDataPoint),
+            )
+
+        assertDoesNotThrow {
+            dataPointValidator.validateDataset(mapOf(dataPointId to dataPoint), mapOf(), correlationId)
         }
     }
 }

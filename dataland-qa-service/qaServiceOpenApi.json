@@ -2059,7 +2059,7 @@
             }
           },
           {
-            "name": "dataPointType",
+            "name": "dataType",
             "in": "query",
             "required": false,
             "schema": {
@@ -2083,9 +2083,9 @@
             }
           },
           {
-            "name": "onlyLatest",
+            "name": "showOnlyActive",
             "in": "query",
-            "description": "If set, only show the most recent QA review information for each data point (independent of whether the data point is active or not).",
+            "description": "If set, only show the active QA review information for each data point.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2857,13 +2857,13 @@
           "scope4GhgEmissionsInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "enterpriseValue": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          "enterpriseValueInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          "totalRevenueInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "carbonFootprintInTonnesPerMillionEURRevenue": {
+          "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "ghgIntensityInTonnesPerMillionEURRevenue": {
