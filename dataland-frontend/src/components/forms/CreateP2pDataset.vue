@@ -103,7 +103,6 @@ import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DriveMixType } from '@/api-models/DriveMixType';
@@ -158,7 +157,6 @@ export default defineComponent({
     PercentageFormField,
     Card,
     PrimeButton,
-    Calendar,
     SuccessMessage,
     FailMessage,
     SubmitButton,
@@ -364,3 +362,74 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+
+  .title {
+    margin: 0.25rem 0;
+  }
+
+  p {
+    margin: 0.25rem;
+  }
+
+  .formFields {
+    background: var(--upload-form-bg);
+    padding: var(--spacing-lg);
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+</style>

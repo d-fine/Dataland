@@ -29,7 +29,7 @@
                   :is-required="true"
                 />
                 <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <Calendar
+                  <DatePicker
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
                     inputId="icon"
@@ -134,7 +134,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { additionalCompanyInformationDataModel } from '@/frameworks/additional-company-information/UploadConfig';
@@ -184,7 +184,7 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
-    Calendar,
+    DatePicker,
     DateFormField,
     UploadReports,
     DateExtendedDataPointFormField,
@@ -384,3 +384,75 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+  .title {
+    margin: 0.25rem 0;
+  }
+  p {
+    margin: 0.25rem;
+  }
+  .formFields {
+    background: var(--upload-form-bg);
+    padding: var(--spacing-lg);
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    .form-field:not(:last-child) {
+      margin: 0 0 1rem 0;
+      padding: 0 0 1rem 0;
+      border-bottom: 1px solid var(--input-separator);
+    }
+  }
+}
+</style>

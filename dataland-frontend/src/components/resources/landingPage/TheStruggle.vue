@@ -26,8 +26,6 @@ const struggleSection = computed(() => {
 });
 </script>
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .struggle {
   display: flex;
   flex-direction: column;
@@ -43,7 +41,8 @@ const struggleSection = computed(() => {
     width: 100%;
     padding: 0 32px;
   }
-  h2 {
+  h2,
+  h2 * {
     grid-column: 1 / -1;
     font-size: 100px;
     font-style: normal;
@@ -57,7 +56,7 @@ const struggleSection = computed(() => {
       font-size 0.4s ease,
       line-height 0.4s ease;
     span {
-      color: var(--primary-orange);
+      color: var(--p-primary-color);
     }
   }
 
@@ -103,7 +102,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: var(--breakpoint-medium)) {
   .struggle {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -131,7 +130,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: var(--breakpoint-small)) {
   .struggle {
     padding: 80px 0;
     &__wrapper {

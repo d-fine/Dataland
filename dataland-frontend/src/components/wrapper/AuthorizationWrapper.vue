@@ -16,7 +16,7 @@
       !isUserCompanyOwnerOrUploader &&
       (!hasUserRequiredKeycloakRole || isFrameworkPrivate)
     "
-    class="paper-section flex"
+    class="flex"
   >
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
@@ -94,3 +94,12 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+</style>

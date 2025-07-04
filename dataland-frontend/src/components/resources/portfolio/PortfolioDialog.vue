@@ -289,4 +289,8 @@ i.pi-trash {
   margin-right: 0.25em;
   cursor: pointer;
 }
+
+.gray-text {
+  color: var(--gray);
+}
 </style>

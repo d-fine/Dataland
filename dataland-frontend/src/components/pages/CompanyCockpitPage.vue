@@ -1,33 +1,31 @@
 <template>
   <TheHeader v-if="!useMobileView" />
-  <TheContent class="paper-section flex">
+  <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="grid-container">
-      <div class="paper-section">
-        <div class="card">
-          <div class="card__title">Latest Documents</div>
-          <div class="card__separator" />
-          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
-            <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
-            <div v-if="getDocumentData(category).length === 0">-</div>
-            <div v-else>
-              <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                <DocumentDownloadLink
-                  :document-download-info="{
-                    downloadName: documentNameOrId(document),
-                    fileReference: document.documentId,
-                  }"
-                  :label="documentNameOrId(document)"
-                  :suffix="documentPublicationDateOrEmpty(document)"
-                  show-icon
-                />
-              </div>
+      <div class="card">
+        <div class="card__title">Latest Documents</div>
+        <div class="card__separator" />
+        <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
+          <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
+          <div v-if="getDocumentData(category).length === 0">-</div>
+          <div v-else>
+            <div v-for="document in getDocumentData(category)" :key="document.documentId">
+              <DocumentDownloadLink
+                :document-download-info="{
+                  downloadName: documentNameOrId(document),
+                  fileReference: document.documentId,
+                }"
+                :label="documentNameOrId(document)"
+                :suffix="documentPublicationDateOrEmpty(document)"
+                show-icon
+              />
             </div>
           </div>
-          <a :href="`/companies/${companyId}/documents`" class="tertiary-button">
-            VIEW ALL DOCUMENTS <span class="material-icons">arrow_forward_ios</span>
-          </a>
         </div>
+        <a :href="`/companies/${companyId}/documents`" class="tertiary-button">
+          VIEW ALL DOCUMENTS <span class="material-icons">arrow_forward_ios</span>
+        </a>
       </div>
       <div>
         <div class="card-grid" :data-test="'summaryPanels'">
@@ -228,7 +226,7 @@ export default defineComponent({
     /**
      * Checks if the user is allowed to upload datasets for the framework
      * @param framework to check for
-     * @returns a boolean as result of this check
+     * @returns a boolean as the result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
       return this.isUserCompanyOwnerOrUploader || (isFrameworkPublic(framework) && this.isUserKeycloakUploader);
@@ -263,15 +261,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 .card-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     padding: 24px 17px;
   }
 }
@@ -281,7 +277,7 @@ export default defineComponent({
   grid-template-columns: 3fr 6fr 30px;
   padding: 40px;
   gap: 40px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
     padding: 24px 3%;
@@ -295,10 +291,10 @@ export default defineComponent({
   gap: 40px;
   flex-wrap: wrap;
   justify-content: space-between;
-  @media only screen and (max-width: newVariables.$medium) {
+  @media only screen and (max-width: var(--breakpoint-medium)) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
   }
@@ -315,7 +311,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -351,5 +347,65 @@ export default defineComponent({
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.tertiary-button {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:enabled:hover {
+    color: white;
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  }
+
+  &:enabled:active {
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+
+.tertiary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--main-color);
+  background: none;
+  border: none;
 }
 </style>

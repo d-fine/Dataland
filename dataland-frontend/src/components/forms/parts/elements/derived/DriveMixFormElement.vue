@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
-      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isItActive" />
+      <ToggleSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isItActive" />
       <h5 data-test="dataPointToggleTitle" class="m-2">
         {{ label }}
       </h5>
@@ -38,7 +38,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import { FormKit } from '@formkit/vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
@@ -56,7 +56,7 @@ export default defineComponent({
   components: {
     UploadFormHeader,
     PercentageFormField,
-    InputSwitch,
+    ToggleSwitch,
     FormKit,
   },
   props: BaseFormFieldProps,
@@ -69,3 +69,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

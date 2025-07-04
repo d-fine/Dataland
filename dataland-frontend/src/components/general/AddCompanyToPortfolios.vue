@@ -138,9 +138,6 @@ function closeDialog(): void {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/colors';
-@use '@/assets/scss/variables';
-
 .container {
   width: 28em;
   border-radius: 0.25rem;
@@ -154,19 +151,14 @@ function closeDialog(): void {
   margin: 0 15%;
 }
 
-:deep(.p-badge) {
-  background: #fff;
-  color: #5a4f36;
-}
-
 :deep(.p-multiselect) {
   background: none;
   box-shadow: none;
-  margin: variables.$spacing-sm 28%;
+  margin: var(--spacing-sm) 28%;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  color: variables.$brown-light;
-  border: 2px solid variables.$brown-light;
+  color: var(--brown-light);
+  border: 2px solid var(--brown-light);
 }
 
 :deep(.p-multiselect-trigger) {
@@ -192,5 +184,62 @@ function closeDialog(): void {
     background: #5a4f36;
     color: white;
   }
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.primary-button {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:enabled:hover {
+    color: white;
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  }
+
+  &:enabled:active {
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+
+.primary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-bg);
+  margin: 0;
 }
 </style>

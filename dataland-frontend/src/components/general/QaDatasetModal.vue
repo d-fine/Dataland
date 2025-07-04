@@ -93,23 +93,16 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-pre#dataset-container {
-  background: white;
-  padding: 20px;
-  border: 1px solid black;
+<style scoped>
+.w-30 {
+  width: 30vw;
 }
 
-#accept-button {
-  color: var(--green-700);
-  background: var(--green-100);
-  border: 1px solid var(--green-700);
+.flex-direction-column {
+  flex-direction: column;
 }
 
-#reject-button {
-  color: var(--red-700);
-  background: var(--red-100);
-  border: 1px solid var(--red-700);
+.d-letters {
+  letter-spacing: 0.05em;
 }
 </style>

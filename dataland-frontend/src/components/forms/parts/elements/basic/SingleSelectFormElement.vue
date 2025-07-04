@@ -41,7 +41,7 @@ import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/Fo
 export type OptionType = string[] | DropdownOption[] | Record<string, string>;
 
 /**
- * Converts from a liberally choosen amount of formats to specify options
+ * Converts from a liberally chosen number of formats to specify options
  * to a unified DropDownOption interface for easier processing
  * @param options the input option in one of the desired formats
  * @returns the options converted to the unified format
@@ -176,11 +176,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/variables';
-
 .bottom-line {
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-color: variables.$brown-lighter;
+  border-color: var(--brown-lighter);
 }
 </style>

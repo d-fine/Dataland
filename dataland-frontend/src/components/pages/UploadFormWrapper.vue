@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section">
+    <TheContent>
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID" :data-type="frameworkType">
         <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
@@ -71,3 +71,8 @@ const frameworkToUploadComponent = computed(() => {
   }
 });
 </script>
+<style scoped>
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
+</style>

@@ -95,8 +95,8 @@ import {
   type MLDTConfig,
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronLeftIcon from 'primevue/icons/chevronleft';
+import ChevronDownIcon from '@primevue/icons/chevrondown';
+import ChevronLeftIcon from '@primevue/icons/chevronleft';
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
 import { computed, onMounted, ref } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
@@ -159,3 +159,9 @@ onMounted(() => {
   expandSectionsOnPageLoad();
 });
 </script>
+
+<style scoped>
+.info-icon {
+  cursor: help;
+}
+</style>

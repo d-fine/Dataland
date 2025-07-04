@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
 
-    <TheContent class="paper-section flex">
+    <TheContent class="flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
         <h1>{{ pageTitle }}</h1>
@@ -55,7 +55,7 @@
               <template #text-info>
                 <div class="col-12">Make sure to copy your API Key now. You will not be able to access it again.</div>
                 <div class="my-2">
-                  <div class="p-input-icon-right border-round-sm paper-section pl-1 col-10 fs-lg">
+                  <div class="p-input-icon-right border-round-sm pl-1 col-10 fs-lg">
                     <PrimeTextarea
                       ref="newKeyHolderRef"
                       @focus="($event.target as HTMLTextAreaElement).select()"
@@ -347,6 +347,59 @@ export default defineComponent({
         text-decoration: underline;
       }
     }
+  }
+}
+
+.p-component {
+  &:disabled {
+    opacity: 0.8;
+  }
+}
+
+.primary-color {
+  color: var(--main-color);
+}
+
+.p-component-overlay-enter {
+  animation: p-component-overlay-enter-animation 150ms forwards;
+}
+
+.p-component-overlay-leave {
+  animation: p-component-overlay-leave-animation 150ms forwards;
+}
+
+.p-inputtext {
+  font-family: inherit;
+  color: var(--input-text-color);
+  background: var(--input-text-bg);
+  padding: var(--spacing-sm);
+  border: 0;
+  margin: 0;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  appearance: none;
+  &:enabled:hover {
+    border-color: var(--input-text-border-hover);
+  }
+  &:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #bfd1f6;
+    border-color: var(--input-text-border-hover);
+  }
+  &.p-invalid.p-component {
+    border-color: #ced4da #ced4da #ced4da #e4677e;
+  }
+  &.p-inputtext-sm {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
+  }
+  &.p-inputtext-lg {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-sm);
   }
 }
 </style>

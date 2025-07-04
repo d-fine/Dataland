@@ -4,21 +4,23 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
-import DynamicDialog from 'primevue/dynamicdialog';
-import Keycloak from 'keycloak-js';
+import SessionDialog from '@/components/general/SessionDialog.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { useSharedSessionStateStore } from '@/stores/Stores';
+import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import {
   SessionDialogMode,
   startSessionSetIntervalFunctionAndReturnItsId,
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from '@/utils/SessionTimeoutUtils';
-import SessionDialog from '@/components/general/SessionDialog.vue';
-import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
-import { useSharedSessionStateStore } from '@/stores/Stores';
-import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignment } from '@clients/communitymanager';
-import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
+import type Keycloak from 'keycloak-js';
+import DynamicDialog from 'primevue/dynamicdialog';
+import { computed, defineComponent, ref } from 'vue';
+//@ts-ignore
+// eslint-disable-next-line no-restricted-imports
+import { minimalKeycloakMock } from '../tests/component/testUtils/Keycloak';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -113,7 +115,12 @@ export default defineComponent({
      * @returns a promise which resolves to the Keycloak adaptor object
      */
     initKeycloak(): Promise<Keycloak> {
-      const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      //const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      const keycloak = minimalKeycloakMock({
+        userId: 'dummyUser',
+        roles: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_REVIEWER', 'ROLE_UPLOADER'],
+        authenticated: true,
+      });
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({

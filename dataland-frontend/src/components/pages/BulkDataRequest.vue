@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section no-ui-message">
+    <TheContent class="no-ui-message">
       <div class="col-12 mb-2 bg-white">
         <div class="text-left company-details px-4">
           <h1 data-test="headerLabel">Bulk Data Request</h1>
@@ -122,8 +122,7 @@
 
                     <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
                       Receive emails directly or via summary
-                      <InputSwitch
-                        class="p-inputswitch p-inputswitch-slider"
+                      <ToggleSwitch
                         style="display: block; margin: 1rem 0"
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
@@ -195,7 +194,7 @@ import { FormKit } from '@formkit/vue';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -204,7 +203,7 @@ export default defineComponent({
     BulkDataRequestSummary,
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
-    InputSwitch,
+    ToggleSwitch,
     TheHeader,
     TheContent,
     TheFooter,
@@ -404,8 +403,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
-
 .uploadFormWrapper {
   min-height: calc(100vh - 200px);
 
@@ -451,10 +448,20 @@ export default defineComponent({
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .status-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.no-ui-message {
+  [data-message-type='ui'] {
+    display: none;
+  }
 }
 
 .status-container {
@@ -463,12 +470,98 @@ export default defineComponent({
 }
 
 .info-color-text {
-  color: variables.$orange-prime;
+  color: var(--p-primary-color);
 }
 
 .no-framework {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.paper-section {
+  background-color: var(--paper-white);
+}
+
+.radius-1 {
+  border-radius: var(--p-border-radius-xs);
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.red-text {
+  color: var(--red);
+}
+
+.green-text {
+  color: var(--green);
+}
+
+.primary-button {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:enabled:hover {
+    color: white;
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  }
+
+  &:enabled:active {
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+
+.primary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-bg);
+  margin: 0;
 }
 </style>

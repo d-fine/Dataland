@@ -8,14 +8,13 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div
-            class="p-badge badge-light-green outline rounded"
-            data-test="verifiedCompanyOwnerBadge"
+          <Tag
             v-if="hasCompanyOwner"
-          >
-            <span class="material-icons-outlined fs-sm">verified</span>
-            Verified Company Owner
-          </div>
+            data-test="verifiedCompanyOwnerBadge"
+            value="Verified Company Owner"
+            icon="pi pi-check-circle"
+            severity="success"
+          ></Tag>
         </div>
         <div class="right-elements">
           <PrimeButton
@@ -85,6 +84,7 @@ import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
 import PrimeButton from 'primevue/button';
+import Tag from 'primevue/tag';
 import router from '@/router';
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import type { BasePortfolio } from '@clients/userservice';
@@ -281,9 +281,6 @@ async function setCompanyOwnershipStatus(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-@use '@/assets/scss/variables';
-
 .inline-loading {
   width: 450px;
 }
@@ -305,7 +302,7 @@ async function setCompanyOwnershipStatus(): Promise<void> {
   }
 
   &__separator {
-    @media only screen and (max-width: newVariables.$small) {
+    @media only screen and (max-width: var(--breakpoint-small)) {
       width: 100%;
       border-bottom: #e0dfde 1px solid;
       margin-bottom: 0.5rem;
@@ -315,14 +312,14 @@ async function setCompanyOwnershipStatus(): Promise<void> {
   &__info-holder {
     display: flex;
     flex-direction: row;
-    @media only screen and (max-width: newVariables.$small) {
+    @media only screen and (max-width: var(--breakpoint-small)) {
       flex-direction: column;
     }
   }
 
   &__info {
     padding-top: 0.3rem;
-    @media only screen and (min-width: newVariables.$small) {
+    @media only screen and (min-width: var(--breakpoint-small)) {
       padding-right: 40px;
     }
   }
@@ -332,10 +329,87 @@ async function setCompanyOwnershipStatus(): Promise<void> {
 .right-elements {
   display: flex;
   align-items: center;
+
+  h1 {
+    margin-right: var(--spacing-sm);
+  }
 }
 
-.fs-sm {
-  font-size: variables.$fs-sm;
-  margin-right: 0.25rem;
+.primary-button {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:enabled:hover {
+    color: white;
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  }
+
+  &:enabled:active {
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+
+.primary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-bg);
+  margin: 0;
+}
+
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+
+  &.--underlined {
+    text-decoration: underline;
+  }
 }
 </style>
