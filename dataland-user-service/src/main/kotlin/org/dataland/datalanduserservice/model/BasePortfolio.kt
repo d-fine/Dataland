@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.UsersOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.utils.PortfolioIsMonitored
+import org.dataland.datalanduserservice.utils.PortfolioMonitoredFrameworks
+import org.dataland.datalanduserservice.utils.PortfolioStartingMonitoringPeriod
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.time.Instant
 import java.util.UUID
@@ -50,22 +53,13 @@ data class BasePortfolio(
     )
     override val companyIds: Set<String>,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_EXAMPLE,
-    )
+    @field:PortfolioIsMonitored
     override val isMonitored: Boolean,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE,
-    )
+    @field:PortfolioStartingMonitoringPeriod
     override val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE,
-    )
+    @field:PortfolioMonitoredFrameworks
     override val monitoredFrameworks: Set<String>,
 ) : Portfolio,
     PortfolioMonitoring {

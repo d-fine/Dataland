@@ -87,8 +87,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val CHUNK_SIZE_DESCRIPTION =
         "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
-            "of a single chunk. All chunks except possibly the last will have that size. The default " +
-            "value is 100."
+            "of a single chunk. All chunks except possibly the last will have that size."
 
     const val CHUNK_INDEX_DESCRIPTION =
         "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the " +
