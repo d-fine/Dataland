@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.companies
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
@@ -29,14 +30,22 @@ data class CompanyInformation(
         example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
-    @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
+            ),
     )
     val companyAlternativeNames: List<String>?,
-    @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
+            ),
     )
     val companyContactDetails: List<String>?,
     @field:Schema(

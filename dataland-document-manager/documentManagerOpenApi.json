@@ -869,9 +869,7 @@
               "a31733e0-42ed-47c9-9909-e1d2ecf08083"
             ],
             "items": {
-              "type": "string",
-              "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
-              "example": "[\"72c5cbdc-4244-49dd-8368-be4e64b399ae\",\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"]"
+              "type": "string"
             }
           },
           "publicationDate": {
@@ -924,9 +922,7 @@
               "a31733e0-42ed-47c9-9909-e1d2ecf08083"
             ],
             "items": {
-              "type": "string",
-              "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
-              "example": "[\"72c5cbdc-4244-49dd-8368-be4e64b399ae\",\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"]"
+              "type": "string"
             }
           },
           "uploaderId": {
@@ -975,9 +971,7 @@
               "a31733e0-42ed-47c9-9909-e1d2ecf08083"
             ],
             "items": {
-              "type": "string",
-              "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
-              "example": "[\"72c5cbdc-4244-49dd-8368-be4e64b399ae\",\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"]"
+              "type": "string"
             }
           },
           "publicationDate": {
@@ -1038,9 +1032,7 @@
               "a31733e0-42ed-47c9-9909-e1d2ecf08083"
             ],
             "items": {
-              "type": "string",
-              "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
-              "example": "[\"72c5cbdc-4244-49dd-8368-be4e64b399ae\",\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"]"
+              "type": "string"
             }
           },
           "uploaderId": {

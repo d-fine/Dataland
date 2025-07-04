@@ -32,10 +32,12 @@
           {
             "name": "portfolioId",
             "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           }
         ],
         "responses": {
@@ -90,10 +92,12 @@
           {
             "name": "portfolioId",
             "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           }
         ],
         "requestBody": {
@@ -168,10 +172,12 @@
           {
             "name": "portfolioId",
             "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           }
         ],
         "responses": {
@@ -342,10 +348,12 @@
           {
             "name": "portfolioId",
             "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           }
         ],
         "requestBody": {
@@ -421,10 +429,12 @@
           {
             "name": "portfolioId",
             "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           }
         ],
         "responses": {
@@ -480,10 +490,12 @@
           {
             "name": "userId",
             "in": "path",
+            "description": "The user ID of the user who created the portfolio.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
           }
         ],
         "responses": {
@@ -595,6 +607,7 @@
           {
             "name": "chunkSize",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size. The default value is 100.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -605,6 +618,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -842,26 +856,44 @@
         "type": "object",
         "properties": {
           "portfolioName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the portfolio on Dataland.",
+            "example": "My Portfolio"
           },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company IDs that are contained in the portfolio.",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "A list of company IDs that are contained in the portfolio.",
+              "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\"]"
             }
           },
           "isMonitored": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag that indicates whether the portfolio is monitored.",
+            "example": true
           },
           "startingMonitoringPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
+            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+            "example": [
+              "sfdr"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+              "example": "[\"sfdr\"]"
             }
           }
         }
@@ -880,40 +912,66 @@
         "type": "object",
         "properties": {
           "portfolioId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier to identify the portfolio.",
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           },
           "portfolioName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the portfolio on Dataland.",
+            "example": "My Portfolio"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The user ID of the user who created the portfolio.",
+            "example": "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the portfolio was created.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "lastUpdateTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the portfolio was last updated.",
+            "format": "int64",
+            "example": 1751291892373
           },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company IDs that are contained in the portfolio.",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "A list of company IDs that are contained in the portfolio.",
+              "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\"]"
             }
           },
           "isMonitored": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag that indicates whether the portfolio is monitored.",
+            "example": true
           },
           "startingMonitoringPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
+            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+            "example": [
+              "sfdr"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+              "example": "[\"sfdr\"]"
             }
           }
         }
@@ -926,16 +984,26 @@
         "type": "object",
         "properties": {
           "isMonitored": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag that indicates whether the portfolio is monitored.",
+            "example": true
           },
           "startingMonitoringPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
+            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+            "example": [
+              "sfdr"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+              "example": "[\"sfdr\"]"
             }
           }
         }
@@ -950,13 +1018,19 @@
         "type": "object",
         "properties": {
           "portfolioId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier to identify the portfolio.",
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           },
           "portfolioName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the portfolio on Dataland.",
+            "example": "My Portfolio"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The user ID of the user who created the portfolio.",
+            "example": "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
           },
           "entries": {
             "type": "array",
@@ -965,16 +1039,26 @@
             }
           },
           "isMonitored": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag that indicates whether the portfolio is monitored.",
+            "example": true
           },
           "startingMonitoringPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
+            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+            "example": [
+              "sfdr"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+              "example": "[\"sfdr\"]"
             }
           }
         }
@@ -991,30 +1075,52 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "description": "The industry or sector in which the company operates.",
+            "example": "web services"
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "example": "DE"
           },
           "companyCockpitRef": {
-            "type": "string"
+            "type": "string",
+            "description": "The link to the company cockpit page.",
+            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "frameworkHyphenatedNamesToDataRef": {
             "type": "object",
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "description": "The links to the data pages per framework.",
+              "example": "{\"sfdr\":\"https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/sfdr\"}"
+            },
+            "description": "The links to the data pages per framework.",
+            "example": {
+              "sfdr": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/sfdr"
             }
           },
           "availableReportingPeriods": {
             "type": "object",
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "description": "The reporting periods that are available per framework.",
+              "example": "{\"sfdr\":\"2024, 2023, 2022\"}"
+            },
+            "description": "The reporting periods that are available per framework.",
+            "example": {
+              "sfdr": "2024, 2023, 2022"
             }
           }
         }
@@ -1027,10 +1133,14 @@
         "type": "object",
         "properties": {
           "portfolioId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier to identify the portfolio.",
+            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
           },
           "portfolioName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the portfolio on Dataland.",
+            "example": "My Portfolio"
           }
         }
       },

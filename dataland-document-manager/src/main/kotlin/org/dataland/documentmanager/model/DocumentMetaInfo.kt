@@ -2,6 +2,7 @@ package org.dataland.documentmanager.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
@@ -30,9 +31,13 @@ data class DocumentMetaInfo(
     )
     override val documentCategory: DocumentCategory,
     @field:JsonProperty(required = true)
-    @field:Schema(
-        description = OpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = OpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+                example = OpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+            ),
     )
     override val companyIds: Set<String>,
     @field:JsonFormat(pattern = "yyyy-MM-dd")

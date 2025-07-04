@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -397,8 +398,10 @@ interface CompanyApi {
             example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
-        @PathVariable("companyId") companyId: String,
-        @Valid @RequestBody
+        @PathVariable("companyId")
+        companyId: String,
+        @Valid
+        @RequestBody
         companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
@@ -565,7 +568,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
-        @Parameter(
+        @Schema(
             name = "identifiers",
             description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
