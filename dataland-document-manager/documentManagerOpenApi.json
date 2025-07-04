@@ -985,7 +985,8 @@
             "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "example": "2023"
           }
-        }
+        },
+        "description": "A patch object for document metainformation."
       },
       "DocumentMetaInfoEntity": {
         "required": [
