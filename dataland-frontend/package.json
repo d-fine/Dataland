@@ -47,7 +47,7 @@
     "@tsconfig/node20": "20.1.6",
     "@types/markdown-it": "14.1.2",
     "@types/node": "24.0.7",
-    "@vitejs/plugin-vue": "5.2.4",
+    "@vitejs/plugin-vue": "6.0.0",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.5.1",
     "@vue/test-utils": "2.4.6",
@@ -71,7 +71,7 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.8.3",
-    "vite": "6.3.5",
+    "vite": "7.0.0",
     "vite-plugin-istanbul": "7.0.0",
     "vue-markdown-render": "2.2.1",
     "vue-tsc": "2.2.10"
