@@ -11,7 +11,12 @@
     :popup="true"
     :pt="{
       root: {
-        style: 'top: 4rem;',
+        style: 'top: 4rem; right: 0',
+      },
+      item: ({ context }) => {
+        return {
+          style: context.disabled ? 'display: none' : '',
+        };
       },
     }"
   />

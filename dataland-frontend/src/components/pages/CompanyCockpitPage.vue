@@ -360,7 +360,7 @@ export default defineComponent({
 .tertiary-button {
   white-space: nowrap;
   cursor: pointer;
-  font-weight: var(--button-fw);
+  font-weight: var(--font-weight-semibold);
   text-decoration: none;
   min-width: 10em;
   width: fit-content;

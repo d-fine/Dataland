@@ -421,7 +421,7 @@ export default defineComponent({
   }
   .formFields {
     background: var(--upload-form-bg);
-    padding: var(--upload-form-padding);
+    padding: var(--spacing-lg);
     margin-left: auto;
     margin-bottom: 1rem;
   }

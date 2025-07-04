@@ -1,7 +1,6 @@
 @import '@/assets/scss/theme.scss';
 @import '@/assets/scss/colors.scss';
 @import '@/assets/scss/units.scss';
-/*@import '@/assets/scss/mixins.scss';*/
 
 :root {
     --font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial;
@@ -24,8 +23,16 @@
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
 
+    /* MEDIA BREAKPOINTS */
+    --breakpoint-small: 768px;
+    --breakpoint-medium: 1024px;
+    --breakpoint-large: 1440px;
+    --breakpoint-extra-large: 1800px;
+
     /* Formkit Style Override */
-    --fk-font-family: var(--font-family)
+    --fk-font-family: var(--font-family);
+    --fk-color-primary: var(--input-checked-color);
+    --fk-border-radius: 0;
 }
 
 #app {

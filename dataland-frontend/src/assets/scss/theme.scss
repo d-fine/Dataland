@@ -1,3 +1,5 @@
+// THIS FILE IS TARGETED TO BE REMOVED WHEN ALL VARIABLES DEFINED BECOME UNNECESSARY
+
 :root {
   //PRIMARY COLOR PALETTE
   --brown: #292219; //stone 800
@@ -27,26 +29,10 @@
   --secondary-color: var(--p-blue-950);
   --secondary-color-text: var(--paper-white);
 
-  // Typography
-  --font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial;
-
   --content-padding: 1rem;
   --inline-spacing: 0.5rem;
   --border-radius: 0;
   --surface-card: #ffffff;
   --surface-hover: #e9ecef;
   --maskbg: rgba(0, 0, 0, 0.4);
-
-  // MEDIA BREAKPOINTS
-  --breakpoint-small: 768px;
-  --breakpoint-medium: 1024px;
-  --breakpoint-large: 1440px;
-  --breakpoint-extra-large: 1800px;
-}
-
-body {
-  //FormKit
-  --fk-font-family: var(--font-family);
-  --fk-color-primary: var(--input-checked-color);
-  --fk-border-radius: 0;
 }
