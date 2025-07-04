@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 
@@ -11,9 +12,13 @@ import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescri
  * @param creationTimestamp the creation time of the message object
  */
 data class StoredDataRequestMessageObject(
-    @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_EXAMPLE,
+            ),
     )
     var contacts: Set<String>,
     @field:Schema(

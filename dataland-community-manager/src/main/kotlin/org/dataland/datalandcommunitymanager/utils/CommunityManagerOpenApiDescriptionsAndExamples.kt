@@ -61,7 +61,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val USER_EMAIL_ADDRESS_EXAMPLE = "description"
 
     const val CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the user created the data request."
-    const val CREATION_TIMESTAMP_EXAMPLE = "description"
+    const val CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
 
     const val DATA_TYPE_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION
     const val DATA_TYPE_EXAMPLE = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE
@@ -75,8 +75,11 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val COMPANY_NAME_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION
     const val COMPANY_NAME_EXAMPLE = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE
 
+    const val COMPANY_IDENTIFIER_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION
+    const val COMPANY_IDENTIFIER_EXAMPLE = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE
+
     const val LAST_MODIFIED_DATE_DESCRIPTION = "The date when the data request has been modified the last time."
-    const val LAST_MODIFIED_DATE_EXAMPLE = "description"
+    const val LAST_MODIFIED_DATE_EXAMPLE = "1751291892373"
 
     const val MESSAGE_HISTORY_DESCRIPTION = "The list of all message objects which were created during the life cycle."
 
@@ -101,10 +104,10 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val MESSAGE_EXAMPLE = "description"
 
     const val MESSAGE_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the message object was created."
-    const val MESSAGE_CREATION_TIMESTAMP_EXAMPLE = "description"
+    const val MESSAGE_CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
 
     const val STATUS_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the status object was created."
-    const val STATUS_CREATION_TIMESTAMP_EXAMPLE = "description"
+    const val STATUS_CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
 
     const val REQUEST_STATUS_CHANGE_REASON_DESCRIPTION = "The reason for the status change."
     const val REQUEST_STATUS_CHANGE_REASON_EXAMPLE = "description"
@@ -121,4 +124,9 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val DATA_REQUEST_COUNT_DESCRIPTION =
         "The count of existing data requests for this framework, identifierType and identifierValue."
     const val DATA_REQUEST_COUNT_EXAMPLE = "0"
+
+    const val COMPANY_ROLE_DESCRIPTION = "The role within the company. Possible values: CompanyOwner, DataUploader, MemberAdmin, Member."
+
+    const val OWNERSHIP_COMMENT_DESCRIPTION = "An accompanying comment to the ownership request."
+    const val OWNERSHIP_COMMENT_EXAMPLE = "description"
 }
