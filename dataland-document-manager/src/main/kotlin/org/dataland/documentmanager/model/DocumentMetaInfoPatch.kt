@@ -17,6 +17,9 @@ import java.time.LocalDate
  * @param publicationDate
  * @param reportingPeriod only for informative purposes
  */
+@Schema(
+    description = "A patch object for document metainformation.",
+)
 data class DocumentMetaInfoPatch(
     @field:Schema(
         description = OpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
