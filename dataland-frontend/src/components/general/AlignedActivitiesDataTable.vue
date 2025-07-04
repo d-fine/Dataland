@@ -346,6 +346,7 @@ export default defineComponent({
 
 /**
  * @param activity targeted activity object
+ * @param kpiKey key of displayed kpi
  * @returns list of kpi data items
  */
 function createKpiGroupData(

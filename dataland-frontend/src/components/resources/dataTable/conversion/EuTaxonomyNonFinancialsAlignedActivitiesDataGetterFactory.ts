@@ -25,12 +25,6 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  const tableKeyMap = {
-    revenue: 'alignedActivities',
-    capex: 'capexAlignedActivities',
-    opex: 'opexAlignedActivities',
-  };
-
   const typeLabels = {
     revenue: 'Revenue',
     capex: 'CapEx',
@@ -49,7 +43,6 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     ...euTaxonomyNonFinancialsModalColumnHeaders,
     [tableKey]: adjustedHeaders,
   };
-
 
   return createModalDisplayObject({
     activities: alignedActivities,
