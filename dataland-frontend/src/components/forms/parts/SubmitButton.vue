@@ -51,3 +51,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.button-disabled {
+  opacity: 0.4;
+  background: var(--btn-primary-bg) !important;
+  border: 0 !important;
+}
+</style>

@@ -448,10 +448,20 @@ export default defineComponent({
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .status-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.no-ui-message {
+  [data-message-type='ui'] {
+    display: none;
+  }
 }
 
 .status-container {
@@ -553,11 +563,5 @@ export default defineComponent({
   background: var(--btn-primary-bg);
   border: 1px solid var(--btn-primary-bg);
   margin: 0;
-}
-
-.no-ui-message {
-  [data-message-type='ui'] {
-    display: none;
-  }
 }
 </style>

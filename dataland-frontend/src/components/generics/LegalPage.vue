@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheNewHeader.vue';
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import contentData from '@/assets/content.json';
 import type { Content } from '@/types/ContentTypes';
 import { defineComponent } from 'vue';
@@ -22,7 +22,7 @@ const content: Content = contentData;
 export default defineComponent({
   name: 'LegalPage',
   components: {
-    TheHeader,
+    TheHeader: LandingPageHeader,
     TheFooter,
   },
   data() {

@@ -647,6 +647,10 @@ export default defineComponent({
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .two-columns {
   columns: 2;
   -webkit-columns: 2;

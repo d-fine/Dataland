@@ -159,3 +159,9 @@ onMounted(() => {
   expandSectionsOnPageLoad();
 });
 </script>
+
+<style scoped>
+.info-icon {
+  cursor: help;
+}
+</style>

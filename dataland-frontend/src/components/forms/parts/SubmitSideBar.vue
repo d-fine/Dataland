@@ -41,10 +41,35 @@ export default defineComponent({
 }
 
 :deep(button.p-message-close) {
-  min-width: 8px;
+  min-width: 0.5rem;
 }
 
 :deep(.p-message-wrapper) {
   padding: 0.5rem;
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 </style>

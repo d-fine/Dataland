@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :landingPage="landingPage" />
+  <LandingPageHeader :landingPage="landingPage" />
   <main role="main">
     <TheAboutIntro :sections="aboutPage?.sections" />
     <TheAboutPrinciples :sections="aboutPage?.sections" />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import TheHeader from '@/components/generics/TheNewHeader.vue';
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheAboutIntro from '@/components/resources/aboutPage/TheAboutIntro.vue';
 import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';

@@ -810,4 +810,8 @@ a:after {
     padding: var(--spacing-sm);
   }
 }
+
+.info-icon {
+  cursor: help;
+}
 </style>

@@ -191,6 +191,10 @@ div.summary-section {
   color: var(--main-color);
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .bg-white {
   background-color: var(--default-neutral-white);
 }

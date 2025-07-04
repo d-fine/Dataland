@@ -271,6 +271,11 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.bordered-box {
+  border: 2px dotted var(--input-separator);
+  padding: 16px;
+}
+
 .next-to-each-other {
   display: flex;
   gap: 1rem;

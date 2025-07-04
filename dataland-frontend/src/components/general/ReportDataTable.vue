@@ -216,6 +216,10 @@ export default defineComponent({
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .p-component-overlay-enter {
   animation: p-component-overlay-enter-animation 150ms forwards;
 }

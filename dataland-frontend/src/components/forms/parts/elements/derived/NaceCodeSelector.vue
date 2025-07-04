@@ -38,7 +38,7 @@
               :binary="true"
               data-test="NaceCodeSelectorCheckbox"
             ></Checkbox>
-            <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
+            <div :style="{ visibility: !selectedChildrenCounter.get(slotProps.node.key) ? 'hidden' : 'visible' }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
             </div>
             <span>{{ slotProps.node.label }}</span>
@@ -210,5 +210,15 @@ export default defineComponent({
   height: 400px;
   min-width: 200px;
   overflow: auto;
+}
+
+.d-nace-focus {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.d-nace-chipview {
+  max-width: 66%;
 }
 </style>

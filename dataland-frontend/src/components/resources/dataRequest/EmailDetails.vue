@@ -492,6 +492,10 @@ export default defineComponent({
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .p-dropdown {
   background: var(--input-text-bg);
   .p-dropdown-trigger {

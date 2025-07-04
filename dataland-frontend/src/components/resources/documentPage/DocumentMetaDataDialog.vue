@@ -330,4 +330,8 @@ onMounted(() => {
     }
   }
 }
+
+.info-icon {
+  cursor: help;
+}
 </style>

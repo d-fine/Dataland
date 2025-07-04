@@ -244,6 +244,10 @@ const props = defineProps<{
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .border-bottom-table {
   border-bottom: 1px solid var(--table-border);
 }
