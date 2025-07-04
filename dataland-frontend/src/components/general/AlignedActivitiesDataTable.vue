@@ -159,13 +159,13 @@ export default defineComponent({
       {
         field: kpiField,
         header: this.humanizeHeaderName(kpiField),
-        group: '_revenue',
+        group: '_kpi',
         groupIndex: 0,
       },
       {
         field: kpiPercentField,
         header: this.humanizeHeaderName(kpiPercentField),
-        group: '_revenue',
+        group: '_kpi',
         groupIndex: 1,
       },
 
@@ -199,7 +199,7 @@ export default defineComponent({
 
     this.mainColumnData = this.listOfRowContents
       .map((col) => [
-        ...createRevenueGroupData(col, this.kpiKeyOfTable),
+        ...createKpiGroupData(col, this.kpiKeyOfTable),
         ...createActivityGroupData<number>(
           col.activityName as string,
           'substantialContributionCriteria',
@@ -241,7 +241,7 @@ export default defineComponent({
       .flat();
 
     this.mainColumnGroups = [
-      { key: '_revenue', label: '', colspan: this.findMaxColspanForGroup('_revenue') },
+      { key: '_kpi', label: '', colspan: this.findMaxColspanForGroup('_kpi') },
       {
         key: 'substantialContributionCriteria',
         label: this.humanizeHeaderName('substantialContributionCriteria'),
@@ -266,7 +266,7 @@ export default defineComponent({
     findMaxColspanForGroup(groupName: string): number {
       const environmentalObjectivesLength = euTaxonomyObjectives.length;
       const colspans: { [groupName: string]: number } = {
-        _revenue: 2,
+        _kpi: 2,
         substantialContributionCriteria: environmentalObjectivesLength,
         dnshCriteria: environmentalObjectivesLength,
         _minimumSafeguards: 1,
@@ -346,9 +346,9 @@ export default defineComponent({
 
 /**
  * @param activity targeted activity object
- * @returns list of revenue data items
+ * @returns list of kpi data items
  */
-function createRevenueGroupData(
+function createKpiGroupData(
   activity: EuTaxonomyAlignedActivity,
   kpiKey: 'revenue' | 'capex' | 'opex'
 ): ActivityFieldValueObject[] {
@@ -358,13 +358,13 @@ function createRevenueGroupData(
   return [
     {
       activity: activity.activityName,
-      group: '_revenue',
+      group: '_kpi',
       field: kpiKey,
       content: formatAmountWithCurrency(value),
     },
     {
       activity: activity.activityName,
-      group: '_revenue',
+      group: '_kpi',
       field: `${kpiKey}Percent`,
       content: formatPercentageNumberAsString(percent),
     },
