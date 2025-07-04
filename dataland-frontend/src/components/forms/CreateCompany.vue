@@ -408,4 +408,8 @@ export default defineComponent({
   display: flex;
   gap: 1rem;
 }
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
 </style>

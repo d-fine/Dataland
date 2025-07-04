@@ -173,4 +173,8 @@ export default defineComponent({
 .d-letters {
   letter-spacing: 0.05em;
 }
+
+.text-primary {
+  color: var(--main-color);
+}
 </style>

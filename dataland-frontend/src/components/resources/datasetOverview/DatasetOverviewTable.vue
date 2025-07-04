@@ -151,3 +151,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+</style>

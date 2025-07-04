@@ -136,4 +136,8 @@ export default defineComponent({
   transform: translate(-50%, -50%);
   background-color: white;
 }
+
+.text-primary {
+  color: var(--main-color);
+}
 </style>

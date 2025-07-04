@@ -152,4 +152,9 @@ export default defineComponent({
 .d-letters {
   letter-spacing: 0.05em;
 }
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
 </style>

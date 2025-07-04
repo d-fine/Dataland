@@ -95,3 +95,38 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.gray-text {
+  color: var(--gray);
+}
+
+.grid-2-form-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  > div:nth-child(even) {
+    border-left: 1px solid var(--table-border);
+    padding: 0 0 0 20px;
+  }
+
+  > div:nth-child(odd) {
+    border: 0 none;
+    padding: 0 20px 0 0;
+  }
+
+  grid-gap: 10px;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    > div:nth-child(even) {
+      border: 0 none;
+      padding: 0;
+    }
+    > div:nth-child(odd) {
+      padding: 0;
+    }
+    > div {
+      margin-bottom: 1rem;
+    }
+  }
+}
+</style>

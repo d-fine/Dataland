@@ -43,4 +43,8 @@ div.basic-form-section {
 .radius-1 {
   border-radius: var(--p-border-radius-xs);
 }
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
 </style>

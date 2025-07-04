@@ -232,4 +232,13 @@ export default defineComponent({
   color: #e67f3f;
   margin-left: 8px;
 }
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
 </style>

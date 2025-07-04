@@ -346,3 +346,13 @@ function areAllFiltersDeactivated(
   return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
 }
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+</style>

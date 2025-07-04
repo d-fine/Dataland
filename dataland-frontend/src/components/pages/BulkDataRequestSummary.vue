@@ -186,4 +186,12 @@ div.summary-section {
   justify-content: center;
   justify-items: center;
 }
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
 </style>

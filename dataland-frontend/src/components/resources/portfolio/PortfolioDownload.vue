@@ -350,4 +350,13 @@ async function downloadPortfolio(): Promise<void> {
   display: flex;
   align-items: center;
 }
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
 </style>

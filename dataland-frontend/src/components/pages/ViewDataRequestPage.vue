@@ -661,4 +661,17 @@ export default defineComponent({
 .d-letters {
   letter-spacing: 0.05em;
 }
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.green-text {
+  color: var(--green);
+}
 </style>

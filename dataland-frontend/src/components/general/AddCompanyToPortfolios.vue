@@ -151,11 +151,6 @@ function closeDialog(): void {
   margin: 0 15%;
 }
 
-:deep(.p-badge) {
-  background: #fff;
-  color: #5a4f36;
-}
-
 :deep(.p-multiselect) {
   background: none;
   box-shadow: none;
@@ -189,5 +184,9 @@ function closeDialog(): void {
     background: #5a4f36;
     color: white;
   }
+}
+
+.gray-text {
+  color: var(--gray);
 }
 </style>

@@ -261,3 +261,22 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.d-card {
+  background: var(--default-neutral-white);
+  padding: var(--spacing-md);
+  box-shadow: 0 0 3px 3px var(--shadow-color);
+}
+
+.top-border-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--input-separator);
+}
+
+.bottom-border-section-dots {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dotted var(--input-separator);
+}
+</style>

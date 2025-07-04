@@ -204,14 +204,12 @@ export default defineComponent({
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
-     * @param event ClickEvent
      */
     async resolveRequest() {
       await this.patchDataRequest(this.dataRequestId, RequestStatus.Resolved);
     },
     /**
      * Method to reopen the request or provide dropdown for that when the button is clicked
-     * @param event ClickEvent
      */
     async reOpenRequest() {
       await this.fetchMessageHistory();
@@ -335,5 +333,13 @@ export default defineComponent({
 
 .d-letters {
   letter-spacing: 0.05em;
+}
+
+.red-text {
+  color: var(--red);
+}
+
+.green-text {
+  color: var(--green);
 }
 </style>

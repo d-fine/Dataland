@@ -143,12 +143,7 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.p-input-icon-align {
-  text-align: left;
-}
-
-.search-icon {
-  z-index: 20;
-  color: #958d7c;
+.red-text {
+  color: var(--red);
 }
 </style>

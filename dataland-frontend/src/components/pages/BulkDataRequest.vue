@@ -476,4 +476,29 @@ export default defineComponent({
 .radius-1 {
   border-radius: var(--p-border-radius-xs);
 }
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.red-text {
+  color: var(--red);
+}
+
+.green-text {
+  color: var(--green);
+}
 </style>

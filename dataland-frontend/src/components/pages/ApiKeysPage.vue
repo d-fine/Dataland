@@ -355,4 +355,8 @@ export default defineComponent({
     opacity: 0.8;
   }
 }
+
+.primary-color {
+  color: var(--main-color);
+}
 </style>

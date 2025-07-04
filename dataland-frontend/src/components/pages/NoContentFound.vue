@@ -21,3 +21,8 @@ export default {
   components: { TheHeader, TheContent, TheFooter },
 };
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+</style>

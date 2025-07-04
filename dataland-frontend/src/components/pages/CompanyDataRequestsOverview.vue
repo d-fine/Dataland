@@ -443,4 +443,12 @@ export default defineComponent({
 .d-letters {
   letter-spacing: 0.05em;
 }
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
 </style>

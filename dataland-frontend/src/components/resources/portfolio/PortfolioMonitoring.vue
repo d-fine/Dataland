@@ -261,4 +261,13 @@ label {
   margin: 0;
   cursor: pointer;
 }
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
 </style>

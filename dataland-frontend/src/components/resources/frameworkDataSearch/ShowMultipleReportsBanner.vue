@@ -116,4 +116,12 @@ export default defineComponent({
   display: flex;
   gap: 1rem;
 }
+
+.link-in-list {
+  padding: 0 0.5rem;
+}
+
+.link-in-list:not(:last-child) {
+  border-right: 1px solid #858585;
+}
 </style>
