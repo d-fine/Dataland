@@ -106,47 +106,133 @@ class DataExportUtils
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
-            includeAliases: Boolean = true,
+            includeAliases: Boolean,
         ): PreparedExportData {
             val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-            val isAssembledDataset = (frameworkTemplate != null)
+            val isAssembledDatasetParam = (frameworkTemplate != null)
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
-            val aliasExportMap =
-                if (isAssembledDataset) {
-                    extractAliasExportFields(frameworkTemplate)
+            val orderedHeaderFields =
+                if (isAssembledDatasetParam) {
+                    JsonUtils.getLeafNodeFieldNames(
+                        frameworkTemplate ?: portfolioExportRows.first(),
+                        keepEmptyFields = true,
+                        dropLastFieldName = true,
+                    )
                 } else {
-                    emptyMap()
+                    LinkedHashSet(
+                        nonEmptyHeaderFields.sortedWith(
+                            compareBy<String> {
+                                @Suppress("MagicNumber")
+                                when {
+                                    it.startsWith("companyName") -> -3
+                                    it.startsWith("companyLei") -> -2
+                                    it.startsWith("reportingPeriod") -> -1
+                                    else -> 0
+                                }
+                            }.then(naturalOrder()),
+                        ),
+                    )
                 }
 
-            val readableHeaders = mutableMapOf<String, String>()
-
-            nonEmptyHeaderFields.forEach { fieldName ->
-                val strippedField = fieldName.removePrefix("data.").removeSuffix(SUFFIX)
-                val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
-
-                val aliasHeader = STATIC_ALIASES[strippedField] ?: stripFieldNames(fieldName, aliasExportMap)
-                val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
-
+            val orderedHeaders = getOrderedHeaders(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDatasetParam)
+            val readableHeaders =
                 if (includeAliases) {
-                    readableHeaders[headerKey] = aliasHeader
+                    applyAliasRenaming(orderedHeaders, frameworkTemplate ?: portfolioExportRows.first())
                 } else {
-                    readableHeaders[headerKey] = fieldName
+                    orderedHeaders.associateWith { it }
                 }
+
+            val mappedCsvData = mapReadableHeadersToCsvData(csvData, readableHeaders)
+
+            val usedReadableHeaders =
+                mappedCsvData
+                    .flatMap { it.entries }
+                    .filter { it.value.isNotBlank() }
+                    .map { it.key }
+                    .toSet()
+
+            val filteredReadableHeaders = readableHeaders.filterValues { it in usedReadableHeaders }
+
+            val csvSchema =
+                createCsvSchemaBuilder(
+                    filteredReadableHeaders.values.toSet(),
+                    orderedHeaders.mapNotNull { filteredReadableHeaders[it] },
+                    isAssembledDatasetParam,
+                )
+
+            return PreparedExportData(mappedCsvData, csvSchema, filteredReadableHeaders)
+        }
+
+        private fun filterColumnsWithOnlyEmptyValues(
+            csvData: List<Map<String, String>>,
+            headers: Set<String>,
+        ): Set<String> =
+            headers
+                .filter { header ->
+                    csvData.any { row -> row[header]?.isNotEmpty() == true }
+                }.toSet()
+
+        /**
+         * Applies alias renaming to a list of field headers based on a framework template.
+         *
+         * @param orderedHeaders list of original field header names in the order they appear.
+         * @param frameworkTemplate JSON node containing alias definitions used for renaming.
+         * @param includeAlias flag indicating whether alias mapping should be applied. If false, original field names are used.
+         */
+        fun applyAliasRenaming(
+            orderedHeaders: List<String>,
+            frameworkTemplate: JsonNode,
+        ): Map<String, String> {
+            val aliasExportMap = extractAliasExportFields(frameworkTemplate)
+            val aliasHeaders = mutableMapOf<String, String>()
+
+            orderedHeaders.forEach { field ->
+                val staticAlias = STATIC_ALIASES[field]
+                val alias = staticAlias ?: stripFieldNames(field, aliasExportMap)
+                aliasHeaders[field] = alias
             }
 
-            val orderedHeaderFields =
-                nonEmptyHeaderFields.toList().map { field ->
-                    val strippedField = field.removePrefix("data.").removeSuffix(SUFFIX)
-                    val isStaticAlias = STATIC_ALIASES.containsKey(strippedField)
-                    val headerKey = if (isStaticAlias) strippedField else "data.$strippedField"
-                    readableHeaders[headerKey] ?: headerKey
+            return aliasHeaders
+        }
+
+        /**
+         * Creates the CSV schema based on the provided headers
+         * The first parameter determines which fields are used to create columns; the second parameter determines the
+         * order of the columns.
+         * @param orderedHeaderFields a set of column names used as the headers in the CSV in the correct order
+         * @return the csv schema builder
+         */
+        private fun getOrderedHeaders(
+            usedHeaderFields: Set<String>,
+            orderedHeaderFields: Collection<String>,
+            isAssembledDataset: Boolean,
+        ): List<String> {
+            require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
+
+            val resultList = mutableListOf<String>()
+
+            if (isAssembledDataset) {
+                usedHeaderFields
+                    .filter {
+                        !it.startsWith("data" + JsonUtils.getPathSeparator())
+                    }.forEach { resultList.add(it) }
+
+                orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
+                        }.forEach {
+                            resultList.add(it)
+                        }
                 }
-
-            val csvSchema = createCsvSchemaBuilder(readableHeaders.values.toSet(), orderedHeaderFields, isAssembledDataset)
-
-            return PreparedExportData(csvData, csvSchema, readableHeaders)
+            } else {
+                orderedHeaderFields.forEach {
+                    resultList.add(it)
+                }
+            }
+            return resultList
         }
 
         /**
@@ -159,10 +245,14 @@ class DataExportUtils
             csvData: List<Map<String, String>>,
             readableHeaders: Map<String, String>,
         ): List<Map<String, String>> =
-            csvData.map { originalMap ->
-                originalMap.mapKeys { (key, _) ->
-                    readableHeaders[key.removeSuffix(SUFFIX)] ?: key
-                }
+            csvData.map { row ->
+                row
+                    .mapNotNull { (originalKey, value) ->
+                        val mappedKey =
+                            readableHeaders[originalKey]
+                                ?: readableHeaders.entries.firstOrNull { (jsonPath, _) -> originalKey.endsWith(jsonPath) }?.value
+                        mappedKey?.let { it to value }
+                    }.toMap()
             }
 
         /**
@@ -198,6 +288,7 @@ class DataExportUtils
                         JsonUtils
                             .getNonEmptyLeafNodesAsMapping(node)
                             .filterKeys { !isReferencedReportsField(it) }
+                            .filterValues { it.isNotBlank() }
                             .toMutableMap()
 
                     if (keepValueFieldsOnly) {
@@ -206,7 +297,13 @@ class DataExportUtils
                         nonEmptyNodes
                     }
                 }
-            val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
+
+            val nonEmptyFields =
+                csvData
+                    .flatMap { it.entries }
+                    .filter { it.value.isNotBlank() }
+                    .map { it.key }
+                    .toSet()
 
             csvData.forEach { dataSet ->
                 nonEmptyFields.forEach { headerField ->

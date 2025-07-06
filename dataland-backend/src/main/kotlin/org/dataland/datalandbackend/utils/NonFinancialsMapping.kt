@@ -19,5 +19,6 @@ object NonFinancialsMapping {
             "minimumSafeguards" to "MIN_SAFEGUARDS",
             "enablingActivity" to "ENABLING",
             "transitionalActivity" to "TRANSITIONAL",
+            "activityName" to "ACTIVITY_NAME",
         )
 }

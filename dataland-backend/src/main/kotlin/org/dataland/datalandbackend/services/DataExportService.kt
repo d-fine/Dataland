@@ -52,6 +52,7 @@ class DataExportService
             if (jsonData.isEmpty()) {
                 throw DownloadDataNotFoundApiException()
             }
+
             return when (exportFileType) {
                 ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly, includeAliases)
                 ExportFileType.EXCEL -> buildExcelStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly, includeAliases)
@@ -90,6 +91,8 @@ class DataExportService
                 }
             }
 
+            println("csvDataWithReadableHeaders: $csvDataWithReadableHeaders")
+
             workbook.write(outputStream)
             workbook.close()
         }
@@ -108,7 +111,7 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema, readableHeaders) =
+            val (aliasedCsvData, csvSchema, readableHeaders) =
                 dataExportUtils.prepareExportData(
                     portfolioExportRows, dataType,
                     keepValueFieldsOnly, includeAliases,
@@ -117,9 +120,7 @@ class DataExportService
             val outputStream = ByteArrayOutputStream()
             val csvMapper = CsvMapper()
 
-            val csvWithReadableHeaders =
-                dataExportUtils.mapReadableHeadersToCsvData(csvData, readableHeaders)
-            csvMapper.writer(csvSchema).writeValues(outputStream).writeAll(csvWithReadableHeaders)
+            csvMapper.writer(csvSchema).writeValues(outputStream).writeAll(aliasedCsvData)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -145,11 +146,8 @@ class DataExportService
 
             val outputStream = ByteArrayOutputStream()
 
-            val csvWithReadableHeaders =
-                dataExportUtils.mapReadableHeadersToCsvData(csvData, readableHeaders)
-
             transformDataToExcelWithReadableHeaders(
-                csvWithReadableHeaders,
+                csvData,
                 csvSchema,
                 outputStream,
             )
