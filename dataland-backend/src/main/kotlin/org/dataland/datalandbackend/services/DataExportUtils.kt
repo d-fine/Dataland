@@ -165,15 +165,6 @@ class DataExportUtils
             return PreparedExportData(mappedCsvData, csvSchema, filteredReadableHeaders)
         }
 
-        private fun filterColumnsWithOnlyEmptyValues(
-            csvData: List<Map<String, String>>,
-            headers: Set<String>,
-        ): Set<String> =
-            headers
-                .filter { header ->
-                    csvData.any { row -> row[header]?.isNotEmpty() == true }
-                }.toSet()
-
         /**
          * Applies alias renaming to a list of field headers based on a framework template.
          *
