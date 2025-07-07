@@ -5,7 +5,7 @@ import {
   type LksgData,
   type SfdrData,
   type VsmeData,
-  type NuclearAndGasData
+  type NuclearAndGasData,
 } from '@clients/backend';
 
 export interface Category {
@@ -43,4 +43,10 @@ export interface Field {
   existingFieldValues?: (dataModel?: LksgData) => object;
 }
 
-export type FrameworkData = EutaxonomyFinancialsData | EutaxonomyNonFinancialsData | LksgData | SfdrData | VsmeData | NuclearAndGasData;
+export type FrameworkData =
+  | EutaxonomyFinancialsData
+  | EutaxonomyNonFinancialsData
+  | LksgData
+  | SfdrData
+  | VsmeData
+  | NuclearAndGasData;

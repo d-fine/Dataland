@@ -223,10 +223,7 @@ export default defineComponent({
       return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(
-        this.nuclearAndGasDataModel,
-        this.companyAssociatedNuclearAndGasData.data
-      );
+      return createSubcategoryVisibilityMap(this.nuclearAndGasDataModel, this.companyAssociatedNuclearAndGasData.data);
     },
   },
   props: {
