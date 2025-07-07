@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---

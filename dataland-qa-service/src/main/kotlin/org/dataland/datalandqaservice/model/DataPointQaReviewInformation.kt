@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /**
  * API model for the QA review information of a data point building on the DataPointDimensions interface.

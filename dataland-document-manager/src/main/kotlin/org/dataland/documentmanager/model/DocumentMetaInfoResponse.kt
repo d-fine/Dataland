@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.DocumentCategory
-import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
 import java.time.LocalDate
 
 /**
@@ -22,43 +22,43 @@ import java.time.LocalDate
 data class DocumentMetaInfoResponse(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
     )
     val documentId: String,
     @field:Schema(
-        description = OpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.DOCUMENT_NAME_EXAMPLE,
+        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
+        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_NAME_EXAMPLE,
     )
     override val documentName: String?,
     @field:Schema(
-        description = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_EXAMPLE,
+        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
+        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_EXAMPLE,
     )
     override val documentCategory: DocumentCategory?,
     @field:ArraySchema(
         arraySchema =
             Schema(
                 type = "string",
-                description = OpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
-                example = OpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+                description = DocumentOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+                example = DocumentOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
             ),
     )
     override val companyIds: Set<String>?,
     @field:Schema(
-        description = OpenApiDescriptionsAndExamples.UPLOADER_ID_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.UPLOADER_ID_EXAMPLE,
+        description = DocumentOpenApiDescriptionsAndExamples.UPLOADER_ID_DESCRIPTION,
+        example = DocumentOpenApiDescriptionsAndExamples.UPLOADER_ID_EXAMPLE,
     )
     val uploaderId: String,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     @field:Schema(
-        description = OpenApiDescriptionsAndExamples.PUBLICATION_DATE_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.PUBLICATION_DATE_EXAMPLE,
+        description = DocumentOpenApiDescriptionsAndExamples.PUBLICATION_DATE_DESCRIPTION,
+        example = DocumentOpenApiDescriptionsAndExamples.PUBLICATION_DATE_EXAMPLE,
     )
     override val publicationDate: LocalDate?,
     @field:Schema(
-        description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     override val reportingPeriod: String?,
 ) : BasicDocumentMetaInfo

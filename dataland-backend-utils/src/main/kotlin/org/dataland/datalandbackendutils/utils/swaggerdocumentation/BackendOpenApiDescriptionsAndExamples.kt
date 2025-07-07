@@ -1,4 +1,4 @@
-package org.dataland.datalandbackendutils.utils
+package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_NAME_DESCRIPTION = "The official name of the company."

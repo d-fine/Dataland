@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterRequired
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
-import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
-import org.dataland.datalandcommunitymanager.utils.CompanyIdParameterRequired
-import org.dataland.datalandcommunitymanager.utils.CompanyRoleParameterRequired
-import org.dataland.datalandcommunitymanager.utils.UserIdParameterRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping

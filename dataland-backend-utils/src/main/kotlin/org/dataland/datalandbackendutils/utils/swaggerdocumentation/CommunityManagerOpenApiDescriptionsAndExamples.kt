@@ -1,6 +1,4 @@
-package org.dataland.datalandcommunitymanager.utils
-
-import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object CommunityManagerOpenApiDescriptionsAndExamples {
     const val DATA_TYPE_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION

@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.utils
+package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.Parameter
 
@@ -108,7 +108,7 @@ annotation class DataRequestIdParameterRequired
 )
 annotation class CompanyIdParameterRequired
 
-/** * DataRequestId annotation */
+/** * CompanyRole annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -117,7 +117,7 @@ annotation class CompanyIdParameterRequired
 )
 annotation class CompanyRoleParameterRequired
 
-/** * DataRequestId annotation */
+/** * UserId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(

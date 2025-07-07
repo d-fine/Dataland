@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 
 /** API model containing all fields that can be set when patching an existing data request
  * @param requestStatus The new request status to set

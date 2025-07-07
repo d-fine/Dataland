@@ -2,7 +2,7 @@ package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.UsersOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UsersOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---

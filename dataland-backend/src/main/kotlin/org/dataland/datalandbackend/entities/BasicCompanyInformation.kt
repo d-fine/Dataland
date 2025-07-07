@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.entities
 
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /**
  * Just the basic data regarding a company stored in dataland

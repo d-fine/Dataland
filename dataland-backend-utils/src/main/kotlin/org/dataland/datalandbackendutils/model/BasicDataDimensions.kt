@@ -2,7 +2,7 @@ package org.dataland.datalandbackendutils.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.interfaces.DataDimensions
-import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /**
  * Data class that contains an instance of the abstract data dimensions

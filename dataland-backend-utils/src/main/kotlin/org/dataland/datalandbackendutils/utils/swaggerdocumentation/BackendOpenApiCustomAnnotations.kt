@@ -1,6 +1,7 @@
-package org.dataland.datalandbackendutils.utils
+package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.Parameter
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /** * DataType annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)

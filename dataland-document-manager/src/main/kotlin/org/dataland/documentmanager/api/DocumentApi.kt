@@ -10,11 +10,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.model.DocumentCategory
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
-import org.dataland.documentmanager.utils.OpenApiDescriptionsAndExamples
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -116,8 +116,8 @@ interface DocumentApi {
     fun patchDocumentMetaInfo(
         @Parameter(
             name = "documentId",
-            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -171,16 +171,16 @@ interface DocumentApi {
     fun patchDocumentMetaInfoCompanyIds(
         @Parameter(
             name = "documentId",
-            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
         documentId: String,
         @Parameter(
             name = "companyId",
-            description = OpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -209,8 +209,8 @@ interface DocumentApi {
     fun checkDocument(
         @Parameter(
             name = "documentId",
-            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -255,8 +255,8 @@ interface DocumentApi {
     fun getDocument(
         @Parameter(
             name = "documentId",
-            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -299,8 +299,8 @@ interface DocumentApi {
     fun getDocumentMetaInformation(
         @Parameter(
             name = "documentId",
-            description = OpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -352,39 +352,39 @@ interface DocumentApi {
     fun searchForDocumentMetaInformation(
         @Parameter(
             name = "companyId",
-            description = OpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_EXAMPLE,
             required = false,
         )
         @RequestParam
         companyId: String? = null,
         @Parameter(
             name = "documentCategories",
-            description = OpenApiDescriptionsAndExamples.DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION,
+            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION,
             required = false,
         )
         @RequestParam
         documentCategories: Set<DocumentCategory>? = null,
         @Parameter(
             name = "reportingPeriod",
-            description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE,
             required = false,
         )
         @RequestParam
         reportingPeriod: String? = null,
         @Parameter(
             name = "chunkSize",
-            description = OpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
             required = false,
         )
         @RequestParam
         chunkSize: Int = 100,
         @Parameter(
             name = "chunkIndex",
-            description = OpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
+            description = DocumentOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            example = DocumentOpenApiDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
             required = false,
         )
         @RequestParam

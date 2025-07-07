@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.entities
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /**
  * A variation of the DataMetaInformation augmented by the information needed for display on the "My Datasets" page

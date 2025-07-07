@@ -1,8 +1,7 @@
-package org.dataland.datalanduserservice.utils
+package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.UsersOpenApiDescriptionsAndExamples
 
 /**
  * Boolean flag that indicates whether the portfolio is monitored.
