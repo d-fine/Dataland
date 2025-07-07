@@ -607,7 +607,7 @@
           {
             "name": "chunkSize",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size. The default value is 100.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -952,26 +952,16 @@
             }
           },
           "isMonitored": {
-            "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "example": true
+            "type": "boolean"
           },
           "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
+            "type": "string"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
-            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-            "example": [
-              "sfdr"
-            ],
             "items": {
-              "type": "string",
-              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-              "example": "[\"sfdr\"]"
+              "type": "string"
             }
           }
         }
@@ -984,26 +974,16 @@
         "type": "object",
         "properties": {
           "isMonitored": {
-            "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "example": true
+            "type": "boolean"
           },
           "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
+            "type": "string"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
-            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-            "example": [
-              "sfdr"
-            ],
             "items": {
-              "type": "string",
-              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-              "example": "[\"sfdr\"]"
+              "type": "string"
             }
           }
         }

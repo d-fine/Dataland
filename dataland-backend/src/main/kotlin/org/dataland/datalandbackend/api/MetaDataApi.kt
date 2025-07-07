@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -200,7 +202,19 @@ interface MetaDataApi {
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200", description = "Successfully retrieved list of data point IDs.",
+                responseCode = "200",
+                description = "Successfully retrieved list of data point IDs.",
+                content = [
+                    Content(
+                        schema =
+                            Schema(
+                                type = "object",
+                                additionalPropertiesSchema = String::class,
+                                description = "A map from data point IDs to the associated technical IDs.",
+                                example = "{\"extendedEnumFiscalYearDeviation\":\"d4e2b1f3-9132-4c62-b653-7ecf394215f4\"}",
+                            ),
+                    ),
+                ],
             ),
         ],
     )
