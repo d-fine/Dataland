@@ -269,7 +269,6 @@ class AssembledDatasetTest {
                                 .numberOfReportedIncidentsOfHumanRightsViolations!!,
                     ),
             )
-
         val expectedDataPointInformationYesNo =
             mapOf(
                 "extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure" to
@@ -289,7 +288,6 @@ class AssembledDatasetTest {
                                 .biodiversityProtectionPolicy!!,
                     ),
             )
-
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
         expectedDataPointInformationBigInteger.forEach { (dataPointType, expectedData) ->
             val dataPointId = datasetComposition[dataPointType]!!

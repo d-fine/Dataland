@@ -1,7 +1,7 @@
 {
   "framework": {
-    "id": "sfdr",
-    "ref": "https://dummy.com/specifications/frameworks/sfdr"
+    "id": "dummy-framework",
+    "ref": "https://dummy.com/specifications/frameworks/dummy-framework"
   },
   "name": "DummyFramework",
   "businessDefinition": "DummyFramework",
