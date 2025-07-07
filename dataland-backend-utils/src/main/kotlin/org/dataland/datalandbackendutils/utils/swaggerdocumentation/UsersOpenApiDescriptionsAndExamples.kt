@@ -32,14 +32,14 @@ object UsersOpenApiDescriptionsAndExamples {
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =
-        "{\n\t\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\": \"2024, 2023, 2022\"\n}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":\"2024, 2023, 2022\"}"
 
     const val COMPANY_COCKPIT_REF_DESCRIPTION = "The link to the company cockpit page."
     const val COMPANY_COCKPIT_REF_EXAMPLE = "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}"
 
     const val FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_DESCRIPTION = "The links to the data pages per framework."
     const val FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_EXAMPLE =
-        "{\n\t\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\": " +
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":" +
             "\"https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
-            "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"\n}"
+            "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"}"
 }

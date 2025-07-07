@@ -14,8 +14,7 @@ object DocumentOpenApiDescriptionsAndExamples {
         "The set of Dataland company IDs of the companies using this document " +
             "as a referenced report."
     const val COMPANY_IDS_EXAMPLE =
-        "[\n\t\"72c5cbdc-4244-49dd-8368-be4e64b399ae\"," +
-            "\n\t\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"\n]"
+        "[\"72c5cbdc-4244-49dd-8368-be4e64b399ae\",\"a31733e0-42ed-47c9-9909-e1d2ecf08083\"]"
 
     const val PUBLICATION_DATE_DESCRIPTION =
         "The date on which this document was published by the responsible company, specified in format " +

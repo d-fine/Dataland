@@ -5,7 +5,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_ALTERNATIVE_NAMES_EXAMPLE = "[\"ABC Corp.\"]"
 
     const val COMPANY_CONTACT_DETAILS_DESCRIPTION = "The email addresses of the company."
-    const val COMPANY_CONTACT_DETAILS_EXAMPLE = "\n[\"contact@abccorp.com\"\n]"
+    const val COMPANY_CONTACT_DETAILS_EXAMPLE = "[\"contact@abccorp.com\"]"
 
     const val COMPANY_LEGAL_FORM_DESCRIPTION = "The legal structure under which the company operates."
     const val COMPANY_LEGAL_FORM_EXAMPLE = "Private Limited Company (Ltd)"
@@ -57,10 +57,10 @@ object BackendOpenApiDescriptionsAndExamples {
     const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_EXAMPLE = "2"
 
     const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
-    const val LIST_OF_COUNTRY_CODES_EXAMPLE = "\n[\"$COUNTRY_CODE_EXAMPLE\"\n]"
+    const val LIST_OF_COUNTRY_CODES_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
 
     const val LIST_OF_SECTORS_DESCRIPTION = "The list of sectors."
-    const val LIST_OF_SECTORS_EXAMPLE = "\n[\"$SECTOR_EXAMPLE\"\n]"
+    const val LIST_OF_SECTORS_EXAMPLE = "[\"$SECTOR_EXAMPLE\"]"
 
     const val UPLOADER_USER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the dataset."
     const val UPLOADER_USER_ID_EXAMPLE = "814caf16-54de-4385-af6e-bd6b64b64634"
