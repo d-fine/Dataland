@@ -18,6 +18,9 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val COMPANY_IDENTIFIER_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION
     const val COMPANY_IDENTIFIER_EXAMPLE = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE
 
+    const val REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
+    const val TIMESTAMP_EXAMPLE = "1751291892373"
+
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
         "A set of identifier strings to identify companies on Dataland by. Use Dataland company IDs, " +
             "Leis or Isins for the best results. Requests will be posted for all companies that can " +
@@ -34,8 +37,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
         "A set of strings which identify reporting periods on Dataland, such as year numbers. Requests will " +
             "be posted for all specified reporting periods."
-    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE =
-        "[\"2023\",\"2024\"]"
+    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = REPORTING_PERIODS_LIST_EXAMPLE
 
     const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =
         "Whether an immediate notification email shall be sent when there is an update concerning one of " +
@@ -50,7 +52,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored data requests."
-    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE = "[\"2023\",\"2024\"]"
+    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE = REPORTING_PERIODS_LIST_EXAMPLE
 
     const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to data requests that were rejected due to being duplicates."
@@ -58,7 +60,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored access requests."
-    const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE = "[\"2023\",\"2024\"]"
+    const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE = REPORTING_PERIODS_LIST_EXAMPLE
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 
@@ -73,10 +75,10 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val USER_EMAIL_ADDRESS_EXAMPLE = "test@example.com"
 
     const val CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the user created the data request."
-    const val CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
+    const val CREATION_TIMESTAMP_EXAMPLE = TIMESTAMP_EXAMPLE
 
     const val LAST_MODIFIED_DATE_DESCRIPTION = "The timestamp (epoch milliseconds) when the data request has been modified the last time."
-    const val LAST_MODIFIED_DATE_EXAMPLE = "1751291892373"
+    const val LAST_MODIFIED_DATE_EXAMPLE = TIMESTAMP_EXAMPLE
 
     const val MESSAGE_HISTORY_DESCRIPTION =
         "The list of objects documenting the history of messages sent to company contacts regarding the data request."
@@ -102,10 +104,10 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val MESSAGE_EXAMPLE = "Please consider sharing your data on Dataland."
 
     const val MESSAGE_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the message object was created."
-    const val MESSAGE_CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
+    const val MESSAGE_CREATION_TIMESTAMP_EXAMPLE = TIMESTAMP_EXAMPLE
 
     const val STATUS_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the status object was created."
-    const val STATUS_CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
+    const val STATUS_CREATION_TIMESTAMP_EXAMPLE = TIMESTAMP_EXAMPLE
 
     const val REQUEST_STATUS_CHANGE_REASON_DESCRIPTION = "The reason for the status change."
     const val REQUEST_STATUS_CHANGE_REASON_EXAMPLE = "The company has not published data for this reporting period yet."

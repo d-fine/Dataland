@@ -1,12 +1,11 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.DataIdParameterRequired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -47,12 +46,7 @@ fun interface DataDeletionApi {
     )
     fun deleteCompanyAssociatedData(
         // @RequestBody
-        @Parameter(
-            name = "dataId",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
-            required = true,
-        )
+        @DataIdParameterRequired
         @PathVariable("dataId")
         @Valid
         dataId: String,

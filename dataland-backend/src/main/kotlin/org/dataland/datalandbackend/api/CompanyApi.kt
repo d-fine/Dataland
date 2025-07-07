@@ -20,10 +20,12 @@ import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
 import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.CompanyIdParameter
-import org.dataland.datalandbackendutils.utils.CountryCodeParameter
-import org.dataland.datalandbackendutils.utils.DataTypeParameter
-import org.dataland.datalandbackendutils.utils.SectorParameter
+import org.dataland.datalandbackendutils.utils.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.CountryCodeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.IdentifierParameterRequired
+import org.dataland.datalandbackendutils.utils.IdentifierTypeParameterRequired
+import org.dataland.datalandbackendutils.utils.SectorParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -103,13 +105,13 @@ interface CompanyApi {
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
-        @DataTypeParameter
+        @DataTypeParameterNonRequired
         dataTypes: Set<DataType>? = null,
         @RequestParam
-        @CountryCodeParameter
+        @CountryCodeParameterNonRequired
         countryCodes: Set<String>? = null,
         @RequestParam
-        @SectorParameter
+        @SectorParameterNonRequired
         sectors: Set<String>? = null,
         @RequestParam(defaultValue = "100")
         @Parameter(
@@ -158,13 +160,13 @@ interface CompanyApi {
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
-        @DataTypeParameter
+        @DataTypeParameterNonRequired
         dataTypes: Set<DataType>? = null,
         @RequestParam
-        @CountryCodeParameter
+        @CountryCodeParameterNonRequired
         countryCodes: Set<String>? = null,
         @RequestParam
-        @SectorParameter
+        @SectorParameterNonRequired
         sectors: Set<String>? = null,
     ): ResponseEntity<Int>
 
@@ -216,18 +218,9 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun existsIdentifier(
-        @Parameter(
-            name = "identifierType",
-            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
-            required = true,
-        )
+        @IdentifierTypeParameterRequired
         @PathVariable("identifierType") identifierType: IdentifierType,
-        @Parameter(
-            name = "identifier",
-            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
-            required = true,
-        )
+        @IdentifierParameterRequired
         @PathVariable("identifier") identifier: String,
     )
 
@@ -252,18 +245,9 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyIdByIdentifier(
-        @Parameter(
-            name = "identifierType",
-            description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_TYPE_DESCRIPTION,
-            required = true,
-        )
+        @IdentifierTypeParameterRequired
         @PathVariable("identifierType") identifierType: IdentifierType,
-        @Parameter(
-            name = "identifier",
-            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
-            required = true,
-        )
+        @IdentifierParameterRequired
         @PathVariable("identifier") identifier: String,
     ): ResponseEntity<CompanyId>
 
@@ -307,7 +291,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyById(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<StoredCompany>
 
@@ -336,7 +320,7 @@ interface CompanyApi {
             "@CompanyRoleChecker.canUserPatchFieldsForCompany(#companyInformationPatch, #companyId)",
     )
     fun patchCompanyById(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
         companyInformationPatch: CompanyInformationPatch,
@@ -364,7 +348,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putCompanyById(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId")
         companyId: String,
         @Valid
@@ -414,7 +398,7 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getAggregatedFrameworkDataSummary(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 
@@ -437,7 +421,7 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompanyInfo(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<CompanyInformation>
 
@@ -467,7 +451,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isCompanyIdValid(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     )
 
@@ -491,7 +475,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanySubsidiariesByParentId(
-        @CompanyIdParameter
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<List<BasicCompanyInformation>>
 

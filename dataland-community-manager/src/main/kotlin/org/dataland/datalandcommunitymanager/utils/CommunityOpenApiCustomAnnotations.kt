@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter
     description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
     required = false,
 )
-annotation class DataTypeParameter
+annotation class DataTypeParameterNonRequired
 
 /** * UserId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -19,7 +19,7 @@ annotation class DataTypeParameter
     example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     required = false,
 )
-annotation class UserIdParameter
+annotation class UserIdParameterNonRequired
 
 /** * UserEmailAddress annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -29,7 +29,7 @@ annotation class UserIdParameter
     example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     required = false,
 )
-annotation class UserEmailAddressParameter
+annotation class UserEmailAddressParameterNonRequired
 
 /** * AdminComment annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -39,7 +39,7 @@ annotation class UserEmailAddressParameter
     example = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
     required = false,
 )
-annotation class AdminCommentParameter
+annotation class AdminCommentParameterNonRequired
 
 /** * RequestStatus annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -48,7 +48,7 @@ annotation class AdminCommentParameter
     description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_STATUS_DESCRIPTION,
     required = false,
 )
-annotation class RequestStatusParameter
+annotation class RequestStatusParameterNonRequired
 
 /** * AccessStatus annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -57,7 +57,7 @@ annotation class RequestStatusParameter
     description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
     required = false,
 )
-annotation class AccessStatusParameter
+annotation class AccessStatusParameterNonRequired
 
 /** * RequestPriority annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -66,7 +66,7 @@ annotation class AccessStatusParameter
     description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
     required = false,
 )
-annotation class RequestPriorityParameter
+annotation class RequestPriorityParameterNonRequired
 
 /** * ReportingPeriod annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -76,7 +76,7 @@ annotation class RequestPriorityParameter
     example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     required = false,
 )
-annotation class ReportingPeriodParameter
+annotation class ReportingPeriodParameterNonRequired
 
 /** * DatalandCompanyId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -86,4 +86,43 @@ annotation class ReportingPeriodParameter
     example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     required = false,
 )
-annotation class DatalandCompanyIdParameter
+annotation class CompanyIdParameterNonRequired
+
+/** * DataRequestId annotation */
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+@Parameter(
+    description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_DESCRIPTION,
+    example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_EXAMPLE,
+    required = true,
+)
+annotation class DataRequestIdParameterRequired
+
+/** * CompanyId annotation */
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+@Parameter(
+    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+    example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    required = true,
+)
+annotation class CompanyIdParameterRequired
+
+/** * DataRequestId annotation */
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+@Parameter(
+    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
+    required = true,
+)
+annotation class CompanyRoleParameterRequired
+
+/** * DataRequestId annotation */
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+@Parameter(
+    description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+    example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+    required = true,
+)
+annotation class UserIdParameterRequired

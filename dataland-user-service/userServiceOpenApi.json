@@ -868,9 +868,7 @@
               "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
             ],
             "items": {
-              "type": "string",
-              "description": "A list of company IDs that are contained in the portfolio.",
-              "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\"]"
+              "type": "string"
             }
           },
           "isMonitored": {
@@ -891,9 +889,7 @@
               "sfdr"
             ],
             "items": {
-              "type": "string",
-              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-              "example": "[\"sfdr\"]"
+              "type": "string"
             }
           }
         }
@@ -946,20 +942,26 @@
               "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
             ],
             "items": {
-              "type": "string",
-              "description": "A list of company IDs that are contained in the portfolio.",
-              "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\"]"
+              "type": "string"
             }
           },
           "isMonitored": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag that indicates whether the portfolio is monitored.",
+            "example": true
           },
           "startingMonitoringPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
+            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+            "example": [
+              "sfdr"
+            ],
             "items": {
               "type": "string"
             }
@@ -974,14 +976,22 @@
         "type": "object",
         "properties": {
           "isMonitored": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag that indicates whether the portfolio is monitored.",
+            "example": true
           },
           "startingMonitoringPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
+            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
+            "example": [
+              "sfdr"
+            ],
             "items": {
               "type": "string"
             }
@@ -1036,9 +1046,7 @@
               "sfdr"
             ],
             "items": {
-              "type": "string",
-              "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-              "example": "[\"sfdr\"]"
+              "type": "string"
             }
           }
         }

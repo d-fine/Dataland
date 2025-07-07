@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandcommunitymanager.utils.CompanyIdParameterRequired
+import org.dataland.datalandcommunitymanager.utils.CompanyRoleParameterRequired
+import org.dataland.datalandcommunitymanager.utils.UserIdParameterRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -53,22 +56,11 @@ interface CompanyRolesApi {
             "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
     )
     fun assignCompanyRole(
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
-            required = true,
-        )
+        @CompanyRoleParameterRequired
         @PathVariable("role") companyRole: CompanyRole,
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: UUID,
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
-            required = true,
-        )
+        @UserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     ): ResponseEntity<CompanyRoleAssignment>
 

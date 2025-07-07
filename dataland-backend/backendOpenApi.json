@@ -2487,15 +2487,14 @@
           {
             "name": "frameworksOrDataPointTypes",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            }
           },
           {
             "name": "reportingPeriods",
@@ -6957,10 +6956,11 @@
             "type": "array",
             "description": "A set of Dataland user IDs of the users who uploaded the document.",
             "nullable": true,
-            "example": true,
+            "example": [
+              "814caf16-54de-4385-af6e-bd6b64b64634"
+            ],
             "items": {
               "type": "string",
-              "description": "A set of Dataland user IDs of the users who uploaded the document.",
               "format": "uuid"
             }
           },
@@ -22995,15 +22995,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The ID under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },

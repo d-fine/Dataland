@@ -20,16 +20,17 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.utils.AccessStatusParameter
-import org.dataland.datalandcommunitymanager.utils.AdminCommentParameter
+import org.dataland.datalandcommunitymanager.utils.AccessStatusParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.AdminCommentParameterNonRequired
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
-import org.dataland.datalandcommunitymanager.utils.DataTypeParameter
-import org.dataland.datalandcommunitymanager.utils.DatalandCompanyIdParameter
-import org.dataland.datalandcommunitymanager.utils.ReportingPeriodParameter
-import org.dataland.datalandcommunitymanager.utils.RequestPriorityParameter
-import org.dataland.datalandcommunitymanager.utils.RequestStatusParameter
-import org.dataland.datalandcommunitymanager.utils.UserEmailAddressParameter
-import org.dataland.datalandcommunitymanager.utils.UserIdParameter
+import org.dataland.datalandcommunitymanager.utils.CompanyIdParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.DataRequestIdParameterRequired
+import org.dataland.datalandcommunitymanager.utils.DataTypeParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.ReportingPeriodParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.RequestPriorityParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.RequestStatusParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.UserEmailAddressParameterNonRequired
+import org.dataland.datalandcommunitymanager.utils.UserIdParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -112,10 +113,10 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAggregatedOpenDataRequests(
         @RequestParam
-        @DataTypeParameter
+        @DataTypeParameterNonRequired
         dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam
-        @ReportingPeriodParameter
+        @ReportingPeriodParameterNonRequired
         reportingPeriod: String? = null,
         @RequestParam
         @Parameter(
@@ -154,7 +155,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
         @RequestParam(required = false)
-        @UserIdParameter
+        @UserIdParameterNonRequired
         userId: String? = null,
     ): ResponseEntity<SingleDataRequestResponse>
 
@@ -176,10 +177,7 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId)")
     fun getDataRequestById(
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_EXAMPLE,
-        )
+        @DataRequestIdParameterRequired
         @PathVariable dataRequestId: UUID,
     ): ResponseEntity<StoredDataRequest>
 
@@ -207,11 +205,7 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchDataRequest(#dataRequestId, #dataRequestPatch)",
     )
     fun patchDataRequest(
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_EXAMPLE,
-            required = true,
-        )
+        @DataRequestIdParameterRequired
         @PathVariable("dataRequestId") dataRequestId: UUID,
         @Valid @RequestBody
         dataRequestPatch: DataRequestPatch,
@@ -251,31 +245,31 @@ interface RequestApi {
     )
     fun getDataRequests(
         @RequestParam
-        @DataTypeParameter
+        @DataTypeParameterNonRequired
         dataType: Set<DataTypeEnum>?,
         @RequestParam
-        @UserIdParameter
+        @UserIdParameterNonRequired
         userId: String?,
         @RequestParam
-        @UserEmailAddressParameter
+        @UserEmailAddressParameterNonRequired
         emailAddress: String?,
         @RequestParam
-        @AdminCommentParameter
+        @AdminCommentParameterNonRequired
         adminComment: String?,
         @RequestParam
-        @RequestStatusParameter
+        @RequestStatusParameterNonRequired
         requestStatus: Set<RequestStatus>?,
         @RequestParam
-        @AccessStatusParameter
+        @AccessStatusParameterNonRequired
         accessStatus: Set<AccessStatus>?,
         @RequestParam
-        @RequestPriorityParameter
+        @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
         @RequestParam
-        @ReportingPeriodParameter
+        @ReportingPeriodParameterNonRequired
         reportingPeriod: String?,
         @RequestParam
-        @DatalandCompanyIdParameter
+        @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
         @RequestParam(defaultValue = "100")
         @Parameter(
@@ -323,31 +317,31 @@ interface RequestApi {
     )
     fun getNumberOfRequests(
         @RequestParam
-        @DataTypeParameter
+        @DataTypeParameterNonRequired
         dataType: Set<DataTypeEnum>?,
         @RequestParam
-        @UserIdParameter
+        @UserIdParameterNonRequired
         userId: String?,
         @RequestParam
-        @UserEmailAddressParameter
+        @UserEmailAddressParameterNonRequired
         emailAddress: String?,
         @RequestParam
-        @AdminCommentParameter
+        @AdminCommentParameterNonRequired
         adminComment: String?,
         @RequestParam
-        @RequestStatusParameter
+        @RequestStatusParameterNonRequired
         requestStatus: Set<RequestStatus>?,
         @RequestParam
-        @AccessStatusParameter
+        @AccessStatusParameterNonRequired
         accessStatus: Set<AccessStatus>?,
         @RequestParam
-        @RequestPriorityParameter
+        @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
         @RequestParam
-        @ReportingPeriodParameter
+        @ReportingPeriodParameterNonRequired
         reportingPeriod: String?,
         @RequestParam
-        @DatalandCompanyIdParameter
+        @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
     ): ResponseEntity<Int>
 

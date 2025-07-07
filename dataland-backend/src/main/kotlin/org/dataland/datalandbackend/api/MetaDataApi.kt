@@ -17,6 +17,11 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.CompanyIdParameterNonRequired
+import org.dataland.datalandbackendutils.utils.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.DataIdParameterRequired
+import org.dataland.datalandbackendutils.utils.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.ReportingPeriodParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -63,17 +68,10 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getListOfDataMetaInfo(
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = false,
-        )
+        @CompanyIdParameterNonRequired
         companyId: String? = null,
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            required = false,
-        )
+        @DataTypeParameterNonRequired
         dataType: DataType? = null,
         @RequestParam(defaultValue = "true")
         @Parameter(
@@ -82,11 +80,7 @@ interface MetaDataApi {
         )
         showOnlyActive: Boolean,
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameterNonRequired
         reportingPeriod: String? = null,
         @RequestParam
         @Parameter(
@@ -148,12 +142,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getDataMetaInfo(
-        @Parameter(
-            name = "dataId",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
-            required = true,
-        )
+        @DataIdParameterRequired
         @PathVariable dataId: String,
     ): ResponseEntity<DataMetaInformation>
 
@@ -179,12 +168,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataMetaInfo(
-        @Parameter(
-            name = "dataId",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
-            required = true,
-        )
+        @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
         @Valid @RequestBody(required = true)
         dataMetaInformationPatch: DataMetaInformationPatch,
@@ -224,12 +208,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getContainedDataPoints(
-        @Parameter(
-            name = "dataId",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
-            required = true,
-        )
+        @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<Map<String, String>>
 
@@ -259,25 +238,13 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getInfoOnNonSourceabilityOfDatasets(
         @RequestParam
-        @Parameter(
-            name = "companyId",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = false,
-        )
+        @CompanyIdParameterNonRequired
         companyId: String? = null,
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            required = false,
-        )
+        @DataTypeParameterNonRequired
         dataType: DataType? = null,
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameterNonRequired
         reportingPeriod: String? = null,
         @RequestParam
         @Parameter(
@@ -339,12 +306,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isDataNonSourceable(
-        @Parameter(
-            name = "companyId",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
         @Parameter(
             name = "dataType",
@@ -362,7 +324,7 @@ interface MetaDataApi {
     )
 
     /**
-     * A method to retrieve all available data dimensions filtered by the provided parameters.
+     * A method to retrieve all  available data dimensions filtered by the provided parameters.
      * @param companyIds a list of company identifiers to filter for
      * @param frameworksOrDataPointTypes a list of frameworks or data point types (or mixture thereof) to filter for
      * @param reportingPeriods a list of reporting periods to filter for
@@ -382,25 +344,13 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAvailableDataDimensions(
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = false,
-        )
+        @CompanyIdParameterNonRequired
         companyIds: List<String>? = null,
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = false,
-        )
+        @DataTypeParameterNonRequired
         frameworksOrDataPointTypes: List<String>? = null,
         @RequestParam
-        @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameterNonRequired
         reportingPeriods: List<String>? = null,
     ): ResponseEntity<List<BasicDataDimensions>>
 }
