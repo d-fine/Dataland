@@ -131,6 +131,11 @@ export const DatalandPreset = definePreset(Aura, {
             },
           },
         },
+        overlay: {
+          modal: {
+            borderRadius: '{border.radius.xs}',
+          },
+        },
       },
     },
   },
