@@ -9,15 +9,31 @@
     persists.
   </div>
   <div v-else>
-    <span class="button_bar">
-      <PrimeButton class="primary-button" @click="editPortfolio()" data-test="edit-portfolio">
+    <div class="button_bar">
+      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
-      <PrimeButton class="primary-button" @click="downloadPortfolio()" data-test="download-portfolio">
+
+      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
         <i class="pi pi-download pr-2" /> Download Portfolio
       </PrimeButton>
-      <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
-    </span>
+      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
+        <span class="material-icons-outlined fs-sm pr-1">verified</span>
+        Portfolio actively monitored
+      </div>
+
+      <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
+        <PrimeButton
+          class="primary-button"
+          @click="openMonitoringModal()"
+          data-test="monitor-portfolio"
+          :disabled="!isPremiumUser"
+        >
+          <i class="pi pi-bell pr-2" /> EDIT MONITORING
+        </PrimeButton>
+        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+      </div>
+    </div>
 
     <DataTable
       stripedRows
@@ -140,6 +156,7 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
+import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
@@ -224,8 +241,11 @@ const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
+const isMonitored = ref<boolean>(false);
+const isPremiumUser = ref(false);
 
 onMounted(() => {
+  void checkPremiumRole();
   loadPortfolio();
 });
 
@@ -253,6 +273,15 @@ watch([enrichedPortfolio], () => {
     );
   });
 });
+
+/**
+ * Checks whether the logged in User is premium user
+ */
+async function checkPremiumRole(): Promise<void> {
+  const keycloak = await assertDefined(getKeycloakPromise)();
+
+  isPremiumUser.value = keycloak.realmAccess?.roles.includes('ROLE_PREMIUM_USER') || false;
+}
 
 /**
  * Returns the width (in percent of the total screen width) of a portfolio datatable column
@@ -310,6 +339,7 @@ function loadPortfolio(): void {
 
       portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
       reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
+      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
     .catch((reason) => {
       console.error(reason);
@@ -401,7 +431,7 @@ async function handleDatasetDownload(
  * Once the dialog is closed, it reloads the portfolio data and emits an update event
  * to refresh the portfolio overview.
  */
-function editPortfolio(): void {
+function openEditModal(): void {
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Edit Portfolio',
@@ -409,6 +439,7 @@ function editPortfolio(): void {
     },
     data: {
       portfolio: enrichedPortfolio.value,
+      isMonitoring: isMonitored.value,
     },
     onClose() {
       loadPortfolio();
@@ -421,7 +452,7 @@ function editPortfolio(): void {
  * Opens the PortfolioDownload with the current portfolio's data for downloading.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function downloadPortfolio(): void {
+function openDownloadModal(): void {
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
   dialog.open(DownloadData, {
@@ -445,6 +476,41 @@ function downloadPortfolio(): void {
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,
+    },
+    onClose() {
+      loadPortfolio();
+      emit('update:portfolio-overview');
+    },
+  });
+}
+
+/**
+ * Opens the PortfolioMonitoring with the current portfolio's data.
+ * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ */
+function openMonitoringModal(): void {
+  const fullName = 'Monitoring of ' + enrichedPortfolio.value?.portfolioName;
+  dialog.open(PortfolioMonitoring, {
+    props: {
+      modal: true,
+      header: fullName,
+      pt: {
+        title: {
+          style: {
+            maxWidth: '18rem',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
+      },
+    },
+    data: {
+      portfolio: enrichedPortfolio.value,
+    },
+    onClose() {
+      loadPortfolio();
+      emit('update:portfolio-overview');
     },
   });
 }
@@ -498,9 +564,26 @@ a:after {
   display: flex;
   margin: 1rem;
   gap: 1rem;
+  align-items: center;
 
   :last-child {
     margin-left: auto;
+  }
+}
+
+.monitor-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+
+  :deep(.p-inputswitch) {
+    transform: scale(1.3);
+    margin-left: 0.3rem; /* push it right so it’s not clipped */
+  }
+
+  span {
+    white-space: nowrap;
   }
 }
 </style>

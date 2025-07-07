@@ -2,7 +2,7 @@ Field Identifier,Category,Sub-Category,Field Name,Alias Export,Tooltip,Component
 0,General,,Fiscal Year Deviation,FISCAL_YEAR_DEVIATION,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,Extended,,,,,,
 ,General,,Fiscal Year End,FISCAL_YEAR_END,The date the fiscal year ends.,Date,,,Extended,,,,,,
 1,General,,Scope Of Entities,SCOPE_OF_ENTITIES,Are all Group legal entities covered in the reports?,Yes/No/NA, ,,Extended,,,,,,
-2,General,,NFRD Mandatory,NFRD_MANDATORY,Is the NFRD mandatory for your company?,Yes/No, ,,Extended,,,,,,
+2,General,,NFRD Mandatory,NFRD_MANDATORY,Is the NFRD mandatory for your company?,Yes/No, ,,Extended,,,,,,IsNfrdMandatory
 3,General,,EU Taxonomy Activity Level Reporting,ACTIVITY_LEVEL_REPORTING,Activity level disclosure,Yes/No, ,,Extended,,,,,,
 4,General,,Assurance,ASSURANCE,"Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",Custom EuTaxonomyAssuranceComponent, ,,,,,,,,
 5,General,,Number of Employees,NO_OF_EMPLOYEES,Total Number of Employees (including temporary workers with assignment duration longer than 6 months),Number,"Allowed Range: [0, INF]",,Extended,,,,,,
