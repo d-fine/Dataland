@@ -256,8 +256,9 @@ class AssembledDatasetTest {
     }
 
     @Test
-    fun `ensure information from an assembled qa report gets applied to the individual datapoints`() {
+    fun `ensure information from an assembled qa report gets applied to Integer Datapoints`() {
         val linkedQaReportMetaInfo = uploadSfdrWithLinkedQaReport()
+
         val expectedDataPointInformationBigInteger =
             mapOf(
                 "extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations" to
@@ -269,6 +270,22 @@ class AssembledDatasetTest {
                                 .numberOfReportedIncidentsOfHumanRightsViolations!!,
                     ),
             )
+
+        val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
+        expectedDataPointInformationBigInteger.forEach { (dataPointType, expectedData) ->
+            val dataPointId = datasetComposition[dataPointType]!!
+            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
+                assertEquals(expectedData.qaStatus, it[0].qaStatus)
+            }
+            QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
+                assertQaReportsAlignBigInteger(expectedData.qaReport, it[0])
+            }
+        }
+    }
+
+    @Test
+    fun `ensure information from an assembled qa report gets applied to YesNo Datapoints`() {
+        val linkedQaReportMetaInfo = uploadSfdrWithLinkedQaReport()
 
         val expectedDataPointInformationYesNo =
             mapOf(
@@ -291,15 +308,6 @@ class AssembledDatasetTest {
             )
 
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
-        expectedDataPointInformationBigInteger.forEach { (dataPointType, expectedData) ->
-            val dataPointId = datasetComposition[dataPointType]!!
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
-                assertEquals(expectedData.qaStatus, it[0].qaStatus)
-            }
-            QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
-                assertQaReportsAlignBigInteger(expectedData.qaReport, it[0])
-            }
-        }
         expectedDataPointInformationYesNo.forEach { (dataPointType, expectedData) ->
             val dataPointId = datasetComposition[dataPointType]!!
             QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
@@ -341,7 +349,10 @@ class AssembledDatasetTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         ApiAwait.waitForSuccess { uploadDummySfdrDataset(companyId, bypassQa = true) }
 
-        this.postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(companyId, dummyReportingPeriod)
+        this.postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(
+            companyId,
+            dummyReportingPeriod,
+        )
 
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
             val activeSfdrDataset =
@@ -361,7 +372,10 @@ class AssembledDatasetTest {
     fun `ensure that uploading only a single datapoint for a company renders the reporting period active`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        this.postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(companyId, dummyReportingPeriod)
+        this.postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(
+            companyId,
+            dummyReportingPeriod,
+        )
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
             val activeSfdrDataset =
                 this.getSfdrDataset(companyId, dummyReportingPeriod)
