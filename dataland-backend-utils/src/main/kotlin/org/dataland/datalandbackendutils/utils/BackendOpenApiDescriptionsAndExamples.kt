@@ -5,7 +5,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_NAME_EXAMPLE = "ABC Corporation"
 
     const val COMPANY_ALTERNATIVE_NAMES_DESCRIPTION = "Any alternative names or abbreviations the company might be known by."
-    const val COMPANY_ALTERNATIVE_NAMES_EXAMPLE = "\n[\"ABC Corp.\"\n]"
+    const val COMPANY_ALTERNATIVE_NAMES_EXAMPLE = "[\"ABC Corp.\"]"
 
     const val COMPANY_CONTACT_DETAILS_DESCRIPTION = "The email addresses of the company."
     const val COMPANY_CONTACT_DETAILS_EXAMPLE = "\n[\"contact@abccorp.com\"\n]"
@@ -110,6 +110,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val IS_ONLY_ACTIVE_EXAMPLE = "true"
 
     const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
+    const val ALL_UPLOADER_USER_IDS_EXAMPLE = "[\"$UPLOADER_USER_ID_EXAMPLE\"]"
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION =
         "Boolean parameter. If set to true or empty, only metadata of QA reports " +

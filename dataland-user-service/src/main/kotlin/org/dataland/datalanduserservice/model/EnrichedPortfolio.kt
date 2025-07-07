@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.UsersOpenApiDescriptionsAndExamples
 
@@ -42,9 +43,13 @@ data class EnrichedPortfolio(
     )
     val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION,
+                example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE,
+            ),
     )
     val monitoredFrameworks: Set<String>?,
 )

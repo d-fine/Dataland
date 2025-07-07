@@ -20,7 +20,16 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.utils.AccessStatusParameter
+import org.dataland.datalandcommunitymanager.utils.AdminCommentParameter
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandcommunitymanager.utils.DataTypeParameter
+import org.dataland.datalandcommunitymanager.utils.DatalandCompanyIdParameter
+import org.dataland.datalandcommunitymanager.utils.ReportingPeriodParameter
+import org.dataland.datalandcommunitymanager.utils.RequestPriorityParameter
+import org.dataland.datalandcommunitymanager.utils.RequestStatusParameter
+import org.dataland.datalandcommunitymanager.utils.UserEmailAddressParameter
+import org.dataland.datalandcommunitymanager.utils.UserIdParameter
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -103,17 +112,10 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAggregatedOpenDataRequests(
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            required = false,
-        )
+        @DataTypeParameter
         dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameter
         reportingPeriod: String? = null,
         @RequestParam
         @Parameter(
@@ -152,10 +154,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
         @RequestParam(required = false)
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
-        )
+        @UserIdParameter
         userId: String? = null,
     ): ResponseEntity<SingleDataRequestResponse>
 
@@ -252,63 +251,31 @@ interface RequestApi {
     )
     fun getDataRequests(
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            required = false,
-        )
+        @DataTypeParameter
         dataType: Set<DataTypeEnum>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
-            required = false,
-        )
+        @UserIdParameter
         userId: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
-            required = false,
-        )
+        @UserEmailAddressParameter
         emailAddress: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
-            required = false,
-        )
+        @AdminCommentParameter
         adminComment: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_STATUS_DESCRIPTION,
-            required = false,
-        )
+        @RequestStatusParameter
         requestStatus: Set<RequestStatus>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
-            required = false,
-        )
+        @AccessStatusParameter
         accessStatus: Set<AccessStatus>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
-            required = false,
-        )
+        @RequestPriorityParameter
         requestPriority: Set<RequestPriority>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameter
         reportingPeriod: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = false,
-        )
+        @DatalandCompanyIdParameter
         datalandCompanyId: String?,
         @RequestParam(defaultValue = "100")
         @Parameter(
@@ -356,63 +323,31 @@ interface RequestApi {
     )
     fun getNumberOfRequests(
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            required = false,
-        )
+        @DataTypeParameter
         dataType: Set<DataTypeEnum>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
-            required = false,
-        )
+        @UserIdParameter
         userId: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
-            required = false,
-        )
+        @UserEmailAddressParameter
         emailAddress: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
-            required = false,
-        )
+        @AdminCommentParameter
         adminComment: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_STATUS_DESCRIPTION,
-            required = false,
-        )
+        @RequestStatusParameter
         requestStatus: Set<RequestStatus>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
-            required = false,
-        )
+        @AccessStatusParameter
         accessStatus: Set<AccessStatus>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
-            required = false,
-        )
+        @RequestPriorityParameter
         requestPriority: Set<RequestPriority>?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameter
         reportingPeriod: String?,
         @RequestParam
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = false,
-        )
+        @DatalandCompanyIdParameter
         datalandCompanyId: String?,
     ): ResponseEntity<Int>
 

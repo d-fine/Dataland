@@ -17,7 +17,7 @@ object UsersOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_LAST_UPDATE_TIMESTAMP_EXAMPLE = PORTFOLIO_CREATION_TIMESTAMP_EXAMPLE
 
     const val PORTFOLIO_COMPANY_IDS_DESCRIPTION = "A list of company IDs that are contained in the portfolio."
-    const val PORTFOLIO_COMPANY_IDS_EXAMPLE = "\n[\"${BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"\n]"
+    const val PORTFOLIO_COMPANY_IDS_EXAMPLE = "[\"${BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"]"
 
     const val PORTFOLIO_IS_MONITORED_DESCRIPTION = "Boolean flag that indicates whether the portfolio is monitored."
     const val PORTFOLIO_IS_MONITORED_EXAMPLE = "true"
@@ -28,7 +28,7 @@ object UsersOpenApiDescriptionsAndExamples {
 
     const val PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION =
         "A list of frameworks for which the companies in the portfolio are actively monitored."
-    const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "\n[\"${BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"\n]"
+    const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"]"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =
