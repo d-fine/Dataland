@@ -62,10 +62,7 @@
             }
           },
           "403": {
-            "description": "Only admins can impersonate another user.",
-            "content": {
-              "application/json": {}
-            }
+            "description": "Only admins can impersonate another user."
           },
           "default": {
             "description": "An error occurred",

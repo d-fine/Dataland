@@ -87,8 +87,7 @@ interface DocumentApi {
                 description = "You do not have the right to update the document's metainformation.",
                 content = [
                     Content(
-                        mediaType = "application/json",
-                        examples = [],
+                        schema = Schema(),
                     ),
                 ],
             ),
@@ -97,8 +96,7 @@ interface DocumentApi {
                 description = "Document ID does not match any stored document.",
                 content = [
                     Content(
-                        mediaType = "application/json",
-                        examples = [],
+                        schema = Schema(),
                     ),
                 ],
             ),
@@ -146,8 +144,7 @@ interface DocumentApi {
                 description = "You do not have the right to update the companyIds field.",
                 content = [
                     Content(
-                        mediaType = "application/json",
-                        examples = [],
+                        schema = Schema(),
                     ),
                 ],
             ),
@@ -156,8 +153,7 @@ interface DocumentApi {
                 description = "Document ID does not match any stored document.",
                 content = [
                     Content(
-                        mediaType = "application/json",
-                        examples = [],
+                        schema = Schema(),
                     ),
                 ],
             ),
@@ -282,8 +278,7 @@ interface DocumentApi {
                 description = "Document meta information could not be retrieved.",
                 content = [
                     Content(
-                        mediaType = "application/json",
-                        examples = [],
+                        schema = Schema(),
                     ),
                 ],
             ),
@@ -338,8 +333,7 @@ interface DocumentApi {
                         "that the chunk index is within bounds (when in doubt, use chunk index 0).",
                 content = [
                     Content(
-                        mediaType = "application/json",
-                        examples = [],
+                        schema = Schema(),
                     ),
                 ],
             ),
