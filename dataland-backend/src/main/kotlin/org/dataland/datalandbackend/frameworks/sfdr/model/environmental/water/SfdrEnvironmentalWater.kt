@@ -17,17 +17,16 @@ data class SfdrEnvironmentalWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Emissions to water in tonnes (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See  Regulation (EU) 2022/1288, Annex I, top (12).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -36,17 +35,16 @@ data class SfdrEnvironmentalWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Amount of water consumed by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -55,17 +53,16 @@ data class SfdrEnvironmentalWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Amount of water recycled and reused by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.2 .""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -74,17 +71,16 @@ data class SfdrEnvironmentalWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Amount in cubic meters of fresh water used per million EUR revenue. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -92,17 +88,16 @@ data class SfdrEnvironmentalWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have policies and procedures for water management? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.) If yes, please share the relevant documents with us.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -110,17 +105,16 @@ data class SfdrEnvironmentalWater(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy? See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

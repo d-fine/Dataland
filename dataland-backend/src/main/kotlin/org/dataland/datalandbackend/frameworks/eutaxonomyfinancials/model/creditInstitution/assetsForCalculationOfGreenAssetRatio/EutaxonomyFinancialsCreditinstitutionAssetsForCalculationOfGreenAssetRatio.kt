@@ -14,114 +14,102 @@ data class EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAsset
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalGrossCarryingAmount: CurrencyDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total amount of assets which are Taxonomy-eligible for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible: CurrencyDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total amount of assets which are Taxonomy-aligned for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned: CurrencyDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total amount of Taxonomy-aligned assets which are Use of Proceeds for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds: CurrencyDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total amount of Taxonomy-aligned assets which are Transitional for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional: CurrencyDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total amount of Taxonomy-aligned assets which are Enabling for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling: CurrencyDataPoint? = null,
 )

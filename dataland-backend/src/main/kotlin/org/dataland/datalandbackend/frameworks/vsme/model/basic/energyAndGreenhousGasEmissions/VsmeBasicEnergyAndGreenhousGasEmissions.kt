@@ -20,17 +20,16 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Please disclose your total energy consumption in MWh (in the reporting period) for electricity as reflected in utility billings. If available distinguish between renewable and nonrenewable sources.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -51,17 +50,16 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
     @field:Schema(
         description = """Please disclose your estimated gross greenhouse gas (GHG) emissions in tons of CO2 equivalents (tCO2eq) considering the content of the GHG Protocol Corporate Standard.
 (a) total GHG emissions in tCO2eq""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -69,17 +67,16 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """(b) the Scope 1 GHG emissions in tCO2eq (from owned or controlled sources)""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -87,17 +84,16 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """(c) the Scope 2 emissions in tCO2eq (i.e., emissions from the generation of purchased energy)""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -105,17 +101,16 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """(d) Scope 3 emissions, in case you can provide them""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

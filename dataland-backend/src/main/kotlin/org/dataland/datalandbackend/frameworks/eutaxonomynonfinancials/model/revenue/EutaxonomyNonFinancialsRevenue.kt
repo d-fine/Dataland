@@ -26,19 +26,17 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total revenue per annum""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val totalAmount: CurrencyDataPoint? = null,
     @field:Valid()
@@ -50,9 +48,8 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible""",
-        example = """
-            {
-            "value" :   [ {
+        example = """{
+      "value" : [{
       "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
       "naceCodes" : [ "E.38.11" ],
       "share" : {
@@ -82,15 +79,15 @@ data class EutaxonomyNonFinancialsRevenue(
           "currency" : "EUR"
         }
       }
-    } ] , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+    }], 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -100,17 +97,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of revenue substantially contributing to climate change mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -118,17 +114,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -136,17 +131,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -154,17 +148,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -172,17 +165,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and transitional proportion of revenue substantially contributing to climate change mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -190,17 +182,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -208,17 +199,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -226,17 +216,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -244,17 +233,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -262,17 +250,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -281,17 +268,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -300,17 +286,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -319,17 +304,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -338,17 +322,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of revenue substantially contributing to circular economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -356,17 +339,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of revenue substantially contributing to circular economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -374,17 +356,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to circular economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -392,17 +373,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -410,17 +390,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of revenue substantially contributing to pollution prevention and control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -428,17 +407,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of revenue substantially contributing to pollution prevention and control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -446,17 +424,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -464,17 +441,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of revenue substantially contributing to pollution prevention and control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -482,17 +458,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-eligible proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -501,17 +476,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -520,17 +494,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -539,17 +512,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -558,9 +530,7 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Absolute value and share of the revenue per activity that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards""",
-        example = """
-            {
-            "value" :  [ {
+        example = """[{
       "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
       "naceCodes" : [ "E.38.11" ],
       "share" : {
@@ -610,33 +580,23 @@ data class EutaxonomyNonFinancialsRevenue(
       "minimumSafeguards" : "Yes",
       "enablingActivity" : "No",
       "transitionalActivity" : "Yes"
-    } ] , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
-    } """,
+    }] """,
     )
     @field:Valid()
     val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -644,17 +604,16 @@ data class EutaxonomyNonFinancialsRevenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

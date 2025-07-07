@@ -17,35 +17,32 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount: CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -53,17 +50,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -71,17 +67,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -90,17 +85,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -109,17 +103,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -127,17 +120,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -145,17 +137,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -164,17 +155,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -183,17 +173,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -202,17 +191,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -221,17 +209,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -239,17 +226,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -257,17 +243,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -275,17 +260,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -294,17 +278,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -312,17 +295,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -331,17 +313,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -350,17 +331,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -369,17 +349,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -388,17 +367,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -407,17 +385,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -426,17 +403,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -445,17 +421,16 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBa
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

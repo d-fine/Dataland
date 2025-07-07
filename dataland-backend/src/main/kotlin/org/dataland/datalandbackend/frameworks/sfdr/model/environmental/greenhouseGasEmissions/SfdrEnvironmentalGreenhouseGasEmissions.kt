@@ -15,17 +15,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -33,17 +32,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -51,17 +49,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -69,17 +66,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -87,17 +83,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -105,17 +100,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -123,17 +117,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -141,17 +134,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -159,17 +151,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -177,17 +168,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -195,17 +185,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -213,17 +202,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -231,17 +219,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -249,17 +236,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -267,17 +253,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). """,
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -285,17 +270,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total revenue in EUR for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -303,17 +287,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of GHG emissions per million EUR enterprise value.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -321,17 +304,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -339,17 +321,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -357,17 +338,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -375,17 +355,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -393,17 +372,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Tonnes of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -411,17 +389,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels? (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -429,17 +406,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The sum of scope 1 and scope 2 emissions of financed companies.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -447,17 +423,16 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The scope 3 emissions of financed companies.""",
-        example = """
-            {
-            "value" : 100.5, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

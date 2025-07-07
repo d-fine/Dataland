@@ -69,21 +69,21 @@ Hier sollte darauf eingangen werden, ob die Methodik alle drei Bereiche abdeckt 
         description = """Welche Quellen werden für die Datenerhebung verwendet?
 Angabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.""",
         example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					] """,
+      {
+        "value": "lifetime value",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+        }
+      },
+      {
+        "value": "technologies",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+        }
+      }
+    ] """,
     )
     val datenquellen: List<BaseDataPoint<String>>? = null,
     @Suppress("ktlint:standard:max-line-length")
@@ -190,21 +190,21 @@ Angaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten und kurzfristige r
     @field:Schema(
         description = """Welche Quellen werden für die Erhebung der PAIs verwendet?""",
         example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					] """,
+      {
+        "value": "lifetime value",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+        }
+      },
+      {
+        "value": "technologies",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+        }
+      }
+    ] """,
     )
     val quelleDerPaiSammlung: List<BaseDataPoint<String>>? = null,
     @Suppress("ktlint:standard:max-line-length")
@@ -230,21 +230,21 @@ Angaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten und kurzfristige r
     @field:Schema(
         description = """Welche Quellen werden zur Erfassung von Kontroversen genutzt?""",
         example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					] """,
+      {
+        "value": "lifetime value",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+        }
+      },
+      {
+        "value": "technologies",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+        }
+      }
+    ] """,
     )
     val quellenZurErfassungVonKontroversen: List<BaseDataPoint<String>>? = null,
 )

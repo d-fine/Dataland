@@ -14,9 +14,8 @@ data class NuclearAndGasGeneralTaxonomyAlignedNumerator(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - Revenue-based""",
-        example = """
-            {
-            "value" : {
+        example = """{
+      "value" : {
       "taxonomyAlignedShareNumeratorNAndG426" : {
         "mitigationAndAdaptation" : 5,
         "mitigation" : 6,
@@ -58,14 +57,14 @@ data class NuclearAndGasGeneralTaxonomyAlignedNumerator(
         "adaptation" : 100
       }
     }, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -73,9 +72,8 @@ data class NuclearAndGasGeneralTaxonomyAlignedNumerator(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - CapEx-based""",
-        example = """
-            {
-            "value" : {
+        example = """{
+      "value" : {
       "taxonomyAlignedShareNumeratorNAndG426" : {
         "mitigationAndAdaptation" : 5,
         "mitigation" : 6,
@@ -117,14 +115,14 @@ data class NuclearAndGasGeneralTaxonomyAlignedNumerator(
         "adaptation" : 100
       }
     }, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

@@ -12,73 +12,65 @@ data class AdditionalCompanyInformationGeneralFinancialInformation(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The value of ownership interest in the company, calculated as total assets minus total liabilities.""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val equity: CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The total amount of all financial obligations the company owes to external parties, including loans, bonds, and other forms of debt.""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val debt: CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The sum of all assets listed on the balance sheet, representing the total value of the company's resources.""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val balanceSheetTotal: CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Enterprise Value Including Cash""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val evic: CurrencyDataPoint? = null,
 )

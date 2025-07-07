@@ -16,17 +16,16 @@ data class EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUnder
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - Turnover-based in Percent.""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -34,17 +33,16 @@ data class EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUnder
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - CapEx-based in Percent.""",
-        example = """
-            {
-            "value" : 13.52, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -53,38 +51,34 @@ data class EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUnder
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities, with following weights for investments in undertakings - Turnover based monetary amount.""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount: CurrencyDataPoint? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities, with following weights for investments in undertakings - CapEx-based monetary amount.""",
-        example = """
-        {
-        "value" : 100.5,
-        "currency" : "USD",
-        "quality" : "Reported",
-        "comment" : "The value is reported by the company.",
-        "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-        }
-     """,
+        example = """{
+      "value" : 100.5,
+      "currency" : "USD",
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    } """,
     )
     val weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount: CurrencyDataPoint? = null,
 )

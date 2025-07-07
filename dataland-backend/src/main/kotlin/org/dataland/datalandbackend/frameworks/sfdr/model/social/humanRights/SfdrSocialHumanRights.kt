@@ -16,17 +16,16 @@ data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have a human rights policy? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.) If yes, please share the policy with us.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -34,17 +33,16 @@ data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -52,17 +50,16 @@ data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have a policy against trafficking in human beings? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.)  If yes, please share the policy with us.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -70,17 +67,16 @@ data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have reported incidents of child labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -88,17 +84,16 @@ data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.""",
-        example = """
-            {
-            "value" :  "Yes" , 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()
@@ -107,17 +102,16 @@ data class SfdrSocialHumanRights(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Number of cases of severe human rights issues and incidents connected to the company. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 14. """,
-        example = """
-            {
-            "value" : 100, 
-            "quality" : "Reported",
-            "comment" : "The value is reported by the company."
-            "dataSource" : {
-            "page" : "5-7",
-            "tagName" : "monetaryAmount",
-            "fileName" : "AnnualReport2020.pdf",
-            "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-            }
+        example = """{
+      "value" : 100, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
     } """,
     )
     @field:Valid()

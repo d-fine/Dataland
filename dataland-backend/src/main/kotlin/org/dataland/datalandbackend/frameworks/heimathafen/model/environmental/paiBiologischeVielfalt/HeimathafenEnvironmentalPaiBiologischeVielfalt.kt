@@ -51,21 +51,21 @@ Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erken
         description = """Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.""",
         example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					] """,
+      {
+        "value": "lifetime value",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+        }
+      },
+      {
+        "value": "technologies",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+        }
+      }
+    ] """,
     )
     val datenquellen: List<BaseDataPoint<String>>? = null,
 )

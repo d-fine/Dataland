@@ -24,21 +24,21 @@ data class EsgDatenkatalogAllgemeinGenerelleEsgStrategie(
     @field:Schema(
         description = """Bitte hängen Sie Ihre Nachhaltigkeitsstrategie an. Nachhaltigkeit in diesem Sinne umfasst die Themen Umwelt (E), Soziales (S) und Unternehmensführung (G). Sie können mehrere Dokumente anhängen und pro Dokument eine Beschreibung angeben.""",
         example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					] """,
+      {
+        "value": "lifetime value",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+        }
+      },
+      {
+        "value": "technologies",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+        }
+      }
+    ] """,
     )
     val dokumenteZurNachhaltigkeitsstrategie: List<BaseDataPoint<String>>? = null,
     @Suppress("ktlint:standard:max-line-length")

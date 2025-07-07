@@ -16,21 +16,21 @@ data class VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUser
     @field:Schema(
         description = """Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.""",
         example = """[
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-							}
-						}
-					] """,
+      {
+        "value": "lifetime value",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+        }
+      },
+      {
+        "value": "technologies",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+        }
+      }
+    ] """,
     )
     val negativeEffects: List<BaseDataPoint<String>>? = null,
     @Suppress("ktlint:standard:max-line-length")
