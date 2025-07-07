@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import java.time.LocalDate
 
 /**
@@ -47,8 +48,8 @@ data class DocumentMetaInfoPatch(
     )
     override val publicationDate: LocalDate?,
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     override val reportingPeriod: String?,
 ) : BasicDocumentMetaInfo {

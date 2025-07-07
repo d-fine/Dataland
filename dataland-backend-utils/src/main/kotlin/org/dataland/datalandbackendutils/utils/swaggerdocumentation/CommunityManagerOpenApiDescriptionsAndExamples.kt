@@ -1,21 +1,6 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object CommunityManagerOpenApiDescriptionsAndExamples {
-    const val DATA_TYPE_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION
-    const val DATA_TYPE_EXAMPLE = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE
-
-    const val REPORTING_PERIOD_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION
-    const val REPORTING_PERIOD_EXAMPLE = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE
-
-    const val COMPANY_ID_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION
-    const val COMPANY_ID_EXAMPLE = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE
-
-    const val COMPANY_NAME_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION
-    const val COMPANY_NAME_EXAMPLE = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE
-
-    const val COMPANY_IDENTIFIER_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION
-    const val COMPANY_IDENTIFIER_EXAMPLE = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE
-
     const val REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
     const val TIMESTAMP_EXAMPLE = "1751291892373"
 
@@ -67,7 +52,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val ALREADY_EXISTING_DATASETS_DESCRIPTION = "Contains information about all already existing data sets"
 
     const val REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION = "Contains all company identifiers that were rejected by Dataland"
-    const val REJECTED_COMPANY_IDENTIFIERS_EXAMPLE = "[\"$COMPANY_IDENTIFIER_EXAMPLE\"]"
+    const val REJECTED_COMPANY_IDENTIFIERS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE}\"]"
 
     const val USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
     const val USER_EMAIL_ADDRESS_EXAMPLE = "test@example.com"
@@ -113,9 +98,6 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val ANSWERING_DATA_ID_DESCRIPTION = "The data ID of the data set that answered the request."
     const val ANSWERING_DATA_ID_EXAMPLE = "9a73f4cd-2b68-401e-a8c5-d01b57e8f924"
 
-    const val CHUNK_SIZE_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION
-    const val CHUNK_INDEX_DESCRIPTION = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION
-
     const val AGGREGATED_DATA_REQUEST_PRIORITY_DESCRIPTION =
         "The aggregated data request priority."
 
@@ -131,7 +113,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val USER_PROVIDED_IDENTIFIER_DESCRIPTION =
         "The identifier (e.g., Dataland company ID or LEI) through which the user specified the respective company."
-    const val USER_PROVIDED_IDENTIFIER_EXAMPLE = COMPANY_IDENTIFIER_EXAMPLE
+    const val USER_PROVIDED_IDENTIFIER_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE
 
     const val RESOURCE_ID_DESCRIPTION =
         "A unique identifier for identifying a resource on Dataland. In case of newly created or duplicate open requests, " +

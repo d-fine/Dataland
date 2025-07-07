@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -18,14 +19,14 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityMan
 data class SingleDataRequest(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_IDENTIFIER_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_IDENTIFIER_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE,
     )
     val companyIdentifier: String,
     @field:JsonProperty(required = true)
     @field:Schema(
         implementation = DataTypeEnum::class,
-        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
     )
     val dataType: DataTypeEnum,
     @field:JsonProperty(required = true)

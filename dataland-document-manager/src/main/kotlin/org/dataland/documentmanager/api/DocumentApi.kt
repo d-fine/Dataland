@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
@@ -375,16 +376,14 @@ interface DocumentApi {
         reportingPeriod: String? = null,
         @Parameter(
             name = "chunkSize",
-            description = DocumentOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.CHUNK_SIZE_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         @RequestParam
         chunkSize: Int = 100,
         @Parameter(
             name = "chunkIndex",
-            description = DocumentOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.CHUNK_INDEX_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         @RequestParam

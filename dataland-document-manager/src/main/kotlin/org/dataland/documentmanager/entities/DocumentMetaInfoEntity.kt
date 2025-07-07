@@ -17,6 +17,7 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -69,8 +70,8 @@ data class DocumentMetaInfoEntity(
     )
     val uploaderId: String,
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.UPLOAD_TIME_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
     )
     val uploadTime: Long,
     @field:Schema(
@@ -79,14 +80,13 @@ data class DocumentMetaInfoEntity(
     )
     var publicationDate: LocalDate?,
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     var reportingPeriod: String?,
     @Enumerated(EnumType.STRING)
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.QA_STATUS_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     var qaStatus: QaStatus,
 ) {

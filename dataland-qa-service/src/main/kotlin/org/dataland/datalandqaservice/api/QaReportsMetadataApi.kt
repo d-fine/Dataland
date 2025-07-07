@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
@@ -65,7 +66,7 @@ interface QaReportsMetadataApi {
         showOnlyActive: Boolean,
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus? = null,
@@ -87,8 +88,8 @@ interface QaReportsMetadataApi {
         maxUploadDate: LocalDate? = null,
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE,
             required = false,
         )
         companyIdentifier: String?,

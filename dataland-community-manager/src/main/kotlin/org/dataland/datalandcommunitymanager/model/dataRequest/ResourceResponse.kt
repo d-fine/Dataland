@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -18,20 +19,20 @@ data class ResourceResponse(
     val userProvidedIdentifier: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
     )
     val framework: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     val reportingPeriod: String,
     @field:JsonProperty(required = true)

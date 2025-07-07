@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UsersOpenApiDescriptionsAndExamples
 
 /**
@@ -12,14 +13,14 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UsersOpenApi
 data class EnrichedPortfolioEntry(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     val companyId: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
     @field:JsonProperty(required = false)

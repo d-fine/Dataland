@@ -2,15 +2,6 @@ package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.Parameter
 
-/** * DataType annotation */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-    required = false,
-)
-annotation class DataTypeParameterNonRequired
-
 /** * UserId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
@@ -68,26 +59,6 @@ annotation class AccessStatusParameterNonRequired
 )
 annotation class RequestPriorityParameterNonRequired
 
-/** * ReportingPeriod annotation */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-    required = false,
-)
-annotation class ReportingPeriodParameterNonRequired
-
-/** * DatalandCompanyId annotation */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-    required = false,
-)
-annotation class CompanyIdParameterNonRequired
-
 /** * DataRequestId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
@@ -97,16 +68,6 @@ annotation class CompanyIdParameterNonRequired
     required = true,
 )
 annotation class DataRequestIdParameterRequired
-
-/** * CompanyId annotation */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-    required = true,
-)
-annotation class CompanyIdParameterRequired
 
 /** * CompanyRole annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)

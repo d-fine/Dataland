@@ -23,6 +23,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CountryCodeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.SectorParameterNonRequired
@@ -115,13 +116,13 @@ interface CompanyApi {
         sectors: Set<String>? = null,
         @RequestParam(defaultValue = "100")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         chunkSize: Int? = null,
         @RequestParam(defaultValue = "0")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         chunkIndex: Int? = null,

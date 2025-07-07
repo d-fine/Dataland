@@ -14,6 +14,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityMan
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestStatusParameterNonRequired
@@ -273,13 +274,13 @@ interface RequestApi {
         datalandCompanyId: String?,
         @RequestParam(defaultValue = "100")
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         chunkSize: Int,
         @RequestParam(defaultValue = "0")
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         chunkIndex: Int,
@@ -371,18 +372,18 @@ interface RequestApi {
     )
     fun hasAccessToDataset(
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
         )
         @PathVariable("dataType") dataType: String,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
         )
         @PathVariable("reportingPeriod") reportingPeriod: String,
         @Parameter(

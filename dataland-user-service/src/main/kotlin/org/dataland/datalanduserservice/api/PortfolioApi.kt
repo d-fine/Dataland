@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UsersOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
@@ -124,13 +124,13 @@ interface PortfolioApi {
     fun getAllPortfolios(
         @RequestParam(defaultValue = "100")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         chunkSize: Int,
         @RequestParam(defaultValue = "0")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         chunkIndex: Int,

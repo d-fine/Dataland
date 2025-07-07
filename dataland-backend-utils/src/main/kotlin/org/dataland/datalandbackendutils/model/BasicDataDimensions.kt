@@ -2,7 +2,7 @@ package org.dataland.datalandbackendutils.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.interfaces.DataDimensions
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * Data class that contains an instance of the abstract data dimensions
@@ -12,18 +12,18 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
  */
 data class BasicDataDimensions(
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     override val companyId: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
     )
     override val dataType: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     override val reportingPeriod: String,
 ) : DataDimensions {

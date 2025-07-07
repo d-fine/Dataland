@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repo
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -21,8 +22,8 @@ data class QaReportMetaInformation(
     val dataId: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
     )
     val dataType: String,
     @field:JsonProperty(required = true)

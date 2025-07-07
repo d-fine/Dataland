@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterRequired
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
@@ -102,8 +103,8 @@ interface CompanyRolesApi {
         companyRole: CompanyRole? = null,
         @RequestParam("companyId")
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         companyId: UUID? = null,
@@ -149,8 +150,8 @@ interface CompanyRolesApi {
         )
         @PathVariable("role") companyRole: CompanyRole,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
@@ -201,8 +202,8 @@ interface CompanyRolesApi {
         )
         @PathVariable("role") companyRole: CompanyRole,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
@@ -235,8 +236,8 @@ interface CompanyRolesApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyOwnershipRequest(
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
@@ -274,8 +275,8 @@ interface CompanyRolesApi {
     )
     fun hasCompanyAtLeastOneOwner(
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,

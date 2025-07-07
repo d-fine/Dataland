@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -31,14 +32,14 @@ data class DataPointMetaInformation(
     override val dataPointType: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     override val companyId: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     override val reportingPeriod: String,
     @field:Schema(
@@ -48,8 +49,8 @@ data class DataPointMetaInformation(
     val uploaderUserId: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.UPLOAD_TIME_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
     )
     val uploadTime: Long,
     @field:Schema(
@@ -58,7 +59,7 @@ data class DataPointMetaInformation(
     )
     val currentlyActive: Boolean,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     val qaStatus: QaStatus,
 ) : DataPointDimensions

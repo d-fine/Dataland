@@ -21,6 +21,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdPar
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -90,7 +91,7 @@ interface MetaDataApi {
         uploaderUserIds: Set<UUID>? = null,
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus? = null,
@@ -310,14 +311,14 @@ interface MetaDataApi {
         @PathVariable("companyId") companyId: String,
         @Parameter(
             name = "dataType",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
             required = true,
         )
         @PathVariable("dataType") dataType: DataType,
         @Parameter(
             name = "reportingPeriod",
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
             required = true,
         )
         @PathVariable("reportingPeriod") reportingPeriod: String,

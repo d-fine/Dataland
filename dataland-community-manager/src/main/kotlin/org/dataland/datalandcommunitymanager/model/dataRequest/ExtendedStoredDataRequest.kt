@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 
 /**
@@ -41,23 +42,23 @@ data class ExtendedStoredDataRequest(
     )
     val creationTimestamp: Long,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
     )
     val dataType: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     val reportingPeriod: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     val datalandCompanyId: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
     @field:Schema(

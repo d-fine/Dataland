@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 
 /**
@@ -16,23 +17,23 @@ data class QaReviewResponse(
     )
     val dataId: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     val companyId: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
     )
     val companyName: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
     )
     val framework: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     val reportingPeriod: String,
     @field:Schema(
@@ -41,7 +42,7 @@ data class QaReviewResponse(
     )
     val timestamp: Long,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     var qaStatus: QaStatus,
     @field:Schema(

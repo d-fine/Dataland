@@ -22,9 +22,6 @@ object DocumentOpenApiDescriptionsAndExamples {
             "'yyyy-MM-dd'."
     const val PUBLICATION_DATE_EXAMPLE = "2024-02-13"
 
-    const val REPORTING_PERIOD_DESCRIPTION = "The reporting period the document belongs to (e.g. a fiscal year)."
-    const val REPORTING_PERIOD_EXAMPLE = "2023"
-
     const val DOCUMENT_ID_DESCRIPTION =
         "The ID under which the document can be found on Dataland. It is contained in the HTTP response " +
             "after posting a new document and is a SHA-256 value."
@@ -36,15 +33,6 @@ object DocumentOpenApiDescriptionsAndExamples {
 
     const val DOCUMENT_TYPE_DESCRIPTION = "The file type of the document."
     const val DOCUMENT_TYPE_EXAMPLE = "Pdf"
-
-    const val UPLOAD_TIME_DESCRIPTION =
-        "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
-    const val UPLOAD_TIME_EXAMPLE =
-        "1751291891271"
-
-    const val QA_STATUS_DESCRIPTION =
-        "The status of the document with regard to Dataland's Quality Assurance process."
-    const val QA_STATUS_EXAMPLE = "Accepted"
 
     const val ADDED_COMPANY_ID_DESCRIPTION =
         "Dataland ID of the company to newly associate with the document."
@@ -63,17 +51,4 @@ object DocumentOpenApiDescriptionsAndExamples {
         "If specified, only returns meta information of documents associated with this reporting" +
             "period (e.g., fiscal year)."
     const val REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE = "2024"
-
-    const val CHUNK_SIZE_DESCRIPTION =
-        "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
-            "of a single chunk. All chunks except possibly the last will have that size. The default " +
-            "value is 100."
-    const val CHUNK_SIZE_EXAMPLE = "50"
-
-    const val CHUNK_INDEX_DESCRIPTION =
-        "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the " +
-            "returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by " +
-            "default, the first chunk (containing the meta information of the latest published documents) is " +
-            "returned."
-    const val CHUNK_INDEX_EXAMPLE = "0"
 }

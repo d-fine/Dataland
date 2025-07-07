@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.springframework.http.ResponseEntity
@@ -45,42 +46,42 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "dataTypes",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
             required = false,
         )
         dataTypes: Set<DataTypeEnum>?,
         @RequestParam
         @Parameter(
             name = "reportingPeriods",
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
             required = false,
         )
         reportingPeriods: Set<String>?,
         @RequestParam
         @Parameter(
             name = "companyName",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
             required = false,
         )
         companyName: String?,
         @RequestParam(defaultValue = "Pending")
         @Parameter(
             name = "qaStatus",
-            description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus,
         @RequestParam(defaultValue = "10")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         chunkSize: Int,
         @RequestParam(defaultValue = "0")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         chunkIndex: Int,
@@ -153,7 +154,7 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = true,
         )
         qaStatus: QaStatus,
@@ -200,23 +201,23 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "dataTypes",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
             required = false,
         )
         dataTypes: Set<DataTypeEnum>?,
         @RequestParam
         @Parameter(
             name = "reportingPeriods",
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
             required = false,
         )
         reportingPeriods: Set<String>?,
         @RequestParam
         @Parameter(
             name = "companyName",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
             required = false,
         )
         companyName: String?,
@@ -243,30 +244,30 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "companyName",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
             required = false,
         )
         companyId: String?,
         @RequestParam
         @Parameter(
             name = "dataType",
-            description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
             required = false,
         )
         dataType: String?,
         @RequestParam
         @Parameter(
             name = "reportingPeriod",
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
             required = false,
         )
         reportingPeriod: String?,
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus?,
@@ -278,13 +279,13 @@ interface QaApi {
         showOnlyActive: Boolean,
         @RequestParam(defaultValue = "10")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
         )
         chunkSize: Int,
         @RequestParam(defaultValue = "0")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
             required = false,
         )
         chunkIndex: Int,
@@ -357,7 +358,7 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = BackendOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = true,
         )
         qaStatus: QaStatus,

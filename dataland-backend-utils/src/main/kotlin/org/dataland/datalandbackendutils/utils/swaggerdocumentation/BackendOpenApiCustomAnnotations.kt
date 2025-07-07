@@ -1,13 +1,12 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.Parameter
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /** * DataType annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = BackendOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+    description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
     required = false,
 )
 annotation class DataTypeParameterNonRequired
@@ -37,8 +36,8 @@ annotation class SectorParameterNonRequired
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
     name = "companyId",
-    description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-    example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+    example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     required = true,
 )
 annotation class CompanyIdParameterRequired
@@ -58,8 +57,8 @@ annotation class IdentifierTypeParameterRequired
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
     name = "identifier",
-    description = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_DESCRIPTION,
-    example = BackendOpenApiDescriptionsAndExamples.SINGLE_IDENTIFIER_EXAMPLE,
+    description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_DESCRIPTION,
+    example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE,
     required = true,
 )
 annotation class IdentifierParameterRequired
@@ -68,8 +67,8 @@ annotation class IdentifierParameterRequired
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-    example = BackendOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+    example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     required = false,
 )
 annotation class CompanyIdParameterNonRequired
@@ -78,8 +77,8 @@ annotation class CompanyIdParameterNonRequired
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-    example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+    example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     required = false,
 )
 annotation class ReportingPeriodParameterNonRequired
