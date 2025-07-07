@@ -45,7 +45,7 @@
 
               <FrameworkDataSearchFilters
                 id="frameworkDataSearchFilters"
-                class="ml-3 col-8"
+                class="col-8"
                 ref="frameworkDataSearchFilters"
                 :show-heading="!pageScrolled || searchBarToggled"
                 v-model:selected-country-codes="currentFilteredCountryCodes"

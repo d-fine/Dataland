@@ -1,53 +1,25 @@
 <template>
-  <div class="back-button cursor-pointer flex flex-row align-items-center" @click="goBack">
-    <span class="material-icons text-primary">arrow_back_ios</span>
-    <span class="text-primary font-semibold d-letters" title="back_button" :data-test="dataTestMarker">{{
-      label
-    }}</span>
-  </div>
+  <Button
+    icon="pi pi-chevron-left"
+    variant="text"
+    @click="router.back()"
+    data-test="back-button"
+    label="BACK"
+    :pt="{
+      root: {
+        style: 'padding-left: 0',
+      },
+      label: {
+        style: 'font-weight: var(--font-weight-semibold)',
+      },
+      icon: {
+        style: 'font-size: var(--font-size-lg);',
+      },
+    }"
+  />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import router from '@/router';
-
-export default defineComponent({
-  name: 'BackButton',
-  props: {
-    label: {
-      type: String,
-      default: 'BACK',
-    },
-    dataTestMarker: {
-      type: String,
-      default: 'back-button',
-    },
-  },
-  methods: {
-    /**
-     * Performs a go-back operation on the vue router
-     */
-    goBack(): void {
-      router.go(-1);
-    },
-  },
-});
+import Button from 'primevue/button';
 </script>
-
-<style scoped lang="scss">
-.back-button {
-  width: fit-content;
-  @media only screen and (min-width: var(--breakpoint-small)) {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
-.text-primary {
-  color: var(--main-color);
-}
-</style>

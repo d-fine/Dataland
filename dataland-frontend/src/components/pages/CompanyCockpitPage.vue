@@ -277,6 +277,7 @@ export default defineComponent({
   grid-template-columns: 3fr 6fr 30px;
   padding: 40px;
   gap: 40px;
+  background: var(--p-surface-50);
   @media only screen and (max-width: var(--breakpoint-small)) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);

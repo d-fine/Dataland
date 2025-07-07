@@ -40,9 +40,9 @@
 import BackButton from '@/components/general/BackButton.vue';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
+import router from '@/router';
 import { type CompanyInformation } from '@clients/backend';
 import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
-import router from '@/router';
 
 const injectedMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);

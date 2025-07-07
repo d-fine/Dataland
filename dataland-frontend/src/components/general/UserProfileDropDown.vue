@@ -15,7 +15,7 @@
       },
       item: ({ context }) => {
         return {
-          style: context.disabled ? 'display: none' : '',
+          style: `font-weight: var(--font-weight-semibold); ${context.disabled ? 'display: none' : ''}`,
         };
       },
     }"
@@ -113,6 +113,10 @@ const menuItems: Ref<MenuItem[]> = computed(() => [
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .d-triangle-down {
