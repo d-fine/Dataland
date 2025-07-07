@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.utils.UsersOpenApiDescriptionsAndExampl
 /**
  * Boolean flag that indicates whether the portfolio is monitored.
  */
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 @Schema(
     description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_DESCRIPTION,
@@ -18,7 +18,7 @@ annotation class PortfolioIsMonitored
 /**
  * The reporting period from which the companies in the portfolio are actively monitored for data updates.
  */
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Schema(
     description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION,
