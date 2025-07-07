@@ -14,7 +14,6 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.FileInputStream
 import java.io.OutputStream
 
 /**
@@ -91,7 +90,7 @@ class DataExportService
             val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
 
             // Step 2: Write the header row
-            val headerRow = sheet.createRow(HEADER_ROW_INDEX) // First row in the sheet (index 0)
+            val headerRow = sheet.createRow(HEADER_ROW_INDEX)
             orderedColumns.forEachIndexed { colIndex, columnName ->
                 headerRow.createCell(colIndex).setCellValue(columnName)
             }
@@ -107,14 +106,8 @@ class DataExportService
             orderedColumns.forEachIndexed { index, _ ->
                 sheet.autoSizeColumn(index)
             }
-            val tempFile = createTempFile("test_output_", ".xlsx")
-            workbook.write(tempFile.outputStream())
+            workbook.write(outputStream)
             workbook.close()
-
-            val ips = FileInputStream(tempFile.path)
-            val workb = XSSFWorkbook(ips)
-            workb.write(outputStream)
-            workb.close()
         }
 
         /**
