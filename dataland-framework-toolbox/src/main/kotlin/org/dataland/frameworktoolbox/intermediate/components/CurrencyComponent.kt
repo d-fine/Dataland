@@ -28,12 +28,11 @@ class CurrencyComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val annotations = getAnnotationsWithMinMax(EXAMPLE_EXTENDED_CURRENCY_COMPONENT, minimumValue, maximumValue)
 
         dataClassBuilder.addProperty(
             identifier,
             TypeReference("org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint", isNullable),
-            annotations,
+            getAnnotationsWithMinMax(EXAMPLE_EXTENDED_CURRENCY_COMPONENT, minimumValue, maximumValue),
         )
     }
 

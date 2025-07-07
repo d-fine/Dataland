@@ -5,9 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_ISO_COUNTRY_CODES_MULTI_SELECT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -30,14 +28,6 @@ open class Iso2CountryCodesMultiSelectComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val schemaAnnotation =
-            Annotation(
-                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                rawParameterSpec =
-                    "description = \"\"\"${this.uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$EXAMPLE_PLAIN_ISO_COUNTRY_CODES_MULTI_SELECT_COMPONENT \"\"\"",
-                applicationTargetPrefix = "field",
-            )
 
         dataClassBuilder.addProperty(
             this.identifier,
@@ -46,7 +36,10 @@ open class Iso2CountryCodesMultiSelectComponent(
                 isNullable,
                 listOf(TypeReference("String", false)),
             ),
-            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                EXAMPLE_PLAIN_ISO_COUNTRY_CODES_MULTI_SELECT_COMPONENT,
+            ),
         )
     }
 

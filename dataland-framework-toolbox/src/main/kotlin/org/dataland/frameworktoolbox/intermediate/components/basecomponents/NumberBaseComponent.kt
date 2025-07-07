@@ -7,7 +7,6 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWith
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -34,12 +33,15 @@ open class NumberBaseComponent(
             minimumValue != null && maximumValue != null -> {
                 "between:$minimumValue,$maximumValue"
             }
+
             minimumValue != null -> {
                 "min:$minimumValue"
             }
+
             maximumValue != null -> {
                 "max:$maximumValue"
             }
+
             else -> {
                 null
             }
@@ -56,17 +58,9 @@ open class NumberBaseComponent(
         minimumValue: Long?,
         maximumValue: Long?,
     ): List<Annotation> {
-        val schemaAnnotation =
-            Annotation(
-                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                rawParameterSpec =
-                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"$example \"\"\"",
-                applicationTargetPrefix = "field",
-            )
         val annotations =
             getMinMaxDatamodelAnnotations(minimumValue, maximumValue) +
-                listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation)
+                getSchemaAnnotationWithSuppressMaxLineLength(uploadPageExplanation, example)
         return annotations
     }
 
@@ -97,12 +91,15 @@ open class NumberBaseComponent(
             minimumValue != null && maximumValue != null -> {
                 "$minimumValue, $maximumValue"
             }
+
             minimumValue != null -> {
                 "$minimumValue"
             }
+
             maximumValue != null -> {
                 "0, $maximumValue"
             }
+
             else -> {
                 ""
             }

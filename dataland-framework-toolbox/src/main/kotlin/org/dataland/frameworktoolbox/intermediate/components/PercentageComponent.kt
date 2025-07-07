@@ -6,9 +6,7 @@ import org.dataland.frameworktoolbox.intermediate.components.basecomponents.Numb
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -32,20 +30,14 @@ class PercentageComponent(
     override var constantUnitSuffix: String? = "%"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val schemaAnnotation =
-            Annotation(
-                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                rawParameterSpec =
-                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT)} \"\"\"",
-                applicationTargetPrefix = "field",
-            )
-
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
             TypeReference("java.math.BigDecimal", isNullable),
-            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT),
+            ),
         )
     }
 

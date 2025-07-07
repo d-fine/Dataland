@@ -6,7 +6,6 @@ import org.dataland.frameworktoolbox.intermediate.components.basecomponents.Simp
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -22,17 +21,11 @@ class DateComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SimpleKotlinBackedBaseComponent(identifier, parent, "java.time.LocalDate") {
-    override fun getAnnotations(): List<Annotation> {
-        val schemaAnnotation =
-            Annotation(
-                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                rawParameterSpec =
-                    "description = \"\"\"${this.uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_DATE_COMPONENT)} \"\"\"",
-                applicationTargetPrefix = "field",
-            )
-        return listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation)
-    }
+    override fun getAnnotations(): List<Annotation> =
+        getSchemaAnnotationWithSuppressMaxLineLength(
+            uploadPageExplanation,
+            getExample(EXAMPLE_PLAIN_DATE_COMPONENT),
+        )
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
@@ -57,8 +50,7 @@ class DateComponent(
             when (documentSupport) {
                 is NoDocumentSupport -> "DateFormField"
                 is ExtendedDocumentSupport -> "DateExtendedDataPointFormField"
-                else ->
-                    throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
+                else -> throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
             }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
