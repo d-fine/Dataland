@@ -71,13 +71,12 @@
           {
             "name": "chunkSize",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size. The default value is 100.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
               "format": "int32"
-            },
-            "example": 50
+            }
           },
           {
             "name": "chunkIndex",
@@ -87,8 +86,7 @@
             "schema": {
               "type": "integer",
               "format": "int32"
-            },
-            "example": 0
+            }
           }
         ],
         "responses": {
@@ -1061,8 +1059,7 @@
       },
       "QaStatus": {
         "type": "string",
-        "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
-        "example": "Accepted",
+        "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
         "enum": [
           "Pending",
           "Accepted",
