@@ -5,7 +5,7 @@
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
-      <div class="company-details__headline">
+      <div class="company-title-row">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
           <Tag
@@ -14,19 +14,25 @@
             value="Verified Company Owner"
             icon="pi pi-check-circle"
             severity="success"
-          ></Tag>
+          />
         </div>
         <div class="right-elements">
           <PrimeButton
             v-if="authenticated"
-            class="primary-button"
-            aria-label="Add company to your portfolios"
+            icon="pi pi-plus"
+            label="ADD TO PORTFOLIO"
             @click="openPortfolioModal"
+            aria-label="Add company to your portfolios"
             data-test="addCompanyToPortfoliosButton"
-          >
-            <i class="pi pi-plus pr-2" />Add to a portfolio
-          </PrimeButton>
-          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
+          />
+          <PrimeButton
+            v-if="showSingleDataRequestButton"
+            icon="pi pi-file"
+            label="REQUEST DATA"
+            @click="handleSingleDataRequest"
+            aria-label="Request data for this company"
+            data-test="singleDataRequestButton"
+          />
         </div>
       </div>
 
@@ -39,29 +45,39 @@
         @close-dialog="onCloseDialog"
       />
 
-      <div class="company-details__separator" />
-
-      <div class="company-details__info-holder">
-        <div class="company-details__info">
-          <span>Sector: </span>
-          <span class="font-semibold" data-test="sector-visible">{{ displaySector }}</span>
+      <div class="company-info-row">
+        <div>
+          <span class="company-info-title">Sector:</span>
+          <span class="company-info-content" data-test="sector-visible">{{ displaySector }}</span>
         </div>
-        <div class="company-details__info">
-          <span>Headquarter: </span>
-          <span class="font-semibold" data-test="headquarter-visible">{{ companyInformation.headquarters }}</span>
+        <div>
+          <span class="company-info-title">Headquarter:</span>
+          <span class="company-info-content" data-test="headquarter-visible">{{
+            companyInformation.headquarters
+          }}</span>
         </div>
-        <div class="company-details__info">
-          <span>LEI: </span>
-          <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
+        <div>
+          <span class="company-info-title">LEI:</span>
+          <span class="company-info-content" data-test="lei-visible">{{ displayLei }}</span>
         </div>
-        <div class="company-details__info">
-          <span>Parent Company: </span>
-          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
-            <a class="link" style="display: inline-flex" data-test="parent-visible" @click="visitParentCompany()">
-              {{ parentCompany?.companyName }}</a
-            ></span
-          >
-          <span v-if="!hasParentCompany" data-test="parent-visible" class="font-semibold">—</span>
+        <div>
+          <span class="company-info-title">Parent Company: </span>
+          <PrimeButton
+            v-if="hasParentCompany"
+            :label="parentCompany?.companyName"
+            variant="link"
+            data-test="parent-visible"
+            @click="visitParentCompany"
+            :pt="{
+              root: {
+                style: 'padding-left: 0;',
+              },
+              label: {
+                style: 'font-weight: var(--font-weight-semibold);',
+              },
+            }"
+          />
+          <span v-else data-test="parent-visible" class="font-semibold">—</span>
         </div>
       </div>
     </div>
@@ -72,24 +88,23 @@
 </template>
 
 <script setup lang="ts">
-import { ApiClientProvider } from '@/services/ApiClients';
-import { computed, inject, onMounted, ref, watch } from 'vue';
-import { type CompanyIdAndName, type CompanyInformation, IdentifierType } from '@clients/backend';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
+import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
-import { getErrorMessage } from '@/utils/ErrorMessageUtils';
-import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
+import type { BasePortfolio } from '@clients/userservice';
+import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Tag from 'primevue/tag';
-import router from '@/router';
-import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
-import type { BasePortfolio } from '@clients/userservice';
 import { useDialog } from 'primevue/usedialog';
-import { type NavigationFailure } from 'vue-router';
+import { computed, inject, onMounted, ref, watch } from 'vue';
+import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const authenticated = inject<boolean>('authenticated');
@@ -157,6 +172,23 @@ function fetchDataForThisPage(): void {
   } catch (error) {
     console.error('Error fetching data for new company:', error);
   }
+}
+
+/**
+ * Handles the click event of the single data request button.
+ * Navigates to the single data request page with the companyId and preSelectedFramework as query parameters.
+ * @returns a router push to the single data request page
+ */
+function handleSingleDataRequest(): Promise<NavigationFailure | void | undefined> {
+  const currentRoute: RouteLocationNormalizedLoaded = router.currentRoute.value;
+  const dataType = currentRoute.params.dataType;
+  const preSelectedFramework = dataType ? (dataType as DataTypeEnum) : '';
+  return router.push({
+    path: `/singledatarequest/${props.companyId}`,
+    query: {
+      preSelectedFramework: preSelectedFramework,
+    },
+  });
 }
 
 /**
@@ -282,134 +314,41 @@ async function setCompanyOwnershipStatus(): Promise<void> {
 
 <style scoped lang="scss">
 .inline-loading {
-  width: 450px;
+  width: 28rem;
 }
 
-.rounded {
-  border-radius: 0.5rem;
-}
-
-.company-details {
+.company-title-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 
-  &__headline {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  &__separator {
-    @media only screen and (max-width: var(--breakpoint-small)) {
-      width: 100%;
-      border-bottom: #e0dfde 1px solid;
-      margin-bottom: 0.5rem;
-    }
-  }
-
-  &__info-holder {
+  .left-elements,
+  .right-elements {
     display: flex;
     flex-direction: row;
-    @media only screen and (max-width: var(--breakpoint-small)) {
-      flex-direction: column;
-    }
-  }
-
-  &__info {
-    padding-top: 0.3rem;
-    @media only screen and (min-width: var(--breakpoint-small)) {
-      padding-right: 40px;
-    }
+    justify-items: end;
+    align-items: end;
+    gap: 1rem;
   }
 }
 
-.left-elements,
-.right-elements {
+.company-info-row {
   display: flex;
-  align-items: center;
-
-  h1 {
-    margin-right: var(--spacing-sm);
-  }
-}
-
-.primary-button {
-  white-space: nowrap;
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  min-width: 10em;
-  width: fit-content;
-  justify-content: center;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: bottom;
   flex-direction: row;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-  transition: all 0.2s;
-  border-radius: 0;
-  text-transform: uppercase;
-  font-size: 0.875rem;
+  justify-content: start;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
 
-  &:enabled:hover {
-    color: white;
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  .company-info-title {
+    padding-right: var(--spacing-xs);
   }
 
-  &:enabled:active {
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-  }
-
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: var(--btn-disabled-color);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-}
-
-.primary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--btn-primary-color);
-  background: var(--btn-primary-bg);
-  border: 1px solid var(--btn-primary-bg);
-  margin: 0;
-}
-
-.link {
-  color: var(--main-color);
-  background: transparent;
-  border: transparent;
-  cursor: pointer;
-  display: flex;
-
-  &:hover {
-    color: hsl(from var(--main-color) h s calc(l - 20));
-    text-decoration: underline;
-  }
-
-  &:active {
-    color: hsl(from var(--main-color) h s calc(l + 10));
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-
-  &.--underlined {
-    text-decoration: underline;
+  .company-info-content {
+    font-weight: var(--font-weight-semibold);
+    padding-left: 0;
   }
 }
 </style>

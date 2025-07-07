@@ -334,7 +334,7 @@ onUnmounted(() => {
 
   // Modifier class for light version
   &--light {
-    background-color: #f6f5f0;
+    background-color: var(--p-surface-100);
     color: #0b191f;
 
     .footer {
