@@ -124,7 +124,7 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
         ): InputStreamResource {
-            val (aliasedCsvData, csvSchema, readableHeaders) =
+            val (aliasedCsvData, csvSchema) =
                 dataExportUtils.prepareExportData(
                     portfolioExportRows, dataType,
                     keepValueFieldsOnly, includeAliases,

@@ -66,7 +66,6 @@ class DataExportUtils
         data class PreparedExportData(
             val csvData: List<Map<String, String>>,
             val csvSchema: CsvSchema,
-            val readableHeaders: Map<String, String>,
         )
 
         /**
@@ -140,7 +139,7 @@ class DataExportUtils
                     isAssembledDatasetParam,
                 )
 
-            return PreparedExportData(mappedCsvData, csvSchema, filteredReadableHeaders)
+            return PreparedExportData(mappedCsvData, csvSchema)
         }
 
         /**
