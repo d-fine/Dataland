@@ -81,10 +81,6 @@ export default defineConfigWithVueTs(
         },
       ],
 
-      'vue/no-reserved-component-names': [
-        'warn',
-      ],
-
       'vue/no-unused-properties': [
         'error',
         {
@@ -107,5 +103,5 @@ export default defineConfigWithVueTs(
       ],
     },
   },
-  skipFormatting,
+  skipFormatting
 );
