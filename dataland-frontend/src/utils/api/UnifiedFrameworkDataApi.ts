@@ -75,8 +75,8 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
-    includeAlias: boolean,
     keepValuesOnly?: boolean,
+    includeAlias?: boolean,
     options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 } & {
@@ -140,8 +140,8 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
-    includeAlias: boolean,
     keepValuesOnly?: boolean,
+    includeAlias?: boolean,
     options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -149,8 +149,8 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
       reportingPeriods,
       companyIds,
       fileFormat,
-      includeAlias,
       keepValuesOnly,
+      includeAlias,
       options
     );
   }

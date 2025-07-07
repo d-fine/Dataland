@@ -43,12 +43,12 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
      reportingPeriods: string[],
      companyIds: string[],
      fileFormat: ExportFileType,
-     includeAliases: Boolean,
      keepValueFieldsOnly?: Boolean,
+     includeAliases?: Boolean,
      options?: AxiosRequestConfig):
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
     AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataByDimensions(reportingPeriods, companyIds, fileFormat, includeAliases, keepValueFieldsOnly, options);
+    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataByDimensions(reportingPeriods, companyIds, fileFormat, keepValueFieldsOnly, includeAliases, options);
   }
 
   getCompanyAssociatedDataByDimensions(

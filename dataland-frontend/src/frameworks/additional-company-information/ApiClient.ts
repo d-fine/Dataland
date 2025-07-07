@@ -55,8 +55,8 @@ export class AdditionalCompanyInformationApiClient implements PublicFrameworkDat
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
-    includeAliases: boolean,
     keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -64,8 +64,8 @@ export class AdditionalCompanyInformationApiClient implements PublicFrameworkDat
       reportingPeriods,
       companyIds,
       fileFormat,
-      includeAliases,
       keepValueFieldsOnly,
+      includeAliases,
       options
     );
   }
