@@ -3,17 +3,10 @@ import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cyp
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import {
-  DataTypeEnum,
-  type EutaxonomyFinancialsData,
-  type LksgData,
-  type SfdrData,
-} from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData, type LksgData, type SfdrData } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import {
-  uploadFrameworkDataForPublicToolboxFramework,
-} from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
@@ -294,7 +287,7 @@ describeIf(
               '2019',
               getPreparedFixture('lighweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
             );
-          })
+          });
       });
     }
 
@@ -304,8 +297,8 @@ describeIf(
      */
     function uploadCompanyBetaAndData(): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
-          .then(async (storedCompany) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta)).then(
+          async (storedCompany) => {
             companyIdOfBeta = storedCompany.companyId;
             return uploadFrameworkDataForPublicToolboxFramework(
               LksgBaseFrameworkDefinition,
@@ -314,7 +307,8 @@ describeIf(
               '2015',
               getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
             );
-          })
+          }
+        );
       });
     }
 

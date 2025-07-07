@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';

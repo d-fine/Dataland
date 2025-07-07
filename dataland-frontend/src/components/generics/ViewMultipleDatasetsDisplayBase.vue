@@ -120,7 +120,7 @@ export default defineComponent({
       humanizeString: humanizeStringOrNumber,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
-      humanizedDataDescription: humanizeStringOrNumber(this.dataType)
+      humanizedDataDescription: humanizeStringOrNumber(this.dataType),
     };
   },
   setup() {

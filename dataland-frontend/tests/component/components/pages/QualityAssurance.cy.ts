@@ -334,7 +334,9 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/${mockDataMetaInfo.dataId}`, mockCompanyAssociatedLksgData).as(
       'fetchLksgData'
     );
-    cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/${mockDataMetaInfo.companyId}*`, [mockLksgDataAndMetaInfo]);
+    cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/${mockDataMetaInfo.companyId}*`, [
+      mockLksgDataAndMetaInfo,
+    ]);
 
     getMountingFunction({
       keycloak: keycloakMockWithUploaderAndReviewerRoles,

@@ -42,9 +42,4 @@ export interface Field {
   existingFieldValues?: (dataModel?: LksgData) => object;
 }
 
-export type FrameworkData =
-  | EutaxonomyFinancialsData
-  | EutaxonomyNonFinancialsData
-  | LksgData
-  | SfdrData
-  | VsmeData;
+export type FrameworkData = EutaxonomyFinancialsData | EutaxonomyNonFinancialsData | LksgData | SfdrData | VsmeData;

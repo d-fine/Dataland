@@ -154,7 +154,6 @@ describe(
       );
     }
 
-
     // Prepopulation for frameworks of the framework-registry
     for (const framework of getAllPublicFrameworkIdentifiers()) {
       const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework);

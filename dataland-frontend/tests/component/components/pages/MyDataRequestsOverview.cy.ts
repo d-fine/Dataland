@@ -238,12 +238,7 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check filter functionality and reset button', function (): void {
-    const expectedFrameworks = [
-      'SFDR',
-      'EU Taxonomy',
-      'for financial companies',
-      'for non-financial companies',
-    ];
+    const expectedFrameworks = ['SFDR', 'EU Taxonomy', 'for financial companies', 'for non-financial companies'];
 
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,

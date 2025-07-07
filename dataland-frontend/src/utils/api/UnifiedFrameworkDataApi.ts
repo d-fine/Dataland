@@ -49,4 +49,3 @@ export interface PrivateFrameworkDataApi<FrameworkDataType> extends BaseFramewor
     options?: AxiosRequestConfig
   ): AxiosPromise<DataMetaInformation>;
 }
-

@@ -139,10 +139,7 @@ export function getFrameworkTitle(framework: string): string {
  * @returns boolean if framework has subtitle
  */
 export function frameworkHasSubTitle(framework: string): boolean {
-  return (
-    framework == DataTypeEnum.EutaxonomyFinancials ||
-    framework == DataTypeEnum.EutaxonomyNonFinancials
-  );
+  return framework == DataTypeEnum.EutaxonomyFinancials || framework == DataTypeEnum.EutaxonomyNonFinancials;
 }
 /**
  * Return the subtitle of a framework

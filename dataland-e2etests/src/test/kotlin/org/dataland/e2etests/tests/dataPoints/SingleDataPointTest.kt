@@ -27,7 +27,7 @@ class SingleDataPointTest {
         """
         {"value": 0.5, "currency": "USD"}
         """.trimIndent()
-    private val dummyDataPointType = "extendedCurrencyEquity"
+    private val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData.getCompanyInformationWithoutIdentifiers(1)
 
     private fun uploadDummyDatapoint(

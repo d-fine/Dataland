@@ -45,7 +45,6 @@ export async function uploadFrameworkDataForPublicToolboxFramework<FrameworkData
   );
 }
 
-
 /**
  * Uploads a single framework entry for a company
  * @param token The API bearer token to use
