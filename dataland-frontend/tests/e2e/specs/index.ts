@@ -51,9 +51,10 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    * user-authentication and admin-tools both need the admin tunnel to be present.
    * That's why they live together.
    */
+
+  require('./nuclear-and-gas');
   require('./user-authentication');
   require('./admin-tools');
-  require('./nuclear-and-gas');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
