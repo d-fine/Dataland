@@ -8,9 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWith
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
@@ -51,14 +49,6 @@ class EuTaxonomyAlignedActivitiesComponent(
     }
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val schemaAnnotation =
-            Annotation(
-                fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                rawParameterSpec =
-                    "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
-                        "example = \"\"\"${getExample(EXAMPLE_PLAIN_EU_TAXONOMY_ALIGNED_ACTIVITIES_COMPONENT)} \"\"\"",
-                applicationTargetPrefix = "field",
-            )
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
@@ -73,7 +63,10 @@ class EuTaxonomyAlignedActivitiesComponent(
                     ),
                 ),
             ),
-            listOf(SuppressKtlintMaxLineLengthAnnotation, schemaAnnotation),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                EXAMPLE_PLAIN_EU_TAXONOMY_ALIGNED_ACTIVITIES_COMPONENT,
+            ),
         )
     }
 
