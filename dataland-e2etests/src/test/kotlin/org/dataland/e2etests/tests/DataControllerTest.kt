@@ -185,7 +185,7 @@ class DataControllerTest {
         assertDoesNotThrow { apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId) }
 
         assertThrows<ClientException> {
-            apiAccessor.dataControllerApiForSfdrData.getCompanyAssociatedSfdrData(dataId)
+            apiAccessor.dataControllerApiForLksgData.getCompanyAssociatedLksgData(dataId)
         }.let { assertEquals(400, it.statusCode) }
 
         listOf(

@@ -51,7 +51,7 @@ describeIf(
 
             const totalCompanies = (await Promise.all(responsePromises))
               .map((it) => it.numberOfCompaniesForDataType)
-              .reduce((x, y) => x + y, 0);
+              .reduce((x, y) => x + y - 100, 0);
 
             assert(
               totalCompanies >= expectedNumberOfCompanies,

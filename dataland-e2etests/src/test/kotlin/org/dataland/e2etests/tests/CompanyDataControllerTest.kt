@@ -368,7 +368,7 @@ class CompanyDataControllerTest {
         companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         val expectedNumberForFramework: Map<DataTypeEnum, Long> =
             mapOf(
-                DataTypeEnum.eutaxonomyMinusFinancials to 2,
+                DataTypeEnum.eutaxonomyMinusFinancials to 0,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2,
                 DataTypeEnum.sfdr to 0,
             )

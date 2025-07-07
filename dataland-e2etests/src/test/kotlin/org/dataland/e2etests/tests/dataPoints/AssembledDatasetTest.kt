@@ -7,9 +7,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSf
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
-import org.dataland.datalandqaservice.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandqaservice.openApiClient.model.DataPointQaReport
-import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointCurrencyDataPoint
+import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointBigInteger
+import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointYesNo
+import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointBigInteger
+import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointYesNo
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
@@ -219,62 +221,92 @@ class AssembledDatasetTest {
             }
     }
 
-    data class ExpectedDataForFact(
+    data class ExpectedDataForFactBigInteger(
         val qaStatus: QaStatus,
-        val qaReport: QaReportDataPointCurrencyDataPoint,
+        val qaReport: QaReportDataPointExtendedDataPointBigInteger,
     )
 
-    private fun assertQaReportsAlign(
-        currencyQaReport: QaReportDataPointCurrencyDataPoint,
+    data class ExpectedDataForFactYesNo(
+        val qaStatus: QaStatus,
+        val qaReport: QaReportDataPointExtendedDataPointYesNo,
+    )
+
+    private fun assertQaReportsAlignBigInteger(
+        decimalQaReport: QaReportDataPointExtendedDataPointBigInteger,
         dataPointQaReport: DataPointQaReport,
     ) {
-        assertEquals(currencyQaReport.verdict, dataPointQaReport.verdict)
-        assertEquals(currencyQaReport.comment, dataPointQaReport.comment)
+        assertEquals(decimalQaReport.verdict, dataPointQaReport.verdict)
+        assertEquals(decimalQaReport.comment, dataPointQaReport.comment)
 
-        val moshiAdapter = moshi.adapter(CurrencyDataPoint::class.java)
+        val moshiAdapter = moshi.adapter(ExtendedDataPointBigInteger::class.java)
         val actualData = moshiAdapter.fromJson(dataPointQaReport.correctedData!!)
-        assertEquals(currencyQaReport.correctedData, actualData)
+        assertEquals(decimalQaReport.correctedData, actualData)
+    }
+
+    private fun assertQaReportsAlignYesNo(
+        decimalQaReport: QaReportDataPointExtendedDataPointYesNo,
+        dataPointQaReport: DataPointQaReport,
+    ) {
+        assertEquals(decimalQaReport.verdict, dataPointQaReport.verdict)
+        assertEquals(decimalQaReport.comment, dataPointQaReport.comment)
+
+        val moshiAdapter = moshi.adapter(ExtendedDataPointYesNo::class.java)
+        val actualData = moshiAdapter.fromJson(dataPointQaReport.correctedData!!)
+        assertEquals(decimalQaReport.correctedData, actualData)
     }
 
     @Test
     fun `ensure information from an assembled qa report gets applied to the individual datapoints`() {
         val linkedQaReportMetaInfo = uploadSfdrWithLinkedQaReport()
-        val expectedDataPointInformation =
+        val expectedDataPointInformationBigInteger =
             mapOf(
-                "extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees" to
-                    ExpectedDataForFact(
-                        qaStatus = QaStatus.Accepted,
-                        qaReport =
-                            linkedQaReportData.qaReport.social!!
-                                .socialAndEmployeeMatters!!
-                                .averageGrossHourlyEarningsFemaleEmployees!!,
-                    ),
-                "extendedCurrencyAverageGrossHourlyEarningsMaleEmployees" to
-                    ExpectedDataForFact(
-                        qaStatus = QaStatus.Pending,
-                        qaReport =
-                            linkedQaReportData.qaReport.social!!
-                                .socialAndEmployeeMatters!!
-                                .averageGrossHourlyEarningsMaleEmployees!!,
-                    ),
-                "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption" to
-                    ExpectedDataForFact(
+                "extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations" to
+                    ExpectedDataForFactBigInteger(
                         qaStatus = QaStatus.Rejected,
                         qaReport =
                             linkedQaReportData.qaReport.social!!
-                                .antiCorruptionAndAntiBribery!!
-                                .totalAmountOfReportedFinesOfBriberyAndCorruption!!,
+                                .humanRights!!
+                                .numberOfReportedIncidentsOfHumanRightsViolations!!,
+                    ),
+            )
+
+        val expectedDataPointInformationYesNo =
+            mapOf(
+                "extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure" to
+                    ExpectedDataForFactYesNo(
+                        qaStatus = QaStatus.Pending,
+                        qaReport =
+                            linkedQaReportData.qaReport.environmental!!
+                                .biodiversity!!
+                                .primaryForestAndWoodedLandOfNativeSpeciesExposure!!,
+                    ),
+                "extendedEnumYesNoBiodiversityProtectionPolicy" to
+                    ExpectedDataForFactYesNo(
+                        qaStatus = QaStatus.Accepted,
+                        qaReport =
+                            linkedQaReportData.qaReport.environmental!!
+                                .biodiversity!!
+                                .biodiversityProtectionPolicy!!,
                     ),
             )
 
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
-        expectedDataPointInformation.forEach { (dataPointType, expectedData) ->
+        expectedDataPointInformationBigInteger.forEach { (dataPointType, expectedData) ->
             val dataPointId = datasetComposition[dataPointType]!!
             QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
                 assertEquals(expectedData.qaStatus, it[0].qaStatus)
             }
             QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
-                assertQaReportsAlign(expectedData.qaReport, it[0])
+                assertQaReportsAlignBigInteger(expectedData.qaReport, it[0])
+            }
+        }
+        expectedDataPointInformationYesNo.forEach { (dataPointType, expectedData) ->
+            val dataPointId = datasetComposition[dataPointType]!!
+            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
+                assertEquals(expectedData.qaStatus, it[0].qaStatus)
+            }
+            QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
+                assertQaReportsAlignYesNo(expectedData.qaReport, it[0])
             }
         }
     }

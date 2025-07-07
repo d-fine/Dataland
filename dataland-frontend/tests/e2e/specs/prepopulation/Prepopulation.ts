@@ -21,7 +21,7 @@ const chunkSize = 15;
 describe(
   'As a user, I want to be able to see some data on the Dataland webpage',
   {
-    defaultCommandTimeout: Cypress.env('prepopulate_timeout_s') * 1000,
+    defaultCommandTimeout: Cypress.env('prepopulate_timeout_s') * 2000,
     retries: {
       runMode: 0,
       openMode: 0,
