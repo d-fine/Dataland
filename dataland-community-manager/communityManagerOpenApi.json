@@ -32,12 +32,12 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -176,7 +176,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -187,13 +187,13 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -257,7 +257,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -268,13 +268,13 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -331,7 +331,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -342,13 +342,13 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -401,7 +401,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -465,7 +465,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -530,7 +530,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -591,7 +591,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -658,7 +658,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -689,13 +689,13 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -773,12 +773,12 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "emailAddress",
@@ -803,7 +803,7 @@
           {
             "name": "requestStatus",
             "in": "query",
-            "description": "The current status of the data request.",
+            "description": "The current request status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -816,7 +816,7 @@
           {
             "name": "accessStatus",
             "in": "query",
-            "description": "The current status of the access to the data request.",
+            "description": "The current access status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -852,7 +852,7 @@
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -1017,12 +1017,12 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "emailAddress",
@@ -1047,7 +1047,7 @@
           {
             "name": "requestStatus",
             "in": "query",
-            "description": "The current status of the data request.",
+            "description": "The current request status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1060,7 +1060,7 @@
           {
             "name": "accessStatus",
             "in": "query",
-            "description": "The current status of the access to the data request.",
+            "description": "The current access status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1096,7 +1096,7 @@
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -1267,7 +1267,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1278,13 +1278,13 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The ID of the user who created this data request.",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -1566,7 +1566,7 @@
             "type": "array",
             "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
-              "testuser@example.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
@@ -1574,12 +1574,12 @@
           },
           "message": {
             "type": "string",
-            "description": "Contains a text about the result of Dataland processing the data request.",
+            "description": "A text about the result of Dataland processing the data request.",
             "example": "Your data request was stored successfully."
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
             "example": true
           }
         }
@@ -1595,7 +1595,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Contains a text about the result of Dataland processing the data request.",
+            "description": "A text about the result of Dataland processing the data request.",
             "example": "Your data request was stored successfully."
           },
           "reportingPeriodsOfStoredDataRequests": {
@@ -1644,10 +1644,10 @@
           "companyIdentifiers": {
             "uniqueItems": true,
             "type": "array",
-            "description": "A set of identifier strings to identify companies on Dataland by. Use Dataland company IDs, Leis or Isins for the best results. Requests will be posted for all companies that can be identified.",
+            "description": "A set of identifiers for companies on Dataland by. Use Dataland company IDs, Leis or Isins for the best results. Requests will be posted for all companies that can be identified.",
             "example": [
-              "99c5e9b2-220e-40dc-aba5-f371566e73a4",
-              "549300JSX0Z4CW0V5023",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28",
+              "5493001KJX4BT0IHAG73",
               "US0378331005"
             ],
             "items": {
@@ -1696,7 +1696,7 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
             "example": true
           }
         }
@@ -1775,13 +1775,13 @@
           },
           "resourceId": {
             "type": "string",
-            "description": "A unique identifier for identifying a resource on Dataland. In case of newly created or duplicate open requests, it identifies the newly created or original open request. In case of a request for an already existing dataset, it identifies that dataset.",
-            "example": "d796f874-7a7e-457c-aa41-2cb73d4e9529"
+            "description": "A unique identifier of a resource on Dataland. In case of newly created or duplicate open requests, it identifies the newly created or original open request. In case of a request for an already existing dataset, it identifies that dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "resourceUrl": {
             "type": "string",
             "description": "A URL pointing to the resource identified by resourceId.",
-            "example": "https://dataland.com/requests/d796f874-7a7e-457c-aa41-2cb73d4e9529"
+            "example": "https://dataland.com/requests/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -1807,19 +1807,19 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created this data request.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
       "AccessStatus": {
         "type": "string",
-        "description": "The current status of the access to the data request.",
+        "description": "The current access status of the data request.",
         "enum": [
           "Declined",
           "Granted",
@@ -1842,7 +1842,7 @@
             "type": "array",
             "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
-              "testuser@example.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
@@ -1850,7 +1850,7 @@
           },
           "message": {
             "type": "string",
-            "description": "Contains a text about the result of Dataland processing the data request.",
+            "description": "A text about the result of Dataland processing the data request.",
             "example": "Your data request was stored successfully."
           },
           "requestPriority": {
@@ -1858,7 +1858,7 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
             "example": true
           },
           "adminComment": {
@@ -1885,7 +1885,7 @@
       },
       "RequestStatus": {
         "type": "string",
-        "description": "The current status of the data request.",
+        "description": "The current request status of the data request.",
         "enum": [
           "Open",
           "Answered",
@@ -1916,12 +1916,12 @@
           "dataRequestId": {
             "type": "string",
             "description": "The unique identifier of the data request on Dataland.",
-            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created this data request.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userEmailAddress": {
             "type": "string",
@@ -1930,14 +1930,14 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Whether an immediate notification email shall be sent when there is an update concerning one of the posted requests. Otherwise, those updates are listed in the weekly summary email.",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
             "example": true
           },
           "creationTimestamp": {
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) when the user created the data request.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "dataType": {
             "type": "string",
@@ -1951,7 +1951,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "messageHistory": {
@@ -1971,7 +1971,7 @@
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) when the data request has been modified the last time.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -2001,7 +2001,7 @@
             "type": "array",
             "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
-              "testuser@example.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
@@ -2016,7 +2016,7 @@
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) when the message object was created.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           }
         },
         "description": "The list of objects documenting the history of messages sent to company contacts regarding the data request."
@@ -2036,7 +2036,7 @@
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) when the status object was created.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
@@ -2049,7 +2049,7 @@
           "answeringDataId": {
             "type": "string",
             "description": "The data ID of the data set that answered the request.",
-            "example": "9a73f4cd-2b68-401e-a8c5-d01b57e8f924"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -2072,12 +2072,12 @@
           "dataRequestId": {
             "type": "string",
             "description": "The unique identifier of the data request on Dataland.",
-            "example": "5e34d8ab-f790-4c2a-a371-8f62be90c483"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created this data request.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userEmailAddress": {
             "type": "string",
@@ -2088,7 +2088,7 @@
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) when the user created the data request.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "dataType": {
             "type": "string",
@@ -2102,7 +2102,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -2114,7 +2114,7 @@
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) when the data request has been modified the last time.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -2174,7 +2174,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "aggregatedPriority": {

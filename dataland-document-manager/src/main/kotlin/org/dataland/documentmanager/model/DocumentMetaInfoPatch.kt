@@ -29,7 +29,6 @@ data class DocumentMetaInfoPatch(
     override val documentName: String?,
     @field:Schema(
         description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_EXAMPLE,
     )
     override val documentCategory: DocumentCategory?,
     @field:ArraySchema(

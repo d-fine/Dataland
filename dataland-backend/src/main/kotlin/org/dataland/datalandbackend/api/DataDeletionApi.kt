@@ -45,7 +45,6 @@ fun interface DataDeletionApi {
             ")",
     )
     fun deleteCompanyAssociatedData(
-        // @RequestBody
         @DataIdParameterRequired
         @PathVariable("dataId")
         @Valid

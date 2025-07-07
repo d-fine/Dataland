@@ -38,7 +38,6 @@ data class DocumentMetaInfoEntity(
     @Enumerated(EnumType.STRING)
     @field:Schema(
         description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_TYPE_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_TYPE_EXAMPLE,
     )
     val documentType: DocumentType,
     @field:Schema(
@@ -49,7 +48,6 @@ data class DocumentMetaInfoEntity(
     @Convert(converter = DocumentCategoryConverter::class)
     @field:Schema(
         description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_EXAMPLE,
     )
     var documentCategory: DocumentCategory?,
     @ElementCollection(fetch = FetchType.EAGER)

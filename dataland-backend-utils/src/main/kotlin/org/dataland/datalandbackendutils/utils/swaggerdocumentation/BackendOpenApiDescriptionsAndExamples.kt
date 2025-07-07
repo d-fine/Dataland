@@ -5,7 +5,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_ALTERNATIVE_NAMES_EXAMPLE = "[\"ABC Corp.\"]"
 
     const val COMPANY_CONTACT_DETAILS_DESCRIPTION = "The email addresses of the company."
-    const val COMPANY_CONTACT_DETAILS_EXAMPLE = "[\"contact@abccorp.com\"]"
+    const val COMPANY_CONTACT_DETAILS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE}\"]"
 
     const val COMPANY_LEGAL_FORM_DESCRIPTION = "The legal structure under which the company operates."
     const val COMPANY_LEGAL_FORM_EXAMPLE = "Private Limited Company (Ltd)"
@@ -23,7 +23,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
 
     const val IDENTIFIERS_DESCRIPTION = "Unique identifiers associated with the company, such as LEI, PermId, ..."
-    const val IDENTIFIERS_EXAMPLE = "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
+    const val IDENTIFIERS_EXAMPLE = "{\"Lei\":[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"]}"
 
     const val COUNTRY_CODE_DESCRIPTION = "The ISO 3166-1 alpha-2 code representing the country of origin."
     const val COUNTRY_CODE_EXAMPLE = "DE"
@@ -34,13 +34,13 @@ object BackendOpenApiDescriptionsAndExamples {
     const val WEBSITE_DESCRIPTION = "The official website URL of the company."
     const val WEBSITE_EXAMPLE = "www.abccorp.com"
 
-    const val PARENT_COMPANY_LEI_DESCRIPTION = "The LEI of the parent company, if applicable."
-    const val PARENT_COMPANY_LEI_EXAMPLE = "5493001KJX4BT0IHAG72"
+    const val PARENT_COMPANY_LEI_DESCRIPTION = "The LEI of the parent company if it exists."
+    const val PARENT_COMPANY_LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
 
-    const val DATA_ID_DESCRIPTION = "The unique identifier to identify the data in the data store."
-    const val DATA_ID_EXAMPLE = "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+    const val DATA_ID_DESCRIPTION = "The unique identifier of the data."
+    const val DATA_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val CURRENTLY_ACTIVE_DESCRIPTION = "Boolean flag whether the dataset is currently active."
+    const val CURRENTLY_ACTIVE_DESCRIPTION = "Boolean flag indicating whether the dataset is currently active."
     const val CURRENTLY_ACTIVE_EXAMPLE = "true"
 
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
@@ -49,7 +49,7 @@ object BackendOpenApiDescriptionsAndExamples {
             "frameworks/eutaxonomy-non-financials/$DATA_ID_EXAMPLE"
 
     const val LEI_DESCRIPTION = "The LEI of the company."
-    const val LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
+    const val LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
 
     const val IDENTIFIER_TYPE_DESCRIPTION = "The type of identifier that is used."
 
@@ -63,39 +63,39 @@ object BackendOpenApiDescriptionsAndExamples {
     const val LIST_OF_SECTORS_EXAMPLE = "[\"$SECTOR_EXAMPLE\"]"
 
     const val UPLOADER_USER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the dataset."
-    const val UPLOADER_USER_ID_EXAMPLE = "814caf16-54de-4385-af6e-bd6b64b64634"
+    const val UPLOADER_USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val IS_NON_SOURCEABLE_DESCRIPTION =
         "If true, the method only returns meta info for datasets which are" +
-            "non-sourceable and if false, it returns sourceable data."
+            "non-sourceable. If false, it returns sourceable data."
     const val IS_NON_SOURCEABLE_EXAMPLE = "true"
 
     const val REASON_DESCRIPTION = "The reason why there is no source available"
     const val REASON_EXAMPLE = "Parent Uploaded"
 
     const val CREATION_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was created."
-    const val CREATION_TIME_EXAMPLE = "1751291891271"
+    const val CREATION_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
-    const val IS_ONLY_ACTIVE_DESCRIPTION = "Boolean flag whether the dataset is currently the only active dataset."
+    const val IS_ONLY_ACTIVE_DESCRIPTION = "Boolean flag indicating whether the dataset is currently the only active dataset."
     const val IS_ONLY_ACTIVE_EXAMPLE = "true"
 
     const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
     const val ALL_UPLOADER_USER_IDS_EXAMPLE = "[\"$UPLOADER_USER_ID_EXAMPLE\"]"
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION =
-        "Boolean parameter. If set to true or empty, only metadata of QA reports " +
-            "are returned that are active. If set to false, all QA reports will be returned regardless of their active status."
+        "Boolean parameter. If set to true or empty, only metadata of active QA reports " +
+            "are returned. If set to false, all QA reports will be returned."
 
-    const val DATA_POINT_ID_DESCRIPTION = "The unique identifier to identify the datapoint."
-    const val DATA_POINT_ID_EXAMPLE = "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+    const val DATA_POINT_ID_DESCRIPTION = "The unique identifier of the datapoint."
+    const val DATA_POINT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val DATA_POINT_DESCRIPTION = "The content of the data point as a JSON string."
+    const val DATA_POINT_DESCRIPTION = "The data point as a JSON string."
     const val DATA_POINT_EXAMPLE =
         "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\"," +
             "\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\"," +
             "\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
 
-    const val DATA_POINT_TYPE_DESCRIPTION = "Which data point the provided content is associated to."
+    const val DATA_POINT_TYPE_DESCRIPTION = "The data point type of the provided data point."
     const val DATA_POINT_TYPE_EXAMPLE = "extendedEnumYesNoNfrdMandatory"
 
     const val COMMENT_DESCRIPTION = "Optional comment to explain the QA review status change."
@@ -108,25 +108,23 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REVIEWER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
     const val REVIEW_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was reviewed."
-    const val REVIEW_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE
+    const val REVIEW_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val QA_REPORT_ID_DESCRIPTION = "The unique identifier of the QA report"
-    const val QA_REPORT_ID_EXAMPLE = "3f87b4ac-b3e2-4f7d-95d3-8e20c9ad6f1e"
+    const val QA_REPORT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded this QA report."
+    const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
     const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
     const val QA_REPORT_UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the QA report was uploaded."
-    const val QA_REPORT_UPLOAD_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE
+    const val QA_REPORT_UPLOAD_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val IS_REPORT_ACTIVE_DESCRIPTION = "Boolean flag. True if and only if the QA report is marked as active."
     const val IS_REPORT_ACTIVE_EXAMPLE = "true"
 
-    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION =
-        "The quality decision of this qa report. " +
-            "Possible values are: QaAccepted, QaRejected, QaInconclusive, QaNotAttempted."
+    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The quality decision of this qa report."
 
-    const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "If rejected, contains suggested data corrections for the data point."
+    const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "Contains suggested data corrections for the rejected data point."
     const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
 
     const val QA_REPORT_COMMENT_DESCRIPTION = "A comment explaining the verdict."
@@ -137,10 +135,10 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean flag. If true, only active QA reports are included in the response."
 
     const val QA_REPORT_MIN_UPLOAD_DATE_DESCRIPTION =
-        "If set, only metadata of reports are returned that were uploaded after the minUploadDate."
+        "If set, only metadata of reports that were uploaded after the minUploadDate are returned."
     const val QA_REPORT_MIN_UPLOAD_DATE_EXAMPLE = "01-01-2024"
 
     const val QA_REPORT_MAX_UPLOAD_DATE_DESCRIPTION =
-        "If set, only metadata of reports are returned that were uploaded before the maxUploadDate."
+        "If set, only metadata of reports that were uploaded before the maxUploadDate are returned."
     const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
 }

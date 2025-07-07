@@ -37,7 +37,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -97,7 +97,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -177,7 +177,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -353,7 +353,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -434,7 +434,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -495,7 +495,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -910,7 +910,7 @@
           "portfolioId": {
             "type": "string",
             "description": "The unique identifier to identify the portfolio.",
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "portfolioName": {
             "type": "string",
@@ -920,19 +920,19 @@
           "userId": {
             "type": "string",
             "description": "The user ID of the user who created the portfolio.",
-            "example": "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "creationTimestamp": {
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) at which the portfolio was created.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "lastUpdateTimestamp": {
             "type": "integer",
             "description": "The timestamp (epoch milliseconds) at which the portfolio was last updated.",
             "format": "int64",
-            "example": 1751291892373
+            "example": 1751291891271
           },
           "companyIds": {
             "uniqueItems": true,
@@ -1010,7 +1010,7 @@
           "portfolioId": {
             "type": "string",
             "description": "The unique identifier to identify the portfolio.",
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "portfolioName": {
             "type": "string",
@@ -1020,7 +1020,7 @@
           "userId": {
             "type": "string",
             "description": "The user ID of the user who created the portfolio.",
-            "example": "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "entries": {
             "type": "array",
@@ -1064,7 +1064,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -1123,7 +1123,7 @@
           "portfolioId": {
             "type": "string",
             "description": "The unique identifier to identify the portfolio.",
-            "example": "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "portfolioName": {
             "type": "string",

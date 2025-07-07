@@ -32,7 +32,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -92,7 +92,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -162,7 +162,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -218,7 +218,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -290,7 +290,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -319,7 +319,7 @@
           {
             "name": "nonSourceable",
             "in": "query",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable and if false, it returns sourceable data.",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
             "required": false,
             "schema": {
               "type": "boolean"
@@ -1825,7 +1825,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1885,7 +1885,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1957,7 +1957,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -2185,7 +2185,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -2288,7 +2288,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -2307,7 +2307,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
-            "description": "Boolean parameter. If set to true or empty, only metadata of QA reports are returned that are active. If set to false, all QA reports will be returned regardless of their active status.",
+            "description": "Boolean parameter. If set to true or empty, only metadata of active QA reports are returned. If set to false, all QA reports will be returned.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2341,7 +2341,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2405,7 +2405,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "required": true,
             "schema": {
               "type": "string"
@@ -2474,7 +2474,7 @@
           {
             "name": "companyIds",
             "in": "query",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
@@ -5866,12 +5866,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -5928,12 +5928,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -5990,7 +5990,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6055,7 +6055,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6117,7 +6117,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6635,7 +6635,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6711,7 +6711,7 @@
             "description": "The email addresses of the company.",
             "nullable": true,
             "example": [
-              "contact@abccorp.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
@@ -6788,9 +6788,9 @@
           },
           "parentCompanyLei": {
             "type": "string",
-            "description": "The LEI of the parent company, if applicable.",
+            "description": "The LEI of the parent company if it exists.",
             "nullable": true,
-            "example": "5493001KJX4BT0IHAG72"
+            "example": "5493001KJX4BT0IHAG73"
           }
         }
       },
@@ -6808,12 +6808,12 @@
         "properties": {
           "dataId": {
             "type": "string",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -6823,7 +6823,7 @@
             "type": "string",
             "description": "The Dataland user ID of the user who uploaded the dataset.",
             "nullable": true,
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "uploadTime": {
             "type": "integer",
@@ -6838,7 +6838,7 @@
           },
           "currentlyActive": {
             "type": "boolean",
-            "description": "Boolean flag whether the dataset is currently active.",
+            "description": "Boolean flag indicating whether the dataset is currently active.",
             "example": true
           },
           "qaStatus": {
@@ -6854,7 +6854,7 @@
       },
       "QaStatus": {
         "type": "string",
-        "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+        "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
         "enum": [
           "Pending",
           "Accepted",
@@ -6871,7 +6871,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyInformation": {
@@ -6897,7 +6897,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -6910,7 +6910,7 @@
           },
           "isNonSourceable": {
             "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable and if false, it returns sourceable data.",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
             "example": true
           },
           "reason": {
@@ -6928,7 +6928,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "nullable": true,
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
@@ -6948,7 +6948,7 @@
           },
           "onlyActive": {
             "type": "boolean",
-            "description": "Boolean flag whether the dataset is currently the only active dataset.",
+            "description": "Boolean flag indicating whether the dataset is currently the only active dataset.",
             "example": true
           },
           "uploaderUserIds": {
@@ -6957,7 +6957,7 @@
             "description": "A set of Dataland user IDs of the users who uploaded the document.",
             "nullable": true,
             "example": [
-              "814caf16-54de-4385-af6e-bd6b64b64634"
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
             ],
             "items": {
               "type": "string",
@@ -22362,17 +22362,17 @@
         "properties": {
           "dataPoint": {
             "type": "string",
-            "description": "The content of the data point as a JSON string.",
+            "description": "The data point as a JSON string.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
           "dataPointType": {
             "type": "string",
-            "description": "Which data point the provided content is associated to.",
+            "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoNfrdMandatory"
           },
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
@@ -22397,17 +22397,17 @@
         "properties": {
           "dataPointId": {
             "type": "string",
-            "description": "The unique identifier to identify the datapoint.",
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "description": "The unique identifier of the datapoint.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "dataPointType": {
             "type": "string",
-            "description": "Which data point the provided content is associated to.",
+            "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoNfrdMandatory"
           },
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
@@ -22418,7 +22418,7 @@
           "uploaderUserId": {
             "type": "string",
             "description": "The Dataland user ID of the user who uploaded the dataset.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "uploadTime": {
             "type": "integer",
@@ -22428,7 +22428,7 @@
           },
           "currentlyActive": {
             "type": "boolean",
-            "description": "Boolean flag whether the dataset is currently active.",
+            "description": "Boolean flag indicating whether the dataset is currently active.",
             "example": true
           },
           "qaStatus": {
@@ -22445,12 +22445,12 @@
         "properties": {
           "dataPoint": {
             "type": "string",
-            "description": "The content of the data point as a JSON string.",
+            "description": "The data point as a JSON string.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
           "dataPointType": {
             "type": "string",
-            "description": "Which data point the provided content is associated to.",
+            "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoNfrdMandatory"
           }
         }
@@ -22480,7 +22480,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -22564,7 +22564,7 @@
           "uploaderUserId": {
             "type": "string",
             "description": "The Dataland user ID of the user who uploaded the dataset.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -22593,7 +22593,7 @@
             "description": "The email addresses of the company.",
             "nullable": true,
             "example": [
-              "contact@abccorp.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
@@ -22673,9 +22673,9 @@
           },
           "parentCompanyLei": {
             "type": "string",
-            "description": "The LEI of the parent company, if applicable.",
+            "description": "The LEI of the parent company if it exists.",
             "nullable": true,
-            "example": "5493001KJX4BT0IHAG72"
+            "example": "5493001KJX4BT0IHAG73"
           }
         }
       },
@@ -22705,12 +22705,12 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataId": {
             "type": "string",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyName": {
@@ -22731,7 +22731,7 @@
           },
           "currentlyActive": {
             "type": "boolean",
-            "description": "Boolean flag whether the dataset is currently active.",
+            "description": "Boolean flag indicating whether the dataset is currently active.",
             "nullable": true,
             "example": true
           },
@@ -22757,7 +22757,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -22770,7 +22770,7 @@
           },
           "isNonSourceable": {
             "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable and if false, it returns sourceable data.",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
             "example": true
           },
           "reason": {
@@ -22787,7 +22787,7 @@
           "userId": {
             "type": "string",
             "description": "The Dataland user ID of the user who uploaded the dataset.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -22801,7 +22801,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -22995,15 +22995,15 @@
         ],
         "type": "object",
         "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
-          },
-          "companyId": {
-            "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
@@ -23046,7 +23046,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }

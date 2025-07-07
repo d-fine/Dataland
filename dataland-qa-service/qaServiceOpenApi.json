@@ -32,7 +32,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "required": true,
             "schema": {
               "type": "string",
@@ -103,7 +103,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "required": true,
             "schema": {
               "type": "string"
@@ -113,7 +113,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -900,12 +900,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -976,17 +976,17 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -1049,12 +1049,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "showInactive",
@@ -1068,12 +1068,12 @@
           {
             "name": "reporterUserId",
             "in": "query",
-            "description": "The unique user ID of the user who uploaded this QA report.",
+            "description": "The unique user ID of the user who uploaded the QA report.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -1131,12 +1131,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -1618,12 +1618,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "qaReportId",
@@ -1633,7 +1633,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "3f87b4ac-b3e2-4f7d-95d3-8e20c9ad6f1e"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -1844,7 +1844,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -1996,7 +1996,7 @@
           {
             "name": "uploaderUserIds",
             "in": "query",
-            "description": "The unique user ID of the user who uploaded this QA report.",
+            "description": "The unique user ID of the user who uploaded the QA report.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -2006,7 +2006,7 @@
                 "format": "uuid"
               }
             },
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "showOnlyActive",
@@ -2021,7 +2021,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
             "required": false,
             "schema": {
               "type": "string",
@@ -2035,7 +2035,7 @@
           {
             "name": "minUploadDate",
             "in": "query",
-            "description": "If set, only metadata of reports are returned that were uploaded after the minUploadDate.",
+            "description": "If set, only metadata of reports that were uploaded after the minUploadDate are returned.",
             "required": false,
             "schema": {
               "type": "string",
@@ -2046,7 +2046,7 @@
           {
             "name": "maxUploadDate",
             "in": "query",
-            "description": "If set, only metadata of reports are returned that were uploaded before the maxUploadDate.",
+            "description": "If set, only metadata of reports that were uploaded before the maxUploadDate are returned.",
             "required": false,
             "schema": {
               "type": "string",
@@ -2415,7 +2415,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process. Possible values are: Pending, Accepted, Rejected.",
+            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2424,7 +2424,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
-            "description": "Boolean parameter. If set to true or empty, only metadata of QA reports are returned that are active. If set to false, all QA reports will be returned regardless of their active status.",
+            "description": "Boolean parameter. If set to true or empty, only metadata of active QA reports are returned. If set to false, all QA reports will be returned.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2511,12 +2511,12 @@
           {
             "name": "dataPointId",
             "in": "path",
-            "description": "The unique identifier to identify the datapoint.",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "qaReportId",
@@ -2526,7 +2526,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "3f87b4ac-b3e2-4f7d-95d3-8e20c9ad6f1e"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -2832,7 +2832,7 @@
             "type": "string"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -2869,7 +2869,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -2907,7 +2907,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -2948,7 +2948,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -3068,7 +3068,7 @@
       },
       "QaReportDataPointVerdict": {
         "type": "string",
-        "description": "The quality decision of this qa report. Possible values are: QaAccepted, QaRejected, QaInconclusive, QaNotAttempted.",
+        "description": "The quality decision of this qa report.",
         "enum": [
           "QaAccepted",
           "QaRejected",
@@ -3530,7 +3530,7 @@
         "properties": {
           "dataId": {
             "type": "string",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "dataType": {
@@ -3541,12 +3541,12 @@
           "qaReportId": {
             "type": "string",
             "description": "The unique identifier of the QA report",
-            "example": "3f87b4ac-b3e2-4f7d-95d3-8e20c9ad6f1e"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "reporterUserId": {
             "type": "string",
-            "description": "The unique user ID of the user who uploaded this QA report.",
-            "example": "The unique user ID of the user who uploaded this QA report."
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "example": "The unique user ID of the user who uploaded the QA report."
           },
           "uploadTime": {
             "type": "integer",
@@ -3578,7 +3578,7 @@
             "format": "date"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -3615,7 +3615,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -3652,7 +3652,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -3689,7 +3689,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -3726,7 +3726,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -4068,7 +4068,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/CompanyReport"
             },
-            "description": "If rejected, contains suggested data corrections for the data point.",
+            "description": "Contains suggested data corrections for the rejected data point.",
             "example": {
               "value": "No",
               "quality": "Incomplete",
@@ -4997,7 +4997,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -5037,7 +5037,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -5077,7 +5077,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -5115,7 +5115,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -5157,7 +5157,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -6179,7 +6179,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -6287,7 +6287,7 @@
             "$ref": "#/components/schemas/ExtendedDocumentReference"
           }
         },
-        "description": "If rejected, contains suggested data corrections for the data point.",
+        "description": "Contains suggested data corrections for the rejected data point.",
         "example": {
           "value": "No",
           "quality": "Incomplete",
@@ -6338,7 +6338,7 @@
           },
           "correctedData": {
             "type": "string",
-            "description": "If rejected, contains suggested data corrections for the data point.",
+            "description": "Contains suggested data corrections for the rejected data point.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           }
         }
@@ -6357,23 +6357,23 @@
         "properties": {
           "dataPointId": {
             "type": "string",
-            "description": "The unique identifier to identify the datapoint.",
-            "example": "The unique identifier to identify the datapoint."
+            "description": "The unique identifier of the datapoint.",
+            "example": "The unique identifier of the datapoint."
           },
           "dataPointType": {
             "type": "string",
-            "description": "Which data point the provided content is associated to.",
+            "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoNfrdMandatory"
           },
           "qaReportId": {
             "type": "string",
             "description": "The unique identifier of the QA report",
-            "example": "3f87b4ac-b3e2-4f7d-95d3-8e20c9ad6f1e"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "reporterUserId": {
             "type": "string",
-            "description": "The unique user ID of the user who uploaded this QA report.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "uploadTime": {
             "type": "integer",
@@ -6396,7 +6396,7 @@
           },
           "correctedData": {
             "type": "string",
-            "description": "If rejected, contains suggested data corrections for the data point.",
+            "description": "Contains suggested data corrections for the rejected data point.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           }
         }
@@ -6431,12 +6431,12 @@
         "properties": {
           "dataId": {
             "type": "string",
-            "description": "The unique identifier to identify the data in the data store.",
+            "description": "The unique identifier of the data.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -6471,7 +6471,7 @@
           "triggeringUserId": {
             "type": "string",
             "description": "The unique user ID of the user who uploaded the review.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -6638,12 +6638,12 @@
         "properties": {
           "dataPointId": {
             "type": "string",
-            "description": "The unique identifier to identify the datapoint.",
-            "example": "2a7fa2ba-a65f-4b5d-8c7b-423bcfb0d41d"
+            "description": "The unique identifier of the datapoint.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {
             "type": "string",
-            "description": "The ID under which the company can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -6653,7 +6653,7 @@
           },
           "dataPointType": {
             "type": "string",
-            "description": "Which data point the provided content is associated to.",
+            "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoNfrdMandatory"
           },
           "reportingPeriod": {
@@ -6678,7 +6678,7 @@
           "reviewerId": {
             "type": "string",
             "description": "The unique user ID of the user who uploaded the review.",
-            "example": "814caf16-54de-4385-af6e-bd6b64b64634"
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },

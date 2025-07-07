@@ -2,19 +2,19 @@ package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object UsersOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_ID_DESCRIPTION = "The unique identifier to identify the portfolio."
-    const val PORTFOLIO_ID_EXAMPLE = "7c12fa9b-d84e-4763-b527-9a3f1bc06def"
+    const val PORTFOLIO_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val PORTFOLIO_NAME_DESCRIPTION = "The name of the portfolio on Dataland."
     const val PORTFOLIO_NAME_EXAMPLE = "My Portfolio"
 
     const val PORTFOLIO_USER_ID_DESCRIPTION = "The user ID of the user who created the portfolio."
-    const val PORTFOLIO_USER_ID_EXAMPLE = "d11413cb-9a8b-4fe0-867c-c5de00c3d18b"
+    const val PORTFOLIO_USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val PORTFOLIO_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the portfolio was created."
-    const val PORTFOLIO_CREATION_TIMESTAMP_EXAMPLE = "1751291892373"
+    const val PORTFOLIO_CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val PORTFOLIO_LAST_UPDATE_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the portfolio was last updated."
-    const val PORTFOLIO_LAST_UPDATE_TIMESTAMP_EXAMPLE = PORTFOLIO_CREATION_TIMESTAMP_EXAMPLE
+    const val PORTFOLIO_LAST_UPDATE_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val PORTFOLIO_COMPANY_IDS_DESCRIPTION = "A list of company IDs that are contained in the portfolio."
     const val PORTFOLIO_COMPANY_IDS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"]"

@@ -28,7 +28,6 @@ data class DocumentMetaInfo(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_EXAMPLE,
     )
     override val documentCategory: DocumentCategory,
     @field:JsonProperty(required = true)
