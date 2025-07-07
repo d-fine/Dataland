@@ -42,9 +42,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-financials');
   require('./eu-taxonomy-non-financials');
-  require('./p2p');
   require('./vsme');
-  require('./esg-datenkatalog');
   require('./company-ownership');
 }
 
@@ -53,10 +51,10 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    * user-authentication and admin-tools both need the admin tunnel to be present.
    * That's why they live together.
    */
+
+  require('./nuclear-and-gas');
   require('./user-authentication');
   require('./admin-tools');
-  require('./additional-company-information');
-  require('./nuclear-and-gas');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {

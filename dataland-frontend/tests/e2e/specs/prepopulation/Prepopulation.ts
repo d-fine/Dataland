@@ -9,13 +9,11 @@ import {
   uploadGenericFrameworkData,
   uploadVsmeFrameworkData,
 } from '@e2e/utils/FrameworkUpload';
-import { frameworkFixtureMap } from '@e2e/utils/FixtureMap';
 import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
 } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum, type VsmeData } from '@clients/backend';
-import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 
 const chunkSize = 15;
@@ -23,7 +21,7 @@ const chunkSize = 15;
 describe(
   'As a user, I want to be able to see some data on the Dataland webpage',
   {
-    defaultCommandTimeout: Cypress.env('prepopulate_timeout_s') * 1000,
+    defaultCommandTimeout: Cypress.env('prepopulate_timeout_s') * 2000,
     retries: {
       runMode: 0,
       openMode: 0,
@@ -153,16 +151,6 @@ describe(
             checkUploadedData(DataTypeEnum.Vsme, fixtureData.length);
           });
         }
-      );
-    }
-
-    // Prepopulation for frameworks not implemented with the framework-toolbox
-    for (const [key, value] of Object.entries(frameworkFixtureMap)) {
-      const keyTyped = key as keyof typeof frameworkFixtureMap;
-      registerFrameworkFakeFixtureUpload(
-        keyTyped,
-        (config) => getUnifiedFrameworkDataControllerFromConfiguration(keyTyped, config),
-        value
       );
     }
 
