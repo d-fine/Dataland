@@ -14,8 +14,8 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
 import java.io.OutputStream
-import kotlin.collections.map
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -54,8 +54,22 @@ class DataExportService
             }
 
             return when (exportFileType) {
-                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly, includeAliases)
-                ExportFileType.EXCEL -> buildExcelStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly, includeAliases)
+                ExportFileType.CSV ->
+                    buildCsvStreamFromPortfolioAsJsonData(
+                        jsonData,
+                        dataType,
+                        keepValueFieldsOnly,
+                        includeAliases,
+                    )
+
+                ExportFileType.EXCEL ->
+                    buildExcelStreamFromPortfolioAsJsonData(
+                        jsonData,
+                        dataType,
+                        keepValueFieldsOnly,
+                        includeAliases,
+                    )
+
                 ExportFileType.JSON -> buildJsonStreamFromPortfolioAsJsonData(jsonData)
             }
         }
@@ -72,29 +86,35 @@ class DataExportService
         ) {
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("Data")
-            val headerRow = sheet.createRow(HEADER_ROW_INDEX)
-            val orderedColumnsWithValues = dataExportUtils.findOrderedColumnNamesForNonEmptyCols(csvDataWithReadableHeaders, csvSchema)
 
-            // Write header row
-            orderedColumnsWithValues.forEachIndexed { index, columnName ->
-                val cell = headerRow.createCell(index)
-                cell.setCellValue(columnName)
+            // Step 1: Get the ordered columns from csvSchema
+            val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
+
+            // Step 2: Write the header row
+            val headerRow = sheet.createRow(HEADER_ROW_INDEX) // First row in the sheet (index 0)
+            orderedColumns.forEachIndexed { colIndex, columnName ->
+                headerRow.createCell(colIndex).setCellValue(columnName)
             }
 
-            // Write data rows
+            // Step 3: Write the data rows
             csvDataWithReadableHeaders.forEachIndexed { rowIndex, dataMap ->
-                val row = sheet.createRow(rowIndex + 1)
-                orderedColumnsWithValues.forEachIndexed { colIndex, columnName ->
-                    val cell = row.createCell(colIndex)
-                    val value = dataMap[columnName] ?: ""
-                    cell.setCellValue(value)
+                val row = sheet.createRow(rowIndex + 1) // Start writing from the second row (index 1)
+                orderedColumns.forEachIndexed { colIndex, columnName ->
+                    val cellValue = dataMap[columnName] ?: ""
+                    row.createCell(colIndex).setCellValue(cellValue)
                 }
             }
-
-            println("csvDataWithReadableHeaders: $csvDataWithReadableHeaders")
-
-            workbook.write(outputStream)
+            orderedColumns.forEachIndexed { index, _ ->
+                sheet.autoSizeColumn(index)
+            }
+            val tempFile = createTempFile("test_output_", ".xlsx")
+            workbook.write(tempFile.outputStream())
             workbook.close()
+
+            val ips = FileInputStream(tempFile.path)
+            val workb = XSSFWorkbook(ips)
+            workb.write(outputStream)
+            workb.close()
         }
 
         /**
@@ -138,7 +158,7 @@ class DataExportService
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema, readableHeaders) =
+            val (csvData, csvSchema) =
                 dataExportUtils.prepareExportData(
                     portfolioExportRows, dataType,
                     keepValueFieldsOnly, includeAliases,
