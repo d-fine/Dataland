@@ -41,28 +41,6 @@ class DataExportUtils
         private val objectMapper = JsonUtils.defaultObjectMapper
 
         /**
-         * Return a list of column names for the file export that is ordered according to the framework specification
-         *
-         * @param csvDataWithReadableHeaders the data to be exported with readable column names
-         * @param csvSchema the csvSchema containing the columns in the correct order
-         *
-         */
-        fun findOrderedColumnNamesForNonEmptyCols(
-            csvDataWithReadableHeaders: List<Map<String, String>>,
-            csvSchema: CsvSchema,
-        ): List<String?> {
-            val columnsWithValues = mutableSetOf<String>()
-            csvDataWithReadableHeaders.forEach { dataMap ->
-                dataMap.forEach { (key, value) ->
-                    if (value.isNotEmpty()) {
-                        columnsWithValues.add(key)
-                    }
-                }
-            }
-            return csvSchema.columnNames.filter { it in columnsWithValues }
-        }
-
-        /**
          * Return the template of an assembled framework or null if the passed name refers to an old style framework
          *
          * @param framework the framework for which the template shall be returned
