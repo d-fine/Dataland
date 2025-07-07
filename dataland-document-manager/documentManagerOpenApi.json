@@ -106,10 +106,7 @@
             }
           },
           "400": {
-            "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0).",
-            "content": {
-              "application/json": {}
-            }
+            "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0)."
           },
           "default": {
             "description": "An error occurred",
@@ -415,16 +412,10 @@
             }
           },
           "403": {
-            "description": "You do not have the right to update the document\u0027s metainformation.",
-            "content": {
-              "application/json": {}
-            }
+            "description": "You do not have the right to update the document\u0027s metainformation."
           },
           "404": {
-            "description": "Document ID does not match any stored document.",
-            "content": {
-              "application/json": {}
-            }
+            "description": "Document ID does not match any stored document."
           },
           "default": {
             "description": "An error occurred",
@@ -499,16 +490,10 @@
             }
           },
           "403": {
-            "description": "You do not have the right to update the companyIds field.",
-            "content": {
-              "application/json": {}
-            }
+            "description": "You do not have the right to update the companyIds field."
           },
           "404": {
-            "description": "Document ID does not match any stored document.",
-            "content": {
-              "application/json": {}
-            }
+            "description": "Document ID does not match any stored document."
           },
           "default": {
             "description": "An error occurred",
@@ -573,10 +558,7 @@
             }
           },
           "404": {
-            "description": "Document meta information could not be retrieved.",
-            "content": {
-              "application/json": {}
-            }
+            "description": "Document meta information could not be retrieved."
           },
           "default": {
             "description": "An error occurred",
