@@ -10,8 +10,12 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.utils.OpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.FrameworkControllerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -52,8 +56,8 @@ interface DataApi<T> {
         companyAssociatedData: CompanyAssociatedData<T>,
         @Parameter(
             name = "bypassQa",
-            description = OpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
+            description = FrameworkControllerOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+            example = FrameworkControllerOpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
             required = false,
         )
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
@@ -79,12 +83,7 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getCompanyAssociatedData(
-        @Parameter(
-            name = "dataId",
-            description = OpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
-            required = true,
-        )
+        @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<CompanyAssociatedData<T>>
 
@@ -111,17 +110,12 @@ interface DataApi<T> {
     fun getCompanyAssociatedDataByDimensions(
         @Parameter(
             name = "reportingPeriod",
-            description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
             required = true,
         )
         @RequestParam reportingPeriod: String,
-        @Parameter(
-            name = "companyId",
-            description = OpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyIdParameterRequired
         @RequestParam companyId: String,
     ): ResponseEntity<CompanyAssociatedData<T>>
 
@@ -162,29 +156,28 @@ interface DataApi<T> {
     fun exportCompanyAssociatedDataByDimensions(
         @Parameter(
             name = "reportingPeriods",
-            description = OpenApiDescriptionsAndExamples.REPORTING_PERIODS_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.REPORTING_PERIODS_EXAMPLE,
+            description = FrameworkControllerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_DESCRIPTION,
+            example = FrameworkControllerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_EXAMPLE,
             required = true,
         )
         @RequestParam("reportingPeriods") reportingPeriods: List<String>,
         @Parameter(
             name = "companyIds",
-            description = OpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+            description = FrameworkControllerOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+            example = FrameworkControllerOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
             required = true,
         )
         @RequestParam("companyIds") companyIds: List<String>,
         @Parameter(
             name = "fileFormat",
-            description = OpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.FILE_FORMAT_EXAMPLE,
+            description = FrameworkControllerOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
             required = true,
         )
         @RequestParam("fileFormat") exportFileType: ExportFileType,
         @Parameter(
             name = "keepValueFieldsOnly",
-            description = OpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_EXAMPLE,
+            description = FrameworkControllerOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
+            example = FrameworkControllerOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_EXAMPLE,
             required = false,
         )
         @RequestParam(
@@ -218,26 +211,16 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getFrameworkDatasetsForCompany(
-        @Parameter(
-            name = "companyId",
-            description = OpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
         @Parameter(
             name = "showOnlyActive",
-            description = OpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_EXAMPLE,
+            description = FrameworkControllerOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
+            example = FrameworkControllerOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_EXAMPLE,
             required = false,
         )
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
-        @Parameter(
-            name = "reportingPeriod",
-            description = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = OpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-            required = false,
-        )
+        @ReportingPeriodParameterNonRequired
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
 }

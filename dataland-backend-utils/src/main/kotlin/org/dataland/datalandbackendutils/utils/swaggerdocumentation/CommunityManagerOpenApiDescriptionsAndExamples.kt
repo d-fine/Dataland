@@ -1,8 +1,6 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object CommunityManagerOpenApiDescriptionsAndExamples {
-    const val REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
-
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
         "A set of identifiers for companies on Dataland by. Use Dataland company IDs, " +
             "Leis or Isins for the best results. Requests will be posted for all companies that can " +
@@ -21,7 +19,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
         "A set of strings which identify reporting periods on Dataland, such as year numbers. Requests will " +
             "be posted for all specified reporting periods."
-    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = REPORTING_PERIODS_LIST_EXAMPLE
+    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
 
     const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =
         "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of " +
@@ -31,12 +29,16 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val USER_ID_DESCRIPTION = "The ID of the user who created the data request."
     const val USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
+    const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user."
+    const val COMPANY_ROLE_USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
+
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
 
     const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored data requests."
-    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE = REPORTING_PERIODS_LIST_EXAMPLE
+    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE =
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
 
     const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to data requests that were rejected due to being duplicates."
@@ -44,7 +46,8 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored access requests."
-    const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE = REPORTING_PERIODS_LIST_EXAMPLE
+    const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE =
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 
@@ -107,7 +110,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val DATA_REQUEST_COUNT_EXAMPLE = "23"
 
     const val COMPANY_ROLE_DESCRIPTION =
-        "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland."
+        "One of the Dataland specific roles which a user can have with respect to a company on Dataland."
 
     const val OWNERSHIP_COMMENT_DESCRIPTION = "An accompanying comment to a company ownership request."
     const val OWNERSHIP_COMMENT_EXAMPLE = "I am the CEO of this company, please make me its owner on Dataland."

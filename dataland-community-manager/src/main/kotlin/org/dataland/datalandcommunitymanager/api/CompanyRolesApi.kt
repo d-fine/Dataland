@@ -110,8 +110,8 @@ interface CompanyRolesApi {
         companyId: UUID? = null,
         @RequestParam("userId")
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
             required = false,
         )
         userId: UUID? = null,
@@ -156,8 +156,8 @@ interface CompanyRolesApi {
         )
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("userId") userId: UUID,
@@ -208,8 +208,8 @@ interface CompanyRolesApi {
         )
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("userId") userId: UUID,

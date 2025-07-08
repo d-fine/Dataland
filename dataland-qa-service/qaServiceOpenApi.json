@@ -32,7 +32,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier of the data.",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string",
@@ -103,7 +103,7 @@
           {
             "name": "dataId",
             "in": "path",
-            "description": "The unique identifier of the data.",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
@@ -113,7 +113,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
+            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -986,7 +986,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
+            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -1844,7 +1844,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
+            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -1864,7 +1864,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -2021,7 +2021,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
+            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "type": "string",
@@ -2415,7 +2415,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
+            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2424,7 +2424,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
-            "description": "Boolean parameter. If set to true or empty, only metadata of active QA reports are returned. If set to false, all QA reports will be returned.",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2445,7 +2445,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -2996,7 +2996,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -3016,7 +3016,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -3036,7 +3036,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -3056,7 +3056,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -3530,7 +3530,7 @@
         "properties": {
           "dataId": {
             "type": "string",
-            "description": "The unique identifier of the data.",
+            "description": "The unique identifier of the dataset.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "dataType": {
@@ -3978,7 +3978,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -3998,7 +3998,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -4018,7 +4018,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -4038,7 +4038,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -4058,7 +4058,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -5181,7 +5181,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -5201,7 +5201,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -5221,7 +5221,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -5241,7 +5241,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -5261,7 +5261,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -6203,7 +6203,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -6311,7 +6311,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -6331,7 +6331,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -6389,7 +6389,7 @@
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
-            "example": "comment"
+            "example": "The data point is correct and hence accepted."
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -6431,7 +6431,7 @@
         "properties": {
           "dataId": {
             "type": "string",
-            "description": "The unique identifier of the data.",
+            "description": "The unique identifier of the dataset.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {

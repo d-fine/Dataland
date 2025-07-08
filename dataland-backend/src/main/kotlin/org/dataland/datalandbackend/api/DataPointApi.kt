@@ -72,7 +72,13 @@ interface DataPointApi {
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadedDataPoint,
-        @RequestParam(defaultValue = "false") bypassQa: Boolean,
+        @RequestParam(defaultValue = "false")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
+            required = false,
+        )
+        bypassQa: Boolean,
     ): ResponseEntity<DataPointMetaInformation>
 
     /**

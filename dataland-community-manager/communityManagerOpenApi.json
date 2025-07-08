@@ -167,7 +167,7 @@
           {
             "name": "role",
             "in": "path",
-            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -248,7 +248,7 @@
           {
             "name": "role",
             "in": "path",
-            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -268,7 +268,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user.",
             "required": true,
             "schema": {
               "type": "string",
@@ -322,7 +322,7 @@
           {
             "name": "role",
             "in": "path",
-            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -342,7 +342,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user.",
             "required": true,
             "schema": {
               "type": "string",
@@ -873,7 +873,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1258,7 +1258,7 @@
           {
             "name": "role",
             "in": "query",
-            "description": "One of a selection of Dataland specific roles which a user can have with respect to a company on Dataland.",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -1278,7 +1278,7 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user.",
             "required": false,
             "schema": {
               "type": "string",

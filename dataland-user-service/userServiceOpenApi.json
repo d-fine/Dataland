@@ -618,7 +618,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1075,7 +1075,7 @@
           "sector": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
-            "example": "web services"
+            "example": "Information Technology"
           },
           "countryCode": {
             "type": "string",

@@ -17,7 +17,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val HEADQUARTERS_POSTAL_CODE_EXAMPLE = "10123"
 
     const val SECTOR_DESCRIPTION = "The industry or sector in which the company operates."
-    const val SECTOR_EXAMPLE = "web services"
+    const val SECTOR_EXAMPLE = "Information Technology"
 
     const val SECTOR_CODE_WZ_DESCRIPTION = "The industry classification code according to the NACE compliant WZ method."
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
@@ -37,7 +37,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val PARENT_COMPANY_LEI_DESCRIPTION = "The LEI of the parent company if it exists."
     const val PARENT_COMPANY_LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
 
-    const val DATA_ID_DESCRIPTION = "The unique identifier of the data."
+    const val DATA_ID_DESCRIPTION = "The unique identifier of the dataset."
     const val DATA_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val CURRENTLY_ACTIVE_DESCRIPTION = "Boolean flag indicating whether the dataset is currently active."
@@ -79,12 +79,12 @@ object BackendOpenApiDescriptionsAndExamples {
     const val IS_ONLY_ACTIVE_DESCRIPTION = "Boolean flag indicating whether the dataset is currently the only active dataset."
     const val IS_ONLY_ACTIVE_EXAMPLE = "true"
 
-    const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A set of Dataland user IDs of the users who uploaded the document."
+    const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A list of Dataland user IDs corresponding to the users who uploaded the data."
     const val ALL_UPLOADER_USER_IDS_EXAMPLE = "[\"$UPLOADER_USER_ID_EXAMPLE\"]"
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION =
-        "Boolean parameter. If set to true or empty, only metadata of active QA reports " +
-            "are returned. If set to false, all QA reports will be returned."
+        "Boolean parameter. If set to true or empty, only currently active data is returned. " +
+            "If set to false, all data is returned regardless of active status."
 
     const val DATA_POINT_ID_DESCRIPTION = "The unique identifier of the datapoint."
     const val DATA_POINT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
@@ -128,7 +128,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
 
     const val QA_REPORT_COMMENT_DESCRIPTION = "A comment explaining the verdict."
-    const val QA_REPORT_COMMENT_EXAMPLE = "comment"
+    const val QA_REPORT_COMMENT_EXAMPLE = "The data point is correct and hence accepted."
 
     const val QA_REPORT_SHOW_INACTIVE_DESCRIPTION = "Boolean flag to indicate if inactive QA reports should be included in the response."
 
@@ -141,4 +141,12 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_MAX_UPLOAD_DATE_DESCRIPTION =
         "If set, only metadata of reports that were uploaded before the maxUploadDate are returned."
     const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
+
+    const val FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION =
+        "Either the framework of the wanted dataset or the dataPointType of the wanted data point."
+    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE
+
+    const val BYPASS_QA_DESCRIPTION =
+        "If true, data is not sent to QA."
+    const val BYPASS_QA_EXAMPLE = "false"
 }

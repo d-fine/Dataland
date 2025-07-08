@@ -348,7 +348,11 @@ interface MetaDataApi {
         @CompanyIdParameterNonRequired
         companyIds: List<String>? = null,
         @RequestParam
-        @DataTypeParameterNonRequired
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE,
+            required = false,
+        )
         frameworksOrDataPointTypes: List<String>? = null,
         @RequestParam
         @ReportingPeriodParameterNonRequired

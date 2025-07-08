@@ -42,7 +42,7 @@
           {
             "name": "documentCategories",
             "in": "query",
-            "description": "If specified, only returns meta information of documents having one of these document categories.",
+            "description": "If specified, only returns meta information of documents belonging to one of these document categories.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -81,7 +81,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by default, the first chunk (containing the meta information of the latest published documents) is returned.",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1054,7 +1054,7 @@
       },
       "QaStatus": {
         "type": "string",
-        "description": "The status of the document with regard to Dataland\u0027s Quality Assurance process.",
+        "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
         "enum": [
           "Pending",
           "Accepted",

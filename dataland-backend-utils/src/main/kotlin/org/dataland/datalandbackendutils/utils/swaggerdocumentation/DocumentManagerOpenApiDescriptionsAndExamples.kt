@@ -42,8 +42,7 @@ object DocumentManagerOpenApiDescriptionsAndExamples {
     const val COMPANY_ID_SEARCH_PARAMETER_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE
 
     const val DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION =
-        "If specified, only returns meta information of documents having one of these document " +
-            "categories."
+        "If specified, only returns meta information of documents belonging to one of these document categories."
 
     const val REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION =
         "If specified, only returns meta information of documents associated with this reporting" +

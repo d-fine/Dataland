@@ -5,6 +5,7 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val GENERAL_EMAIL_EXAMPLE = "test@example.com"
     const val GENERAL_TIMESTAMP_EXAMPLE = "1751291891271"
     const val GENERAL_LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
+    const val GENERAL_REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
 
     const val REPORTING_PERIOD_DESCRIPTION = "The reporting period the document belongs to (e.g. a fiscal year)."
     const val REPORTING_PERIOD_EXAMPLE = "2023"
@@ -13,17 +14,16 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val UPLOAD_TIME_EXAMPLE = GENERAL_TIMESTAMP_EXAMPLE
 
     const val QA_STATUS_DESCRIPTION =
-        "The status of the document with regard to Dataland's Quality Assurance process."
+        "The status of the document with regard to Dataland's quality assurance process."
 
     const val CHUNK_SIZE_DESCRIPTION =
         "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
             "of a single chunk. All chunks except possibly the last will have that size."
 
     const val CHUNK_INDEX_DESCRIPTION =
-        "Only a chunk of all matching, ordered results is returned. This parameter specifies the number of the " +
-            "returned chunk in the ordering, with counting starting at 0. The default value is 0, i.e., by " +
-            "default, the first chunk (containing the meta information of the latest published documents) is " +
-            "returned."
+        "Only a chunk of all matching, ordered results is returned. " +
+            "This parameter specifies which chunk to return, starting at 0. " +
+            "The default value is 0, meaning the first chunk is returned."
 
     const val COMPANY_ID_DESCRIPTION = "The unique identifier under which the company can be found on Dataland."
     const val COMPANY_ID_EXAMPLE = "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
