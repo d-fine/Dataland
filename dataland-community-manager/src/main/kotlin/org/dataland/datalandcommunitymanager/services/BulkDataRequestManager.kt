@@ -1,10 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
@@ -28,6 +31,7 @@ class BulkDataRequestManager(
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageBuilder,
     @Autowired private val utils: DataRequestProcessingUtils,
     @Autowired private val metaDataController: MetaDataControllerApi,
+    @PersistenceContext private val entityManager: EntityManager,
     @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
     /**
@@ -49,8 +53,8 @@ class BulkDataRequestManager(
             getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
 
         val existingDatasets =
-            metaDataController.postListOfDataMetaInfoFilters(
-                validRequestCombinations.map { it.toDataMetaInformationSearchFilter() },
+            metaDataController.retrieveMetaDataOfActiveDatasets(
+                basicDataDimensions = validRequestCombinations.map { it.toBasicDataDimensions() },
             )
 
         val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
@@ -145,6 +149,35 @@ class BulkDataRequestManager(
         }
 
     /**
+     * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
+     * For performance reasons tupel matching is used and requires a native query via entity manager. JPA does not support tupel matching.
+     * @param dataDimensions List of data dimensions to filter the requests.
+     * @param userId The ID of the user for whom to retrieve the active requests.
+     */
+    fun getActiveRequests(
+        dataDimensions: List<DatasetDimensions>,
+        userId: String,
+    ): List<DataRequestEntity> {
+        val formattedTuples =
+            dataDimensions.joinToString(", ") {
+                "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
+            }
+
+        val queryToExecute =
+            "WITH history AS (SELECT *, ROW_NUMBER() " +
+                "OVER (PARTITION BY data_request_id ORDER BY creation_timestamp DESC) AS num_row FROM request_status_history) " +
+                "SELECT d.* FROM data_requests d " +
+                "JOIN (SELECT * FROM history " +
+                "WHERE num_row = 1 AND request_status IN ('Open', 'Answered')) h " +
+                "ON d.data_request_id = h.data_request_id " +
+                "WHERE (d.dataland_company_id, d.data_type, d.reporting_period) IN ($formattedTuples) " +
+                "AND d.user_id = '$userId'"
+
+        val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)
+        return query.resultList as List<DataRequestEntity>
+    }
+
+    /**
      * Processes data requests to remove already existing data requests
      * @param validDataDimensions list of all valid data requests
      * @param userProvidedIdentifierToDatalandCompanyIdMapping mapping of user provided company identifiers to
@@ -155,38 +188,35 @@ class BulkDataRequestManager(
         validDataDimensions: MutableList<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
-        val existingDataRequests = mutableListOf<ResourceResponse>()
-        val iterator = validDataDimensions.iterator()
-
-        while (iterator.hasNext()) {
-            val dimension = iterator.next()
-            val existingRequestId =
-                utils.getRequestIdForDataRequestWithNonFinalStatus(
-                    dimension.companyId,
-                    dimension.dataType,
-                    dimension.reportingPeriod,
-                )
-            if (existingRequestId != null) {
+        // Does not work with impersonation like this
+        val userId = DatalandAuthentication.fromContext().userId
+        val existingRequests = getActiveRequests(validDataDimensions, userId)
+        val existingDataRequestsResponse =
+            existingRequests.map {
                 val (userProvidedCompanyId, companyName) =
                     extractUserProvidedIdAndName(
-                        dimension.companyId,
-                        userProvidedIdentifierToDatalandCompanyIdMapping,
+                        it.datalandCompanyId, userProvidedIdentifierToDatalandCompanyIdMapping,
                     )
-
-                existingDataRequests.add(
-                    ResourceResponse(
-                        userProvidedIdentifier = userProvidedCompanyId,
-                        companyName = companyName,
-                        framework = dimension.dataType.toString(),
-                        reportingPeriod = dimension.reportingPeriod,
-                        resourceId = existingRequestId,
-                        resourceUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
-                    ),
+                ResourceResponse(
+                    userProvidedIdentifier = userProvidedCompanyId,
+                    companyName = companyName,
+                    framework = it.dataType,
+                    reportingPeriod = it.reportingPeriod,
+                    resourceId = it.dataRequestId,
+                    resourceUrl = "https://$proxyPrimaryUrl/requests/${it.dataRequestId}",
                 )
-                iterator.remove()
             }
-        }
-        return existingDataRequests
+
+        val existingDatasetDimensions =
+            existingRequests.map { dimension ->
+                DatasetDimensions(
+                    companyId = dimension.datalandCompanyId,
+                    dataType = DataTypeEnum.valueOf(dimension.dataType.replace("-", "Minus")),
+                    reportingPeriod = dimension.reportingPeriod,
+                )
+            }
+        validDataDimensions.removeAll(existingDatasetDimensions)
+        return existingDataRequestsResponse
     }
 
     private fun extractUserProvidedIdAndName(
