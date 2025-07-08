@@ -1,6 +1,5 @@
 // @ts-nocheck
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
-import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -22,17 +21,6 @@ const createSfdrDataset = {
   },
 };
 
-const createP2pDataset = {
-  fillRequiredFields(): void {
-    createSfdrDataset.fillDateFieldWithFutureDate('dataDate');
-    this.selectSector('Automotive');
-  },
-  selectSector(sector: string): void {
-    cy.get('div[data-test="sectors"] div.p-multiselect').should('exist').click();
-    cy.contains('span', sector).should('exist').click();
-    cy.get('div[data-test="sectors"] div.p-multiselect').should('exist').click();
-  },
-};
 const createLksgDataset = {
   fillRequiredFields(): void {
     createSfdrDataset.fillDateFieldWithFutureDate('dataDate');
@@ -90,9 +78,6 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     if (framework == 'sfdr') {
       dataType = DataTypeEnum.Sfdr;
       createDataset = CreateSfdrDataset;
-    } else if (framework == 'p2p') {
-      dataType = DataTypeEnum.P2p;
-      createDataset = CreateP2pDataset;
     } else {
       dataType = DataTypeEnum.Lksg;
       createDataset = CreateLksgDataset;
@@ -149,28 +134,6 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     uploadFieldSpecificDocuments('fourth', 3, 'grievanceHandlingMechanism');
     cy.wait(100);
     cy.get('div[data-test="BaseDataPointFormFieldgrievanceHandlingMechanism"] button .pi-times').click();
-    cy.wait(100);
-    submitButton.buttonAppearsEnabled();
-    submitButton.clickButton();
-
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
-      cy.wait(`@documentExists-${hash}`);
-    });
-    cy.wait(100);
-    cy.get('@documentExists').should('have.been.calledOnce');
-  });
-
-  it('Check if the document uploads in P2p upload page work', () => {
-    const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithOneByteSize]);
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
-      interceptEachUpload(hash);
-    });
-    mountPluginAndInterceptUploads('p2p');
-    createP2pDataset.fillRequiredFields();
-    uploadFieldSpecificDocuments('first', 1, 'upstreamSupplierProcurementPolicy');
-    createP2pDataset.selectSector('Livestock Farming');
-    uploadFieldSpecificDocuments('second', 2, 'externalFeedCertification');
-    createP2pDataset.selectSector('Livestock Farming');
     cy.wait(100);
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();

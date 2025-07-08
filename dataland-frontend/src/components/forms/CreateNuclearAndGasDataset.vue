@@ -150,7 +150,7 @@ import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
-import type { FrameworkData, Subcategory } from '@/utils/GenericFrameworkTypes';
+import type { Subcategory } from '@/utils/GenericFrameworkTypes';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
@@ -223,10 +223,7 @@ export default defineComponent({
       return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(
-        this.nuclearAndGasDataModel,
-        this.companyAssociatedNuclearAndGasData.data as FrameworkData
-      );
+      return createSubcategoryVisibilityMap(this.nuclearAndGasDataModel, this.companyAssociatedNuclearAndGasData.data);
     },
   },
   props: {

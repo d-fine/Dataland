@@ -51,7 +51,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.P2p,
+      DataTypeEnum.Lksg,
       '2020',
       'companyAnswered',
       'compA',
@@ -99,7 +99,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.EsgDatenkatalog,
+      DataTypeEnum.Sfdr,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
@@ -238,15 +238,11 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check filter functionality and reset button', function (): void {
-    const expectedFrameworks = [
-      'WWF',
+    const expectedFrameworkNameSubstrings = [
       'SFDR',
       'EU Taxonomy',
-      'Pathways to Paris',
       'for financial companies',
       'for non-financial companies',
-      'ESG Datenkatalog',
-      'für Corporate Schuldscheindarlehen',
     ];
 
     cy.intercept('**community/requests/user', {
@@ -260,11 +256,11 @@ describe('Component tests for the data requests search page', function (): void 
       void mounted.wrapper.setData({
         selectedFrameworks: [],
       });
-      expectedFrameworks.forEach((value) => {
+      expectedFrameworkNameSubstrings.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should('not.exist');
       });
       cy.get('[data-test=reset-filter]').should('exist').click();
-      expectedFrameworks.forEach((value) => {
+      expectedFrameworkNameSubstrings.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should('exist');
       });
       cy.get(`table tbody:contains("SME")`).should('not.exist');

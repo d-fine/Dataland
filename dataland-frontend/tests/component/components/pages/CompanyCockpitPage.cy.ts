@@ -4,7 +4,7 @@ import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
   DataTypeEnum,
-  type HeimathafenData,
+  type LksgData,
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
@@ -40,9 +40,9 @@ describe('Component test for the company cockpit', () => {
   let allFrameworks: Set<DataTypeEnum>;
 
   before(function () {
-    cy.fixture('CompanyInformationWithHeimathafenData').then(function (jsonContent) {
-      const heimathafenFixtures = jsonContent as Array<FixtureData<HeimathafenData>>;
-      companyInformationForTest = heimathafenFixtures[0].companyInformation;
+    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
+      const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      companyInformationForTest = lksgFixtures[0].companyInformation;
     });
     cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
@@ -247,7 +247,7 @@ describe('Component test for the company cockpit', () => {
         return;
       }
       if (isProvideDataButtonExpected) {
-        if (frameworkName != 'heimathafen') {
+        if (frameworkName != 'lksg') {
           cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
             'exist'
           );
