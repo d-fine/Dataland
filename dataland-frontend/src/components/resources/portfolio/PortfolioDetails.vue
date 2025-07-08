@@ -10,13 +10,14 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio">
-        <i class="material-icons pr-2">edit</i> Edit Portfolio
-      </PrimeButton>
+      <PrimeButton @click="openEditModal()" data-test="edit-portfolio" label="Edit Portfolio" icon="pi pi-pencil" />
+      <PrimeButton
+        @click="openDownloadModal()"
+        data-test="download-portfolio"
+        label="Download Portfolio"
+        icon="pi pi-download"
+      />
 
-      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
-        <i class="pi pi-download pr-2" /> Download Portfolio
-      </PrimeButton>
       <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
         <span class="material-icons-outlined fs-sm pr-1">verified</span>
         Portfolio actively monitored
@@ -24,14 +25,13 @@
 
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
         <PrimeButton
-          class="primary-button"
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
-        >
-          <i class="pi pi-bell pr-2" /> EDIT MONITORING
-        </PrimeButton>
-        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+          icon="pi pi-bell"
+          label="Edit Monitoring"
+        />
+        <PrimeButton variant="text" @click="resetFilters" label="RESET FILTER" data-test="reset-filter" />
       </div>
     </div>
 
@@ -459,50 +459,16 @@ a:after {
   font-weight: bold;
 }
 
-:deep(.p-inputtext) {
-  background: none;
-}
-
-:deep(.p-column-filter) {
-  margin: 0.5rem;
-}
-
-:deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
-  color: inherit;
-}
-
-.selection-button {
-  background: white;
-  color: #5a4f36;
-  border: 2px solid #5a4f36;
-  border-radius: 0.5em;
-  height: 2.25rem;
-}
-
 .button_bar {
   display: flex;
-  margin: 1rem;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
   gap: 1rem;
   align-items: center;
+  background-color: var(--p-surface-50);
 
   :last-child {
     margin-left: auto;
-  }
-}
-
-.monitor-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.5rem;
-
-  :deep(.p-inputswitch) {
-    transform: scale(1.3);
-    margin-left: 0.3rem; /* push it right so it’s not clipped */
-  }
-
-  span {
-    white-space: nowrap;
   }
 }
 
@@ -512,306 +478,5 @@ a:after {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.primary-button {
-  white-space: nowrap;
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  min-width: 10em;
-  width: fit-content;
-  justify-content: center;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: bottom;
-  flex-direction: row;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-  transition: all 0.2s;
-  border-radius: 0;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-
-  &:enabled:hover {
-    color: white;
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-  }
-
-  &:enabled:active {
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-  }
-
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: var(--btn-disabled-color);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-}
-
-.tertiary-button {
-  white-space: nowrap;
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  min-width: 10em;
-  width: fit-content;
-  justify-content: center;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: bottom;
-  flex-direction: row;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-  transition: all 0.2s;
-  border-radius: 0;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-
-  &:enabled:hover {
-    color: white;
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-  }
-
-  &:enabled:active {
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-  }
-
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: var(--btn-disabled-color);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-}
-
-.primary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--btn-primary-color);
-  background: var(--btn-primary-bg);
-  border: 1px solid var(--btn-primary-bg);
-  margin: 0;
-}
-
-.tertiary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--main-color);
-  background: none;
-  border: none;
-}
-
-.p-datatable {
-  border-radius: 0;
-  background: var(--table-background-color);
-  color: var(--main-text-color);
-
-  .border-left {
-    border-left: 1px solid var(--table-border);
-  }
-
-  .border-right {
-    border-right: 1px solid var(--table-border);
-  }
-
-  .border-bottom {
-    border-bottom: 1px solid var(--table-border);
-  }
-
-  .horizontal-headers-size {
-    background-color: var(--default-neutral-white);
-
-    &:first-of-type {
-      width: var(--first-table-column-width);
-    }
-  }
-  .onlyHeaders {
-    tr {
-      display: flex;
-      width: calc(100vw - 58px);
-    }
-    tr th:not(.first-horizontal-headers-size) {
-      flex: 1;
-    }
-    .p-datatable-tbody {
-      display: none;
-    }
-  }
-  tr {
-    &:not(.p-rowgroup-header) {
-      td {
-        border-bottom: 1px solid var(--table-border);
-      }
-    }
-    &:hover {
-      background: var(--table-background-hover-color);
-    }
-    th,
-    td {
-      text-align: left;
-      padding: 1rem;
-    }
-  }
-  .p-datatable-tbody {
-    tr {
-      border-color: hsl(from var(--table-border-dark) h s 45);
-    }
-    .info-icon {
-      float: right;
-      max-width: 20%;
-    }
-    .table-left-label {
-      float: left;
-      max-width: 80%;
-    }
-  }
-  .p-sortable-column {
-    .p-sortable-column-icon {
-      color: var(--table-icon-color);
-      margin-left: 0.5rem;
-    }
-    &.p-highlight {
-      background: var(--table-background-color);
-      color: var(--main-color);
-      .p-sortable-column-icon {
-        color: var(--main-color);
-      }
-    }
-  }
-  .headers-bg {
-    background-color: var(--tables-headers-bg);
-    display: table-cell;
-    width: var(--first-table-column-width);
-  }
-  .auto-headers-size {
-    width: auto;
-  }
-  .p-rowgroup-header {
-    background-color: var(--table-background-hover-color-light);
-    cursor: pointer;
-
-    &.p-topmost-header {
-      background-color: var(--tables-headers-bg);
-    }
-
-    td {
-      position: relative;
-      width: var(--first-table-column-width);
-      button {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        margin-top: -7px;
-      }
-    }
-  }
-
-  .p-datatable-thead {
-    z-index: 1;
-    tr {
-      box-shadow: none;
-      &:hover {
-        background: var(--table-background-color);
-      }
-    }
-  }
-
-  &.activities-data-table {
-    $col-activity-width: 300px;
-    $col-nace-codes-width: 70px;
-    .group-row-header {
-      background-color: var(--tables-headers-bg);
-      border-bottom: 1px solid var(--table-border);
-      .p-column-header-content {
-        justify-content: center;
-      }
-      &:not(:first-of-type) {
-        border-left: 1px solid var(--table-border);
-      }
-    }
-    .first-group-column:not(:first-of-type) {
-      border-left: 1px solid var(--table-border);
-    }
-    .non-frozen-header {
-      vertical-align: top;
-    }
-    .frozen-row-header {
-      vertical-align: top;
-      background-color: var(--tables-headers-bg);
-    }
-    .col-activity {
-      width: $col-activity-width;
-      min-width: $col-activity-width;
-    }
-    .col-nace-codes {
-      width: $col-nace-codes-width;
-      min-width: $col-nace-codes-width;
-      border-right: 1px solid var(--table-border);
-    }
-    .col-value {
-      width: 160px;
-      min-width: 160px;
-    }
-    .col-percentage {
-      min-width: 6rem;
-    }
-  }
-}
-
-.p-inputtext {
-  font-family: inherit;
-  color: var(--input-text-color);
-  background: var(--input-text-bg);
-  padding: var(--spacing-sm);
-  border: 0;
-  margin: 0;
-  transition:
-    background-color 0.2s,
-    color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
-  appearance: none;
-  &:enabled:hover {
-    border-color: var(--input-text-border-hover);
-  }
-  &:enabled:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #bfd1f6;
-    border-color: var(--input-text-border-hover);
-  }
-  &.p-invalid.p-component {
-    border-color: #ced4da #ced4da #ced4da #e4677e;
-  }
-  &.p-inputtext-sm {
-    font-size: var(--font-size-sm);
-    padding: var(--spacing-xs);
-  }
-  &.p-inputtext-lg {
-    font-size: var(--font-size-lg);
-    padding: var(--spacing-sm);
-  }
-}
-
-.info-icon {
-  cursor: help;
 }
 </style>

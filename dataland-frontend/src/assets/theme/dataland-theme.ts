@@ -182,6 +182,17 @@ export const DatalandPreset = definePreset(Aura, {
           },
         },
       },
+      css: () => `
+        .p-button:disabled {
+          cursor: not-allowed;
+        }
+      `,
+    },
+    datatable: {
+      headerCell: {
+        selectedColor: '{primary.color}',
+        selectedBackground: '{content.background}',
+      },
     },
     menu: {
       root: {
