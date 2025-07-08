@@ -98,6 +98,8 @@ export const DatalandPreset = definePreset(Aura, {
           activeColor: '{orange.500}',
         },
         content: {
+          background: '{surface.0}',
+          color: '{surface.900}',
           borderColor: '{surface.200}',
           borderRadius: '{border.radius.xs}',
           extend: {
