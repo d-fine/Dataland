@@ -12,16 +12,20 @@ import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.UUID
 
 class DataExportServiceTest {
+    private val testAlias2 = "TEST_ALIAS_2"
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
@@ -185,7 +189,7 @@ class DataExportServiceTest {
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
-                includeAliases = false,
+                includeAliases = true,
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -203,16 +207,100 @@ class DataExportServiceTest {
         )
     }
 
+    @Test
+    fun `check that the exported columns are ordered according to the specification`() {
+        val testJsonWithOneValue = createTestJsonWithBothValueAndQuality()
+        val testJsonWithTwoValues = createTestJsonWithTwoDataPoints()
+        whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
+            FrameworkSpecification(
+                IdWithRef("testId", "testRef"),
+                "testFramework",
+                "testBusinessefinition",
+                createTestSpecification(),
+                "testPath",
+            ),
+        )
+
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(
+                    SingleCompanyExportData(
+                        companyName = "Test Company 1",
+                        companyLei = "TEST67890",
+                        reportingPeriod = "2024",
+                        data = objectMapper.treeToValue(testJsonWithOneValue, Any::class.java),
+                    ),
+                    SingleCompanyExportData(
+                        companyName = "Test Company 2",
+                        companyLei = "TEST67890",
+                        reportingPeriod = "2024",
+                        data = objectMapper.treeToValue(testJsonWithTwoValues, Any::class.java),
+                    ),
+                ),
+                ExportFileType.CSV,
+                DataType.valueOf("lksg"),
+                keepValueFieldsOnly = true,
+                includeAliases = false,
+            )
+
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+        val colsInCorrectOrder =
+            """"data.testCategory.aTestDataPoint.value","data.testCategory.testDataPoint.value""""
+        // Verify that the value field was kept (and not the quality field)
+        Assertions.assertTrue(
+            csvString
+                .contains(colsInCorrectOrder),
+            "CSV does not contain the specified columns in the correct order",
+        )
+    }
+
+    @Test
+    fun `check that the specified aliases are exported`() {
+        val testJson = createTestJsonWithBothValueAndQuality()
+
+        whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("sfdr")).thenReturn(
+            FrameworkSpecification(
+                IdWithRef("testId", "testRef"),
+                "testFramework",
+                "testBusinessefinition",
+                createTestSpecification(),
+                "testPath",
+            ),
+        )
+
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(
+                    SingleCompanyExportData(
+                        companyName = "Test Company ",
+                        companyLei = "TEST67890",
+                        reportingPeriod = "2024",
+                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                    ),
+                ),
+                ExportFileType.CSV,
+                DataType.valueOf("sfdr"),
+                keepValueFieldsOnly = true,
+                includeAliases = true,
+            )
+
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+        // Verify that the value field was kept (and not the quality field)
+        Assertions.assertTrue(
+            csvString
+                .contains(testAlias2),
+            "CSV does not contain the export alias $testAlias2",
+        )
+    }
+
     /**
      * Creates a test JSON with a data point that has only a quality field (no value field)
      */
     private fun createTestJsonWithQualityNoValue(): JsonNode {
         val root = objectMapper.createObjectNode()
-        val data = objectMapper.createObjectNode()
-        root.set<JsonNode>("data", data)
 
         val testField = objectMapper.createObjectNode()
-        data.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>("testCategory", testField)
 
         val testPoint = objectMapper.createObjectNode()
         testField.set<JsonNode>("testDataPoint", testPoint)
@@ -228,11 +316,9 @@ class DataExportServiceTest {
      */
     private fun createTestJsonWithBothValueAndQuality(): JsonNode {
         val root = objectMapper.createObjectNode()
-        val data = objectMapper.createObjectNode()
-        root.set<JsonNode>("data", data)
 
         val testField = objectMapper.createObjectNode()
-        data.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>("testCategory", testField)
 
         val testPoint = objectMapper.createObjectNode()
         testField.set<JsonNode>("testDataPoint", testPoint)
@@ -242,5 +328,56 @@ class DataExportServiceTest {
         testPoint.put("quality", "Reported")
 
         return root
+    }
+
+    /**
+     * Creates a test JSON with a data point that has both a value and quality field
+     */
+    private fun createTestJsonWithTwoDataPoints(): JsonNode {
+        val root = objectMapper.createObjectNode()
+
+        val testField = objectMapper.createObjectNode()
+        root.set<JsonNode>("testCategory", testField)
+
+        val testPointA = objectMapper.createObjectNode()
+        testField.set<JsonNode>("aTestDataPoint", testPointA)
+
+        testPointA.put("value", "123")
+        testPointA.put("quality", "Reported")
+
+        val testPointB = objectMapper.createObjectNode()
+        testField.set<JsonNode>("testDataPoint", testPointB)
+
+        testPointB.put("value", "42")
+        testPointB.put("quality", "Reported")
+
+        return root
+    }
+
+    /**
+     * Creates a test specification matching the test data created in createTestJsonWithBothValueAndQuality
+     */
+    private fun createTestSpecification(): String {
+        val root = objectMapper.createObjectNode()
+
+        val testField = objectMapper.createObjectNode()
+        root.set<JsonNode>("testCategory", testField)
+
+        val testPointA = objectMapper.createObjectNode()
+        testField.set<JsonNode>("aTestDataPoint", testPointA)
+
+        testPointA.put("id", "testId1")
+        testPointA.put("ref", "testRef1")
+        testPointA.put("aliasExport", "TEST_ALIAS_1")
+
+        val testPointB = objectMapper.createObjectNode()
+        testField.set<JsonNode>("testDataPoint", testPointB)
+
+        // Set both value and quality fields
+        testPointB.put("id", "testId2")
+        testPointB.put("ref", "testRef2")
+        testPointB.put("aliasExport", testAlias2)
+
+        return root.toString()
     }
 }
