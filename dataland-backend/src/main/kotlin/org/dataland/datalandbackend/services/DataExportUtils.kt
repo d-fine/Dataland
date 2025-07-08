@@ -35,7 +35,14 @@ class DataExportUtils
                     "companyLei" to "COMPANY_LEI",
                     "reportingPeriod" to "REPORTING_PERIOD",
                 )
-            const val SUFFIX = ".value"
+            private const val DATA = "data"
+            private const val ALIAS_EXPORT = "aliasExport"
+            private const val QUALITY = "quality"
+            private const val COMMENT = "comment"
+            private const val DATA_SOURCE = "dataSource"
+            private const val VALUE = "value"
+            private const val PREFIX = "$DATA."
+            private const val SUFFIX = ".$VALUE"
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -182,13 +189,13 @@ class DataExportUtils
             if (isAssembledDataset) {
                 usedHeaderFields
                     .filter {
-                        !it.startsWith("data" + JsonUtils.getPathSeparator())
+                        !it.startsWith(DATA + JsonUtils.getPathSeparator())
                     }.forEach { resultList.add(it) }
 
                 orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
                     usedHeaderFields
                         .filter { usedHeaderField ->
-                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
+                            usedHeaderField.startsWith(DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
                         }.forEach {
                             resultList.add(it)
                         }
@@ -232,9 +239,9 @@ class DataExportUtils
          */
         private fun isMetaDataField(field: String): Boolean {
             val separator = JsonUtils.getPathSeparator()
-            return field.endsWith(separator + "comment") ||
-                field.endsWith(separator + "quality") ||
-                field.contains(separator + "dataSource" + separator) ||
+            return field.endsWith(separator + COMMENT) ||
+                field.endsWith(separator + QUALITY) ||
+                field.contains(separator + DATA_SOURCE + separator) ||
                 isReferencedReportsField(field)
         }
 
@@ -295,16 +302,18 @@ class DataExportUtils
                 val value = nodes[field] ?: continue
 
                 when {
-                    field.endsWith("${separator}quality") -> {
-                        val basePath = field.removeSuffix("${separator}quality")
-                        val valuePath = "${basePath}${separator}value"
+                    field.endsWith("${separator}$QUALITY") -> {
+                        val basePath = field.removeSuffix("${separator}$QUALITY")
+                        val valuePath = "${basePath}${separator}$VALUE"
                         if (valuePath !in nodes) {
                             filteredNodes[valuePath] = value
                         }
                     }
-                    field.endsWith("${separator}value") -> {
+
+                    field.endsWith("${separator}$VALUE") -> {
                         filteredNodes[field] = value
                     }
+
                     !isMetaDataField(field) -> {
                         filteredNodes[field] = value
                     }
@@ -368,10 +377,11 @@ class DataExportUtils
                 val fullPath = if (prefix.isEmpty()) field else "$prefix$separator$field"
 
                 when {
-                    node.has("aliasExport") -> {
-                        val aliasExport = node.get("aliasExport")?.asText()
+                    node.has(ALIAS_EXPORT) -> {
+                        val aliasExport = node.get(ALIAS_EXPORT)?.asText()
                         result[fullPath] = if (aliasExport != "null") aliasExport else null
                     }
+
                     node.isObject -> {
                         result.putAll(extractAliasExportFields(node, fullPath))
                     }
@@ -388,7 +398,7 @@ class DataExportUtils
             fullFieldName: String,
             aliasExportMap: Map<String, String?>,
         ): String {
-            val coreField = fullFieldName.removePrefix("data.").removeSuffix(SUFFIX)
+            val coreField = fullFieldName.removePrefix(PREFIX).removeSuffix(SUFFIX)
 
             val parts = coreField.split(".")
 
@@ -416,7 +426,7 @@ class DataExportUtils
             val transformedSuffix =
                 suffixParts.mapNotNull { part ->
                     when (part) {
-                        "share", "amount", "value" -> null
+                        "share", "amount", VALUE -> null
                         "absoluteShare" -> "ABS"
                         else ->
                             NonFinancialsMapping.aliasMap[part]
