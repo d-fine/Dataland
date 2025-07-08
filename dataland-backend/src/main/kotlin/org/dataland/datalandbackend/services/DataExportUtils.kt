@@ -183,20 +183,22 @@ class DataExportUtils
             isAssembledDataset: Boolean,
         ): List<String> {
             require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
-
             val resultList = mutableListOf<String>()
 
             if (isAssembledDataset) {
-                usedHeaderFields
-                    .filter {
-                        !it.startsWith(DATA + JsonUtils.getPathSeparator())
-                    }.forEach { resultList.add(it) }
+                STATIC_ALIASES.keys.forEach { staticFieldName ->
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField == staticFieldName
+                        }.forEach { resultList.add(it) }
+                }
 
                 orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
                     usedHeaderFields
                         .filter { usedHeaderField ->
                             usedHeaderField.startsWith(DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
-                        }.forEach {
+                        }.sorted()
+                        .forEach {
                             resultList.add(it)
                         }
                 }
