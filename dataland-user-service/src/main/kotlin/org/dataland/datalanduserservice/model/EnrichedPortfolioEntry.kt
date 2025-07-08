@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UsersOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -37,20 +37,20 @@ data class EnrichedPortfolioEntry(
     val countryCode: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.COMPANY_COCKPIT_REF_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.COMPANY_COCKPIT_REF_EXAMPLE,
+        description = UserServiceOpenApiDescriptionsAndExamples.COMPANY_COCKPIT_REF_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.COMPANY_COCKPIT_REF_EXAMPLE,
     )
     val companyCockpitRef: String,
     @field:JsonProperty(required = false)
     @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_EXAMPLE,
+        description = UserServiceOpenApiDescriptionsAndExamples.FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_EXAMPLE,
     )
     val frameworkHyphenatedNamesToDataRef: Map<String, String?>,
     @field:JsonProperty(required = false)
     @field:Schema(
-        description = UsersOpenApiDescriptionsAndExamples.AVAILABLE_REPORTING_PERIODS_DESCRIPTION,
-        example = UsersOpenApiDescriptionsAndExamples.AVAILABLE_REPORTING_PERIODS_EXAMPLE,
+        description = UserServiceOpenApiDescriptionsAndExamples.AVAILABLE_REPORTING_PERIODS_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.AVAILABLE_REPORTING_PERIODS_EXAMPLE,
     )
     val availableReportingPeriods: Map<String, String?>,
 )

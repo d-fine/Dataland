@@ -16,7 +16,7 @@ import org.dataland.datalandbackendutils.converter.DocumentCategoryConverter
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -31,23 +31,23 @@ import java.time.LocalDate
 data class DocumentMetaInfoEntity(
     @Id
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
     )
     val documentId: String,
     @Enumerated(EnumType.STRING)
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_TYPE_DESCRIPTION,
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_TYPE_DESCRIPTION,
     )
     val documentType: DocumentType,
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_NAME_EXAMPLE,
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_NAME_EXAMPLE,
     )
     var documentName: String?,
     @Convert(converter = DocumentCategoryConverter::class)
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
     )
     var documentCategory: DocumentCategory?,
     @ElementCollection(fetch = FetchType.EAGER)
@@ -57,14 +57,14 @@ data class DocumentMetaInfoEntity(
         arraySchema =
             Schema(
                 type = "string",
-                description = DocumentOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
-                example = DocumentOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+                description = DocumentManagerOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+                example = DocumentManagerOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
             ),
     )
     val companyIds: MutableSet<String> = mutableSetOf(),
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.UPLOADER_ID_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.UPLOADER_ID_EXAMPLE,
+        description = DocumentManagerOpenApiDescriptionsAndExamples.UPLOADER_ID_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.UPLOADER_ID_EXAMPLE,
     )
     val uploaderId: String,
     @field:Schema(
@@ -73,8 +73,8 @@ data class DocumentMetaInfoEntity(
     )
     val uploadTime: Long,
     @field:Schema(
-        description = DocumentOpenApiDescriptionsAndExamples.PUBLICATION_DATE_DESCRIPTION,
-        example = DocumentOpenApiDescriptionsAndExamples.PUBLICATION_DATE_EXAMPLE,
+        description = DocumentManagerOpenApiDescriptionsAndExamples.PUBLICATION_DATE_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.PUBLICATION_DATE_EXAMPLE,
     )
     var publicationDate: LocalDate?,
     @field:Schema(

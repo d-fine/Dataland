@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.model.DocumentCategory
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
@@ -115,8 +115,8 @@ interface DocumentApi {
     fun patchDocumentMetaInfo(
         @Parameter(
             name = "documentId",
-            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -168,16 +168,16 @@ interface DocumentApi {
     fun patchDocumentMetaInfoCompanyIds(
         @Parameter(
             name = "documentId",
-            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
         documentId: String,
         @Parameter(
             name = "companyId",
-            description = DocumentOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("companyId") companyId: String,
@@ -206,8 +206,8 @@ interface DocumentApi {
     fun checkDocument(
         @Parameter(
             name = "documentId",
-            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -252,8 +252,8 @@ interface DocumentApi {
     fun getDocument(
         @Parameter(
             name = "documentId",
-            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -295,8 +295,8 @@ interface DocumentApi {
     fun getDocumentMetaInformation(
         @Parameter(
             name = "documentId",
-            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("documentId")
@@ -347,23 +347,23 @@ interface DocumentApi {
     fun searchForDocumentMetaInformation(
         @Parameter(
             name = "companyId",
-            description = DocumentOpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.COMPANY_ID_SEARCH_PARAMETER_EXAMPLE,
             required = false,
         )
         @RequestParam
         companyId: String? = null,
         @Parameter(
             name = "documentCategories",
-            description = DocumentOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORIES_SEARCH_PARAMETER_DESCRIPTION,
             required = false,
         )
         @RequestParam
         documentCategories: Set<DocumentCategory>? = null,
         @Parameter(
             name = "reportingPeriod",
-            description = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION,
-            example = DocumentOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE,
+            description = DocumentManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SEARCH_PARAMETER_EXAMPLE,
             required = false,
         )
         @RequestParam

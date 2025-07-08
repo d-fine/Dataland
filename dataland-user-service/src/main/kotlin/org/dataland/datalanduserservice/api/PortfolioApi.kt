@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UsersOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
@@ -71,8 +71,8 @@ interface PortfolioApi {
     )
     fun getPortfolio(
         @Parameter(
-            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
-            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("portfolioId") portfolioId: String,
@@ -97,8 +97,8 @@ interface PortfolioApi {
     )
     fun getPortfoliosForUser(
         @Parameter(
-            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_DESCRIPTION,
-            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_EXAMPLE,
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("userId") userId: String,
@@ -183,8 +183,8 @@ interface PortfolioApi {
     )
     fun replacePortfolio(
         @Parameter(
-            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
-            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
             required = true,
         )
         @PathVariable(name = "portfolioId") portfolioId: String,
@@ -212,8 +212,8 @@ interface PortfolioApi {
     )
     fun deletePortfolio(
         @Parameter(
-            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
-            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
             required = true,
         )
         @PathVariable(name = "portfolioId") portfolioId: String,
@@ -260,8 +260,8 @@ interface PortfolioApi {
     )
     fun getEnrichedPortfolio(
         @Parameter(
-            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
-            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("portfolioId") portfolioId: String,
@@ -288,8 +288,8 @@ interface PortfolioApi {
     @PreAuthorize("(hasRole('ROLE_USER') and !#portfolioMonitoringPatch.isMonitored) or hasRole('ROLE_PREMIUM_USER')")
     fun patchMonitoring(
         @Parameter(
-            description = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
-            example = UsersOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("portfolioId") portfolioId: String,

@@ -1,6 +1,6 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
-object DocumentOpenApiDescriptionsAndExamples {
+object DocumentManagerOpenApiDescriptionsAndExamples {
     const val DOCUMENT_NAME_DESCRIPTION =
         "Name under which the document is saved on Dataland. " +
             "Does not need to coincide with the name of the uploaded file " +

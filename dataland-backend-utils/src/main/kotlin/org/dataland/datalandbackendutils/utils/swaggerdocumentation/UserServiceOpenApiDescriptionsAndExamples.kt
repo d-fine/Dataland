@@ -1,6 +1,6 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
-object UsersOpenApiDescriptionsAndExamples {
+object UserServiceOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_ID_DESCRIPTION = "The unique identifier to identify the portfolio."
     const val PORTFOLIO_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
