@@ -468,12 +468,12 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company associated with the document can be found on Dataland.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {

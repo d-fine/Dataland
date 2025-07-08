@@ -32,10 +32,6 @@ object DocumentManagerOpenApiDescriptionsAndExamples {
 
     const val DOCUMENT_TYPE_DESCRIPTION = "The file type of the document."
 
-    const val ADDED_COMPANY_ID_DESCRIPTION =
-        "The unique identifier under which the company associated with the document can be found on Dataland."
-    const val ADDED_COMPANY_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
-
     const val COMPANY_ID_SEARCH_PARAMETER_DESCRIPTION =
         "If specified, only returns meta information of documents associated with the company " +
             "having this Dataland company ID."

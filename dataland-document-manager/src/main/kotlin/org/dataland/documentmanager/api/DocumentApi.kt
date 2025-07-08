@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.model.DocumentCategory
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
@@ -174,12 +175,7 @@ interface DocumentApi {
         )
         @PathVariable("documentId")
         documentId: String,
-        @Parameter(
-            name = "companyId",
-            description = DocumentManagerOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_DESCRIPTION,
-            example = DocumentManagerOpenApiDescriptionsAndExamples.ADDED_COMPANY_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<DocumentMetaInfoResponse>
 

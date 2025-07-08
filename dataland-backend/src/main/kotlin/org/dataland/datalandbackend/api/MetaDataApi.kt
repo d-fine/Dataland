@@ -195,8 +195,8 @@ interface MetaDataApi {
                             Schema(
                                 type = "object",
                                 additionalPropertiesSchema = String::class,
-                                description = "A map from data point IDs to the associated technical IDs.",
-                                example = "{\"extendedEnumFiscalYearDeviation\":\"d4e2b1f3-9132-4c62-b653-7ecf394215f4\"}",
+                                description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_MAP_DESCRIPTION,
+                                example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_MAP_EXAMPLE,
                             ),
                     ),
                 ],

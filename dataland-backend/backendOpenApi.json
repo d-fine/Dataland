@@ -1589,7 +1589,16 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/identifiers"
+                "type": "array",
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+                "example": {
+                  "Lei": [
+                    "5493001KJX4BT0IHAG73"
+                  ]
+                },
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -2427,7 +2436,7 @@
                   },
                   "description": "A map from data point IDs to the associated technical IDs.",
                   "example": {
-                    "extendedEnumFiscalYearDeviation": "d4e2b1f3-9132-4c62-b653-7ecf394215f4"
+                    "extendedEnumFiscalYearDeviation": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
                   }
                 }
               }
@@ -22411,20 +22420,6 @@
             "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoNfrdMandatory"
           }
-        }
-      },
-      "identifiers": {
-        "type": "array",
-        "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
-        "example": {
-          "Lei": [
-            "5493001KJX4BT0IHAG73"
-          ]
-        },
-        "items": {
-          "type": "string",
-          "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
-          "example": "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
         }
       },
       "BasicCompanyInformation": {

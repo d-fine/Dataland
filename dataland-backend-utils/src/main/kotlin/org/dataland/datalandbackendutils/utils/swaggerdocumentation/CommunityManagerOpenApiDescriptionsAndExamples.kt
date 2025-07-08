@@ -17,8 +17,8 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
         "[\"sfdr\",\"eutaxonomy-financials\",\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"vsme\"]"
 
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
-        "A set of strings which identify reporting periods on Dataland, such as year numbers. Requests will " +
-            "be posted for all specified reporting periods."
+        "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods."
+
     const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
 
     const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =

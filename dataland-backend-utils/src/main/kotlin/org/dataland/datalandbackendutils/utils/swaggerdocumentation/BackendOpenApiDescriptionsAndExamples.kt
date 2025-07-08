@@ -149,4 +149,9 @@ object BackendOpenApiDescriptionsAndExamples {
     const val BYPASS_QA_DESCRIPTION =
         "If true, data is not sent to QA."
     const val BYPASS_QA_EXAMPLE = "false"
+
+    const val DATA_POINT_MAP_DESCRIPTION = "A map from data point IDs to the associated technical IDs."
+    const val DATA_POINT_MAP_EXAMPLE =
+        "{\"extendedEnumFiscalYearDeviation\":" +
+            "\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"}"
 }

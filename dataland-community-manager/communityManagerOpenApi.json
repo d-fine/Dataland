@@ -1552,7 +1552,7 @@
           "reportingPeriods": {
             "uniqueItems": true,
             "type": "array",
-            "description": "A set of strings which identify reporting periods on Dataland, such as year numbers. Requests will be posted for all specified reporting periods.",
+            "description": "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods.",
             "example": [
               "2023",
               "2024"
@@ -1685,7 +1685,7 @@
           "reportingPeriods": {
             "uniqueItems": true,
             "type": "array",
-            "description": "A set of strings which identify reporting periods on Dataland, such as year numbers. Requests will be posted for all specified reporting periods.",
+            "description": "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods.",
             "example": [
               "2023",
               "2024"
