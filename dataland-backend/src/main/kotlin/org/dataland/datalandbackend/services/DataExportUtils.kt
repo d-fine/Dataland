@@ -61,7 +61,6 @@ class DataExportUtils
          *
          * @param csvData the data to be exported with the original json path headers
          * @param csvSchema
-         * @param readableHeaders a map json path name to export alias
          */
         data class PreparedExportData(
             val csvData: List<Map<String, String>>,
@@ -93,7 +92,7 @@ class DataExportUtils
             val orderedHeaderFields =
                 if (isAssembledDatasetParam) {
                     JsonUtils.getLeafNodeFieldNames(
-                        frameworkTemplate ?: portfolioExportRows.first(),
+                        frameworkTemplate,
                         keepEmptyFields = true,
                         dropLastFieldName = true,
                     )
@@ -147,7 +146,6 @@ class DataExportUtils
          *
          * @param orderedHeaders list of original field header names in the order they appear.
          * @param frameworkTemplate JSON node containing alias definitions used for renaming.
-         * @param includeAlias flag indicating whether alias mapping should be applied. If false, original field names are used.
          */
         fun applyAliasRenaming(
             orderedHeaders: List<String>,
