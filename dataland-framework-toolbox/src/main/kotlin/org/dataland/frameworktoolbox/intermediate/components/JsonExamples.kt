@@ -8,7 +8,7 @@ object JsonExamples {
      * Obtain an example with extended document support
      * @param plainTextExample an example for the component without extended document support
      */
-    fun exampleExtendedDocumentSupport(plainTextExample: String) =
+    fun translateToExampleExtendedDocumentSupport(plainTextExample: String) =
         """{
       "value" : $plainTextExample, 
       "quality" : "Reported",
