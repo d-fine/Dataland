@@ -33,8 +33,12 @@ class DataAvailabilityChecker(
                 " WHERE (company_id, data_type, reporting_period) IN ($formattedTuples)" +
                 " AND currently_active = true"
 
-        val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
-        return (query.resultList as List<DataMetaInformationEntity>).map { it.toApiModel() }
+        return if (dimensionsToProcess.isNotEmpty()) {
+            val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
+            return (query.resultList as List<DataMetaInformationEntity>).map { it.toApiModel() }
+        } else {
+            emptyList()
+        }
     }
 
     private fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
