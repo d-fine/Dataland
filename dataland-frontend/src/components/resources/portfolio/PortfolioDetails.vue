@@ -162,7 +162,7 @@ import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
-import type { AxiosRequestConfig } from 'axios';
+import type { type AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 
@@ -220,6 +220,7 @@ const countryOptions = ref<string[]>(new Array<string>());
 const sectorOptions = ref<string[]>(new Array<string>());
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
+const downloadErrors = ref('');
 let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
@@ -421,6 +422,7 @@ async function handleDatasetDownload(
     forceFileDownload(content, filename);
   } catch (err) {
     console.error(err);
+    downloadErrors.value = `${(err as AxiosError).message}`;
   } finally {
     isDownloading.value = false;
   }
@@ -473,6 +475,7 @@ function openDownloadModal(): void {
     data: {
       reportingPeriodsPerFramework: reportingPeriodsPerFramework,
       isDownloading: isDownloading,
+      downloadErrors: downloadErrors,
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,

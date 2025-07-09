@@ -159,6 +159,7 @@ const hasUserReviewerRights = ref(false);
 const dataId = ref(route.params.dataId);
 const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
+const downloadErrors = ref('');
 
 provide(
   'hideEmptyFields',
@@ -411,6 +412,7 @@ async function handleDatasetDownload(
     const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
     forceFileDownload(content, filename);
   } catch (err) {
+    downloadErrors.value = `${(err as AxiosError).message}`;
     console.error(err);
   } finally {
     isDownloading.value = false;
@@ -450,6 +452,7 @@ function downloadData(): void {
     data: {
       reportingPeriodsPerFramework: reportingPeriodsPerFramework,
       isDownloading: isDownloading,
+      downloadErrors: downloadErrors,
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,

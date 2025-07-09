@@ -67,8 +67,8 @@
         Use short aliases, e. g. REV_ELIGIBLE_ABS in export. (Only applicable if 'values only' is selected)
       </span>
     </FormKit>
-    <Message v-if="portfolioErrors" severity="error" :life="3000">
-      {{ portfolioErrors }}
+    <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
+      {{ dialogRef?.data?.downloadErrors }}
     </Message>
     <div>
       <PrimeButton
@@ -109,7 +109,6 @@ const emit = defineEmits<{
 }>();
 
 const downloadProgress = ref<number | undefined>(undefined);
-const portfolioErrors = ref('');
 const selectedFileType = ref<string>('');
 const showReportingPeriodError = ref<boolean>(false);
 const showFrameworksError = ref<boolean>(false);
@@ -158,7 +157,7 @@ onMounted(() => {
  * Reset errors when either framework, reporting period or file type changes
  */
 function resetErrors(): void {
-  portfolioErrors.value = '';
+  downloadErrors.value = '';
   showReportingPeriodError.value = false;
   showFileTypeError.value = false;
   showFrameworksError.value = false;
