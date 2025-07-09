@@ -157,7 +157,6 @@ onMounted(() => {
  * Reset errors when either framework, reporting period or file type changes
  */
 function resetErrors(): void {
-  downloadErrors.value = '';
   showReportingPeriodError.value = false;
   showFileTypeError.value = false;
   showFrameworksError.value = false;
