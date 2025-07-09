@@ -22,15 +22,6 @@
           </div>
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.P2p"
-              :frameworkIdentifier="DataTypeEnum.P2p"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-              data-test="MultiLayerDataTableFrameworkPanelP2P"
-            />
-            <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
               :frameworkIdentifier="dataType"
               :companyId="companyId"
@@ -71,7 +62,7 @@
 <script lang="ts">
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { defineComponent, inject, type PropType } from 'vue';
-import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -79,8 +70,6 @@ import { type AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
-import { convertDataModelToMLDTConfig } from '@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter';
-import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
   type FrameworkViewConfiguration,
@@ -90,9 +79,6 @@ import {
 export default defineComponent({
   name: 'ViewMultipleDatasetsDisplayBase',
   computed: {
-    p2pDataModel() {
-      return p2pDataModel;
-    },
     frameworkConfiguration(): FrontendFrameworkDefinition<object> | undefined {
       return this.dataType ? getFrontendFrameworkDefinition(this.dataType) : undefined;
     },
@@ -135,7 +121,6 @@ export default defineComponent({
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
       humanizedDataDescription: humanizeStringOrNumber(this.dataType),
-      DataTypeEnum,
     };
   },
   setup() {
@@ -175,7 +160,6 @@ export default defineComponent({
   },
 
   methods: {
-    convertDataModelToMLDTConfig,
     /**
      * Method to set flags that indicate found data
      */
