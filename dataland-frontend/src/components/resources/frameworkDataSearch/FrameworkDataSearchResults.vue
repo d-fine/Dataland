@@ -23,7 +23,7 @@
       </Column>
       <Column field="lei" :sortable="false" class="d-bg-white w-2">
         <template #header>
-          <span>LEI</span>
+          <span class="lei-column-header">LEI</span>
           <Tag
             icon="pi pi-info-circle"
             size="large"
@@ -138,5 +138,9 @@ export default defineComponent({
 
 .text-primary {
   color: var(--main-color);
+}
+
+.lei-column-header {
+  font-weight: var(--p-datatable-column-title-font-weight);
 }
 </style>

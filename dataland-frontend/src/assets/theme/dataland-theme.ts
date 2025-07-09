@@ -219,21 +219,11 @@ export const DatalandPreset = definePreset(Aura, {
       },
     },
     paginator: {
-      css: ({ dt }) => `
-    /* Default page buttons */
-    .p-paginator .p-paginator-pages .p-paginator-page {
-      min-width: 2.375rem;
-      height: 2.375rem;
-      margin: .143rem;
-      border-radius: 0rem;
-    }
-
-    /* Active (selected) page button */
-    .p-paginator .p-paginator-pages .p-paginator-page-selected {
-      background-color: ${dt('primary.color')};
-      color: ${dt('primary.contrastColor')};
-    }
-  `,
+      navButton: {
+        selectedBackground: '{primary.color}',
+        borderRadius: '{border.radius.none}',
+        selectedColor: '{primary.contrast.color}',
+      },
     },
   },
 });
