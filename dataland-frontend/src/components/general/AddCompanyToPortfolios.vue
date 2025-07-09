@@ -11,20 +11,15 @@
       :max-selected-labels="0"
       :selected-items-label="selectedItemsLabel"
       :pt="{
-        option: {
-          style: 'max-width: 15rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;',
+        optionLabel: {
+          style: 'max-width: 13rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;',
         },
       }"
-    >
-      <template #dropdownicon>
-        <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">
-          <polygon points="0,0 5,5 10,0" fill="currentColor" />
-        </svg>
-      </template>
-    </MultiSelect>
+    />
 
     <p class="gray-text font-italic text-xs m-0 pb-2">
-      Choose one or more portfolios to add this company to. Portfolios already containing it will not be modified.
+      Choose one or more portfolios you wish to add this company to. Portfolios already containing the company will not
+      be modified.
     </p>
 
     <Message v-if="errorMessage" severity="error" class="my-3">
@@ -32,16 +27,14 @@
     </Message>
 
     <PrimeButton
-      class="primary-button primary-button-in-modal"
       aria-label="Add Company"
       :disabled="selectedPortfolios.length === 0 || isLoading"
       :loading="isLoading"
       @click="handleCompanyAddition"
       data-test="saveButton"
+      icon="pi pi-plus"
+      :label="'Add company to portfolio' + (selectedPortfolios.length > 1 ? 's' : '')"
     >
-      <i class="pi pi-plus pr-2" />
-      <span v-if="selectedPortfolios.length <= 1">Add company to portfolio</span>
-      <span v-else>Add company to portfolios</span>
     </PrimeButton>
   </div>
   <SuccessMessage v-else success-message="Successfully added!" :closable="false" />
@@ -139,107 +132,14 @@ function closeDialog(): void {
 
 <style scoped lang="scss">
 .container {
-  width: 28em;
-  border-radius: 0.25rem;
-  background-color: white;
-  padding: 0 1.5rem 1rem;
+  width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
   align-items: center;
-}
-
-:deep(.primary-button-in-modal) {
-  width: 70%;
-  margin: 0 15%;
-}
-
-:deep(.p-multiselect) {
-  background: none;
-  box-shadow: none;
-  margin: var(--spacing-sm) 28%;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  color: var(--brown-light);
-  border: 2px solid var(--brown-light);
-}
-
-:deep(.p-multiselect-trigger) {
-  width: auto;
-}
-
-:deep(.selection-button) {
-  background: white;
-  color: #5a4f36;
-  border: 2px solid #5a4f36;
-  border-radius: 8px;
-  height: 2.5rem;
-
-  .selection-button-content {
-    margin: 0.5rem 1rem;
-  }
-
-  &.overlayVisible {
-    background: #e0dfde;
-  }
-
-  &.filterActive {
-    background: #5a4f36;
-    color: white;
-  }
 }
 
 .gray-text {
   color: var(--gray);
-}
-
-.primary-button {
-  white-space: nowrap;
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  min-width: 10em;
-  width: fit-content;
-  justify-content: center;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: bottom;
-  flex-direction: row;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-  transition: all 0.2s;
-  border-radius: 0;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-
-  &:enabled:hover {
-    color: white;
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-  }
-
-  &:enabled:active {
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-  }
-
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: var(--btn-disabled-color);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-}
-
-.primary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--btn-primary-color);
-  background: var(--btn-primary-bg);
-  border: 1px solid var(--btn-primary-bg);
-  margin: 0;
 }
 </style>
