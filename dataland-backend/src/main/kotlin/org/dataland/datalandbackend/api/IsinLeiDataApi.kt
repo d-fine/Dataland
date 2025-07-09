@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/isinleimapping")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface IsinLeiDataApi {
+fun interface IsinLeiDataApi {
     /**
      * A method to update the ISIN-LEI mapping entirely
      * @param isinLeiMappingData ISIN-LEI mapping data

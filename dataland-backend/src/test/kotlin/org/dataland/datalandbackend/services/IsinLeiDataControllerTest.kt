@@ -65,7 +65,7 @@ class IsinLeiDataControllerTest(
     }
 
     @Test
-    fun `add sample ISIN-LEI mapping to empty database and check if it is there`() {
+    fun `add sample ISIN LEI mapping to empty database and check if it is there`() {
         putIsinLeiData(jsonPayload)
 
         val query =
@@ -78,7 +78,7 @@ class IsinLeiDataControllerTest(
     }
 
     @Test
-    fun `add sample ISIN-LEI mapping to database and check if it replaced the old data`() {
+    fun `add sample ISIN LEI mapping to database and check if it replaced the old data`() {
         entityManager.persist(entity1)
         entityManager.persist(entity2)
         entityManager.flush()
