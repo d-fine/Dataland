@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController
 class IsinLeiDataController(
     @Autowired private val isinLeiManager: IsinLeiManager,
 ) : IsinLeiDataApi {
-    override fun putIsinLeiMapping(isinLeiMappingData: IsinLeiMappingData): ResponseEntity<IsinLeiMappingData> {
-        isinLeiManager.putIsinLeiMapping(isinLeiMappingData.isin, isinLeiMappingData.lei)
+    override fun putIsinLeiMapping(isinLeiMappingData: List<IsinLeiMappingData>): ResponseEntity<List<IsinLeiMappingData>> {
+        isinLeiManager.clearAllMappings()
+        isinLeiMappingData.forEach { data ->
+            isinLeiManager.putIsinLeiMapping(data.isin, data.lei)
+        }
         return ResponseEntity.ok(isinLeiMappingData)
     }
 }

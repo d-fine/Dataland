@@ -32,4 +32,12 @@ class IsinLeiManager(
             )
         return isinLeiRepository.save(isinLeiEntity)
     }
+
+    /**
+     * Method to remove all ISIN-LEI mappings.
+     */
+    @Transactional
+    fun clearAllMappings() {
+        isinLeiRepository.deleteAll()
+    }
 }

@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 interface IsinLeiDataApi {
     /**
      * A method to update the ISIN-LEI mapping entirely
-     * @param isin ISIN identifier of the company in Dataland
-     * @param lei LEI identifier of the company in Dataland
+     * @param isinLeiMappingData ISIN-LEI mapping data
      * @return updated ISIN-LEI mapping data
      */
     @Operation(
@@ -42,6 +41,6 @@ interface IsinLeiDataApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putIsinLeiMapping(
         @Valid @RequestBody
-        isinLeiMappingData: IsinLeiMappingData,
-    ): ResponseEntity<IsinLeiMappingData>
+        isinLeiMappingData: List<IsinLeiMappingData>,
+    ): ResponseEntity<List<IsinLeiMappingData>>
 }
