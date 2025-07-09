@@ -30,7 +30,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
 import PrimeMenu from 'primevue/menu';
-import { type MenuItem } from 'primevue/menuitem';
+import type { MenuItem } from 'primevue/menuitem';
 import { computed, inject, onMounted, type Ref, ref, useTemplateRef } from 'vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
