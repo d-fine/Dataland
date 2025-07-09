@@ -18,7 +18,7 @@
 
   <Popover ref="popover" data-test="activityPopover">
     <div>
-      <Tree :value="allActivities" class="w-full md:w-30rem" placeholder="Select Activitie">
+      <Tree :value="allActivities" class="w-full md:w-30rem" placeholder="Select Activities">
         <template #default="slotProps">
           <b>{{ slotProps.node.name }}</b>
         </template>
