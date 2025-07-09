@@ -5,7 +5,6 @@
         <ToggleSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
-          @click="handleToggleClick"
           v-model="dataPointIsAvailable"
         />
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
@@ -246,12 +245,6 @@ export default defineComponent({
       if (newCheckboxValue && newCheckboxValue !== '') {
         this.checkboxValue = [newCheckboxValue];
       }
-    },
-    /**
-     * Toggle dataPointIsAvailable variable value
-     */
-    handleToggleClick(): void {
-      this.dataPointIsAvailable = !this.dataPointIsAvailable;
     },
     /**
      * updateCurrentValue

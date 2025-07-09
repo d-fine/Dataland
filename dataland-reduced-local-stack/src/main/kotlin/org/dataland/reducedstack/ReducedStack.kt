@@ -17,7 +17,7 @@ private val selectedServices =
         "pgadmin" to false,
         "rabbitmq" to true, // always required
         "qaService" to true,
-        "userService" to true,
+        "userService" to false,
         "batchManager" to false,
         "communityManager" to true,
         "specificationService" to true,
@@ -28,7 +28,7 @@ private val selectedServices =
         "grafana" to false,
         "loki" to false,
         "alloy" to false,
-        "frontendDev" to false, // if this is set to false, use -l flag and start the frontend dev server manually
+        "frontendDev" to true, // if this is set to false, use -l flag and start the frontend dev server manually
     )
 
 private val serviceNames =
