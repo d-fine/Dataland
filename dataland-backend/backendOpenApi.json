@@ -32,7 +32,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IsinLeiMappingData"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IsinLeiMappingData"
+                }
               }
             }
           },
@@ -44,7 +47,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IsinLeiMappingData"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IsinLeiMappingData"
+                  }
                 }
               }
             }
@@ -69,7 +75,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
     "/companies/{companyId}": {
@@ -15065,10 +15079,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
