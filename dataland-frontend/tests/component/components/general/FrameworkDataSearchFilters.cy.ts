@@ -17,13 +17,13 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       return cy.wrap(mounted.wrapper).as('vue');
     });
 
-    cy.get('#country-filter').click();
-    cy.get('span').contains('Germany').click();
-
     cy.get('#sector-filter').click();
     cy.get('span').contains('DummySector').click();
+    cy.get('.p-multiselect-overlay').invoke('hide');
 
     // Ignored as TS does not understand that "vue" is not a JQuery Component but rather the whole wrapper
+    cy.get('#country-filter').click();
+    cy.get('span').contains('Germany').click();
 
     // @ts-ignore
     cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
