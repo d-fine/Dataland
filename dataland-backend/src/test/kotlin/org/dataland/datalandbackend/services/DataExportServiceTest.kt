@@ -46,6 +46,8 @@ class DataExportServiceTest {
     private val companyExportDataLksgTestData =
         objectMapper
             .readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
+    private val largeDecimal = 1234567899.1
+    private val largeDecimalAsString = "1234567899.1"
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -293,6 +295,35 @@ class DataExportServiceTest {
         )
     }
 
+    @Test
+    fun `check that large decimals are exported properly`() {
+        val testJson = createTestJsonWithLargeDecimal()
+
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(
+                    SingleCompanyExportData(
+                        companyName = "Test Company ",
+                        companyLei = "TEST67890",
+                        reportingPeriod = "2024",
+                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                    ),
+                ),
+                ExportFileType.CSV,
+                DataType.valueOf("sfdr"),
+                keepValueFieldsOnly = true,
+                includeAliases = true,
+            )
+
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+
+        Assertions.assertTrue(
+            csvString
+                .contains(largeDecimalAsString),
+            "CSV does not contain the large decimal as string $largeDecimalAsString",
+        )
+    }
+
     /**
      * Creates a test JSON with a data point that has only a quality field (no value field)
      */
@@ -325,6 +356,25 @@ class DataExportServiceTest {
 
         // Set both value and quality fields
         testPoint.put("value", "42")
+        testPoint.put("quality", "Reported")
+
+        return root
+    }
+
+    /**
+     * Creates a test JSON with a large decimal value
+     */
+    private fun createTestJsonWithLargeDecimal(): JsonNode {
+        val root = objectMapper.createObjectNode()
+
+        val testField = objectMapper.createObjectNode()
+        root.set<JsonNode>("testCategory", testField)
+
+        val testPoint = objectMapper.createObjectNode()
+        testField.set<JsonNode>("testDataPoint", testPoint)
+
+        // Set both value and quality fields
+        testPoint.put("value", largeDecimal)
         testPoint.put("quality", "Reported")
 
         return root

@@ -1,5 +1,7 @@
 package org.dataland.datalandbackendutils.utils
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -11,7 +13,12 @@ object JsonUtils {
     /**
      * The object mapper used for testing.
      */
-    val defaultObjectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+    val defaultObjectMapper: ObjectMapper =
+        jacksonObjectMapper()
+            .findAndRegisterModules()
+            .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+            .setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+            .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
 
     /**
      * Return the path separator used in constructing node paths
