@@ -3054,8 +3054,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -3132,8 +3131,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -3374,8 +3372,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -3452,8 +3449,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -3694,8 +3690,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -3772,8 +3767,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -4014,8 +4008,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -4092,8 +4085,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -4334,8 +4326,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -4412,8 +4403,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -4654,8 +4644,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -4732,8 +4721,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -4974,8 +4962,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -5052,8 +5039,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -5294,8 +5280,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -5372,8 +5357,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",
@@ -5614,8 +5598,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -5692,8 +5675,7 @@
             "schema": {
               "type": "boolean",
               "default": true
-            },
-            "example": true
+            }
           },
           {
             "name": "reportingPeriod",

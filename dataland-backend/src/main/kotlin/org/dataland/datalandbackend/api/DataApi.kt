@@ -11,9 +11,9 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.FrameworkControllerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.core.io.InputStreamResource
@@ -56,8 +56,8 @@ interface DataApi<T> {
         companyAssociatedData: CompanyAssociatedData<T>,
         @Parameter(
             name = "bypassQa",
-            description = FrameworkControllerOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
-            example = FrameworkControllerOpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
             required = false,
         )
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
@@ -156,28 +156,27 @@ interface DataApi<T> {
     fun exportCompanyAssociatedDataByDimensions(
         @Parameter(
             name = "reportingPeriods",
-            description = FrameworkControllerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_DESCRIPTION,
-            example = FrameworkControllerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_EXAMPLE,
             required = true,
         )
         @RequestParam("reportingPeriods") reportingPeriods: List<String>,
         @Parameter(
             name = "companyIds",
-            description = FrameworkControllerOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
-            example = FrameworkControllerOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_EXAMPLE,
             required = true,
         )
         @RequestParam("companyIds") companyIds: List<String>,
         @Parameter(
             name = "fileFormat",
-            description = FrameworkControllerOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
+            description = BackendOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
             required = true,
         )
         @RequestParam("fileFormat") exportFileType: ExportFileType,
         @Parameter(
             name = "keepValueFieldsOnly",
-            description = FrameworkControllerOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
-            example = FrameworkControllerOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
             required = false,
         )
         @RequestParam(
@@ -215,8 +214,7 @@ interface DataApi<T> {
         @PathVariable("companyId") companyId: String,
         @Parameter(
             name = "showOnlyActive",
-            description = FrameworkControllerOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
-            example = FrameworkControllerOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_EXAMPLE,
+            description = BackendOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
             required = false,
         )
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,

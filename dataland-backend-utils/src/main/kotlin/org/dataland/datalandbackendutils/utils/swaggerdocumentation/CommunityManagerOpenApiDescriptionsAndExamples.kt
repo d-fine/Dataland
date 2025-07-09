@@ -68,7 +68,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val LAST_MODIFIED_DATE_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val MESSAGE_HISTORY_DESCRIPTION =
-        "The list of objects documenting the history of messages sent to company contacts regarding the data request."
+        "Information on the messages sent to company contacts regarding the data request."
 
     const val REQUEST_STATUS_DESCRIPTION =
         "The current request status of the data request."

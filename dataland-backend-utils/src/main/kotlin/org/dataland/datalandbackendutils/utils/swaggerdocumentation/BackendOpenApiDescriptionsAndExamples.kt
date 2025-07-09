@@ -154,4 +154,20 @@ object BackendOpenApiDescriptionsAndExamples {
     const val DATA_POINT_MAP_EXAMPLE =
         "{\"extendedEnumFiscalYearDeviation\":" +
             "\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"}"
+
+    const val REPORTING_PERIODS_LIST_DESCRIPTION =
+        "The reporting periods for which the data export is requested."
+    const val REPORTING_PERIODS_LIST_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+
+    const val COMPANY_IDS_LIST_DESCRIPTION =
+        "A list of Dataland company ids for which the data export is requested."
+    const val COMPANY_IDS_LIST_EXAMPLE =
+        """["${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}",
+            |"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}"]"""
+
+    const val FILE_FORMAT_DESCRIPTION =
+        "The file format for the data export."
+
+    const val KEEP_VALUE_FIELDS_ONLY_DESCRIPTION =
+        "If set to true, data is to be exported without additional information like comments on the data or the data's qa status."
 }

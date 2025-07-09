@@ -1956,7 +1956,7 @@
           },
           "messageHistory": {
             "type": "array",
-            "description": "The list of objects documenting the history of messages sent to company contacts regarding the data request.",
+            "description": "Information on the messages sent to company contacts regarding the data request.",
             "items": {
               "$ref": "#/components/schemas/StoredDataRequestMessageObject"
             }
@@ -2019,7 +2019,7 @@
             "example": 1751291891271
           }
         },
-        "description": "The list of objects documenting the history of messages sent to company contacts regarding the data request."
+        "description": "Information on the messages sent to company contacts regarding the data request."
       },
       "StoredDataRequestStatusObject": {
         "required": [
