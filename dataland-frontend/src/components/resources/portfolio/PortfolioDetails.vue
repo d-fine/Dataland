@@ -162,7 +162,7 @@ import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
-import type { type AxiosError, AxiosRequestConfig } from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 
