@@ -140,8 +140,6 @@ onMounted(() => {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
 
-  console.log(data?.isDownloading);
-
   selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
     value: false,
