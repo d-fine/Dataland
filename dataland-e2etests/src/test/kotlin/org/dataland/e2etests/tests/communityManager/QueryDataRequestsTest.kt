@@ -37,7 +37,7 @@ class QueryDataRequestsTest {
     private val chunkSize = 1000
 
     private val dataTypeGetDataRequestsSfdr = RequestControllerApi.DataTypeGetDataRequests.sfdr
-    private val dataTypeGetDataRequestsP2p = RequestControllerApi.DataTypeGetDataRequests.p2p
+    private val dataTypeGetDataRequestsLksg = RequestControllerApi.DataTypeGetDataRequests.lksg
     private val dataTypeGetDataRequestsVsme = RequestControllerApi.DataTypeGetDataRequests.vsme
 
     private fun postSingleDataRequest(
@@ -89,7 +89,7 @@ class QueryDataRequestsTest {
     fun postDataRequestsBeforeQueryTest() {
         withTechnicalUser(TechnicalUser.PremiumUser) {
             postSingleDataRequest(companyIdA, SingleDataRequest.DataType.vsme, setOf("2022", "2023"))
-            postSingleDataRequest(companyIdB, SingleDataRequest.DataType.p2p, setOf("2023"))
+            postSingleDataRequest(companyIdB, SingleDataRequest.DataType.lksg, setOf("2023"))
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
     }
@@ -113,12 +113,12 @@ class QueryDataRequestsTest {
                 ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, sfdrDataRequests.size)
 
-        val p2pDataRequests =
+        val lksgDataRequests =
             api
-                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsP2p), chunkSize = chunkSize)
+                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsLksg), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(1, p2pDataRequests.size)
-        assertEquals(DataTypeEnum.p2p.value, p2pDataRequests.first().dataType)
+        assertEquals(1, lksgDataRequests.size)
+        assertEquals(DataTypeEnum.lksg.value, lksgDataRequests.first().dataType)
 
         val vsmeDataRequests =
             api
@@ -127,14 +127,14 @@ class QueryDataRequestsTest {
         assertEquals(2, vsmeDataRequests.size)
         vsmeDataRequests.forEach { assertEquals(DataTypeEnum.vsme.value, it.dataType) }
 
-        val vsmeAndP2pDataRequests =
+        val vsmeAndLksgDataRequests =
             api
                 .getDataRequests(
-                    dataType = listOf(dataTypeGetDataRequestsVsme, dataTypeGetDataRequestsP2p), chunkSize = chunkSize,
+                    dataType = listOf(dataTypeGetDataRequestsVsme, dataTypeGetDataRequestsLksg), chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(3, vsmeAndP2pDataRequests.size)
+        assertEquals(3, vsmeAndLksgDataRequests.size)
         vsmeDataRequests.forEach {
-            assertTrue(listOf(DataTypeEnum.vsme.value, DataTypeEnum.p2p.value).contains(it.dataType))
+            assertTrue(listOf(DataTypeEnum.vsme.value, DataTypeEnum.lksg.value).contains(it.dataType))
         }
     }
 
@@ -178,7 +178,7 @@ class QueryDataRequestsTest {
                     .dataRequestId,
             )
         val storedDataRequestB = api.getDataRequestById(dataRequestIdB)
-        assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
+        assertEquals(DataTypeEnum.lksg.value, storedDataRequestB.dataType)
         assertEquals("2023", storedDataRequestB.reportingPeriod)
 
         api.patchDataRequest(dataRequestIdB, DataRequestPatch(RequestStatus.Answered))
@@ -320,7 +320,7 @@ class QueryDataRequestsTest {
         val combinedQueryResults =
             api
                 .getDataRequests(
-                    dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsP2p, dataTypeGetDataRequestsVsme),
+                    dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsVsme),
                     requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
                     accessStatus = setOf(AccessStatus.Pending),
                     reportingPeriod = "2023",

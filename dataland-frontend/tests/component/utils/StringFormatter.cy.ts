@@ -25,9 +25,7 @@ describe('Unit test for StringFormatter', () => {
   });
 
   it('Check that framework identifiers are being formatted correctly', () => {
-    expect(humanizeStringOrNumber(DataTypeEnum.Heimathafen)).to.equal(
-      PublicFrameworkDefinitions[DataTypeEnum.Heimathafen].label
-    );
+    expect(humanizeStringOrNumber(DataTypeEnum.Lksg)).to.equal(PublicFrameworkDefinitions[DataTypeEnum.Lksg].label);
     expect(humanizeStringOrNumber(DataTypeEnum.Vsme)).to.equal(PrivateFrameworkDefinitions[DataTypeEnum.Vsme].label);
   });
 

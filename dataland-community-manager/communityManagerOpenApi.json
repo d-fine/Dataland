@@ -760,12 +760,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1004,12 +1000,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1171,12 +1163,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1541,12 +1529,8 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "reportingPeriods": {
@@ -1673,12 +1657,8 @@
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
-                "p2p",
                 "lksg",
-                "additional-company-information",
-                "vsme",
-                "esg-datenkatalog",
-                "heimathafen"
+                "vsme"
               ]
             }
           },
@@ -2159,12 +2139,8 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "reportingPeriod": {

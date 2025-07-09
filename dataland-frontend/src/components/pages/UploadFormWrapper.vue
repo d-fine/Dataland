@@ -15,15 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import CreateAdditionalCompanyInformationDataset from '@/components/forms/CreateAdditionalCompanyInformationDataset.vue';
-
-import CreateEsgDatenkatalogDataset from '@/components/forms/CreateEsgDatenkatalogDataset.vue';
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
-import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
-import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 import BackButton from '@/components/general/BackButton.vue';
@@ -50,22 +45,14 @@ const frameworkToUploadComponent = computed(() => {
       return CreateEuTaxonomyNonFinancials;
     case `${DataTypeEnum.EutaxonomyFinancials}`:
       return CreateEuTaxonomyForFinancials;
-    case `${DataTypeEnum.P2p}`:
-      return CreateP2pDataset;
     case `${DataTypeEnum.Lksg}`:
       return CreateLksgDataset;
     case `${DataTypeEnum.Sfdr}`:
       return CreateSfdrDataset;
-    case `${DataTypeEnum.Heimathafen}`:
-      return CreateHeimathafenDataset;
-    case `${DataTypeEnum.EsgDatenkatalog}`:
-      return CreateEsgDatenkatalogDataset;
     case `${DataTypeEnum.Vsme}`:
       return CreateVsmeDataset;
     case `${DataTypeEnum.NuclearAndGas}`:
       return CreateNuclearAndGasDataset;
-    case `${DataTypeEnum.AdditionalCompanyInformation}`:
-      return CreateAdditionalCompanyInformationDataset;
     default:
       return null;
   }

@@ -3,19 +3,10 @@ import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cyp
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import {
-  DataTypeEnum,
-  type EutaxonomyFinancialsData,
-  type LksgData,
-  type SfdrData,
-  type PathwaysToParisData,
-} from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData, type LksgData, type SfdrData } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import {
-  uploadFrameworkDataForLegacyFramework,
-  uploadFrameworkDataForPublicToolboxFramework,
-} from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
@@ -29,10 +20,9 @@ describeIf(
   },
   function (): void {
     const uniqueCompanyMarker = Date.now().toString();
-    const nameOfCompanyAlpha = 'company-alpha-with-four-different-framework-types-' + uniqueCompanyMarker;
+    const nameOfCompanyAlpha = 'company-alpha-with-three-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
-      humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
       'Documents',
@@ -297,15 +287,6 @@ describeIf(
               '2019',
               getPreparedFixture('lighweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
             );
-          })
-          .then(() => {
-            return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.P2p,
-              token,
-              companyIdOfAlpha,
-              '2015',
-              p2pFixtures[0].t
-            );
           });
       });
     }
@@ -316,8 +297,8 @@ describeIf(
      */
     function uploadCompanyBetaAndData(): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
-          .then(async (storedCompany) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta)).then(
+          async (storedCompany) => {
             companyIdOfBeta = storedCompany.companyId;
             return uploadFrameworkDataForPublicToolboxFramework(
               LksgBaseFrameworkDefinition,
@@ -326,30 +307,18 @@ describeIf(
               '2015',
               getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
             );
-          })
-          .then(async () => {
-            return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.P2p,
-              token,
-              companyIdOfBeta,
-              '2014',
-              p2pFixtures[1].t
-            );
-          });
+          }
+        );
       });
     }
 
     let euTaxoFinancialPreparedFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
-    let p2pFixtures: Array<FixtureData<PathwaysToParisData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
     before(() => {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
-      });
-      cy.fixture('CompanyInformationWithP2pData').then(function (jsonContent) {
-        p2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
       });
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -382,14 +351,14 @@ describeIf(
         ' redirects the user to the company cockpit',
       () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, nameOfCompanyAlpha);
 
         cy.get('[data-test=toggleShowAll]').scrollIntoView();
         cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
         validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
-        validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
+        validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
-        validateChosenFramework(DataTypeEnum.P2p);
+        validateChosenFramework(DataTypeEnum.Lksg);
         selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
         validateChosenFramework(DataTypeEnum.Sfdr);
@@ -406,10 +375,10 @@ describeIf(
       validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
-      selectFrameworkInDropdown(DataTypeEnum.P2p);
+      selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.P2p);
+      validateChosenFramework(DataTypeEnum.Sfdr);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -421,7 +390,7 @@ describeIf(
       clickBackButton();
 
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.P2p);
+      validateChosenFramework(DataTypeEnum.Sfdr);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 

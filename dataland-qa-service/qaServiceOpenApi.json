@@ -745,149 +745,6 @@
         ]
       }
     },
-    "/data/additional-company-information/{dataId}/reports": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-qa-report-controller"
-        ],
-        "operationId": "getAdditionalCompanyInformationDataAllQaReportsForDataset",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showInactive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "reporterUserId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved all QA reports.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QaReportWithMetaInformationAdditionalCompanyInformationData"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "additional-company-information-data-qa-report-controller"
-        ],
-        "operationId": "postAdditionalCompanyInformationDataQaReport",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdditionalCompanyInformationData"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully added QA report to dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QaReportMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data-points/{dataPointId}": {
       "get": {
         "tags": [
@@ -1537,75 +1394,6 @@
         ]
       }
     },
-    "/data/additional-company-information/{dataId}/reports/{qaReportId}/status": {
-      "patch": {
-        "tags": [
-          "additional-company-information-data-qa-report-controller"
-        ],
-        "operationId": "setAdditionalCompanyInformationDataQaReportStatus",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "qaReportId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QaReportStatusPatch"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully marked QA report as active or inactive."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data-points/{dataPointId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -1705,12 +1493,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1807,12 +1591,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -2273,72 +2053,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyFinancialsData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/additional-company-information/{dataId}/reports/{qaReportId}": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-qa-report-controller"
-        ],
-        "operationId": "getAdditionalCompanyInformationDataQaReport",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "qaReportId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved QA report.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QaReportWithMetaInformationAdditionalCompanyInformationData"
                 }
               }
             }
@@ -6213,114 +5927,6 @@
           }
         }
       },
-      "AdditionalCompanyInformationData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/AdditionalCompanyInformationGeneral"
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneral": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralGeneral"
-          },
-          "financialInformation": {
-            "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralFinancialInformation"
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneralFinancialInformation": {
-        "type": "object",
-        "properties": {
-          "equity": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          },
-          "debt": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          },
-          "balanceSheetTotal": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          },
-          "evic": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneralGeneral": {
-        "type": "object",
-        "properties": {
-          "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions"
-          },
-          "fiscalYearEnd": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
-          }
-        }
-      },
-      "ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "enum": [
-              "Deviation",
-              "NoDeviation"
-            ]
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        },
-        "description": "Contains suggested data corrections for the rejected data point.",
-        "example": {
-          "value": "No",
-          "quality": "Incomplete",
-          "comment": "program neural circuit",
-          "dataSource": {
-            "page": "1026",
-            "tagName": "web services",
-            "fileName": "SustainabilityReport",
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "publicationDate": "2024-01-07"
-          }
-        }
-      },
-      "QaReportDataPointExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
-        "required": [
-          "comment",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string",
-            "description": "A comment explaining the verdict.",
-            "example": "The data point is correct and hence accepted."
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions"
-          }
-        }
-      },
       "QaReportDataPointString": {
         "required": [
           "comment",
@@ -6530,12 +6136,8 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "uploadTime": {
@@ -6606,21 +6208,6 @@
           },
           "report": {
             "$ref": "#/components/schemas/EutaxonomyFinancialsData"
-          }
-        }
-      },
-      "QaReportWithMetaInformationAdditionalCompanyInformationData": {
-        "required": [
-          "metaInfo",
-          "report"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/QaReportMetaInformation"
-          },
-          "report": {
-            "$ref": "#/components/schemas/AdditionalCompanyInformationData"
           }
         }
       },
