@@ -17,22 +17,33 @@
       <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
         <i class="pi pi-download pr-2" /> Download Portfolio
       </PrimeButton>
-      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
-        <span class="material-icons-outlined fs-sm pr-1">verified</span>
-        Portfolio actively monitored
-      </div>
 
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
         <PrimeButton
-          class="primary-button"
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
-        >
-          <i class="pi pi-bell pr-2" /> EDIT MONITORING
-        </PrimeButton>
-        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+          icon="pi pi-bell"
+          label="ACTIVE MONITORING"
+        />
       </div>
+
+      <Tag
+        v-if="isMonitored"
+        data-test="isMonitoredBadge"
+        value="Portfolio actively monitored"
+        icon="pi pi-check-circle"
+        severity="success"
+      />
+      <Tag
+        v-else
+        data-test="isNotMonitoredBadge"
+        value="Portfolio not actively monitored"
+        icon="pi pi-times-circle"
+        severity="danger"
+      />
+
+      <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
     </div>
 
     <DataTable
@@ -155,6 +166,7 @@ import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
+import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
@@ -469,6 +481,10 @@ a:after {
 
 :deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
   color: inherit;
+}
+
+:deep(.p-tag) {
+  border: 1px solid inherit;
 }
 
 .selection-button {
