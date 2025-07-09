@@ -67,6 +67,9 @@
         Use short aliases, e. g. REV_ELIGIBLE_ABS in export. (Only applicable if 'values only' is selected)
       </span>
     </FormKit>
+    <Message v-if="portfolioErrors" severity="error" :life="3000">
+      {{ portfolioErrors }}
+    </Message>
     <div>
       <PrimeButton
         data-test="downloadDataButtonInModal"
@@ -91,6 +94,7 @@ import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import Message from 'primevue/message';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
