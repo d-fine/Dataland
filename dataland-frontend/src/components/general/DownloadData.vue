@@ -57,9 +57,9 @@
       <div class="flex align-content-start align-items-center">
         <InputSwitch
           v-model="includeAlias"
-          :disabled="!keepValuesOnly"
           class="form-field vertical-middle"
           data-test="includeAliasSwitch"
+          @change="includeAlias ? (keepValuesOnly = true) : keepValuesOnly"
         />
         <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten field names </span>
       </div>
