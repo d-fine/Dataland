@@ -20,6 +20,58 @@
     }
   ],
   "paths": {
+    "/isinleimapping/update": {
+      "put": {
+        "tags": [
+          "isin-lei-data-controller"
+        ],
+        "summary": "Update ISIN-LEI mapping entirely",
+        "description": "Replace all ISIN-LEI mappings with the given mappings.",
+        "operationId": "putIsinLeiMapping",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IsinLeiMappingData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated ISIN-LEI mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IsinLeiMappingData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/companies/{companyId}": {
       "get": {
         "tags": [
@@ -4878,6 +4930,21 @@
   },
   "components": {
     "schemas": {
+      "IsinLeiMappingData": {
+        "required": [
+          "isin",
+          "lei"
+        ],
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyInformation": {
         "required": [
           "companyName",
@@ -14998,10 +15065,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
