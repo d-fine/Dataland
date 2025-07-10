@@ -125,7 +125,7 @@ describe('Component test for the company cockpit', () => {
   /**
    * Mounts the company cockpit page with a specific authentication
    * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
-   * @param isMobile determines if the mount shall happen from a mobie-users perspective
+   * @param isMobile determines if the mount shall happen from a mobile-users perspective
    * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
    * @param companyRoleAssignments defines the company role assignments that the current user shall have
    * @returns the mounted component
@@ -161,7 +161,7 @@ describe('Component test for the company cockpit', () => {
 
   /**
    * Validates the existence of the back-button
-   * @param isMobile determines if the validation shall be executed from a moble users perspective
+   * @param isMobile determines if the validation shall be executed from a mobile users perspective
    */
   function validateBackButtonExistence(isMobile: boolean): void {
     const backButtonSelector = `span[data-test="${isMobile ? 'back-button-mobile' : 'back-button'}"]`;

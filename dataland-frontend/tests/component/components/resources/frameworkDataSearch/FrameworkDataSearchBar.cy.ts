@@ -39,7 +39,7 @@ function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
  * @param isPanelExpectedToExist decides whether the panel is expected to be displayed or not
  */
 function validateAutocompletePanel(isPanelExpectedToExist: boolean): void {
-  cy.get('div.p-autocomplete-panel').should(isPanelExpectedToExist ? 'exist' : 'not.exist');
+  cy.get('div.p-autocomplete-list-container').should(isPanelExpectedToExist ? 'exist' : 'not.exist');
 }
 
 describe('Component tests for the search bar on the company search page', () => {

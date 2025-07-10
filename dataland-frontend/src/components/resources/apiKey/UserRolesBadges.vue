@@ -1,7 +1,7 @@
 <template>
   <div class="text-left text-xs ml-1 text-600">Scope</div>
   <div class="flex align-items-center justify-content-center">
-    <Tag v-if="userRoles.includes(KEYCLOAK_ROLE_USER)" data-test="userRoleUser" value="Read" severity="warn"></Tag>
+    <Tag v-if="userRoles.includes(KEYCLOAK_ROLE_USER)" data-test="userRoleUser" value="READ" severity="warn"></Tag>
     <Tag
       v-if="userRoles.includes(KEYCLOAK_ROLE_UPLOADER)"
       data-test="userRoleUploader"
