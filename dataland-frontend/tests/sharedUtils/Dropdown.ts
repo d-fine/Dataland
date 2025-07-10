@@ -11,12 +11,12 @@ export function selectItemFromDropdownByValue(
 ): void {
   dropdownDiv.find('.p-select-dropdown').click();
   if (exactMatchNotNeeded) {
-    cy.get('.p-select-list').contains(valueToSelect).should('contain.text', valueToSelect).click();
+    cy.get('.p-select-option').contains(valueToSelect).should('contain.text', valueToSelect).click();
   } else {
-    cy.get('.p-select-list')
+    cy.get('.p-select-option')
       .contains(new RegExp(`^${valueToSelect}$`))
       .should('have.text', valueToSelect);
-    cy.get('.p-select-list')
+    cy.get('.p-select-option')
       .contains(new RegExp(`^${valueToSelect}$`))
       .click();
   }
