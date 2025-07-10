@@ -177,6 +177,7 @@ class BulkDataRequestManager(
         return if (dataDimensions.isNotEmpty()) {
             val rawQuery = entityManager.createNativeQuery(queryToExecute)
             return rawQuery.resultList.map { row ->
+                @Suppress("MagicNumber")
                 DataRequestEntity(
                     dataRequestId = (row as Array<*>)[0] as String,
                     creationTimestamp = row[1] as Long,
@@ -231,8 +232,9 @@ class BulkDataRequestManager(
             existingRequests.map { dimension ->
                 DatasetDimensions(
                     companyId = dimension.datalandCompanyId,
-                    dataType = DataTypeEnum.decode(dimension.dataType) ?:
-                        throw IllegalArgumentException("Invalid data type: ${dimension.dataType}"),
+                    dataType =
+                        DataTypeEnum.decode(dimension.dataType)
+                            ?: throw IllegalArgumentException("Invalid data type: ${dimension.dataType}"),
                     reportingPeriod = dimension.reportingPeriod,
                 )
             }

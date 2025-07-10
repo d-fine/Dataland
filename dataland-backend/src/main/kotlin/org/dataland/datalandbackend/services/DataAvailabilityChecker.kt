@@ -3,11 +3,10 @@ package org.dataland.datalandbackend.services
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.utils.filterOutInvalidDimensions
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 /**
  * Service to determine if data is available
@@ -40,24 +39,4 @@ class DataAvailabilityChecker(
             emptyList()
         }
     }
-
-    private fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
-        dataDimensions.filter { dimensions ->
-            isCompanyId(dimensions.companyId) &&
-                isDataType(dimensions.dataType) &&
-                isReportingPeriod(dimensions.reportingPeriod)
-        }
-
-    private fun isReportingPeriod(testString: String) = testString.matches(Regex("\\d{4}"))
-
-    private fun isCompanyId(testString: String): Boolean {
-        try {
-            UUID.fromString(testString)
-            return true
-        } catch (ignore: Exception) {
-            return false
-        }
-    }
-
-    private fun isDataType(testString: String) = DataType.values.any { it.toString() == testString }
 }
