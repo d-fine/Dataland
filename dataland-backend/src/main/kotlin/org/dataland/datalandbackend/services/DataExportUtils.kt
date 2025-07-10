@@ -70,7 +70,7 @@ class DataExportUtils
          * @param csvSchema
          */
         data class PreparedExportData(
-            val csvData: List<Map<String, String>>,
+            val csvData: List<Map<String, String?>>,
             val csvSchema: CsvSchema,
         )
 
@@ -132,7 +132,8 @@ class DataExportUtils
             val usedReadableHeaders =
                 mappedCsvData
                     .flatMap { it.entries }
-                    .filter { it.value.isNotBlank() }
+                    .filter { it.value != null }
+                    .filter { !it.value.isNullOrBlank() }
                     .map { it.key }
                     .toSet()
 
@@ -216,9 +217,9 @@ class DataExportUtils
          * @return The provided csv data with the himan-readable names
          */
         fun mapReadableHeadersToCsvData(
-            csvData: List<Map<String, String>>,
+            csvData: List<Map<String, String?>>,
             readableHeaders: Map<String, String>,
-        ): List<Map<String, String>> =
+        ): List<Map<String, String?>> =
             csvData.map { row ->
                 row
                     .mapNotNull { (originalKey, value) ->
@@ -255,14 +256,13 @@ class DataExportUtils
         fun getCsvDataAndNonEmptyFields(
             nodes: List<JsonNode>,
             keepValueFieldsOnly: Boolean,
-        ): Pair<List<Map<String, String>>, Set<String>> {
+        ): Pair<List<Map<String, String?>>, Set<String>> {
             val csvData =
                 nodes.map { node ->
                     val nonEmptyNodes =
                         JsonUtils
-                            .getNonEmptyLeafNodesAsMapping(node)
+                            .getAllLeafNodesAsMapping(node)
                             .filterKeys { !isReferencedReportsField(it) }
-                            .filterValues { it.isNotBlank() }
                             .toMutableMap()
 
                     if (keepValueFieldsOnly) {
@@ -275,7 +275,7 @@ class DataExportUtils
             val nonEmptyFields =
                 csvData
                     .flatMap { it.entries }
-                    .filter { it.value.isNotBlank() }
+                    .filter { !it.value.isNullOrBlank() }
                     .map { it.key }
                     .toSet()
 
@@ -294,7 +294,7 @@ class DataExportUtils
          * @param nodes The map of nodes to process
          * @return A filtered map containing only value fields (including converted quality fields)
          */
-        private fun processQualityFields(nodes: MutableMap<String, String>): MutableMap<String, String> {
+        private fun processQualityFields(nodes: MutableMap<String, String?>): MutableMap<String, String?> {
             val filteredNodes = mutableMapOf<String, String>()
             val separator = JsonUtils.getPathSeparator()
 

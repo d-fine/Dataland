@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -48,6 +49,7 @@ class DataExportServiceTest {
             .readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
     private val largeDecimal = 1234567899.1
     private val largeDecimalAsString = "1234567899.1"
+    private val testCompany = "Test Company "
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -274,7 +276,7 @@ class DataExportServiceTest {
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(
                     SingleCompanyExportData(
-                        companyName = "Test Company ",
+                        companyName = testCompany,
                         companyLei = "TEST67890",
                         reportingPeriod = "2024",
                         data = objectMapper.treeToValue(testJson, Any::class.java),
@@ -303,7 +305,7 @@ class DataExportServiceTest {
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(
                     SingleCompanyExportData(
-                        companyName = "Test Company ",
+                        companyName = testCompany,
                         companyLei = "TEST67890",
                         reportingPeriod = "2024",
                         data = objectMapper.treeToValue(testJson, Any::class.java),
@@ -324,6 +326,35 @@ class DataExportServiceTest {
         )
     }
 
+    @Test
+    fun `test custom components`() {
+        val testJson = createTestJsonNonPrimitiveValue()
+
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(
+                    SingleCompanyExportData(
+                        companyName = testCompany,
+                        companyLei = "TEST67890",
+                        reportingPeriod = "2024",
+                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                    ),
+                ),
+                ExportFileType.CSV,
+                DataType.valueOf("sfdr"),
+                keepValueFieldsOnly = true,
+                includeAliases = false,
+            )
+
+        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+
+        Assertions.assertFalse(
+            csvString
+                .contains("Reported"),
+            "CSV should not contain the data quality",
+        )
+    }
+
     /**
      * Creates a test JSON with a data point that has only a quality field (no value field)
      */
@@ -337,6 +368,7 @@ class DataExportServiceTest {
         testField.set<JsonNode>("testDataPoint", testPoint)
 
         // Only set a quality field, no value field
+        testPoint.set<JsonNode>("value", NullNode.instance)
         testPoint.put("quality", "Audited")
 
         return root
@@ -400,6 +432,27 @@ class DataExportServiceTest {
 
         testPointB.put("value", "42")
         testPointB.put("quality", "Reported")
+
+        return root
+    }
+
+    /**
+     * Creates a test JSON with a data point that has a non primitive type
+     */
+    private fun createTestJsonNonPrimitiveValue(): JsonNode {
+        val root = objectMapper.createObjectNode()
+
+        val testField = objectMapper.createObjectNode()
+        root.set<JsonNode>("testCategory", testField)
+
+        val testPoint = objectMapper.createObjectNode()
+        testField.set<JsonNode>("testDataPoint", testPoint)
+
+        val nonPrimitiveValue = objectMapper.createObjectNode()
+        testPoint.set<JsonNode>("value", nonPrimitiveValue)
+        testPoint.put("quality", "Reported")
+        nonPrimitiveValue.put("attribute1", 123)
+        nonPrimitiveValue.put("attribute2", "test")
 
         return root
     }

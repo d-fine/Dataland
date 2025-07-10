@@ -79,7 +79,7 @@ class DataExportService
          * @param outputStream the output stream to write the data to
          */
         fun transformDataToExcelWithReadableHeaders(
-            csvDataWithReadableHeaders: List<Map<String, String>>,
+            csvDataWithReadableHeaders: List<Map<String, String?>>,
             csvSchema: CsvSchema,
             outputStream: OutputStream,
         ) {

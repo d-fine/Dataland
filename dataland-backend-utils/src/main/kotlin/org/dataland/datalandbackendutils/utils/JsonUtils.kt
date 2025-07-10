@@ -34,29 +34,36 @@ object JsonUtils {
      * @param currentPath the current path
      * @return a mapping of the names of non-empty fields to their respective values
      */
-    fun getNonEmptyLeafNodesAsMapping(
+    fun getAllLeafNodesAsMapping(
         node: JsonNode,
         currentPath: String = "",
-    ): MutableMap<String, String> {
-        val result = mutableMapOf<String, String>()
+    ): MutableMap<String, String?> {
+        val result = mutableMapOf<String, String?>()
 
         when {
-            node.isValueNode && !node.isNull -> {
-                val nodeString = if (node.isTextual) node.textValue() else node.toString()
-                if (nodeString.isNotEmpty()) result[currentPath] = nodeString
+            node.isValueNode -> {
+                val nodeString =
+                    if (node.isTextual) {
+                        node.textValue()
+                    } else if (node.isNull) {
+                        null
+                    } else {
+                        node.toString()
+                    }
+                result[currentPath] = nodeString
             }
 
             node.isObject -> {
                 node.fields().forEachRemaining { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
-                    result.putAll(getNonEmptyLeafNodesAsMapping(value, newPath))
+                    result.putAll(getAllLeafNodesAsMapping(value, newPath))
                 }
             }
 
             node.isArray -> {
                 node.elements().withIndex().forEachRemaining { (index, element) ->
                     val newPath = if (currentPath.isEmpty()) "$index" else "$currentPath$JSON_PATH_SEPARATOR$index"
-                    result.putAll(getNonEmptyLeafNodesAsMapping(element, newPath))
+                    result.putAll(getAllLeafNodesAsMapping(element, newPath))
                 }
             }
         }
