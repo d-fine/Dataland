@@ -197,8 +197,7 @@ class DataExportUtils
                     usedHeaderFields
                         .filter { usedHeaderField ->
                             usedHeaderField.startsWith(DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
-                        }.sorted()
-                        .forEach {
+                        }.forEach {
                             resultList.add(it)
                         }
                 }
