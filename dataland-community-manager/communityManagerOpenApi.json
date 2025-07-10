@@ -26,7 +26,7 @@
           "request-controller"
         ],
         "summary": "Send a single request",
-        "description": "A single data request for a specific framework and company and one or multiple reporting periods is sent.",
+        "description": "A single data request for a specific framework, a company, and one or multiple reporting periods is triggered.",
         "operationId": "postSingleDataRequest",
         "parameters": [
           {
@@ -1563,8 +1563,7 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
-            "example": true
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1676,8 +1675,7 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
-            "example": true
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1699,7 +1697,7 @@
           },
           "alreadyExistingNonFinalRequests": {
             "type": "array",
-            "description": "Contains information about all already existing non-final data requests",
+            "description": "Contains information about all already existing data requests that are \"Open\" or \"Answered\".",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
@@ -1838,8 +1836,7 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
-            "example": true
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           },
           "adminComment": {
             "type": "string",
@@ -1910,8 +1907,7 @@
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
-            "example": true
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           },
           "creationTimestamp": {
             "type": "integer",

@@ -50,7 +50,7 @@ open class NumberBaseComponent(
     /**
      * Returns the annotations for this component, i.e.
      * - schema annotation
-     * - suppres max line length annotation
+     * - suppress max line length annotation
      * - annotation for minimum and maximum value
      */
     fun getAnnotationsWithMinMax(

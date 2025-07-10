@@ -47,7 +47,6 @@ data class QaReportMetaInformation(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_EXAMPLE,
     )
     val active: Boolean,
 )

@@ -873,8 +873,7 @@
           },
           "isMonitored": {
             "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "example": true
+            "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
           "startingMonitoringPeriod": {
             "type": "string",
@@ -947,8 +946,7 @@
           },
           "isMonitored": {
             "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "example": true
+            "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
           "startingMonitoringPeriod": {
             "type": "string",
@@ -977,8 +975,7 @@
         "properties": {
           "isMonitored": {
             "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "example": true
+            "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
           "startingMonitoringPeriod": {
             "type": "string",
@@ -1030,8 +1027,7 @@
           },
           "isMonitored": {
             "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "example": true
+            "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
           "startingMonitoringPeriod": {
             "type": "string",

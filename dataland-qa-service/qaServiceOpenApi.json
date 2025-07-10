@@ -3270,8 +3270,7 @@
           },
           "active": {
             "type": "boolean",
-            "description": "Boolean flag. True if and only if the QA report is marked as active.",
-            "example": true
+            "description": "Boolean flag. True if and only if the QA report is marked as active."
           }
         }
       },
@@ -5989,8 +5988,7 @@
           },
           "active": {
             "type": "boolean",
-            "description": "Boolean flag. True if and only if the QA report is marked as active.",
-            "example": true
+            "description": "Boolean flag. True if and only if the QA report is marked as active."
           },
           "comment": {
             "type": "string",
@@ -6018,8 +6016,7 @@
         "properties": {
           "active": {
             "type": "boolean",
-            "description": "Boolean flag. True if and only if the QA report is marked as active.",
-            "example": true
+            "description": "Boolean flag. True if and only if the QA report is marked as active."
           }
         }
       },

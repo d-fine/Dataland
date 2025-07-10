@@ -75,7 +75,6 @@ interface DataPointApi {
         @RequestParam(defaultValue = "false")
         @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
             required = false,
         )
         bypassQa: Boolean,

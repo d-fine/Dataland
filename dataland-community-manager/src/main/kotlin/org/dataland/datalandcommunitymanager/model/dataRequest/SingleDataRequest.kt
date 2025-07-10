@@ -56,7 +56,6 @@ data class SingleDataRequest(
     @field:JsonProperty(required = false)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_EXAMPLE,
     )
     val notifyMeImmediately: Boolean = false,
 )

@@ -29,8 +29,7 @@ data class DataMetaInformationSearchFilter(
     )
     val reportingPeriod: String? = null,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IS_ONLY_ACTIVE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IS_ONLY_ACTIVE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
     )
     val onlyActive: Boolean,
     @field:ArraySchema(

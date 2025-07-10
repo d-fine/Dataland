@@ -55,7 +55,6 @@ data class DataPointMetaInformation(
     val uploadTime: Long,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_EXAMPLE,
     )
     val currentlyActive: Boolean,
     @field:Schema(

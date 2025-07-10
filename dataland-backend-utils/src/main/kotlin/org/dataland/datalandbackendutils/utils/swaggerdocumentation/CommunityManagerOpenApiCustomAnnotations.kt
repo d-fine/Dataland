@@ -2,7 +2,7 @@ package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.Parameter
 
-/** * UserId annotation */
+/** UserId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter
 )
 annotation class UserIdParameterNonRequired
 
-/** * UserEmailAddress annotation */
+/** UserEmailAddress annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -22,7 +22,7 @@ annotation class UserIdParameterNonRequired
 )
 annotation class UserEmailAddressParameterNonRequired
 
-/** * AdminComment annotation */
+/** AdminComment annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -32,7 +32,7 @@ annotation class UserEmailAddressParameterNonRequired
 )
 annotation class AdminCommentParameterNonRequired
 
-/** * RequestStatus annotation */
+/** RequestStatus annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -41,7 +41,7 @@ annotation class AdminCommentParameterNonRequired
 )
 annotation class RequestStatusParameterNonRequired
 
-/** * AccessStatus annotation */
+/** AccessStatus annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -50,7 +50,7 @@ annotation class RequestStatusParameterNonRequired
 )
 annotation class AccessStatusParameterNonRequired
 
-/** * RequestPriority annotation */
+/** RequestPriority annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -59,7 +59,7 @@ annotation class AccessStatusParameterNonRequired
 )
 annotation class RequestPriorityParameterNonRequired
 
-/** * DataRequestId annotation */
+/** DataRequestId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -69,7 +69,7 @@ annotation class RequestPriorityParameterNonRequired
 )
 annotation class DataRequestIdParameterRequired
 
-/** * CompanyRole annotation */
+/** CompanyRole annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -78,7 +78,7 @@ annotation class DataRequestIdParameterRequired
 )
 annotation class CompanyRoleParameterRequired
 
-/** * UserId annotation */
+/** UserId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(

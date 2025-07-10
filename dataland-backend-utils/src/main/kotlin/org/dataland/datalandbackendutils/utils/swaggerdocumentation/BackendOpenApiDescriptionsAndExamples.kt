@@ -29,7 +29,6 @@ object BackendOpenApiDescriptionsAndExamples {
     const val COUNTRY_CODE_EXAMPLE = "DE"
 
     const val IS_TEASER_COMPANY_DESCRIPTION = "A boolean indicating if the company is a teaser company."
-    const val IS_TEASER_COMPANY_EXAMPLE = "true"
 
     const val WEBSITE_DESCRIPTION = "The official website URL of the company."
     const val WEBSITE_EXAMPLE = "www.abccorp.com"
@@ -41,7 +40,6 @@ object BackendOpenApiDescriptionsAndExamples {
     const val DATA_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val CURRENTLY_ACTIVE_DESCRIPTION = "Boolean flag indicating whether the dataset is currently active."
-    const val CURRENTLY_ACTIVE_EXAMPLE = "true"
 
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
     const val REF_EXAMPLE =
@@ -68,16 +66,12 @@ object BackendOpenApiDescriptionsAndExamples {
     const val IS_NON_SOURCEABLE_DESCRIPTION =
         "If true, the method only returns meta info for datasets which are" +
             "non-sourceable. If false, it returns sourceable data."
-    const val IS_NON_SOURCEABLE_EXAMPLE = "true"
 
     const val REASON_DESCRIPTION = "The reason why there is no source available"
     const val REASON_EXAMPLE = "Parent Uploaded"
 
     const val CREATION_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was created."
     const val CREATION_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
-
-    const val IS_ONLY_ACTIVE_DESCRIPTION = "Boolean flag indicating whether the dataset is currently the only active dataset."
-    const val IS_ONLY_ACTIVE_EXAMPLE = "true"
 
     const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A list of Dataland user IDs corresponding to the users who uploaded the data."
     const val ALL_UPLOADER_USER_IDS_EXAMPLE = "[\"$UPLOADER_USER_ID_EXAMPLE\"]"
@@ -120,7 +114,6 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_UPLOAD_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val IS_REPORT_ACTIVE_DESCRIPTION = "Boolean flag. True if and only if the QA report is marked as active."
-    const val IS_REPORT_ACTIVE_EXAMPLE = "true"
 
     const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The quality decision of this qa report."
 
@@ -148,7 +141,6 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val BYPASS_QA_DESCRIPTION =
         "If true, data is not sent to QA."
-    const val BYPASS_QA_EXAMPLE = "false"
 
     const val DATA_POINT_MAP_DESCRIPTION = "A map from data point IDs to the associated technical IDs."
     const val DATA_POINT_MAP_EXAMPLE =

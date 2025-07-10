@@ -20,7 +20,6 @@ object UserServiceOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_COMPANY_IDS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\"]"
 
     const val PORTFOLIO_IS_MONITORED_DESCRIPTION = "Boolean flag that indicates whether the portfolio is monitored."
-    const val PORTFOLIO_IS_MONITORED_EXAMPLE = "true"
 
     const val PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION =
         "The reporting period from which the companies in the portfolio are actively monitored for data updates."

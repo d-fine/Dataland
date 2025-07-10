@@ -15,7 +15,6 @@ data class PortfolioMonitoringPatch(
     @field:JsonProperty(required = false)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_DESCRIPTION,
-        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_EXAMPLE,
     )
     override val isMonitored: Boolean,
     @field:JsonProperty(required = false)

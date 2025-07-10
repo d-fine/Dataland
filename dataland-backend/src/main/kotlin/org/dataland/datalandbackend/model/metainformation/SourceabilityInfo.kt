@@ -36,7 +36,6 @@ data class SourceabilityInfo(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_EXAMPLE,
     )
     val isNonSourceable: Boolean,
     @field:JsonProperty(required = true)

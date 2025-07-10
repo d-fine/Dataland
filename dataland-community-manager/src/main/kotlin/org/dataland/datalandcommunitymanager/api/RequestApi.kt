@@ -136,7 +136,7 @@ interface RequestApi {
      */
     @Operation(
         summary = "Send a single request",
-        description = "A single data request for a specific framework and company and one or multiple reporting periods is sent.",
+        description = "A single data request for a specific framework, a company, and one or multiple reporting periods is triggered.",
     )
     @ApiResponses(
         value = [

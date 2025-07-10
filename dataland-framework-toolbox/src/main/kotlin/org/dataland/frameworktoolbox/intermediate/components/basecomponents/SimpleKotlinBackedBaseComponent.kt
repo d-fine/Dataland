@@ -18,9 +18,9 @@ open class SimpleKotlinBackedBaseComponent(
     var fullyQualifiedNameOfKotlinType: String,
 ) : ComponentBase(identifier, parent) {
     /**
-     * Returns the annotations for this component, e.g..
+     * Returns the annotations for this component, e.g.,
      * - schema annotation
-     * - suppres max line length annotation
+     * - suppress max line length annotation
      */
     open fun getAnnotations(): List<Annotation> = emptyList()
 

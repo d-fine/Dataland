@@ -56,7 +56,6 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_EXAMPLE,
     )
     val currentlyActive: Boolean,
     @field:JsonProperty(required = true)

@@ -40,7 +40,6 @@ data class DataMetaInformationForMyDatasets(
     val qualityStatus: QaStatus,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_EXAMPLE,
     )
     val currentlyActive: Boolean?,
     @field:Schema(

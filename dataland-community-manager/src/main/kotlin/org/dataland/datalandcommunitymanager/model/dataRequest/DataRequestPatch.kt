@@ -42,7 +42,6 @@ data class DataRequestPatch(
     val requestPriority: RequestPriority? = null,
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_EXAMPLE,
     )
     var notifyMeImmediately: Boolean? = null,
     @field:Schema(

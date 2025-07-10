@@ -89,7 +89,6 @@ data class CompanyInformation(
     val countryCode: String,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IS_TEASER_COMPANY_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IS_TEASER_COMPANY_EXAMPLE,
     )
     val isTeaserCompany: Boolean?,
     @field:Schema(

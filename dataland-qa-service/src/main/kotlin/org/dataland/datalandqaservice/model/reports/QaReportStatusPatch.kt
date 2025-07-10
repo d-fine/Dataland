@@ -9,7 +9,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
 data class QaReportStatusPatch(
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_EXAMPLE,
     )
     val active: Boolean,
 )

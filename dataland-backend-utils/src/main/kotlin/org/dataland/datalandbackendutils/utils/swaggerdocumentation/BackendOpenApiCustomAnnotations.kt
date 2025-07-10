@@ -2,7 +2,7 @@ package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 import io.swagger.v3.oas.annotations.Parameter
 
-/** * DataType annotation */
+/** DataType annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter
 )
 annotation class DataTypeParameterNonRequired
 
-/** * CountryCode annotation */
+/** CountryCode annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -21,7 +21,7 @@ annotation class DataTypeParameterNonRequired
 )
 annotation class CountryCodeParameterNonRequired
 
-/** * Sector annotation */
+/** Sector annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -31,7 +31,7 @@ annotation class CountryCodeParameterNonRequired
 )
 annotation class SectorParameterNonRequired
 
-/** * CompanyId annotation */
+/** CompanyId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -42,7 +42,7 @@ annotation class SectorParameterNonRequired
 )
 annotation class CompanyIdParameterRequired
 
-/** * IdentifierType annotation */
+/** IdentifierType annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -52,7 +52,7 @@ annotation class CompanyIdParameterRequired
 )
 annotation class IdentifierTypeParameterRequired
 
-/** * Identifier annotation */
+/** Identifier annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -63,7 +63,7 @@ annotation class IdentifierTypeParameterRequired
 )
 annotation class IdentifierParameterRequired
 
-/** * CompanyId annotation */
+/** CompanyId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -73,7 +73,7 @@ annotation class IdentifierParameterRequired
 )
 annotation class CompanyIdParameterNonRequired
 
-/** * ReportingPeriod annotation */
+/** ReportingPeriod annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
@@ -83,7 +83,7 @@ annotation class CompanyIdParameterNonRequired
 )
 annotation class ReportingPeriodParameterNonRequired
 
-/** * DataId annotation */
+/** DataId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(

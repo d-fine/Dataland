@@ -24,7 +24,6 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =
         "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of " +
             "the posted requests. If set to false, these updates are listed in the weekly summary email."
-    const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_EXAMPLE = "true"
 
     const val USER_ID_DESCRIPTION = "The ID of the user who created the data request."
     const val USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
@@ -51,7 +50,8 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 
-    const val ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION = "Contains information about all already existing non-final data requests"
+    const val ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION =
+        "Contains information about all already existing data requests that are \"Open\" or \"Answered\"."
 
     const val ALREADY_EXISTING_DATASETS_DESCRIPTION = "Contains information about all already existing data sets"
 

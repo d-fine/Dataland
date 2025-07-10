@@ -250,7 +250,6 @@ interface MetaDataApi {
         @RequestParam
         @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_EXAMPLE,
             required = false,
         )
         nonSourceable: Boolean? = null,

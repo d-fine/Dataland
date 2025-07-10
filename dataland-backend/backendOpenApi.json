@@ -323,8 +323,7 @@
             "required": false,
             "schema": {
               "type": "boolean"
-            },
-            "example": true
+            }
           }
         ],
         "responses": {
@@ -641,8 +640,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "example": false
+            }
           }
         ],
         "requestBody": {
@@ -712,8 +710,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "example": false
+            }
           }
         ],
         "requestBody": {
@@ -783,8 +780,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "example": false
+            }
           }
         ],
         "requestBody": {
@@ -854,8 +850,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "example": false
+            }
           }
         ],
         "requestBody": {
@@ -925,8 +920,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "example": false
+            }
           }
         ],
         "requestBody": {
@@ -998,8 +992,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "example": false
+            }
           }
         ],
         "requestBody": {
@@ -5170,8 +5163,7 @@
           "isTeaserCompany": {
             "type": "boolean",
             "description": "A boolean indicating if the company is a teaser company.",
-            "nullable": true,
-            "example": true
+            "nullable": true
           },
           "website": {
             "type": "string",
@@ -5231,8 +5223,7 @@
           },
           "currentlyActive": {
             "type": "boolean",
-            "description": "Boolean flag indicating whether the dataset is currently active.",
-            "example": true
+            "description": "Boolean flag indicating whether the dataset is currently active."
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
@@ -5303,8 +5294,7 @@
           },
           "isNonSourceable": {
             "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
-            "example": true
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
           },
           "reason": {
             "type": "string",
@@ -5341,8 +5331,7 @@
           },
           "onlyActive": {
             "type": "boolean",
-            "description": "Boolean flag indicating whether the dataset is currently the only active dataset.",
-            "example": true
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status."
           },
           "uploaderUserIds": {
             "uniqueItems": true,
@@ -15261,8 +15250,7 @@
           },
           "currentlyActive": {
             "type": "boolean",
-            "description": "Boolean flag indicating whether the dataset is currently active.",
-            "example": true
+            "description": "Boolean flag indicating whether the dataset is currently active."
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
@@ -15481,8 +15469,7 @@
           "isTeaserCompany": {
             "type": "boolean",
             "description": "A boolean indicating if the company is a teaser company.",
-            "nullable": true,
-            "example": true
+            "nullable": true
           },
           "website": {
             "type": "string",
@@ -15551,8 +15538,7 @@
           "currentlyActive": {
             "type": "boolean",
             "description": "Boolean flag indicating whether the dataset is currently active.",
-            "nullable": true,
-            "example": true
+            "nullable": true
           },
           "uploadTime": {
             "type": "integer",
@@ -15589,8 +15575,7 @@
           },
           "isNonSourceable": {
             "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
-            "example": true
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
           },
           "reason": {
             "type": "string",

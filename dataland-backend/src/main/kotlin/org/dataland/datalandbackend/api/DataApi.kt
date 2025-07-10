@@ -57,7 +57,6 @@ interface DataApi<T> {
         @Parameter(
             name = "bypassQa",
             description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_EXAMPLE,
             required = false,
         )
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
