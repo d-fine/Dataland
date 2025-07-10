@@ -4519,8 +4519,7 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
-                    "type": "integer",
-                    "format": "int64"
+                    "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
                   },
                   "description": "The amount of available reporting periods per framework.",
                   "example": {
@@ -15720,6 +15719,18 @@
           },
           "data": {
             "$ref": "#/components/schemas/EutaxonomyFinancialsData"
+          }
+        }
+      },
+      "AggregatedFrameworkDataSummary": {
+        "required": [
+          "numberOfProvidedReportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "numberOfProvidedReportingPeriods": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

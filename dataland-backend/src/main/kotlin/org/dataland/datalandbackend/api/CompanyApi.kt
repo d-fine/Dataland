@@ -399,7 +399,7 @@ interface CompanyApi {
                         schema =
                             Schema(
                                 type = "object",
-                                additionalPropertiesSchema = Long::class,
+                                additionalPropertiesSchema = AggregatedFrameworkDataSummary::class,
                                 description = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION,
                                 example = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE,
                             ),
