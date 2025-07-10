@@ -1,8 +1,8 @@
 package org.dataland.datalandbatchmanager.service
 
 import org.apache.commons.io.FileUtils
-import org.dataland.datalandbackend.controller.IsinLeiDataController
-import org.dataland.datalandbackend.model.IsinLeiMappingData
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.IsinLeiMappingData
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ import kotlin.time.measureTime
 @Suppress("LongParameterList")
 @Component
 class GleifGoldenCopyIngestor(
-    @Autowired private val isinLeiDataControllerApi: IsinLeiDataController,
+    @Autowired private val isinLeiDataControllerApi: IsinLeiDataControllerApi,
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifParser: CsvParser,
     @Autowired private val companyUploader: CompanyUploader,
@@ -101,7 +101,7 @@ class GleifGoldenCopyIngestor(
      * @param file the file containing the ISIN-LEI mapping data
      * @return a list of IsinLeiMappingData objects
      */
-    fun extractIsinLeiMapping(file: File): List<IsinLeiMappingData> {
+    private fun extractIsinLeiMapping(file: File): List<IsinLeiMappingData> {
         val csvLines = file.readLines()
         return csvLines.drop(1).map { line ->
             val parts = line.split(",")
@@ -129,7 +129,6 @@ class GleifGoldenCopyIngestor(
                 if (!newMappingFile.delete()) {
                     logger.error("failed to delete temporary mapping file $newMappingFile")
                 }
-
                 isinLeiDataControllerApi.putIsinLeiMapping(extractIsinLeiMapping(newPersistentFile))
                 replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
             }
