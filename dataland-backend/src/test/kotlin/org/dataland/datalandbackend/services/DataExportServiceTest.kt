@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
@@ -35,11 +36,12 @@ class DataExportServiceTest {
 
     private val testDataProvider = TestDataProvider(objectMapper)
     private val lksgTestData = testDataProvider.getLksgDataset()
+    private val testReportingPeriod = "2024"
     private val lksgCompanyExportTestData =
         SingleCompanyExportData(
             companyName = "test name",
             companyLei = UUID.randomUUID().toString(),
-            reportingPeriod = "2024",
+            reportingPeriod = testReportingPeriod,
             data = lksgTestData,
         )
 
@@ -49,7 +51,8 @@ class DataExportServiceTest {
             .readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
     private val largeDecimal = 1234567899.1
     private val largeDecimalAsString = "1234567899.1"
-    private val testCompany = "Test Company "
+    private val testCompany = "Test Company"
+    private val testCompanyLei = "TEST67890"
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -137,14 +140,14 @@ class DataExportServiceTest {
 
     @Test
     fun `check that quality field is used as value when no value field exists and keepValueFieldsOnly is true`() {
-        val testJson = createTestJsonWithQualityNoValue()
+        val testJson = createTestJsonWithQualityNullValue()
 
         // Process the data with keepValueFieldsOnly = true
         val companyExportData =
             SingleCompanyExportData(
                 companyName = "Quality Test Company",
-                companyLei = "TEST12345",
-                reportingPeriod = "2024",
+                companyLei = testCompanyLei,
+                reportingPeriod = testReportingPeriod,
                 data = objectMapper.treeToValue(testJson, Any::class.java),
             )
 
@@ -182,8 +185,8 @@ class DataExportServiceTest {
         val companyExportData =
             SingleCompanyExportData(
                 companyName = "Both Fields Test Company",
-                companyLei = "TEST67890",
-                reportingPeriod = "2024",
+                companyLei = testCompanyLei,
+                reportingPeriod = testReportingPeriod,
                 data = objectMapper.treeToValue(testJson, Any::class.java),
             )
 
@@ -206,7 +209,7 @@ class DataExportServiceTest {
 
         // Verify that the quality field content is not present in the CSV
         Assertions.assertFalse(
-            csvString.contains("Reported"),
+            csvString.contains(QualityOptions.Reported.toString()),
             "CSV should not contain the quality value 'Reported' when value exists",
         )
     }
@@ -230,14 +233,14 @@ class DataExportServiceTest {
                 listOf(
                     SingleCompanyExportData(
                         companyName = "Test Company 1",
-                        companyLei = "TEST67890",
-                        reportingPeriod = "2024",
+                        companyLei = testCompanyLei,
+                        reportingPeriod = testReportingPeriod,
                         data = objectMapper.treeToValue(testJsonWithOneValue, Any::class.java),
                     ),
                     SingleCompanyExportData(
                         companyName = "Test Company 2",
-                        companyLei = "TEST67890",
-                        reportingPeriod = "2024",
+                        companyLei = testCompanyLei,
+                        reportingPeriod = testReportingPeriod,
                         data = objectMapper.treeToValue(testJsonWithTwoValues, Any::class.java),
                     ),
                 ),
@@ -277,8 +280,8 @@ class DataExportServiceTest {
                 listOf(
                     SingleCompanyExportData(
                         companyName = testCompany,
-                        companyLei = "TEST67890",
-                        reportingPeriod = "2024",
+                        companyLei = testCompanyLei,
+                        reportingPeriod = testReportingPeriod,
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
@@ -306,8 +309,8 @@ class DataExportServiceTest {
                 listOf(
                     SingleCompanyExportData(
                         companyName = testCompany,
-                        companyLei = "TEST67890",
-                        reportingPeriod = "2024",
+                        companyLei = testCompanyLei,
+                        reportingPeriod = testReportingPeriod,
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
@@ -335,8 +338,8 @@ class DataExportServiceTest {
                 listOf(
                     SingleCompanyExportData(
                         companyName = testCompany,
-                        companyLei = "TEST67890",
-                        reportingPeriod = "2024",
+                        companyLei = testCompanyLei,
+                        reportingPeriod = testReportingPeriod,
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
@@ -350,15 +353,15 @@ class DataExportServiceTest {
 
         Assertions.assertFalse(
             csvString
-                .contains("Reported"),
+                .contains(QualityOptions.Reported.toString()),
             "CSV should not contain the data quality",
         )
     }
 
     /**
-     * Creates a test JSON with a data point that has only a quality field (no value field)
+     * Creates a test JSON with a data point that has only a quality field. The value field is null.
      */
-    private fun createTestJsonWithQualityNoValue(): JsonNode {
+    private fun createTestJsonWithQualityNullValue(): JsonNode {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
@@ -367,7 +370,6 @@ class DataExportServiceTest {
         val testPoint = objectMapper.createObjectNode()
         testField.set<JsonNode>("testDataPoint", testPoint)
 
-        // Only set a quality field, no value field
         testPoint.set<JsonNode>("value", NullNode.instance)
         testPoint.put("quality", "Audited")
 
@@ -375,7 +377,7 @@ class DataExportServiceTest {
     }
 
     /**
-     * Creates a test JSON with a data point that has both a value and quality field
+     * Creates a test JSON with a data point that has both a non-null value and quality field
      */
     private fun createTestJsonWithBothValueAndQuality(): JsonNode {
         val root = objectMapper.createObjectNode()
@@ -386,9 +388,8 @@ class DataExportServiceTest {
         val testPoint = objectMapper.createObjectNode()
         testField.set<JsonNode>("testDataPoint", testPoint)
 
-        // Set both value and quality fields
         testPoint.put("value", "42")
-        testPoint.put("quality", "Reported")
+        testPoint.put("quality", QualityOptions.Reported.toString())
 
         return root
     }
@@ -407,7 +408,7 @@ class DataExportServiceTest {
 
         // Set both value and quality fields
         testPoint.put("value", largeDecimal)
-        testPoint.put("quality", "Reported")
+        testPoint.put("quality", QualityOptions.Reported.toString())
 
         return root
     }
@@ -425,13 +426,13 @@ class DataExportServiceTest {
         testField.set<JsonNode>("aTestDataPoint", testPointA)
 
         testPointA.put("value", "123")
-        testPointA.put("quality", "Reported")
+        testPointA.put("quality", QualityOptions.Reported.toString())
 
         val testPointB = objectMapper.createObjectNode()
         testField.set<JsonNode>("testDataPoint", testPointB)
 
         testPointB.put("value", "42")
-        testPointB.put("quality", "Reported")
+        testPointB.put("quality", QualityOptions.Reported.toString())
 
         return root
     }
@@ -450,7 +451,7 @@ class DataExportServiceTest {
 
         val nonPrimitiveValue = objectMapper.createObjectNode()
         testPoint.set<JsonNode>("value", nonPrimitiveValue)
-        testPoint.put("quality", "Reported")
+        testPoint.put("quality", QualityOptions.Reported.toString())
         nonPrimitiveValue.put("attribute1", 123)
         nonPrimitiveValue.put("attribute2", "test")
 
@@ -458,7 +459,7 @@ class DataExportServiceTest {
     }
 
     /**
-     * Creates a test specification matching the test data created in createTestJsonWithBothValueAndQuality
+     * Creates a test specification
      */
     private fun createTestSpecification(): String {
         val root = objectMapper.createObjectNode()
