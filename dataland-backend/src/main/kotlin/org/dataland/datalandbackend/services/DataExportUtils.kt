@@ -306,7 +306,7 @@ class DataExportUtils
                     field.endsWith("${separator}$QUALITY") -> {
                         val basePath = field.removeSuffix("${separator}$QUALITY")
                         val valuePath = "${basePath}${separator}$VALUE"
-                        if (valuePath in nodes && nodes[valuePath].isNullOrEmpty()) {
+                        if (valuePath !in nodes) {
                             filteredNodes[valuePath] = value
                         }
                     }
