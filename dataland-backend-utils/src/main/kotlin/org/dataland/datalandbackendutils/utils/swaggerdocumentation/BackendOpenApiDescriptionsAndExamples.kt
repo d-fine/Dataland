@@ -51,12 +51,9 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val IDENTIFIER_TYPE_DESCRIPTION = "The type of identifier that is used."
 
-    const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_DESCRIPTION = "The number of reporting periods that are used."
-    const val NUMBER_OF_PROVIDED_REPORTING_PERIODS_EXAMPLE = "2"
-
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION = "The amount of available reporting periods per framework."
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":$NUMBER_OF_PROVIDED_REPORTING_PERIODS_EXAMPLE}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":2}"
 
     const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
     const val LIST_OF_COUNTRY_CODES_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
