@@ -1,0 +1,42 @@
+package org.dataland.datalandbackend.utils
+
+object NuclearAndGasMapping {
+    val aliasMap =
+        mapOf(
+            "taxonomyAlignedShareNumeratorNAndG426" to "4_26_PCT",
+            "taxonomyAlignedShareNumeratorNAndG427" to "4_27_PCT",
+            "taxonomyAlignedShareNumeratorNAndG428" to "4_28_PCT",
+            "taxonomyAlignedShareNumeratorNAndG429" to "4_29_PCT",
+            "taxonomyAlignedShareNumeratorNAndG430" to "4_30_PCT",
+            "taxonomyAlignedShareNumeratorNAndG431" to "4_31_PCT",
+            "taxonomyAlignedShareNumeratorOtherActivities" to "OTHER_PCT",
+            "taxonomyAlignedShareNumerator" to "TOTAL_PROP_PCT",
+            "taxonomyAlignedShareDenominatorNAndG426" to "4_26_PCT",
+            "taxonomyAlignedShareDenominatorNAndG427" to "4_27_PCT",
+            "taxonomyAlignedShareDenominatorNAndG428" to "4_28_PCT",
+            "taxonomyAlignedShareDenominatorNAndG429" to "4_29_PCT",
+            "taxonomyAlignedShareDenominatorNAndG430" to "4_30_PCT",
+            "taxonomyAlignedShareDenominatorNAndG431" to "4_31_PCT",
+            "taxonomyAlignedShareDenominatorOtherActivities" to "OTHER_PCT",
+            "taxonomyAlignedShareDenominator" to "TOTAL_PROP_PCT",
+            "taxonomyNonEligibleShareNAndG426" to "4_26_PCT",
+            "taxonomyNonEligibleShareNAndG427" to "4_27_PCT",
+            "taxonomyNonEligibleShareNAndG428" to "4_28_PCT",
+            "taxonomyNonEligibleShareNAndG429" to "4_29_PCT",
+            "taxonomyNonEligibleShareNAndG430" to "4_30_PCT",
+            "taxonomyNonEligibleShareNAndG431" to "4_31_PCT",
+            "taxonomyNonEligibleShareOtherActivities" to "OTHER_PCT",
+            "taxonomyNonEligibleShare" to "TOTAL_PROPORTION_PCT",
+            "taxonomyEligibleButNotAlignedShareNAndG426" to "4_26_PCT",
+            "taxonomyEligibleButNotAlignedShareNAndG427" to "4_27_PCT",
+            "taxonomyEligibleButNotAlignedShareNAndG428" to "4_28_PCT",
+            "taxonomyEligibleButNotAlignedShareNAndG429" to "4_29_PCT",
+            "taxonomyEligibleButNotAlignedShareNAndG430" to "4_30_PCT",
+            "taxonomyEligibleButNotAlignedShareNAndG431" to "4_31_PCT",
+            "taxonomyEligibleButNotAlignedShareOtherActivities" to "OTHER_PCT",
+            "taxonomyEligibleButNotAlignedShare" to "TOTAL_PROP_PCT",
+            "mitigation" to "CCM",
+            "adaptation" to "CCA",
+            "mitigationAndAdaptation" to "CCM_AND_CCA",
+        )
+}

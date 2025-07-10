@@ -140,13 +140,12 @@
 
 <script setup lang="ts">
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
-import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { DataTypeEnum } from '@clients/backend';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import { FilterMatchMode } from 'primevue/api';
@@ -158,6 +157,14 @@ import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
+import DownloadData from '@/components/general/DownloadData.vue';
+import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
+import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -212,6 +219,9 @@ const emit = defineEmits(['update:portfolio-overview']);
 const countryOptions = ref<string[]>(new Array<string>());
 const sectorOptions = ref<string[]>(new Array<string>());
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
+const isDownloading = ref(false);
+const downloadErrors = ref('');
+let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -229,6 +239,7 @@ const props = defineProps<{
 
 const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
+const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
@@ -328,6 +339,7 @@ function loadPortfolio(): void {
       enrichedPortfolio.value = response.data;
 
       portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
       isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
     .catch((reason) => {
@@ -344,6 +356,75 @@ function resetFilters(): void {
   let filterName: keyof typeof filters.value;
   for (filterName in filters.value) {
     filters.value[filterName].value = null;
+  }
+}
+
+/**
+ * Retrieve the array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
+ */
+function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName[] {
+  const companyMap = new Map(entries.map((entry) => [entry.companyId, entry]));
+  return Array.from(companyMap.values()).sort((a, b) => a.companyName.localeCompare(b.companyName));
+}
+
+/**
+ * Extracts company IDs from the selected portfolio
+ */
+function getCompanyIds(): string[] {
+  portfolioCompanies.value = getUniqueSortedCompanies(enrichedPortfolio.value?.entries ?? []);
+  return portfolioCompanies.value.map((company) => company.companyId);
+}
+
+/**
+ * Download the dataset from the selected reporting period as a file in the selected format
+ * @param selectedYears selected reporting year
+ * @param selectedFileType selected export file type
+ * @param selectedFramework selected data type
+ * @param keepValuesOnly selected export of values only
+ * @param includeAlias selected type of field names
+ */
+async function handleDatasetDownload(
+  selectedYears: string[],
+  selectedFileType: string,
+  selectedFramework: DataTypeEnum,
+  keepValuesOnly: boolean,
+  includeAlias: boolean
+): Promise<void> {
+  isDownloading.value = true;
+  try {
+    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+    // DataExport Button does not exist for private frameworks, so cast is safe
+    const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
+      selectedFramework,
+      apiClientProvider
+    ) as PublicFrameworkDataApi<FrameworkData>;
+
+    const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
+    if (!exportFileType) throw new Error('ExportFileType undefined.');
+
+    const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+
+    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
+    const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
+
+    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
+      selectedYears,
+      getCompanyIds(),
+      exportFileType,
+      keepValuesOnly,
+      includeAlias,
+      options
+    );
+
+    const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
+    forceFileDownload(content, filename);
+  } catch (err) {
+    console.error(err);
+    downloadErrors.value = `${(err as AxiosError).message}`;
+  } finally {
+    isDownloading.value = false;
   }
 }
 
@@ -376,7 +457,7 @@ function openEditModal(): void {
 function openDownloadModal(): void {
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
-  dialog.open(PortfolioDownload, {
+  dialog.open(DownloadData, {
     props: {
       modal: true,
       header: fullName,
@@ -392,9 +473,12 @@ function openDownloadModal(): void {
       },
     },
     data: {
-      portfolioName: fullName,
-      portfolio: enrichedPortfolio.value,
-      companies: portfolioEntriesToDisplay.value,
+      reportingPeriodsPerFramework: reportingPeriodsPerFramework,
+      isDownloading: isDownloading,
+      downloadErrors: downloadErrors,
+    },
+    emits: {
+      onDownloadDataset: handleDatasetDownload,
     },
     onClose() {
       loadPortfolio();

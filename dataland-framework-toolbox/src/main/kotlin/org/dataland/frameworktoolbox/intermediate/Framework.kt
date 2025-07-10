@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilde
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.specification.FrameworkSpecificationBuilder
+import org.dataland.frameworktoolbox.specific.specification.FrameworkTranslationBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.utils.DatalandRepository
@@ -45,6 +46,19 @@ class Framework(
         }
 
         return frameworkDataModelBuilder
+    }
+
+    /**
+     * Generate a translation for this framework In-Memory.
+     */
+    fun generateTranslations(datalandRepository: DatalandRepository): FrameworkTranslationBuilder {
+        val frameworkTranslationBuilder = FrameworkTranslationBuilder(this, datalandRepository)
+
+        root.children.forEach {
+            it.generateTranslation(frameworkTranslationBuilder.rootCategoryBuilder)
+        }
+
+        return frameworkTranslationBuilder
     }
 
     /**

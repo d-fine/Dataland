@@ -29,6 +29,7 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     companyIds: string[],
     fileFormat: ExportFileType,
     includeDataMetaInformation?: boolean,
+    includeAlias?: boolean,
     options?: AxiosRequestConfig
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): AxiosPromise<any>;

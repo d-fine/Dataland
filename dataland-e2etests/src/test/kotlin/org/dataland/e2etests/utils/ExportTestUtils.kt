@@ -63,8 +63,11 @@ object ExportTestUtils {
         val lines = content.replace("\\n", "\n").split("\n")
         val headerLine =
             lines.find {
-                it.contains("companyLei") && !it.contains("sep=")
-            } ?: return emptyList()
+                it.contains(",") && !it.contains("sep=")
+            } ?: lines.find {
+                it.contains(";") && !it.contains("sep=")
+            }
+                ?: return emptyList()
 
         // extract cleaned header values
         return headerLine
@@ -209,7 +212,7 @@ object ExportTestUtils {
      * @param contextMessage Context information for the error message
      * @return The index of the first matching column or -1 if none found
      */
-    fun assertColumnPatternExists(
+    fun assertColumnPatternExistsOrNot(
         headers: List<String>,
         columnNamePart: String,
         shouldExist: Boolean,

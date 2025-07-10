@@ -169,6 +169,7 @@ open class DataController<T>(
         companyIds: List<String>,
         exportFileType: ExportFileType,
         keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
         if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
                 it.companyInformation == null
@@ -200,6 +201,7 @@ open class DataController<T>(
                     exportFileType,
                     dataType,
                     keepValueFieldsOnly,
+                    includeAliases,
                 )
             } catch (_: DownloadDataNotFoundApiException) {
                 return ResponseEntity.noContent().build()

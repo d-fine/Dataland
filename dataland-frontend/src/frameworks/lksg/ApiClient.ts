@@ -44,6 +44,7 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
     companyIds: string[],
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
@@ -52,6 +53,7 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
       companyIds,
       fileFormat,
       keepValueFieldsOnly,
+      includeAliases,
       options
     );
   }
