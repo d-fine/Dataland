@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -173,8 +174,27 @@ class BulkDataRequestManager(
                 "WHERE (d.dataland_company_id, d.data_type, d.reporting_period) IN ($formattedTuples) " +
                 "AND d.user_id = '$userId'"
 
-        val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)
-        return query.resultList as List<DataRequestEntity>
+        return if (dataDimensions.isNotEmpty()) {
+            val rawQuery = entityManager.createNativeQuery(queryToExecute)
+            return rawQuery.resultList.map { row ->
+                DataRequestEntity(
+                    dataRequestId = (row as Array<*>)[0] as String,
+                    creationTimestamp = row[1] as Long,
+                    datalandCompanyId = row[2] as String,
+                    dataType = row[3] as String,
+                    userId = row[4] as String,
+                    reportingPeriod = row[5] as String,
+                    lastModifiedDate = row[6] as Long,
+                    requestPriority = RequestPriority.valueOf(row[7] as String),
+                    notifyMeImmediately = row[8] as Boolean? ?: false,
+                    adminComment = row[9] as String?,
+                    messageHistory = emptyList(),
+                    dataRequestStatusHistory = emptyList(),
+                )
+            }
+        } else {
+            emptyList()
+        }
     }
 
     /**
@@ -211,7 +231,8 @@ class BulkDataRequestManager(
             existingRequests.map { dimension ->
                 DatasetDimensions(
                     companyId = dimension.datalandCompanyId,
-                    dataType = DataTypeEnum.valueOf(dimension.dataType.replace("-", "Minus")),
+                    dataType = DataTypeEnum.decode(dimension.dataType) ?:
+                        throw IllegalArgumentException("Invalid data type: ${dimension.dataType}"),
                     reportingPeriod = dimension.reportingPeriod,
                 )
             }
