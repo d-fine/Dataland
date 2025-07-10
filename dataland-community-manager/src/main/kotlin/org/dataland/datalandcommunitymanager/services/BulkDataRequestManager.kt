@@ -11,7 +11,6 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -175,24 +174,8 @@ class BulkDataRequestManager(
                 "AND d.user_id = '$userId'"
 
         return if (dataDimensions.isNotEmpty()) {
-            val rawQuery = entityManager.createNativeQuery(queryToExecute)
-            return rawQuery.resultList.map { row ->
-                @Suppress("MagicNumber")
-                DataRequestEntity(
-                    dataRequestId = (row as Array<*>)[0] as String,
-                    creationTimestamp = row[1] as Long,
-                    datalandCompanyId = row[2] as String,
-                    dataType = row[3] as String,
-                    userId = row[4] as String,
-                    reportingPeriod = row[5] as String,
-                    lastModifiedDate = row[6] as Long,
-                    requestPriority = RequestPriority.valueOf(row[7] as String),
-                    notifyMeImmediately = row[8] as Boolean? ?: false,
-                    adminComment = row[9] as String?,
-                    messageHistory = emptyList(),
-                    dataRequestStatusHistory = emptyList(),
-                )
-            }
+            val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)
+            return query.resultList as List<DataRequestEntity>
         } else {
             emptyList()
         }
