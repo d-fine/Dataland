@@ -120,11 +120,11 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'EDIT MONITORING');
+        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
       });
     });
   });
-  it('Check Monitoring Button for premium user', function (): void {
+  it('Check Monitoring Button and Not Monitored Badge for premium user', function (): void {
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
     // @ts-ignore
     cy.mountWithPlugins(PortfolioDetails, {
@@ -134,7 +134,33 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'EDIT MONITORING').click();
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
+        cy.get('[data-test="is-not-monitored-badge"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio not actively monitored');
+        cy.get('[data-test="is-monitored-badge"]').should('not.exist');
+      });
+    });
+  });
+  it('Check Monitored Badge for premium user', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', {
+      ...portfolioFixture,
+      isMonitored: true,
+      startingMonitoringPeiod: '2024',
+      monitoredFrameworks: new Set('sfdr'),
+    }).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({
+        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
+      }),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="is-not-monitored-badge"]').should('not.exist');
+        cy.get('[data-test="is-monitored-badge"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio actively monitored');
       });
     });
   });

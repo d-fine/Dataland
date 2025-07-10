@@ -30,14 +30,14 @@
 
       <Tag
         v-if="isMonitored"
-        data-test="isMonitoredBadge"
+        data-test="is-monitored-badge"
         value="Portfolio actively monitored"
         icon="pi pi-check-circle"
         severity="success"
       />
       <Tag
         v-else
-        data-test="isNotMonitoredBadge"
+        data-test="is-not-monitored-badge"
         value="Portfolio not actively monitored"
         icon="pi pi-times-circle"
         severity="danger"
