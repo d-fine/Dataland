@@ -163,7 +163,7 @@ describeIf(
     function checkDropdownLabels(): void {
       cy.get("[data-test='datapoint-framework']").click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        cy.get('.p-dropdown-item').contains(humanizeStringOrNumber(framework)).should('exist');
+        cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
       });
       cy.get("[data-test='datapoint-framework']").click();
     }

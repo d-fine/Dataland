@@ -60,7 +60,7 @@ describeIf(
         uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
 
         cy.get('div.form-field:contains("Assurance")').find('div.p-dropdown').click();
-        cy.get('.p-dropdown-item').contains('None').click();
+        cy.get('.p-select-option').contains('None').click();
 
         cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').click();
         selectReportForDatapoint('Total (gross) Carrying Amount', TEST_PDF_FILE_NAME);

@@ -12,7 +12,7 @@ describe('Component tests for the SingleSelectFormElement', () => {
         modelValue: nonExistantOption,
       },
     }).then(() => {
-      cy.get('span.p-dropdown-label, span.p-select-label').should('have.text', nonExistantOption);
+      cy.get('span.p-select-label').should('have.text', nonExistantOption);
     });
   });
 

@@ -60,14 +60,14 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
    */
   function isTabVisible(textInTab: string, isTabExpectedToBeVisible: boolean): void {
     const visibilityAssertion = isTabExpectedToBeVisible ? 'be.visible' : 'not.be.visible';
-    cy.get('li[data-pc-name="tabpanel"]').contains(textInTab).should(visibilityAssertion);
+    cy.get('[data-pc-name="tablist"]').contains(textInTab).should(visibilityAssertion);
   }
 
   /**
    * Asserts if the 'Companies' tab is highlighted
    */
   function assertCompaniesTabIsHighlighted(): void {
-    cy.get(`li[data-pc-name="tabpanel"][data-p-active="true"]`).contains(AlwaysVisibleTabs.Companies).should('exist');
+    cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.Companies).should('exist');
   }
 
   /**
