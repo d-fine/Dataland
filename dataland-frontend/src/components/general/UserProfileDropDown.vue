@@ -1,6 +1,6 @@
 <template>
   <div class="user-menu-container" @click="toggleDropdown">
-    <Button variant="outlined" severity="contrast" rounded icon="pi pi-user" />
+    <Button data-test="user-profile-toggle" variant="outlined" severity="contrast" rounded icon="pi pi-user" />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
 
