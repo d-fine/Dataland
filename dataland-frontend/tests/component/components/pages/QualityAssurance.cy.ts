@@ -363,7 +363,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('button[data-test="qaApproveButton"]').should('exist').click();
     cy.wait('@approveDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
-    cy.get('.p-dialog-header-close').click();
+    cy.get('.p-dialog-close-button').click();
 
     cy.intercept('POST', `**/qa/datasets/${mockDataMetaInfo.dataId}?qaStatus=${QaStatus.Rejected}`, (request) => {
       request.reply(200, {});
@@ -371,6 +371,6 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('button[data-test="qaRejectButton"]').should('exist').click();
     cy.wait('@rejectDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
-    cy.get('.p-dialog-header-close').click();
+    cy.get('.p-dialog-close-button').click();
   });
 });
