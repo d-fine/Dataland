@@ -21,7 +21,7 @@ describe('Component test for the landing page', () => {
       validateQuotesSection();
       validateHowItWorksSection();
 
-      assertFrameworkPanelExists('Pathways to Paris');
+      assertFrameworkPanelExists('VSME');
       assertFrameworkPanelExists('LkSG');
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');
@@ -62,7 +62,7 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection('Brands').image;
-  expect(images?.length).to.eq(32);
+  expect(images?.length).to.eq(33);
   images?.forEach((image, index) => {
     const filename = image.split('/').slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);

@@ -115,6 +115,7 @@
             "/static/logos/img_envoria.png",
             "/static/logos/img_eurodat.png",
             "/static/logos/img_Experience_One.png",
+            "/static/logos/img_financial_reports.png",
             "/static/logos/img_fmf.png",
             "/static/logos/img_gleif.png",
             "/static/logos/img_HansaInvest.png",
@@ -198,8 +199,8 @@
           ],
           "cards": [
             {
-              "title": "Pathways to Paris",
-              "text": "Captures companies’ progress on Paris-compatible transformation paths that are necessary to achieve the goals of the Paris climate protection agreement.",
+              "title": "VSME",
+              "text": "Captures companies' progress on material sustainability issues, enabling them to respond to capital providers and stakeholders efficiently and proportionally.",
               "date": "14th of August"
             },
             {

@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.7_6-jdk-jammy@sha256:9e0064c4aaf8bca5467468281ba4b1ccc26cdb1235739416e783c58025c51da8 AS builder
+FROM eclipse-temurin:21.0.7_6-jdk-jammy@sha256:5fdd5f11eb03c9c4474de0383d883fc8f1b2dd67f4440f39f7a2595f443569ef AS builder
 
 WORKDIR /app
 

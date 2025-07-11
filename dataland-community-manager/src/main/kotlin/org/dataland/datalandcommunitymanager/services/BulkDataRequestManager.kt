@@ -16,6 +16,8 @@ import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestE
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -41,9 +43,9 @@ class BulkDataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
-        utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
+        val logger = LoggerFactory.getLogger(javaClass)
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
 
         val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
@@ -59,9 +61,13 @@ class BulkDataRequestManager(
 
         val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
 
-        sendBulkDataRequestInternalEmailMessage(
-            bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
-        )
+        if (DatalandAuthentication.fromContext() is DatalandJwtAuthentication) {
+            sendBulkDataRequestInternalEmailMessage(
+                bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
+            )
+        } else {
+            logger.info("Not Jwt-authenticated: No InternalEmailMessage sent.")
+        }
 
         return createBulkDataRequests(
             acceptedRequestCombinations = acceptedRequestCombinations,
@@ -336,7 +342,12 @@ class BulkDataRequestManager(
         val requestsToProcess = acceptedRequestCombinations.toMutableList()
         val existingNonFinalRequests =
             processExistingDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
-        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName, notifyMeImmediately)
+        val acceptedRequests =
+            storeDataRequests(
+                requestsToProcess,
+                acceptedIdentifiersToCompanyIdAndName,
+                notifyMeImmediately,
+            )
         val existingDatasetsResponse =
             getAlreadyExistingDatasetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
 
