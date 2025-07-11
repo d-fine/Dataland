@@ -146,11 +146,6 @@ const routes = [
   },
   {
     path: '/portfolios',
-    name: 'Portfolios Overview',
-    component: PortfolioOverview,
-  },
-  {
-    path: '/portfolios/:portfolioName',
     name: 'Portfolio Overview',
     component: PortfolioOverview,
   },
