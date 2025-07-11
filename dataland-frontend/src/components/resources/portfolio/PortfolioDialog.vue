@@ -52,7 +52,6 @@
         class="primary-button deleteButton"
         :data-test="'deleteButton'"
         title="Delete the selected Portfolio"
-        style="width: 1em; padding: 1em"
       />
       <PrimeButton
         label="Save Portfolio"
@@ -230,10 +229,7 @@ async function deletePortfolio(): Promise<void> {
 
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
-    dialogRef?.value.close({
-      deleted: true,
-      portfolioId: portfolioId.value,
-    });
+    dialogRef?.value.close();
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }
@@ -258,11 +254,6 @@ function processCompanyInputString(): string[] {
   border-radius: 0.25rem;
   background-color: white;
   padding: 1.5rem;
-}
-
-.deleteButton {
-  min-width: fit-content;
-  padding: 1em;
 }
 
 .buttonbar {
