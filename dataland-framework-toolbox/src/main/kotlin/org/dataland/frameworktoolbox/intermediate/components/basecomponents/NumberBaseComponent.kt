@@ -33,21 +33,41 @@ open class NumberBaseComponent(
             minimumValue != null && maximumValue != null -> {
                 "between:$minimumValue,$maximumValue"
             }
+
             minimumValue != null -> {
                 "min:$minimumValue"
             }
+
             maximumValue != null -> {
                 "max:$maximumValue"
             }
+
             else -> {
                 null
             }
         }
 
     /**
+     * Returns the annotations for this component, i.e.
+     * - schema annotation
+     * - suppress max line length annotation
+     * - annotation for minimum and maximum value
+     */
+    fun getAnnotationsWithMinMax(
+        example: String,
+        minimumValue: Long?,
+        maximumValue: Long?,
+    ): List<Annotation> {
+        val annotations =
+            getMinMaxDatamodelAnnotations(minimumValue, maximumValue) +
+                getSchemaAnnotationWithSuppressMaxLineLength(uploadPageExplanation, example)
+        return annotations
+    }
+
+    /**
      * Returns a list of datamodel annotations to enforce the minimum and maximum value constraints
      */
-    fun getMinMaxDatamodelAnnotations(
+    private fun getMinMaxDatamodelAnnotations(
         minimumValue: Long?,
         maximumValue: Long?,
     ): List<Annotation> {
@@ -71,12 +91,15 @@ open class NumberBaseComponent(
             minimumValue != null && maximumValue != null -> {
                 "$minimumValue, $maximumValue"
             }
+
             minimumValue != null -> {
                 "$minimumValue"
             }
+
             maximumValue != null -> {
                 "0, $maximumValue"
             }
+
             else -> {
                 ""
             }

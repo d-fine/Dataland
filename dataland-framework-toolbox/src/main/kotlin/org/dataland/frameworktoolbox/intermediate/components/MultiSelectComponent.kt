@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_MULTI_SELECT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
@@ -42,6 +43,10 @@ open class MultiSelectComponent(
             TypeReference(
                 "java.util.EnumSet",
                 isNullable, listOf(enum.getTypeReference(false)),
+            ),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_MULTI_SELECT_COMPONENT),
             ),
         )
     }

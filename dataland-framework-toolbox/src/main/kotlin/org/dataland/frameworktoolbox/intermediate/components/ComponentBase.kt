@@ -9,6 +9,8 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.SuppressKtlintMaxLineLengthAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
@@ -108,6 +110,51 @@ open class ComponentBase(
      * Specifies which kind of document-support (Datapoint-type) is desired for this component
      */
     var documentSupport: DocumentSupport = NoDocumentSupport
+
+    /**
+     * Obtain an example for this component
+     * @param examplePlainData an example for this component without extended document support
+     */
+    fun getExample(examplePlainData: String): String =
+        if (documentSupport == ExtendedDocumentSupport) {
+            JsonExamples.translateToExampleExtendedDocumentSupport(examplePlainData)
+        } else {
+            examplePlainData
+        }
+
+    /**
+     * Create a schema annotation for the data model with a description and an example per field
+     * @param uploadPageExplanation the tooltip description for the data upload (business definition for data points)
+     * @param example an example as a json string
+     */
+    private fun getSchemaAnnotation(
+        uploadPageExplanation: String?,
+        example: String,
+    ) = Annotation(
+        fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
+        rawParameterSpec =
+            "description = \"\"\"${uploadPageExplanation}\"\"\", \n" +
+                "example = \"\"\"$example \"\"\"",
+        applicationTargetPrefix = "field",
+    )
+
+    /**
+     * Create a schema annotation for the data model with a description and an example per field. Also create a supress
+     * SuppressKtlintMaxLineLengthAnnotation due to long description texts.
+     * @param uploadPageExplanation the tooltip description for the data upload (business definition for data points)
+     * @param example an example as a json string
+     */
+    fun getSchemaAnnotationWithSuppressMaxLineLength(
+        uploadPageExplanation: String?,
+        example: String,
+    ): List<Annotation> =
+        listOf(
+            SuppressKtlintMaxLineLengthAnnotation,
+            getSchemaAnnotation(
+                uploadPageExplanation,
+                example,
+            ),
+        )
 
     /**
      * Obtain a list of all parents of this node until the root node
@@ -245,7 +292,9 @@ open class ComponentBase(
      * Build the specification for this component
      */
     fun generateSpecification(specificationCategoryBuilder: CategoryBuilder) {
-        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(specificationCategoryBuilder)
+        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(
+            specificationCategoryBuilder,
+        )
     }
 
     /**

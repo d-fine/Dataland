@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components.basecomponents
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -16,6 +17,13 @@ open class SimpleKotlinBackedBaseComponent(
     parent: FieldNodeParent,
     var fullyQualifiedNameOfKotlinType: String,
 ) : ComponentBase(identifier, parent) {
+    /**
+     * Returns the annotations for this component, e.g.,
+     * - schema annotation
+     * - suppress max line length annotation
+     */
+    open fun getAnnotations(): List<Annotation> = emptyList()
+
     // This method has been marked final to prevent accidental overwriting of generateDefaultDataModel
     // without overwriting generateDefaultQaModel.
     // If you need to overwrite this method, please extend from ComponentBase
@@ -24,6 +32,7 @@ open class SimpleKotlinBackedBaseComponent(
             documentSupport,
             identifier,
             TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            getAnnotations(),
         )
     }
 
