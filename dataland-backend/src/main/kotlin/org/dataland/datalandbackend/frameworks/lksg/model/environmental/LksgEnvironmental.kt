@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.environmental.useOfMer
 /**
  * The data-model for the Environmental section
  */
+@Suppress("MaxLineLength")
 data class LksgEnvironmental(
     @field:Valid()
     val useOfMercuryMercuryWasteMinamataConvention: LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention? = null,

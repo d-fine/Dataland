@@ -1,8 +1,11 @@
 package org.dataland.datalandbackend.model.metainformation
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -17,19 +20,53 @@ import org.dataland.datalandbackendutils.model.QaStatus
  */
 data class DataMetaInformation(
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+    )
     val dataId: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    )
     val companyId: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+    )
     val dataType: DataType,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.UPLOADER_USER_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.UPLOADER_USER_ID_EXAMPLE,
+    )
     val uploaderUserId: String? = null,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
+    )
     val uploadTime: Long,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.CURRENTLY_ACTIVE_DESCRIPTION,
+    )
     val currentlyActive: Boolean,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+    )
     var qaStatus: QaStatus,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REF_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REF_EXAMPLE,
+        nullable = true,
+    )
     var ref: String? = null,
 )
