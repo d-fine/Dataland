@@ -127,6 +127,11 @@
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
                         v-model="notifyMeImmediately"
+                        :pt="{
+                          input: {
+                            'data-test': 'notifyMeImmediatelyInputToClick',
+                          },
+                        }"
                       />
                       <label for="notifyMeImmediatelyInput">
                         <strong v-if="notifyMeImmediately">immediate update</strong>
