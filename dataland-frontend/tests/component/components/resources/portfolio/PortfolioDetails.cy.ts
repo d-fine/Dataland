@@ -120,7 +120,7 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'EDIT MONITORING');
+        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'Edit Monitoring');
       });
     });
   });
@@ -134,7 +134,7 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'EDIT MONITORING').click();
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'Edit Monitoring').click();
       });
     });
   });
@@ -145,7 +145,7 @@ describe('Check the portfolio details view', function (): void {
  */
 function checkHeader(): void {
   cy.get('[data-pc-section="sort"]').should('be.visible');
-  cy.get('[data-pc-section="columnfilter"]').should('be.visible');
+  cy.get('[data-pc-section="filter"]').should('be.visible');
 }
 
 /**
@@ -179,7 +179,7 @@ function checkSort(selector: string, companyUp: string, companyDown: string, isA
  */
 function checkFilter(columnSelector: string, inputSelector: string, needle: string, matches: number): void {
   const rowsSelector = 'table tr';
-  const filterButtonSelector = `table tr:first-child th:${columnSelector} [data-pc-section="filtermenubutton"]`;
+  const filterButtonSelector = `table tr:first-child th:${columnSelector} .p-datatable-column-filter-button`;
   cy.get(rowsSelector).should('have.length', 4);
   cy.get(filterButtonSelector).click();
 
