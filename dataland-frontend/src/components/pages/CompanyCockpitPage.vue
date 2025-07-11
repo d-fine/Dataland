@@ -1,35 +1,43 @@
 <template>
   <TheHeader v-if="!useMobileView" />
-  <TheContent class="paper-section flex">
+  <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <div class="grid-container">
-      <div class="paper-section">
-        <div class="card">
-          <div class="card__title">Latest Documents</div>
-          <div class="card__separator" />
-          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
-            <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
-            <div v-if="getDocumentData(category).length === 0">-</div>
-            <div v-else>
-              <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                <DocumentDownloadLink
-                  :document-download-info="{
-                    downloadName: documentNameOrId(document),
-                    fileReference: document.documentId,
-                  }"
-                  :label="documentNameOrId(document)"
-                  :suffix="documentPublicationDateOrEmpty(document)"
-                  show-icon
-                />
-              </div>
+    <div class="card-container">
+      <div class="card" id="document-card">
+        <div class="card__title">Latest Documents</div>
+        <div class="card__separator" />
+        <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
+          <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
+          <div v-if="getDocumentData(category).length === 0">-</div>
+          <div v-else>
+            <div v-for="document in getDocumentData(category)" :key="document.documentId">
+              <DocumentDownloadLink
+                :document-download-info="{
+                  downloadName: documentNameOrId(document),
+                  fileReference: document.documentId,
+                }"
+                :label="documentNameOrId(document)"
+                :suffix="documentPublicationDateOrEmpty(document)"
+                show-icon
+              />
             </div>
           </div>
-          <a :href="`/companies/${companyId}/documents`" class="tertiary-button">
-            VIEW ALL DOCUMENTS <span class="material-icons">arrow_forward_ios</span>
-          </a>
         </div>
+        <PrimeButton
+          label="VIEW ALL DOCUMENTS"
+          variant="link"
+          icon="pi pi-chevron-right"
+          icon-pos="right"
+          as="a"
+          href="`/companies/${companyId}/documents`"
+          :pt="{
+            root: {
+              style: 'text-decoration: inherit',
+            },
+          }"
+        />
       </div>
-      <div>
+      <div id="framework-cards">
         <div class="card-grid" :data-test="'summaryPanels'">
           <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
           <FrameworkSummaryPanel
@@ -88,6 +96,7 @@ import {
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -98,6 +107,7 @@ export default defineComponent({
     ClaimOwnershipPanel,
     CompanyInfoSheet,
     FrameworkSummaryPanel,
+    PrimeButton,
     TheContent,
     TheHeader,
     TheFooter,
@@ -228,7 +238,7 @@ export default defineComponent({
     /**
      * Checks if the user is allowed to upload datasets for the framework
      * @param framework to check for
-     * @returns a boolean as result of this check
+     * @returns a boolean as the result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
       return this.isUserCompanyOwnerOrUploader || (isFrameworkPublic(framework) && this.isUserKeycloakUploader);
@@ -263,28 +273,26 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
-.card-wrapper {
+.card-container {
   width: 100%;
+  padding: var(--spacing-md);
   display: flex;
-  justify-content: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  @media only screen and (max-width: newVariables.$small) {
-    padding: 24px 17px;
-  }
-}
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  background-color: var(--p-surface-50);
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 3fr 6fr 30px;
-  padding: 40px;
-  gap: 40px;
-  @media only screen and (max-width: newVariables.$small) {
-    width: 100%;
-    grid-template-columns: repeat(1, 1fr);
-    padding: 24px 3%;
+  #document-card {
+    width: 30%;
+    border-radius: var(--p-border-radius-none);
+  }
+
+  #framework-cards {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -292,30 +300,29 @@ export default defineComponent({
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
+  gap: var(--spacing-md);
   flex-wrap: wrap;
   justify-content: space-between;
-  @media only screen and (max-width: newVariables.$medium) {
+  @media only screen and (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: 768px) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
   }
 }
 
 .card {
-  width: 90%;
   background-color: var(--surface-card);
-  padding: 40px;
-  margin: 0 20px 1rem 40px;
+  padding: 2.5rem;
+  margin: 0 var(--spacing-md);
   box-shadow: 0 0 12px var(--gray-300);
   border-radius: 0.5rem;
   text-align: left;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: 768px) {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -351,5 +358,13 @@ export default defineComponent({
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-primary {
+  color: var(--main-color);
 }
 </style>

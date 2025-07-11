@@ -118,4 +118,52 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 .p-dropdown-trigger-icon {
   margin-left: 1rem;
 }
+
+.fill-dropdown {
+  background: var(--default-neutral-white);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--fill-dropdown-bg);
+  border-radius: 8px;
+  &.always-fill {
+    background: var(--fill-dropdown-bg);
+    color: var(--default-neutral-white);
+    .p-dropdown-trigger {
+      color: var(--default-neutral-white);
+    }
+  }
+
+  &.p-overlay-open {
+    background: var(--fill-dropdown-hover-bg);
+    .p-dropdown-trigger {
+      color: var(--fill-dropdown-hover-text);
+    }
+  }
+  .p-dropdown-trigger {
+    color: var(--fill-dropdown-hover-text);
+  }
+}
+
+.p-dropdown-panel {
+  background: var(--default-neutral-white);
+  .p-dropdown-items {
+    .p-dropdown-item {
+      margin: 0;
+      padding: 0.5rem 1rem;
+      border: 0.1em solid var(--dropdown-options-bg);
+      color: var(--input-text-color);
+      background: transparent;
+      transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+      border-radius: 0;
+
+      &.p-highlight {
+        color: var(--input-text-bg);
+        background: var(--input-text-border-hover);
+      }
+    }
+  }
+}
 </style>

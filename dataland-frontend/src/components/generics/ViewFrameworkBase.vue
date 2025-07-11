@@ -1,6 +1,6 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
-  <TheContent class="paper-section min-h-screen">
+  <TheContent class="min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
@@ -24,7 +24,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -88,12 +88,12 @@
               </PrimeButton>
             </router-link>
           </div>
-          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+          <Popover ref="reportingPeriodsPopover">
             <SimpleReportingPeriodSelectorDialog
               :reporting-periods="availableReportingPeriods"
               @selected-reporting-period="goToUpdateFormByReportingPeriod"
             />
-          </OverlayPanel>
+          </Popover>
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
@@ -136,9 +136,9 @@ import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
-import OverlayPanel from 'primevue/overlaypanel';
-import { computed, defineComponent, inject, type PropType } from 'vue';
+import ToggleSwitch from 'primevue/toggleswitch';
+import Popover from 'primevue/popover';
+import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -154,10 +154,10 @@ export default defineComponent({
     MarginWrapper,
     TheFooter,
     PrimeButton,
-    OverlayPanel,
+    Popover,
     SimpleReportingPeriodSelectorDialog,
     QualityAssuranceButtons,
-    InputSwitch,
+    ToggleSwitch,
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
@@ -284,9 +284,9 @@ export default defineComponent({
       if (this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByDataId(this.singleDataMetaInfoToDisplay.dataId);
       } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
-        const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
-        if (panel) {
-          panel.toggle(event);
+        const reportingPeriodsPopover = ref();
+        if (reportingPeriodsPopover.value) {
+          reportingPeriodsPopover.value.toggle(event);
         }
       } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByReportingPeriod(this.availableReportingPeriods[0]);
@@ -490,3 +490,13 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

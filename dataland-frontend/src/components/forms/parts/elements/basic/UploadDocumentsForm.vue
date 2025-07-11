@@ -29,7 +29,7 @@
         </div>
       </template>
       <template #content="{ files, messages }">
-        <FileSelectMessage v-for="msg of messages" :key="msg" severity="error">{{ msg }} </FileSelectMessage>
+        <FileSelectMessage v-for="msg of messages" :key="msg" severity="error" closable>{{ msg }} </FileSelectMessage>
         <div v-show="files.length > 0" data-test="files-to-upload">
           <div
             v-for="(selectedFile, index) of files"

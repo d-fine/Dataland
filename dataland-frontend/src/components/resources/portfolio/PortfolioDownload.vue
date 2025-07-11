@@ -44,7 +44,7 @@
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a File Type.</p>
       <div class="flex align-content-start align-items-center">
-        <InputSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch" />
+        <ToggleSwitch v-model="keepValuesOnly" class="form-field vertical-middle" data-test="valuesOnlySwitch" />
         <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
@@ -96,7 +96,7 @@ import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
 import { inject, onMounted, type Ref, ref } from 'vue';
 
@@ -312,8 +312,6 @@ async function downloadPortfolio(): Promise<void> {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables.scss';
-
 .portfolio-download-content {
   width: 20em;
   height: 100%;
@@ -343,8 +341,75 @@ async function downloadPortfolio(): Promise<void> {
 }
 
 .formkit-help {
-  color: variables.$gray;
-  font-size: variables.$fs-xs;
+  color: var(--gray);
+  font-size: var(--font-size-xs) xs;
   font-style: italic;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.primary-button {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:enabled:hover {
+    color: white;
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  }
+
+  &:enabled:active {
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+
+.primary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-bg);
+  margin: 0;
 }
 </style>

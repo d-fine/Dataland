@@ -32,7 +32,7 @@
 import { computed, type ComputedRef } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import { openEmailClient } from '@/utils/Email';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const findSection = (title: string): ComputedRef<Section | null> => {
@@ -43,8 +43,6 @@ const getInTouchSection = findSection('Get in touch');
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .joincampaign {
   display: flex;
   flex-direction: column;
@@ -59,7 +57,8 @@ const getInTouchSection = findSection('Get in touch');
     padding: 0 32px;
   }
 
-  &__title {
+  &__title,
+  &__title * {
     font-size: 100px;
     font-style: normal;
     font-weight: 700;
@@ -72,7 +71,7 @@ const getInTouchSection = findSection('Get in touch');
       font-size 0.4s ease,
       line-height 0.4s ease;
     span {
-      color: var(--primary-orange);
+      color: var(--p-primary-color);
     }
   }
 
@@ -89,7 +88,7 @@ const getInTouchSection = findSection('Get in touch');
   &__button {
     padding: 14px 32px;
     border-radius: 32px;
-    background-color: var(--primary-orange);
+    background-color: var(--p-primary-color);
     color: var(--default-neutral-white);
     font-size: 16px;
     font-style: normal;
@@ -97,13 +96,13 @@ const getInTouchSection = findSection('Get in touch');
     line-height: 20px;
     letter-spacing: 0.75px;
     text-transform: uppercase;
-    border: 2px solid var(--primary-orange);
+    border: 2px solid var(--p-primary-color);
     cursor: pointer;
     grid-column: 1 / -1;
     width: fit-content;
     &:hover {
       background-color: var(--default-neutral-white);
-      color: var(--basic-dark);
+      color: var(--p-highlight-color);
     }
   }
 
@@ -135,8 +134,9 @@ const getInTouchSection = findSection('Get in touch');
     font-weight: 400;
     line-height: 24px; /* 150% */
     letter-spacing: 0.25px;
-    &--icon {
-      color: var(--basic-dark);
+    &--icon,
+    &--icon * {
+      color: var(--p-highlight-color);
       font-size: 32px;
       font-style: normal;
       font-weight: 600;
@@ -147,7 +147,7 @@ const getInTouchSection = findSection('Get in touch');
   &__join-link {
     margin-top: auto; // Push it to the bottom
     text-decoration: none;
-    color: var(--primary-orange);
+    color: var(--p-primary-color);
     font-size: 48px;
     font-style: normal;
     font-weight: 600;
@@ -157,7 +157,7 @@ const getInTouchSection = findSection('Get in touch');
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .joincampaign {
     padding: 80px 0;
     &__wrapper {
@@ -181,7 +181,7 @@ const getInTouchSection = findSection('Get in touch');
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .joincampaign {
     padding: 64px 0;
     &__wrapper {

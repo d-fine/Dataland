@@ -1,60 +1,59 @@
 <template>
   <div class="grid">
     <div class="col-8 text-left">
-      <span class="p-fluid">
-        <span class="p-input-icon-left p-input-icon-right">
-          <i
-            class="pi pi-search d-framework-searchbar-input-icon"
-            aria-hidden="true"
-            style="z-index: 20; color: #958d7c"
-          />
-          <AutoComplete
-            :inputId="searchBarId"
-            ref="autocomplete"
-            v-model="searchBarInput"
-            :suggestions="autocompleteArrayDisplayed"
-            optionLabel="companyName"
-            :autoOptionFocus="false"
-            :min-length="3"
-            placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
-            inputClass="h-3rem d-framework-searchbar-input"
-            panelClass="d-framework-searchbar-panel"
-            style="z-index: 10"
-            @complete="searchCompanyName"
-            @keydown="noteThatAKeyWasPressed"
-            @keydown.down="getCurrentFocusedOptionIndex"
-            @keydown.up="getCurrentFocusedOptionIndex"
-            @item-select="handleItemSelect"
-            @keyup.enter="executeSearchIfNoItemFocused"
-            @focus="setCurrentFocusedOptionIndexToDefault"
-          >
-            <template #option="slotProps">
-              <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
-            </template>
+      <IconField>
+        <InputIcon class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+        <AutoComplete
+          :autofocus="true"
+          :inputId="searchBarId"
+          ref="autocomplete"
+          v-model="searchBarInput"
+          :suggestions="autocompleteArrayDisplayed"
+          optionLabel="companyName"
+          :autoOptionFocus="false"
+          :min-length="3"
+          placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
+          inputClass="h-3rem d-framework-searchbar-input"
+          panelClass="d-framework-searchbar-panel"
+          style="z-index: 10"
+          variant="filled"
+          :fluid="true"
+          @complete="searchCompanyName"
+          @keydown="noteThatAKeyWasPressed"
+          @keydown.down="getCurrentFocusedOptionIndex"
+          @keydown.up="getCurrentFocusedOptionIndex"
+          @item-select="handleItemSelect"
+          @keyup.enter="executeSearchIfNoItemFocused"
+          @focus="setCurrentFocusedOptionIndexToDefault"
+        >
+          <template #option="slotProps">
+            <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+            <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+          </template>
 
-            <template #footer>
-              <ul
-                class="p-autocomplete-items pt-0"
-                v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
-              >
-                <li class="p-autocomplete-item" @click="executeSearchIfNoItemFocused">
-                  <span class="text-primary font-medium underline pl-3"> View all results </span>
-                </li>
-              </ul>
-            </template>
-          </AutoComplete>
-        </span>
-        <div class="mt-2">
-          <span class="red-text" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
-        </div>
-      </span>
+          <template #footer>
+            <ul
+              class="p-autocomplete-items pt-0"
+              v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
+            >
+              <li class="p-autocomplete-item" @click="executeSearchIfNoItemFocused">
+                <span class="text-primary font-normal underline pl-3"> View all results </span>
+              </li>
+            </ul>
+          </template>
+        </AutoComplete>
+      </IconField>
+    </div>
+    <div class="col-4 mt-2 justify-content-center text-left">
+      <span class="text-danger" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import AutoComplete from 'primevue/autocomplete';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
 import {
   getCompanyDataForFrameworkDataSearchPage,
@@ -76,11 +75,18 @@ import router from '@/router';
  */
 export interface AutoCompleteInternalState {
   focusedOptionIndex: number | null;
+
   hide(): void;
+
   $refs: {
     focusInput: HTMLInputElement;
   };
 }
+
+// const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+// const { searchBarId, chunkSize, currentPage, filter,  }
+
+//TODO: Transfer to Composition API, use templateRef
 
 export default defineComponent({
   setup() {
@@ -90,7 +96,7 @@ export default defineComponent({
     };
   },
   name: 'FrameworkDataSearchBar',
-  components: { AutoComplete, SearchResultHighlighter },
+  components: { AutoComplete, SearchResultHighlighter, IconField, InputIcon },
 
   emits: ['companies-received', 'search-confirmed'],
 
@@ -206,7 +212,7 @@ export default defineComponent({
      * Focuses the search bar
      */
     focusOnSearchBar() {
-      this.autocomplete?.$refs?.focusInput.focus();
+      // this.autocomplete?.$refs?.focusInput.focus();
     },
 
     /**
@@ -340,3 +346,13 @@ function areAllFiltersDeactivated(
   return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
 }
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+</style>

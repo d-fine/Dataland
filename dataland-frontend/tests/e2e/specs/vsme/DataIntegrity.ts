@@ -55,7 +55,7 @@ describeIf(
         .find(`[data-test=${inputAdressFormField}]`)
         .find('[data-test="country"]')
         .click();
-      cy.get('ul.p-dropdown-items li').contains(`Afghanistan`).click();
+      cy.get('ul.p-select-list li').contains(`Afghanistan`).click();
       cy.get(`[data-test=${inputSection}]`)
         .find(`[data-test=${inputAdressFormField}]`)
         .find('[name="city"]')
@@ -83,7 +83,7 @@ describeIf(
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="pollutionType"]').type('Test-Waste-Type');
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="emissionInKilograms"]').type('12345');
       cy.get('[data-test="PollutionEmissionSection"]').find('[data-test="relaseMedium"]').click();
-      cy.get('ul.p-dropdown-items li').contains(`Air`).click();
+      cy.get('ul.p-select-list li').contains(`Air`).click();
     }
     /**
      * Fill out the vsme site and area section
@@ -102,7 +102,7 @@ describeIf(
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLatitude"]').type('12345');
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLongitude"]').type('12345');
       cy.get('[data-test="SiteAndAreaSection"]').find('[data-test="specificationOfAdjointness"]').click();
-      cy.get('ul.p-dropdown-items li').contains(`In`).click();
+      cy.get('ul.p-select-list li').contains(`In`).click();
     }
     /**
      * Fill out the vsme waste classification section
@@ -110,7 +110,7 @@ describeIf(
     function fillOutWasteClassificationSection(): void {
       cy.get('[data-test="WasteClassificationSection"]').should('exist');
       cy.get('[data-test="WasteClassificationSection"]').find('[data-test="wasteClassification"]').click();
-      cy.get('ul.p-dropdown-items li').contains(`Hazardous`).click();
+      cy.get('ul.p-select-list li').contains(`Hazardous`).click();
       cy.get('[data-test="WasteClassificationSection"]').find('[name="typeOfWaste"]').type('Test-Waste');
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInTonnes"]').type('12345');
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTonnes"]').type('12345');
@@ -128,7 +128,7 @@ describeIf(
       cy.get('[data-test="addNewEmployeesPerCountryButton"]').click();
       cy.get('[data-test="employeesPerCountrySection"]').should('exist');
       cy.get('[data-test="employeesPerCountrySection"]').find('[data-test="country"]').click();
-      cy.get('ul.p-dropdown-items li').contains(`Afghanistan`).click();
+      cy.get('ul.p-select-list li').contains(`Afghanistan`).click();
       cy.get('[data-test="employeesPerCountrySection"]').find('[name="numberOfEmployeesInHeadCount"]').type('12345');
       cy.get('[data-test="employeesPerCountrySection"]')
         .find('[name="numberOfEmployeesInFullTimeEquivalent"]')
@@ -144,9 +144,9 @@ describeIf(
         .click();
       cy.get('[data-test="electricityTotalInMWh"]').find('div[data-test="value"]').find('[name="value"]').type('12345');
       cy.get('[data-test="electricityTotalInMWh"]').find('div[name="quality"]').click();
-      cy.get('ul.p-dropdown-items li').contains(`Audited`).click();
+      cy.get('ul.p-select-list li').contains(`Audited`).click();
       cy.get('[data-test="electricityTotalInMWh"]').find('div[name="fileName"]').click();
-      cy.get('ul.p-dropdown-items li').contains(`${TEST_PDF_FILE_NAME}-private`).click();
+      cy.get('ul.p-select-list li').contains(`${TEST_PDF_FILE_NAME}-private`).click();
     }
     /**
      * Upload a document and verify that it worked

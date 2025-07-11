@@ -85,7 +85,7 @@ describe('Portfolio Monitoring Modal', () => {
 
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
-        cy.get('.p-dropdown-item').contains('2023').click();
+        cy.get('.p-select-option').contains('2023').click();
 
         cy.get('[data-test="frameworkSelection"]')
           .contains('EU Taxonomy')

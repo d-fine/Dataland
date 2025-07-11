@@ -94,8 +94,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     mountComponent(getMockDialogRef());
 
     cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-item.p-highlight').should('not.exist');
-    cy.get('.p-multiselect').click();
+    cy.get('.p-multiselect-option.p-highlight').should('not.exist');
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
   });
 
@@ -103,7 +102,10 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     mountComponent(getMockDialogRef([]));
 
     cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-empty-message').should('be.visible').and('contain.text', 'No available options');
+    cy.get('.p-multiselect-empty-message')
+      .should('be.visible')
+      .and('contain.text', 'No available options')
+      .invoke('hide'); //overlay needs to be hidden; otherwise multiselect hidden and not selectable
     cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').should('be.disabled');
   });
@@ -112,14 +114,16 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     mountComponent(getMockDialogRef());
 
     cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-item').eq(0).click(); // One
-    cy.get('.p-multiselect-item').eq(1).click(); // Two
-    cy.get('.p-multiselect-item').eq(2).click(); // Three
+    cy.get('.p-multiselect-option').eq(0).click(); // One
+    cy.get('.p-multiselect-option').eq(1).click(); // Two
+    cy.get('.p-multiselect-option').eq(2).click(); // Three
 
-    cy.get('.p-multiselect-item').eq(2).should('have.class', 'p-highlight').and('have.class', 'p-focus');
-    cy.get('.p-multiselect-item').eq(0).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
-    cy.get('.p-multiselect-item').eq(1).should('have.class', 'p-highlight').and('not.have.class', 'p-focus');
+    cy.get('.p-multiselect-option').eq(2).should('have.class', 'p-focus');
+    cy.get('.p-multiselect-option').eq(0).should('not.have.class', 'p-focus');
+    cy.get('.p-multiselect-option').eq(1).should('not.have.class', 'p-focus');
 
+    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
+    cy.get('.p-multiselect-list-container').invoke('hide');
     cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').should('be.enabled');
   });
@@ -139,8 +143,10 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     mountComponent(mockDialogRef);
 
     cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-item').eq(0).click();
-    cy.get('.p-multiselect-item').eq(1).click();
+    cy.get('.p-multiselect-option').eq(0).click();
+    cy.get('.p-multiselect-option').eq(1).click();
+    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
+    cy.get('.p-multiselect-list-container').invoke('hide');
     cy.get('.p-multiselect').click();
 
     cy.get('[data-test="saveButton"]').click();
@@ -166,7 +172,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     mountComponent(getMockDialogRef());
 
     cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-item').first().click();
+    cy.get('.p-multiselect-option').first().click();
+    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
+    cy.get('.p-multiselect-list-container').invoke('hide');
     cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').click();
     cy.wait('@replacePortfolio');
@@ -184,7 +192,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     mountComponent(getMockDialogRef(mockPortfolios, closeStub));
 
     cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-item').first().click();
+    cy.get('.p-multiselect-option').first().click();
+    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
+    cy.get('.p-multiselect-list-container').invoke('hide');
     cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').click();
 

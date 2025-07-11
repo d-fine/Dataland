@@ -12,7 +12,7 @@ describe('Component tests for the SingleSelectFormElement', () => {
         modelValue: nonExistantOption,
       },
     }).then(() => {
-      cy.get('span.p-dropdown-label').should('have.text', nonExistantOption);
+      cy.get('span.p-select-label').should('have.text', nonExistantOption);
     });
   });
 
@@ -24,7 +24,7 @@ describe('Component tests for the SingleSelectFormElement', () => {
         modelValue: nonExistantOption,
       },
     }).then(() => {
-      cy.get('span.p-dropdown-label').should('have.text', placeholderText);
+      cy.get('span.p-select-label').should('have.text', placeholderText);
     });
   });
 
@@ -36,13 +36,13 @@ describe('Component tests for the SingleSelectFormElement', () => {
         modelValue: nonExistantOption,
       },
     }).then((mounted) => {
-      cy.get('span.p-dropdown-label').should('have.text', nonExistantOption);
+      cy.get('span.p-select-label').should('have.text', nonExistantOption);
 
       cy.wrap(mounted.wrapper).then((wrapper) => {
         void wrapper.setProps({
           allowUnknownOption: false,
         });
-        cy.get('span.p-dropdown-label').should('have.text', placeholderText);
+        cy.get('span.p-select-label').should('have.text', placeholderText);
       });
     });
   });
@@ -71,7 +71,7 @@ describe('Component tests for the SingleSelectFormElement', () => {
           },
         }).then((mounted) => {
           cy.wrap(mounted.wrapper).then(() => {
-            cy.get('span.p-dropdown-label').should('have.text', 'A');
+            cy.get('span.p-select-label').should('have.text', 'A');
           });
 
           cy.wrap(mounted.wrapper).then((wrapper) => {
@@ -84,7 +84,7 @@ describe('Component tests for the SingleSelectFormElement', () => {
               ],
             });
 
-            cy.get('span.p-dropdown-label').should('have.text', placeholderText);
+            cy.get('span.p-select-label').should('have.text', placeholderText);
           });
         });
       }

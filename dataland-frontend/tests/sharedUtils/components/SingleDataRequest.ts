@@ -15,8 +15,8 @@ export const singleDataRequestPage = {
       'LkSG',
       true
     );
-    cy.get('[data-test="datapoint-framework"]').get('.p-dropdown-trigger').click();
-    cy.get('.p-dropdown-items').find('li').should('have.length', numberOfFrameworks);
-    cy.get('[data-test="datapoint-framework"]').get('.p-dropdown-trigger').click();
+    cy.get('[data-test="datapoint-framework"]').get('.p-select-dropdown').click();
+    cy.get('.p-select-list').find('li').should('have.length', numberOfFrameworks);
+    cy.get('[data-test="datapoint-framework"]').get('.p-select-dropdown').click();
   },
 };

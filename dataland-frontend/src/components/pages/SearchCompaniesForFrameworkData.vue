@@ -2,17 +2,17 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="0">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <div
           id="searchBarAndFiltersContainer"
-          class="w-full bg-white pt-4"
+          class="w-full pt-4 pl-4"
           :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
           ref="searchBarAndFiltersContainer"
         >
           <FrameworkDataSearchBar
             id="frameworkDataSearchBar"
             ref="frameworkDataSearchBar"
-            class="pl-4 m-0"
+            class="m-0"
             v-model="currentSearchBarInput"
             :filter="currentCombinedFilter"
             :chunk-size="rowsPerPage"
@@ -24,8 +24,7 @@
           />
 
           <div
-            id="searchFiltersPanel"
-            class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
+            class="search-filters-panel"
             :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
           >
             <div class="flex" id="searchFiltersContainer">
@@ -46,7 +45,7 @@
 
               <FrameworkDataSearchFilters
                 id="frameworkDataSearchFilters"
-                class="ml-3"
+                class="col-8"
                 ref="frameworkDataSearchFilters"
                 :show-heading="!pageScrolled || searchBarToggled"
                 v-model:selected-country-codes="currentFilteredCountryCodes"
@@ -418,11 +417,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.d-search-toggle {
-  z-index: 99;
-  top: 4rem;
+.search-filters-panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
-.d-search-filters-panel {
-  height: 5rem;
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
 }
 </style>

@@ -14,10 +14,10 @@ const createSfdrDataset = {
     this.fillDateFieldWithFutureDate('fiscalYearEnd');
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
-    cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-trigger').click();
+    cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-dropdown').click();
     cy.get(`input[name="${fieldName}"]`).should('not.be.visible');
-    cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
-    cy.get('div.p-datepicker').find('span:contains("11")').click();
+    cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
+    cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   },
 };
 
@@ -40,7 +40,7 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     new UploadDocuments('referencedReports').selectDummyFile(fileName, contentSize);
     cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).click();
     selectItemFromDropdownByValue(
-      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] div[name='fileName']`),
+      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataReport']`),
       fileName
     );
   }

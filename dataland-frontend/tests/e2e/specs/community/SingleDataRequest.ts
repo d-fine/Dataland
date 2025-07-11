@@ -118,7 +118,7 @@ describeIf(
       verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
       cy.get('[data-test="notifyMeImmediatelyInput"]').click();
       cy.reload(); // Check if the data was persisted in the backend
-      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
     }
 
     /**
@@ -163,7 +163,7 @@ describeIf(
     function checkDropdownLabels(): void {
       cy.get("[data-test='datapoint-framework']").click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        cy.get('.p-dropdown-item').contains(humanizeStringOrNumber(framework)).should('exist');
+        cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
       });
       cy.get("[data-test='datapoint-framework']").click();
     }

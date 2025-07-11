@@ -1,19 +1,18 @@
 <template>
-  <div v-if="this.duplicateNamesJoinedString !== ''">
+  <div v-if="duplicateNamesJoinedString !== ''">
     <p>Files with duplicate names:</p>
-    <strong>{{ this.duplicateNamesJoinedString }}</strong>
+    <strong>{{ duplicateNamesJoinedString }}</strong>
   </div>
-  <br v-if="this.duplicateNamesJoinedString !== '' && this.fileNamesWithCharacterViolationsJoinedString !== ''" />
-  <div v-if="this.fileNamesWithCharacterViolationsJoinedString !== ''">
+  <br v-if="duplicateNamesJoinedString !== '' && fileNamesWithCharacterViolationsJoinedString !== ''" />
+  <div v-if="fileNamesWithCharacterViolationsJoinedString !== ''">
     <p>File names containing illegal characters:</p>
-    <strong>{{ this.fileNamesWithCharacterViolationsJoinedString }}</strong>
+    <strong>{{ fileNamesWithCharacterViolationsJoinedString }}</strong>
   </div>
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 export default defineComponent({
   inject: ['dialogRef'],

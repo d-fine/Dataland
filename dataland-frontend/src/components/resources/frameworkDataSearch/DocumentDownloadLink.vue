@@ -94,4 +94,8 @@ div {
   white-space: nowrap;
   max-width: 100%;
 }
+
+.text-primary {
+  color: var(--main-color);
+}
 </style>
