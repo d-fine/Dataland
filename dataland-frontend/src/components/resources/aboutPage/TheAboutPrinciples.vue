@@ -225,7 +225,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .about-principles {
     &__title {
       font-size: 40px;
@@ -233,7 +233,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .about-principles {
     padding: 0 0 80px;
     &__wrapper {

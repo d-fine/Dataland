@@ -218,7 +218,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-extra-large)) {
+@media only screen and (max-width: 1800px) {
   .howitworks {
     padding: 120px 0 64px;
 
@@ -258,7 +258,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .howitworks {
     &__title {
       font-size: 40px;
@@ -266,7 +266,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .howitworks {
     padding: 80px 0;
     &__wrapper {

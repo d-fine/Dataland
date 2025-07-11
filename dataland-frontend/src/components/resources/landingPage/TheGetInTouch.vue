@@ -106,7 +106,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-large)) {
+@media only screen and (max-width: 1440px) {
   .getintouch {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -129,7 +129,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .getintouch {
     padding: 80px 0;
 
@@ -143,7 +143,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .getintouch {
     &__wrapper {
       gap: 24px 16px;

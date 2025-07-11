@@ -91,7 +91,7 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .about-intro {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -101,7 +101,7 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .about-intro {
     padding: 32px 0 40px;
     background-color: var(--grey-tones-100);

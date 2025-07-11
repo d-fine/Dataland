@@ -303,10 +303,10 @@ export default defineComponent({
   gap: var(--spacing-md);
   flex-wrap: wrap;
   justify-content: space-between;
-  @media only screen and (max-width: var(--breakpoint-medium)) {
+  @media only screen and (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media only screen and (max-width: var(--breakpoint-small)) {
+  @media only screen and (max-width: 768px) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
   }
@@ -322,7 +322,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media only screen and (max-width: var(--breakpoint-small)) {
+  @media only screen and (max-width: 768px) {
     width: 100%;
     margin-left: 0;
     margin-right: 0;

@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.frameworks.nuclearandgas.custom
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_NUCLEAR_AND_GAS_ALIGNED_DENOMINATOR_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
@@ -34,6 +35,10 @@ class NuclearAndGasAlignedDenominatorComponent(
             documentSupport,
             identifier,
             TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_NUCLEAR_AND_GAS_ALIGNED_DENOMINATOR_COMPONENT),
+            ),
         )
     }
 

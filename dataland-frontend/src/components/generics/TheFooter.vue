@@ -362,7 +362,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .footer {
     &__row--top {
       display: flex;
@@ -376,7 +376,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .footer {
     padding: 4rem 1.5rem 2.5rem;
 

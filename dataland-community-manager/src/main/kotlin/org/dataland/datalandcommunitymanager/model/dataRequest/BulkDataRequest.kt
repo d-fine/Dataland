@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -17,7 +18,8 @@ data class BulkDataRequest(
         arraySchema =
             Schema(
                 type = "string",
-                example = "[\"enterValidIdentifiers\"]",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE,
             ),
     )
     val companyIdentifiers: Set<String>,
@@ -26,7 +28,8 @@ data class BulkDataRequest(
         arraySchema =
             Schema(
                 implementation = DataTypeEnum::class,
-                example = "[\"sfdr\", \"lksg\"]",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_EXAMPLE,
             ),
     )
     val dataTypes: Set<DataTypeEnum>,
@@ -35,10 +38,14 @@ data class BulkDataRequest(
         arraySchema =
             Schema(
                 type = "string",
-                example = "[\"2022\", \"2023\"]",
+                description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION,
+                example = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_EXAMPLE,
             ),
     )
     val reportingPeriods: Set<String>,
     @field:JsonProperty(required = false)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
+    )
     val notifyMeImmediately: Boolean = false,
 )

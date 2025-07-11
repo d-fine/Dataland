@@ -157,7 +157,7 @@ const getInTouchSection = findSection('Get in touch');
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .joincampaign {
     padding: 80px 0;
     &__wrapper {
@@ -181,7 +181,7 @@ const getInTouchSection = findSection('Get in touch');
     }
   }
 }
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .joincampaign {
     padding: 64px 0;
     &__wrapper {

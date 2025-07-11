@@ -81,7 +81,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-large)) {
+@media only screen and (max-width: 1440px) {
   .brands {
     &__wrap {
       grid-template-columns: repeat(12, 1fr);
@@ -99,7 +99,7 @@ const brandsSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .brands {
     padding: 32px 0 80px;
     gap: 24px;
@@ -128,7 +128,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .brands {
     &__wrap {
       gap: 24px 16px;

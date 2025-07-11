@@ -391,7 +391,7 @@ const register = (): void => {
   opacity: 0.5;
   pointer-events: none;
 }
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .quotes {
     margin: 32px auto 64px;
     gap: 32px;

@@ -71,31 +71,35 @@
       </Column>
       <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
-            <Checkbox
-              v-model="filterModel.value"
-              :inputId="country"
-              name="country"
-              :value="country"
-              data-test="countryFilterValue"
-              @change="filterCallback"
-            />
-            <label :for="country">{{ country }}</label>
+          <div data-test="countryFilterOverlay">
+            <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+              <Checkbox
+                v-model="filterModel.value"
+                :inputId="country"
+                name="country"
+                :value="country"
+                data-test="countryFilterValue"
+                @change="filterCallback"
+              />
+              <label :for="country">{{ country }}</label>
+            </div>
           </div>
         </template>
       </Column>
       <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
-            <Checkbox
-              v-model="filterModel.value"
-              :inputId="sector"
-              name="sector"
-              :value="sector"
-              data-test="sectorFilterValue"
-              @change="filterCallback"
-            />
-            <label :for="sector">{{ sector }}</label>
+          <div data-test="sectorFilterOverlay">
+            <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
+              <Checkbox
+                v-model="filterModel.value"
+                :inputId="sector"
+                name="sector"
+                :value="sector"
+                data-test="sectorFilterValue"
+                @change="filterCallback"
+              />
+              <label :for="sector">{{ sector }}</label>
+            </div>
           </div>
         </template>
       </Column>
@@ -117,20 +121,22 @@
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <div
-            v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
-            :key="availableReportingPeriods"
-            class="filter-checkbox"
-          >
-            <Checkbox
-              v-model="filterModel.value"
-              :inputId="availableReportingPeriods"
-              name="availableReportingPeriods"
-              :value="availableReportingPeriods"
-              :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
-              @change="filterCallback"
-            />
-            <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
+          <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
+            <div
+              v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
+              :key="availableReportingPeriods"
+              class="filter-checkbox"
+            >
+              <Checkbox
+                v-model="filterModel.value"
+                :inputId="availableReportingPeriods"
+                name="availableReportingPeriods"
+                :value="availableReportingPeriods"
+                :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+                @change="filterCallback"
+              />
+              <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
+            </div>
           </div>
         </template>
       </Column>
@@ -141,6 +147,7 @@
 <script setup lang="ts">
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import PortfolioDownload from '@/components/resources/portfolio/PortfolioDownload.vue';
+import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
@@ -148,8 +155,8 @@ import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/Str
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { DataTypeEnum } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import type Keycloak from 'keycloak-js';
 import { FilterMatchMode } from '@primevue/core/api';
+import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
@@ -157,7 +164,6 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch } from 'vue';
-import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -209,8 +215,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
-const countryOptions = ref<string[]>(new Array<string>());
-const sectorOptions = ref<string[]>(new Array<string>());
+const countryOptions = ref<string[]>([]);
+const sectorOptions = ref<string[]>([]);
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 
 const filters = ref({

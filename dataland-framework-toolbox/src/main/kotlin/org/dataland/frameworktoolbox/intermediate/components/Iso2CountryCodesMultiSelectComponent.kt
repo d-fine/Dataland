@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_ISO_COUNTRY_CODES_MULTI_SELECT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -27,12 +28,17 @@ open class Iso2CountryCodesMultiSelectComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+
         dataClassBuilder.addProperty(
             this.identifier,
             TypeReference(
                 "List",
                 isNullable,
                 listOf(TypeReference("String", false)),
+            ),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                EXAMPLE_PLAIN_ISO_COUNTRY_CODES_MULTI_SELECT_COMPONENT,
             ),
         )
     }

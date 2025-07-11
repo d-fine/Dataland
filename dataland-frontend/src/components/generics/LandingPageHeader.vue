@@ -80,18 +80,19 @@ const isActiveAbout = computed(() => route.path === '/about');
     }
   }
 }
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media screen and (max-width: 768px) {
   .header {
-    padding: 16px;
+    padding: 1rem;
     margin: 0;
     width: 100%;
     border-radius: 0;
-    &__logo {
+    flex-direction: column;
+    .header__logo {
       img {
         width: 79px;
       }
     }
-    &__navigation {
+    .header__navigation {
       display: none;
     }
   }

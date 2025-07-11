@@ -102,7 +102,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .struggle {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -130,7 +130,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .struggle {
     padding: 80px 0;
     &__wrapper {

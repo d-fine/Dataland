@@ -2,10 +2,10 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_EXTENDED_CURRENCY_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeReference
@@ -28,12 +28,11 @@ class CurrencyComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue) + ValidAnnotation
 
         dataClassBuilder.addProperty(
             identifier,
             TypeReference("org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint", isNullable),
-            annotations,
+            getAnnotationsWithMinMax(EXAMPLE_EXTENDED_CURRENCY_COMPONENT, minimumValue, maximumValue),
         )
     }
 
