@@ -69,6 +69,9 @@ export const DatalandPreset = definePreset(Aura, {
       select: {
         borderRadius: '{border.radius.none}',
       },
+      popover: {
+        borderRadius: '{border.radius.none}',
+      },
     },
     navigation: {
       item: {
