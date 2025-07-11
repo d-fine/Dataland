@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.entities
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -29,6 +30,7 @@ data class RequestStatusEntity(
     val creationTimestamp: Long,
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
+    @JsonBackReference
     var dataRequest: DataRequestEntity,
     val requestStatusChangeReason: String? = null,
     val answeringDataId: String? = null,

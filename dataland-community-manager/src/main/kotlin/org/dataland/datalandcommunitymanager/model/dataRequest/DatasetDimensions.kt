@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
@@ -15,13 +15,12 @@ data class DatasetDimensions(
     val reportingPeriod: String,
 ) {
     /**
-     * Converts the DatasetDimensions object to a DataMetaInformationFilter object.
+     * Converts the DatasetDimensions to a BasicDataDimensions.
      */
-    fun toDataMetaInformationSearchFilter(): DataMetaInformationSearchFilter =
-        DataMetaInformationSearchFilter(
+    fun toBasicDataDimensions(): BasicDataDimensions =
+        BasicDataDimensions(
             companyId = companyId,
-            dataType = dataType,
+            dataType = dataType.value,
             reportingPeriod = reportingPeriod,
-            onlyActive = true,
         )
 }

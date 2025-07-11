@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.entities
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -29,6 +30,7 @@ data class MessageEntity(
     val creationTimestamp: Long,
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
+    @JsonBackReference
     var dataRequest: DataRequestEntity,
 ) {
     companion object {

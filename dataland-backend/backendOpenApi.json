@@ -480,6 +480,72 @@
         ]
       }
     },
+    "/metadata/active-datasets": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if active datasets are available.",
+        "description": "Checks if any active datasets are available applying the provided data dimensions.",
+        "operationId": "retrieveMetaDataOfActiveDatasets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BasicDataDimensions"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset meta data.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/internal/cached/public/get-batch": {
       "post": {
         "tags": [
@@ -5106,6 +5172,25 @@
                 "$ref": "#/components/schemas/QaStatus"
               }
             ]
+          }
+        }
+      },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
           }
         }
       },
@@ -14858,25 +14943,6 @@
             "format": "int64"
           },
           "userId": {
-            "type": "string"
-          }
-        }
-      },
-      "BasicDataDimensions": {
-        "required": [
-          "companyId",
-          "dataType",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "string"
-          },
-          "reportingPeriod": {
             "type": "string"
           }
         }
