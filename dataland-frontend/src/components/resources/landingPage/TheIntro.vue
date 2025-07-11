@@ -138,7 +138,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-large)) {
+@media only screen and (max-width: 1440px) {
   .intro {
     &__img {
       margin-bottom: 31px;
@@ -161,7 +161,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-medium)) {
+@media only screen and (max-width: 1024px) {
   .intro {
     &__text {
       font-size: 48px;
@@ -179,7 +179,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .intro {
     margin: 64px auto;
     padding-inline: 16px;
@@ -315,7 +315,7 @@ const handleInputBlur = (): void => {
     background: var(--default-neutral-white);
     box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
-    @media only screen and (max-width: var(--breakpoint-large)) {
+    @media only screen and (max-width: 1440px) {
       max-width: 701px !important;
       width: calc(100% + 52px) !important;
     }
@@ -366,14 +366,14 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-large)) {
+@media only screen and (max-width: 1440px) {
   .search {
     margin-top: 31px;
     max-width: 701px;
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .search__autocomplete {
     padding: 0;
     top: 47px !important;

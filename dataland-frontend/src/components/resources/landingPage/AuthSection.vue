@@ -143,8 +143,9 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: var(--breakpoint-small)) {
+@media only screen and (max-width: 768px) {
   .header {
+    background-color: var(--p-pink-300);
     padding: 16px;
     margin: 0;
     width: 100%;

@@ -37,7 +37,7 @@ const handleClick = (): void => {
   color: var(--default-neutral-white);
   border: 2px solid var(--p-primary-color);
   cursor: pointer;
-  @media only screen and (max-width: var(--breakpoint-small)) {
+  @media only screen and (max-width: 768px) {
     padding: 10px 16px;
     font-size: 14px;
     letter-spacing: 0.25px;

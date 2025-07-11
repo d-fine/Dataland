@@ -150,7 +150,7 @@ function onCursorLeaveProvideButton(): void {
     }
   }
 
-  @media only screen and (max-width: var(--breakpoint-small)) {
+  @media only screen and (max-width: 768px) {
     &--interactive {
       width: 339px;
       height: 282px;

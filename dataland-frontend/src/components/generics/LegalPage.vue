@@ -44,7 +44,7 @@ export default defineComponent({
 main {
   margin-top: 122px;
   margin-bottom: 52px;
-  @media only screen and (max-width: var(--breakpoint-small)) {
+  @media only screen and (max-width: 768px) {
     margin-top: 82px;
   }
 }
