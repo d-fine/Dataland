@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "cypress-wait-until": "3.0.2"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^6.0.0"
   }
 }
