@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.api.COMPANY_SEARCH_STRING_MIN_LENGTH
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -10,11 +11,14 @@ import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationR
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
+import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
@@ -31,6 +35,7 @@ class CompanyQueryManager
         private val companyRepository: StoredCompanyRepository,
         private val dataMetaInfoRepository: DataMetaInformationRepository,
         private val companyIdentifierRepository: CompanyIdentifierRepository,
+        private val isinLeiRepository: IsinLeiRepository,
     ) {
         private val highlightedCompanyIdsInMemoryStorage = ConcurrentHashMap<String, String>()
 
@@ -131,8 +136,47 @@ class CompanyQueryManager
                 resultLimit,
             )
 
-        private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
-            var companiesWithFetchedFields = companyRepository.fetchIdentifiers(storedCompanies)
+        private fun getLeiOrNull(storedCompanyEntity: StoredCompanyEntity): String? =
+            storedCompanyEntity.identifiers
+                .firstOrNull {
+                    it.identifierType == IdentifierType.Lei
+                }?.identifierValue
+
+        private fun fetchIsinIdentifiers(
+            storedCompanies: List<StoredCompanyEntity>,
+            isinChunkSize: Int,
+            isinChunkIndex: Int,
+        ): List<StoredCompanyEntity> {
+            storedCompanies.forEach { storedCompany ->
+                val lei = getLeiOrNull(storedCompany)
+                if (lei == null) return@forEach
+                val isinsAsStrings =
+                    isinLeiRepository
+                        .findAllByLei(
+                            lei,
+                            PageRequest.of(isinChunkIndex, isinChunkSize, Sort.by("isin").ascending()),
+                        ).content
+                        .map { it.isin }
+                isinsAsStrings.forEach {
+                    storedCompany.identifiers.add(
+                        CompanyIdentifierEntity(
+                            identifierValue = it,
+                            identifierType = IdentifierType.Isin,
+                            company = storedCompany,
+                        ),
+                    )
+                }
+            }
+            return storedCompanies
+        }
+
+        private fun fetchAllStoredCompanyFields(
+            storedCompanies: List<StoredCompanyEntity>,
+            isinChunkSize: Int,
+            isinChunkIndex: Int,
+        ): List<StoredCompanyEntity> {
+            var companiesWithFetchedFields = companyRepository.fetchNonIsinIdentifiers(storedCompanies)
+            companiesWithFetchedFields = fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
             companiesWithFetchedFields = companyRepository.fetchAlternativeNames(companiesWithFetchedFields)
             companiesWithFetchedFields = companyRepository.fetchCompanyContactDetails(companiesWithFetchedFields)
             companiesWithFetchedFields = companyRepository.fetchCompanyAssociatedByDataland(companiesWithFetchedFields)
@@ -158,9 +202,17 @@ class CompanyQueryManager
          * @return the StoredCompany object of the retrieved company
          */
         @Transactional
-        fun getCompanyApiModelById(companyId: String): StoredCompany {
+        fun getCompanyApiModelById(
+            companyId: String,
+            isinChunkSize: Int,
+            isinChunkIndex: Int,
+        ): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
-            return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
+            return fetchAllStoredCompanyFields(
+                listOf(searchResult),
+                isinChunkSize,
+                isinChunkIndex,
+            ).first().toApiModel()
         }
 
         /**

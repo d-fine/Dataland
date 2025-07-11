@@ -2,12 +2,14 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
+import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -24,10 +26,11 @@ import org.springframework.transaction.annotation.Transactional
  * @param companyIdentifierRepositoryInterface JPA repository for company identifiers
  */
 @Service
-class CompanyAlterationManager(
-    @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
-    @Autowired private val companyQueryManager: CompanyQueryManager,
+class CompanyAlterationManager @Autowired constructor(
+    private val companyRepository: StoredCompanyRepository,
+    private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
+    private val companyQueryManager: CompanyQueryManager,
+    private val isinLeiRepository: IsinLeiRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -91,7 +94,20 @@ class CompanyAlterationManager(
                 }
             }
         try {
-            return companyIdentifierRepositoryInterface.saveAllAndFlush(newIdentifiers).toList()
+            val savedNonIsinIdentifiers = companyIdentifierRepositoryInterface
+                .saveAllAndFlush(
+                    newIdentifiers.filter { it.identifierType != IdentifierType.Isin },
+                ).toList()
+            val savedIsinIdentifiers = isinLeiRepository.saveAllAndFlush(
+                newIdentifiers.filter {
+                    it.identifierType == IdentifierType.Isin
+                }.map {
+                    IsinLeiEntity(
+                        isin = it.identifierValue,
+                        lei =
+                    )
+                }
+            )
         } catch (ex: DataIntegrityViolationException) {
             val cause = ex.cause
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {

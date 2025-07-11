@@ -143,13 +143,14 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     ): List<CompanyIdAndName>
 
     /**
-     * Used for pre-fetching the identifiers field of a list of stored companies
+     * Used for pre-fetching the identifiers field of a list of stored companies. ISINs are no
+     * longer stored in the table company_identifiers, hence the name of the method.
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
             "LEFT JOIN FETCH company.identifiers WHERE company IN :companies",
     )
-    fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+    fun fetchNonIsinIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
      * Used for pre-fetching the alternative company names field of a list of stored companies

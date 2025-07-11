@@ -25,7 +25,9 @@ class TemporaryTables private constructor() {
         // Requires the parameter searchFilter : StoredCompanySearchFilter
         const val TABLE_FILTERED_TEXT_RESULTS =
             " ( " +
-                " (SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name, " +
+                // Fuzzy-Search Company Name
+                " (" +
+                " SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name, " +
                 " MAX( CASE " +
                 "   WHEN company_name = :#{#searchFilter.searchString} THEN 10 " +
                 "   WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5 " +
@@ -36,11 +38,13 @@ class TemporaryTables private constructor() {
                 " LEFT JOIN data_meta_information " +
                 "   ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true " +
                 " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
-                " GROUP BY stored_companies.company_id) " +
+                " GROUP BY stored_companies.company_id" +
+                " ) " +
 
                 " UNION " +
                 // Fuzzy-Search Company Alternative Name
-                " (SELECT stored_company_entity_company_id AS company_id," +
+                " (" +
+                " SELECT stored_company_entity_company_id AS company_id," +
                 " MAX(stored_companies.company_name) AS company_name, " +
                 " MAX( CASE " +
                 "   WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
@@ -61,8 +65,9 @@ class TemporaryTables private constructor() {
                 " ) " +
 
                 " UNION " +
-                // Fuzzy-Search Company Identifier
-                " (SELECT company_identifiers.company_id, MAX(stored_companies.company_name) AS company_name, " +
+                // Fuzzy-Search Non-ISIN Company Identifier
+                " (" +
+                " SELECT company_identifiers.company_id, MAX(stored_companies.company_name) AS company_name, " +
                 " MAX( CASE " +
                 "   WHEN identifier_value = :#{#searchFilter.searchString} THEN 10 " +
                 "   WHEN identifier_value " +
@@ -75,7 +80,28 @@ class TemporaryTables private constructor() {
                 " LEFT JOIN data_meta_information " +
                 "   ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true " +
                 " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
-                " GROUP BY company_identifiers.company_id) " +
+                " GROUP BY company_identifiers.company_id " +
+                " ) " +
+
+                " UNION " +
+                // Fuzzy-Search ISIN Company Identifier
+                " (" +
+                " SELECT stored_companies.company_id as company_id, MAX(stored_companies.company_name) AS company_name, " +
+                " MAX( CASE " +
+                "   WHEN isin = :#{searchFilter.searchString} THEN 10" +
+                "   WHEN isin ILIKE :#{escape(#searchFilter.searchString)% ESCAPE :#{escapeCharacer()} THEN 3" +
+                "   ELSE 0" +
+                "   END) AS match_quality, " +
+                DATASET_RANK +
+                " FROM isin_lei_mapping " +
+                " JOIN company_identifiers ON identifier_value = lei AND identifier_type = 'Lei' " +
+                " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id" +
+                " LEFT JOIN data_meta_information " +
+                "   ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true " +
+                " WHERE isin ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
+                " GROUP BY stored_companies.company_id " +
+                " ) " +
+
                 " ) AS filtered_text_results "
 
         // Select company_id if company satisfies data_type, sector and country filter

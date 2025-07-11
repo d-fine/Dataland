@@ -161,10 +161,14 @@ class CompanyDataController(
             ),
         )
 
-    override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> =
+    override fun getCompanyById(
+        companyId: String,
+        isinChunkSize: Int,
+        isinChunkIndex: Int,
+    ): ResponseEntity<StoredCompany> =
         ResponseEntity.ok(
             companyQueryManager
-                .getCompanyApiModelById(companyId),
+                .getCompanyApiModelById(companyId, isinChunkSize, isinChunkIndex),
         )
 
     override fun patchCompanyById(
