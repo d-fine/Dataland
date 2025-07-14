@@ -52,7 +52,8 @@
         <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3" style="margin-bottom: 2rem; display: block">
-        Download only data values. Turn off to include additional details, e.g. comment, data source, ...
+        Download only data values. Turn off to include additional details, e.g. comment, data source, etc. Only
+        applicable for CSV and Excel file types.
       </span>
       <div class="flex align-content-start align-items-center">
         <InputSwitch
@@ -64,7 +65,7 @@
         <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten field names </span>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
-        Use short aliases, e. g. REV_ELIGIBLE_ABS in export. (Only applicable if 'values only' is selected)
+        Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
       </span>
     </FormKit>
     <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
