@@ -18,7 +18,7 @@
 import { computed, inject, onMounted, ref, type Ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { nuclearAndGasActivityNames } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
 import type { NuclearAndGasNonEligible } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 import { formatPercentageNumberAsString } from '@/utils/Formatter';

@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import PrimeButton from 'primevue/button';
 import {
   isRefreshTokenExpiryTimestampInSharedStoreReached,

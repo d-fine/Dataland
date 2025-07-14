@@ -95,7 +95,7 @@ import { type EnrichedPortfolio, type EnrichedPortfolioEntry } from '@clients/us
 import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
 import { inject, onMounted, type Ref, ref } from 'vue';
