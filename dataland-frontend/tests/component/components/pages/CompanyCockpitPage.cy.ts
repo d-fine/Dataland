@@ -161,10 +161,9 @@ describe('Component test for the company cockpit', () => {
 
   /**
    * Validates the existence of the back-button
-   * @param isMobile determines if the validation shall be executed from a mobile users perspective
    */
-  function validateBackButtonExistence(isMobile: boolean): void {
-    const backButtonSelector = `span[data-test="${isMobile ? 'back-button-mobile' : 'back-button'}"]`;
+  function validateBackButtonExistence(): void {
+    const backButtonSelector = `[data-test="back-button"]`;
     cy.get(backButtonSelector).should('exist');
   }
 
@@ -261,22 +260,6 @@ describe('Component test for the company cockpit', () => {
   }
 
   /**
-   * Validates if the mobile header of the company info sheet is currently fixed or not
-   * @param isScrolled determines if the mobile page is currently scrolled or not
-   */
-  function validateMobileHeader(isScrolled: boolean): void {
-    const sheetSelector = '[data-test=sheet]';
-    const attachedSheetSelector = '[data-test=sheet-attached]';
-    const mobileHeaderTitleSelector = '[data-test=mobile-header-title]';
-    cy.get(mobileHeaderTitleSelector).should(
-      'have.text',
-      isScrolled ? companyInformationForTest.companyName : 'Company Overview'
-    );
-    cy.get(sheetSelector).should(isScrolled ? 'have.css' : 'not.have.css', 'visibility', 'hidden');
-    cy.get(attachedSheetSelector).should(isScrolled ? 'have.not.css' : 'have.css', 'visibility', 'hidden');
-  }
-
-  /**
    * Validates the existence or non-existence of the single data request button
    * @param isButtonExpected self explanatory
    */
@@ -350,7 +333,7 @@ describe('Component test for the company cockpit', () => {
     const isProvideDataButtonExpected = false;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(false, false, []);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -372,7 +355,7 @@ describe('Component test for the company cockpit', () => {
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER], []);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -386,7 +369,7 @@ describe('Component test for the company cockpit', () => {
     const isProvideDataButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], []);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -400,7 +383,7 @@ describe('Component test for the company cockpit', () => {
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyRoleAssignmentsOfUser);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -444,13 +427,7 @@ describe('Component test for the company cockpit', () => {
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]);
 
-    cy.wait(3000);
-    cy.scrollTo('bottom');
-    validateMobileHeader(true);
-    cy.scrollTo('top');
-    validateMobileHeader(false);
-
-    validateBackButtonExistence(true);
+    validateBackButtonExistence();
     validateSearchBarExistence(false);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);

@@ -294,6 +294,16 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
   }
+
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: start;
+
+    #document-card {
+      width: 100%;
+      margin-bottom: var(--spacing-md);
+    }
+  }
 }
 
 .card-grid {

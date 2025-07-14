@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container" data-test="company-info-sheet">
     <BackButton />
     <CompaniesOnlySearchBar
-      v-if="showSearchBar"
+      v-if="!useMobileView"
       @select-company="router.push(`/companies/${$event.companyId}`)"
       wrapper-class-additions="w-8 mt-2"
     />
@@ -22,22 +22,20 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 import router from '@/router';
 import { type CompanyInformation } from '@clients/backend';
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 
-const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
+const { companyId, showSingleDataRequestButton } = defineProps({
   companyId: {
     type: String,
     required: true,
-  },
-  showSearchBar: {
-    type: Boolean,
-    default: true,
   },
   showSingleDataRequestButton: {
     type: Boolean,
     default: false,
   },
 });
+
+const useMobileView = inject<boolean>('useMobileView', false);
 
 const emit = defineEmits(['fetchedCompanyInformation']);
 const companyName = ref<string>();

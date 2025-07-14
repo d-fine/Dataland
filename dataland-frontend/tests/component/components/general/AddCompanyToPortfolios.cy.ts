@@ -1,6 +1,6 @@
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import { type BasePortfolio } from '@clients/userservice';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Tests for AddCompanyToPortfolios Component', () => {
   const companyId = 'COMP-123';
