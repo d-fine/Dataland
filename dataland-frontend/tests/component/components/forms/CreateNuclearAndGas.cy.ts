@@ -23,10 +23,11 @@ describe('Component tests for the Nuclear and Gas that test dependent fields', (
     const subsections = ['NAndG426', 'NAndG427', 'NAndG428', 'NAndG429', 'NAndG430', 'NAndG431', 'OtherActivities', ''];
 
     cy.get(
-      `div[data-test="nuclearAndGasTaxonomyAlignedRevenueDenominator"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
-    )
-      .should('exist')
-      .click();
+      'div[data-test="nuclearAndGasTaxonomyAlignedRevenueDenominator"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
+    ).within(() => {
+      cy.get('#dataPointIsAvailableSwitch').click();
+    });
+
     subsections.forEach((subsection) => {
       cy.get(
         `div[data-test="nuclearAndGasTaxonomyAlignedRevenueDenominator"] div[data-test="taxonomyAlignedShareDenominator${subsection}"] input[name="mitigationAndAdaptation"]`
@@ -47,9 +48,9 @@ describe('Component tests for the Nuclear and Gas that test dependent fields', (
 
     cy.get(
       `div[data-test="nuclearAndGasTaxonomyNonEligibleRevenue"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
-    )
-      .should('exist')
-      .click();
+    ).within(() => {
+      cy.get('#dataPointIsAvailableSwitch').click();
+    });
     subsections.forEach((subsection) => {
       cy.get(
         `div[data-test="nuclearAndGasTaxonomyNonEligibleRevenue"] div[data-test="taxonomyNonEligibleShare${subsection}"] input[name="taxonomyNonEligibleShare${subsection}"]`

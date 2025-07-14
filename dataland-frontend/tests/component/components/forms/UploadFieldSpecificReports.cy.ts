@@ -38,7 +38,11 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
    */
   function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
     new UploadDocuments('referencedReports').selectDummyFile(fileName, contentSize);
-    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).click();
+    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).within(
+      () => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      }
+    );
     selectItemFromDropdownByValue(
       cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataReport']`),
       fileName
