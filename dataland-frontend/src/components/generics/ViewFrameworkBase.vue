@@ -138,7 +138,7 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Popover from 'primevue/popover';
-import { computed, defineComponent, inject, type PropType, ref } from 'vue';
+import { computed, defineComponent, inject, type PropType } from 'vue';
 import { useRoute } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -284,9 +284,9 @@ export default defineComponent({
       if (this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByDataId(this.singleDataMetaInfoToDisplay.dataId);
       } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
-        const reportingPeriodsPopover = ref();
-        if (reportingPeriodsPopover.value) {
-          reportingPeriodsPopover.value.toggle(event);
+        const reportingPeriodsPopover = this.$refs.reportingPeriodsPopover as InstanceType<typeof Popover> | undefined;
+        if (reportingPeriodsPopover) {
+          reportingPeriodsPopover.toggle(event);
         }
       } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
         this.goToUpdateFormByReportingPeriod(this.availableReportingPeriods[0]);
