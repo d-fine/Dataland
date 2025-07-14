@@ -26,196 +26,230 @@ import org.springframework.transaction.annotation.Transactional
  * @param companyIdentifierRepositoryInterface JPA repository for company identifiers
  */
 @Service
-class CompanyAlterationManager @Autowired constructor(
-    private val companyRepository: StoredCompanyRepository,
-    private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
-    private val companyQueryManager: CompanyQueryManager,
-    private val isinLeiRepository: IsinLeiRepository,
-) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
-    private fun createStoredCompanyEntityWithoutForeignReferences(
-        companyId: String,
-        companyInformation: CompanyInformation,
-    ): StoredCompanyEntity {
-        val newCompanyEntity =
-            StoredCompanyEntity(
-                companyId = companyId,
-                companyName = companyInformation.companyName,
-                companyAlternativeNames = companyInformation.companyAlternativeNames,
-                companyContactDetails = companyInformation.companyContactDetails,
-                companyLegalForm = companyInformation.companyLegalForm,
-                headquarters = companyInformation.headquarters,
-                headquartersPostalCode = companyInformation.headquartersPostalCode,
-                sector = companyInformation.sector,
-                sectorCodeWz = companyInformation.sectorCodeWz,
-                identifiers = mutableListOf(),
-                dataRegisteredByDataland = mutableListOf(),
-                countryCode = companyInformation.countryCode,
-                isTeaserCompany = companyInformation.isTeaserCompany ?: false,
-                website = companyInformation.website,
-                parentCompanyLei = companyInformation.parentCompanyLei,
-            )
-
-        return companyRepository.save(newCompanyEntity)
-    }
-
-    private fun assertNoDuplicateIdentifiersExist(identifierMap: Map<IdentifierType, List<String>>) {
-        val duplicateIdentifiers =
-            companyIdentifierRepositoryInterface.findAllById(
-                identifierMap.flatMap { identifierPair ->
-                    identifierPair.value.map {
-                        CompanyIdentifierEntityId(
-                            identifierType = identifierPair.key,
-                            identifierValue = it,
-                        )
-                    }
-                },
-            )
-
-        if (duplicateIdentifiers.isNotEmpty()) {
-            throw DuplicateIdentifierApiException(duplicateIdentifiers)
-        }
-    }
-
-    private fun createAndAssociateIdentifiers(
-        savedCompanyEntity: StoredCompanyEntity,
-        identifierMap: Map<IdentifierType, List<String>>,
-    ): List<CompanyIdentifierEntity> {
-        assertNoDuplicateIdentifiersExist(identifierMap)
-
-        val newIdentifiers =
-            identifierMap.flatMap { identifierPair ->
-                identifierPair.value.map {
-                    CompanyIdentifierEntity(
-                        identifierType = identifierPair.key, identifierValue = it,
-                        company = savedCompanyEntity, isNew = true,
-                    )
-                }
-            }
-        try {
-            val savedNonIsinIdentifiers = companyIdentifierRepositoryInterface
-                .saveAllAndFlush(
-                    newIdentifiers.filter { it.identifierType != IdentifierType.Isin },
-                ).toList()
-            val savedIsinIdentifiers = isinLeiRepository.saveAllAndFlush(
-                newIdentifiers.filter {
-                    it.identifierType == IdentifierType.Isin
-                }.map {
-                    IsinLeiEntity(
-                        isin = it.identifierValue,
-                        lei =
-                    )
-                }
-            )
-        } catch (ex: DataIntegrityViolationException) {
-            val cause = ex.cause
-            if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
-                // Cannot access the list of duplicate identifiers here because of hibernate caching.
-                throw DuplicateIdentifierApiException(null)
-            }
-            throw ex
-        }
-    }
-
-    /**
-     * Method to add a company
-     * @param companyInformation denotes information of the company
-     * @return information of the newly created entry in the company data store of Dataland,
-     * including the generated company ID
-     */
-    @Transactional(rollbackFor = [InvalidInputApiException::class])
-    fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
-        val companyId = IdUtils.generateUUID()
-        logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
-        val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
-        val identifiers = createAndAssociateIdentifiers(savedCompany, companyInformation.identifiers)
-        savedCompany.identifiers = identifiers.toMutableList()
-        logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
-        return savedCompany
-    }
-
-    private fun replaceCompanyIdentifiers(
-        companyEntity: StoredCompanyEntity,
-        identifierType: IdentifierType,
-        newIdentifiers: List<String>,
+class CompanyAlterationManager
+    @Autowired
+    constructor(
+        private val companyRepository: StoredCompanyRepository,
+        private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
+        private val companyQueryManager: CompanyQueryManager,
+        private val isinLeiRepository: IsinLeiRepository,
     ) {
-        companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(companyEntity, identifierType)
-        createAndAssociateIdentifiers(companyEntity, mapOf(identifierType to newIdentifiers))
-    }
+        private val logger = LoggerFactory.getLogger(javaClass)
 
-    /**
-     * Method to patch the information of a company.
-     * @param companyId the id of the company to patch
-     * @param patch the patch to apply to the company
-     * @return the updated company information object
-     */
-    @Suppress("CyclomaticComplexMethod")
-    @Transactional
-    fun patchCompany(
-        companyId: String,
-        patch: CompanyInformationPatch,
-    ): StoredCompanyEntity {
-        val companyEntity = companyQueryManager.getCompanyById(companyId)
-        logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
-        patch.companyName?.let { companyEntity.companyName = it }
-        patch.companyContactDetails?.let { companyEntity.companyContactDetails = it }
-        patch.companyLegalForm?.let { companyEntity.companyLegalForm = it }
-        patch.headquarters?.let { companyEntity.headquarters = it }
-        patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
-        patch.sector?.let { companyEntity.sector = it }
-        patch.sectorCodeWz?.let { companyEntity.sectorCodeWz = it }
-        patch.countryCode?.let { companyEntity.countryCode = it }
-        patch.website?.let { companyEntity.website = it }
-        patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
-        patch.parentCompanyLei?.let { companyEntity.parentCompanyLei = it }
+        private fun createStoredCompanyEntityWithoutForeignReferences(
+            companyId: String,
+            companyInformation: CompanyInformation,
+        ): StoredCompanyEntity {
+            val newCompanyEntity =
+                StoredCompanyEntity(
+                    companyId = companyId,
+                    companyName = companyInformation.companyName,
+                    companyAlternativeNames = companyInformation.companyAlternativeNames,
+                    companyContactDetails = companyInformation.companyContactDetails,
+                    companyLegalForm = companyInformation.companyLegalForm,
+                    headquarters = companyInformation.headquarters,
+                    headquartersPostalCode = companyInformation.headquartersPostalCode,
+                    sector = companyInformation.sector,
+                    sectorCodeWz = companyInformation.sectorCodeWz,
+                    identifiers = mutableListOf(),
+                    dataRegisteredByDataland = mutableListOf(),
+                    countryCode = companyInformation.countryCode,
+                    isTeaserCompany = companyInformation.isTeaserCompany ?: false,
+                    website = companyInformation.website,
+                    parentCompanyLei = companyInformation.parentCompanyLei,
+                )
 
-        if (patch.companyAlternativeNames != null) {
-            companyEntity.companyAlternativeNames = patch.companyAlternativeNames
+            return companyRepository.save(newCompanyEntity)
         }
 
-        if (patch.identifiers != null) {
-            for (keypair in patch.identifiers) {
-                replaceCompanyIdentifiers(
-                    companyEntity = companyEntity,
-                    identifierType = keypair.key,
-                    newIdentifiers = keypair.value,
+        private fun assertNoDuplicateIdentifiersExist(identifierMap: Map<IdentifierType, List<String>>) {
+            val duplicateIdentifiers =
+                companyIdentifierRepositoryInterface.findAllById(
+                    identifierMap.flatMap { identifierPair ->
+                        identifierPair.value.map {
+                            CompanyIdentifierEntityId(
+                                identifierType = identifierPair.key,
+                                identifierValue = it,
+                            )
+                        }
+                    },
+                )
+
+            if (duplicateIdentifiers.isNotEmpty()) {
+                throw DuplicateIdentifierApiException(duplicateIdentifiers)
+            }
+        }
+
+        private fun assertNoDuplicateSpecifiedLeisExist(identifierMap: Map<IdentifierType, List<String>>) {
+            val specifiedLeis = identifierMap[IdentifierType.Lei]
+            if (specifiedLeis != null && specifiedLeis.size > 1) {
+                throw InvalidInputApiException(
+                    summary = "Duplicate LEIs detected.",
+                    message = "There is more than one entry in your specified list of LEIs.",
                 )
             }
         }
 
-        return companyRepository.save(companyEntity)
-    }
+        private fun createAndAssociateNonIsinIdentifiers(
+            savedCompanyEntity: StoredCompanyEntity,
+            identifierMap: Map<IdentifierType, List<String>>,
+        ): List<CompanyIdentifierEntity> {
+            assertNoDuplicateIdentifiersExist(identifierMap)
+            assertNoDuplicateSpecifiedLeisExist(identifierMap)
 
-    /**
-     * Method to put the information of a company.
-     * @param companyId the id of the company to patch
-     * @param companyInformation denotes information of the company
-     * @return the updated company information object
-     */
-    @Transactional
-    fun putCompany(
-        companyId: String,
-        companyInformation: CompanyInformation,
-    ): StoredCompanyEntity {
-        val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
-        logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
-        storedCompanyEntity.companyName = companyInformation.companyName
-        storedCompanyEntity.companyContactDetails = companyInformation.companyContactDetails
-        storedCompanyEntity.companyLegalForm = companyInformation.companyLegalForm
-        storedCompanyEntity.headquarters = companyInformation.headquarters
-        storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
-        storedCompanyEntity.sector = companyInformation.sector
-        storedCompanyEntity.sectorCodeWz = companyInformation.sectorCodeWz
-        storedCompanyEntity.countryCode = companyInformation.countryCode
-        storedCompanyEntity.website = companyInformation.website
-        storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false
-        storedCompanyEntity.parentCompanyLei = companyInformation.parentCompanyLei
-        storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
-        companyIdentifierRepositoryInterface.deleteAllByCompany(
-            storedCompanyEntity,
-        )
-        createAndAssociateIdentifiers(storedCompanyEntity, companyInformation.identifiers)
-        return companyRepository.save(storedCompanyEntity)
+            val newNonIsinIdentifiers =
+                identifierMap
+                    .flatMap { identifierPair ->
+                        identifierPair.value.map {
+                            CompanyIdentifierEntity(
+                                identifierType = identifierPair.key, identifierValue = it,
+                                company = savedCompanyEntity, isNew = true,
+                            )
+                        }
+                    }.distinct()
+                    .filter { it.identifierType != IdentifierType.Isin }
+
+            try {
+                return companyIdentifierRepositoryInterface
+                    .saveAllAndFlush(newNonIsinIdentifiers)
+                    .toList()
+            } catch (dataIntegrityViolationException: DataIntegrityViolationException) {
+                val cause = dataIntegrityViolationException.cause
+                if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
+                    // Cannot access the list of duplicate identifiers here because of hibernate caching.
+                    throw DuplicateIdentifierApiException(null)
+                }
+                throw dataIntegrityViolationException
+            }
+        }
+
+        private fun createAndAssociateIsinIdentifiers(
+            savedCompanyEntity: StoredCompanyEntity,
+            identifierMap: Map<IdentifierType, List<String>>,
+        ): List<CompanyIdentifierEntity> {
+            val leiOrNull = identifierMap[IdentifierType.Lei]?.firstOrNull()
+
+            if (leiOrNull == null) return emptyList()
+
+            val isinLeiEntities =
+                identifierMap[IdentifierType.Isin]?.map {
+                    IsinLeiEntity(
+                        isin = it,
+                        lei = leiOrNull,
+                    )
+                }
+
+            if (isinLeiEntities == null) return emptyList()
+
+            return isinLeiRepository.saveAllAndFlush(isinLeiEntities).toList().map {
+                CompanyIdentifierEntity(
+                    identifierType = IdentifierType.Isin,
+                    identifierValue = it.isin,
+                    company = savedCompanyEntity,
+                )
+            }
+        }
+
+        /**
+         * Method to add a company
+         * @param companyInformation denotes information of the company
+         * @return information of the newly created entry in the company data store of Dataland,
+         * including the generated company ID
+         */
+        @Transactional(rollbackFor = [InvalidInputApiException::class])
+        fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
+            val companyId = IdUtils.generateUUID()
+            logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
+            val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
+            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            val isinIdentifiers = createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            val allIdentifiers = nonIsinIdentifiers + isinIdentifiers
+            savedCompany.identifiers = allIdentifiers.toMutableList()
+            logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
+            return savedCompany
+        }
+
+        private fun replaceCompanyIdentifiers(
+            companyEntity: StoredCompanyEntity,
+            identifierType: IdentifierType,
+            newIdentifiers: List<String>,
+        ) {
+            companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(companyEntity, identifierType)
+            createAndAssociateNonIsinIdentifiers(companyEntity, mapOf(identifierType to newIdentifiers))
+        }
+
+        /**
+         * Method to patch the information of a company.
+         * @param companyId the id of the company to patch
+         * @param patch the patch to apply to the company
+         * @return the updated company information object
+         */
+        @Suppress("CyclomaticComplexMethod")
+        @Transactional
+        fun patchCompany(
+            companyId: String,
+            patch: CompanyInformationPatch,
+        ): StoredCompanyEntity {
+            val companyEntity = companyQueryManager.getCompanyById(companyId)
+            logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
+            patch.companyName?.let { companyEntity.companyName = it }
+            patch.companyContactDetails?.let { companyEntity.companyContactDetails = it }
+            patch.companyLegalForm?.let { companyEntity.companyLegalForm = it }
+            patch.headquarters?.let { companyEntity.headquarters = it }
+            patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
+            patch.sector?.let { companyEntity.sector = it }
+            patch.sectorCodeWz?.let { companyEntity.sectorCodeWz = it }
+            patch.countryCode?.let { companyEntity.countryCode = it }
+            patch.website?.let { companyEntity.website = it }
+            patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
+            patch.parentCompanyLei?.let { companyEntity.parentCompanyLei = it }
+
+            if (patch.companyAlternativeNames != null) {
+                companyEntity.companyAlternativeNames = patch.companyAlternativeNames
+            }
+
+            if (patch.identifiers != null) {
+                for (keypair in patch.identifiers) {
+                    replaceCompanyIdentifiers(
+                        companyEntity = companyEntity,
+                        identifierType = keypair.key,
+                        newIdentifiers = keypair.value,
+                    )
+                }
+            }
+
+            return companyRepository.save(companyEntity)
+        }
+
+        /**
+         * Method to put the information of a company.
+         * @param companyId the id of the company to patch
+         * @param companyInformation denotes information of the company
+         * @return the updated company information object
+         */
+        @Transactional
+        fun putCompany(
+            companyId: String,
+            companyInformation: CompanyInformation,
+        ): StoredCompanyEntity {
+            val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
+            logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
+            storedCompanyEntity.companyName = companyInformation.companyName
+            storedCompanyEntity.companyContactDetails = companyInformation.companyContactDetails
+            storedCompanyEntity.companyLegalForm = companyInformation.companyLegalForm
+            storedCompanyEntity.headquarters = companyInformation.headquarters
+            storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
+            storedCompanyEntity.sector = companyInformation.sector
+            storedCompanyEntity.sectorCodeWz = companyInformation.sectorCodeWz
+            storedCompanyEntity.countryCode = companyInformation.countryCode
+            storedCompanyEntity.website = companyInformation.website
+            storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false
+            storedCompanyEntity.parentCompanyLei = companyInformation.parentCompanyLei
+            storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
+            companyIdentifierRepositoryInterface.deleteAllByCompany(
+                storedCompanyEntity,
+            )
+            createAndAssociateNonIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)
+            return companyRepository.save(storedCompanyEntity)
+        }
     }
-}

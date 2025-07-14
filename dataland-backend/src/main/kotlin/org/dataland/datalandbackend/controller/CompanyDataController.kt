@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
+
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
-import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -12,11 +12,12 @@ import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationR
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
+import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.utils.CompanyIdentifierUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
@@ -30,202 +31,203 @@ import org.springframework.web.bind.annotation.RestController
  * Controller for the company data endpoints
  * @param companyAlterationManager the company manager service to handle company alteration
  * @param companyQueryManager the company manager service to handle company database queries
- * @param companyIdentifierRepositoryInterface the company identifier repository
+ * @param companyIdentifierManager the service to handle company identifiers
  * @param companyBaseManager the company base manager service to handle basic information about companies
  */
 
 @RestController
-class CompanyDataController(
-    @Autowired private val companyAlterationManager: CompanyAlterationManager,
-    @Autowired private val companyQueryManager: CompanyQueryManager,
-    @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
-    @Autowired private val companyBaseManager: CompanyBaseManager,
-    @Autowired private val dataPointUtils: DataPointUtils,
-) : CompanyApi {
-    private val logger = LoggerFactory.getLogger(javaClass)
+class CompanyDataController
+    @Autowired
+    constructor(
+        private val companyAlterationManager: CompanyAlterationManager,
+        private val companyQueryManager: CompanyQueryManager,
+        private val companyIdentifierManager: CompanyIdentifierManager,
+        private val companyBaseManager: CompanyBaseManager,
+        private val dataPointUtils: DataPointUtils,
+    ) : CompanyApi {
+        private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
-        logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
-        companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
-        return ResponseEntity.ok(
-            companyAlterationManager
-                .addCompany(companyInformation)
-                .toApiModel(),
-        )
-    }
-
-    override fun getCompanies(
-        searchString: String?,
-        dataTypes: Set<DataType>?,
-        countryCodes: Set<String>?,
-        sectors: Set<String>?,
-        chunkSize: Int?,
-        chunkIndex: Int?,
-    ): ResponseEntity<List<BasicCompanyInformation>> {
-        logger.info(
-            "Received a request to get basic company information with searchString='$searchString'" +
-                ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
-        )
-        return ResponseEntity.ok(
-            companyQueryManager.getCompaniesInChunks(
-                StoredCompanySearchFilter(
-                    searchString = searchString?.trim() ?: "",
-                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
-                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
-                    sectorFilter = sectors?.toList() ?: listOf(),
-                ),
-                chunkIndex ?: 0,
-                chunkSize,
-            ),
-        )
-    }
-
-    override fun getNumberOfCompanies(
-        searchString: String?,
-        dataTypes: Set<DataType>?,
-        countryCodes: Set<String>?,
-        sectors: Set<String>?,
-    ): ResponseEntity<Int> {
-        logger.info(
-            "Received a request to get number of companies with searchString='$searchString'" +
-                ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
-        )
-        return ResponseEntity.ok(
-            companyBaseManager.countNumberOfCompanies(
-                StoredCompanySearchFilter(
-                    searchString = searchString ?: "",
-                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
-                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
-                    sectorFilter = sectors?.toList() ?: listOf(),
-                ),
-            ),
-        )
-    }
-
-    override fun getCompaniesBySearchString(
-        searchString: String,
-        resultLimit: Int,
-    ): ResponseEntity<List<CompanyIdAndName>> =
-        ResponseEntity.ok(
-            companyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-                searchString,
-                resultLimit,
-            ),
-        )
-
-    override fun existsIdentifier(
-        identifierType: IdentifierType,
-        identifier: String,
-    ) {
-        try {
-            companyIdentifierRepositoryInterface.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
-        } catch (e: JpaObjectRetrievalFailureException) {
-            throw ResourceNotFoundApiException(
-                "Company identifier does not exist",
-                "Company identifier $identifier of type $identifierType does not exist",
-                e,
+        override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
+            logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
+            companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
+            return ResponseEntity.ok(
+                companyAlterationManager
+                    .addCompany(companyInformation)
+                    .toApiModel(),
             )
         }
-    }
 
-    override fun getCompanyIdByIdentifier(
-        identifierType: IdentifierType,
-        identifier: String,
-    ): ResponseEntity<CompanyId> {
-        val companyNotFoundSummary = "Company identifier does not exist"
-        val companyNotFoundMessage = "Company identifier $identifier of type $identifierType does not exist"
-        logger.info("Trying to retrieve company for $identifierType: $identifier")
-        try {
-            val companyId =
-                companyIdentifierRepositoryInterface
-                    .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
-                    .company!!
-                    .companyId
-            logger.info("Retrieved company ID: $companyId")
-            return ResponseEntity.ok(CompanyId(companyId))
-        } catch (e: JpaObjectRetrievalFailureException) {
-            logger.info(companyNotFoundMessage)
-            throw ResourceNotFoundApiException(
-                companyNotFoundSummary,
-                companyNotFoundMessage,
-                e,
+        override fun getCompanies(
+            searchString: String?,
+            dataTypes: Set<DataType>?,
+            countryCodes: Set<String>?,
+            sectors: Set<String>?,
+            chunkSize: Int?,
+            chunkIndex: Int?,
+        ): ResponseEntity<List<BasicCompanyInformation>> {
+            logger.info(
+                "Received a request to get basic company information with searchString='$searchString'" +
+                    ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
+            )
+            return ResponseEntity.ok(
+                companyQueryManager.getCompaniesInChunks(
+                    StoredCompanySearchFilter(
+                        searchString = searchString?.trim() ?: "",
+                        dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
+                        countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                        sectorFilter = sectors?.toList() ?: listOf(),
+                    ),
+                    chunkIndex ?: 0,
+                    chunkSize,
+                ),
             )
         }
-    }
 
-    override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> =
-        ResponseEntity.ok(
-            CompanyAvailableDistinctValues(
-                countryCodes = companyBaseManager.getDistinctCountryCodes(),
-                sectors = companyBaseManager.getDistinctSectors(),
-            ),
-        )
+        override fun getNumberOfCompanies(
+            searchString: String?,
+            dataTypes: Set<DataType>?,
+            countryCodes: Set<String>?,
+            sectors: Set<String>?,
+        ): ResponseEntity<Int> {
+            logger.info(
+                "Received a request to get number of companies with searchString='$searchString'" +
+                    ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
+            )
+            return ResponseEntity.ok(
+                companyBaseManager.countNumberOfCompanies(
+                    StoredCompanySearchFilter(
+                        searchString = searchString ?: "",
+                        dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
+                        countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                        sectorFilter = sectors?.toList() ?: listOf(),
+                    ),
+                ),
+            )
+        }
 
-    override fun getCompanyById(
-        companyId: String,
-        isinChunkSize: Int,
-        isinChunkIndex: Int,
-    ): ResponseEntity<StoredCompany> =
-        ResponseEntity.ok(
-            companyQueryManager
-                .getCompanyApiModelById(companyId, isinChunkSize, isinChunkIndex),
-        )
+        override fun getCompaniesBySearchString(
+            searchString: String,
+            resultLimit: Int,
+        ): ResponseEntity<List<CompanyIdAndName>> =
+            ResponseEntity.ok(
+                companyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+                    searchString,
+                    resultLimit,
+                ),
+            )
 
-    override fun patchCompanyById(
-        companyId: String,
-        companyInformationPatch: CompanyInformationPatch,
-    ): ResponseEntity<StoredCompany> {
-        companyInformationPatch.companyContactDetails?.forEach { it.validateIsEmailAddress() }
-        companyAlterationManager.patchCompany(companyId, companyInformationPatch)
-        return ResponseEntity.ok(
-            companyQueryManager
-                .getCompanyApiModelById(companyId),
-        )
-    }
-
-    override fun putCompanyById(
-        companyId: String,
-        companyInformation: CompanyInformation,
-    ): ResponseEntity<StoredCompany> {
-        companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
-        companyAlterationManager.putCompany(companyId, companyInformation)
-        return ResponseEntity.ok(
-            companyQueryManager
-                .getCompanyApiModelById(companyId),
-        )
-    }
-
-    override fun getTeaserCompanies(): List<String> = companyQueryManager.getTeaserCompanyIds()
-
-    override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
-        ResponseEntity.ok(
-            DataType.values.associateWith {
-                AggregatedFrameworkDataSummary(
-                    (
-                        companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
-                            dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
-                    ).size.toLong(),
+        override fun existsIdentifier(
+            identifierType: IdentifierType,
+            identifier: String,
+        ) {
+            try {
+                companyIdentifierManager.getCompanyIdentifierReference(identifierType, identifier)
+            } catch (e: JpaObjectRetrievalFailureException) {
+                throw ResourceNotFoundApiException(
+                    CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
+                    CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
+                    e,
                 )
-            },
-        )
+            }
+        }
 
-    override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
-        ResponseEntity.ok(
-            companyQueryManager
-                .getCompanyApiModelById(companyId)
-                .companyInformation,
-        )
+        override fun getCompanyIdByIdentifier(
+            identifierType: IdentifierType,
+            identifier: String,
+        ): ResponseEntity<CompanyId> {
+            logger.info("Trying to retrieve company for $identifierType: $identifier")
+            try {
+                val companyId =
+                    companyIdentifierManager.getCompanyIdByIdentifier(identifierType, identifier)
+                logger.info("Retrieved company ID: $companyId")
+                return ResponseEntity.ok(CompanyId(companyId))
+            } catch (e: JpaObjectRetrievalFailureException) {
+                logger.info(CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier))
+                throw ResourceNotFoundApiException(
+                    CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
+                    CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
+                    e,
+                )
+            }
+        }
 
-    override fun isCompanyIdValid(companyId: String) {
-        companyQueryManager.assertCompanyIdExists(companyId)
+        override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> =
+            ResponseEntity.ok(
+                CompanyAvailableDistinctValues(
+                    countryCodes = companyBaseManager.getDistinctCountryCodes(),
+                    sectors = companyBaseManager.getDistinctSectors(),
+                ),
+            )
+
+        override fun getCompanyById(
+            companyId: String,
+            isinChunkSize: Int,
+            isinChunkIndex: Int,
+        ): ResponseEntity<StoredCompany> =
+            ResponseEntity.ok(
+                companyQueryManager
+                    .getCompanyApiModelById(companyId, isinChunkSize, isinChunkIndex),
+            )
+
+        override fun patchCompanyById(
+            companyId: String,
+            companyInformationPatch: CompanyInformationPatch,
+        ): ResponseEntity<StoredCompany> {
+            companyInformationPatch.companyContactDetails?.forEach { it.validateIsEmailAddress() }
+            companyAlterationManager.patchCompany(companyId, companyInformationPatch)
+            return ResponseEntity.ok(
+                companyQueryManager
+                    .getCompanyApiModelById(
+                        companyId,
+                        companyInformationPatch.identifiers?.get(IdentifierType.Isin)?.size ?: 0,
+                        0,
+                    ),
+            )
+        }
+
+        override fun putCompanyById(
+            companyId: String,
+            companyInformation: CompanyInformation,
+        ): ResponseEntity<StoredCompany> {
+            companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
+            companyAlterationManager.putCompany(companyId, companyInformation)
+            return ResponseEntity.ok(
+                companyQueryManager
+                    .getCompanyApiModelById(companyId),
+            )
+        }
+
+        override fun getTeaserCompanies(): List<String> = companyQueryManager.getTeaserCompanyIds()
+
+        override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
+            ResponseEntity.ok(
+                DataType.values.associateWith {
+                    AggregatedFrameworkDataSummary(
+                        (
+                            companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
+                                dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
+                        ).size.toLong(),
+                    )
+                },
+            )
+
+        override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
+            ResponseEntity.ok(
+                companyQueryManager
+                    .getCompanyApiModelById(companyId)
+                    .companyInformation,
+            )
+
+        override fun isCompanyIdValid(companyId: String) {
+            companyQueryManager.assertCompanyIdExists(companyId)
+        }
+
+        override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
+            ResponseEntity.ok(
+                companyQueryManager.getCompanySubsidiariesByParentId(companyId),
+            )
+
+        override fun postCompanyValidation(identifiers: List<String>): ResponseEntity<List<CompanyIdentifierValidationResult>> =
+            ResponseEntity
+                .ok(companyQueryManager.validateCompanyIdentifiers(identifiers))
     }
-
-    override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
-        ResponseEntity.ok(
-            companyQueryManager.getCompanySubsidiariesByParentId(companyId),
-        )
-
-    override fun postCompanyValidation(identifiers: List<String>): ResponseEntity<List<CompanyIdentifierValidationResult>> =
-        ResponseEntity
-            .ok(companyQueryManager.validateCompanyIdentifiers(identifiers))
-}

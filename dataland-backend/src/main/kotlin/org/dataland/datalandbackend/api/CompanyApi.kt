@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -53,6 +55,16 @@ interface CompanyApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully added company."),
+            ApiResponse(
+                responseCode = "400",
+                description =
+                    "Company could not be added. Please check that the strings specified in companyContactDetails are " +
+                        "valid email addresses, that there is no repetition among specified identifiers of the same kind, " +
+                        "that all specified identifiers are new and that you did not specify more than one LEI.",
+                content = [
+                    Content(schema = Schema()),
+                ],
+            ),
         ],
     )
     @PostMapping(

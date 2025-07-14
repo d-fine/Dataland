@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.Optional
 
 /**
  * A JPA interface for accessing the CompanyIdentifier Entity
@@ -35,4 +36,6 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
         companies: Collection<StoredCompanyEntity>,
         identifierType: IdentifierType,
     ): MutableList<CompanyIdentifierEntity>
+
+    override fun findById(companyIdentifierEntityId: CompanyIdentifierEntityId): Optional<CompanyIdentifierEntity>
 }
