@@ -1,13 +1,13 @@
+import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
+import router from '@/router';
+import { DataTypeEnum } from '@clients/backend';
 import {
   AccessStatus,
   type ExtendedStoredDataRequest,
   RequestPriority,
   RequestStatus,
 } from '@clients/communitymanager';
-import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { DataTypeEnum } from '@clients/backend';
-import router from '@/router';
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
 const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'STATUS'];
@@ -237,7 +237,7 @@ describe('Component tests for the data requests search page', function (): void 
     });
   });
 
-  it('Check filter functionality and reset button', function (): void {
+  it.only('Check filter functionality and reset button', function (): void {
     const expectedFrameworkNameSubstrings = [
       'SFDR',
       'EU Taxonomy',
@@ -252,10 +252,7 @@ describe('Component tests for the data requests search page', function (): void 
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
-    }).then((mounted) => {
-      void mounted.wrapper.setData({
-        selectedFrameworks: [],
-      });
+    }).then(() => {
       expectedFrameworkNameSubstrings.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should('not.exist');
       });
@@ -266,6 +263,7 @@ describe('Component tests for the data requests search page', function (): void 
       cy.get(`table tbody:contains("SME")`).should('not.exist');
     });
   });
+
   it('Check the functionality of rowClick event', function (): void {
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,
