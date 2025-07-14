@@ -29,6 +29,7 @@ const val LARGE_DECIMAL = 1234567899.1
 const val LARGE_DECIMAL_AS_STRING = "1234567899.1"
 const val TEST_COMPANY_NAME = "Test Company"
 const val TEST_COMPANY_LEI = "TEST67890"
+const val TEST_REPORTING_PERIOD = "2024"
 const val TEST_CATEGORY = "testCategory"
 const val TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET = "aTestDataPoint"
 const val TEST_DATA_POINT_NAME = "testDataPoint"
@@ -44,12 +45,12 @@ class DataExportServiceTest {
 
     private val testDataProvider = TestDataProvider(objectMapper)
     private val lksgTestData = testDataProvider.getLksgDataset()
-    private val testReportingPeriod = "2024"
+
     private val lksgCompanyExportTestData =
         SingleCompanyExportData(
             companyName = "test name",
             companyLei = UUID.randomUUID().toString(),
-            reportingPeriod = testReportingPeriod,
+            reportingPeriod = TEST_REPORTING_PERIOD,
             data = lksgTestData,
         )
 
@@ -150,7 +151,7 @@ class DataExportServiceTest {
             SingleCompanyExportData(
                 companyName = "Quality Test Company",
                 companyLei = TEST_COMPANY_LEI,
-                reportingPeriod = testReportingPeriod,
+                reportingPeriod = TEST_REPORTING_PERIOD,
                 data = objectMapper.treeToValue(testJson, Any::class.java),
             )
 
@@ -189,7 +190,7 @@ class DataExportServiceTest {
             SingleCompanyExportData(
                 companyName = "Both Fields Test Company",
                 companyLei = TEST_COMPANY_LEI,
-                reportingPeriod = testReportingPeriod,
+                reportingPeriod = TEST_REPORTING_PERIOD,
                 data = objectMapper.treeToValue(testJson, Any::class.java),
             )
 
@@ -237,13 +238,13 @@ class DataExportServiceTest {
                     SingleCompanyExportData(
                         companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = testReportingPeriod,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
                         data = objectMapper.treeToValue(testJsonWithOneValue, Any::class.java),
                     ),
                     SingleCompanyExportData(
                         companyName = "Test Company 2",
                         companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = testReportingPeriod,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
                         data = objectMapper.treeToValue(testJsonWithTwoValues, Any::class.java),
                     ),
                 ),
@@ -284,7 +285,7 @@ class DataExportServiceTest {
                     SingleCompanyExportData(
                         companyName = TEST_COMPANY_NAME,
                         companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = testReportingPeriod,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
@@ -312,7 +313,7 @@ class DataExportServiceTest {
                     SingleCompanyExportData(
                         companyName = TEST_COMPANY_NAME,
                         companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = testReportingPeriod,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
@@ -340,7 +341,7 @@ class DataExportServiceTest {
                     SingleCompanyExportData(
                         companyName = TEST_COMPANY_NAME,
                         companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = testReportingPeriod,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
