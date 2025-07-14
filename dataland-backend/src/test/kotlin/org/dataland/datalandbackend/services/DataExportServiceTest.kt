@@ -27,7 +27,7 @@ import java.io.File
 import java.util.UUID
 
 class DataExportServiceTest {
-    private val testAlias2 = "TEST_ALIAS_2"
+    private val testAlias1 = "TEST_ALIAS_1"
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
@@ -300,8 +300,8 @@ class DataExportServiceTest {
 
         Assertions.assertTrue(
             csvString
-                .contains(testAlias2),
-            "CSV does not contain the export alias $testAlias2",
+                .contains(testAlias1),
+            "CSV does not contain the export alias $testAlias1",
         )
     }
 
@@ -485,7 +485,7 @@ class DataExportServiceTest {
 
         testPoint2.put("id", "testId2")
         testPoint2.put("ref", "testRef2")
-        testPoint2.put("aliasExport", testAlias2)
+        testPoint2.put("aliasExport", testAlias1)
 
         return root.toString()
     }
