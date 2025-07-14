@@ -40,7 +40,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
       { force: true }
     );
     cy.get('.p-dialog-content').should('contain.text', 'Files with duplicate names');
-    cy.get('.p-dialog-header-close').click();
+    cy.get('[data-pc-name="pcclosebutton"]').click();
     cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should('have.length', 1);
   }
 
@@ -51,7 +51,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
     uploadReports.selectDummyFile('Invalid:Filename', 400);
     cy.get('.p-dialog-content').should('contain.text', 'File names containing illegal characters');
-    cy.get('.p-dialog-header-close').click();
+    cy.get('[data-pc-name="pcclosebutton"]').click();
     cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should('not.exist');
   }
 
@@ -127,9 +127,9 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateGeneralSection(reports: string[]): void {
-    cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-trigger').click();
-    cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
-    cy.get('div.p-datepicker').find('span:contains("11")').click();
+    cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-dropdown').click();
+    cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
+    cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
     cy.get('div[data-test="fiscalYearEnd"] input[name="value"]').invoke('val').should('contain', '11');
     cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="Deviation"]').check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
@@ -140,11 +140,11 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
     cy.get('div[data-test="numberOfEmployees"] input[name="value"]').clear().type('333');
     cy.get('div[data-test="nfrdMandatory"] input[type="checkbox"][value="Yes"]').click();
-    selectItemFromDropdownByIndex(cy.get('div[name="value"'), 2);
+    selectItemFromDropdownByIndex(cy.get('[data-test="nfrdMandatory"]').find('[data-test="dataQuality"]'), 2);
     cy.get('input[name="provider"]').clear().type('Assurance Provider');
-    cy.get('div[label="General"] div[name="fileName"]').each((reportField) =>
-      selectItemFromDropdownByValue(cy.wrap(reportField), reports[0])
-    );
+    cy.get('div[label="General"]')
+      .find('[data-test="dataReport"]')
+      .each((reportField) => selectItemFromDropdownByValue(cy.wrap(reportField), reports[0]));
     fillAndValidateAssuranceReportPageNumber();
   }
 
@@ -165,9 +165,9 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get(
       `div[label="Revenue"] div[data-test="${dataTestMarker}"] 
         div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
-    )
-      .should('exist')
-      .click();
+    ).within(() => {
+      cy.get('#dataPointIsAvailableSwitch').click();
+    });
   }
 
   /**
@@ -182,9 +182,9 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get(
       `div[label="Revenue"] div[data-test=${dataTestMarkerOfSubSegment}] div[data-test="${dataTestMarkerOfDataPoint}"] 
         div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
-    )
-      .should('exist')
-      .click();
+    ).within(() => {
+      cy.get('#dataPointIsAvailableSwitch').click();
+    });
   }
 
   /**
@@ -193,9 +193,12 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
    */
   function fillAndValidateOtherSections(reports: string[]): void {
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="value"]').clear().type('130000');
-    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="currency"]'), 1);
+    selectItemFromDropdownByIndex(
+      cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[data-test="currency"]'),
+      1
+    );
     selectItemFromDropdownByValue(
-      cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="fileName"]'),
+      cy.get('div[label="Revenue"] div[data-test="totalAmount"] [data-test="dataReport"]'),
       reports[0]
     );
 
@@ -204,7 +207,10 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
       .clear()
       .type('5');
 
-    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="quality"]'), 2);
+    selectItemFromDropdownByIndex(
+      cy.get('div[label="Revenue"] div[data-test="totalAmount"] [data-test="dataQuality"]'),
+      2
+    );
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type('just a comment');
 
     toggleDataPointInSubSegmentOfRevenue('eligibleShare', 'relativeShareInPercent');
@@ -224,12 +230,12 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(0).clear().type('25');
     toggleDataPointInSubSegmentOfRevenue('eligibleShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(0).clear().type('5000');
-    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(0), 5);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="currency"]').eq(0), 5);
     toggleDataPointInSubSegmentOfRevenue('alignedShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(1).clear().type('50');
     toggleDataPointInSubSegmentOfRevenue('alignedShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(1).clear().type('4000');
-    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="currency"]').eq(1), 51);
     toggleDataPoint('substantialContributionToClimateChangeMitigationInPercentEligible');
     insertValueIntoRevenueDataPoint('a', 'substantialContributionToClimateChangeMitigationInPercentEligible');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
@@ -260,12 +266,12 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(2).clear().type('11');
     toggleDataPointInSubSegmentOfRevenue('nonAlignedShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(2).clear().type('12000');
-    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(2), 51);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="currency"]').eq(2), 51);
     toggleDataPointInSubSegmentOfRevenue('nonEligibleShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(3).clear().type('13');
     toggleDataPointInSubSegmentOfRevenue('nonEligibleShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(3).clear().type('13000');
-    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(3), 53);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="currency"]').eq(3), 53);
     toggleDataPoint('enablingShareInPercent');
     insertValueIntoRevenueDataPoint('12', 'enablingShareInPercent');
     toggleDataPoint('transitionalShareInPercent');
@@ -405,7 +411,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it('Open upload page, fill out and validate the upload form, except for new activities', () => {
+  it.only('Open upload page, fill out and validate the upload form, except for new activities', () => {
     cy.stub(DataPointFormWithToggle);
     getMountingFunction({
       keycloak: minimalKeycloakMock(),

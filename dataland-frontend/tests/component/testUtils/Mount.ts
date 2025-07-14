@@ -1,3 +1,4 @@
+import { DatalandPreset } from '@/assets/theme/dataland-theme.ts';
 import type Keycloak from 'keycloak-js';
 import type { Router } from 'vue-router';
 import { mount } from 'cypress/vue';
@@ -30,6 +31,7 @@ interface DatalandMountOptions {
     propsToPassToTheMountedComponent?: object;
   };
 }
+
 /**
  * A higher-order function that returns a
  * slightly modified version of the vue mount function that automatically initiates plugins used in dataland
@@ -51,7 +53,14 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     options.global.stubs = options.global.stubs ?? {};
     options.global.plugins = options.global.plugins ?? [];
     options.global.plugins.push(createPinia());
-    options.global.plugins.push(PrimeVue);
+    options.global.plugins.push([
+      PrimeVue,
+      {
+        theme: {
+          preset: DatalandPreset,
+        },
+      },
+    ]);
     options.global.plugins.push(DialogService);
     options.global.provide = options.global.provide ?? {};
 
