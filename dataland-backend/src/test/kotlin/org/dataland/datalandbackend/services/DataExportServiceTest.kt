@@ -53,6 +53,11 @@ class DataExportServiceTest {
     private val largeDecimalAsString = "1234567899.1"
     private val testCompany = "Test Company"
     private val testCompanyLei = "TEST67890"
+    private val testCategory = "testCategory"
+    private val testDataPointNameFirstInAlphabet = "aTestDataPoint"
+    private val testDatapointName = "testDataPoint"
+    private val valueString = "value"
+    private val qualityString = "quality"
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -165,14 +170,14 @@ class DataExportServiceTest {
         // Verify that the quality value was correctly used as a value field
         // We expect to find "Audited" in the CSV (our test quality value)
         Assertions.assertTrue(
-            csvString.contains("Audited"),
+            csvString.contains(QualityOptions.Audited.toString()),
             "CSV should contain the quality value 'Audited' in place of missing value field",
         )
 
         // Check that the original quality field name is not present in the output
         val separator = JsonUtils.getPathSeparator()
         Assertions.assertFalse(
-            csvString.contains("${separator}quality"),
+            csvString.contains("${separator}$qualityString"),
             "CSV should not contain the original quality field",
         )
     }
@@ -251,9 +256,9 @@ class DataExportServiceTest {
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
+        // check that columns are not ordered alphabetically, but according to the specification
         val colsInCorrectOrder =
-            """"data.testCategory.aTestDataPoint.value","data.testCategory.testDataPoint.value""""
-        // Verify that the value field was kept (and not the quality field)
+            """"data.$testCategory.$testDatapointName.$valueString","data.$testCategory.$testDataPointNameFirstInAlphabet.$valueString""""
         Assertions.assertTrue(
             csvString
                 .contains(colsInCorrectOrder),
@@ -292,7 +297,7 @@ class DataExportServiceTest {
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        // Verify that the value field was kept (and not the quality field)
+
         Assertions.assertTrue(
             csvString
                 .contains(testAlias2),
@@ -301,7 +306,7 @@ class DataExportServiceTest {
     }
 
     @Test
-    fun `check that large decimals are exported properly`() {
+    fun `check that large decimals are exported properly and not in scientific notation`() {
         val testJson = createTestJsonWithLargeDecimal()
 
         val csvStream =
@@ -330,7 +335,7 @@ class DataExportServiceTest {
     }
 
     @Test
-    fun `test custom components`() {
+    fun `test custom components do not automatically export the data quality when values are available`() {
         val testJson = createTestJsonNonPrimitiveValue()
 
         val csvStream =
@@ -365,13 +370,13 @@ class DataExportServiceTest {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
-        root.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>(testCategory, testField)
 
         val testPoint = objectMapper.createObjectNode()
-        testField.set<JsonNode>("testDataPoint", testPoint)
+        testField.set<JsonNode>(testDatapointName, testPoint)
 
-        testPoint.set<JsonNode>("value", NullNode.instance)
-        testPoint.put("quality", "Audited")
+        testPoint.set<JsonNode>(valueString, NullNode.instance)
+        testPoint.put(qualityString, QualityOptions.Audited.toString())
 
         return root
     }
@@ -383,13 +388,13 @@ class DataExportServiceTest {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
-        root.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>(testCategory, testField)
 
         val testPoint = objectMapper.createObjectNode()
-        testField.set<JsonNode>("testDataPoint", testPoint)
+        testField.set<JsonNode>(testDatapointName, testPoint)
 
-        testPoint.put("value", "42")
-        testPoint.put("quality", QualityOptions.Reported.toString())
+        testPoint.put(valueString, "42")
+        testPoint.put(qualityString, QualityOptions.Reported.toString())
 
         return root
     }
@@ -401,14 +406,14 @@ class DataExportServiceTest {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
-        root.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>(testCategory, testField)
 
         val testPoint = objectMapper.createObjectNode()
-        testField.set<JsonNode>("testDataPoint", testPoint)
+        testField.set<JsonNode>(testDatapointName, testPoint)
 
         // Set both value and quality fields
-        testPoint.put("value", largeDecimal)
-        testPoint.put("quality", QualityOptions.Reported.toString())
+        testPoint.put(valueString, largeDecimal)
+        testPoint.put(qualityString, QualityOptions.Reported.toString())
 
         return root
     }
@@ -420,19 +425,19 @@ class DataExportServiceTest {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
-        root.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>(testCategory, testField)
 
         val testPointA = objectMapper.createObjectNode()
-        testField.set<JsonNode>("aTestDataPoint", testPointA)
+        testField.set<JsonNode>(testDataPointNameFirstInAlphabet, testPointA)
 
-        testPointA.put("value", "123")
-        testPointA.put("quality", QualityOptions.Reported.toString())
+        testPointA.put(valueString, "123")
+        testPointA.put(qualityString, QualityOptions.Reported.toString())
 
         val testPointB = objectMapper.createObjectNode()
-        testField.set<JsonNode>("testDataPoint", testPointB)
+        testField.set<JsonNode>(testDatapointName, testPointB)
 
-        testPointB.put("value", "42")
-        testPointB.put("quality", QualityOptions.Reported.toString())
+        testPointB.put(valueString, "42")
+        testPointB.put(qualityString, QualityOptions.Reported.toString())
 
         return root
     }
@@ -444,14 +449,14 @@ class DataExportServiceTest {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
-        root.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>(testCategory, testField)
 
         val testPoint = objectMapper.createObjectNode()
-        testField.set<JsonNode>("testDataPoint", testPoint)
+        testField.set<JsonNode>(testDatapointName, testPoint)
 
         val nonPrimitiveValue = objectMapper.createObjectNode()
-        testPoint.set<JsonNode>("value", nonPrimitiveValue)
-        testPoint.put("quality", QualityOptions.Reported.toString())
+        testPoint.set<JsonNode>(valueString, nonPrimitiveValue)
+        testPoint.put(qualityString, QualityOptions.Reported.toString())
         nonPrimitiveValue.put("attribute1", 123)
         nonPrimitiveValue.put("attribute2", "test")
 
@@ -465,22 +470,22 @@ class DataExportServiceTest {
         val root = objectMapper.createObjectNode()
 
         val testField = objectMapper.createObjectNode()
-        root.set<JsonNode>("testCategory", testField)
+        root.set<JsonNode>(testCategory, testField)
 
-        val testPointA = objectMapper.createObjectNode()
-        testField.set<JsonNode>("aTestDataPoint", testPointA)
+        val testPoint1 = objectMapper.createObjectNode()
+        testField.set<JsonNode>(testDatapointName, testPoint1)
 
-        testPointA.put("id", "testId1")
-        testPointA.put("ref", "testRef1")
-        testPointA.put("aliasExport", "TEST_ALIAS_1")
+        testPoint1.put("id", "testId1")
+        testPoint1.put("ref", "testRef1")
+        testPoint1.put("aliasExport", "TEST_ALIAS_1")
+        // make sure that the data point that would be alphabetically first is not the first one in the specification
+        // to check, that the order is indeed according to the specification
+        val testPoint2 = objectMapper.createObjectNode()
+        testField.set<JsonNode>(testDataPointNameFirstInAlphabet, testPoint2)
 
-        val testPointB = objectMapper.createObjectNode()
-        testField.set<JsonNode>("testDataPoint", testPointB)
-
-        // Set both value and quality fields
-        testPointB.put("id", "testId2")
-        testPointB.put("ref", "testRef2")
-        testPointB.put("aliasExport", testAlias2)
+        testPoint2.put("id", "testId2")
+        testPoint2.put("ref", "testRef2")
+        testPoint2.put("aliasExport", testAlias2)
 
         return root.toString()
     }
