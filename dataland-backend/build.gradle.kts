@@ -56,6 +56,8 @@ dependencies {
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("org.testcontainers:junit-jupiter:1.19.3")
+    testImplementation("org.testcontainers:postgresql:1.19.3")
     kapt(Spring.boot.configurationProcessor)
     implementation("org.apache.poi:poi:5.4.1")
     implementation("org.apache.poi:poi-ooxml:5.4.1")
