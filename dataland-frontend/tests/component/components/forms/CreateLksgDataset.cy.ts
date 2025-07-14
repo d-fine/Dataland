@@ -66,6 +66,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
         });
         request.reply(200);
       }).as('send');
+      cy.get('.p-multiselect-overlay').invoke('hide');
       submitButton.clickButton();
       cy.wait('@send');
     });
