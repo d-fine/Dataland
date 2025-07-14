@@ -64,10 +64,14 @@ class DataExportUtils
         }
 
         /**
-         * A data class for export data
+         * A data class containing the export data as a list of maps and the csv schema definition.
+         * Each entry in csvData represents one row in the corresponding excel or csv file.
          *
-         * @param csvData the data to be exported with the original json path headers
-         * @param csvSchema
+         * @param csvData: List<Map<String, String?>>
+         *     The data to be exported
+         *     Each entry in the list represents a column in the excel or csv file that is to be exported
+         * @param csvSchema: CsvSchema: This contains all allowed column names for the excel or csv file to be exported
+         *     in the correct order
          */
         data class PreparedExportData(
             val csvData: List<Map<String, String?>>,
@@ -132,8 +136,7 @@ class DataExportUtils
             val usedReadableHeaders =
                 mappedCsvData
                     .flatMap { it.entries }
-                    .filter { it.value != null }
-                    .filter { !it.value.isNullOrBlank() }
+                    .filterNot { it.value.isNullOrBlank() }
                     .map { it.key }
                     .toSet()
 
@@ -275,7 +278,7 @@ class DataExportUtils
             val nonEmptyFields =
                 csvData
                     .flatMap { it.entries }
-                    .filter { !it.value.isNullOrBlank() }
+                    .filterNot { it.value.isNullOrBlank() }
                     .map { it.key }
                     .toSet()
 

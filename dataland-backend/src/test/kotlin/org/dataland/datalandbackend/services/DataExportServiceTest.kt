@@ -25,6 +25,7 @@ import java.io.File
 import java.util.UUID
 
 const val TEST_ALIAS_1 = "TEST_ALIAS_1"
+const val TEST_ALIAS_2 = "TEST_ALIAS_2"
 const val LARGE_DECIMAL = 1234567899.1
 const val LARGE_DECIMAL_AS_STRING = "1234567899.1"
 const val TEST_COMPANY_NAME = "Test Company"
@@ -300,6 +301,10 @@ class DataExportServiceTest {
         Assertions.assertTrue(
             csvString.contains(TEST_ALIAS_1),
             "CSV does not contain the export alias $TEST_ALIAS_1",
+        )
+        Assertions.assertFalse(
+            csvString.contains(TEST_ALIAS_2),
+            "CSV contains $TEST_ALIAS_2 even though it shouldn't.",
         )
     }
 

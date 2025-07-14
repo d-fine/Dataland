@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.LARGE_DECIMAL
 import org.dataland.datalandbackend.services.QUALITY_STRING
 import org.dataland.datalandbackend.services.TEST_ALIAS_1
+import org.dataland.datalandbackend.services.TEST_ALIAS_2
 import org.dataland.datalandbackend.services.TEST_CATEGORY
 import org.dataland.datalandbackend.services.TEST_DATA_POINT_NAME
 import org.dataland.datalandbackend.services.TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET
@@ -194,7 +195,7 @@ class TestDataProvider(
 
         testPoint1.put("id", "testId1")
         testPoint1.put("ref", "testRef1")
-        testPoint1.put("aliasExport", "TEST_ALIAS_1")
+        testPoint1.put("aliasExport", TEST_ALIAS_1)
         // make sure that the data point that would be alphabetically first is not the first one in the specification
         // to check, that the order is indeed according to the specification
         val testPoint2 = objectMapper.createObjectNode()
@@ -202,7 +203,7 @@ class TestDataProvider(
 
         testPoint2.put("id", "testId2")
         testPoint2.put("ref", "testRef2")
-        testPoint2.put("aliasExport", TEST_ALIAS_1)
+        testPoint2.put("aliasExport", TEST_ALIAS_2)
 
         return root.toString()
     }

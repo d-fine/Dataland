@@ -95,11 +95,9 @@ describeIf(
      * @param fileExtension - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyDownloadedFile(partialFileNamePrefix: string, fileExtension: string): void {
-      const downloadsFolder = DOWNLOADS_FOLDER;
-
       cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
       cy.task('findFileByPrefix', {
-        folder: downloadsFolder,
+        folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
         extension: fileExtension,
       }).then((filePath) => {
@@ -119,21 +117,20 @@ describeIf(
      * @param includeAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyAliases(partialFileNamePrefix: string, fileExtension: string, includeAliases: boolean): void {
-      const downloadsFolder = DOWNLOADS_FOLDER;
       cy.wait(Cypress.env('medium_timeout_in_ms') as number);
       cy.task('findFileByPrefix', {
-        folder: downloadsFolder,
+        folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
         extension: fileExtension,
       }).then((filePath) => {
         if (typeof filePath === 'string') {
           cy.readFile(filePath).then((txt) => {
             if (includeAliases) {
-              expect(txt).to.contains('COMPANY_NAME');
-              expect(txt).to.not.contains('companyName');
+              expect(txt).to.contain('COMPANY_NAME');
+              expect(txt).to.not.contain('companyName');
             } else {
-              expect(txt).to.contains('companyName');
-              expect(txt).to.not.contains('COMPANY_NAME');
+              expect(txt).to.contain('companyName');
+              expect(txt).to.not.contain('COMPANY_NAME');
             }
           });
           deleteFile(filePath);
