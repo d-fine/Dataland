@@ -148,12 +148,10 @@ class CompanyQueryManager
             isinChunkIndex: Int,
         ): List<StoredCompanyEntity> {
             storedCompanies.forEach { storedCompany ->
-                val lei = getLeiOrNull(storedCompany)
-                if (lei == null) return@forEach
                 val isinsAsStrings =
                     isinLeiRepository
-                        .findAllByLei(
-                            lei,
+                        .findByCompanyId(
+                            storedCompany.companyId,
                             PageRequest.of(isinChunkIndex, isinChunkSize, Sort.by("isin").ascending()),
                         ).content
                         .map { it.isin }
@@ -175,12 +173,12 @@ class CompanyQueryManager
             isinChunkSize: Int,
             isinChunkIndex: Int,
         ): List<StoredCompanyEntity> {
-            var companiesWithFetchedFields = companyRepository.fetchNonIsinIdentifiers(storedCompanies)
-            companiesWithFetchedFields = fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
-            companiesWithFetchedFields = companyRepository.fetchAlternativeNames(companiesWithFetchedFields)
-            companiesWithFetchedFields = companyRepository.fetchCompanyContactDetails(companiesWithFetchedFields)
-            companiesWithFetchedFields = companyRepository.fetchCompanyAssociatedByDataland(companiesWithFetchedFields)
-            return companiesWithFetchedFields
+            var companyWithFetchedFields = companyRepository.fetchNonIsinIdentifiers(storedCompanies)
+            companyWithFetchedFields = fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
+            companyWithFetchedFields = companyRepository.fetchAlternativeNames(companyWithFetchedFields)
+            companyWithFetchedFields = companyRepository.fetchCompanyContactDetails(companyWithFetchedFields)
+            companyWithFetchedFields = companyRepository.fetchCompanyAssociatedByDataland(companyWithFetchedFields)
+            return companyWithFetchedFields
         }
 
         private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {

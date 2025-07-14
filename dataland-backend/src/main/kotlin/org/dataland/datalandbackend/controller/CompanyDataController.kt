@@ -193,7 +193,11 @@ class CompanyDataController
             companyAlterationManager.putCompany(companyId, companyInformation)
             return ResponseEntity.ok(
                 companyQueryManager
-                    .getCompanyApiModelById(companyId),
+                    .getCompanyApiModelById(
+                        companyId,
+                        companyInformation.identifiers[IdentifierType.Isin]?.size ?: 0,
+                        0,
+                    ),
             )
         }
 
@@ -211,10 +215,14 @@ class CompanyDataController
                 },
             )
 
-        override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
+        override fun getCompanyInfo(
+            companyId: String,
+            isinChunkSize: Int,
+            isinChunkIndex: Int,
+        ): ResponseEntity<CompanyInformation> =
             ResponseEntity.ok(
                 companyQueryManager
-                    .getCompanyApiModelById(companyId)
+                    .getCompanyApiModelById(companyId, isinChunkSize, isinChunkIndex)
                     .companyInformation,
             )
 

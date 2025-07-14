@@ -15,4 +15,9 @@ interface IsinLeiRepository : JpaRepository<IsinLeiEntity, String> {
         lei: String,
         pageable: Pageable,
     ): Page<IsinLeiEntity>
+
+    fun findByCompanyId(
+        companyId: String,
+        pageable: Pageable,
+    ): Page<IsinLeiEntity>
 }

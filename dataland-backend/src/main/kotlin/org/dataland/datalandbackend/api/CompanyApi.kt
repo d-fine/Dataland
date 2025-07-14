@@ -401,6 +401,16 @@ interface CompanyApi {
     )
     fun getCompanyInfo(
         @PathVariable("companyId") companyId: String,
+        @RequestParam(defaultValue = "10")
+        @Parameter(
+            description = "How large of a chunk of all company ISINs to display.",
+        )
+        isinChunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = "Which chunk of all company ISINs to display. Counting starts at 0.",
+        )
+        isinChunkIndex: Int,
     ): ResponseEntity<CompanyInformation>
 
     /**
