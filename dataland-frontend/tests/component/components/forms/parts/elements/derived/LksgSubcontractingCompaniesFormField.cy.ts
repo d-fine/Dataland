@@ -6,12 +6,13 @@ describe('Component tests for the LksgSubcontractingCompaniesFormField', () => {
     cy.mountWithPlugins(LksgSubcontractingCompaniesFormField, {}).then(() => {
       cy.get('[data-pc-name="multiselect"]').should('be.visible').click();
       cy.get('[data-pc-name="multiselect"]')
-        .get('[data-pc-section="wrapper"]')
+        .get('[data-pc-section="option"]')
         .get('[data-pc-section="list"]')
         .find('li')
         .get('[aria-label="Albania (AL)"]')
         .should('contain', 'Albania (AL)')
         .click();
+      cy.get('body').type('{esc}');
       cy.get('[data-test="NaceCodeSelectorInput"]').should('be.visible').click().type('01.11');
       cy.get('[data-test="NaceCodeSelectorTree"]')
         .find('li')

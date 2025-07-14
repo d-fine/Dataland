@@ -16,7 +16,7 @@ describe('Component test for CurrencyDataPointFormField', () => {
       cy.get('[data-test="dataPointToggleButton"]').click();
       validateDataQualityField();
       cy.get('input[name="value"]').should('be.visible').type('123');
-      selectItemFromDropdownByValue(cy.get('div[name="currency"]').should('be.visible'), 'EUR', true);
+      selectItemFromDropdownByValue(cy.get('[data-test="currency"]').should('be.visible'), 'EUR', true);
     });
   });
 });

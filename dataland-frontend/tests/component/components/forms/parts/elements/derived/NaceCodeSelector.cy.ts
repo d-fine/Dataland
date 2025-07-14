@@ -18,7 +18,7 @@ describe('Component tests for the NaceCodeSelector', () => {
         .eq(3)
         .should('contain', 'Computer consultancy activities');
 
-      cy.get('[data-test="NaceCodeSelectorCheckbox"]').eq(3).click();
+      cy.get('[data-test="NaceCodeSelectorCheckbox"]').find('input[type="checkbox"]').eq(3).click();
       cy.get('[data-test="NaceCodeSelectorInput"]').clear();
       cy.get('[data-test="NaceCodeSelectorTree"]').should('be.visible');
       cy.get('[data-test="NaceCodeSelectorTree"] span.p-badge').filter(':contains("1")').should('have.length', 1);
