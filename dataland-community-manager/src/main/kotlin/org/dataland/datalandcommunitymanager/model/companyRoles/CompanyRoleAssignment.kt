@@ -1,6 +1,9 @@
 package org.dataland.datalandcommunitymanager.model.companyRoles
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * --- Generic API model ---
@@ -11,9 +14,20 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class CompanyRoleAssignment(
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
+    )
     val companyRole: CompanyRole,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    )
     val companyId: String,
     @field:JsonProperty(required = true)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+    )
     val userId: String,
 )
