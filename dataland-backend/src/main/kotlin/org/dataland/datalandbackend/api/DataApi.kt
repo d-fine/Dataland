@@ -182,6 +182,10 @@ interface DataApi<T> {
             value = "keepValueFieldsOnly",
             defaultValue = "true",
         ) keepValueFieldsOnly: Boolean = true,
+        @RequestParam(
+            value = "includeAliases",
+            defaultValue = "true",
+        ) includeAliases: Boolean = true,
     ): ResponseEntity<InputStreamResource>
 
     /**

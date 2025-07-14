@@ -335,6 +335,21 @@ abstract class PavedRoadFramework(
         specifications.build()
     }
 
+    protected fun compileTranslations(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.Translations)) {
+            return
+        }
+        val exportAliases = mutableListOf<String?>()
+        framework.root.nestedChildren.forEach { if (it.aliasExport != "") exportAliases.add(it.aliasExport) }
+        val duplicatedAliases = exportAliases.groupingBy { it }.eachCount().filter { it.value > 1 && it.key != null }
+        require(duplicatedAliases.isEmpty()) {
+            "Export aliases must be unique, found duplicates: $duplicatedAliases"
+        }
+
+        val translations = framework.generateTranslations(datalandProject)
+        translations.build()
+    }
+
     /**
      * Compiles a framework following the template and integrates it into the dataland repository
      */
@@ -361,6 +376,7 @@ abstract class PavedRoadFramework(
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
         compileSpecifications(datalandProject)
+        compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))

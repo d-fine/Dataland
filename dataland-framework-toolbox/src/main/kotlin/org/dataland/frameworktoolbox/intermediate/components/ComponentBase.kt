@@ -43,6 +43,11 @@ open class ComponentBase(
     var dataPointTypeName: String? = null
 
     /**
+     * Shorter version of a human-readable name describing the component
+     */
+    var aliasExport: String? = null
+
+    /**
      * The explanation of a component is a longer description of the component. This variant will be displayed on the
      * upload page.
      */
@@ -298,6 +303,15 @@ open class ComponentBase(
     }
 
     /**
+     * Build the translation for this component
+     */
+    fun generateTranslation(translationCategoryBuilder: CategoryBuilder) {
+        generateDefaultTranslation(
+            translationCategoryBuilder,
+        )
+    }
+
+    /**
      * Build the specification for this component using the default generator
      */
     open fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder): Unit =
@@ -305,6 +319,15 @@ open class ComponentBase(
             "This component (${javaClass.canonicalName})" +
                 " did not implement specification generation.",
         )
+
+    /**
+     * Build the specification for this component using the default generator
+     */
+    open fun generateDefaultTranslation(translationCategoryBuilder: CategoryBuilder) {
+        translationCategoryBuilder.addDefaultTranslation(
+            component = this,
+        )
+    }
 
     /**
      * Return constraints as a list of parseable strings
