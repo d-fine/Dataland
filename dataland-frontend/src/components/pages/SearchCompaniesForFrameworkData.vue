@@ -385,7 +385,7 @@ export default defineComponent({
   flex-direction: row;
   position: sticky;
   top: 4rem;
-  z-index: 100;
+  z-index: 50;
   background-color: var(--p-surface-0);
   justify-content: space-between;
   align-items: end;
