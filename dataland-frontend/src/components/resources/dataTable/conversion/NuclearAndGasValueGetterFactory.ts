@@ -42,7 +42,7 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
     | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  if (!nuclearAndGasExtendedDataPoint?.value) {
+  if (!nuclearAndGasExtendedDataPoint?.value && !nuclearAndGasExtendedDataPoint?.dataSource && !nuclearAndGasExtendedDataPoint?.quality) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
