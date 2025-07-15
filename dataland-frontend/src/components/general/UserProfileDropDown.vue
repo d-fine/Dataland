@@ -5,7 +5,7 @@
   </div>
 
   <PrimeMenu
-    data-test="profileMenu"
+    id="user-menu-overlay"
     ref="menu"
     :model="menuItems"
     :popup="true"
