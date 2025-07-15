@@ -237,7 +237,7 @@ describe('Component tests for the data requests search page', function (): void 
     });
   });
 
-  it.only('Check filter functionality and reset button', function (): void {
+  it('Check filter functionality and reset button', function (): void {
     const expectedFrameworkNameSubstrings = [
       'SFDR',
       'EU Taxonomy',
