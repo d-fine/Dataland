@@ -1,7 +1,6 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import NuclearAndGasDataTable from '@/components/general/NuclearAndGasDataTable.vue';
@@ -42,49 +41,51 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
     | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  const { value, dataSource, quality, comment } = nuclearAndGasExtendedDataPoint ?? {};
+  if (!nuclearAndGasExtendedDataPoint?.value) {
+    if (
+      nuclearAndGasExtendedDataPoint?.dataSource ||
+      nuclearAndGasExtendedDataPoint?.comment ||
+      nuclearAndGasExtendedDataPoint?.quality
+    ) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+        displayValue: {
+          innerContents: MLDTDisplayObjectForEmptyString,
+          fieldLabel,
+          dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+          comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,
+          quality: nuclearAndGasExtendedDataPoint.quality ?? undefined,
+        },
+      };
+    }
 
-  if (!value && !dataSource && !quality && !comment) {
     return MLDTDisplayObjectForEmptyString;
-  } else if (!value && (dataSource || quality || comment)) {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
-      displayValue: {
-        label: 'Data Source',
-        modalOptions: {
-          data: {
-            dataPointDisplay: {
-              dataSource,
-              comment,
-              quality,
-            },
-          },
-        },
-      },
-    };
-  } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
-      displayValue: {
-        label: 'Show Table',
-        modalComponent: NuclearAndGasDataTable,
-        modalOptions: {
-          props: {
-            header: fieldLabel,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: {
-            columnHeaders: nuclearAndGasModalColumnHeaders,
-            input: value,
-            dataPointDisplay: {
-              dataSource,
-              comment,
-              quality,
-            },
-          },
-        },
-      },
-    };
   }
+
+  return {
+    displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
+    displayValue: {
+      label: `Show Table`,
+      modalComponent: NuclearAndGasDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          columnHeaders: nuclearAndGasModalColumnHeaders,
+          input: nuclearAndGasExtendedDataPoint.value,
+          dataPointDisplay: {
+            dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+            comment: nuclearAndGasExtendedDataPoint.comment,
+            quality: nuclearAndGasExtendedDataPoint.quality,
+          },
+        },
+      },
+      dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+      comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,
+      quality: nuclearAndGasExtendedDataPoint.quality ?? undefined,
+    },
+  };
 }
