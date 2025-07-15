@@ -44,8 +44,8 @@ export default defineComponent({
     },
     hasAuxiliaryData() {
       return (
-        this.content.displayValue?.dataSource?.fileName ??
-        this.content.displayValue?.dataSource?.fileReference ??
+        this.content.displayValue?.dataSource?.fileName ||
+        this.content.displayValue?.dataSource?.fileReference ||
         this.content.displayValue?.comment
       );
     },
@@ -53,7 +53,7 @@ export default defineComponent({
       return this.content?.displayValue?.value && this.content?.displayValue?.value !== NO_DATA_PROVIDED;
     },
     contentDisplayValue() {
-      return this.hasAuxiliaryData && !this.hasValidValue
+      return this.hasAuxiliaryData || !this.hasValidValue
         ? ONLY_AUXILIARY_DATA_PROVIDED
         : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
