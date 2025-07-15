@@ -31,19 +31,18 @@
           </template>
 
           <template #footer>
-            <ul
-              class="p-autocomplete-items pt-0"
+            <PrimeButton
               v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
-            >
-              <li class="p-autocomplete-item" @click="executeSearchIfNoItemFocused">
-                <span class="text-primary font-normal underline pl-3"> View all results </span>
-              </li>
-            </ul>
+              severity="secondary"
+              @click="executeSearchIfNoItemFocused"
+              label="View all results"
+              fluid
+            />
           </template>
         </AutoComplete>
       </IconField>
     </div>
-    <div class="col-2 mt-2 justify-content-center text-left w-full">
+    <div class="col-2 mt-2 justify-content-center text-left">
       <span class="text-danger" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
     </div>
   </div>
@@ -65,6 +64,7 @@ import type Keycloak from 'keycloak-js';
 import AutoComplete from 'primevue/autocomplete';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import PrimeButton from 'primevue/button';
 import { defineComponent, inject, ref } from 'vue';
 
 /**
@@ -89,7 +89,7 @@ export default defineComponent({
     };
   },
   name: 'FrameworkDataSearchBar',
-  components: { AutoComplete, SearchResultHighlighter, IconField, InputIcon },
+  components: { AutoComplete, SearchResultHighlighter, IconField, InputIcon, PrimeButton },
 
   emits: ['companies-received', 'search-confirmed'],
 

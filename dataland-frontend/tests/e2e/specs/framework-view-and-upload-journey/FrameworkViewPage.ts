@@ -100,7 +100,7 @@ describeIf(
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
       cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
-      const companySelector = '.p-autocomplete-item';
+      const companySelector = '.p-autocomplete-option';
       cy.get(companySelector).first().click({ force: true });
     }
 
