@@ -34,13 +34,13 @@ describeIf(
     function fillRequiredEutaxonomyNonFinancialsFields(): void {
       cy.get(
         'div[data-test="fiscalYearEnd"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-      )
-        .should('exist')
-        .click();
+      ).within(() => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      });
       cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-dropdown').click();
       cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').first().click();
       cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
-      selectItemFromDropdownByIndex(cy.get('div[name="value"]'), 1);
+      selectItemFromDropdownByIndex(cy.get('[data-test="assurance-form-field"]'), 1);
       cy.get('input[name="provider"]').type('Some Assurance Provider Company');
     }
 
@@ -103,10 +103,13 @@ describeIf(
       );
       uploadReports.fillAllFormsOfReportsSelectedForUpload();
       selectItemFromDropdownByValue(
-        cy.get('div[name="capex"] div[name="fileName"]').eq(0),
+        cy.get('div[name="capex"] div[data-test="dataReport"]').eq(0),
         differentFileNameForSameFile
       );
-      selectItemFromDropdownByValue(cy.get('div[name="opex"] div[name="fileName"]').eq(0), `${TEST_PDF_FILE_NAME}2`);
+      selectItemFromDropdownByValue(
+        cy.get('div[name="opex"] div[data-test="dataReport"]').eq(0),
+        `${TEST_PDF_FILE_NAME}2`
+      );
       cy.intercept({ url: `**/documents/*`, method: 'HEAD', times: 1 }).as('documentExists');
       cy.intercept(`**/documents/`, cy.spy().as('postDocument'));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
@@ -140,23 +143,27 @@ describeIf(
               fillRequiredEutaxonomyNonFinancialsFields();
               const revenueSelectorPrefix = 'div[name="revenue"] div[data-test="totalAmount"]';
 
-              cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).click();
+              cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+                cy.get('#dataPointIsAvailableSwitch').click();
+              });
               cy.get(`${revenueSelectorPrefix} input[name="value"]`).type('250700');
-              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[name="currency"]`), 1);
-              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[name="quality"]`), 1);
+              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="currency"]`), 1);
+              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="dataQuality"]`), 1);
               selectItemFromDropdownByValue(
-                cy.get(`${revenueSelectorPrefix} div[name="fileName"]`).eq(0),
+                cy.get(`${revenueSelectorPrefix} div[data-test="dataReport"]`).eq(0),
                 TEST_PDF_FILE_NAME
               );
 
               const capexSelectorPrefix = 'div[name="capex"] div[data-test="totalAmount"]';
 
-              cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).click();
+              cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+                cy.get('#dataPointIsAvailableSwitch').click();
+              });
               cy.get(`${capexSelectorPrefix} input[name="value"]`).type('450700');
-              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[name="currency"]`), 10);
-              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[name="quality"]`), 1);
+              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="currency"]`), 10);
+              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="dataQuality"]`), 1);
               selectItemFromDropdownByValue(
-                cy.get(`${capexSelectorPrefix} div[name="fileName"]`).eq(0),
+                cy.get(`${capexSelectorPrefix} div[data-test="dataReport"]`).eq(0),
                 `${TEST_PDF_FILE_NAME}2`
               );
 
