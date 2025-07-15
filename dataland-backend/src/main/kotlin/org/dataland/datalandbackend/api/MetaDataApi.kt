@@ -283,15 +283,17 @@ interface MetaDataApi {
      */
     @Operation(
         summary = "Checks if active datasets are available.",
-        description = "Checks if any active datasets are available applying the provided data dimensions.",
+        description =
+            "Checks if any active datasets are available applying the provided data dimensions " +
+                "and returns the corresponding meta data.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset meta data."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta data of active datasets."),
         ],
     )
     @PostMapping(
-        value = ["/active-datasets"],
+        value = ["/active-dataset-search"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun retrieveMetaDataOfActiveDatasets(

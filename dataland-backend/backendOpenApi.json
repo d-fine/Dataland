@@ -480,13 +480,13 @@
         ]
       }
     },
-    "/metadata/active-datasets": {
+    "/metadata/active-dataset-search": {
       "post": {
         "tags": [
           "meta-data-controller"
         ],
         "summary": "Checks if active datasets are available.",
-        "description": "Checks if any active datasets are available applying the provided data dimensions.",
+        "description": "Checks if any active datasets are available applying the provided data dimensions and returns the corresponding meta data.",
         "operationId": "retrieveMetaDataOfActiveDatasets",
         "requestBody": {
           "content": {
@@ -503,7 +503,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully retrieved dataset meta data.",
+            "description": "Successfully retrieved meta data of active datasets.",
             "content": {
               "*/*": {
                 "schema": {
