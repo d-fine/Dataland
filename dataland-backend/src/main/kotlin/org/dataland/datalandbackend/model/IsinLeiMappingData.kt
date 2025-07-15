@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.entities.IsinLeiEntity
 
 /**
  * --- API model ---
@@ -13,4 +14,14 @@ data class IsinLeiMappingData(
     val isin: String,
     @field:JsonProperty(required = true)
     val lei: String,
-)
+) {
+    /**
+     * Converts this API model to a database entity.
+     * @return the corresponding [IsinLeiEntity]
+     */
+    fun toIsinLeiEntity(): IsinLeiEntity =
+        IsinLeiEntity(
+            isin = isin,
+            lei = lei,
+        )
+}

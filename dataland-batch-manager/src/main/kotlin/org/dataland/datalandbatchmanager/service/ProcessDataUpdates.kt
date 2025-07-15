@@ -53,6 +53,7 @@ class ProcessDataUpdates
         }
 
         private val logger = LoggerFactory.getLogger(javaClass)
+        private var temp = true
 
         /**
          * Method that listens to a trigger event and calls the methods for GLEIF and NorthData updates
@@ -121,6 +122,15 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 5 * * * * ")
+        private fun testIsinLeiMapping() {
+            if (temp) {
+                gleifGoldenCopyIngestor.processIsinMappingFile()
+                temp = false
+            }
+        }
+
+        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 0 3 ? * SUN")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
@@ -130,7 +140,7 @@ class ProcessDataUpdates
 
             waitForBackend()
             gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullUpdate)
-            gleifGoldenCopyIngestor.processIsinMappingFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processIsinMappingFile()
             gleifGoldenCopyIngestor.processRelationshipFile(doFullUpdate)
 
             flagFileGleif?.let { file ->
