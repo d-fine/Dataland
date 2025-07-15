@@ -1,6 +1,6 @@
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type BasicCompanyInformation } from '@clients/backend';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { faker } from '@faker-js/faker';
 
@@ -23,7 +23,7 @@ before(function () {
  * @param input to type
  */
 function typeIntoSearchBar(input: string): void {
-  cy.get('input[id=framework_data_search_bar_standard]').type(input);
+  cy.get('input[id=search-bar-input]').type(input);
 }
 
 /**
@@ -81,7 +81,7 @@ describe('Component tests for the search bar on the company search page', () => 
     validateSearchStringWarning(false);
     validateAutocompletePanel(true);
 
-    cy.get(`input[id="framework_data_search_bar_standard"]`).clear();
+    cy.get(`input[id="search-bar-input"]`).clear();
     validateSearchStringWarning(false);
     validateAutocompletePanel(false);
   });
