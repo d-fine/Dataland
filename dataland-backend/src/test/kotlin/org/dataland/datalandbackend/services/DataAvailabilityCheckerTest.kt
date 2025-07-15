@@ -35,11 +35,12 @@ class DataAvailabilityCheckerTest {
 
         @Container
         @JvmStatic
-        val postgres: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15-alpine")
-            .withDatabaseName("dataland_test")
-            .withUsername("test")
-            .withPassword("test")
-            .withReuse(true)
+        val postgres: PostgreSQLContainer<*> =
+            PostgreSQLContainer("postgres:15-alpine")
+                .withDatabaseName("dataland_test")
+                .withUsername("test")
+                .withPassword("test")
+                .withReuse(true)
 
         @DynamicPropertySource
         @JvmStatic
