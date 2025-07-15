@@ -104,7 +104,7 @@ function testDownloadPortfolio({
     if (keepValuesOnly) {
       cy.get('[data-test="valuesOnlySwitch"]').click();
     }
-    cy.get('[data-test="downloadButton"]').click();
+    cy.get('[data-test="downloadDataButtonInModal"]').click();
 
     cy.wait(Cypress.env('medium_timeout_in_ms') as number);
     cy.task('findFileByPrefix', {
