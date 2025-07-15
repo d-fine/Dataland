@@ -42,13 +42,15 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
     | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  if (!nuclearAndGasExtendedDataPoint?.value && !nuclearAndGasExtendedDataPoint?.dataSource && !nuclearAndGasExtendedDataPoint?.quality) {
+  const { value, dataSource, quality, comment } = nuclearAndGasExtendedDataPoint ?? {};
+
+  if (!value && !dataSource && !quality && !comment) {
     return MLDTDisplayObjectForEmptyString;
-  } else {
+  } else if (!value && (dataSource || quality || comment)) {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
       displayValue: {
-        label: `Show Table`,
+        label: 'Data Source',
         modalComponent: NuclearAndGasDataTable,
         modalOptions: {
           props: {
@@ -58,11 +60,35 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
           },
           data: {
             columnHeaders: nuclearAndGasModalColumnHeaders,
-            input: nuclearAndGasExtendedDataPoint.value,
+            input: [],
             dataPointDisplay: {
-              dataSource: nuclearAndGasExtendedDataPoint.dataSource,
-              comment: nuclearAndGasExtendedDataPoint.comment,
-              quality: nuclearAndGasExtendedDataPoint.quality,
+              dataSource,
+              comment,
+              quality,
+            },
+          },
+        },
+      },
+    };
+  } else {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
+      displayValue: {
+        label: 'Show Table',
+        modalComponent: NuclearAndGasDataTable,
+        modalOptions: {
+          props: {
+            header: fieldLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            columnHeaders: nuclearAndGasModalColumnHeaders,
+            input: value,
+            dataPointDisplay: {
+              dataSource,
+              comment,
+              quality,
             },
           },
         },
@@ -70,3 +96,4 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
     };
   }
 }
+
