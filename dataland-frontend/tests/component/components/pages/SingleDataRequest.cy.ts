@@ -51,9 +51,9 @@ describe('Component tests for the single data request page', function (): void {
         cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
         cy.get('[data-test="notifyMeImmediatelyInput"]').should('be.visible');
         cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
-        cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+        cy.get('input[id="notifyMeImmediatelyInput"]').click();
         cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'immediate');
-        cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+        cy.get('input[id="notifyMeImmediatelyInput"]').click();
         cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
       });
     });
