@@ -11,10 +11,11 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface IsinLeiRepository : JpaRepository<IsinLeiEntity, String> {
-    fun findAllByLei(
-        lei: String,
-        pageable: Pageable,
-    ): Page<IsinLeiEntity>
+    fun deleteAllByCompanyId(companyId: String)
+
+    fun findByIsin(isin: String): IsinLeiEntity?
+
+    fun findAllByIsinIn(isins: List<String>): List<IsinLeiEntity>
 
     fun findByCompanyId(
         companyId: String,

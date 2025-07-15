@@ -136,12 +136,6 @@ class CompanyQueryManager
                 resultLimit,
             )
 
-        private fun getLeiOrNull(storedCompanyEntity: StoredCompanyEntity): String? =
-            storedCompanyEntity.identifiers
-                .firstOrNull {
-                    it.identifierType == IdentifierType.Lei
-                }?.identifierValue
-
         private fun fetchIsinIdentifiers(
             storedCompanies: List<StoredCompanyEntity>,
             isinChunkSize: Int,
@@ -294,6 +288,15 @@ class CompanyQueryManager
             } else {
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
                     buildCompanyIdentifierValidationResult(identifier, it)
+                } ?: isinLeiRepository.findByIsin(identifier)?.let {
+                    if (checkCompanyIdExists(it.companyId)) {
+                        buildCompanyIdentifierValidationResult(
+                            identifier,
+                            getCompanyByIdAndAssertExistence(it.companyId),
+                        )
+                    } else {
+                        null
+                    }
                 } ?: CompanyIdentifierValidationResult(identifier)
             }
 

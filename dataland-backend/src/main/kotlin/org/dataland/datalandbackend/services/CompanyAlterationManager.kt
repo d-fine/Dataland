@@ -62,8 +62,12 @@ class CompanyAlterationManager
             return companyRepository.save(newCompanyEntity)
         }
 
-        private fun assertNoDuplicateIdentifiersExist(identifierMap: Map<IdentifierType, List<String>>) {
-            val duplicateIdentifiers =
+        private fun assertNoDuplicateNonIsinIdentifiersExist(
+            storedCompanyEntity: StoredCompanyEntity,
+            identifierMap: Map<IdentifierType, List<String>>,
+            ignoreSpecifiedCompany: Boolean = false,
+        ) {
+            val duplicateNonIsinIdentifiers =
                 companyIdentifierRepositoryInterface.findAllById(
                     identifierMap.flatMap { identifierPair ->
                         identifierPair.value.map {
@@ -75,35 +79,69 @@ class CompanyAlterationManager
                     },
                 )
 
-            if (duplicateIdentifiers.isNotEmpty()) {
-                throw DuplicateIdentifierApiException(duplicateIdentifiers)
+            val violatingNonIsinIdentifiers =
+                if (ignoreSpecifiedCompany) {
+                    duplicateNonIsinIdentifiers.filter { it.company?.companyId != storedCompanyEntity.companyId }
+                } else {
+                    duplicateNonIsinIdentifiers
+                }
+
+            if (violatingNonIsinIdentifiers.isNotEmpty()) {
+                throw DuplicateIdentifierApiException(violatingNonIsinIdentifiers)
+            }
+        }
+
+        private fun assertNoDuplicateIsinIdentifiersExist(
+            storedCompanyEntity: StoredCompanyEntity,
+            identifierMap: Map<IdentifierType, List<String>>,
+            ignoreSpecifiedCompany: Boolean = false,
+        ) {
+            val specifiedIsins = identifierMap[IdentifierType.Isin]
+            if (specifiedIsins == null) return
+            val duplicateIsinIdentifiers =
+                isinLeiRepository.findAllByIsinIn(specifiedIsins)
+
+            val violatingIsinIdentifiers =
+                if (ignoreSpecifiedCompany) {
+                    duplicateIsinIdentifiers.filter { it.companyId != storedCompanyEntity.companyId }
+                } else {
+                    duplicateIsinIdentifiers
+                }
+
+            if (violatingIsinIdentifiers.isNotEmpty()) {
+                throw DuplicateIdentifierApiException(
+                    violatingIsinIdentifiers.map {
+                        CompanyIdentifierEntity(
+                            identifierType = IdentifierType.Isin,
+                            identifierValue = it.isin,
+                            company = storedCompanyEntity,
+                        )
+                    },
+                )
             }
         }
 
         private fun assertNoDuplicateSpecifiedLeisExist(identifierMap: Map<IdentifierType, List<String>>) {
-            val specifiedLeis = identifierMap[IdentifierType.Lei]
+            val specifiedLeis = identifierMap[IdentifierType.Lei]?.distinct()
             if (specifiedLeis != null && specifiedLeis.size > 1) {
                 throw InvalidInputApiException(
                     summary = "Duplicate LEIs detected.",
-                    message = "There is more than one entry in your specified list of LEIs.",
+                    message = "There is more than one distinct entry in your specified list of LEIs.",
                 )
             }
         }
 
         private fun createAndAssociateNonIsinIdentifiers(
-            savedCompanyEntity: StoredCompanyEntity,
+            storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
         ): List<CompanyIdentifierEntity> {
-            assertNoDuplicateIdentifiersExist(identifierMap)
-            assertNoDuplicateSpecifiedLeisExist(identifierMap)
-
             val newNonIsinIdentifiers =
                 identifierMap
                     .flatMap { identifierPair ->
                         identifierPair.value.map {
                             CompanyIdentifierEntity(
                                 identifierType = identifierPair.key, identifierValue = it,
-                                company = savedCompanyEntity, isNew = true,
+                                company = storedCompanyEntity, isNew = true,
                             )
                         }
                     }.distinct()
@@ -124,16 +162,15 @@ class CompanyAlterationManager
         }
 
         private fun createAndAssociateIsinIdentifiers(
-            savedCompanyEntity: StoredCompanyEntity,
+            storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
         ): List<CompanyIdentifierEntity> {
             val leiOrNull = identifierMap[IdentifierType.Lei]?.firstOrNull()
 
-            if (leiOrNull == null) return emptyList()
-
             val isinLeiEntities =
                 identifierMap[IdentifierType.Isin]?.map {
                     IsinLeiEntity(
+                        companyId = storedCompanyEntity.companyId,
                         isin = it,
                         lei = leiOrNull,
                     )
@@ -145,7 +182,8 @@ class CompanyAlterationManager
                 CompanyIdentifierEntity(
                     identifierType = IdentifierType.Isin,
                     identifierValue = it.isin,
-                    company = savedCompanyEntity,
+                    company = storedCompanyEntity,
+                    isNew = true,
                 )
             }
         }
@@ -161,6 +199,9 @@ class CompanyAlterationManager
             val companyId = IdUtils.generateUUID()
             logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
             val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
+            assertNoDuplicateNonIsinIdentifiersExist(savedCompany, companyInformation.identifiers)
+            assertNoDuplicateSpecifiedLeisExist(companyInformation.identifiers)
+            assertNoDuplicateIsinIdentifiersExist(savedCompany, companyInformation.identifiers)
             val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
             val isinIdentifiers = createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
             val allIdentifiers = nonIsinIdentifiers + isinIdentifiers
@@ -169,13 +210,34 @@ class CompanyAlterationManager
             return savedCompany
         }
 
-        private fun replaceCompanyIdentifiers(
-            companyEntity: StoredCompanyEntity,
+        private fun replaceNonIsinCompanyIdentifiers(
+            storedCompanyEntity: StoredCompanyEntity,
             identifierType: IdentifierType,
             newIdentifiers: List<String>,
         ) {
-            companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(companyEntity, identifierType)
-            createAndAssociateNonIsinIdentifiers(companyEntity, mapOf(identifierType to newIdentifiers))
+            if (identifierType == IdentifierType.Isin) return
+            companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(
+                storedCompanyEntity,
+                identifierType,
+            )
+            createAndAssociateNonIsinIdentifiers(storedCompanyEntity, mapOf(identifierType to newIdentifiers))
+        }
+
+        private fun replaceIsinLeiEntities(
+            storedCompanyEntity: StoredCompanyEntity,
+            newIdentifiers: List<String>,
+            leiToUse: String?,
+        ) {
+            isinLeiRepository.deleteAllByCompanyId(storedCompanyEntity.companyId)
+            val identifierMapToUse =
+                mutableMapOf(
+                    IdentifierType.Isin to newIdentifiers,
+                )
+            if (leiToUse != null) identifierMapToUse[IdentifierType.Lei] = listOf(leiToUse)
+            createAndAssociateIsinIdentifiers(
+                storedCompanyEntity,
+                identifierMapToUse,
+            )
         }
 
         /**
@@ -190,35 +252,52 @@ class CompanyAlterationManager
             companyId: String,
             patch: CompanyInformationPatch,
         ): StoredCompanyEntity {
-            val companyEntity = companyQueryManager.getCompanyById(companyId)
-            logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
-            patch.companyName?.let { companyEntity.companyName = it }
-            patch.companyContactDetails?.let { companyEntity.companyContactDetails = it }
-            patch.companyLegalForm?.let { companyEntity.companyLegalForm = it }
-            patch.headquarters?.let { companyEntity.headquarters = it }
-            patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
-            patch.sector?.let { companyEntity.sector = it }
-            patch.sectorCodeWz?.let { companyEntity.sectorCodeWz = it }
-            patch.countryCode?.let { companyEntity.countryCode = it }
-            patch.website?.let { companyEntity.website = it }
-            patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
-            patch.parentCompanyLei?.let { companyEntity.parentCompanyLei = it }
+            val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
+            assertNoDuplicateNonIsinIdentifiersExist(storedCompanyEntity, patch.identifiers ?: emptyMap(), true)
+            assertNoDuplicateSpecifiedLeisExist(patch.identifiers ?: emptyMap())
+            assertNoDuplicateIsinIdentifiersExist(storedCompanyEntity, patch.identifiers ?: emptyMap(), true)
+            logger.info("Patching Company ${storedCompanyEntity.companyName} with ID $companyId")
+            patch.companyName?.let { storedCompanyEntity.companyName = it }
+            patch.companyAlternativeNames?.let { storedCompanyEntity.companyAlternativeNames = it }
+            patch.companyContactDetails?.let { storedCompanyEntity.companyContactDetails = it }
+            patch.companyLegalForm?.let { storedCompanyEntity.companyLegalForm = it }
+            patch.headquarters?.let { storedCompanyEntity.headquarters = it }
+            patch.headquartersPostalCode?.let { storedCompanyEntity.headquartersPostalCode = it }
+            patch.sector?.let { storedCompanyEntity.sector = it }
+            patch.sectorCodeWz?.let { storedCompanyEntity.sectorCodeWz = it }
+            patch.countryCode?.let { storedCompanyEntity.countryCode = it }
+            patch.website?.let { storedCompanyEntity.website = it }
+            patch.isTeaserCompany?.let { storedCompanyEntity.isTeaserCompany = it }
+            patch.parentCompanyLei?.let { storedCompanyEntity.parentCompanyLei = it }
 
-            if (patch.companyAlternativeNames != null) {
-                companyEntity.companyAlternativeNames = patch.companyAlternativeNames
+            if (patch.identifiers == null) return companyRepository.save(storedCompanyEntity)
+
+            for (keypair in patch.identifiers) {
+                if (keypair.key == IdentifierType.Isin) continue
+                replaceNonIsinCompanyIdentifiers(
+                    storedCompanyEntity = storedCompanyEntity,
+                    identifierType = keypair.key,
+                    newIdentifiers = keypair.value.distinct(),
+                )
             }
 
-            if (patch.identifiers != null) {
-                for (keypair in patch.identifiers) {
-                    replaceCompanyIdentifiers(
-                        companyEntity = companyEntity,
-                        identifierType = keypair.key,
-                        newIdentifiers = keypair.value,
-                    )
+            val newIsinIdentifiers = patch.identifiers[IdentifierType.Isin]
+            val leiAfterPatch =
+                if (patch.identifiers[IdentifierType.Lei] != null) {
+                    patch.identifiers[IdentifierType.Lei]?.firstOrNull()
+                } else {
+                    storedCompanyEntity.identifiers.find { it.identifierType == IdentifierType.Lei }?.identifierValue
                 }
+
+            if (newIsinIdentifiers != null) {
+                replaceIsinLeiEntities(
+                    storedCompanyEntity = storedCompanyEntity,
+                    newIdentifiers = newIsinIdentifiers,
+                    leiToUse = leiAfterPatch,
+                )
             }
 
-            return companyRepository.save(companyEntity)
+            return companyRepository.save(storedCompanyEntity)
         }
 
         /**
@@ -246,10 +325,16 @@ class CompanyAlterationManager
             storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false
             storedCompanyEntity.parentCompanyLei = companyInformation.parentCompanyLei
             storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
+
             companyIdentifierRepositoryInterface.deleteAllByCompany(
                 storedCompanyEntity,
             )
+            isinLeiRepository.deleteAllByCompanyId(
+                storedCompanyEntity.companyId,
+            )
             createAndAssociateNonIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)
+            createAndAssociateIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)
+
             return companyRepository.save(storedCompanyEntity)
         }
     }

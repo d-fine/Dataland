@@ -4,6 +4,8 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
+import org.dataland.datalandbackend.utils.CompanyIdentifierUtils
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -12,18 +14,22 @@ class CompanyIdentifierManager(
     @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
     @Autowired private val isinLeiRepository: IsinLeiRepository,
 ) {
-    fun getCompanyIdentifierReference(
+    fun searchForCompanyIdentifier(
         identifierType: IdentifierType,
         identifier: String,
     ) {
-        when (identifierType) {
-            IdentifierType.Isin -> isinLeiRepository.getReferenceById(identifier)
-            else ->
-                companyIdentifierRepository.getReferenceById(
-                    CompanyIdentifierEntityId(
-                        identifier,
-                        identifierType,
-                    ),
+        if (identifierType != IdentifierType.Isin) {
+            companyIdentifierRepository.getReferenceById(
+                CompanyIdentifierEntityId(
+                    identifier,
+                    identifierType,
+                ),
+            )
+        } else {
+            isinLeiRepository.findByIsin(identifier)
+                ?: throw ResourceNotFoundApiException(
+                    CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
+                    CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
                 )
         }
     }
@@ -40,11 +46,10 @@ class CompanyIdentifierManager(
                 .companyId
         }
 
-        val isinLeiPair = isinLeiRepository.getReferenceById(identifier)
-        return companyIdentifierRepository
-            .getReferenceById(
-                CompanyIdentifierEntityId(isinLeiPair.lei, IdentifierType.Lei),
-            ).company!!
-            .companyId
+        return isinLeiRepository.findByIsin(identifier)?.companyId
+            ?: throw ResourceNotFoundApiException(
+                CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
+                CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
+            )
     }
 }

@@ -86,7 +86,7 @@ class TemporaryTables private constructor() {
                 " UNION " +
                 // Fuzzy-Search ISIN Company Identifier
                 " (" +
-                " SELECT stored_companies.company_id as company_id, MAX(stored_companies.company_name) AS company_name, " +
+                " SELECT isin_lei_mapping.company_id as company_id, MAX(stored_companies.company_name) AS company_name, " +
                 " MAX( CASE " +
                 "   WHEN isin = :#{searchFilter.searchString} THEN 10" +
                 "   WHEN isin ILIKE :#{escape(#searchFilter.searchString)% ESCAPE :#{escapeCharacer()} THEN 3" +
@@ -94,12 +94,11 @@ class TemporaryTables private constructor() {
                 "   END) AS match_quality, " +
                 DATASET_RANK +
                 " FROM isin_lei_mapping " +
-                " JOIN company_identifiers ON identifier_value = lei AND identifier_type = 'Lei' " +
-                " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id" +
+                " JOIN stored_companies ON stored_companies.company_id = isin_lei_mapping.company_id" +
                 " LEFT JOIN data_meta_information " +
-                "   ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true " +
+                "   ON isin_lei_mapping.company_id = data_meta_information.company_id AND currently_active = true " +
                 " WHERE isin ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
-                " GROUP BY stored_companies.company_id " +
+                " GROUP BY isin_lei_mapping.company_id " +
                 " ) " +
 
                 " ) AS filtered_text_results "

@@ -121,7 +121,7 @@ class CompanyDataController
             identifier: String,
         ) {
             try {
-                companyIdentifierManager.getCompanyIdentifierReference(identifierType, identifier)
+                companyIdentifierManager.searchForCompanyIdentifier(identifierType, identifier)
             } catch (e: JpaObjectRetrievalFailureException) {
                 throw ResourceNotFoundApiException(
                     CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
@@ -174,6 +174,7 @@ class CompanyDataController
             companyInformationPatch: CompanyInformationPatch,
         ): ResponseEntity<StoredCompany> {
             companyInformationPatch.companyContactDetails?.forEach { it.validateIsEmailAddress() }
+
             companyAlterationManager.patchCompany(companyId, companyInformationPatch)
             return ResponseEntity.ok(
                 companyQueryManager
