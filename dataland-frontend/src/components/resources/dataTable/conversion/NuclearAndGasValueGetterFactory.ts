@@ -51,16 +51,8 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
       displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
       displayValue: {
         label: 'Data Source',
-        modalComponent: NuclearAndGasDataTable,
         modalOptions: {
-          props: {
-            header: fieldLabel,
-            modal: true,
-            dismissableMask: true,
-          },
           data: {
-            columnHeaders: nuclearAndGasModalColumnHeaders,
-            input: [],
             dataPointDisplay: {
               dataSource,
               comment,
