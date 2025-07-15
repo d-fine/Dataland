@@ -75,6 +75,7 @@ describeIf(
       cy.get('[data-test="subsidiarySection"]').get('[name="nameOfSubsidiary"]').type('Test-Subsidiary');
       fillOutAdressFormField('subsidiarySection', 'AddressFormField');
     }
+
     /**
      * Fill out the vsme pollution emission section
      */
@@ -85,6 +86,7 @@ describeIf(
       cy.get('[data-test="PollutionEmissionSection"]').find('[data-test="relaseMedium"]').click();
       cy.get('ul.p-select-list li').contains(`Air`).click();
     }
+
     /**
      * Fill out the vsme site and area section
      */
@@ -104,6 +106,7 @@ describeIf(
       cy.get('[data-test="SiteAndAreaSection"]').find('[data-test="specificationOfAdjointness"]').click();
       cy.get('ul.p-select-list li').contains(`In`).click();
     }
+
     /**
      * Fill out the vsme waste classification section
      */
@@ -121,6 +124,7 @@ describeIf(
         .type('12345');
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInCubicMeters"]').type('12345');
     }
+
     /**
      * Fill out the vsme employees per country section
      */
@@ -134,6 +138,7 @@ describeIf(
         .find('[name="numberOfEmployeesInFullTimeEquivalent"]')
         .type('12345');
     }
+
     /**
      * Fill out a datapoint with an attached document
      */
@@ -141,13 +146,16 @@ describeIf(
       cy.get('[data-test="electricityTotalInMWh"]')
         .find('div[data-test="toggleDataPointWrapper"]')
         .find('div[data-test="dataPointToggleButton"]')
-        .click();
+        .within(() => {
+          cy.get('#dataPointIsAvailableSwitch').click();
+        });
       cy.get('[data-test="electricityTotalInMWh"]').find('div[data-test="value"]').find('[name="value"]').type('12345');
-      cy.get('[data-test="electricityTotalInMWh"]').find('div[name="quality"]').click();
+      cy.get('[data-test="electricityTotalInMWh"]').find('div[data-test="dataQuality"]').click();
       cy.get('ul.p-select-list li').contains(`Audited`).click();
-      cy.get('[data-test="electricityTotalInMWh"]').find('div[name="fileName"]').click();
+      cy.get('[data-test="electricityTotalInMWh"]').find('div[data-test="dataReport"]').click();
       cy.get('ul.p-select-list li').contains(`${TEST_PDF_FILE_NAME}-private`).click();
     }
+
     /**
      * Upload a document and verify that it worked
      */
@@ -218,7 +226,9 @@ describeIf(
         times: 1,
       }).as('postCompanyAssociatedData');
       cy.get('[data-test="reportingPeriod"]').click();
-      cy.get('div.p-datepicker').get('div.p-yearpicker').click();
+      cy.get('.p-datepicker-year-view').within(() => {
+        cy.get('.p-datepicker-year').contains('2025').click();
+      });
       fillOutSubsidiarySection();
       fillOutPollutionEmissionSection();
       fillOutSiteAndAreaSection();

@@ -9,7 +9,7 @@ describe('Component test for DataPointFormField', () => {
       });
       cy.get('[data-test="dataPointToggleButton"]').click();
       cy.get("input[name='value']").type('1234');
-      cy.get('div[name="currency"]').should('not.exist');
+      cy.get('div[data-test="currency"]').should('not.exist');
 
       cy.get('div[data-test="dataQuality"]').find('span').should('not.have.class', 'p-disabled');
       cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should('not.exist');
