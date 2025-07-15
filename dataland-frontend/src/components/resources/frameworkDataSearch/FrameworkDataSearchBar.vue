@@ -1,17 +1,17 @@
 <template>
-  <div class="grid">
-    <div class="col-8 text-left">
+  <div class="flex">
+    <div class="text-left col-10">
       <IconField>
         <InputIcon class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
         <AutoComplete
           :autofocus="true"
-          :inputId="searchBarId"
           ref="autocomplete"
           v-model="searchBarInput"
           :suggestions="autocompleteArrayDisplayed"
           optionLabel="companyName"
           :autoOptionFocus="false"
           :min-length="3"
+          input-id="search-bar-input"
           placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
           inputClass="h-3rem d-framework-searchbar-input"
           panelClass="d-framework-searchbar-panel"
@@ -44,30 +44,29 @@
         </AutoComplete>
       </IconField>
     </div>
-    <div class="col-4 mt-2 justify-content-center text-left">
+    <div class="col-2 mt-2 justify-content-center text-left w-full">
       <span class="text-danger" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
+import router from '@/router';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import {
+  type FrameworkDataSearchFilterInterface,
+  getCompanyDataForFrameworkDataSearchPage,
+  getCompanyDataForFrameworkDataSearchPageWithoutFilters,
+  getNumberOfCompaniesForFrameworkDataSearchPage,
+} from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
 import AutoComplete from 'primevue/autocomplete';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
-import {
-  getCompanyDataForFrameworkDataSearchPage,
-  type FrameworkDataSearchFilterInterface,
-  getNumberOfCompaniesForFrameworkDataSearchPage,
-  getCompanyDataForFrameworkDataSearchPageWithoutFilters,
-} from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { defineComponent, inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { useRoute } from 'vue-router';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
-import router from '@/router';
 
 /**
  * This interface defines the internal state of the autocomplete component
@@ -83,11 +82,6 @@ export interface AutoCompleteInternalState {
   };
 }
 
-// const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-// const { searchBarId, chunkSize, currentPage, filter,  }
-
-//TODO: Transfer to Composition API, use templateRef
-
 export default defineComponent({
   setup() {
     return {
@@ -101,10 +95,6 @@ export default defineComponent({
   emits: ['companies-received', 'search-confirmed'],
 
   props: {
-    searchBarId: {
-      type: String,
-      default: 'framework_data_search_bar_standard',
-    },
     chunkSize: {
       type: Number,
       default: null,
@@ -136,15 +126,9 @@ export default defineComponent({
   mounted() {
     this.searchBarInput = this.filter?.companyNameFilter ?? '';
     void this.queryCompany();
-    if (!this.route.query.input) {
-      this.focusOnSearchBar();
-    }
   },
 
   watch: {
-    searchBarId() {
-      this.focusOnSearchBar();
-    },
     searchBarInput(newValue: string) {
       this.validateSearchBarInput();
       this.saveCurrentSearchStringIfValid(newValue);
@@ -171,7 +155,6 @@ export default defineComponent({
       latestValidSearchString: '',
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
-      route: useRoute(),
       notEnoughCharactersWarningTimeoutId: 0,
       areNotEnoughCharactersProvided: false,
     };
@@ -206,13 +189,6 @@ export default defineComponent({
      */
     setCurrentFocusedOptionIndexToDefault() {
       this.currentFocusedOptionIndex = -1;
-    },
-
-    /**
-     * Focuses the search bar
-     */
-    focusOnSearchBar() {
-      // this.autocomplete?.$refs?.focusInput.focus();
     },
 
     /**
