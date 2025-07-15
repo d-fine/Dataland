@@ -92,7 +92,7 @@ describeIf(
      * @param isOnViewPage determines if cypress is expected to be on the view page
      */
     function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
-      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search_bar_top';
+      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search-bar-input';
       cy.intercept({
         url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
         times: 1,

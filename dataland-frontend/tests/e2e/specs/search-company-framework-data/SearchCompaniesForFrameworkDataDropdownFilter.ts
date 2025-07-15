@@ -220,8 +220,8 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
             'searchCompanyInput'
           );
-          cy.get('input[id=search_bar_top]').click({ scrollBehavior: false });
-          cy.get('input[id=search_bar_top]').type(companyNameMarker, { scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
           cy.wait('@searchCompanyInput', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(() => {
             cy.get('.p-autocomplete-item').eq(0).get("span[class='font-normal']").contains(preFix).should('exist');
           });
@@ -251,8 +251,8 @@ describe('As a user, I expect the search functionality on the /companies page to
             cy.get('div.p-multiselect-panel').find("li:contains('No results found')").should('exist');
           });
           cy.intercept('**/api/companies*').as('searchCompany');
-          cy.get('input[id=search_bar_top]').click({ scrollBehavior: false });
-          cy.get('input[id=search_bar_top]').type(companyName, { scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').type(companyName, { scrollBehavior: false });
           cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
             const timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches = 1000;
             // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -286,8 +286,8 @@ describe('As a user, I expect the search functionality on the /companies page to
         cy.intercept({ url: `**searchString=${companyNameMarker}*`, times: 1 }).as(
           `searchCompanyInput_${frameworkToFilterFor}`
         );
-        cy.get('input[id=search_bar_top]').click({ scrollBehavior: false });
-        cy.get('input[id=search_bar_top]').type(companyNameMarker, { scrollBehavior: false });
+        cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+        cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
         cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
           if (isSearchStringExpectedInFirstAutocompleteResult) {
             cy.get('.p-autocomplete-item')

@@ -36,7 +36,7 @@ function mockDataAndMountComponent(mockedResponse?: BasicCompanyInformation[]): 
  * @param input search string
  */
 function enterSearchString(input: string): void {
-  cy.get('input[id=search_bar_top]').should('exist').type(input).type('{enter}').should('have.value', input).clear();
+  cy.get('input[id=search-bar-input]').should('exist').type(input).type('{enter}').should('have.value', input).clear();
 }
 
 /**
@@ -72,7 +72,7 @@ describe('As a user, I expect there to be multiple result pages if there are man
 
   it('Search for all companies, go to page 2 of the search results, then run a another query and verify that paginator and the page text are reset', () => {
     mockDataAndMountComponent();
-    cy.get('button[class="p-paginator-page p-paginator-element p-link"]').eq(0).should('contain.text', '2').click();
+    cy.get('.p-paginator-pages').find('button[class="p-paginator-page"]').eq(0).should('contain.text', '2').click();
     enterSearchString('abs');
     validateExistenceOfPaginator();
   });

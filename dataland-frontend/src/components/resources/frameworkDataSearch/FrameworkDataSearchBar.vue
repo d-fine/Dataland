@@ -15,7 +15,6 @@
           placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
           inputClass="h-3rem d-framework-searchbar-input"
           panelClass="d-framework-searchbar-panel"
-          style="z-index: 10"
           variant="filled"
           :fluid="true"
           @complete="searchCompanyName"
@@ -208,7 +207,6 @@ export default defineComponent({
     executeSearchIfNoItemFocused() {
       if (!this.areNotEnoughCharactersProvided && this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         this.autocomplete?.hide();
-        this.autocomplete?.$refs.focusInput.blur();
         this.$emit('search-confirmed', this.searchBarInput);
         void this.queryCompany();
       }

@@ -32,11 +32,11 @@ describeIf(
      */
     function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
       const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(' '));
-      cy.get('input[id=search_bar_top]').should('not.be.disabled').click({ force: true });
-      cy.get('input[id=search_bar_top]').type(inputValue);
-      cy.get('input[id=search_bar_top]').should('have.value', inputValue);
-      cy.get('input[id=search_bar_top]').type('{enter}');
-      cy.get('input[id=search_bar_top]').should('have.value', inputValue);
+      cy.get('input[id=search-bar-input]').should('not.be.disabled').click({ force: true });
+      cy.get('input[id=search-bar-input]').type(inputValue);
+      cy.get('input[id=search-bar-input]').should('have.value', inputValue);
+      cy.get('input[id=search-bar-input]').type('{enter}');
+      cy.get('input[id=search-bar-input]').should('have.value', inputValue);
       cy.url({ decode: true }).should('include', '/companies?input=' + inputValueUntilFirstSpace);
     }
 
@@ -77,7 +77,7 @@ describeIf(
             clickFirstSearchResult();
             cy.get('h1[data-test="companyNameTitle"]').should('have.text', testCompanyName);
             cy.get('[data-test="back-button"]').should('be.visible').click({ force: true });
-            cy.get('input[id=search_bar_top]').should('contain.value', testCompanyName);
+            cy.get('input[id=search-bar-input]').should('contain.value', testCompanyName);
             clickFirstSearchResult();
             cy.get('h1[data-test="companyNameTitle"]').should('have.text', testCompanyName);
           }
@@ -163,27 +163,27 @@ describeIf(
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();
-            cy.get('input[id=search_bar_top]').type('abs');
+            cy.get('input[id=search-bar-input]').type('abs');
             cy.get('.p-autocomplete-item').contains('View all results').click();
 
             verifySearchResultTableExists();
             cy.url().should('include', '/companies?input=abs');
-            cy.get('input[id=search_bar_top]').click({ force: true });
-            cy.get('input[id=search_bar_top]').type(
+            cy.get('input[id=search-bar-input]').click({ force: true });
+            cy.get('input[id=search-bar-input]').type(
               `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
             );
             cy.get('ul[class=p-autocomplete-items]').should('exist');
-            cy.get('input[id=search_bar_top]').type('{downArrow}');
+            cy.get('input[id=search-bar-input]').type('{downArrow}');
             cy.get('.p-autocomplete-item').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-item').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search_bar_top]').type('{downArrow}');
+            cy.get('input[id=search-bar-input]').type('{downArrow}');
             cy.get('.p-autocomplete-item').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-item').eq(1).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search_bar_top]').type('{upArrow}');
+            cy.get('input[id=search-bar-input]').type('{upArrow}');
             cy.get('.p-autocomplete-item').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-item').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search_bar_top]').click({ force: true });
-            cy.get('input[id=search_bar_top]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
+            cy.get('input[id=search-bar-input]').click({ force: true });
+            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
             assertSearchedCompanyNameIsUnique(testCompany);
 
             cy.get('.p-autocomplete-item').eq(0).should('contain.text', testCompany.companyName).click({ force: true });
