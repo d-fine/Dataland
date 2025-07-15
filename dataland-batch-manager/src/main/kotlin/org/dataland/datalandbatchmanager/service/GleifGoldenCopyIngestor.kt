@@ -105,11 +105,9 @@ class GleifGoldenCopyIngestor(
         val csvLines = file.readLines()
         return csvLines.drop(1).map { line ->
             val parts = line.split(",")
-            val isin = parts[1].trim()
-            val lei = parts[0].trim()
             IsinLeiMappingData(
-                isin = isin,
-                lei = lei,
+                isin = parts[1].trim(),
+                lei = parts[0].trim(),
             )
         }
     }
@@ -129,7 +127,10 @@ class GleifGoldenCopyIngestor(
                 if (!newMappingFile.delete()) {
                     logger.error("failed to delete temporary mapping file $newMappingFile")
                 }
-                isinLeiDataControllerApi.putIsinLeiMapping(extractIsinLeiMapping(newPersistentFile))
+                logger.info("Successfully downloaded ISIN-LEI mapping to file $newPersistentFile.")
+                val isinLeiMappingData = extractIsinLeiMapping(newPersistentFile)
+                logger.info("Extracted ${isinLeiMappingData.size} ISIN-LEI mappings from file $newPersistentFile.")
+                isinLeiDataControllerApi.putIsinLeiMapping(isinLeiMappingData)
                 replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
             }
         logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")

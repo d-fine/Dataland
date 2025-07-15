@@ -42,5 +42,5 @@ fun interface IsinLeiDataApi {
     fun putIsinLeiMapping(
         @Valid @RequestBody
         isinLeiMappingData: List<IsinLeiMappingData>,
-    ): ResponseEntity<List<IsinLeiMappingData>>
+    ): ResponseEntity<Map<String?, String?>?>
 }
