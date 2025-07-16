@@ -1,7 +1,8 @@
 {
   "files": [], // This is required to override the default import pattern "**/*"
   "compilerOptions": {
-    "module": "NodeNext"
+    "module": "NodeNext",
+    "lib": ["ES2023.Array"]
   },
   "references": [
     {
