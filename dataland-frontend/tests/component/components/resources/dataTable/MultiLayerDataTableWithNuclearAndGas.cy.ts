@@ -17,7 +17,6 @@ import { nuclearAndGasViewConfiguration } from '@/frameworks/nuclear-and-gas/Vie
  * @param expectedValue the value that is expected in the test
  */
 function testTableValueNuclearAndGas(
-  table: string,
   fixture: FixtureData<NuclearAndGasData>,
   sectionHead: string,
   cellValueContainer: string,
@@ -26,7 +25,7 @@ function testTableValueNuclearAndGas(
 ): void {
   mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [fixture]);
   getSectionHead(sectionHead).should('exist');
-  getCellValueContainer(cellValueContainer).contains(table).click();
+  getCellValueContainer(cellValueContainer).contains('Show').click();
 
   cy.get('td')
     .contains(activity)
@@ -55,7 +54,6 @@ describe('Component Test for the nuclear and gas view Page with its components',
       preparedFixturesNuG
     );
     testTableValueNuclearAndGas(
-      'Show',
       preparedFixture,
       'Taxonomy-aligned (numerator)',
       'Nuclear and Gas Taxonomy-aligned Revenue (numerator)',
@@ -71,7 +69,6 @@ describe('Component Test for the nuclear and gas view Page with its components',
       preparedFixturesNuG
     );
     testTableValueNuclearAndGas(
-      'Show',
       preparedFixture,
       'Taxonomy-non-eligible',
       'Nuclear and Gas Taxonomy-non-eligible Revenue',
