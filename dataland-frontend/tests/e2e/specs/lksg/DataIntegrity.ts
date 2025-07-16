@@ -127,16 +127,22 @@ describeIf(
     }
 
     /**
+     * Sorts the riskPositions Array in respect to an index inside the Object
+     * @param riskPositions
+     * @returns sorted riskPositions
+     */
+    function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
+      return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
+    }
+
+    /**
      * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
      * @param dataset frontend dataset to modify
      * @returns sorted frontend object
      */
     function sortComplaintsRiskObject(dataset: LksgData): LksgData {
       dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach(
-        (element) =>
-          (element.riskPositions = element.riskPositions.sort((a: RiskPositionType, b: RiskPositionType) =>
-            String(a).localeCompare(String(b))
-          ))
+        (element) => (element.riskPositions = sortRiskPositions(element.riskPositions))
       );
       dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
         const comparisonA = a.specifiedComplaint;
