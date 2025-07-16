@@ -46,7 +46,8 @@ export default defineComponent({
       return (
         this.content.displayValue?.dataSource?.fileName ||
         this.content.displayValue?.dataSource?.fileReference ||
-        this.content.displayValue?.comment
+        this.content.displayValue?.comment ||
+        this.content.displayValue?.quality
       );
     },
     hasValidValue() {
