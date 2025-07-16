@@ -13,6 +13,9 @@
       root: {
         style: 'top: 4rem; right: 0',
       },
+      list: {
+        'data-test': 'profileMenu',
+      },
       item: ({ context }) => {
         return {
           style: `font-weight: var(--font-weight-semibold); ${context.disabled ? 'display: none' : ''}`,
