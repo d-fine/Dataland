@@ -102,6 +102,28 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "isinChunkSize",
+            "in": "query",
+            "description": "How large of a chunk of all company ISINs to display.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "isinChunkIndex",
+            "in": "query",
+            "description": "Which chunk of all company ISINs to display. Counting starts at 0.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {
@@ -1291,6 +1313,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Company could not be added. Please check that the strings specified in companyContactDetails are valid email addresses, that there is no repetition among specified identifiers of the same kind, that all specified identifiers are new and that you did not specify more than one LEI."
           },
           "default": {
             "description": "An error occurred",
@@ -4332,6 +4357,28 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "isinChunkSize",
+            "in": "query",
+            "description": "How large of a chunk of all company ISINs to display.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "isinChunkIndex",
+            "in": "query",
+            "description": "Which chunk of all company ISINs to display. Counting starts at 0.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
             }
           }
         ],

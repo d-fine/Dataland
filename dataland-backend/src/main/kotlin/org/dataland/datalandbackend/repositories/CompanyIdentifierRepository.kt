@@ -53,7 +53,8 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
      * Finds a `CompanyIdentifierEntity` based on the identifier ID
      *
      * @param CompanyIdentifierEntityId The value of the identifier to search for.
-     * @return An `Optional` containing the `CompanyIdentifierEntity` matching the given identifier value and type, or empty if no match is found.
+     * @return An `Optional` containing the `CompanyIdentifierEntity` matching the given identifier value and type,
+     * or empty if no match is found.
      */
     override fun findById(companyIdentifierEntityId: CompanyIdentifierEntityId): Optional<CompanyIdentifierEntity>
 }

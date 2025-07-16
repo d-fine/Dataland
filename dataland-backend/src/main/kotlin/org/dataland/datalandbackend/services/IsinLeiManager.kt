@@ -1,13 +1,11 @@
 package org.dataland.datalandbackend.services
 
-import com.zaxxer.hikari.HikariDataSource
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,13 +24,14 @@ class IsinLeiManager(
     @Value("\${spring.datasource.hikari.maximum-pool-size}")
     private val dataSourceMaximumPoolSize: Int,
 ) {
-//    private val hikariDataSource = dataSource as HikariDataSource
-//    @Autowired
-//    private lateinit var hikariDataSource: HikariDataSource
-
     private val logger = LoggerFactory.getLogger(javaClass)
 
-//    @Async
+    /**
+     * Method to put an ISIN-LEI mapping into the database.
+     * This method clears all previous mappings and adds new ones.
+     * @param isinLeiMappingData the list of ISIN-LEI mapping data to be put
+     */
+    @Async
     @Transactional
     fun putIsinLeiMapping(isinLeiMappingData: List<IsinLeiMappingData>) {
         logger.info("Start dropping previous entries")
@@ -74,7 +73,7 @@ class IsinLeiManager(
         batchSize: Int = 100,
     ) {
         val tableName = "isin_lei_mapping"
-        val sql = """INSERT INTO $tableName (companyId, isin, lei) VALUES (?, ?, ?)"""
+        val sql = "INSERT INTO $tableName (company_id, isin, lei) VALUES (?, ?, ?)"
 
         dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
@@ -99,6 +98,7 @@ class IsinLeiManager(
             statement.clearParameters()
             statement.setString(1, entity.companyId)
             statement.setString(2, entity.isin)
+            @Suppress("MagicNumber")
             statement.setString(3, entity.lei)
             statement.addBatch()
 
