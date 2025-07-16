@@ -41,7 +41,7 @@ describeIf(
     }
 
     describeIf(
-      '',
+      'Tests for LEI tooltip and that company can be found -- only executed on database reset',
       {
         executionEnvironments: executionEnvironments,
         onlyExecuteOnDatabaseReset: true,
@@ -56,9 +56,9 @@ describeIf(
              */
             function checkPermIdToolTip(): void {
               const expectedTextInToolTip = 'The Legal Entity Identifier (LEI)';
-              cy.get('.material-icons[title="LEI"]').trigger('mouseenter', 'center');
+              cy.get('[data-test="lei-tooltip-tag"]').trigger('mouseenter', 'center');
               cy.get('.p-tooltip').should('be.visible').contains(expectedTextInToolTip);
-              cy.get('.material-icons[title="LEI"]').trigger('mouseleave');
+              cy.get('[data-test="lei-tooltip-tag"]').trigger('mouseleave');
               cy.get('.p-tooltip').should('not.exist');
             }
 
@@ -145,7 +145,7 @@ describeIf(
      * @param testCompany the company that was searched for
      */
     function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
-      cy.get(`.p-autocomplete-item:contains('${testCompany.companyName}')`).then((items) => {
+      cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`).then((items) => {
         if (items.length !== 1)
           throw new Error(
             `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
@@ -164,7 +164,7 @@ describeIf(
 
             verifySearchResultTableExists();
             cy.get('input[id=search-bar-input]').type('abs');
-            cy.get('.p-autocomplete-item').contains('View all results').click();
+            cy.get('[data-test="view-all-results-button"]').contains('View all results').click();
 
             verifySearchResultTableExists();
             cy.url().should('include', '/companies?input=abs');
@@ -172,21 +172,24 @@ describeIf(
             cy.get('input[id=search-bar-input]').type(
               `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
             );
-            cy.get('ul[class=p-autocomplete-items]').should('exist');
+            cy.get('.p-autocomplete-list-container').should('exist');
             cy.get('input[id=search-bar-input]').type('{downArrow}');
-            cy.get('.p-autocomplete-item').eq(0).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('.p-autocomplete-item').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search-bar-input]').type('{downArrow}');
-            cy.get('.p-autocomplete-item').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('.p-autocomplete-item').eq(1).should('have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(1).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search-bar-input]').type('{upArrow}');
-            cy.get('.p-autocomplete-item').eq(0).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('.p-autocomplete-item').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search-bar-input]').click({ force: true });
             cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
             assertSearchedCompanyNameIsUnique(testCompany);
 
-            cy.get('.p-autocomplete-item').eq(0).should('contain.text', testCompany.companyName).click({ force: true });
+            cy.get('.p-autocomplete-option')
+              .eq(0)
+              .should('contain.text', testCompany.companyName)
+              .click({ force: true });
 
             validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
           }
