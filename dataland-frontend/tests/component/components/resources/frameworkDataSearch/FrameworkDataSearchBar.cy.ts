@@ -49,7 +49,7 @@ describe('Component tests for the search bar on the company search page', () => 
     typeIntoSearchBar(highlightedSubString);
     cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number });
     validateAutocompletePanel(true);
-    cy.get('.p-autocomplete-item')
+    cy.get('.p-autocomplete-option')
       .eq(0)
       .get("span[class='font-semibold']")
       .contains(highlightedSubString)
