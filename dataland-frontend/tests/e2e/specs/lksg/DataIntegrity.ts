@@ -7,6 +7,7 @@ import {
   DataTypeEnum,
   type LksgData,
   LksgDataControllerApi,
+  type RiskPositionType,
   type StoredCompany,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -131,9 +132,8 @@ describeIf(
      * @returns sorted frontend object
      */
     function sortComplaintsRiskObject(dataset: LksgData): LksgData {
-      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach(
-        (element) =>
-          (element.riskPositions = element.riskPositions.toSorted((a, b) => String(a).localeCompare(String(b))))
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
+        element.riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)))
       );
       dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
         const comparisonA = a.specifiedComplaint;
