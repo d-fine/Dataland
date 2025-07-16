@@ -37,6 +37,7 @@
               @click="executeSearchIfNoItemFocused"
               label="View all results"
               fluid
+              data-test="view-all-results-button"
             />
           </template>
         </AutoComplete>

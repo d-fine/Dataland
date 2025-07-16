@@ -59,7 +59,7 @@ describe('Component Test for the nuclear and gas view Page with its components',
       'Nuclear and Gas Taxonomy-aligned Revenue (numerator)',
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.26 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
       preparedFixture.t.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator?.value
-        ?.taxonomyAlignedShareNumeratorNAndG426?.mitigation + ' %'
+        ?.taxonomyAlignedShareNumeratorNAndG426?.mitigationAndAdaptation + ' %'
     );
   });
 

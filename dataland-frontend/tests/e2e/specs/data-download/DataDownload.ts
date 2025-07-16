@@ -186,7 +186,7 @@ describeIf(
       verifyDownloadedFile(`data-export-${frameworkLabel}`, ExportFileTypeInformation.CSV.fileExtension);
     });
 
-    it.only('Download data as CSV file, check that an alias exists and delete it afterwards', () => {
+    it('Download data as CSV file, check that an alias exists and delete it afterwards', () => {
       const frameworkLabel = getFrameworkLabel();
       const useAliases = true;
       visitPageAndClickDownloadButton(ExportFileType.Csv.toString(), useAliases);
