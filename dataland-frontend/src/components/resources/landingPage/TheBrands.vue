@@ -33,12 +33,6 @@ const brandsSection = computed(() => {
   padding: 80px 0 140px;
   gap: 40px;
 
-  &__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
   .brands-container {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
@@ -65,6 +59,9 @@ const brandsSection = computed(() => {
   }
 
   &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: row;
     width: 100%;

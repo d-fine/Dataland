@@ -11,10 +11,10 @@
       @update:currentSlide="updateCurrentSlide"
       :slide-width="slideWidth"
     >
-      <li v-if="cards.length % 2 === 0" class="quotes__slide">
+      <div v-if="cards.length % 2 === 0" class="quotes__slide">
         <div class="quotes__slide-videoContainer"></div>
-      </li>
-      <li v-for="(card, index) in cards" :key="index" class="quotes__slide">
+      </div>
+      <div v-for="(card, index) in cards" :key="index" class="quotes__slide">
         <div
           :class="{
             'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide + 1,
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-      </li>
+      </div>
     </SlideShow>
     <transition name="fade" mode="out-in">
       <p class="quotes__slide-text" :key="currentCardInfo.date">{{ currentCardInfo.date }}</p>

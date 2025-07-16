@@ -1,11 +1,5 @@
 <template>
-  <section
-    v-if="howItWorksSection"
-    class="howitworks"
-    role="region"
-    aria-labelledby="howitworks-heading"
-    data-test="howitworks"
-  >
+  <section v-if="howItWorksSection" class="howitworks" aria-labelledby="howitworks-heading" data-test="howitworks">
     <div class="howitworks__wrapper">
       <h2 id="howitworks-heading" class="howitworks__title">
         {{ sectionText }}
@@ -20,11 +14,13 @@
         :scroll-screen-width-limit="1800"
         :slide-width="slideWidth"
       >
-        <li v-for="(slide, index) in slides" :key="index" class="howitworks__slide">
-          <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
-          <p class="howitworks__slide-text">{{ slide.text }}</p>
-          <p class="howitworks__slide-index">0{{ index + 1 }}</p>
-        </li>
+        <ul class="howitworks__list">
+          <li v-for="(slide, index) in slides" :key="index" class="howitworks__slide">
+            <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
+            <p class="howitworks__slide-text">{{ slide.text }}</p>
+            <p class="howitworks__slide-index">0{{ index + 1 }}</p>
+          </li>
+        </ul>
       </SlideShow>
     </div>
   </section>
@@ -58,6 +54,16 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+.howitworks__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
 .howitworks {
   padding: 200px 0;
   background-color: var(--p-primary-color);

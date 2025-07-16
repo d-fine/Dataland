@@ -91,10 +91,6 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 </script>
 
 <style scoped>
-.p-dropdown-panel {
-  position: relative;
-}
-
 .p-dropdown-items {
   width: fit-content;
   display: block;
