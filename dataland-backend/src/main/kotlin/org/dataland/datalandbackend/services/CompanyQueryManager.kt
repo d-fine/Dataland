@@ -138,8 +138,8 @@ class CompanyQueryManager
 
         private fun fetchIsinIdentifiers(
             storedCompanies: List<StoredCompanyEntity>,
-            isinChunkSize: Int,
-            isinChunkIndex: Int,
+            isinChunkSize: Int = 10,
+            isinChunkIndex: Int = 0,
         ): List<StoredCompanyEntity> {
             storedCompanies.forEach { storedCompany ->
                 val isinsAsStrings =
@@ -164,8 +164,8 @@ class CompanyQueryManager
 
         private fun fetchAllStoredCompanyFields(
             storedCompanies: List<StoredCompanyEntity>,
-            isinChunkSize: Int,
-            isinChunkIndex: Int,
+            isinChunkSize: Int = 10,
+            isinChunkIndex: Int = 0,
         ): List<StoredCompanyEntity> {
             var companyWithFetchedFields = companyRepository.fetchNonIsinIdentifiers(storedCompanies)
             companyWithFetchedFields = fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
@@ -196,8 +196,8 @@ class CompanyQueryManager
         @Transactional
         fun getCompanyApiModelById(
             companyId: String,
-            isinChunkSize: Int,
-            isinChunkIndex: Int,
+            isinChunkSize: Int = 10,
+            isinChunkIndex: Int = 0,
         ): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(

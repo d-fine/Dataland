@@ -89,7 +89,7 @@ class TemporaryTables private constructor() {
                 " SELECT isin_lei_mapping.company_id as company_id, MAX(stored_companies.company_name) AS company_name, " +
                 " MAX( CASE " +
                 "   WHEN isin = :#{searchFilter.searchString} THEN 10" +
-                "   WHEN isin ILIKE :#{escape(#searchFilter.searchString)% ESCAPE :#{escapeCharacer()} THEN 3" +
+                "   WHEN isin ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3 " +
                 "   ELSE 0" +
                 "   END) AS match_quality, " +
                 DATASET_RANK +
