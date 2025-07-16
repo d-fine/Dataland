@@ -54,9 +54,15 @@ export default defineComponent({
       return this.content?.displayValue?.value && this.content?.displayValue?.value !== NO_DATA_PROVIDED;
     },
     contentDisplayValue() {
-      return this.hasAuxiliaryData || !this.hasValidValue
-        ? ONLY_AUXILIARY_DATA_PROVIDED
-        : this.content.displayValue?.value || NO_DATA_PROVIDED;
+      if (this.hasValidValue) {
+        return this.content.displayValue?.value;
+      }
+
+      if (this.hasAuxiliaryData) {
+        return ONLY_AUXILIARY_DATA_PROVIDED;
+      }
+
+      return NO_DATA_PROVIDED;
     },
     convertedValueForModal() {
       const content = this.content.displayValue;
