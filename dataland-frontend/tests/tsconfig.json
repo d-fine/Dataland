@@ -3,6 +3,6 @@
   "references": [
     {
       "path": "../tsconfig.cypress-ct.json"
-    },
+    }
   ]
 }
