@@ -95,13 +95,6 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
   position: relative;
 }
 
-.fill-dropdown {
-  padding: 0.5rem;
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-}
-
 .p-dropdown-items {
   width: fit-content;
   display: block;
@@ -120,6 +113,10 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 }
 
 .fill-dropdown {
+  padding: 0.5rem;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
   background: var(--default-neutral-white);
   border-width: 2px;
   border-style: solid;
@@ -145,6 +142,7 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 }
 
 .p-dropdown-panel {
+  position: relative;
   background: var(--default-neutral-white);
   .p-dropdown-items {
     .p-dropdown-item {

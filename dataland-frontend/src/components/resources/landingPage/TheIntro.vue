@@ -2,7 +2,6 @@
   <section
     v-if="introSection"
     class="intro"
-    role="region"
     aria-label="Introduction"
     :style="isMobile && inputFocused ? { marginTop: '0' } : {}"
   >

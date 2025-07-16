@@ -1,17 +1,17 @@
 <template>
-  <section v-if="struggleSection" class="struggle" role="region" aria-label="Struggle Statement">
+  <section v-if="struggleSection" class="struggle" aria-label="Struggle Statement">
     <div class="struggle__wrapper">
-      <h2 id="struggle-heading" aria-labelledby="struggle-heading">
+      <h2 id="struggle-heading">
         <span>{{ struggleSection.text[0] }}</span>
         {{ struggleSection.text[1] }}
       </h2>
-      <div class="struggle__grid" role="list">
-        <div v-for="(card, index) in struggleSection.cards" :key="index" class="struggle__cell" role="listitem">
+      <ul class="struggle__grid" aria-labelledby="struggle-heading">
+        <li v-for="(card, index) in struggleSection.cards" :key="index" class="struggle__cell">
           <img :src="card.icon" :alt="card.title" class="struggle__cell__icon" />
           <h3 class="struggle__cell__title">{{ card.title }}</h3>
           <p class="struggle__cell__text">{{ card.text }}</p>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 </template>

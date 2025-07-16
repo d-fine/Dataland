@@ -518,6 +518,12 @@ export default defineComponent({
 }
 
 .primary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-bg);
+  margin: 0;
   white-space: nowrap;
   cursor: pointer;
   font-weight: var(--font-weight-semibold);
@@ -559,14 +565,5 @@ export default defineComponent({
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
   }
-}
-
-.primary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--btn-primary-color);
-  background: var(--btn-primary-bg);
-  border: 1px solid var(--btn-primary-bg);
-  margin: 0;
 }
 </style>

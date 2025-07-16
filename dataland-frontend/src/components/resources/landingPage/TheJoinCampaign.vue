@@ -1,5 +1,5 @@
 <template>
-  <section v-if="joinCampaignSection" class="joincampaign" role="region" aria-labelledby="joincampaign-heading">
+  <section v-if="joinCampaignSection" class="joincampaign" aria-labelledby="joincampaign-heading">
     <div class="joincampaign__wrapper">
       <h2 id="joincampaign-heading" class="joincampaign__title">
         {{ joinCampaignSection.text[0] }}
@@ -15,14 +15,14 @@
       />
 
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
-        <div v-for="(card, index) in joinCampaignSection.cards" :key="index" role="row" class="joincampaign__row">
-          <div class="joincampaign__cell joincampaign__cell--icon" role="gridcell">
+        <tr v-for="(card, index) in joinCampaignSection.cards" :key="index" class="joincampaign__row">
+          <td class="joincampaign__cell joincampaign__cell--icon">
             <span>{{ card.title }}</span>
-          </div>
-          <div role="gridcell" class="joincampaign__cell">
+          </td>
+          <td class="joincampaign__cell">
             {{ card.text }}
-          </div>
-        </div>
+          </td>
+        </tr>
       </div>
     </div>
   </section>

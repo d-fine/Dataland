@@ -1,19 +1,14 @@
 <template>
-  <section
-    v-if="getInTouchSection && getInTouchSection.cards"
-    class="getintouch"
-    role="region"
-    aria-labelledby="getintouch-heading"
-  >
+  <section v-if="getInTouchSection && getInTouchSection.cards" class="getintouch" aria-labelledby="getintouch-heading">
     <div class="getintouch__wrapper">
       <h2 id="getintouch-heading" class="getintouch__title">
         {{ getInTouchSection.text[0] }}
         <span v-if="getInTouchSection.text[1]"> {{ getInTouchSection.text[1] }}</span>
       </h2>
-      <div v-if="getInTouchSection.cards[1]" class="getintouch__image" role="img" aria-label="Contact Image">
+      <div v-if="getInTouchSection.cards[1]" class="getintouch__image">
         <img :src="getInTouchSection.cards[1].icon" :alt="getInTouchSection.cards[1].title" />
       </div>
-      <div class="getintouch__text" grid-column="15 / 17">
+      <div class="getintouch__text">
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
         <ButtonComponent
@@ -47,6 +42,10 @@ const getInTouchSection = computed(() => {
   display: flex;
   flex-direction: column;
   background-color: #1f1f1f;
+
+  &__text {
+    grid-column: 15 / 17;
+  }
 
   &__wrapper {
     display: grid;
