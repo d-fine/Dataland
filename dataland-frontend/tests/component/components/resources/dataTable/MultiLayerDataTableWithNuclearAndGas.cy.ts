@@ -83,10 +83,17 @@ describe('Component Test for the nuclear and gas view Page with its components',
       'All-fields-defined-for-EU-NuclearAndGas-Framework',
       preparedFixturesNuG
     );
+
+    if (preparedFixture.t.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex) {
+      preparedFixture.t.general.taxonomyNonEligible.nuclearAndGasTaxonomyNonEligibleCapex.value = null;
+    }
+
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [
       preparedFixture,
     ]);
     getSectionHead('Taxonomy-non-eligible').should('exist');
-    getCellValueContainer('Nuclear and Gas Taxonomy-non-eligible CapEx').contains(ONLY_AUXILIARY_DATA_PROVIDED).should('exist');
+    getCellValueContainer('Nuclear and Gas Taxonomy-non-eligible CapEx')
+      .contains(ONLY_AUXILIARY_DATA_PROVIDED)
+      .should('exist');
   });
 });
