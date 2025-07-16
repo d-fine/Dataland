@@ -3,6 +3,9 @@
   "references": [
     {
       "path": "../tsconfig.cypress-ct.json"
-    }
-  ]
+    },
+  ],
+  "compilerOptions": {
+    "lib": ["ES2023.Array"],
+  }
 }

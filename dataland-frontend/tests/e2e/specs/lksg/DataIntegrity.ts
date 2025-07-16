@@ -132,7 +132,7 @@ describeIf(
      */
     function sortComplaintsRiskObject(dataset: LksgData): LksgData {
       dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
-        element.riskPositions.sort()
+        element.riskPositions.toSorted((a, b) => (a < b ? -1 : a > b ? 1 : 0))
       );
       dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
         const comparisonA = a.specifiedComplaint;
