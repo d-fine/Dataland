@@ -65,9 +65,9 @@ const mainColumnDefinitions = computed(() => {
   } else {
     return [
       { field: 'economicActivity', header: 'Economic Activity' },
+      { field: 'mitigationAndAdaptation', header: 'CCM + CCA' },
       { field: 'mitigation', header: 'CCM' },
       { field: 'adaptation', header: 'CCA' },
-      { field: 'mitigationAndAdaptation', header: 'CCM + CCA' },
     ];
   }
 });
@@ -108,9 +108,9 @@ function generateRowContents(): void {
       ] as NuclearAndGasEnvironmentalObjective;
       listOfRowContents.value.push({
         economicActivity: listOfActivities[idx].description,
+        mitigationAndAdaptation: formatPercentageNumberAsString(objective?.mitigationAndAdaptation),
         mitigation: formatPercentageNumberAsString(objective?.mitigation),
         adaptation: formatPercentageNumberAsString(objective?.adaptation),
-        mitigationAndAdaptation: formatPercentageNumberAsString(objective?.mitigationAndAdaptation),
       });
     }
   });
