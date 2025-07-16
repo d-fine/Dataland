@@ -17,6 +17,7 @@ import { nuclearAndGasViewConfiguration } from '@/frameworks/nuclear-and-gas/Vie
  * @param expectedValue the value that is expected in the test
  */
 function testTableValueNuclearAndGas(
+  table: string,
   fixture: FixtureData<NuclearAndGasData>,
   sectionHead: string,
   cellValueContainer: string,
@@ -25,7 +26,7 @@ function testTableValueNuclearAndGas(
 ): void {
   mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [fixture]);
   getSectionHead(sectionHead).should('exist');
-  getCellValueContainer(cellValueContainer).contains('Show').click();
+  getCellValueContainer(cellValueContainer).contains(table).click();
 
   cy.get('td')
     .contains(activity)
@@ -54,6 +55,7 @@ describe('Component Test for the nuclear and gas view Page with its components',
       preparedFixturesNuG
     );
     testTableValueNuclearAndGas(
+      'Show',
       preparedFixture,
       'Taxonomy-aligned (numerator)',
       'Nuclear and Gas Taxonomy-aligned Revenue (numerator)',
@@ -69,6 +71,7 @@ describe('Component Test for the nuclear and gas view Page with its components',
       preparedFixturesNuG
     );
     testTableValueNuclearAndGas(
+      'Show',
       preparedFixture,
       'Taxonomy-non-eligible',
       'Nuclear and Gas Taxonomy-non-eligible Revenue',
@@ -76,5 +79,14 @@ describe('Component Test for the nuclear and gas view Page with its components',
       preparedFixture.t.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue?.value
         ?.taxonomyNonEligibleShareNAndG426 + ' %'
     );
+  });
+  it('Check that on the nuclear and gas view page the auxiliary data works as expected', () => {
+    const preparedFixture = getPreparedFixture(
+      'All-fields-defined-for-EU-NuclearAndGas-Framework',
+      preparedFixturesNuG
+    );
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [preparedFixture]);
+    getSectionHead('Taxonomy-non-eligible').should('exist');
+    getCellValueContainer('Nuclear and Gas Taxonomy-non-eligible CapEx').contains('No data provided').should('exist');
   });
 });

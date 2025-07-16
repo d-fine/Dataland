@@ -471,16 +471,6 @@
 						"quality": "Reported"
 					},
 					"nuclearAndGasTaxonomyNonEligibleCapex": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 67.17,
-							"taxonomyNonEligibleShareNAndG427": 14.1,
-							"taxonomyNonEligibleShareNAndG428": 84.47,
-							"taxonomyNonEligibleShareNAndG429": 56.24,
-							"taxonomyNonEligibleShareNAndG430": 95.51,
-							"taxonomyNonEligibleShareNAndG431": 5.61,
-							"taxonomyNonEligibleShareOtherActivities": 99.19,
-							"taxonomyNonEligibleShare": 25.53
-						},
 						"dataSource": {
 							"page": "55-228",
 							"fileName": "SustainabilityReport",
