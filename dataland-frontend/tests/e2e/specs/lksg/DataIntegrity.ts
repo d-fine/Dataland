@@ -127,8 +127,9 @@ describeIf(
     }
 
     /**
-     * Sorts the riskPositions Array in respect to an index inside the Object
-     * @param riskPositions
+     * Sorts the riskPositions Array by converting the
+     * elements into strings and explicitly defining a compare function
+     * @param riskPositions an array of risk positions
      * @returns sorted riskPositions
      */
     function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
