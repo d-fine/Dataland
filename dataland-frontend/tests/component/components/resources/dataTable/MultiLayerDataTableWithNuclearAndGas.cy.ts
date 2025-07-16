@@ -78,6 +78,7 @@ describe('Component Test for the nuclear and gas view Page with its components',
         ?.taxonomyNonEligibleShareNAndG426 + ' %'
     );
   });
+
   it('Check that on the nuclear and gas view page the auxiliary data works as expected', () => {
     const preparedFixture = getPreparedFixture(
       'All-fields-defined-for-EU-NuclearAndGas-Framework',
