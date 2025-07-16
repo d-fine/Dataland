@@ -54,6 +54,13 @@ export default defineComponent({
       return this.content?.displayValue?.value && this.content?.displayValue?.value !== ONLY_AUXILIARY_DATA_PROVIDED;
     },
     contentDisplayValue() {
+      console.log('DEBUG: displayValue =', this.content.displayValue);
+      console.log('DEBUG: value =', this.content.displayValue?.value);
+      console.log('DEBUG: comment =', this.content.displayValue?.comment);
+      console.log('DEBUG: fileName =', this.content.displayValue?.dataSource?.fileName);
+      console.log('DEBUG: fileReference =', this.content.displayValue?.dataSource?.fileReference);
+      console.log('DEBUG: quality =', this.content.displayValue?.quality);
+      console.log('DEBUG: hasAuxiliaryData =', this.hasAuxiliaryData);
       if (this.hasValidValue) {
         return this.content.displayValue?.value;
       }
