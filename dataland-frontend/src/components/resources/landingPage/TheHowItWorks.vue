@@ -20,11 +20,11 @@
         :scroll-screen-width-limit="1800"
         :slide-width="slideWidth"
       >
-        <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
+        <li v-for="(slide, index) in slides" :key="index" class="howitworks__slide">
           <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
           <p class="howitworks__slide-text">{{ slide.text }}</p>
           <p class="howitworks__slide-index">0{{ index + 1 }}</p>
-        </div>
+        </li>
       </SlideShow>
     </div>
   </section>

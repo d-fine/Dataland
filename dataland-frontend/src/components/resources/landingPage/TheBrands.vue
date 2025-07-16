@@ -1,15 +1,15 @@
 <template>
-  <section v-if="brandsSection" class="brands" role="region" aria-label="Brands Statement">
-    <div class="brands__wrap">
+  <section v-if="brandsSection" class="brands" aria-label="Brands Statement">
+    <div class="brands-container">
       <h2 id="brands-heading" aria-labelledby="brands-heading" class="brands__text">
         {{ brandsSection.text[0] }}
         <span class="brands__text">{{ brandsSection.text[1] }}</span>
       </h2>
-      <div class="brands__list" role="list">
-        <div class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index" role="listitem">
+      <ul class="brands__list">
+        <li class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index">
           <img :src="imgSrc" :alt="`Brand ${index + 1}`" class="brands__item-image" />
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 </template>
@@ -33,7 +33,13 @@ const brandsSection = computed(() => {
   padding: 80px 0 140px;
   gap: 40px;
 
-  &__wrap {
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .brands-container {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
     gap: 40px 32px;

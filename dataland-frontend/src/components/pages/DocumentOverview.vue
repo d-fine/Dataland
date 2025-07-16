@@ -316,6 +316,11 @@ onMounted(() => {
 }
 
 .tertiary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--main-color);
+  background: none;
+  border: none;
   white-space: nowrap;
   cursor: pointer;
   font-weight: var(--font-weight-semibold);
@@ -357,13 +362,5 @@ onMounted(() => {
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
   }
-}
-
-.tertiary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--main-color);
-  background: none;
-  border: none;
 }
 </style>

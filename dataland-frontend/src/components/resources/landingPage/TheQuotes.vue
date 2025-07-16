@@ -1,5 +1,5 @@
 <template>
-  <section v-if="quotesSection" class="quotes" role="region" aria-label="The Quotes">
+  <section v-if="quotesSection" class="quotes" aria-label="The Quotes">
     <SlideShow
       slides-wrapper-classes="quotes__sliderwrapper"
       slides-container-classes="quotes__slides"
@@ -11,10 +11,10 @@
       @update:currentSlide="updateCurrentSlide"
       :slide-width="slideWidth"
     >
-      <div v-if="cards.length % 2 === 0" role="listitem" class="quotes__slide">
+      <li v-if="cards.length % 2 === 0" class="quotes__slide">
         <div class="quotes__slide-videoContainer"></div>
-      </div>
-      <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
+      </li>
+      <li v-for="(card, index) in cards" :key="index" class="quotes__slide">
         <div
           :class="{
             'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide + 1,
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </li>
     </SlideShow>
     <transition name="fade" mode="out-in">
       <p class="quotes__slide-text" :key="currentCardInfo.date">{{ currentCardInfo.date }}</p>
