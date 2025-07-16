@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.entities
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.fasterxml.jackson.annotation.JsonValue
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
@@ -43,6 +44,7 @@ data class StoredCompanyEntity(
     @Column(name = "sector_code_wz")
     var sectorCodeWz: String?,
     @OneToMany(mappedBy = "company")
+    @JsonManagedReference
     var identifiers: MutableList<CompanyIdentifierEntity>,
     @Column(name = "parent_company_lei")
     var parentCompanyLei: String?,
