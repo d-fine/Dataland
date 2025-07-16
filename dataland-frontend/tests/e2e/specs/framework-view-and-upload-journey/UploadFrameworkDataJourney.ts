@@ -239,7 +239,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           cy.get('input[id=company_search_bar_standard]').click({ force: true });
           cy.get('input[id=company_search_bar_standard]').type(testCompanyNameForManyDatasetsCompany);
           cy.wait('@searchCompanyName', { timeout: Cypress.env('short_timeout_in_ms') as number });
-          cy.get('ul[class=p-autocomplete-items]').should('exist');
+          cy.get('.p-autocomplete-list-container').should('exist');
           cy.get('input[id=company_search_bar_standard]').type('{downArrow}');
           cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
           cy.get('input[id=company_search_bar_standard]').type('{enter}');

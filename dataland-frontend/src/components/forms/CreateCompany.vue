@@ -68,7 +68,7 @@
                 validation-label="Headquarters"
               />
             </div>
-            <div>
+            <div data-test="country-code-selector">
               <SingleSelectFormField
                 container-class=""
                 name="countryCode"
@@ -189,6 +189,7 @@
           <h4>GICS classification</h4>
 
           <SingleSelectFormField
+            data-test="sector-selector"
             :label="companyDataNames.sector"
             :description="companyDataExplanations.sector"
             name="sector"
