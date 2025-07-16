@@ -10,6 +10,7 @@ import type {
   ExtendedDataPointNuclearAndGasEligibleButNotAligned,
   ExtendedDataPointNuclearAndGasNonEligible,
 } from '@clients/backend';
+import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants.ts';
 
 export const nuclearAndGasModalColumnHeaders = {
   nuclearAndGasAlignedOrEligible: {
@@ -50,7 +51,10 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
       return {
         displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
         displayValue: {
-          innerContents: MLDTDisplayObjectForEmptyString,
+          innerContents: {
+            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+            displayValue: ONLY_AUXILIARY_DATA_PROVIDED,
+          },
           fieldLabel,
           dataSource: nuclearAndGasExtendedDataPoint.dataSource,
           comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,

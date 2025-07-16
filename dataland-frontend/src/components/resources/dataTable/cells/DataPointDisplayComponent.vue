@@ -3,7 +3,7 @@
     >{{ contentDisplayValue }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
-  <span v-else>{{ ONLY_AUXILIARY_DATA_PROVIDED }}</span>
+  <span v-else>{{ NO_DATA_PROVIDED }}</span>
 </template>
 
 <script lang="ts">
@@ -13,7 +13,7 @@ import {
   type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
-import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
+import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 
 export default defineComponent({
   name: 'DataPointDisplayComponent',
@@ -26,7 +26,7 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
-      ONLY_AUXILIARY_DATA_PROVIDED: ONLY_AUXILIARY_DATA_PROVIDED,
+      NO_DATA_PROVIDED: NO_DATA_PROVIDED,
     };
   },
   computed: {
@@ -44,32 +44,18 @@ export default defineComponent({
     },
     hasAuxiliaryData() {
       return (
-        this.content.displayValue?.dataSource?.fileName ||
-        this.content.displayValue?.dataSource?.fileReference ||
-        this.content.displayValue?.comment ||
-        this.content.displayValue?.quality
+        this.content.displayValue?.dataSource?.fileName ??
+        this.content.displayValue?.dataSource?.fileReference ??
+        this.content.displayValue?.comment
       );
     },
     hasValidValue() {
-      return this.content?.displayValue?.value && this.content?.displayValue?.value !== ONLY_AUXILIARY_DATA_PROVIDED;
+      return this.content?.displayValue?.value && this.content?.displayValue?.value !== NO_DATA_PROVIDED;
     },
     contentDisplayValue() {
-      console.log('DEBUG: displayValue =', this.content.displayValue);
-      console.log('DEBUG: value =', this.content.displayValue?.value);
-      console.log('DEBUG: comment =', this.content.displayValue?.comment);
-      console.log('DEBUG: fileName =', this.content.displayValue?.dataSource?.fileName);
-      console.log('DEBUG: fileReference =', this.content.displayValue?.dataSource?.fileReference);
-      console.log('DEBUG: quality =', this.content.displayValue?.quality);
-      console.log('DEBUG: hasAuxiliaryData =', this.hasAuxiliaryData);
-      if (this.hasValidValue) {
-        return this.content.displayValue?.value;
-      }
-
-      if (this.hasAuxiliaryData) {
-        return ONLY_AUXILIARY_DATA_PROVIDED;
-      }
-
-      return ONLY_AUXILIARY_DATA_PROVIDED;
+      return this.hasAuxiliaryData && !this.hasValidValue
+        ? ONLY_AUXILIARY_DATA_PROVIDED
+        : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
     convertedValueForModal() {
       const content = this.content.displayValue;
