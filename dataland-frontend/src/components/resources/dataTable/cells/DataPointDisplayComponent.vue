@@ -3,7 +3,7 @@
     >{{ contentDisplayValue }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
-  <span v-else>{{ NO_DATA_PROVIDED }}</span>
+  <span v-else>{{ ONLY_AUXILIARY_DATA_PROVIDED }}</span>
 </template>
 
 <script lang="ts">
@@ -13,7 +13,7 @@ import {
   type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
-import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
+import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 
 export default defineComponent({
   name: 'DataPointDisplayComponent',
@@ -26,7 +26,7 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
-      NO_DATA_PROVIDED: NO_DATA_PROVIDED,
+      ONLY_AUXILIARY_DATA_PROVIDED: ONLY_AUXILIARY_DATA_PROVIDED,
     };
   },
   computed: {
@@ -51,7 +51,7 @@ export default defineComponent({
       );
     },
     hasValidValue() {
-      return this.content?.displayValue?.value && this.content?.displayValue?.value !== NO_DATA_PROVIDED;
+      return this.content?.displayValue?.value && this.content?.displayValue?.value !== ONLY_AUXILIARY_DATA_PROVIDED;
     },
     contentDisplayValue() {
       if (this.hasValidValue) {
@@ -62,7 +62,7 @@ export default defineComponent({
         return ONLY_AUXILIARY_DATA_PROVIDED;
       }
 
-      return NO_DATA_PROVIDED;
+      return ONLY_AUXILIARY_DATA_PROVIDED;
     },
     convertedValueForModal() {
       const content = this.content.displayValue;
