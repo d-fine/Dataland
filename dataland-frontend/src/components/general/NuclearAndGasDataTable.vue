@@ -68,7 +68,6 @@ const mainColumnDefinitions = computed(() => {
       { field: 'mitigationAndAdaptation', header: 'CCM + CCA' },
       { field: 'mitigation', header: 'CCM' },
       { field: 'adaptation', header: 'CCA' },
-
     ];
   }
 });
