@@ -68,7 +68,7 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkSubtitles: string[];
       }): void {
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
-        cy.get('[data-test="addNewPortfolio"]').click({ force: true });
+        cy.get('[data-test="add-portfolio"]').click();
         cy.get('[name="portfolioName"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
         cy.get('[name="company-identifiers"]').type(permId);
@@ -80,7 +80,7 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get(`[data-test="portfolio-${portfolioName}"]`)
           .should('exist')
           .within(() => {
-            cy.get('[data-test="monitor-portfolio"]').click({ force: true });
+            cy.get('[data-test="monitor-portfolio"]').click();
           });
 
         cy.get('[data-test="activateMonitoringToggle"]').click();
@@ -91,7 +91,7 @@ describe('Portfolio Monitoring Modal', () => {
           .contains('EU Taxonomy')
           .parent()
           .find('input[type="checkbox"]')
-          .click({ force: true });
+          .click();
 
         cy.get('[data-test="saveChangesButton"]').click();
 
@@ -116,12 +116,12 @@ describe('Portfolio Monitoring Modal', () => {
         });
 
         cy.visitAndCheckAppMount('/portfolios');
-        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
+        cy.get('[data-test="portfolios"] [data-pc-name="tablist"]').contains(portfolioName).click();
 
-        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
-        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
+        cy.get('[data-test="portfolios"] [data-pc-name="tablist"]').contains(portfolioName).click();
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
         cy.get('[data-test="deleteButton"]').click();
-        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).should('not.exist');
+        cy.get('[data-test="portfolios"] [data-pc-name="tablist"]').contains(portfolioName).should('not.exist');
       }
 
       it('submits bulk data request when inputs are valid for non financial company', () => {

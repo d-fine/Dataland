@@ -21,7 +21,6 @@
       icon="pi pi-plus"
       :loading="isCompaniesLoading"
       @click="addCompanies"
-      class="primary-button"
       data-test="addCompanies"
       style="margin-left: 1em; float: right"
     />

@@ -49,6 +49,7 @@
                         @click="goToMyRequests()"
                         label="TO MY DATA REQUESTS"
                         class="uppercase p-button-outlined"
+                        data-test="go-to-my-requests-button"
                       />
                     </div>
                     <BulkDataRequestSummary
