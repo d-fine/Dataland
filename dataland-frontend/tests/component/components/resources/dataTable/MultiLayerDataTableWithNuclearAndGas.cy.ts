@@ -85,7 +85,9 @@ describe('Component Test for the nuclear and gas view Page with its components',
       'All-fields-defined-for-EU-NuclearAndGas-Framework',
       preparedFixturesNuG
     );
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [preparedFixture]);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [
+      preparedFixture,
+    ]);
     getSectionHead('Taxonomy-non-eligible').should('exist');
     getCellValueContainer('Nuclear and Gas Taxonomy-non-eligible CapEx').contains('No data provided').should('exist');
   });
