@@ -32,7 +32,12 @@
               id="createButtonAndPageTitle"
               class="flex align-content-end align-items-center"
             >
-              <BulkDataRequestButton />
+              <PrimeButton
+                label="BULK DATA REQUEST"
+                data-test="bulkDataRequestButton"
+                @click="routeToBulkDataRequest()"
+                icon="pi pi-plus-circle"
+              />
               <NewDatasetButton v-if="hasUserUploaderRights" />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
@@ -65,7 +70,7 @@ import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
+import PrimeButton from 'primevue/button';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
 import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
@@ -93,7 +98,6 @@ export default defineComponent({
   name: 'SearchCompaniesForFrameworkData',
   components: {
     NewDatasetButton,
-    BulkDataRequestButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
@@ -102,6 +106,7 @@ export default defineComponent({
     FrameworkDataSearchBar,
     FrameworkDataSearchResults,
     TheFooter,
+    PrimeButton,
   },
   created() {
     window.addEventListener('scroll', this.windowScrollHandler);
@@ -181,6 +186,13 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Redirect to the bulk data request page
+     */
+    routeToBulkDataRequest() {
+      void router.push('/bulkdatarequest');
+    },
+
     /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update
@@ -378,19 +390,5 @@ export default defineComponent({
   #frameworkDataSearchBar {
     width: 70%;
   }
-}
-
-.collapsed-search-container {
-  display: flex;
-  flex-direction: row;
-  position: sticky;
-  top: 4rem;
-  z-index: 50;
-  background-color: var(--p-surface-0);
-  justify-content: space-between;
-  align-items: end;
-  padding-top: 0;
-  padding-bottom: var(--spacing-xs);
-  border-bottom: 1px solid var(--p-surface-200);
 }
 </style>

@@ -87,15 +87,7 @@
             to the data provider.
           </p>
         </FormKit>
-        <div>
-          <PrimeButton
-            data-test="reopenRequestButton"
-            @click="reopenRequest()"
-            style="width: 100%; justify-content: center"
-          >
-            <span class="d-letters" style="text-align: center" data-test="reopenButton"> REOPEN REQUEST </span>
-          </PrimeButton>
-        </div>
+        <PrimeButton data-test="reopenRequestButton" @click="reopenRequest()" label="REOPEN REQUEST" />
       </PrimeDialog>
 
       <PrimeDialog
