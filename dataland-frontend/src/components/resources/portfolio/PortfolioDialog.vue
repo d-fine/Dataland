@@ -5,6 +5,7 @@
       type="text"
       label="Portfolio Name"
       name="portfolioName"
+      data-test="portfolio-name-input"
       :placeholder="portfolioName"
     />
     <label class="formkit-label" for="company-identifiers">Add Company Identifiers</label>
@@ -14,6 +15,7 @@
       name="company-identifiers"
       placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
       :disabled="isCompaniesLoading"
+      data-test="company-identifiers-input"
     />
     <PrimeButton
       type="button"
@@ -21,7 +23,6 @@
       icon="pi pi-plus"
       :loading="isCompaniesLoading"
       @click="addCompanies"
-      class="primary-button"
       data-test="addCompanies"
       style="margin-left: 1em; float: right"
     />

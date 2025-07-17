@@ -12,7 +12,9 @@
           <div class="tabs-container">
             <TabList>
               <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
-                <div class="tabview-header" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
+                <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
+                  {{ portfolio.portfolioName }}
+                </div>
               </Tab>
             </TabList>
             <PrimeButton

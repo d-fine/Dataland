@@ -103,9 +103,9 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
-  cy.get('[data-test="qaRejectButton"').should('exist');
+  cy.get('[data-test="qaRejectButton"]').should('exist');
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
-  cy.get('span[class=p-toggleswitch-slider]').should('exist');
+  cy.get('.p-toggleswitch-slider').should('exist');
   cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-toggleswitch-checked');
 
   cy.get('[data-test="qaApproveButton"').should('exist').click();
@@ -198,8 +198,8 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
 function safeLogout(): void {
   cy.intercept('**/api-keys/getApiKeyMetaInfoForUser', { body: [] }).as('getApiKeyMetaInfoForUser');
   cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
-  cy.get("div[id='profile-picture-dropdown-toggle']").click();
-  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
+  cy.get('[data-test="user-profile-toggle"]').click();
+  cy.get('a:contains("LOG OUT")').click();
   cy.url().should('eq', getBaseUrl() + '/');
   cy.contains('a', 'Login');
 }

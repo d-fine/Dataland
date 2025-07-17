@@ -35,7 +35,7 @@ describeIf(
       createRequest(1, `${permIdOfExistingCompany}, 12345incorrectNumber`, () => {
         cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
         cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-toggleswitch-checked');
-        cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+        cy.get('[data-test="notifyMeImmediatelyInputToClick"]').click();
         cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
       });
 
@@ -59,8 +59,8 @@ describeIf(
       createRequest(3);
 
       cy.get('[data-test="requestStatusText"]').contains('Success');
-      cy.get('button[type="button"]').should('be.visible');
-      cy.get('button[type="button"]').click();
+      cy.get('button[data-test="go-to-my-requests-button"]').should('be.visible');
+      cy.get('button[data-test="go-to-my-requests-button"]').click();
       cy.url().should('not.include', '/bulkdatarequest');
       cy.url().should('include', '/requests');
     });
@@ -115,11 +115,11 @@ describeIf(
     function chooseFrameworkByIndex(index: number): void {
       const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;
       cy.get('[data-test="selectFrameworkSelect"] .p-multiselect').click();
-      cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item').should(
+      cy.get('.p-multiselect-overlay .p-multiselect-list-container li.p-multiselect-option').should(
         'have.length',
         numberOfFrameworks
       );
-      cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item').eq(index).click();
+      cy.get('.p-multiselect-overlay .p-multiselect-list-container li.p-multiselect-option').eq(index).click();
       cy.get('div[data-test="addedFrameworks"] span').should('have.length', 1);
     }
 
@@ -167,8 +167,8 @@ describeIf(
      * Verifies the successful creation of the request on the request page
      */
     function verifyOnRequestPage(): void {
-      cy.get('button[type="button"]').should('be.visible');
-      cy.get('button[type="button"]').click();
+      cy.get('button[data-test="go-to-my-requests-button"]').should('be.visible');
+      cy.get('button[data-test="go-to-my-requests-button"]').click();
       cy.url().should('not.include', '/bulkdatarequest');
       cy.url().should('include', '/requests');
       cy.get(`td:contains("${testCompanyName}")`).first().scrollIntoView();

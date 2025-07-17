@@ -62,7 +62,7 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('.framework-switch-row')
       .first()
       .within(() => {
-        cy.get('input[type="checkbox"]').check({ force: true }).should('be.checked');
+        cy.get('input[type="checkbox"]').check().should('be.checked');
       });
 
     cy.get('[data-test="saveChangesButton"]').click();
@@ -80,7 +80,7 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('.framework-switch-row')
       .first()
       .within(() => {
-        cy.get('input[type="checkbox"]').check({ force: true });
+        cy.get('input[type="checkbox"]').check();
       });
 
     cy.get('[data-test="saveChangesButton"]').click();
@@ -88,9 +88,7 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('displays EU Taxonomy message when that framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy')
-      .find('input[type="checkbox"]')
-      .click({ force: true });
+    cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy').find('input[type="checkbox"]').click();
 
     cy.get('.gray-text').should(
       'contain.text',
@@ -102,8 +100,8 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.get('.framework-switch-row').each(($row) => {
       cy.wrap($row).within(() => {
-        cy.get('input[type="checkbox"]').check({ force: true }).should('be.checked');
-        cy.get('input[type="checkbox"]').uncheck({ force: true }).should('not.be.checked');
+        cy.get('input[type="checkbox"]').check().should('be.checked');
+        cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
       });
     });
   });
@@ -127,8 +125,8 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.get('.framework-switch-row').each(($row) => {
       cy.wrap($row).within(() => {
-        cy.get('input[type="checkbox"]').check({ force: true }).should('be.checked');
-        cy.get('input[type="checkbox"]').uncheck({ force: true }).should('not.be.checked');
+        cy.get('input[type="checkbox"]').check().should('be.checked');
+        cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
       });
     });
   });
