@@ -22,14 +22,14 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of a company manager for Dataland
- * @param companyRepository  JPA for company data
+ * @param storedCompanyRepository  JPA for company data
  * @param companyIdentifierRepositoryInterface JPA repository for company identifiers
  */
 @Service
 class CompanyAlterationManager
     @Autowired
     constructor(
-        private val companyRepository: StoredCompanyRepository,
+        private val storedCompanyRepository: StoredCompanyRepository,
         private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
         private val companyQueryManager: CompanyQueryManager,
         private val isinLeiRepository: IsinLeiRepository,
@@ -59,7 +59,7 @@ class CompanyAlterationManager
                     parentCompanyLei = companyInformation.parentCompanyLei,
                 )
 
-            return companyRepository.save(newCompanyEntity)
+            return storedCompanyRepository.save(newCompanyEntity)
         }
 
         private fun assertNoDuplicateNonIsinIdentifiersExist(
@@ -270,7 +270,7 @@ class CompanyAlterationManager
             patch.isTeaserCompany?.let { storedCompanyEntity.isTeaserCompany = it }
             patch.parentCompanyLei?.let { storedCompanyEntity.parentCompanyLei = it }
 
-            if (patch.identifiers == null) return companyRepository.save(storedCompanyEntity)
+            if (patch.identifiers == null) return storedCompanyRepository.save(storedCompanyEntity)
 
             for (keypair in patch.identifiers) {
                 if (keypair.key == IdentifierType.Isin) continue
@@ -297,7 +297,7 @@ class CompanyAlterationManager
                 )
             }
 
-            return companyRepository.save(storedCompanyEntity)
+            return storedCompanyRepository.save(storedCompanyEntity)
         }
 
         /**
@@ -335,6 +335,6 @@ class CompanyAlterationManager
             createAndAssociateNonIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)
             createAndAssociateIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)
 
-            return companyRepository.save(storedCompanyEntity)
+            return storedCompanyRepository.save(storedCompanyEntity)
         }
     }
