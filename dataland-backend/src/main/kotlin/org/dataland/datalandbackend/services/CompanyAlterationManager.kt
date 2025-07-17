@@ -103,7 +103,7 @@ class CompanyAlterationManager
 
             val violatingIsinIdentifiers =
                 if (ignoreSpecifiedCompany) {
-                    duplicateIsinIdentifiers.filter { it.companyId != storedCompanyEntity.companyId }
+                    duplicateIsinIdentifiers.filter { it.company != storedCompanyEntity }
                 } else {
                     duplicateIsinIdentifiers
                 }
@@ -170,7 +170,7 @@ class CompanyAlterationManager
             val isinLeiEntities =
                 identifierMap[IdentifierType.Isin]?.map {
                     IsinLeiEntity(
-                        companyId = storedCompanyEntity.companyId,
+                        company = storedCompanyEntity,
                         isin = it,
                         lei = leiOrNull,
                     )
@@ -228,7 +228,7 @@ class CompanyAlterationManager
             newIdentifiers: List<String>,
             leiToUse: String?,
         ) {
-            isinLeiRepository.deleteAllByCompanyId(storedCompanyEntity.companyId)
+            isinLeiRepository.deleteAllByCompany(storedCompanyEntity)
             val identifierMapToUse =
                 mutableMapOf(
                     IdentifierType.Isin to newIdentifiers,
@@ -329,8 +329,8 @@ class CompanyAlterationManager
             companyIdentifierRepositoryInterface.deleteAllByCompany(
                 storedCompanyEntity,
             )
-            isinLeiRepository.deleteAllByCompanyId(
-                storedCompanyEntity.companyId,
+            isinLeiRepository.deleteAllByCompany(
+                storedCompanyEntity,
             )
             createAndAssociateNonIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)
             createAndAssociateIsinIdentifiers(storedCompanyEntity, companyInformation.identifiers)

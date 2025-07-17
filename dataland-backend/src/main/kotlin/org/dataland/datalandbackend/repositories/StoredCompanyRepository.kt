@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for accessing the StoredCompany Entity
  */
-
+@Suppress("TooManyFunctions")
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     /**
      * A function for querying basic information for all companies with approved datasets
@@ -211,4 +211,20 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun getCompanySubsidiariesByParentId(
         @Param("companyId") companyId: String,
     ): List<BasicCompanyInformation>
+
+    /**
+     * Finds a `StoredCompanyEntity` based on the identifier value (always a lei)
+     *
+     * @param leis The value of the identifier to search for.
+     * @return A List<StoredCompanyEntity> matching the given list of leis, or `null` if no match is found.
+     */
+    @Query
+    (
+        "SELECT company FROM  StoredCompanyEntity company " +
+            "JOIN FETCH company.identifiers companyIdentifierEntity " +
+            "WHERE companyIdentifierEntity.identifierValue in :leis ",
+    )
+    fun findCompanies(
+        @Param("leis") leis: List<String>,
+    ): List<StoredCompanyEntity>?
 }

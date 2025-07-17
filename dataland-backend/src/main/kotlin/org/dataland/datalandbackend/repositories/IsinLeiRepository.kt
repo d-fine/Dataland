@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.IsinLeiEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -16,7 +17,7 @@ interface IsinLeiRepository : JpaRepository<IsinLeiEntity, String> {
      *
      * @param companyId The ID of the company whose mappings should be deleted.
      */
-    fun deleteAllByCompanyId(companyId: String)
+    fun deleteAllByCompany(companyId: StoredCompanyEntity)
 
     /**
      * Finds an ISIN-LEI entity by its ISIN.
@@ -41,8 +42,8 @@ interface IsinLeiRepository : JpaRepository<IsinLeiEntity, String> {
      * @param pageable The pagination information.
      * @return A `Page` of `IsinLeiEntity` matching the provided company ID.
      */
-    fun findByCompanyId(
-        companyId: String,
+    fun findByCompany(
+        companyId: StoredCompanyEntity,
         pageable: Pageable,
     ): Page<IsinLeiEntity>
 }

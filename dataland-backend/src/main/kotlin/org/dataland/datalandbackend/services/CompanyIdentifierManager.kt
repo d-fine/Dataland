@@ -68,7 +68,7 @@ class CompanyIdentifierManager(
                 .companyId
         }
 
-        return isinLeiRepository.findByIsin(identifier)?.companyId
+        return isinLeiRepository.findByIsin(identifier)?.company?.companyId
             ?: throw ResourceNotFoundApiException(
                 CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
                 CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),

@@ -1,8 +1,9 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.IsinLeiEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -20,7 +21,7 @@ import javax.sql.DataSource
  */
 @Service
 class IsinLeiManager(
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
+    @Autowired private val storedCompanyRepository: StoredCompanyRepository,
     @Autowired private val dataSource: DataSource,
     @Value("\${spring.datasource.hikari.maximum-pool-size}")
     private val dataSourceMaximumPoolSize: Int,
@@ -40,7 +41,8 @@ class IsinLeiManager(
         clearAllMappings()
         logger.info("Dropped previous entries")
         logger.info("Preparing to add new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
-        val entities = isinLeiMappingData.map { convertToIsinLeiEntity(it) }
+        val companies = storedCompanyRepository.findCompanies(isinLeiMappingData.map { it.lei })
+        val entities = convertToIsinLeiEntity(isinLeiMappingData, companies)
         saveAllJdbcBatchCallable(entities)
         logger.info("Added new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
     }
@@ -50,20 +52,22 @@ class IsinLeiManager(
      * @param isinLeiMappingData the list of ISIN-LEI mapping data
      * @return the list of ISIN-LEI entities
      */
-    private fun convertToIsinLeiEntity(isinLeiMappingData: IsinLeiMappingData): IsinLeiEntity {
-        val companyId =
-            companyIdentifierRepository
-                .findByIdentifierValueAndIdentifierType(
-                    identifierValue = isinLeiMappingData.lei,
-                )?.company
-                ?.companyId
-                ?: throw IllegalArgumentException("Company with LEI ${isinLeiMappingData.lei} not found")
-        logger.info("Found company ID $companyId for LEI ${isinLeiMappingData.lei} and ISIN ${isinLeiMappingData.isin}")
-        return IsinLeiEntity(
-            companyId = companyId,
-            isin = isinLeiMappingData.isin,
-            lei = isinLeiMappingData.lei,
-        )
+    private fun convertToIsinLeiEntity(
+        isinLeiMappingData: List<IsinLeiMappingData>,
+        companies: List<StoredCompanyEntity>?,
+    ): List<IsinLeiEntity> {
+        val entities = mutableListOf<IsinLeiEntity>()
+        isinLeiMappingData.forEach { mappingData ->
+            val company = companies?.first { it.identifiers.map { id -> id.identifierValue }.contains(mappingData.lei) }
+            entities.add(
+                IsinLeiEntity(
+                    isin = mappingData.isin,
+                    company = company,
+                    lei = mappingData.lei,
+                ),
+            )
+        }
+        return entities
     }
 
     /**
@@ -96,7 +100,7 @@ class IsinLeiManager(
         var counter = 0
         for (entity in entities) {
             statement.clearParameters()
-            statement.setString(1, entity.companyId)
+            statement.setString(1, entity.company?.companyId)
             statement.setString(2, entity.isin)
             @Suppress("MagicNumber")
             statement.setString(3, entity.lei)

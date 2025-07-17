@@ -38,18 +38,6 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
     ): MutableList<CompanyIdentifierEntity>
 
     /**
-     * Finds a `CompanyIdentifierEntity` based on the identifier value and type.
-     *
-     * @param identifierValue The value of the identifier to search for.
-     * @param identifierType The type of the identifier to search for. Defaults to `IdentifierType.Lei` if not provided.
-     * @return The `CompanyIdentifierEntity` matching the given identifier value and type, or `null` if no match is found.
-     */
-    fun findByIdentifierValueAndIdentifierType(
-        identifierValue: String,
-        identifierType: IdentifierType? = IdentifierType.Lei,
-    ): CompanyIdentifierEntity?
-
-    /**
      * Finds a `CompanyIdentifierEntity` based on the identifier ID
      *
      * @param CompanyIdentifierEntityId The value of the identifier to search for.

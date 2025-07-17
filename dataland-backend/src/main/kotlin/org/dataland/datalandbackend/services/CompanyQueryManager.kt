@@ -144,8 +144,8 @@ class CompanyQueryManager
             storedCompanies.forEach { storedCompany ->
                 val isinsAsStrings =
                     isinLeiRepository
-                        .findByCompanyId(
-                            storedCompany.companyId,
+                        .findByCompany(
+                            storedCompany,
                             PageRequest.of(isinChunkIndex, isinChunkSize, Sort.by("isin").ascending()),
                         ).content
                         .map { it.isin }
@@ -289,10 +289,11 @@ class CompanyQueryManager
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
                     buildCompanyIdentifierValidationResult(identifier, it)
                 } ?: isinLeiRepository.findByIsin(identifier)?.let {
-                    if (checkCompanyIdExists(it.companyId)) {
+                    val companyId = it.company?.companyId
+                    if (companyId != null && checkCompanyIdExists(companyId)) {
                         buildCompanyIdentifierValidationResult(
                             identifier,
-                            getCompanyByIdAndAssertExistence(it.companyId),
+                            getCompanyByIdAndAssertExistence(companyId),
                         )
                     } else {
                         null
