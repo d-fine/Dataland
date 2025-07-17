@@ -12,7 +12,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(
     name = "isin_lei_mapping",
-    indexes = [Index(name = "idx_company_id", columnList = "company_id", unique = false)],
+    indexes = [Index(name = "idx_company_id_on_isin_lei", columnList = "company_id", unique = false)],
 )
 data class IsinLeiEntity(
     @Column(name = "company_id", nullable = false, unique = false)
