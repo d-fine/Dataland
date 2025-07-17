@@ -8,8 +8,6 @@ import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
-import org.dataland.datalandbackend.utils.TestDataProvider
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -33,11 +31,7 @@ class IsinLeiManagerTest(
     val dummyLei2 = "LEI987654321"
     val dummyIsin1 = "123456789"
     val dummyIsin2 = "987654321"
-    private val testDataProvider = TestDataProvider(defaultObjectMapper)
-    val company1 = storedCompanyRepository.save(testDataProvider.getEmptyStoredCompanyEntityWithIdAndLei("123"))
-    val company2 = storedCompanyRepository.save(testDataProvider.getEmptyStoredCompanyEntityWithIdAndLei("456"))
-    val entity1 = IsinLeiEntity(company1, "123", "LEI123")
-    val entity2 = IsinLeiEntity(company2, "456", "LEI456")
+
     val payload =
         listOf(
             IsinLeiMappingData(
@@ -54,7 +48,7 @@ class IsinLeiManagerTest(
 
     val companyWithTestLei1 =
         CompanyInformation(
-            companyName = "Test Company",
+            companyName = "Test Company 1",
             companyAlternativeNames = null,
             companyContactDetails = null,
             companyLegalForm = null,
@@ -73,7 +67,7 @@ class IsinLeiManagerTest(
         )
     val companyWithTestLei2 =
         CompanyInformation(
-            companyName = "Test Company",
+            companyName = "Test Company 2",
             companyAlternativeNames = null,
             companyContactDetails = null,
             companyLegalForm = null,
@@ -112,22 +106,28 @@ class IsinLeiManagerTest(
         val result = isinLeiRepository.findAll().toList().sortedBy { it.isin }
         assertEquals(2, result.size)
         assertEquals(dummyIsin1, result[0].isin)
-        assertEquals(dummyCompany1, result[0].company)
+        assertEquals(dummyCompany1.companyId, result[0].company?.companyId)
         assertEquals(dummyIsin2, result[1].isin)
-        assertEquals(dummyCompany2, result[1].company)
+        assertEquals(dummyCompany2.companyId, result[1].company?.companyId)
     }
 
     @Test
     fun `add sample ISIN LEI mapping to database and check if it replaced the old data`() {
+        val entity1 = IsinLeiEntity(dummyCompany1, "123", "LEI123")
+        val entity2 = IsinLeiEntity(dummyCompany2, "456", "LEI456")
         isinLeiRepository.saveAllAndFlush(listOf(entity1, entity2))
+        val resultBefore = isinLeiRepository.findAll().toList().sortedBy { it.isin }
+        assertEquals(2, resultBefore.size)
+        assertEquals("123", resultBefore[0].isin)
+        assertEquals("456", resultBefore[1].isin)
 
         isinLeiManager.putIsinLeiMapping(payload)
 
         val result = isinLeiRepository.findAll().toList().sortedBy { it.isin }
         assertEquals(2, result.size)
         assertEquals(dummyIsin1, result[0].isin)
-        assertEquals(dummyCompany1, result[0].company)
+        assertEquals(dummyCompany1.companyId, result[0].company?.companyId)
         assertEquals(dummyIsin2, result[1].isin)
-        assertEquals(dummyCompany2, result[1].company)
+        assertEquals(dummyCompany2.companyId, result[1].company?.companyId)
     }
 }

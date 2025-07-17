@@ -54,25 +54,6 @@ class TestDataProvider(
             null,
         )
 
-    fun getEmptyStoredCompanyEntityWithIdAndLei(companyId: String): StoredCompanyEntity =
-        StoredCompanyEntity(
-            companyId,
-            "",
-            null,
-            null,
-            null,
-            "",
-            null,
-            "",
-            "",
-            mutableListOf(),
-            null,
-            mutableListOf(),
-            "",
-            false,
-            null,
-        )
-
     fun addCompanyAndReturnStorableDatasetForIt(
         companyAlterationManager: CompanyAlterationManager,
         frameworkName: String,
