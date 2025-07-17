@@ -162,19 +162,6 @@ class CompanyQueryManager
             return storedCompanies
         }
 
-        private fun fetchAllStoredCompanyFields(
-            storedCompanies: List<StoredCompanyEntity>,
-            isinChunkSize: Int = 10,
-            isinChunkIndex: Int = 0,
-        ): List<StoredCompanyEntity> {
-            var companyWithFetchedFields = companyRepository.fetchNonIsinIdentifiers(storedCompanies)
-            companyWithFetchedFields = fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
-            companyWithFetchedFields = companyRepository.fetchAlternativeNames(companyWithFetchedFields)
-            companyWithFetchedFields = companyRepository.fetchCompanyContactDetails(companyWithFetchedFields)
-            companyWithFetchedFields = companyRepository.fetchCompanyAssociatedByDataland(companyWithFetchedFields)
-            return companyWithFetchedFields
-        }
-
         private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {
             assertCompanyIdExists(companyId)
             return companyRepository.findById(companyId).get()
@@ -200,7 +187,7 @@ class CompanyQueryManager
             isinChunkIndex: Int = 0,
         ): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
-            return fetchAllStoredCompanyFields(
+            return fetchIsinIdentifiers(
                 listOf(searchResult),
                 isinChunkSize,
                 isinChunkIndex,
