@@ -3,6 +3,18 @@
   "name" : "General deviation data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source, signifying a deviation. Can only have values 'Deviation' and 'NoDeviation'.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.enums.ExtendedFiscalYearDeviationDataPoint",
+  "schema": {
+    "value": "FiscalYearDeviation",
+    "quality": "QualityOptions",
+    "comment": "String",
+    "dataSource": {
+      "page": "String",
+      "tagName": "String",
+      "fileName": "String",
+      "fileReference": "String",
+      "publicationDate": "LocalDate"
+    }
+  },
   "example" : {
     "value" : "NoDeviation",
     "quality" : "Reported",
