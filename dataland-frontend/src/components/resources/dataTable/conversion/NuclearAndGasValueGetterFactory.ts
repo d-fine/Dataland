@@ -1,7 +1,6 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import NuclearAndGasDataTable from '@/components/general/NuclearAndGasDataTable.vue';
@@ -11,6 +10,7 @@ import type {
   ExtendedDataPointNuclearAndGasEligibleButNotAligned,
   ExtendedDataPointNuclearAndGasNonEligible,
 } from '@clients/backend';
+import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants.ts';
 
 export const nuclearAndGasModalColumnHeaders = {
   nuclearAndGasAlignedOrEligible: {
@@ -43,30 +43,53 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!nuclearAndGasExtendedDataPoint?.value) {
-    return MLDTDisplayObjectForEmptyString;
-  } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
-      displayValue: {
-        label: `Show Table`,
-        modalComponent: NuclearAndGasDataTable,
-        modalOptions: {
-          props: {
-            header: fieldLabel,
-            modal: true,
-            dismissableMask: true,
+    if (
+      nuclearAndGasExtendedDataPoint?.dataSource ||
+      nuclearAndGasExtendedDataPoint?.comment ||
+      nuclearAndGasExtendedDataPoint?.quality
+    ) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+        displayValue: {
+          innerContents: {
+            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+            displayValue: ONLY_AUXILIARY_DATA_PROVIDED,
           },
-          data: {
-            columnHeaders: nuclearAndGasModalColumnHeaders,
-            input: nuclearAndGasExtendedDataPoint.value,
-            dataPointDisplay: {
-              dataSource: nuclearAndGasExtendedDataPoint.dataSource,
-              comment: nuclearAndGasExtendedDataPoint.comment,
-              quality: nuclearAndGasExtendedDataPoint.quality,
-            },
+          fieldLabel,
+          dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+          comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,
+          quality: nuclearAndGasExtendedDataPoint.quality ?? undefined,
+        },
+      };
+    }
+
+    return MLDTDisplayObjectForEmptyString;
+  }
+
+  return {
+    displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
+    displayValue: {
+      label: `Show Table`,
+      modalComponent: NuclearAndGasDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          columnHeaders: nuclearAndGasModalColumnHeaders,
+          input: nuclearAndGasExtendedDataPoint.value,
+          dataPointDisplay: {
+            dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+            comment: nuclearAndGasExtendedDataPoint.comment,
+            quality: nuclearAndGasExtendedDataPoint.quality,
           },
         },
       },
-    };
-  }
+      dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+      comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,
+      quality: nuclearAndGasExtendedDataPoint.quality ?? undefined,
+    },
+  };
 }
