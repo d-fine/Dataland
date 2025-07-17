@@ -33,24 +33,28 @@ describeIf(
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
     });
 
-    it('Creates, edits and deletes a portfolio', () => {
+    it('Creates, edits, and deletes a portfolio', () => {
       cy.get('[data-test="add-portfolio"]').click();
-      cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
-      cy.get('[data-test="saveButton"]').should('be.disabled');
-      cy.get('[data-test="company-identifiers-input"]').type(permIdOfExistingCompany);
-      cy.scrollTo('bottom');
-      cy.get('[data-test="addCompanies"]').click();
-      cy.get('[data-test="saveButton"]').should('not.be.disabled');
-      cy.get('[data-test="saveButton"]').click();
+      cy.get('.p-dialog').within(() => {
+        cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
+        cy.get('[data-test="saveButton"]').should('be.disabled');
+        cy.get('[data-test="company-identifiers-input"]').type(permIdOfExistingCompany);
+        cy.scrollTo('bottom');
+        cy.get('[data-test="addCompanies"]').click();
+        cy.get('[data-test="saveButton"]').should('not.be.disabled');
+        cy.get('[data-test="saveButton"]').click();
+      });
 
       cy.get(`[data-test="${portfolioName}"]`).click();
-      cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
-      cy.get('[data-test="portfolio-name-input"]').clear();
-      cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
-      cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
-      cy.get('[data-test="addCompanies"]').click();
-      cy.scrollTo('bottom');
-      cy.get('[data-test="saveButton"]').click();
+      cy.get('.p-dialog').within(() => {
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
+        cy.get('[data-test="portfolio-name-input"]').clear();
+        cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
+        cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
+        cy.get('[data-test="addCompanies"]').click();
+        cy.scrollTo('bottom');
+        cy.get('[data-test="saveButton"]').click();
+      });
       cy.get(`[data-test="${editedPortfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click();
 
