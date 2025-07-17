@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.RestController
+import kotlin.math.max
 
 /**
  * Controller for the company data endpoints
@@ -180,7 +181,7 @@ class CompanyDataController
                 companyQueryManager
                     .getCompanyApiModelById(
                         companyId,
-                        companyInformationPatch.identifiers?.get(IdentifierType.Isin)?.size ?: 0,
+                        max(companyInformationPatch.identifiers?.get(IdentifierType.Isin)?.size ?: 0, 1),
                         0,
                     ),
             )
@@ -196,7 +197,7 @@ class CompanyDataController
                 companyQueryManager
                     .getCompanyApiModelById(
                         companyId,
-                        companyInformation.identifiers[IdentifierType.Isin]?.size ?: 0,
+                        max(companyInformation.identifiers[IdentifierType.Isin]?.size ?: 0, 1),
                         0,
                     ),
             )

@@ -94,7 +94,7 @@ class CompanyDataControllerTest {
             CompanyInformationPatch(
                 identifiers =
                     mapOf(
-                        IdentifierType.Lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
+                        IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}"),
                         IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
                     ),
             )
