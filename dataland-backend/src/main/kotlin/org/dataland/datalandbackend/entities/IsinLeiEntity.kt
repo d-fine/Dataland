@@ -12,14 +12,14 @@ import jakarta.persistence.Table
 @Entity
 @Table(
     name = "isin_lei_mapping",
-    indexes = [Index(name = "idx_isin", columnList = "isin", unique = true)],
+    indexes = [Index(name = "idx_company_id", columnList = "company_id", unique = false)],
 )
 data class IsinLeiEntity(
-    @Id
-    @Column(name = "company_id", nullable = false, unique = true)
+    @Column(name = "company_id", nullable = false, unique = false)
     val companyId: String,
+    @Id
     @Column(name = "isin", nullable = false, unique = true)
     val isin: String,
-    @Column(name = "lei", nullable = true, unique = true)
+    @Column(name = "lei", nullable = true, unique = false)
     val lei: String?,
 )

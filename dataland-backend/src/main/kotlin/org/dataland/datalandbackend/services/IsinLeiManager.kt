@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.sql.BatchUpdateException
 import java.sql.PreparedStatement
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
@@ -25,6 +26,7 @@ class IsinLeiManager(
     private val dataSourceMaximumPoolSize: Int,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val tableName = "isin_lei_mapping"
 
     /**
      * Method to put an ISIN-LEI mapping into the database.
@@ -56,7 +58,7 @@ class IsinLeiManager(
                 )?.company
                 ?.companyId
                 ?: throw IllegalArgumentException("Company with LEI ${isinLeiMappingData.lei} not found")
-
+        logger.info("Found company ID $companyId for LEI ${isinLeiMappingData.lei} and ISIN ${isinLeiMappingData.isin}")
         return IsinLeiEntity(
             companyId = companyId,
             isin = isinLeiMappingData.isin,
@@ -70,11 +72,9 @@ class IsinLeiManager(
      */
     fun saveAllJdbcBatch(
         entities: List<IsinLeiEntity>,
-        batchSize: Int = 100,
+        batchSize: Int = 50,
     ) {
-        val tableName = "isin_lei_mapping"
-        val sql = "INSERT INTO $tableName (company_id, isin, lei) VALUES (?, ?, ?)"
-
+        val sql = """INSERT INTO $tableName (company_id, isin, lei) VALUES (?, ?, ?)"""
         dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 executeBatchInsert(statement, entities, batchSize)
@@ -103,8 +103,13 @@ class IsinLeiManager(
             statement.addBatch()
 
             if ((counter + 1) % batchSize == 0 || (counter + 1) == entities.size) {
-                statement.executeBatch()
-                statement.clearBatch()
+                try {
+                    statement.executeBatch()
+                    statement.clearBatch()
+                } catch (e: BatchUpdateException) {
+                    logger.error("Error executing batch insert: ${e.message}", e)
+                }
+                logger.info("Inserted ${counter + 1} / ${entities.size} records so far")
             }
             counter++
         }
@@ -136,7 +141,7 @@ class IsinLeiManager(
      * Method to remove all ISIN-LEI mappings.
      */
     private fun clearAllMappings() {
-        val sql = """TRUNCATE TABLE isin_lei_mapping"""
+        val sql = """TRUNCATE TABLE $tableName"""
         dataSource.connection.use { connection ->
             connection.createStatement().use { statement ->
                 statement.executeUpdate(sql)
