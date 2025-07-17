@@ -28,7 +28,7 @@ class AssembledDataMigrationTrigger
     ) {
         companion object {
             const val TRIES_TO_WAIT_FOR_INTERNAL_STORAGE = 10
-            const val WAIT_TIME_FOR_INTERNAL_STORAGE = 10_000L
+            const val WAIT_TIME_FOR_INTERNAL_STORAGE = 30_000L
         }
 
         private val logger = LoggerFactory.getLogger(javaClass)
