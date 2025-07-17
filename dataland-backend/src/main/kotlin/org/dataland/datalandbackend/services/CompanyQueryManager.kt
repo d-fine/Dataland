@@ -187,11 +187,20 @@ class CompanyQueryManager
             isinChunkIndex: Int = 0,
         ): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
-            return fetchIsinIdentifiers(
+            return fetchAllStoredCompanyFields(
                 listOf(searchResult),
                 isinChunkSize,
                 isinChunkIndex,
             ).first().toApiModel()
+        }
+
+        private fun fetchAllStoredCompanyFields(
+            storedCompanies: List<StoredCompanyEntity>,
+            isinChunkSize: Int = 10,
+            isinChunkIndex: Int = 0,
+        ): List<StoredCompanyEntity> {
+            companyRepository.fetchAllNonIsinFields(storedCompanies)
+            return fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
         }
 
         /**

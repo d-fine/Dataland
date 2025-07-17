@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for accessing the StoredCompany Entity
  */
-@Suppress("TooManyFunctions")
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     /**
      * A function for querying basic information for all companies with approved datasets
@@ -143,41 +142,19 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     ): List<CompanyIdAndName>
 
     /**
-     * Used for pre-fetching the identifiers field of a list of stored companies. ISINs are no
-     * longer stored in the table company_identifiers, hence the name of the method.
+     * For each stored company entity in the list, fetch the non-ISIN identifiers, the alternative
+     * names, the contact details and the data registered by Dataland.
+     * @param companies the companies to process
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.identifiers WHERE company IN :companies",
+            "LEFT JOIN FETCH company.identifiers " +
+            "LEFT JOIN FETCH company.companyAlternativeNames " +
+            "LEFT JOIN FETCH company.companyContactDetails " +
+            "LEFT JOIN FETCH company.dataRegisteredByDataland " +
+            "WHERE company IN :companies",
     )
-    fun fetchNonIsinIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
-
-    /**
-     * Used for pre-fetching the alternative company names field of a list of stored companies
-     */
-    @Query(
-        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company IN :companies",
-    )
-    fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
-
-    /**
-     * Used for pre-fetching the company contact details field of a list of stored companies
-     */
-    @Query(
-        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.companyContactDetails WHERE company IN :companies",
-    )
-    fun fetchCompanyContactDetails(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
-
-    /**
-     * Used for pre-fetching the dataStoredByDataland field of a list of stored companies
-     */
-    @Query(
-        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company IN :companies",
-    )
-    fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+    fun fetchAllNonIsinFields(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
      * Retrieves all the teaser companies
