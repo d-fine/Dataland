@@ -48,7 +48,7 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="listOfReportingPeriods"]').should('exist');
       const reportingYears = ['2024', '2023', '2022'];
       reportingYears.forEach((year) => {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
+        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
       });
     });
 
