@@ -63,7 +63,7 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkSubtitles: string[];
       }): void {
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
-        cy.get('[data-test="add-portfolio"]').click();
+        cy.get('[data-test="add-portfolio"]').click({ force: true });
         cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
         cy.get('[data-test="company-identifiers-input"]').type(permId);

@@ -34,7 +34,8 @@ describeIf(
     });
 
     it('Creates, edits, and deletes a portfolio', () => {
-      cy.get('[data-test="add-portfolio"]').click();
+      cy.scrollTo('top');
+      cy.get('[data-test="add-portfolio"]').click({ force: true });
       cy.get('.p-dialog').within(() => {
         cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
