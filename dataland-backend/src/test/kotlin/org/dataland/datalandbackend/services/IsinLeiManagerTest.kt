@@ -2,11 +2,14 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.IsinLeiEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.utils.TestDataProvider
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,7 +24,7 @@ import javax.sql.DataSource
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class IsinLeiManagerTest(
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
+    @Autowired private val storedCompanyRepository: StoredCompanyRepository,
     @Autowired private val isinLeiRepository: IsinLeiRepository,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val dataSource: DataSource,
@@ -30,8 +33,11 @@ class IsinLeiManagerTest(
     val dummyLei2 = "LEI987654321"
     val dummyIsin1 = "123456789"
     val dummyIsin2 = "987654321"
-    val entity1 = IsinLeiEntity("123", "123", "LEI123")
-    val entity2 = IsinLeiEntity("456", "456", "LEI456")
+    private val testDataProvider = TestDataProvider(defaultObjectMapper)
+    val company1 = storedCompanyRepository.save(testDataProvider.getEmptyStoredCompanyEntityWithIdAndLei("123"))
+    val company2 = storedCompanyRepository.save(testDataProvider.getEmptyStoredCompanyEntityWithIdAndLei("456"))
+    val entity1 = IsinLeiEntity(company1, "123", "LEI123")
+    val entity2 = IsinLeiEntity(company2, "456", "LEI456")
     val payload =
         listOf(
             IsinLeiMappingData(
@@ -43,8 +49,8 @@ class IsinLeiManagerTest(
                 lei = dummyLei2,
             ),
         )
-    lateinit var dummyCompanyId1: String
-    lateinit var dummyCompanyId2: String
+    lateinit var dummyCompany1: StoredCompanyEntity
+    lateinit var dummyCompany2: StoredCompanyEntity
 
     val companyWithTestLei1 =
         CompanyInformation(
@@ -91,12 +97,12 @@ class IsinLeiManagerTest(
     fun setup() {
         isinLeiManager =
             IsinLeiManager(
-                companyIdentifierRepository = companyIdentifierRepository,
+                storedCompanyRepository = storedCompanyRepository,
                 dataSource = dataSource,
                 dataSourceMaximumPoolSize = 50,
             )
-        dummyCompanyId1 = companyAlterationManager.addCompany(companyWithTestLei1).companyId
-        dummyCompanyId2 = companyAlterationManager.addCompany(companyWithTestLei2).companyId
+        dummyCompany1 = companyAlterationManager.addCompany(companyWithTestLei1)
+        dummyCompany2 = companyAlterationManager.addCompany(companyWithTestLei2)
     }
 
     @Test
@@ -106,9 +112,9 @@ class IsinLeiManagerTest(
         val result = isinLeiRepository.findAll().toList().sortedBy { it.isin }
         assertEquals(2, result.size)
         assertEquals(dummyIsin1, result[0].isin)
-        assertEquals(dummyCompanyId1, result[0].companyId)
+        assertEquals(dummyCompany1, result[0].company)
         assertEquals(dummyIsin2, result[1].isin)
-        assertEquals(dummyCompanyId2, result[1].companyId)
+        assertEquals(dummyCompany2, result[1].company)
     }
 
     @Test
@@ -120,8 +126,8 @@ class IsinLeiManagerTest(
         val result = isinLeiRepository.findAll().toList().sortedBy { it.isin }
         assertEquals(2, result.size)
         assertEquals(dummyIsin1, result[0].isin)
-        assertEquals(dummyCompanyId1, result[0].companyId)
+        assertEquals(dummyCompany1, result[0].company)
         assertEquals(dummyIsin2, result[1].isin)
-        assertEquals(dummyCompanyId2, result[1].companyId)
+        assertEquals(dummyCompany2, result[1].company)
     }
 }
