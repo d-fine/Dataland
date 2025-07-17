@@ -322,10 +322,6 @@ function areAllFiltersDeactivated(
 }
 </script>
 <style scoped>
-.text-primary {
-  color: var(--main-color);
-}
-
 .text-danger {
   color: var(--fk-color-error);
   font-size: var(--font-size-xs);
