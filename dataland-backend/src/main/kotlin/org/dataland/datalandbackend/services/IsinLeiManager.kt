@@ -41,7 +41,7 @@ class IsinLeiManager(
         clearAllMappings()
         logger.info("Dropped previous entries")
         logger.info("Preparing to add new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
-        val companies = storedCompanyRepository.findCompanies(isinLeiMappingData.map { it.lei })
+        val companies = storedCompanyRepository.findCompaniesbyListOfLeis(isinLeiMappingData.map { it.lei })
         val entities = convertToIsinLeiEntity(isinLeiMappingData, companies)
         saveAllJdbcBatchCallable(entities)
         logger.info("Added new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
