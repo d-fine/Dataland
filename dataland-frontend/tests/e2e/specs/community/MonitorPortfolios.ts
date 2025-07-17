@@ -46,11 +46,6 @@ describe('Portfolio Monitoring Modal', () => {
 
       /**
        * Test function for creating portfolio and monitor it
-       * @param portfolioName name of portfolio
-       * @param permId company ids to be monitored
-       * @param expectedDataTypes frameworks to be monitored
-       * @param notExpectedDataTypes frameworks not expected in response
-       * @param framework selected framework
        */
       function testPatchMonitoring({
         portfolioName,
@@ -69,10 +64,11 @@ describe('Portfolio Monitoring Modal', () => {
       }): void {
         cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="add-portfolio"]').click();
-        cy.get('[name="portfolioName"]').type(portfolioName);
+        cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
-        cy.get('[name="company-identifiers"]').type(permId);
+        cy.get('[data-test="company-identifiers-input"]').type(permId);
         cy.get('[data-test="addCompanies"]').click();
+        cy.wait(Cypress.env('short_timeout_in_ms') as number);
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
 
@@ -116,15 +112,13 @@ describe('Portfolio Monitoring Modal', () => {
         });
 
         cy.visitAndCheckAppMount('/portfolios');
-        cy.get('[data-test="portfolios"] [data-pc-name="tablist"]').contains(portfolioName).click();
-
-        cy.get('[data-test="portfolios"] [data-pc-name="tablist"]').contains(portfolioName).click();
+        cy.get(`[data-test="${portfolioName}"]`).click();
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
         cy.get('[data-test="deleteButton"]').click();
-        cy.get('[data-test="portfolios"] [data-pc-name="tablist"]').contains(portfolioName).should('not.exist');
+        cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
       }
 
-      it('submits bulk data request when inputs are valid for non financial company', () => {
+      it('Monitoring yields bulk data request when inputs are valid for non financial company', () => {
         testPatchMonitoring({
           portfolioName: nonFinancialPortfolio,
           companyName: companyNameNonFinancial,
@@ -135,7 +129,7 @@ describe('Portfolio Monitoring Modal', () => {
         });
       });
 
-      it('submits bulk data request when inputs are valid for financial company', () => {
+      it('Monitoring yields bulk data request when inputs are valid for financial company', () => {
         testPatchMonitoring({
           portfolioName: financialPortfolio,
           companyName: companyNameFinancial,
@@ -146,7 +140,7 @@ describe('Portfolio Monitoring Modal', () => {
         });
       });
 
-      it('submits bulk data request when inputs are valid for non sector company', () => {
+      it('Monitoring yields bulk data request when inputs are valid for non sector company', () => {
         testPatchMonitoring({
           portfolioName: nonSectorPortfolio,
           companyName: companyNameNoSector,
