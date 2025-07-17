@@ -1,8 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
-import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
@@ -21,7 +18,6 @@ import org.springframework.test.annotation.DirtiesContext
 import javax.sql.DataSource
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-@Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class IsinLeiManagerTest(
@@ -30,9 +26,6 @@ class IsinLeiManagerTest(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val dataSource: DataSource,
 ) {
-    @PersistenceContext
-    private lateinit var entityManager: EntityManager
-
     val dummyLei1 = "LEI123456789"
     val dummyLei2 = "LEI987654321"
     val dummyIsin1 = "123456789"
@@ -120,9 +113,7 @@ class IsinLeiManagerTest(
 
     @Test
     fun `add sample ISIN LEI mapping to database and check if it replaced the old data`() {
-        entityManager.persist(entity1)
-        entityManager.persist(entity2)
-        entityManager.flush()
+        isinLeiRepository.saveAllAndFlush(listOf(entity1, entity2))
 
         isinLeiManager.putIsinLeiMapping(payload)
 
