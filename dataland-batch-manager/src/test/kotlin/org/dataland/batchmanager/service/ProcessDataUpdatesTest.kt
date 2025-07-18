@@ -5,11 +5,11 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.AppenderBase
 import org.apache.commons.io.FileUtils
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
-import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.dataland.datalandbatchmanager.service.ProcessDataUpdates
@@ -39,13 +39,13 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as Co
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
+    private val mockIsinLeiDataControllerApi = mock(IsinLeiDataControllerApi::class.java)
     private val mockGleifApiAccessor = mock(GleifApiAccessor::class.java)
     private val mockGleifGoldenCopyIngestorTest = mock(GleifGoldenCopyIngestor::class.java)
     private val mockNorthDataAccessor = mock(NorthDataAccessor::class.java)
     private val mockNorthDataIngestorTest = mock(NorthdataDataIngestor::class.java)
     private val mockCsvParser = mock(CsvParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
-    private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
     private val mockRelationshipExtractor = mock(RelationshipExtractor::class.java)
     private val mockBackendActuatorApi = mock(BackendActuatorApi::class.java)
     private val mockRequestPriorityUpdater = mock(RequestPriorityUpdater::class.java)
@@ -184,9 +184,12 @@ class ProcessDataUpdatesTest {
 
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-                mockRelationshipExtractor,
-                File.createTempFile("tesd", ".csv"),
+                isinLeiDataControllerApi = mockIsinLeiDataControllerApi,
+                gleifApiAccessor = mockGleifApiAccessor,
+                gleifParser = mockCsvParser,
+                companyUploader = mockCompanyUploader,
+                relationshipExtractor = mockRelationshipExtractor,
+                savedIsinMappingFile = File.createTempFile("tesd", ".csv"),
             )
 
         companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
@@ -241,7 +244,7 @@ class ProcessDataUpdatesTest {
         method.invoke(processDataUpdates)
 
         verify(mockGleifGoldenCopyIngestorTest, times(1)).prepareGleifDeltaFile(false)
-        verify(mockGleifGoldenCopyIngestorTest, times(1)).processIsinMappingFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, times(1)).processIsinMappingFile()
         verify(mockGleifGoldenCopyIngestorTest, times(1)).processRelationshipFile(false)
     }
 
@@ -267,7 +270,7 @@ class ProcessDataUpdatesTest {
         method.invoke(processDataUpdates)
 
         verify(mockGleifGoldenCopyIngestorTest).prepareGleifDeltaFile(true)
-        verify(mockGleifGoldenCopyIngestorTest).processIsinMappingFile(true)
+        verify(mockGleifGoldenCopyIngestorTest).processIsinMappingFile()
         verify(mockGleifGoldenCopyIngestorTest).processRelationshipFile(true)
 
         assert(!flagFile.exists())

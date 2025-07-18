@@ -1,6 +1,7 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
@@ -31,6 +32,7 @@ import java.io.PrintWriter
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GleifGoldenCopyIngestorTest {
+    private val mockIsinLeiDataControllerApi = mock(IsinLeiDataControllerApi::class.java)
     private val mockGleifApiAccessor = mock(GleifApiAccessor::class.java)
     private val mockCsvParser = mock(CsvParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
@@ -130,9 +132,12 @@ class GleifGoldenCopyIngestorTest {
         val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-                mockRelationshipExtractor,
-                oldFile,
+                isinLeiDataControllerApi = mockIsinLeiDataControllerApi,
+                gleifApiAccessor = mockGleifApiAccessor,
+                gleifParser = mockCsvParser,
+                companyUploader = mockCompanyUploader,
+                relationshipExtractor = mockRelationshipExtractor,
+                savedIsinMappingFile = oldFile,
             )
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
@@ -145,9 +150,12 @@ class GleifGoldenCopyIngestorTest {
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-                mockRelationshipExtractor,
-                oldFile,
+                isinLeiDataControllerApi = mockIsinLeiDataControllerApi,
+                gleifApiAccessor = mockGleifApiAccessor,
+                gleifParser = mockCsvParser,
+                companyUploader = mockCompanyUploader,
+                relationshipExtractor = mockRelationshipExtractor,
+                savedIsinMappingFile = oldFile,
             )
 
         assert(newFile.exists())
@@ -167,9 +175,12 @@ class GleifGoldenCopyIngestorTest {
         flagFile.deleteOnExit()
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-                mockRelationshipExtractor,
-                oldFile,
+                isinLeiDataControllerApi = mockIsinLeiDataControllerApi,
+                gleifApiAccessor = mockGleifApiAccessor,
+                gleifParser = mockCsvParser,
+                companyUploader = mockCompanyUploader,
+                relationshipExtractor = mockRelationshipExtractor,
+                savedIsinMappingFile = oldFile,
             )
 
         val newMappingFile =
