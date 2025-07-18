@@ -31,6 +31,7 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
+      cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
     });
 
     it('Creates, edits and deletes a portfolio', () => {
@@ -38,10 +39,10 @@ describeIf(
       cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
       cy.get('[data-test="saveButton"]').should('be.disabled');
       cy.get('[data-test="company-identifiers-input"]').type(permIdOfExistingCompany);
-      cy.scrollTo('bottom');
       cy.get('[data-test="addCompanies"]').click();
       cy.get('[data-test="saveButton"]').should('not.be.disabled');
       cy.get('[data-test="saveButton"]').click();
+      cy.wait('@getEnrichedPortfolio');
 
       cy.get(`[data-test="${portfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
@@ -49,7 +50,6 @@ describeIf(
       cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
       cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
       cy.get('[data-test="addCompanies"]').click();
-      cy.scrollTo('bottom');
       cy.get('[data-test="saveButton"]').click();
       cy.get(`[data-test="${editedPortfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click();

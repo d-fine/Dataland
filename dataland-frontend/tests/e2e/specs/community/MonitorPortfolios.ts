@@ -40,6 +40,8 @@ describe('Portfolio Monitoring Modal', () => {
       beforeEach(() => {
         cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
         cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
+        cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
+        cy.intercept('POST', '**/api/companies/validation').as('forCompanyValidation');
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount('/portfolios');
       });
@@ -62,17 +64,17 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
-        cy.wait(Cypress.env('short_timeout_in_ms') as number);
+        cy.wait('@getEnrichedPortfolio');
         cy.get('[data-test="add-portfolio"]').click();
         cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
         cy.get('[data-test="company-identifiers-input"]').type(permId);
         cy.get('[data-test="addCompanies"]').click();
-        cy.wait(Cypress.env('short_timeout_in_ms') as number);
+        cy.wait('@forCompanyValidation');
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
 
-        cy.wait(Cypress.env('short_timeout_in_ms') as number);
+        cy.wait('@getEnrichedPortfolio');
         cy.get(`[data-test="portfolio-${portfolioName}"]`)
           .should('exist')
           .within(() => {
@@ -112,8 +114,10 @@ describe('Portfolio Monitoring Modal', () => {
         });
 
         cy.visitAndCheckAppMount('/portfolios');
+        cy.wait('@getEnrichedPortfolio');
         cy.get(`[data-test="${portfolioName}"]`).click();
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
+        cy.wait('@getEnrichedPortfolio');
         cy.get('[data-test="deleteButton"]').click();
         cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
       }
