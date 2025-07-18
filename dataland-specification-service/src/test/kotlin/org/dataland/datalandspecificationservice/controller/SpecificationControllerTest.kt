@@ -80,4 +80,11 @@ class SpecificationControllerTest(
             specificationController.getDataPointBaseType("non-existing-datapoint-type")
         }
     }
+
+    @Test
+    fun `returning schema for known base type`() {
+        val baseTypeId = "extendedCurrency"
+        val response = specificationController.getDataPointBaseTypeSchema(baseTypeId)
+        assert(response.statusCode.is2xxSuccessful)
+    }
 }

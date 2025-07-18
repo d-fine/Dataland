@@ -3,6 +3,18 @@
   "name" : "General decimal data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source, and a decimal value.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDecimalDataPoint",
+  "schema": {
+    "value": "BigDecimal",
+    "quality": "QualityOptions",
+    "comment": "String",
+    "dataSource": {
+      "page": "String",
+      "tagName": "String",
+      "fileName": "String",
+      "fileReference": "String",
+      "publicationDate": "LocalDate"
+    }
+  },
   "example" : {
     "value" : 100.5,
     "quality" : "Reported",

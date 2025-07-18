@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.utils.NuclearAndGasMapping
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.SfdrMapping
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandspecificationservice.controller.SpecificationController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.collections.map
@@ -27,6 +28,7 @@ class DataExportUtils
     constructor(
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val specificationController: SpecificationController,
     ) {
         companion object {
             private val STATIC_ALIASES =
@@ -100,10 +102,13 @@ class DataExportUtils
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
+            val resolvedSchemaNode = specificationController.getDataPointBaseTypeSchema(dataType.toString())
+            objectMapper.valueToTree<JsonNode>(resolvedSchemaNode.body?.resolvedSchema ?: emptyMap<String, Any>())
+
             val orderedHeaderFields =
-                if (isAssembledDatasetParam) {
+                if (isAssembledDatasetParam && resolvedSchemaNode != null) {
                     JsonUtils.getLeafNodeFieldNames(
-                        frameworkTemplate,
+                        resolvedSchemaNode,
                         keepEmptyFields = true,
                         dropLastFieldName = true,
                     )

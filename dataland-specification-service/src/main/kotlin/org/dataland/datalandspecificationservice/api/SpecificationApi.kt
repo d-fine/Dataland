@@ -3,6 +3,7 @@ package org.dataland.datalandspecificationservice.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSchema
 import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSpecification
 import org.dataland.datalandspecificationservice.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.model.FrameworkSpecification
@@ -132,4 +133,16 @@ interface SpecificationApi {
     fun getKotlinClassValidatingTheDataPointType(
         @PathVariable("dataPointTypeId") dataPointSpecificationId: String,
     ): ResponseEntity<String>
+
+    /**
+     * Get the JSON schema for a data point base type
+     */
+
+    @GetMapping(
+        value = ["/data-point-base-types/{dataPointBaseTypeId}/schema"],
+        produces = ["application/json"],
+    )
+    fun getDataPointBaseTypeSchema(
+        @PathVariable("dataPointBaseTypeId") dataPointBaseTypeId: String,
+    ): ResponseEntity<DataPointBaseTypeSchema>
 }

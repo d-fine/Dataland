@@ -3,6 +3,16 @@
   "name" : "General assurance data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source signifying the level of assurance.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint",
+  "schema" : {
+    "value": "AssuranceOption",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "puplicationDate" : "LocalDate"
+    }
+  },
   "example" : {
     "value" : "LimitedAssurance",
     "dataSource" : {
