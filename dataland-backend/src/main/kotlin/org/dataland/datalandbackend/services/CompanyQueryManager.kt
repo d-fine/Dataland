@@ -198,10 +198,12 @@ class CompanyQueryManager
             storedCompanies: List<StoredCompanyEntity>,
             isinChunkSize: Int = 10,
             isinChunkIndex: Int = 0,
-        ): List<StoredCompanyEntity> {
-            companyRepository.fetchAllNonIsinFields(storedCompanies)
-            return fetchIsinIdentifiers(storedCompanies, isinChunkSize, isinChunkIndex)
-        }
+        ): List<StoredCompanyEntity> =
+            fetchIsinIdentifiers(
+                companyRepository.fetchAllNonIsinFields(storedCompanies),
+                isinChunkSize,
+                isinChunkIndex,
+            )
 
         /**
          * Method to retrieve the list of currently set teaser company IDs
