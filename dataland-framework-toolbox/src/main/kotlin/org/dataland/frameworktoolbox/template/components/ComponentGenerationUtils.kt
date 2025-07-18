@@ -60,6 +60,7 @@ open class ComponentGenerationUtils {
         component: ComponentBase,
     ) {
         component.label = row.fieldName
+        component.aliasExport = row.aliasExport
         component.dataPointTypeName = generateDataPointTypeNameFromRow(row)
 
         component.uploadPageExplanation =
