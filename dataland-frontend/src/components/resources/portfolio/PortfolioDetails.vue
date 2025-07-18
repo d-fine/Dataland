@@ -31,8 +31,9 @@
           icon="pi pi-bell"
           label="Edit Monitoring"
         />
-        <PrimeButton variant="text" @click="resetFilters" label="RESET FILTER" data-test="reset-filter" />
       </div>
+
+      <PrimeButton variant="text" @click="resetFilters" label="RESET FILTER" data-test="reset-filter" />
     </div>
 
     <DataTable
@@ -556,10 +557,6 @@ a:after {
   gap: 1rem;
   align-items: center;
   background-color: var(--p-surface-50);
-
-  &:last-child {
-    margin-left: auto;
-  }
 }
 
 .d-center-div {
