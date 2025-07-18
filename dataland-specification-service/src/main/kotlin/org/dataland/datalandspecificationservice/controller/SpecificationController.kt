@@ -113,13 +113,15 @@ class SpecificationController(
                 schema.fields().asSequence().associate { (key, value) ->
                     key to resolveSchema(value, database)
                 }
+
             schema.isArray -> schema.map { resolveSchema(it, database) }
+
             schema.isTextual -> {
                 val typeId = schema.asText()
                 val dataPointType = database.dataPointTypes[typeId]
                 if (dataPointType != null) {
                     val baseType = database.dataPointBaseTypes[dataPointType.dataPointBaseTypeId]
-                    if (baseType != null && baseType.schema != null) {
+                    if (baseType?.schema != null) {
                         resolveSchema(baseType.schema, database)
                     } else {
                         baseType?.validatedBy ?: typeId
@@ -128,6 +130,7 @@ class SpecificationController(
                     typeId
                 }
             }
+
             else -> schema
         }
 }

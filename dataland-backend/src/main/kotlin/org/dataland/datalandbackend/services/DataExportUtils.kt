@@ -102,13 +102,8 @@ class DataExportUtils
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
 
-            val resolvedSchemaNode: JsonNode? =
-                try {
-                    val response = specificationController.getDataPointBaseTypeSchema(dataType.toString())
-                    objectMapper.valueToTree<JsonNode>(response.body?.resolvedSchema ?: emptyMap<String, Any>())
-                } catch (e: Exception) {
-                    null
-                }
+            val resolvedSchemaNode = specificationController.getDataPointBaseTypeSchema(dataType.toString())
+            objectMapper.valueToTree<JsonNode>(resolvedSchemaNode.body?.resolvedSchema ?: emptyMap<String, Any>())
 
             val orderedHeaderFields =
                 if (isAssembledDatasetParam && resolvedSchemaNode != null) {
