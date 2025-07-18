@@ -162,6 +162,18 @@ class CompanyQueryManager
             return storedCompanies
         }
 
+        private fun fetchAllStoredCompanyFields(
+            storedCompanies: List<StoredCompanyEntity>,
+            isinChunkSize: Int = 10,
+            isinChunkIndex: Int = 0,
+        ): List<StoredCompanyEntity> =
+            storedCompanies
+                .let { companyRepository.fetchNonIsinIdentifiers(it) }
+                .let { fetchIsinIdentifiers(it, isinChunkSize, isinChunkIndex) }
+                .let { companyRepository.fetchAlternativeNames(it) }
+                .let { companyRepository.fetchCompanyContactDetails(it) }
+                .let { companyRepository.fetchCompanyAssociatedByDataland(it) }
+
         private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {
             assertCompanyIdExists(companyId)
             return companyRepository.findById(companyId).get()
@@ -193,17 +205,6 @@ class CompanyQueryManager
                 isinChunkIndex,
             ).first().toApiModel()
         }
-
-        private fun fetchAllStoredCompanyFields(
-            storedCompanies: List<StoredCompanyEntity>,
-            isinChunkSize: Int = 10,
-            isinChunkIndex: Int = 0,
-        ): List<StoredCompanyEntity> =
-            fetchIsinIdentifiers(
-                companyRepository.fetchAllNonIsinFields(storedCompanies),
-                isinChunkSize,
-                isinChunkIndex,
-            )
 
         /**
          * Method to retrieve the list of currently set teaser company IDs
