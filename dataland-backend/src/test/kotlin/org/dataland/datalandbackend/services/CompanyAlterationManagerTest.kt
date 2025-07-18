@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -66,11 +67,11 @@ class CompanyAlterationManagerTest {
             mockIsinLeiRepository,
         )
 
-        whenever(mockStoredCompanyRepository.save(any())).thenAnswer { invocation -> invocation.arguments[0] }
-        whenever(mockCompanyIdentifierRepository.saveAllAndFlush<CompanyIdentifierEntity>(any())).thenAnswer { invocation ->
-            invocation.arguments[0]
-        }
-        whenever(mockIsinLeiRepository.saveAllAndFlush<IsinLeiEntity>(any())).thenAnswer { invocation -> invocation.arguments[0] }
+        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockStoredCompanyRepository).save(any())
+        doAnswer { invocation -> invocation.arguments[0] }
+            .whenever(mockCompanyIdentifierRepository)
+            .saveAllAndFlush<CompanyIdentifierEntity>(any())
+        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockIsinLeiRepository).saveAllAndFlush<IsinLeiEntity>(any())
 
         doReturn(
             listOf(
