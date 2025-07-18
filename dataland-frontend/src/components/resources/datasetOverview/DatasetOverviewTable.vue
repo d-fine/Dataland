@@ -24,7 +24,7 @@
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
       <Column field="status" header="STATUS" :sortable="true">
         <template #body="{ data }">
-          <DatasetStatusBadge :dataset-status="data.status" />
+          <DatalandTag :severity="data.status" :value="data.status" />
         </template>
       </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
@@ -72,8 +72,8 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DatasetTableInfo } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import InputText from 'primevue/inputtext';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
 import router from '@/router';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 
 export default defineComponent({
   name: 'DatasetOverviewTable',
@@ -81,7 +81,7 @@ export default defineComponent({
     this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
   },
   components: {
-    DatasetStatusBadge,
+    DatalandTag,
     DataTable,
     Column,
     InputText,
