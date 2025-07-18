@@ -42,7 +42,7 @@ describe('Component tests for the Dataland companies search page', function (): 
     }).then(() => {
       const placeholder = 'Search company by name or identifier (e.g. PermID, LEI, ...)';
       const inputValue = 'A company name';
-      cy.get('input[id=search_bar_top]')
+      cy.get('input[id=search-bar-input]')
         .should('not.be.disabled')
         .type(inputValue)
         .should('have.value', inputValue)
@@ -56,26 +56,15 @@ describe('Component tests for the Dataland companies search page', function (): 
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       verifySearchResultTableExists();
-      cy.get('button[name=search_bar_collapse]').should('not.be.visible');
+      cy.get('div[id=createButtonAndPageTitle]').should('be.visible');
 
       cy.scrollTo(0, 500, { duration: 200 });
-      cy.get('input[id=search_bar_top]').should('exist');
-      cy.get('button[name=search_bar_collapse]').should('be.visible');
+      cy.get('input[id=search-bar-input]').should('exist');
+      cy.get('div[id=createButtonAndPageTitle]').should('not.exist');
 
       cy.scrollTo(0, 0, { duration: 200 });
-      cy.get('input[id=search_bar_top]').should('exist');
-      cy.get('button[name=search_bar_collapse]').should('not.be.visible');
-
-      cy.scrollTo(0, 500, { duration: 200 });
-      cy.get('button[name=search_bar_collapse]').should('exist').click();
-      cy.get('input[id=search_bar_top]').should('not.exist');
-      cy.get('input[id=search_bar_scrolled]').should('exist');
-      cy.get('button[name=search_bar_collapse]').should('not.be.visible');
-
-      cy.scrollTo(0, 480, { duration: 200 });
-      cy.get('button[name=search_bar_collapse]').should('be.visible');
-      cy.get('input[id=search_bar_top]').should('exist');
-      cy.get('input[id=search_bar_scrolled]').should('not.exist');
+      cy.get('input[id=search-bar-input]').should('exist');
+      cy.get('div[id=createButtonAndPageTitle]').should('be.visible').click();
     });
   });
 
@@ -89,12 +78,11 @@ describe('Component tests for the Dataland companies search page', function (): 
         const inputValue1 = 'ABCDEFG';
         const inputValue2 = 'XYZ';
         verifySearchResultTableExists();
-        cy.get('input[id=search_bar_top]').type(inputValue1);
+        cy.get('input[id=search-bar-input]').type(inputValue1);
         cy.scrollTo(0, 500, { duration: 200 });
-        cy.get('button[name=search_bar_collapse]').click();
-        cy.get('input[id=search_bar_scrolled]').should('have.value', inputValue1).type(inputValue2);
+        cy.get('input[id=search-bar-input]').should('have.value', inputValue1).type(inputValue2);
         cy.scrollTo(0, 0, { duration: 200 });
-        cy.get('input[id=search_bar_top]').should('have.value', inputValue1 + inputValue2);
+        cy.get('input[id=search-bar-input]').should('have.value', inputValue1 + inputValue2);
       });
     }
   );

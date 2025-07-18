@@ -68,7 +68,7 @@ function setupCompanyWithData(token: string, companyName: string, years: string[
 function createPortfolio(company1: StoredCompany, company2: StoredCompany, portfolioName: string): void {
   cy.ensureLoggedIn(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/portfolios');
-  cy.get('[data-test="addNewPortfolio"]').click();
+  cy.get('[data-test="add-portfolio"]').click();
   cy.get('[name="portfolioName"]').type(portfolioName);
   cy.get('[name="company-identifiers"]').type(`${company1.companyId},${company2.companyId}`);
   cy.get('[data-test="addCompanies"]').click();
@@ -181,11 +181,11 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
-      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
+      cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
       cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
       reportingYearsToSelect.forEach((year) => {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
+        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
       });
     });
 

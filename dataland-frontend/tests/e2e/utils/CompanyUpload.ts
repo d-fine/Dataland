@@ -21,7 +21,7 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get('input[name=alternativeName]').type('Another Name', { force: true });
   cy.get('button[name=addAlternativeName]').click({ force: true });
   cy.get('input[name=headquarters]').type('Capitol City', { force: true });
-  selectItemFromDropdownByValue(cy.get('div[name=countryCode]'), 'DE', true);
+  selectItemFromDropdownByValue(cy.get('[data-test=country-code-selector]'), 'DE', true);
   cy.get('input[name=headquartersPostalCode]').type('123456', { force: true });
   cy.get('input[name=companyLegalForm]').type('Enterprise Ltd.', { force: true });
   cy.get('input[name=website]').type('www.company.com', { force: true });
@@ -32,7 +32,7 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get('input[name=duns]').type(`DunsValueId:${crypto.randomUUID()}`, { force: true });
   cy.get('input[name=vatNumber]').type(`VatValueId:${crypto.randomUUID()}`, { force: true });
   cy.get('input[name=companyRegistrationNumber]').type(`RegValueId:${crypto.randomUUID()}`, { force: true });
-  selectItemFromDropdownByValue(cy.get('div[name=sector]'), 'Energy');
+  selectItemFromDropdownByValue(cy.get('[data-test=sector-selector]'), 'Energy');
 }
 
 /**

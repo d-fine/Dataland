@@ -5,6 +5,7 @@
       type="text"
       label="Portfolio Name"
       name="portfolioName"
+      data-test="portfolio-name-input"
       :placeholder="portfolioName"
     />
     <label class="formkit-label" for="company-identifiers">Add Company Identifiers</label>
@@ -14,6 +15,7 @@
       name="company-identifiers"
       placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
       :disabled="isCompaniesLoading"
+      data-test="company-identifiers-input"
     />
     <PrimeButton
       type="button"
@@ -21,7 +23,6 @@
       icon="pi pi-plus"
       :loading="isCompaniesLoading"
       @click="addCompanies"
-      class="primary-button"
       data-test="addCompanies"
       style="margin-left: 1em; float: right"
     />
@@ -52,7 +53,6 @@
         class="primary-button deleteButton"
         :data-test="'deleteButton'"
         title="Delete the selected Portfolio"
-        style="width: 1em; padding: 1em"
       />
       <PrimeButton
         label="Save Portfolio"
@@ -126,6 +126,7 @@ onMounted(() => {
   enrichedPortfolio.value = portfolio;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
 });
+
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
@@ -229,10 +230,7 @@ async function deletePortfolio(): Promise<void> {
 
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
-    dialogRef?.value.close({
-      deleted: true,
-      portfolioId: portfolioId.value,
-    });
+    dialogRef?.value.close();
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }
@@ -259,11 +257,6 @@ function processCompanyInputString(): string[] {
   padding: 1.5rem;
 }
 
-.deleteButton {
-  min-width: fit-content;
-  padding: 1em;
-}
-
 .buttonbar {
   display: flex;
   gap: 1rem;
@@ -287,5 +280,9 @@ i.pi-trash {
   color: var(--primary-color);
   margin-right: 0.25em;
   cursor: pointer;
+}
+
+.gray-text {
+  color: var(--gray);
 }
 </style>

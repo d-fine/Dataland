@@ -56,9 +56,9 @@ describe('Component test for ApiKeyCard.vue', () => {
       cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
       cy.get('#expiryTimeWrapper').should('not.exist');
       cy.get('[data-test="expiryDatePicker"]').should('be.visible');
-      cy.get('button.p-datepicker-trigger').click();
-      cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
-      cy.get('div.p-datepicker').find('span:contains("13")').click();
+      cy.get('button.p-datepicker-dropdown').click();
+      cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
+      cy.get('.p-datepicker-day-view').find('td:contains("13")').click();
       cy.get('[data-test="expiryDatePicker"]')
         .find('input')
         .should(($input) => {

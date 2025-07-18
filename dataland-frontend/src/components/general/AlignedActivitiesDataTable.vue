@@ -79,7 +79,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import {
   type YesNo,
   type Activity,
@@ -443,3 +443,15 @@ function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity
   ];
 }
 </script>
+<style scoped>
+ul.unstyled-ul-list {
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+</style>

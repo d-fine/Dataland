@@ -55,11 +55,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
           .should('have.length', 1);
       });
       cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('not.exist');
-      cy.get('[data-pc-name="multiselect"]')
-        .get('[data-pc-section="wrapper"]')
-        .get('[data-pc-section="list"]')
-        .find('li:contains("Albania")')
-        .click();
+      cy.get('[data-pc-name="multiselect"]').get('[data-pc-section="list"]').contains('Albania').click();
       cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('exist');
       cy.intercept('**/api/data/lksg*', (request) => {
         const body = request.body as CompanyAssociatedDataLksgData;
@@ -70,6 +66,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
         });
         request.reply(200);
       }).as('send');
+      cy.get('.p-multiselect-overlay').invoke('hide');
       submitButton.clickButton();
       cy.wait('@send');
     });

@@ -22,8 +22,6 @@ const handleClick = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .button-font-style {
   font-size: 16px;
   font-weight: 600;
@@ -35,18 +33,18 @@ const handleClick = (): void => {
 .button-component {
   padding: 14px 32px 12px;
   border-radius: 32px;
-  background-color: var(--primary-orange);
+  background-color: var(--p-primary-color);
   color: var(--default-neutral-white);
-  border: 2px solid var(--primary-orange);
+  border: 2px solid var(--p-primary-color);
   cursor: pointer;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: 768px) {
     padding: 10px 16px;
     font-size: 14px;
     letter-spacing: 0.25px;
   }
   &:hover {
     background-color: var(--default-neutral-white);
-    color: var(--basic-dark);
+    color: var(--p-highlight-color);
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section v-if="quotesSection" class="quotes" role="region" aria-label="The Quotes">
+  <section v-if="quotesSection" class="quotes" aria-label="The Quotes">
     <SlideShow
       slides-wrapper-classes="quotes__sliderwrapper"
       slides-container-classes="quotes__slides"
@@ -11,10 +11,10 @@
       @update:currentSlide="updateCurrentSlide"
       :slide-width="slideWidth"
     >
-      <div v-if="cards.length % 2 === 0" role="listitem" class="quotes__slide">
+      <div v-if="cards.length % 2 === 0" class="quotes__slide">
         <div class="quotes__slide-videoContainer"></div>
       </div>
-      <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
+      <div v-for="(card, index) in cards" :key="index" class="quotes__slide">
         <div
           :class="{
             'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide + 1,
@@ -72,7 +72,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import type { Section } from '@/types/ContentTypes';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import SlideShow from '@/components/general/SlideShow.vue';
 
 interface YouTubeEvent {
@@ -221,8 +221,6 @@ const register = (): void => {
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables';
-
 .quotes {
   margin: 0 auto 120px;
   display: flex;
@@ -281,7 +279,7 @@ const register = (): void => {
       letter-spacing: 0.25px;
       margin: 0;
       span {
-        color: var(--primary-orange);
+        color: var(--p-primary-color);
         display: block;
       }
     }
@@ -341,7 +339,7 @@ const register = (): void => {
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(203, 203, 203, 0.24);
-    background-color: #fff;
+    background-color: var(--default-neutral-white);
     cursor: pointer;
     &:hover {
       border: 2px solid #585858;
@@ -373,7 +371,7 @@ const register = (): void => {
   &__button {
     padding: 14px 32px;
     border-radius: 32px;
-    background-color: var(--primary-orange);
+    background-color: var(--p-primary-color);
     color: var(--default-neutral-white);
     font-size: 16px;
     font-style: normal;
@@ -381,11 +379,11 @@ const register = (): void => {
     line-height: 20px;
     letter-spacing: 0.75px;
     text-transform: uppercase;
-    border: 2px solid var(--primary-orange);
+    border: 2px solid var(--p-primary-color);
     cursor: pointer;
     &:hover {
       background-color: var(--default-neutral-white);
-      color: var(--basic-dark);
+      color: var(--p-highlight-color);
     }
   }
 }
@@ -393,7 +391,7 @@ const register = (): void => {
   opacity: 0.5;
   pointer-events: none;
 }
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .quotes {
     margin: 32px auto 64px;
     gap: 32px;

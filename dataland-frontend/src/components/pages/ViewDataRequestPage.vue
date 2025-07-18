@@ -124,7 +124,7 @@
         </div>
       </PrimeDialog>
 
-      <div class="py-4 paper-section">
+      <div class="py-4">
         <div class="grid col-9 justify-content-around">
           <div class="col-4">
             <div class="card" data-test="card_requestDetails">
@@ -189,7 +189,7 @@
                 <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
                 <div class="card__separator" />
                 Receive emails directly or via summary
-                <InputSwitch
+                <ToggleSwitch
                   style="margin: 1rem 0"
                   data-test="notifyMeImmediatelyInput"
                   inputId="notifyMeImmediatelyInput"
@@ -291,7 +291,7 @@ import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -302,7 +302,7 @@ export default defineComponent({
     EmailDetails,
     PrimeDialog,
     PrimeButton,
-    InputSwitch,
+    ToggleSwitch,
     BackButton,
     AuthenticationWrapper,
     TheHeader,
@@ -595,13 +595,10 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-@use '@/assets/scss/variables';
-
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
-  padding: variables.$spacing-md;
-  border-radius: variables.$radius-xxs;
+  padding: var(--spacing-lg);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -610,12 +607,11 @@ export default defineComponent({
   margin-top: 1rem;
 }
 
-:deep {
+:deep(*) {
   .card {
     width: 100%;
     background-color: var(--surface-card);
-    padding: variables.$spacing-md;
-    border-radius: variables.$radius-xxs;
+    padding: var(--spacing-lg);
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -651,10 +647,60 @@ export default defineComponent({
   }
 }
 
+.info-icon {
+  cursor: help;
+}
+
 .two-columns {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
   list-style-type: none;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.green-text {
+  color: var(--green);
+}
+
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+
+  &.--underlined {
+    text-decoration: underline;
+  }
 }
 </style>

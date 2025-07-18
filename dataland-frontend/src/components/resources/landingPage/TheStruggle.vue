@@ -1,17 +1,17 @@
 <template>
-  <section v-if="struggleSection" class="struggle" role="region" aria-label="Struggle Statement">
+  <section v-if="struggleSection" class="struggle" aria-label="Struggle Statement">
     <div class="struggle__wrapper">
-      <h2 id="struggle-heading" aria-labelledby="struggle-heading">
+      <h2 id="struggle-heading">
         <span>{{ struggleSection.text[0] }}</span>
         {{ struggleSection.text[1] }}
       </h2>
-      <div class="struggle__grid" role="list">
-        <div v-for="(card, index) in struggleSection.cards" :key="index" class="struggle__cell" role="listitem">
+      <ul class="struggle__grid" aria-labelledby="struggle-heading">
+        <li v-for="(card, index) in struggleSection.cards" :key="index" class="struggle__cell">
           <img :src="card.icon" :alt="card.title" class="struggle__cell__icon" />
           <h3 class="struggle__cell__title">{{ card.title }}</h3>
           <p class="struggle__cell__text">{{ card.text }}</p>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 </template>
@@ -26,8 +26,6 @@ const struggleSection = computed(() => {
 });
 </script>
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .struggle {
   display: flex;
   flex-direction: column;
@@ -43,7 +41,8 @@ const struggleSection = computed(() => {
     width: 100%;
     padding: 0 32px;
   }
-  h2 {
+  h2,
+  h2 * {
     grid-column: 1 / -1;
     font-size: 100px;
     font-style: normal;
@@ -57,7 +56,7 @@ const struggleSection = computed(() => {
       font-size 0.4s ease,
       line-height 0.4s ease;
     span {
-      color: var(--primary-orange);
+      color: var(--p-primary-color);
     }
   }
 
@@ -103,7 +102,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .struggle {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -131,7 +130,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .struggle {
     padding: 80px 0;
     &__wrapper {

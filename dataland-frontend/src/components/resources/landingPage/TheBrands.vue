@@ -1,15 +1,15 @@
 <template>
-  <section v-if="brandsSection" class="brands" role="region" aria-label="Brands Statement">
-    <div class="brands__wrap">
+  <section v-if="brandsSection" class="brands" aria-label="Brands Statement">
+    <div class="brands-container">
       <h2 id="brands-heading" aria-labelledby="brands-heading" class="brands__text">
         {{ brandsSection.text[0] }}
-        <span>{{ brandsSection.text[1] }}</span>
+        <span class="brands__text">{{ brandsSection.text[1] }}</span>
       </h2>
-      <div class="brands__list" role="list">
-        <div class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index" role="listitem">
+      <ul class="brands__list">
+        <li class="brands__item" v-for="(imgSrc, index) in brandsSection.image" :key="index">
           <img :src="imgSrc" :alt="`Brand ${index + 1}`" class="brands__item-image" />
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 </template>
@@ -26,8 +26,6 @@ const brandsSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .brands {
   display: flex;
   flex-direction: column;
@@ -35,7 +33,7 @@ const brandsSection = computed(() => {
   padding: 80px 0 140px;
   gap: 40px;
 
-  &__wrap {
+  .brands-container {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
     gap: 40px 32px;
@@ -61,6 +59,9 @@ const brandsSection = computed(() => {
   }
 
   &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -83,7 +84,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$large) {
+@media only screen and (max-width: 1440px) {
   .brands {
     &__wrap {
       grid-template-columns: repeat(12, 1fr);
@@ -101,7 +102,7 @@ const brandsSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .brands {
     padding: 32px 0 80px;
     gap: 24px;
@@ -130,7 +131,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .brands {
     &__wrap {
       gap: 24px 16px;

@@ -120,13 +120,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
-
 .claim-panel {
   grid-column: 1 / -1;
   background-color: var(--surface-card);
-  padding-left: variables.$spacing-md;
-  border-radius: variables.$radius-xxs;
+  padding-left: var(--spacing-lg);
   text-align: left;
   box-shadow: 0 0 12px var(--gray-300);
 }
@@ -134,5 +131,40 @@ export default defineComponent({
 .claim-panel-text {
   font-size: 18px;
   font-weight: 600;
+}
+
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+
+  &.--underlined {
+    text-decoration: underline;
+  }
 }
 </style>

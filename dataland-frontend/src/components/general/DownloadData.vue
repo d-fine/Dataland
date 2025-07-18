@@ -43,7 +43,7 @@
       />
       <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
       <div class="flex align-content-start align-items-center">
-        <InputSwitch
+        <ToggleSwitch
           v-model="keepValuesOnly"
           class="form-field vertical-middle"
           data-test="valuesOnlySwitch"
@@ -56,7 +56,7 @@
         applicable for CSV and Excel file types.
       </span>
       <div class="flex align-content-start align-items-center">
-        <InputSwitch
+        <ToggleSwitch
           v-model="includeAlias"
           class="form-field vertical-middle"
           data-test="includeAliasSwitch"
@@ -90,7 +90,7 @@ import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
@@ -235,9 +235,7 @@ function checkIfShowErrors(): void {
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/scss/variables.scss';
-
+<style scoped>
 .download-content {
   width: 20em;
   height: 100%;
@@ -252,16 +250,5 @@ function checkIfShowErrors(): void {
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
-
-  .chip {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-    flex: 1 1 auto;
-    max-width: 5rem;
-    text-align: center;
-  }
 }
 </style>

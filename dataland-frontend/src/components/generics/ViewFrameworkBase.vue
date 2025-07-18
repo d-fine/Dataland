@@ -1,6 +1,6 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
-  <TheContent class="paper-section min-h-screen">
+  <TheContent class="min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
@@ -24,7 +24,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -126,9 +126,9 @@ import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import OverlayPanel from 'primevue/overlaypanel';
-import { computed, inject, onMounted, provide, watch, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
@@ -161,15 +161,6 @@ const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 
-provide(
-  'hideEmptyFields',
-  computed(() => hideEmptyFields.value)
-);
-provide(
-  'mapOfReportingPeriodToActiveDataset',
-  computed(() => mapOfReportingPeriodToActiveDataset.value)
-);
-
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
   for (const d of activeDataForCurrentCompanyAndFramework.value) {
@@ -177,6 +168,9 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
   }
   return map;
 });
+
+provide('hideEmptyFields', hideEmptyFields);
+provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
@@ -460,3 +454,13 @@ function downloadData(): void {
   });
 }
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

@@ -40,17 +40,14 @@ describe('Portfolio Monitoring Modal', () => {
       beforeEach(() => {
         cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
         cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
+        cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
+        cy.intercept('POST', '**/api/companies/validation').as('forCompanyValidation');
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount('/portfolios');
       });
 
       /**
        * Test function for creating portfolio and monitor it
-       * @param portfolioName name of portfolio
-       * @param permId company ids to be monitored
-       * @param expectedDataTypes frameworks to be monitored
-       * @param notExpectedDataTypes frameworks not expected in response
-       * @param framework selected framework
        */
       function testPatchMonitoring({
         portfolioName,
@@ -67,31 +64,32 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
-        cy.wait(Cypress.env('short_timeout_in_ms') as number);
-        cy.get('[data-test="addNewPortfolio"]').click({ force: true });
-        cy.get('[name="portfolioName"]').type(portfolioName);
+        cy.wait('@getEnrichedPortfolio');
+        cy.get('[data-test="add-portfolio"]').click();
+        cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
-        cy.get('[name="company-identifiers"]').type(permId);
+        cy.get('[data-test="company-identifiers-input"]').type(permId);
         cy.get('[data-test="addCompanies"]').click();
+        cy.wait('@forCompanyValidation');
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
 
-        cy.wait(Cypress.env('short_timeout_in_ms') as number);
+        cy.wait('@getEnrichedPortfolio');
         cy.get(`[data-test="portfolio-${portfolioName}"]`)
           .should('exist')
           .within(() => {
-            cy.get('[data-test="monitor-portfolio"]').click({ force: true });
+            cy.get('[data-test="monitor-portfolio"]').click();
           });
 
         cy.get('[data-test="activateMonitoringToggle"]').click();
         cy.get('[data-test="listOfReportingPeriods"]').click();
-        cy.get('.p-dropdown-item').contains('2023').click();
+        cy.get('.p-select-option').contains('2023').click();
 
         cy.get('[data-test="frameworkSelection"]')
           .contains('EU Taxonomy')
           .parent()
           .find('input[type="checkbox"]')
-          .click({ force: true });
+          .click();
 
         cy.get('[data-test="saveChangesButton"]').click();
 
@@ -116,15 +114,15 @@ describe('Portfolio Monitoring Modal', () => {
         });
 
         cy.visitAndCheckAppMount('/portfolios');
-        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
-
-        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
-        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
+        cy.wait('@getEnrichedPortfolio');
+        cy.get(`[data-test="${portfolioName}"]`).click();
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
+        cy.wait('@getEnrichedPortfolio');
         cy.get('[data-test="deleteButton"]').click();
-        cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).should('not.exist');
+        cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
       }
 
-      it('submits bulk data request when inputs are valid for non financial company', () => {
+      it('Monitoring yields bulk data request when inputs are valid for non financial company', () => {
         testPatchMonitoring({
           portfolioName: nonFinancialPortfolio,
           companyName: companyNameNonFinancial,
@@ -135,7 +133,7 @@ describe('Portfolio Monitoring Modal', () => {
         });
       });
 
-      it('submits bulk data request when inputs are valid for financial company', () => {
+      it('Monitoring yields bulk data request when inputs are valid for financial company', () => {
         testPatchMonitoring({
           portfolioName: financialPortfolio,
           companyName: companyNameFinancial,
@@ -146,7 +144,7 @@ describe('Portfolio Monitoring Modal', () => {
         });
       });
 
-      it('submits bulk data request when inputs are valid for non sector company', () => {
+      it('Monitoring yields bulk data request when inputs are valid for non sector company', () => {
         testPatchMonitoring({
           portfolioName: nonSectorPortfolio,
           companyName: companyNameNoSector,

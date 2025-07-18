@@ -204,14 +204,12 @@ export default defineComponent({
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
-     * @param event ClickEvent
      */
     async resolveRequest() {
       await this.patchDataRequest(this.dataRequestId, RequestStatus.Resolved);
     },
     /**
      * Method to reopen the request or provide dropdown for that when the button is clicked
-     * @param event ClickEvent
      */
     async reOpenRequest() {
       await this.fetchMessageHistory();
@@ -297,8 +295,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
-
 .no-line-height {
   line-height: 0;
 }
@@ -320,8 +316,7 @@ export default defineComponent({
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
-  padding: variables.$spacing-md;
-  border-radius: variables.$radius-xxs;
+  padding: var(--spacing-lg);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -334,5 +329,21 @@ export default defineComponent({
   border-bottom: #e0dfde solid 1px;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.info-icon {
+  cursor: help;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.red-text {
+  color: var(--red);
+}
+
+.green-text {
+  color: var(--green);
 }
 </style>
