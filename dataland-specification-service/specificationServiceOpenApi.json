@@ -163,6 +163,56 @@
         }
       }
     },
+    "/frameworks/{frameworkSpecificationId}/resolved-schema": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "operationId": "getDataPointBaseTypeSchema",
+        "parameters": [
+          {
+            "name": "frameworkSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointBaseTypeResolvedSchema"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/data-point-types/{dataPointTypeId}": {
       "get": {
         "tags": [
@@ -605,6 +655,32 @@
           },
           "schema": {
             "type": "string"
+          },
+          "referencedReportJsonPath": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointBaseTypeResolvedSchema": {
+        "required": [
+          "businessDefinition",
+          "framework",
+          "name",
+          "resolvedSchema"
+        ],
+        "type": "object",
+        "properties": {
+          "framework": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "name": {
+            "type": "string"
+          },
+          "businessDefinition": {
+            "type": "string"
+          },
+          "resolvedSchema": {
+            "type": "object"
           },
           "referencedReportJsonPath": {
             "type": "string"
