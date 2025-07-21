@@ -145,7 +145,7 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
  * @param datapointProperties the properties of the datapoint-wrapper
  * @returns the built displayValue object
  */
-function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
+export function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
   inputValue: AvailableMLDTDisplayObjectTypes,
   fieldLabel: string,
   datapointProperties: DatapointProperties | undefined | null
@@ -153,12 +153,21 @@ function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
   let innerContent: AvailableMLDTDisplayObjectTypes;
   const isOnlyQualityProvided =
     datapointProperties?.quality != undefined &&
-    datapointProperties?.dataSource == undefined &&
-    isDatapointCommentConsideredMissing(datapointProperties) &&
-    inputValue.displayValue === '';
+    datapointProperties?.dataSource != undefined &&
+    (inputValue.displayValue === '' ||
+    inputValue.displayValue === datapointProperties?.quality);
+
+  console.log("THE INPUT VALUE IS", inputValue.displayValue)
+  console.log("isOnlyQualityProvided is", isOnlyQualityProvided)
+  console.log(datapointProperties?.quality != undefined)
+  console.log(datapointProperties?.dataSource == undefined)
+  console.log(isDatapointCommentConsideredMissing(datapointProperties))
+  console.log(inputValue.displayValue === '' ||
+    inputValue.displayValue === datapointProperties?.quality);
+
 
   if (isOnlyQualityProvided) {
-    innerContent = formatStringForDatatable(humanizeStringOrNumber(datapointProperties?.quality));
+    innerContent = formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED);
   } else {
     innerContent = inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue;
   }

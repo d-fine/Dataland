@@ -10,7 +10,9 @@ import type {
   ExtendedDataPointNuclearAndGasEligibleButNotAligned,
   ExtendedDataPointNuclearAndGasNonEligible,
 } from '@clients/backend';
-import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants.ts';
+import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { buildDisplayValueWhenDataPointMetaInfoIsAvailable } from '@/components/resources/dataTable/conversion/DataPoints';
 
 export const nuclearAndGasModalColumnHeaders = {
   nuclearAndGasAlignedOrEligible: {
@@ -43,26 +45,16 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!nuclearAndGasExtendedDataPoint?.value) {
-    if (
-      nuclearAndGasExtendedDataPoint?.dataSource ||
-      nuclearAndGasExtendedDataPoint?.comment ||
-      nuclearAndGasExtendedDataPoint?.quality
-    ) {
+    if (nuclearAndGasExtendedDataPoint) {
       return {
         displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
-        displayValue: {
-          innerContents: {
-            displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-            displayValue: ONLY_AUXILIARY_DATA_PROVIDED,
-          },
+        displayValue: buildDisplayValueWhenDataPointMetaInfoIsAvailable(
+          formatStringForDatatable(humanizeStringOrNumber(nuclearAndGasExtendedDataPoint?.quality)),
           fieldLabel,
-          dataSource: nuclearAndGasExtendedDataPoint.dataSource,
-          comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,
-          quality: nuclearAndGasExtendedDataPoint.quality ?? undefined,
-        },
+          nuclearAndGasExtendedDataPoint
+        ),
       };
     }
-
     return MLDTDisplayObjectForEmptyString;
   }
 
