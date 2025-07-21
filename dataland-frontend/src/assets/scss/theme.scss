@@ -2,13 +2,13 @@
 
 :root {
   //PRIMARY COLOR PALETTE
-  --brown: #292219; //stone 800
-  --brown-light: #5a4f36; //stone 600
-  --brown-lighter: #958d7c; // stone 400
-  --gray: #6c757d; // gray 600
-  --gray-light: #e0dfde; // gray 200
-  --gray-lighter: #f5f5f5; // gray 100
-  --paper-white: #f7f9fa; // neutral 50
+  --brown: var(--p-stone-800);
+  --brown-light: var(--p-stone-600);
+  --brown-lighter: var(--p-stone-400);
+  --gray: var(--p-gray-600);
+  --gray-light: var(--p-gray-100);
+  --gray-lighter: var(--p-gray-50);
+  --paper-white: var(--p-neutral-50);
   --default-neutral-white: #fff;
   --grey-tones-100: #f6f6f6;
   --grey-tones-300: #c0c0c0;

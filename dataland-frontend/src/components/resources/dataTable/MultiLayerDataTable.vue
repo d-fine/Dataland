@@ -1,7 +1,7 @@
 <template>
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper overflow-auto">
-      <table class="p-datatable-table w-full" :aria-label="ariaLabel">
+      <table class="p-datatable-table" :aria-label="ariaLabel">
         <thead class="p-datatable-thead">
           <tr class="border-bottom-table">
             <th class="horizontal-headers-size">
@@ -190,60 +190,6 @@ const props = defineProps<{
 }>();
 </script>
 <style scoped>
-.p-datatable {
-  border-radius: 0;
-  background: var(--table-background-color);
-  color: var(--main-text-color);
-
-  .horizontal-headers-size {
-    background-color: var(--default-neutral-white);
-
-    &:first-of-type {
-      width: var(--first-table-column-width);
-    }
-  }
-
-  tr {
-    &:hover {
-      background: var(--table-background-hover-color);
-    }
-    th,
-    td {
-      text-align: left;
-      padding: 1rem;
-    }
-  }
-  .p-datatable-tbody {
-    tr {
-      border-color: hsl(from var(--table-border-dark) h s 45);
-    }
-    .info-icon {
-      float: right;
-      max-width: 20%;
-    }
-    .table-left-label {
-      float: left;
-      max-width: 80%;
-    }
-  }
-
-  .headers-bg {
-    background-color: var(--tables-headers-bg);
-    display: table-cell;
-    width: var(--first-table-column-width);
-  }
-
-  .p-datatable-thead {
-    z-index: 1;
-    tr {
-      box-shadow: none;
-      &:hover {
-        background: var(--table-background-color);
-      }
-    }
-  }
-}
-
 .info-icon {
   cursor: help;
 }
