@@ -87,7 +87,7 @@ class GleifGoldenCopyIngestorTest {
         assertEquals("1000", result[0].lei)
         assertEquals("2222", result[1].isin)
         assertEquals("2000", result[1].lei)
-        tempFile.delete()
+        tempFile.deleteOnExit()
     }
 
     @Test
