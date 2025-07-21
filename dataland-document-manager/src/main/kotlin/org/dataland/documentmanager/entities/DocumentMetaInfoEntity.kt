@@ -1,5 +1,7 @@
 package org.dataland.documentmanager.entities
 
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
@@ -14,6 +16,8 @@ import org.dataland.datalandbackendutils.converter.DocumentCategoryConverter
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -26,21 +30,62 @@ import java.time.LocalDate
 @Table(name = "document_meta_info")
 data class DocumentMetaInfoEntity(
     @Id
+    @field:Schema(
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+    )
     val documentId: String,
     @Enumerated(EnumType.STRING)
+    @field:Schema(
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_TYPE_DESCRIPTION,
+    )
     val documentType: DocumentType,
+    @field:Schema(
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_NAME_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_NAME_EXAMPLE,
+    )
     var documentName: String?,
     @Convert(converter = DocumentCategoryConverter::class)
+    @field:Schema(
+        description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_CATEGORY_DESCRIPTION,
+    )
     var documentCategory: DocumentCategory?,
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "company_ids")
     @OrderBy("asc")
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = DocumentManagerOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+                example = DocumentManagerOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+            ),
+    )
     val companyIds: MutableSet<String> = mutableSetOf(),
+    @field:Schema(
+        description = DocumentManagerOpenApiDescriptionsAndExamples.UPLOADER_ID_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.UPLOADER_ID_EXAMPLE,
+    )
     val uploaderId: String,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
+    )
     val uploadTime: Long,
+    @field:Schema(
+        description = DocumentManagerOpenApiDescriptionsAndExamples.PUBLICATION_DATE_DESCRIPTION,
+        example = DocumentManagerOpenApiDescriptionsAndExamples.PUBLICATION_DATE_EXAMPLE,
+    )
     var publicationDate: LocalDate?,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
     var reportingPeriod: String?,
     @Enumerated(EnumType.STRING)
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+    )
     var qaStatus: QaStatus,
 ) {
     /**

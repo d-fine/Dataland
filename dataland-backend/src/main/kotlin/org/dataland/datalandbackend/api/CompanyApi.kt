@@ -2,6 +2,9 @@ package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -18,6 +21,14 @@ import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CountryCodeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.SectorParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -96,11 +107,27 @@ interface CompanyApi {
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
-        @RequestParam dataTypes: Set<DataType>? = null,
-        @RequestParam countryCodes: Set<String>? = null,
-        @RequestParam sectors: Set<String>? = null,
-        @RequestParam chunkSize: Int? = null,
-        @RequestParam chunkIndex: Int? = null,
+        @RequestParam
+        @DataTypeParameterNonRequired
+        dataTypes: Set<DataType>? = null,
+        @RequestParam
+        @CountryCodeParameterNonRequired
+        countryCodes: Set<String>? = null,
+        @RequestParam
+        @SectorParameterNonRequired
+        sectors: Set<String>? = null,
+        @RequestParam(defaultValue = "100")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int? = null,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int? = null,
     ): ResponseEntity<List<BasicCompanyInformation>>
 
     /**
@@ -135,9 +162,15 @@ interface CompanyApi {
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
-        @RequestParam dataTypes: Set<DataType>? = null,
-        @RequestParam countryCodes: Set<String>? = null,
-        @RequestParam sectors: Set<String>? = null,
+        @RequestParam
+        @DataTypeParameterNonRequired
+        dataTypes: Set<DataType>? = null,
+        @RequestParam
+        @CountryCodeParameterNonRequired
+        countryCodes: Set<String>? = null,
+        @RequestParam
+        @SectorParameterNonRequired
+        sectors: Set<String>? = null,
     ): ResponseEntity<Int>
 
     /**
@@ -188,7 +221,9 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun existsIdentifier(
+        @IdentifierTypeParameterRequired
         @PathVariable("identifierType") identifierType: IdentifierType,
+        @IdentifierParameterRequired
         @PathVariable("identifier") identifier: String,
     )
 
@@ -213,7 +248,9 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyIdByIdentifier(
+        @IdentifierTypeParameterRequired
         @PathVariable("identifierType") identifierType: IdentifierType,
+        @IdentifierParameterRequired
         @PathVariable("identifier") identifier: String,
     ): ResponseEntity<CompanyId>
 
@@ -257,6 +294,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyById(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<StoredCompany>
 
@@ -285,6 +323,7 @@ interface CompanyApi {
             "@CompanyRoleChecker.canUserPatchFieldsForCompany(#companyInformationPatch, #companyId)",
     )
     fun patchCompanyById(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
         companyInformationPatch: CompanyInformationPatch,
@@ -312,8 +351,11 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putCompanyById(
-        @PathVariable("companyId") companyId: String,
-        @Valid @RequestBody
+        @CompanyIdParameterRequired
+        @PathVariable("companyId")
+        companyId: String,
+        @Valid
+        @RequestBody
         companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany>
 
@@ -327,7 +369,9 @@ interface CompanyApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully returned teaser companies."),
+            ApiResponse(
+                responseCode = "200", description = "Successfully returned teaser companies.",
+            ),
         ],
     )
     @GetMapping(
@@ -347,7 +391,21 @@ interface CompanyApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved values."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved values.",
+                content = [
+                    Content(
+                        schema =
+                            Schema(
+                                type = "object",
+                                additionalPropertiesSchema = AggregatedFrameworkDataSummary::class,
+                                description = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION,
+                                example = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE,
+                            ),
+                    ),
+                ],
+            ),
         ],
     )
     @GetMapping(
@@ -355,6 +413,7 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getAggregatedFrameworkDataSummary(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 
@@ -377,6 +436,7 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompanyInfo(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<CompanyInformation>
 
@@ -406,6 +466,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isCompanyIdValid(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     )
 
@@ -429,6 +490,7 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanySubsidiariesByParentId(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<List<BasicCompanyInformation>>
 
@@ -452,7 +514,18 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
-        @Valid @RequestBody
+        @ArraySchema(
+            arraySchema =
+                Schema(
+                    type = "string",
+                    description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
+                    example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+                ),
+        )
+        @RequestBody(
+            required = true,
+        )
+        @Valid
         identifiers: List<String>,
     ): ResponseEntity<List<CompanyIdentifierValidationResult>>
 }

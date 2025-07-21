@@ -39,12 +39,35 @@ abstract class BaseExportTest<T> {
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean = true,
+        includeAliases: Boolean = false,
     ): File
 
     private fun exportDataAsCsvWithMetadata(
         companyIds: List<String>,
         reportingPeriods: List<String>,
     ): File = exportDataAsCsv(companyIds, reportingPeriods, keepValueFieldsOnly = false)
+
+    private fun exportDataAsCsvWithAlias(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File =
+        exportDataAsCsv(
+            companyIds = companyIds,
+            reportingPeriods = reportingPeriods,
+            keepValueFieldsOnly = true,
+            includeAliases = true,
+        )
+
+    private fun exportDataAsCsvWithoutAlias(
+        companyIds: List<String>,
+        reportingPeriods: List<String>,
+    ): File =
+        exportDataAsCsv(
+            companyIds = companyIds,
+            reportingPeriods = reportingPeriods,
+            keepValueFieldsOnly = true,
+            includeAliases = false,
+        )
 
     protected abstract fun exportDataAsExcel(
         companyIds: List<String>,
@@ -137,7 +160,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column does NOT exist
-        ExportTestUtils.assertColumnPatternExists(
+        ExportTestUtils.assertColumnPatternExistsOrNot(
             headers,
             getNullFieldName(),
             shouldExist = false,
@@ -158,7 +181,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(singleCompanyCsvExport)
 
         // Check that the null field column DOES exist
-        ExportTestUtils.assertColumnPatternExists(
+        ExportTestUtils.assertColumnPatternExistsOrNot(
             headers,
             getNullFieldName(),
             shouldExist = true,
@@ -263,13 +286,13 @@ abstract class BaseExportTest<T> {
 
         // 1. Verify that the field with a value appears in both exports
         val valuePattern = "$fieldName.value"
-        ExportTestUtils.assertColumnPatternExists(
+        ExportTestUtils.assertColumnPatternExistsOrNot(
             headers = headersWithMetadata,
             columnNamePart = valuePattern,
             shouldExist = true,
             contextMessage = "CSV export with includeDataMetaInformation=true should include value of test field",
         )
-        ExportTestUtils.assertColumnPatternExists(
+        ExportTestUtils.assertColumnPatternExistsOrNot(
             headers = headersWithoutMetadata,
             columnNamePart = valuePattern,
             shouldExist = true,
@@ -278,13 +301,13 @@ abstract class BaseExportTest<T> {
 
         // 2. Verify that for the export without DataMetaInformation NO quality headers exist for this field
         val qualityPattern = "$fieldName.quality"
-        ExportTestUtils.assertColumnPatternExists(
+        ExportTestUtils.assertColumnPatternExistsOrNot(
             headers = headersWithMetadata,
             columnNamePart = qualityPattern,
             shouldExist = true,
             contextMessage = "CSV export with includeDataMetaInformation=true should include quality of test field",
         )
-        ExportTestUtils.assertColumnPatternExists(
+        ExportTestUtils.assertColumnPatternExistsOrNot(
             headers = headersWithoutMetadata,
             columnNamePart = qualityPattern,
             shouldExist = false,
@@ -307,7 +330,7 @@ abstract class BaseExportTest<T> {
     ) {
         // Verify required columns exist
         val nullFieldColumnIndex =
-            ExportTestUtils.assertColumnPatternExists(
+            ExportTestUtils.assertColumnPatternExistsOrNot(
                 headers,
                 getNullFieldName(),
                 shouldExist = true,
@@ -315,7 +338,7 @@ abstract class BaseExportTest<T> {
             )
 
         val companyLeiColumnIndex =
-            ExportTestUtils.assertColumnPatternExists(
+            ExportTestUtils.assertColumnPatternExistsOrNot(
                 headers,
                 "companyLei",
                 shouldExist = true,
@@ -335,6 +358,60 @@ abstract class BaseExportTest<T> {
             companyWithNullFieldLei,
             companyWithNonNullFieldLei,
             exportType,
+        )
+    }
+
+    /**
+     * Tests the CSV export functionality with and without including alias information.
+     *
+     * This method verifies the behavior of the CSV export when the `includeAlias` flag is set to `true` and `false`.
+     * Specifically, it ensures that:
+     * 1. The alias value appears in the CSV headers when `includeAlias` is `true`.
+     * 2. The alias value is omitted from the CSV headers when `includeAlias` is `false`.
+     *
+     * @param alias the alias string to be validated in the CSV export headers
+     */
+    protected fun testCsvExportIncludeAliasFlag(alias: String) {
+        // Export data with includeAlias=true
+        val exportWithAlias =
+            exportDataAsCsvWithAlias(
+                companyIds = listOf(companyWithNonNullFieldId),
+                reportingPeriods = listOf(reportingPeriod),
+            )
+
+        // Export data with default includeAlias=false
+        val exportWithoutAlias =
+            exportDataAsCsvWithoutAlias(
+                companyIds = listOf(companyWithNonNullFieldId),
+                reportingPeriods = listOf(reportingPeriod),
+            )
+
+        // Validate export files
+        ExportTestUtils.validateExportFile(exportWithAlias, "CSV export with alias")
+        ExportTestUtils.validateExportFile(exportWithoutAlias, "CSV export without alias")
+
+        // Read CSV headers from both exports
+        val headersWithAlias =
+            ExportTestUtils.readCsvHeaders(
+                ExportTestUtils.getReadableCsvFile(exportWithAlias),
+            )
+        val headersWithoutAlias =
+            ExportTestUtils.readCsvHeaders(
+                ExportTestUtils.getReadableCsvFile(exportWithoutAlias),
+            )
+
+        val valuePattern = alias
+        ExportTestUtils.assertColumnPatternExistsOrNot(
+            headers = headersWithAlias,
+            columnNamePart = valuePattern,
+            shouldExist = true,
+            contextMessage = "CSV export with includeAlias=true should include value of test field",
+        )
+        ExportTestUtils.assertColumnPatternExistsOrNot(
+            headers = headersWithoutAlias,
+            columnNamePart = valuePattern,
+            shouldExist = false,
+            contextMessage = "CSV export with includeAlias=false should not include value of test field",
         )
     }
 }

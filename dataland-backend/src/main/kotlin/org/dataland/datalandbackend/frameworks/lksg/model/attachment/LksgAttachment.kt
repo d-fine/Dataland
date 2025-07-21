@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.attachment.attachment.
 /**
  * The data-model for the Attachment section
  */
+@Suppress("MaxLineLength")
 data class LksgAttachment(
     @field:Valid()
     val attachment: LksgAttachmentAttachment? = null,

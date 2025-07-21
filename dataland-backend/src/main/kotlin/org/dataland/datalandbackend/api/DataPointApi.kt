@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -8,6 +9,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.DataPointToValidate
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -70,7 +72,12 @@ interface DataPointApi {
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadedDataPoint,
-        @RequestParam(defaultValue = "false") bypassQa: Boolean,
+        @RequestParam(defaultValue = "false")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+            required = false,
+        )
+        bypassQa: Boolean,
     ): ResponseEntity<DataPointMetaInformation>
 
     /**
@@ -93,7 +100,13 @@ interface DataPointApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPoint(
-        @PathVariable dataPointId: String,
+        @Parameter(
+            name = "dataPointId",
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("dataPointId") dataPointId: String,
     ): ResponseEntity<UploadedDataPoint>
 
     /**
@@ -116,6 +129,12 @@ interface DataPointApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPointMetaInfo(
-        @PathVariable dataPointId: String,
+        @Parameter(
+            name = "dataPointId",
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("dataPointId") dataPointId: String,
     ): ResponseEntity<DataPointMetaInformation>
 }
