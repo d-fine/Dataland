@@ -170,14 +170,14 @@ class BulkDataRequestManager(
             }
 
         val queryToExecute =
-            "WITH history AS (SELECT *, ROW_NUMBER() " +
-                "OVER (PARTITION BY data_request_id ORDER BY creation_timestamp DESC) AS num_row FROM request_status_history) " +
-                "SELECT d.* FROM data_requests d " +
-                "JOIN (SELECT * FROM history " +
-                "WHERE num_row = 1 AND request_status IN ('Open', 'Answered')) h " +
-                "ON d.data_request_id = h.data_request_id " +
-                "WHERE (d.dataland_company_id, d.data_type, d.reporting_period) IN ($formattedTuples) " +
-                "AND d.user_id = '$userId'"
+            """WITH history AS (SELECT *, ROW_NUMBER()
+                OVER (PARTITION BY data_request_id ORDER BY creation_timestamp DESC) AS num_row FROM request_status_history)
+                SELECT d.* FROM data_requests d
+                JOIN (SELECT * FROM history
+                WHERE num_row = 1 AND request_status IN ('Open', 'Answered')) h
+                ON d.data_request_id = h.data_request_id
+                WHERE (d.dataland_company_id, d.data_type, d.reporting_period) IN ($formattedTuples)
+                AND d.user_id = '$userId'"""
 
         return if (dataDimensions.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)

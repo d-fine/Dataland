@@ -28,9 +28,9 @@ class DataAvailabilityChecker(
             }
 
         val queryToExecute =
-            "SELECT * FROM data_meta_information" +
-                " WHERE (company_id, data_type, reporting_period) IN ($formattedTuples)" +
-                " AND currently_active = true"
+            """SELECT * FROM data_meta_information
+                WHERE (company_id, data_type, reporting_period) IN ($formattedTuples)
+                AND currently_active = true"""
 
         return if (dimensionsToProcess.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
