@@ -113,18 +113,18 @@ class ProcessDataUpdates
             }
         }
 
-        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 * * * * ")
-        private fun testIsinLeiMapping() {
-            if (temp) {
-                waitForBackend()
-                gleifGoldenCopyIngestor.processIsinMappingFile()
-                temp = false
-            }
-        }
+//        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+//        @Scheduled(cron = "0 30 * * * * ")
+//        private fun testIsinLeiMapping() {
+//            if (temp) {
+//                waitForBackend()
+//                gleifGoldenCopyIngestor.processIsinMappingFile()
+//                temp = false
+//            }
+//        }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 3 ? * SUN")
+        @Scheduled(cron = "0 30 14 ? * MON") // TODO: Change back to "0 0 3 ? * SUN" for production
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
             val doFullUpdate = flagFileGleif?.exists() ?: false
