@@ -5,6 +5,7 @@
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint",
   "schema" : {
     "value": "AssuranceOption",
+    "provider" : "String",
     "dataSource" : {
       "page" : "String",
       "tagName" : "String",
