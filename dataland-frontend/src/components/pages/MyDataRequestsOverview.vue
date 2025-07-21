@@ -105,16 +105,12 @@
                 </Column>
                 <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
                   <template #body="{ data }">
-                    <div :class="badgeClass(data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(data.requestStatus) }}
-                    </div>
+                    <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
                   </template>
                 </Column>
                 <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
                   <template #body="{ data }">
-                    <div :class="accessStatusBadgeClass(data.accessStatus)" style="display: inline-flex">
-                      {{ data.accessStatus }}
-                    </div>
+                    <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
                   </template>
                 </Column>
                 <Column field="resolve" header="">
@@ -154,22 +150,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import Column from 'primevue/column';
-import DataTable, {
-  type DataTablePageEvent,
-  type DataTableRowClickEvent,
-  type DataTableSortEvent,
-} from 'primevue/datatable';
-import InputText from 'primevue/inputtext';
-import PrimeButton from 'primevue/button';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
@@ -179,10 +166,19 @@ import {
   retrieveAvailableAccessStatus,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Column from 'primevue/column';
+import DataTable, {
+  type DataTablePageEvent,
+  type DataTableRowClickEvent,
+  type DataTableSortEvent,
+} from 'primevue/datatable';
+import InputText from 'primevue/inputtext';
+import { inject, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const datasetsPerPage = 100;
 

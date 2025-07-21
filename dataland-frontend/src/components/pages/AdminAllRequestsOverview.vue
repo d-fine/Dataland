@@ -173,23 +173,17 @@
                 </Column>
                 <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
                   <template #body="slotProps">
-                    <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
-                    </div>
+                    <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" />
                   </template>
                 </Column>
                 <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
                   <template #body="slotProps">
-                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
-                      {{ slotProps.data.accessStatus }}
-                    </div>
+                    <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
                   </template>
                 </Column>
                 <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
                   <template #body="slotProps">
-                    <div :class="priorityBadgeClass(slotProps.data.requestPriority)" style="display: inline-flex">
-                      {{ convertCamelCaseToWordsWithSpaces(slotProps.data.requestPriority) }}
-                    </div>
+                    <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
                   </template>
                 </Column>
                 <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
@@ -215,6 +209,7 @@
 </template>
 
 <script lang="ts">
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -230,13 +225,7 @@ import {
   retrieveAvailablePriority,
   retrieveAvailableRequestStatus,
 } from '@/utils/RequestsOverviewPageUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel, priorityBadgeClass } from '@/utils/RequestUtils';
-import {
-  convertCamelCaseToWordsWithSpaces,
-  frameworkHasSubTitle,
-  getFrameworkSubtitle,
-  getFrameworkTitle,
-} from '@/utils/StringFormatter';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type { DataTypeEnum } from '@clients/backend';
 import {
   type ExtendedStoredDataRequest,
@@ -254,6 +243,7 @@ import { defineComponent, inject, ref } from 'vue';
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
   components: {
+    DatalandTag,
     PrimeButton,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
@@ -336,11 +326,6 @@ export default defineComponent({
     },
   },
   methods: {
-    convertCamelCaseToWordsWithSpaces,
-    priorityBadgeClass,
-    badgeClass,
-    accessStatusBadgeClass,
-    getRequestStatusLabel,
     frameworkHasSubTitle,
     getFrameworkTitle,
     getFrameworkSubtitle,
