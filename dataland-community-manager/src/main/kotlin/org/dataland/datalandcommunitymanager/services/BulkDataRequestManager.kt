@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -181,7 +182,7 @@ class BulkDataRequestManager(
 
         return if (dataDimensions.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)
-            return query.resultList as List<DataRequestEntity>
+            JsonUtils.convertQueryResults(query.resultList)
         } else {
             emptyList()
         }

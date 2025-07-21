@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import java.text.SimpleDateFormat
 
 object JsonUtils {
@@ -24,6 +25,14 @@ object JsonUtils {
      * Return the path separator used in constructing node paths
      */
     fun getPathSeparator(): String = JSON_PATH_SEPARATOR
+
+    /**
+     * Convert the result list of an entity manager native query (always List<Any?>) into the expected type.
+     * @param resultList The list of results of the entity manager native query
+     * @return A list of objects of type T representing the original results
+     */
+    fun <T> convertQueryResults(resultList: List<Any?>): List<T> =
+        defaultObjectMapper.readValue<List<T>>(defaultObjectMapper.writeValueAsString(resultList))
 
     /**
      * Get all leaf node field names mapped to their corresponding value from a JSON node.
