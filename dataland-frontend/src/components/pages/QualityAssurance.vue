@@ -39,7 +39,7 @@
               :available-items="availableFrameworks"
               filter-name="Framework"
               data-test="framework-picker"
-              filter-id="framework-filter"
+              id="framework-filter"
               filter-placeholder="Search by Frameworks"
               max-selected-labels="1"
               selected-items-label="{0} frameworks selected"

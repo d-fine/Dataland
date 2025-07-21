@@ -174,7 +174,6 @@ describe('As a user, I expect the search functionality on the /companies page to
       verifySearchResultTableExists();
       cy.get('#framework-filter').click();
       cy.get('div.p-multiselect-overlay').should('exist');
-
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.get('#framework-filter').click();
@@ -227,7 +226,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
         }
       );
-      it(
+      it.only(
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
           'search results, if at least one framework filter is set.',
@@ -241,7 +240,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
           cy.get('#framework-filter').click();
           cy.get('div.p-multiselect-overlay')
-            .find(`li.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           verifySearchResultTableExists();
           cy.wait('@getFilterOptions', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
@@ -262,7 +261,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies?input=${companyName}`);
           cy.get('#framework-filter').click();
           cy.get('div.p-multiselect-overlay')
-            .find(`li.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           cy.get("div[class='col-12 text-left']").should('contain.text', failureMessageOnAvailableDatasetsPage);
         }

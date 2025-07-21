@@ -16,7 +16,7 @@
         :available-items="availableDocumentTypes"
         filter-name="Types"
         data-test="document-type-picker"
-        filter-id="document-type-filter"
+        id="document-type-filter"
         filter-placeholder="Search by document type"
         style="margin: 0 1rem"
       />

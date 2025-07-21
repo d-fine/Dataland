@@ -27,16 +27,12 @@
               />
             </div>
 
-            <div
-              v-if="!isSearchBarContainerCollapsed"
-              id="createButtonAndPageTitle"
-              class="flex align-content-end align-items-center"
-            >
+            <div v-if="!isSearchBarContainerCollapsed" class="button-container">
               <PrimeButton
                 label="BULK DATA REQUEST"
                 data-test="bulkDataRequestButton"
                 @click="routeToBulkDataRequest()"
-                icon="pi pi-plus-circle"
+                icon="pi pi-plus"
               />
               <NewDatasetButton v-if="hasUserUploaderRights" />
               <span>{{ currentlyVisiblePageText }}</span>
@@ -390,5 +386,27 @@ export default defineComponent({
   #frameworkDataSearchBar {
     width: 70%;
   }
+}
+
+.button-container {
+  padding: 0 var(--spacing-xs);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.collapsed-search-container {
+  display: flex;
+  flex-direction: row;
+  position: sticky;
+  top: 4rem;
+  z-index: 50;
+  background-color: var(--p-surface-0);
+  justify-content: space-between;
+  align-items: end;
+  padding-top: 0;
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--p-surface-200);
 }
 </style>

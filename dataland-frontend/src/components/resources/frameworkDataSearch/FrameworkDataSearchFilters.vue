@@ -1,14 +1,13 @@
 <template>
   <div class="filter-container">
     <div class="filter">
-      <label for="companyFilter" v-if="showHeading">Filter by company</label>
+      <label for="sector-filter" v-if="showHeading">Filter by company</label>
       <FrameworkDataSearchDropdownFilter
-        id="companyFilter"
         v-model="selectedSectorsInt"
         ref="sectorFilter"
         :available-items="availableSectors"
         filter-name="Sector"
-        filter-id="sector-filter"
+        id="sector-filter"
         filter-placeholder="Search sectors"
         max-selected-labels="1"
         selected-items-label="{0} sectors"
@@ -19,7 +18,7 @@
         ref="countryFilter"
         :available-items="availableCountries"
         filter-name="Country"
-        filter-id="country-filter"
+        id="country-filter"
         filter-placeholder="Search countries"
         max-selected-labels="1"
         selected-items-label="{0} companies"
@@ -27,18 +26,17 @@
       />
       <Divider layout="vertical" />
       <FrameworkDataSearchDropdownFilter
-        id="dataTypeFilter"
         v-model="selectedFrameworksInt"
         ref="frameworkFilter"
         :available-items="availableFrameworks"
         filter-name="Framework"
-        filter-id="framework-filter"
+        id="framework-filter"
         filter-placeholder="Search frameworks"
         selected-items-label="{0} frameworks"
         max-selected-labels="1"
         class="search-filter"
       />
-      <label for="dataTypeFilter" v-if="showHeading">Filter for available data sets</label>
+      <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
       <Divider layout="vertical" />
     </div>
     <PrimeButton variant="link" @click="resetFilters" label="RESET" />
@@ -222,7 +220,7 @@ export default defineComponent({
 <style scoped>
 .filter-container {
   display: flex;
-  height: 5rem;
+  min-height: 5rem;
   align-items: end;
   width: 100%;
 
