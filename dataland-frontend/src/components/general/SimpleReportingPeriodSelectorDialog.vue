@@ -28,6 +28,12 @@ function onReportingPeriodSelection(reportingPeriod: string): void {
 }
 </script>
 <style scoped>
+.three-in-row {
+  display: grid;
+  gap: var(--spacing-xs);
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .link {
   color: var(--main-color);
   background: transparent;

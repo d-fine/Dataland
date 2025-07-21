@@ -36,7 +36,7 @@
             </div>
           </div>
 
-          <div class="flex align-content-end align-items-center">
+          <div class="button-container">
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
               :meta-info="singleDataMetaInfoToDisplay"
@@ -44,39 +44,33 @@
             />
 
             <PrimeButton
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="DOWNLOAD DATA"
+              aria-label="Download data"
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
-            >
-              <span class="px-2 py-1">DOWNLOAD DATA</span>
-            </PrimeButton>
+              label="Download Data"
+              icon="pi pi-download"
+            />
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="EDIT DATA"
+              aria-label="Edit data"
               @click="editDataset"
               data-test="editDatasetButton"
-            >
-              <span class="px-2 py-1">EDIT DATA</span>
-              <span
-                v-if="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay"
-                class="material-icons-outlined"
-                >arrow_drop_down</span
-              >
-            </PrimeButton>
+              label="Edit Data"
+              :icon="
+                availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
+                  ? 'pi pi-chevron-down'
+                  : 'pi pi-pencil'
+              "
+              :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+            />
             <router-link
               v-if="hasUserUploaderRights"
               :to="targetLinkForAddingNewDataset"
-              class="no-underline ml-3"
               data-test="gotoNewDatasetButton"
             >
-              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                <span class="material-icons-outlined px-2">queue</span>
-                <span class="px-2">NEW DATASET</span>
-              </PrimeButton>
+              <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="New Dataset" />
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
@@ -455,6 +449,11 @@ function downloadData(): void {
 }
 </script>
 <style scoped>
+.button-container {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
 .d-letters {
   letter-spacing: 0.05em;
 }

@@ -83,15 +83,6 @@
   </template>
 </template>
 
-<style scoped>
-.vertical-align-top {
-  vertical-align: top;
-}
-.header-column-width {
-  width: 30%;
-}
-</style>
-
 <script setup lang="ts" generic="T">
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
@@ -164,5 +155,12 @@ onMounted(() => {
 <style scoped>
 .info-icon {
   cursor: help;
+}
+
+.vertical-align-top {
+  vertical-align: top;
+}
+.header-column-width {
+  width: 30%;
 }
 </style>
