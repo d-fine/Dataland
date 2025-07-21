@@ -1,0 +1,18 @@
+// Shared styles for documentation components
+@use './variables';
+
+.specification-field {
+  .field-label {
+    font-size: variables.$fs-base;
+  }
+  
+  .field-value {
+    font-size: variables.$fs-base;
+    line-height: 1.5;
+  }
+}
+
+// Export for component imports
+:export {
+  specificationField: specification-field;
+}

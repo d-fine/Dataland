@@ -33,6 +33,9 @@ const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/component
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+const DataPointBaseTypeDocumentation = (): Promise<RouteComponent> => import('@/components/pages/DataPointBaseTypeDocumentation.vue');
+const DataPointTypeDocumentation = (): Promise<RouteComponent> => import('@/components/pages/DataPointTypeDocumentation.vue');
+const FrameworkDocumentation = (): Promise<RouteComponent> => import('@/components/pages/FrameworkDocumentation.vue');
 
 const routes = [
   {
@@ -189,6 +192,24 @@ const routes = [
     path: '/imprint',
     name: 'LandingImprint',
     component: TheImprint,
+  },
+  {
+    path: '/documentation/data-point-base-types/:baseTypeId',
+    name: 'Data Point Base Type Documentation',
+    props: true,
+    component: DataPointBaseTypeDocumentation,
+  },
+  {
+    path: '/documentation/data-point-types/:dataPointTypeId',
+    name: 'Data Point Type Documentation',
+    props: true,
+    component: DataPointTypeDocumentation,
+  },
+  {
+    path: '/documentation/frameworks/:frameworkId',
+    name: 'Framework Documentation',
+    props: true,
+    component: FrameworkDocumentation,
   },
   {
     path: '/nocontent',
