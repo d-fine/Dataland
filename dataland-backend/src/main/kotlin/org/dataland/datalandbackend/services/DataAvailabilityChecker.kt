@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.utils.filterOutInvalidDimensions
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.stereotype.Service
 
 /**
@@ -35,7 +34,7 @@ class DataAvailabilityChecker(
 
         return if (dimensionsToProcess.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
-            JsonUtils.convertQueryResults<DataMetaInformationEntity>(query.resultList).map { it.toApiModel() }
+            return (query.resultList as List<DataMetaInformationEntity>).map { it.toApiModel() }
         } else {
             emptyList()
         }
