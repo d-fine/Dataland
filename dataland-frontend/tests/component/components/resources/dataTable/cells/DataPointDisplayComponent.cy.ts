@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import DataPointDisplayComponent from '@/components/resources/dataTable/cells/DataPointDisplayComponent.vue';
 
 it('tests if modal with link into position in text file works', () => {
   cy.mountWithDialog(
