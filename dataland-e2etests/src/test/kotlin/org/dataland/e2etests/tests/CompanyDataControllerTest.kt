@@ -103,21 +103,22 @@ class CompanyDataControllerTest {
             apiAccessor.companyDataControllerApi.patchCompanyById(uploadedCompany.companyId, patchObject)
         val oldIdentifiers = uploadedCompany.companyInformation.identifiers
         val newIdentifiers = updatedCompany.companyInformation.identifiers
+        val assertionMessage = "The update should work as expected"
         assertEquals(
             oldIdentifiers[IdentifierType.PermId.value], newIdentifiers[IdentifierType.PermId.value],
             "Unpatched identifiers should remain the same",
         )
         assertEquals(
             patchObject.identifiers!![IdentifierType.Lei.value], newIdentifiers[IdentifierType.Lei.value],
-            "The update should work as expected",
+            assertionMessage,
         )
         assertEquals(
             patchObject.identifiers[IdentifierType.Isin.value], newIdentifiers[IdentifierType.Isin.value],
-            "The update should work as expected",
+            assertionMessage,
         )
         assertEquals(
             patchObject.identifiers[IdentifierType.Duns.value], newIdentifiers[IdentifierType.Duns.value],
-            "The update should work as expected",
+            assertionMessage,
         )
     }
 
