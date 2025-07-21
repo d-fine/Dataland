@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,9 +42,7 @@ class IsinLeiManager(
         clearAllMappings()
         logger.info("Dropped previous entries")
         logger.info("Preparing to add new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
-        val companies = storedCompanyRepository.findCompaniesbyListOfLeis(isinLeiMappingData.map { it.lei })
-        val entities = convertToIsinLeiEntity(isinLeiMappingData, companies)
-        saveAllJdbcBatchCallable(entities)
+        saveAllJdbcBatchCallable(isinLeiMappingData)
         logger.info("Added new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
     }
 
@@ -58,7 +57,13 @@ class IsinLeiManager(
     ): List<IsinLeiEntity> {
         val entities = mutableListOf<IsinLeiEntity>()
         isinLeiMappingData.forEach { mappingData ->
-            val company = companies?.first { it.identifiers.map { id -> id.identifierValue }.contains(mappingData.lei) }
+            val company =
+                companies?.first {
+                    it.identifiers
+                        .filter { id -> id.identifierType == IdentifierType.Lei }
+                        .map { id -> id.identifierValue }
+                        .contains(mappingData.lei)
+                }
             entities.add(
                 IsinLeiEntity(
                     isin = mappingData.isin,
@@ -121,19 +126,21 @@ class IsinLeiManager(
 
     /**
      * Method to save ISIN-LEI mappings in chunks using a callable for asynchronous execution.
-     * @param entities the ISIN-LEI mappings to save
+     * @param data the ISIN-LEI mapping data to save
      * @param chunkSize the size of each chunk to process in parallel
      */
     private fun saveAllJdbcBatchCallable(
-        entities: List<IsinLeiEntity>,
+        data: List<IsinLeiMappingData>,
         chunkSize: Int = 10000,
     ) {
         val executorService = Executors.newFixedThreadPool(dataSourceMaximumPoolSize)
-        val chunks = entities.chunked(chunkSize)
+        val chunks = data.chunked(chunkSize)
         val tasks =
             chunks.map { chunk ->
+                val companies = storedCompanyRepository.findCompaniesbyListOfLeis(data.map { it.lei }.toSet().toList())
+                val entities = convertToIsinLeiEntity(data, companies)
                 Callable<Void> {
-                    saveAllJdbcBatch(chunk)
+                    saveAllJdbcBatch(entities)
                     null
                 }
             }
@@ -144,7 +151,7 @@ class IsinLeiManager(
     /**
      * Method to remove all ISIN-LEI mappings.
      */
-    private fun clearAllMappings() {
+    protected fun clearAllMappings() {
         val sql = """TRUNCATE TABLE $tableName"""
         dataSource.connection.use { connection ->
             connection.createStatement().use { statement ->
