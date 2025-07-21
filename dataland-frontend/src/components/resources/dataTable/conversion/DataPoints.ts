@@ -153,21 +153,12 @@ export function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
   let innerContent: AvailableMLDTDisplayObjectTypes;
   const isOnlyQualityProvided =
     datapointProperties?.quality != undefined &&
-    datapointProperties?.dataSource != undefined &&
-    (inputValue.displayValue === '' ||
-    inputValue.displayValue === datapointProperties?.quality);
-
-  console.log("THE INPUT VALUE IS", inputValue.displayValue)
-  console.log("isOnlyQualityProvided is", isOnlyQualityProvided)
-  console.log(datapointProperties?.quality != undefined)
-  console.log(datapointProperties?.dataSource == undefined)
-  console.log(isDatapointCommentConsideredMissing(datapointProperties))
-  console.log(inputValue.displayValue === '' ||
-    inputValue.displayValue === datapointProperties?.quality);
-
+    datapointProperties?.dataSource == undefined &&
+    isDatapointCommentConsideredMissing(datapointProperties) &&
+    inputValue.displayValue === '';
 
   if (isOnlyQualityProvided) {
-    innerContent = formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED);
+    innerContent = formatStringForDatatable(humanizeStringOrNumber(datapointProperties?.quality));
   } else {
     innerContent = inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue;
   }

@@ -11,7 +11,6 @@ import type {
   ExtendedDataPointNuclearAndGasNonEligible,
 } from '@clients/backend';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory.ts';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { buildDisplayValueWhenDataPointMetaInfoIsAvailable } from '@/components/resources/dataTable/conversion/DataPoints';
 
 export const nuclearAndGasModalColumnHeaders = {
@@ -49,7 +48,7 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
       return {
         displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
         displayValue: buildDisplayValueWhenDataPointMetaInfoIsAvailable(
-          formatStringForDatatable(humanizeStringOrNumber(nuclearAndGasExtendedDataPoint?.quality)),
+          MLDTDisplayObjectForEmptyString,
           fieldLabel,
           nuclearAndGasExtendedDataPoint
         ),
