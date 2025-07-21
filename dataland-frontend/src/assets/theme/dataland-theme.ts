@@ -118,7 +118,7 @@ export const DatalandPreset = definePreset(Aura, {
         formField: {
           filledHoverBackground: '{surface.100}',
           filledFocusBackground: '{surface.100}',
-          borderColor: '{surface.100}',
+          borderColor: '{surface.200}',
           hoverBorderColor: '{surface.300}',
           focusBorderColor: '{primary.color}',
           invalidBorderColor: '{surface.0}',
@@ -145,25 +145,6 @@ export const DatalandPreset = definePreset(Aura, {
     },
   },
   components: {
-    tabs: {
-      tablist: {
-        borderWidth: '0',
-      },
-      tabpanel: {
-        padding: '0',
-      },
-      tab: {
-        padding: '1.25rem 0',
-        margin: '0 1.25rem',
-        borderWidth: '0 0 2px 0',
-        borderColor: '{surface.0}',
-        hoverBorderColor: '{content.hoverBorderColor}',
-      },
-      activeBar: {
-        height: '0',
-        bottom: '0',
-      },
-    },
     button: {
       root: {
         borderRadius: '{border.radius.none}',
@@ -191,6 +172,12 @@ export const DatalandPreset = definePreset(Aura, {
         }
       `,
     },
+    checkbox: {
+      root: {
+        borderRadius: '{border.radius.none}',
+        checkedBorderColor: '{primary.color}',
+      },
+    },
     datatable: {
       headerCell: {
         selectedColor: '{primary.color}',
@@ -201,6 +188,32 @@ export const DatalandPreset = definePreset(Aura, {
       root: {
         background: '{highlight.background}',
         borderRadius: '{border.radius.none}',
+      },
+    },
+    tabs: {
+      tablist: {
+        borderWidth: '0',
+      },
+      tabpanel: {
+        padding: '0',
+      },
+      tab: {
+        padding: '1.25rem 0',
+        margin: '0 1.25rem',
+        borderWidth: '0 0 2px 0',
+        borderColor: '{surface.0}',
+        hoverBorderColor: '{content.hoverBorderColor}',
+      },
+      activeBar: {
+        height: '0',
+        bottom: '0',
+      },
+    },
+    paginator: {
+      navButton: {
+        selectedBackground: '{primary.color}',
+        borderRadius: '{border.radius.none}',
+        selectedColor: '{primary.contrast.color}',
       },
     },
     tag: {
@@ -219,13 +232,6 @@ export const DatalandPreset = definePreset(Aura, {
             background: '{slate.700}',
           },
         },
-      },
-    },
-    paginator: {
-      navButton: {
-        selectedBackground: '{primary.color}',
-        borderRadius: '{border.radius.none}',
-        selectedColor: '{primary.contrast.color}',
       },
     },
   },

@@ -1,14 +1,18 @@
 <template>
   <div class="filter-container">
-    <div id="companyFilter">
+    <div class="filter">
       <label for="companyFilter" v-if="showHeading">Filter by company</label>
       <FrameworkDataSearchDropdownFilter
+        id="companyFilter"
         v-model="selectedSectorsInt"
         ref="sectorFilter"
         :available-items="availableSectors"
         filter-name="Sector"
         filter-id="sector-filter"
         filter-placeholder="Search sectors"
+        max-selected-labels="1"
+        selected-items-label="{0} sectors"
+        class="search-filter"
       />
       <FrameworkDataSearchDropdownFilter
         v-model="selectedCountriesInt"
@@ -17,20 +21,24 @@
         filter-name="Country"
         filter-id="country-filter"
         filter-placeholder="Search countries"
-        class="ml-3"
+        max-selected-labels="1"
+        selected-items-label="{0} companies"
+        class="search-filter"
       />
       <Divider layout="vertical" />
-    </div>
-    <div id="dataTypeFilter">
-      <label for="dataTypeFilter" v-if="showHeading">Filter for available data sets</label>
       <FrameworkDataSearchDropdownFilter
+        id="dataTypeFilter"
         v-model="selectedFrameworksInt"
         ref="frameworkFilter"
         :available-items="availableFrameworks"
         filter-name="Framework"
         filter-id="framework-filter"
         filter-placeholder="Search frameworks"
+        selected-items-label="{0} frameworks"
+        max-selected-labels="1"
+        class="search-filter"
       />
+      <label for="dataTypeFilter" v-if="showHeading">Filter for available data sets</label>
       <Divider layout="vertical" />
     </div>
     <PrimeButton variant="link" @click="resetFilters" label="RESET" />
@@ -218,16 +226,24 @@ export default defineComponent({
   align-items: end;
   width: 100%;
 
-  #companyFilter,
-  #dataTypeFilter {
+  .filter {
     display: grid;
+    gap: 0 var(--spacing-sm);
+
+    .search-filter {
+      width: 11rem;
+      text-align: left;
+    }
 
     label {
       grid-row: 1;
-      grid-column-end: span 2;
       margin-bottom: var(--spacing-xs);
       text-align: left;
       font-size: var(--font-size-xs);
+
+      &:last-of-type {
+        grid-column-start: 4;
+      }
     }
 
     :not(label) {
