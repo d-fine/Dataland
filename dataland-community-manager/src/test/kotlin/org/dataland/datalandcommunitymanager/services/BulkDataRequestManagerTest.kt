@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import jakarta.persistence.EntityManager
+import jakarta.persistence.Query
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -117,9 +118,9 @@ class BulkDataRequestManagerTest {
         whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
         whenever(mockMetaDataController.retrieveMetaDataOfActiveDatasets(any())).thenReturn(emptyList)
-        val mockQuery = mock<jakarta.persistence.Query>()
+        val mockQuery = mock<Query>()
         whenever(mockEntityManager.createNativeQuery(any(), any<Class<DataRequestEntity>>()))
-            .thenReturn(mock<jakarta.persistence.Query>())
+            .thenReturn(mock<Query>())
         whenever(mockQuery.resultList).thenReturn(emptyList<DataRequestEntity>())
     }
 
@@ -173,7 +174,7 @@ class BulkDataRequestManagerTest {
                 adminComment = dummyAdminComment,
             )
 
-        val mockQuery = mock<jakarta.persistence.Query>()
+        val mockQuery = mock<Query>()
         whenever(mockQuery.resultList).thenReturn(listOf(dataRequestEntity))
         whenever(mockEntityManager.createNativeQuery(any(), any<Class<DataRequestEntity>>()))
             .thenReturn(mockQuery)

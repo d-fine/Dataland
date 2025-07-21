@@ -198,7 +198,6 @@ class BulkDataRequestManager(
         validDataDimensions: MutableList<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
-        // Does not work with impersonation like this
         val userId = DatalandAuthentication.fromContext().userId
         val existingRequests = getActiveRequests(validDataDimensions, userId)
         val existingDataRequestsResponse =

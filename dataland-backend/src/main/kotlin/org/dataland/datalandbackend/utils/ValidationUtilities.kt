@@ -5,8 +5,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.utils.ValidationUtils.isCompanyId
-import org.dataland.datalandbackendutils.utils.ValidationUtils.isReportingPeriod
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -188,7 +187,7 @@ fun validateConstraints(
  */
 fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
     dataDimensions.filter { dimensions ->
-        isCompanyId(dimensions.companyId) &&
+        ValidationUtils.isCompanyId(dimensions.companyId) &&
             DataType.isDataType(dimensions.dataType) &&
-            isReportingPeriod(dimensions.reportingPeriod)
+            ValidationUtils.isReportingPeriod(dimensions.reportingPeriod)
     }
