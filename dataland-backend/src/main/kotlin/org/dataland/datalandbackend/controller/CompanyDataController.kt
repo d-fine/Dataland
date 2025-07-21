@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.RestController
-import kotlin.math.max
 
 /**
  * Controller for the company data endpoints
@@ -160,14 +159,10 @@ class CompanyDataController
                 ),
             )
 
-        override fun getCompanyById(
-            companyId: String,
-            isinChunkSize: Int,
-            isinChunkIndex: Int,
-        ): ResponseEntity<StoredCompany> =
+        override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> =
             ResponseEntity.ok(
                 companyQueryManager
-                    .getCompanyApiModelById(companyId, isinChunkSize, isinChunkIndex),
+                    .getCompanyApiModelById(companyId),
             )
 
         override fun patchCompanyById(
@@ -179,11 +174,7 @@ class CompanyDataController
             companyAlterationManager.patchCompany(companyId, companyInformationPatch)
             return ResponseEntity.ok(
                 companyQueryManager
-                    .getCompanyApiModelById(
-                        companyId,
-                        max(companyInformationPatch.identifiers?.get(IdentifierType.Isin)?.size ?: 0, 1),
-                        0,
-                    ),
+                    .getCompanyApiModelById(companyId),
             )
         }
 
@@ -195,11 +186,7 @@ class CompanyDataController
             companyAlterationManager.putCompany(companyId, companyInformation)
             return ResponseEntity.ok(
                 companyQueryManager
-                    .getCompanyApiModelById(
-                        companyId,
-                        max(companyInformation.identifiers[IdentifierType.Isin]?.size ?: 0, 1),
-                        0,
-                    ),
+                    .getCompanyApiModelById(companyId),
             )
         }
 
@@ -217,14 +204,10 @@ class CompanyDataController
                 },
             )
 
-        override fun getCompanyInfo(
-            companyId: String,
-            isinChunkSize: Int,
-            isinChunkIndex: Int,
-        ): ResponseEntity<CompanyInformation> =
+        override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
             ResponseEntity.ok(
                 companyQueryManager
-                    .getCompanyApiModelById(companyId, isinChunkSize, isinChunkIndex)
+                    .getCompanyApiModelById(companyId)
                     .companyInformation,
             )
 

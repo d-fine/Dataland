@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -36,6 +37,8 @@ class CompanyQueryManager
         private val dataMetaInfoRepository: DataMetaInformationRepository,
         private val companyIdentifierRepository: CompanyIdentifierRepository,
         private val isinLeiRepository: IsinLeiRepository,
+        @Value("\${isin.chunk.size:10}")
+        private val isinChunkSize: Int,
     ) {
         private val highlightedCompanyIdsInMemoryStorage = ConcurrentHashMap<String, String>()
 
@@ -136,17 +139,13 @@ class CompanyQueryManager
                 resultLimit,
             )
 
-        private fun fetchIsinIdentifiers(
-            storedCompanies: List<StoredCompanyEntity>,
-            isinChunkSize: Int = 10,
-            isinChunkIndex: Int = 0,
-        ): List<StoredCompanyEntity> {
+        private fun fetchIsinIdentifiers(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
             storedCompanies.forEach { storedCompany ->
                 val isinsAsStrings =
                     isinLeiRepository
                         .findByCompany(
                             storedCompany,
-                            PageRequest.of(isinChunkIndex, isinChunkSize, Sort.by("isin").ascending()),
+                            PageRequest.of(0, isinChunkSize, Sort.by("isin").ascending()),
                         ).content
                         .map { it.isin }
                 isinsAsStrings.forEach {
@@ -162,14 +161,10 @@ class CompanyQueryManager
             return storedCompanies
         }
 
-        private fun fetchAllStoredCompanyFields(
-            storedCompanies: List<StoredCompanyEntity>,
-            isinChunkSize: Int = 10,
-            isinChunkIndex: Int = 0,
-        ): List<StoredCompanyEntity> =
+        private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> =
             storedCompanies
                 .let { companyRepository.fetchNonIsinIdentifiers(it) }
-                .let { fetchIsinIdentifiers(it, isinChunkSize, isinChunkIndex) }
+                .let { fetchIsinIdentifiers(it) }
                 .let { companyRepository.fetchAlternativeNames(it) }
                 .let { companyRepository.fetchCompanyContactDetails(it) }
                 .let { companyRepository.fetchCompanyAssociatedByDataland(it) }
@@ -193,16 +188,10 @@ class CompanyQueryManager
          * @return the StoredCompany object of the retrieved company
          */
         @Transactional
-        fun getCompanyApiModelById(
-            companyId: String,
-            isinChunkSize: Int = 10,
-            isinChunkIndex: Int = 0,
-        ): StoredCompany {
+        fun getCompanyApiModelById(companyId: String): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(
                 listOf(searchResult),
-                isinChunkSize,
-                isinChunkIndex,
             ).first().toApiModel()
         }
 

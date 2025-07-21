@@ -102,28 +102,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "isinChunkSize",
-            "in": "query",
-            "description": "How large of a chunk of all company ISINs to display.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "isinChunkIndex",
-            "in": "query",
-            "description": "Which chunk of all company ISINs to display. Counting starts at 0.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
           }
         ],
         "responses": {
@@ -4357,28 +4335,6 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "isinChunkSize",
-            "in": "query",
-            "description": "How large of a chunk of all company ISINs to display.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "isinChunkIndex",
-            "in": "query",
-            "description": "Which chunk of all company ISINs to display. Counting starts at 0.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
             }
           }
         ],
