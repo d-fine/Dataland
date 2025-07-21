@@ -12,6 +12,7 @@
         max-selected-labels="1"
         selected-items-label="{0} sectors"
         class="search-filter"
+        data-test="frameworkDataSearchDropdownFilterSector"
       />
       <FrameworkDataSearchDropdownFilter
         v-model="selectedCountriesInt"
@@ -39,7 +40,7 @@
       <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
       <Divider layout="vertical" />
     </div>
-    <PrimeButton variant="link" @click="resetFilters" label="RESET" />
+    <PrimeButton variant="link" @click="resetFilters" label="RESET" data-test="reset-filter" />
   </div>
 </template>
 

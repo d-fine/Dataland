@@ -17,7 +17,8 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       return cy.wrap(mounted.wrapper).as('vue');
     });
 
-    cy.get('#sector-filter').click();
+    cy.get('[data-test="reset-filter"]').click();
+    cy.get('[data-test="frameworkDataSearchDropdownFilterSector"]').click();
     cy.get('span').contains('DummySector').click();
     cy.get('.p-multiselect-overlay').invoke('hide');
 

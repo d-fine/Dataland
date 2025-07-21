@@ -21,7 +21,7 @@
               ref="frameworkFilter"
               :available-items="availableFrameworks"
               filter-name="Framework"
-              data-test="requested-Datasets-frameworks"
+              data-test="requested-datasets-frameworks"
               id="framework-filter"
               filter-placeholder="Search frameworks"
               class="search-filter"
@@ -34,14 +34,14 @@
               ref="accessStatusFilter"
               :available-items="availableAccessStatus"
               filter-name="Access Status"
-              data-test="requested-Datasets-frameworks"
+              data-test="requested-datasets-access-status"
               id="access-status-filter"
               filter-placeholder="access status"
               class="search-filter"
               max-selected-labels="1"
               selected-items-label="{0} status selected"
             />
-            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
+            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
           </div>
 
           <div class="col-12 text-left p-3">

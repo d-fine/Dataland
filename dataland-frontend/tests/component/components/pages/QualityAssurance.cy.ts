@@ -115,7 +115,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
     getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
-    cy.contains('span', 'Showing results 1-2 of 2.');
+    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
   }
 
   /**
@@ -135,7 +135,9 @@ describe('Component tests for the Quality Assurance page', () => {
      * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
      */
     function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
-      cy.contains('span', 'Please type at least 3 characters').should(isWarningExpectedToExist ? 'exist' : 'not.exist');
+      cy.get('[data-test="companySearchBarWithMessage"]')
+        .contains('Please type at least 3 characters')
+        .should(isWarningExpectedToExist ? 'exist' : 'not.exist');
     }
 
     /**
@@ -192,8 +194,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.wait('@companyNameFilteredNumberFetch');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
-    cy.contains('span', 'Showing results 1-1 of 1.');
-
+    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-1 of 1.');
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
 
     assertUnfilteredDatatableState();
@@ -294,7 +295,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
     cy.contains('p', 'There are no unreviewed datasets on Dataland matching your filters');
-    cy.contains('span', 'No results for this search.');
+    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('No results for this search.');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
 
