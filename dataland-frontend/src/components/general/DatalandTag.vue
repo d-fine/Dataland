@@ -1,7 +1,6 @@
 <template>
   <Tag
     :severity="severity"
-    v-bind="$attrs"
     :dt="{ colorScheme: { light: { primary: designToken } } }"
     :pt="{
       root: {

@@ -4,56 +4,44 @@
     <DatasetsTabMenu :initial-tab-index="4">
       <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="requested-Datasets-searchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
-                class="ml-3"
-                style="margin: 15px"
+          <div class="container">
+            <IconField id="company-search-bar" class="company-search">
+              <InputIcon class="pi pi-search" />
+              <InputText
+                data-test="requested-datasets-searchbar"
+                v-model="searchBarInput"
+                placeholder="Search by company name"
+                fluid
+                variant="filled"
               />
+            </IconField>
 
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedAccessStatus"
-                ref="accessStatusFilter"
-                :available-items="availableAccessStatus"
-                filter-name="Access Status"
-                data-test="requested-Datasets-frameworks"
-                filter-id="access-status-filter"
-                filter-placeholder="access status"
-                class="ml-3"
-                style="margin: 15px"
-              />
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              ref="frameworkFilter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="requested-Datasets-frameworks"
+              filter-id="framework-filter"
+              filter-placeholder="Search frameworks"
+              class="search-filter"
+              max-selected-labels="1"
+              selected-items-label="{0} frameworks selected"
+            />
 
-              <span class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </span>
-            </span>
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedAccessStatus"
+              ref="accessStatusFilter"
+              :available-items="availableAccessStatus"
+              filter-name="Access Status"
+              data-test="requested-Datasets-frameworks"
+              filter-id="access-status-filter"
+              filter-placeholder="access status"
+              class="search-filter"
+              max-selected-labels="1"
+              selected-items-label="{0} status selected"
+            />
+            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
           </div>
 
           <div class="col-12 text-left p-3">
@@ -170,6 +158,8 @@ import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import Column from 'primevue/column';
 import DataTable, {
   type DataTablePageEvent,
@@ -378,6 +368,24 @@ function onPage(event: DataTablePageEvent): void {
 </script>
 
 <style scoped>
+.container {
+  margin: 0;
+  width: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: start;
+
+  .company-search {
+    width: 30%;
+  }
+
+  .search-filter {
+    width: 13%;
+    text-align: left;
+  }
+}
+
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
 }
@@ -390,15 +398,7 @@ function onPage(event: DataTablePageEvent): void {
   background-color: white;
 }
 
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
 .text-primary {
   color: var(--main-color);
-}
-
-.bg-white {
-  background-color: var(--default-neutral-white);
 }
 </style>

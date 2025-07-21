@@ -3,7 +3,7 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="0">
       <TheContent class="min-h-screen relative">
-        <div id="searchBarAndFiltersContainer" class="searchBarAndFiltersContainer">
+        <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
           <FrameworkDataSearchBar
             id="frameworkDataSearchBar"
             v-model="currentSearchBarInput"
@@ -368,7 +368,7 @@ export default defineComponent({
   background-color: white;
 }
 
-.searchBarAndFiltersContainer {
+.search-bar-and-filters-container {
   margin: 0;
   width: 100%;
   padding-left: var(--spacing-lg);
