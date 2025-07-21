@@ -31,6 +31,7 @@ import StringDisplayComponent from '@/components/resources/dataTable/cells/Strin
 import { defineComponent } from 'vue';
 import ModalLinkDisplayComponent from '@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue';
 import ModalLinkWithDataSourceDisplayComponent from '@/components/resources/dataTable/cells/ModalLinkWithDataSourceDisplayComponent.vue';
+import DataPointDisplayComponent from '@/components/resources/dataTable/cells/DataPointDisplayComponent.vue';
 import DataPointWrapperDisplayComponent from '@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue';
 import FreeTextDisplayComponent from '@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue';
 import { type DataMetaInformation } from '@clients/backend';
@@ -57,6 +58,7 @@ export default defineComponent({
     StringDisplayComponent,
     DocumentLinkDisplayComponent,
     ModalLinkDisplayComponent,
+    DataPointDisplayComponent,
     FreeTextDisplayComponent,
     ModalLinkWithDataSourceDisplayComponent,
   },
