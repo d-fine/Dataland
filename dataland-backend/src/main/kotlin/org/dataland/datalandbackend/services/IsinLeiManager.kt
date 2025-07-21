@@ -137,8 +137,8 @@ class IsinLeiManager(
         val chunks = data.chunked(chunkSize)
         val tasks =
             chunks.map { chunk ->
-                val companies = storedCompanyRepository.findCompaniesbyListOfLeis(data.map { it.lei }.toSet().toList())
-                val entities = convertToIsinLeiEntity(data, companies)
+                val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
+                val entities = convertToIsinLeiEntity(chunk, companies)
                 Callable<Void> {
                     saveAllJdbcBatch(entities)
                     null
