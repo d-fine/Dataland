@@ -139,10 +139,10 @@ interface SpecificationApi {
      */
 
     @GetMapping(
-        value = ["/data-point-base-types/{dataPointBaseTypeId}/schema"],
+        value = ["/data-point-base-types/{frameworkSpecificationId}/schema"],
         produces = ["application/json"],
     )
     fun getDataPointBaseTypeSchema(
-        @PathVariable("dataPointBaseTypeId") dataPointBaseTypeId: String,
+        @PathVariable("frameworkSpecificationId") frameworkSpecificationId: String,
     ): ResponseEntity<DataPointBaseTypeSchema>
 }

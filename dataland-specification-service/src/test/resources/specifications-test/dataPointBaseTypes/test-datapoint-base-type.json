@@ -5,6 +5,9 @@
   "validatedBy": "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",
   "example": {
     "testing": true
+  },
+  "schema": {
+    "testing": "Boolean"
   }
 }
 

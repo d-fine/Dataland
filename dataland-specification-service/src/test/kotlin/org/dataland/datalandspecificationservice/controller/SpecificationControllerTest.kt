@@ -83,8 +83,8 @@ class SpecificationControllerTest(
 
     @Test
     fun `returning schema for known base type`() {
-        val baseTypeId = "extendedCurrency"
-        val response = specificationController.getDataPointBaseTypeSchema(baseTypeId)
+        val frameworkSpecificationId = "test-framework"
+        val response = specificationController.getDataPointBaseTypeSchema(frameworkSpecificationId)
         assert(response.statusCode.is2xxSuccessful)
     }
 }
