@@ -48,7 +48,7 @@ data class DataPointBaseTypeSpecification(
 /**
  * Schema for a data point base type.
  */
-data class DataPointBaseTypeSchema(
+data class DataPointBaseTypeResolvedSchema(
     val framework: IdWithRef,
     val name: String,
     val businessDefinition: String,

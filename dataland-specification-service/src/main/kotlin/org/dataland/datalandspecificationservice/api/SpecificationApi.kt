@@ -3,7 +3,7 @@ package org.dataland.datalandspecificationservice.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSchema
+import org.dataland.datalandspecificationservice.model.DataPointBaseTypeResolvedSchema
 import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSpecification
 import org.dataland.datalandspecificationservice.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.model.FrameworkSpecification
@@ -135,14 +135,14 @@ interface SpecificationApi {
     ): ResponseEntity<String>
 
     /**
-     * Get the JSON schema for a data point base type
+     * Get the JSON schema resolved to base type level for a given framework
      */
 
     @GetMapping(
-        value = ["/data-point-base-types/{frameworkSpecificationId}/schema"],
+        value = ["/frameworks/{frameworkSpecificationId}/resolved-schema"],
         produces = ["application/json"],
     )
     fun getDataPointBaseTypeSchema(
         @PathVariable("frameworkSpecificationId") frameworkSpecificationId: String,
-    ): ResponseEntity<DataPointBaseTypeSchema>
+    ): ResponseEntity<DataPointBaseTypeResolvedSchema>
 }

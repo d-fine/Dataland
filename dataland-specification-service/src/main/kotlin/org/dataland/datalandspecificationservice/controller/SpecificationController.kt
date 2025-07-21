@@ -1,11 +1,12 @@
 package org.dataland.datalandspecificationservice.controller
 
+import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.DataPointBaseType
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.datalandspecificationservice.api.SpecificationApi
-import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSchema
+import org.dataland.datalandspecificationservice.model.DataPointBaseTypeResolvedSchema
 import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSpecification
 import org.dataland.datalandspecificationservice.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.model.FrameworkSpecification
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import kotlin.text.get
 
 /**
  * Controller for the specification service
@@ -85,16 +85,16 @@ class SpecificationController(
         return ResponseEntity.ok(dataPointBaseType.validatedBy)
     }
 
-    override fun getDataPointBaseTypeSchema(frameworkSpecificationId: String): ResponseEntity<DataPointBaseTypeSchema> {
+    override fun getDataPointBaseTypeSchema(frameworkSpecificationId: String): ResponseEntity<DataPointBaseTypeResolvedSchema> {
         val framework =
             database.frameworks[frameworkSpecificationId]
                 ?: throw ResourceNotFoundApiException(
                     "Framework Specification with id $frameworkSpecificationId not found",
                     "The framework specification with the given id was not found in the database.",
                 )
-        val resolvedSchema = resolveSchema(framework.schema, database)
+        val resolvedSchema = resolveSchema(framework.schema)
         val dto =
-            DataPointBaseTypeSchema(
+            DataPointBaseTypeResolvedSchema(
                 framework = framework.getRef(datalandPrimaryUrl),
                 name = framework.name,
                 businessDefinition = framework.businessDefinition,
@@ -104,31 +104,23 @@ class SpecificationController(
         return ResponseEntity.ok(dto)
     }
 
-    private fun resolveSchema(
-        schema: com.fasterxml.jackson.databind.JsonNode,
-        database: SpecificationDatabase,
-    ): Any =
+    private fun resolveSchema(schema: JsonNode): Any =
         when {
             schema.isObject ->
-                schema.fields().asSequence().associate { (key, value) ->
-                    key to resolveSchema(value, database)
+                schema.properties().asSequence().associate { (key, value) ->
+                    key to resolveSchema(value)
                 }
 
-            schema.isArray -> schema.map { resolveSchema(it, database) }
+            schema.isArray -> schema.map { resolveSchema(it) }
 
             schema.isTextual -> {
                 val typeId = schema.asText()
                 val dataPointType = database.dataPointTypes[typeId]
-                if (dataPointType != null) {
-                    val baseType = database.dataPointBaseTypes[dataPointType.dataPointBaseTypeId]
-                    if (baseType?.schema != null) {
-                        resolveSchema(baseType.schema, database)
-                    } else {
-                        baseType?.validatedBy ?: typeId
-                    }
-                } else {
-                    typeId
-                }
+                requireNotNull(dataPointType) { "Datapoint type $typeId was not found." }
+                val baseType = database.dataPointBaseTypes[dataPointType.dataPointBaseTypeId]
+                requireNotNull(baseType) { "Base type ${dataPointType.dataPointBaseTypeId} was not found." }
+                requireNotNull(baseType.schema) { "Base type $baseType has no schema definition." }
+                baseType.schema
             }
 
             else -> schema
