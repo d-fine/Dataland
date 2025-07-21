@@ -57,7 +57,7 @@ describe('Component test for DatasetOverviewTable', () => {
       nameOfCompanyAlpha,
       humanizeStringOrNumber(dataTypeOfDatasetForAlpha),
       '2023',
-      'APPROVED',
+      'Accepted',
     ];
     cy.get('tbody td').should((elements) => {
       expect(elements.length).to.equal(6);

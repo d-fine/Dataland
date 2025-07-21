@@ -24,7 +24,7 @@
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
       <Column field="status" header="STATUS" :sortable="true">
         <template #body="{ data }">
-          <DatalandTag :severity="data.status" :value="data.status" />
+          <DatalandTag :severity="data.status" :value="data.status" data-test="qa-status" />
         </template>
       </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
