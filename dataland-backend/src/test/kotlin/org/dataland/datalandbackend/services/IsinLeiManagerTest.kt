@@ -19,7 +19,6 @@ import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import javax.sql.DataSource
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @Testcontainers
@@ -28,7 +27,7 @@ class IsinLeiManagerTest(
     @Autowired private val isinLeiRepository: IsinLeiRepository,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
-    @Autowired private val dataSource: DataSource,
+    @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
 ) {
     companion object {
         @Container
@@ -123,7 +122,7 @@ class IsinLeiManagerTest(
         isinLeiManager =
             IsinLeiManager(
                 storedCompanyRepository = storedCompanyRepository,
-                dataSource = dataSource,
+                isinLeiTransactionalService,
                 dataSourceMaximumPoolSize = 50,
             )
         dummyCompany1 = companyAlterationManager.addCompany(companyWithTestLei1)

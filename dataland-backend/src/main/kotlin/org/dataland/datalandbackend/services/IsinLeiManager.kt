@@ -10,12 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.sql.BatchUpdateException
-import java.sql.PreparedStatement
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
-import javax.sql.DataSource
 
 /**
  * Implementation of a ISIN manager for Dataland
@@ -23,12 +19,11 @@ import javax.sql.DataSource
 @Service
 class IsinLeiManager(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,
-    @Autowired private val dataSource: DataSource,
+    @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
     @Value("\${spring.datasource.hikari.maximum-pool-size}")
     private val dataSourceMaximumPoolSize: Int,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val tableName = "isin_lei_mapping"
 
     /**
      * Method to put an ISIN-LEI mapping into the database.
@@ -36,10 +31,9 @@ class IsinLeiManager(
      * @param isinLeiMappingData the list of ISIN-LEI mapping data to be put
      */
     @Async
-    @Transactional
     fun putIsinLeiMapping(isinLeiMappingData: List<IsinLeiMappingData>) {
         logger.info("Start dropping previous entries")
-        clearAllMappings()
+        isinLeiTransactionalService.clearAllMappings()
         logger.info("Dropped previous entries")
         logger.info("Preparing to add new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
         saveAllJdbcBatchCallable(isinLeiMappingData)
@@ -76,55 +70,6 @@ class IsinLeiManager(
     }
 
     /**
-     * Method to save ISIN-LEI mappings in batches.
-     * @param entities the ISIN-LEI mappings to save
-     */
-    fun saveAllJdbcBatch(
-        entities: List<IsinLeiEntity>,
-        batchSize: Int = 50,
-    ) {
-        val sql = """INSERT INTO $tableName (company_id, isin, lei) VALUES (?, ?, ?)"""
-        dataSource.connection.use { connection ->
-            connection.prepareStatement(sql).use { statement ->
-                executeBatchInsert(statement, entities, batchSize)
-            }
-        }
-    }
-
-    /**
-     * Executes a batch insert for ISIN-LEI mappings.
-     * @param statement the prepared statement to execute
-     * @param entities the list of ISIN-LEI entities to insert
-     * @param batchSize the size of each batch to insert
-     */
-    private fun executeBatchInsert(
-        statement: PreparedStatement,
-        entities: List<IsinLeiEntity>,
-        batchSize: Int,
-    ) {
-        var counter = 0
-        for (entity in entities) {
-            statement.clearParameters()
-            statement.setString(1, entity.company?.companyId)
-            statement.setString(2, entity.isin)
-            @Suppress("MagicNumber")
-            statement.setString(3, entity.lei)
-            statement.addBatch()
-
-            if ((counter + 1) % batchSize == 0 || (counter + 1) == entities.size) {
-                try {
-                    statement.executeBatch()
-                    statement.clearBatch()
-                } catch (e: BatchUpdateException) {
-                    logger.error("Error executing batch insert: ${e.message}", e)
-                }
-                logger.info("Inserted ${counter + 1} / ${entities.size} records so far")
-            }
-            counter++
-        }
-    }
-
-    /**
      * Method to save ISIN-LEI mappings in chunks using a callable for asynchronous execution.
      * @param data the ISIN-LEI mapping data to save
      * @param chunkSize the size of each chunk to process in parallel
@@ -140,23 +85,11 @@ class IsinLeiManager(
                 val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
                 val entities = convertToIsinLeiEntity(chunk, companies)
                 Callable<Void> {
-                    saveAllJdbcBatch(entities)
+                    isinLeiTransactionalService.saveAllJdbcBatch(entities)
                     null
                 }
             }
 
         executorService.invokeAll(tasks)
-    }
-
-    /**
-     * Method to remove all ISIN-LEI mappings.
-     */
-    protected fun clearAllMappings() {
-        val sql = """TRUNCATE TABLE $tableName"""
-        dataSource.connection.use { connection ->
-            connection.createStatement().use { statement ->
-                statement.executeUpdate(sql)
-            }
-        }
     }
 }
