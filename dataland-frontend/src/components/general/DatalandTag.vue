@@ -21,6 +21,42 @@ type TagColorDefinition = {
   color: string;
 };
 
+// Define tag color constants
+const yellowTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{yellow.800}',
+};
+
+const greenTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{green.600}',
+};
+
+const amberTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{amber.600}',
+};
+
+const skyTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{sky.600}',
+};
+
+const slateTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{slate.600}',
+};
+
+const redTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{red.600}',
+};
+
+const primaryTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{primary.color}',
+};
+
 const { severity } = defineProps({
   severity: {
     type: String,
@@ -32,103 +68,46 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
   switch (severity) {
     // access status
     case AccessStatus.Declined:
-      return {
-        background: '{surface.0}',
-        color: '{yellow.800}',
-      };
+      return yellowTag;
     case AccessStatus.Granted:
-      return {
-        background: '{surface.0}',
-        color: '{green.600}',
-      };
+      return greenTag;
     case AccessStatus.Pending:
-      return {
-        background: '{surface.0}',
-        color: '{amber.600}',
-      };
+      return amberTag;
     case AccessStatus.Public:
-      return {
-        background: '{surface.0}',
-        color: '{sky.600}',
-      };
+      return skyTag;
     case AccessStatus.Revoked:
-      return {
-        background: '{surface.0}',
-        color: '{slate.600}',
-      };
+      return slateTag;
     // quality status
     case ExtendedQaStatus.Pending:
-      return {
-        background: '{surface.0}',
-        color: '{amber.600}',
-      };
+      return amberTag;
     case ExtendedQaStatus.Accepted:
-      return {
-        background: '{surface.0}',
-        color: '{green.600}',
-      };
+      return greenTag;
     case ExtendedQaStatus.Rejected:
-      return {
-        background: '{surface.0}',
-        color: '{red.600}',
-      };
+      return redTag;
     case ExtendedQaStatus.Superseded:
-      return {
-        background: '{surface.0}',
-        color: '{yellow.800}',
-      };
+      return yellowTag;
     // request priority
     case RequestPriority.Low:
-      return {
-        background: '{surface.0}',
-        color: '{sky.600}',
-      };
+      return skyTag;
     case RequestPriority.Baseline:
-      return {
-        background: '{surface.0}',
-        color: '{amber.600}',
-      };
+      return amberTag;
     case RequestPriority.High:
-      return {
-        background: '{surface.0}',
-        color: '{primary.color}',
-      };
+      return primaryTag;
     case RequestPriority.Urgent:
-      return {
-        background: '{surface.0}',
-        color: '{red.600}',
-      };
+      return redTag;
     // request status
     case RequestStatus.Open:
-      return {
-        background: '{surface.0}',
-        color: '{amber.600}',
-      };
+      return amberTag;
     case RequestStatus.Answered:
-      return {
-        background: '{surface.0}',
-        color: '{sky.600}',
-      };
+      return skyTag;
     case RequestStatus.Closed:
-      return {
-        background: '{surface.0}',
-        color: '{yellow.800}',
-      };
+      return yellowTag;
     case RequestStatus.NonSourceable:
-      return {
-        background: '{surface.0}',
-        color: '{slate.600}',
-      };
+      return slateTag;
     case RequestStatus.Resolved:
-      return {
-        background: '{surface.0}',
-        color: '{green.600}',
-      };
+      return greenTag;
     case RequestStatus.Withdrawn:
-      return {
-        background: '{surface.0}',
-        color: '{slate.600}',
-      };
+      return slateTag;
     default:
       throw TypeError('Invalid input for field "severity".');
   }

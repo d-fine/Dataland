@@ -3,7 +3,6 @@
     <div class="filter">
       <label for="companyFilter" v-if="showHeading">Filter by company</label>
       <FrameworkDataSearchDropdownFilter
-        id="companyFilter"
         v-model="selectedSectorsInt"
         ref="sectorFilter"
         :available-items="availableSectors"
@@ -13,6 +12,7 @@
         max-selected-labels="1"
         selected-items-label="{0} sectors"
         class="search-filter"
+        data-test="frameworkDataSearchDropdownFilterSector"
       />
       <FrameworkDataSearchDropdownFilter
         v-model="selectedCountriesInt"
@@ -27,7 +27,6 @@
       />
       <Divider layout="vertical" />
       <FrameworkDataSearchDropdownFilter
-        id="dataTypeFilter"
         v-model="selectedFrameworksInt"
         ref="frameworkFilter"
         :available-items="availableFrameworks"
@@ -41,7 +40,7 @@
       <label for="dataTypeFilter" v-if="showHeading">Filter for available data sets</label>
       <Divider layout="vertical" />
     </div>
-    <PrimeButton variant="link" @click="resetFilters" label="RESET" />
+    <PrimeButton variant="link" @click="resetFilters" label="RESET" data-test="reset-filter" />
   </div>
 </template>
 
@@ -222,7 +221,7 @@ export default defineComponent({
 <style scoped>
 .filter-container {
   display: flex;
-  height: 5rem;
+  min-height: 5rem;
   align-items: end;
   width: 100%;
 

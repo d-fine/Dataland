@@ -67,7 +67,7 @@
             max-selected-labels="1"
             selected-items-label="{0} request priorities"
           />
-          <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
+          <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
           <PrimeButton
             :disabled="waitingForData"
             name="trigger-filtering-requests"
@@ -462,17 +462,5 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
-.text-primary {
-  color: var(--main-color);
-}
-
-.bg-white {
-  background-color: var(--default-neutral-white);
 }
 </style>

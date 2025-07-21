@@ -5,7 +5,7 @@
       <TheContent class="min-h-screen relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
           <div class="container">
-            <div class="company-search">
+            <div class="company-search" data-test="companySearchBarWithMessage">
               <IconField id="company-search-bar">
                 <InputIcon class="pi pi-search" />
                 <InputText
@@ -46,9 +46,13 @@
             />
 
             <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
-            <Message class="info-message" variant="simple" severity="secondary">{{
-              numberOfUnreviewedDatasets
-            }}</Message>
+            <Message
+              class="info-message"
+              variant="simple"
+              severity="secondary"
+              data-test="showingNumberOfUnreviewedDatasets"
+              >{{ numberOfUnreviewedDatasets }}</Message
+            >
           </div>
 
           <div class="col-12 text-left p-3">
