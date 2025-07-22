@@ -10,10 +10,12 @@ import org.dataland.datalandbackend.utils.NuclearAndGasMapping
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.SfdrMapping
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.collections.map
 import kotlin.text.contains
+import kotlin.toString
 
 /**
  * The class holds methods which are used in the data export. Mainly it contains functions to map the
@@ -29,6 +31,14 @@ class DataExportUtils
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
+        @Autowired
+        lateinit var specificationApi: SpecificationControllerApi
+
+        private fun getResolvedSchemaNode(framework: String): JsonNode? {
+            val resolvedSchemaDto = specificationApi.getDataPointBaseTypeSchema(framework)
+            return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
+        }
+
         companion object {
             private val STATIC_ALIASES =
                 mapOf(
@@ -100,14 +110,13 @@ class DataExportUtils
             val isAssembledDatasetParam = (frameworkTemplate != null)
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
-
-            val resolvedSchemaNode = NullNode.instance
             // objectMapper.valueToTree<JsonNode>(resolvedSchemaNode.body?.resolvedSchema ?: emptyMap<String, Any>())
 
             val orderedHeaderFields =
-                if (isAssembledDatasetParam && resolvedSchemaNode != null) {
+                if (isAssembledDatasetParam) {
+                    val resolvedSchemaNode = getResolvedSchemaNode(dataType.toString())
                     JsonUtils.getLeafNodeFieldNames(
-                        resolvedSchemaNode,
+                        resolvedSchemaNode ?: NullNode.instance,
                         keepEmptyFields = true,
                         dropLastFieldName = true,
                     )
@@ -115,7 +124,6 @@ class DataExportUtils
                     LinkedHashSet(
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
-                                @Suppress("MagicNumber")
                                 when {
                                     it.startsWith("companyName") -> -3
                                     it.startsWith("companyLei") -> -2
