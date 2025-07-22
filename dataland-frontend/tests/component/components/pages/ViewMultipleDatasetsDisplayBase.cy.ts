@@ -1,7 +1,13 @@
-// @ts-nocheck
+import type { DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
-import { type DataMetaInformation, DataTypeEnum, type LksgData, QaStatus } from '@clients/backend';
+import {
+  type CompanyInformation,
+  type DataMetaInformation,
+  DataTypeEnum,
+  type LksgData,
+  QaStatus,
+} from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import router from '@/router';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
@@ -48,6 +54,7 @@ describe('Component test for the view multiple dataset display base component', 
     });
     cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockDataAndMetaInfo.metaInfo]);
 
+    //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
       props: {
@@ -76,6 +83,7 @@ describe('Component test for the view multiple dataset display base component', 
     cy.intercept(`/api/data/lksg/companies/mock-company-id*`, [mockedData2024, mockedData2023]);
 
     cy.spy(router, 'push').as('routerPush');
+    //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       router: router,
@@ -86,7 +94,7 @@ describe('Component test for the view multiple dataset display base component', 
         viewInPreviewMode: false,
       });
     });
-    cy.get('[data-test="editDatasetButton"]').find('.material-icons-outlined').should('exist').click();
+    cy.get('[data-test="editDatasetButton"]').should('exist').click();
     cy.get('[data-test="select-reporting-period-dialog"]')
       .should('exist')
       .get('[data-test="reporting-periods"]')
