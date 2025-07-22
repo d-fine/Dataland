@@ -31,12 +31,12 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       const emittedCountryCodes = wrapper.emitted('update:selectedCountryCodes');
       expect(emittedCountryCodes).to.have.length;
       const emittedCountryCodesDefined = assertDefined(emittedCountryCodes);
-      expect(emittedCountryCodesDefined[0][0]).to.deep.equal(['DE']);
+      expect(emittedCountryCodesDefined[emittedCountryCodes.length - 1][0]).to.deep.equal(['DE']);
 
       const emittedSectors = wrapper.emitted('update:selectedSectors');
       expect(emittedSectors).to.have.length;
       const emittedSectorsDefined = assertDefined(emittedSectors);
-      expect(emittedSectorsDefined[0][0]).to.deep.equal(['DummySector']);
+      expect(emittedSectorsDefined[emittedSectors.length - 1][0]).to.deep.equal(['DummySector']);
     });
   });
 });
