@@ -23,7 +23,7 @@
           </div>
           <div>
             <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime) }}</span>
-            <DatalandTag :severity="getDatasetStatus(dataMetaInfo)" value="getDatasetStatus(dataMetaInfo)" />
+            <DatalandTag :severity="getDatasetStatus(dataMetaInfo)" :value="getDatasetStatus(dataMetaInfo)" />
           </div>
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
