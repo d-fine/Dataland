@@ -1,7 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.IsinLeiMappingData
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
@@ -32,9 +30,6 @@ class GleifGoldenCopyIngestor(
     companion object {
         const val UPLOAD_THREAD_POOL_SIZE = 32
     }
-
-    @PersistenceContext
-    private lateinit var entityManager: EntityManager
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -154,7 +149,6 @@ class GleifGoldenCopyIngestor(
                 }.get()
         } finally {
             uploadThreadPool.shutdown()
-            entityManager.flush()
         }
     }
 

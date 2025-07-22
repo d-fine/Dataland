@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.services
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
@@ -25,6 +27,9 @@ class IsinLeiManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
+
     /**
      * Method to put an ISIN-LEI mapping into the database.
      * This method clears all previous mappings and adds new ones.
@@ -35,6 +40,7 @@ class IsinLeiManager(
         logger.info("Start dropping previous entries")
         isinLeiTransactionalService.clearAllMappings()
         logger.info("Dropped previous entries")
+        entityManager.flush()
         logger.info("Preparing to add new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
         saveAllJdbcBatchCallable(isinLeiMappingData)
         logger.info("Added new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
