@@ -75,7 +75,6 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
 
-        cy.wait('@getEnrichedPortfolio');
         cy.wait(Cypress.env('long_timeout_in_ms') as number);
         cy.get(`[data-test="portfolio-${portfolioName}"]`)
           .should('exist')
