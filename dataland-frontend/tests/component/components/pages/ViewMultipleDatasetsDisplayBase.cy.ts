@@ -86,7 +86,8 @@ describe('Component test for the view multiple dataset display base component', 
         viewInPreviewMode: false,
       });
     });
-    cy.get('[data-test="editDatasetButton"]').find('.material-icons-outlined').should('exist').click();
+    cy.pause();
+    cy.get('[data-test="editDatasetButton"]').find('.pi-chevron-down').should('exist').click();
     cy.get('[data-test="select-reporting-period-dialog"]')
       .should('exist')
       .get('[data-test="reporting-periods"]')

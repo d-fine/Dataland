@@ -3,7 +3,7 @@
     <div class="filter">
       <label for="companyFilter" v-if="showHeading">Filter by company</label>
       <FrameworkDataSearchDropdownFilter
-        v-model="selectedSectorsInt"
+        v-model="localSelectedSectors"
         ref="sectorFilter"
         :available-items="availableSectors"
         filter-name="Sector"
@@ -15,7 +15,7 @@
         data-test="frameworkDataSearchDropdownFilterSector"
       />
       <FrameworkDataSearchDropdownFilter
-        v-model="selectedCountriesInt"
+        v-model="localSelectedCountries"
         ref="countryFilter"
         :available-items="availableCountries"
         filter-name="Country"
@@ -27,7 +27,7 @@
       />
       <Divider layout="vertical" />
       <FrameworkDataSearchDropdownFilter
-        v-model="selectedFrameworksInt"
+        v-model="localSelectedFrameworks"
         ref="frameworkFilter"
         :available-items="availableFrameworks"
         filter-name="Framework"
@@ -49,7 +49,6 @@ import { defineComponent, inject, ref } from 'vue';
 import { type ApiClientProvider } from '@/services/ApiClients';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import { type DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
@@ -75,18 +74,6 @@ export default defineComponent({
     };
   },
   props: {
-    selectedFrameworks: {
-      type: Array as () => Array<DataTypeEnum>,
-      default: () => [],
-    },
-    selectedSectors: {
-      type: Array as () => Array<string>,
-      default: () => [],
-    },
-    selectedCountryCodes: {
-      type: Array as () => Array<string>,
-      default: () => [],
-    },
     showHeading: {
       type: Boolean,
       default: true,
@@ -94,48 +81,41 @@ export default defineComponent({
   },
   data() {
     return {
+      localSelectedCountries: [] as Array<CountryCodeSelectableItem>,
+      localSelectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      localSelectedSectors: [] as Array<SelectableItem>,
+
       availableCountries: [] as Array<CountryCodeSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableSectors: [] as Array<SelectableItem>,
     };
   },
-  computed: {
-    selectedCountriesInt: {
-      get(): Array<CountryCodeSelectableItem> {
-        return this.availableCountries.filter((countryCodeSelectableItem) =>
-          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode)
-        );
-      },
-      set(newValue: Array<CountryCodeSelectableItem>) {
+  watch: {
+    localSelectedCountries: {
+      deep: true,
+      handler(newValue: Array<CountryCodeSelectableItem>) {
+        console.log('Watcher: localSelectedCountries changed:', newValue);
         this.$emit(
           'update:selectedCountryCodes',
-          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode)
+          newValue.map((item) => item.countryCode)
         );
       },
     },
-    selectedFrameworksInt: {
-      get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((frameworkSelectableItem) =>
-          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType)
-        );
-      },
-      set(newValue: Array<FrameworkSelectableItem>) {
-        this.$emit(
-          'update:selectedFrameworks',
-          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType)
-        );
-      },
-    },
-    selectedSectorsInt: {
-      get(): Array<SelectableItem> {
-        return this.availableSectors.filter((selectableItem) =>
-          this.selectedSectors.includes(selectableItem.displayName)
-        );
-      },
-      set(newValue: Array<SelectableItem>) {
+    localSelectedSectors: {
+      deep: true,
+      handler(newValue: Array<SelectableItem>) {
         this.$emit(
           'update:selectedSectors',
-          newValue.map((selectableItem) => selectableItem.displayName)
+          newValue.map((item) => item.displayName)
+        );
+      },
+    },
+    localSelectedFrameworks: {
+      deep: true,
+      handler(newValue: Array<FrameworkSelectableItem>) {
+        this.$emit(
+          'update:selectedFrameworks',
+          newValue.map((item) => item.frameworkDataType)
         );
       },
     },
@@ -145,9 +125,9 @@ export default defineComponent({
      * Resets all the filters to their default values (i.e., deselects everything)
      */
     resetFilters() {
-      this.selectedFrameworksInt = [];
-      this.selectedCountriesInt = [];
-      this.selectedSectorsInt = [];
+      this.localSelectedFrameworks = [];
+      this.localSelectedCountries = [];
+      this.localSelectedSectors = [];
     },
     /**
      * A helper function that closes all the dropdown filters
