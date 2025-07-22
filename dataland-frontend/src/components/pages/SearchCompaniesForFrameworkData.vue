@@ -34,7 +34,9 @@
                 @click="routeToBulkDataRequest()"
                 icon="pi pi-plus"
               />
-              <NewDatasetButton v-if="hasUserUploaderRights" />
+              <router-link v-if="hasUserUploaderRights" to="/companies/choose" data-test="newDatasetButton">
+                <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
+              </router-link>
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -62,11 +64,9 @@
 
 <script lang="ts">
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import PrimeButton from 'primevue/button';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
 import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
@@ -80,6 +80,7 @@ import { parseQueryParamArray } from '@/utils/QueryParserUtils';
 import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
 import { defineComponent, inject, ref } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
@@ -93,7 +94,6 @@ export default defineComponent({
   },
   name: 'SearchCompaniesForFrameworkData',
   components: {
-    NewDatasetButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,

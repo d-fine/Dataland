@@ -4,7 +4,9 @@
     <TheContent class="relative">
       <DatasetsTabMenu :initial-tab-index="1">
         <div class="col-12 flex flex-row justify-content-between align-items-end">
-          <NewDatasetButton v-if="hasUserUploaderRights" />
+          <router-link v-if="hasUserUploaderRights" to="/companies/choose" data-test="newDatasetButton">
+            <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
+          </router-link>
         </div>
         <DatasetOverviewTable
           data-test="datasetOverviewTable"
@@ -26,7 +28,6 @@
 
 <script lang="ts">
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -37,12 +38,13 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'DatasetOverview',
   components: {
-    NewDatasetButton,
+    PrimeButton,
     DatasetsTabMenu,
     AuthenticationWrapper,
     TheHeader,
