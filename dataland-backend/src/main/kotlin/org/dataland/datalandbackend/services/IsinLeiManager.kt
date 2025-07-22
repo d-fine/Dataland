@@ -52,7 +52,7 @@ class IsinLeiManager(
         val entities = mutableListOf<IsinLeiEntity>()
         isinLeiMappingData.forEach { mappingData ->
             val company =
-                companies?.first {
+                companies?.firstOrNull {
                     it.identifiers
                         .filter { id -> id.identifierType == IdentifierType.Lei }
                         .map { id -> id.identifierValue }
