@@ -88,7 +88,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   const companyName = storedCompany.companyInformation.companyName;
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(companyName, 'PENDING');
+  testDatasetPresentWithCorrectStatus(companyName, 'Pending');
 
   safeLogout();
   login(reviewer_name, reviewer_pw);
@@ -113,7 +113,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(companyName, 'APPROVED');
+  testDatasetPresentWithCorrectStatus(companyName, 'Accepted');
 }
 
 /**
@@ -144,7 +144,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, 'REJECTED');
+  testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, 'Rejected');
 
   cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as('getUploadedDataset');
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
@@ -189,7 +189,7 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
     .find('.data-test-company-name')
     .should('contain', companyName);
 
-  cy.get('[data-test="datasets-table"]').get('span[data-test="qa-status"]').should('contain', status);
+  cy.get('[data-test="datasets-table"]').find('[data-test="qa-status"]').should('contain', status);
 }
 
 /**

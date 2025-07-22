@@ -27,18 +27,16 @@
               />
             </div>
 
-            <div
-              v-if="!isSearchBarContainerCollapsed"
-              id="createButtonAndPageTitle"
-              class="flex align-content-end align-items-center"
-            >
+            <div v-if="!isSearchBarContainerCollapsed" class="button-container">
               <PrimeButton
                 label="BULK DATA REQUEST"
                 data-test="bulkDataRequestButton"
                 @click="routeToBulkDataRequest()"
-                icon="pi pi-plus-circle"
+                icon="pi pi-file"
               />
-              <NewDatasetButton v-if="hasUserUploaderRights" />
+              <router-link v-if="hasUserUploaderRights" to="/companies/choose" data-test="newDatasetButton">
+                <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
+              </router-link>
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -66,11 +64,9 @@
 
 <script lang="ts">
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import PrimeButton from 'primevue/button';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
 import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
@@ -84,6 +80,7 @@ import { parseQueryParamArray } from '@/utils/QueryParserUtils';
 import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
 import { defineComponent, inject, ref } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
@@ -97,7 +94,6 @@ export default defineComponent({
   },
   name: 'SearchCompaniesForFrameworkData',
   components: {
-    NewDatasetButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
@@ -390,5 +386,27 @@ export default defineComponent({
   #frameworkDataSearchBar {
     width: 70%;
   }
+}
+
+.button-container {
+  padding: 0 var(--spacing-xs);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.collapsed-search-container {
+  display: flex;
+  flex-direction: row;
+  position: sticky;
+  top: 4rem;
+  z-index: 50;
+  background-color: var(--p-surface-0);
+  justify-content: space-between;
+  align-items: end;
+  padding-top: 0;
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--p-surface-200);
 }
 </style>

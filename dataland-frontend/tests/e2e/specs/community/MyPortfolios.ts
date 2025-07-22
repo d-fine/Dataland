@@ -6,22 +6,23 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
 describeIf(
-  'As a user I want to be able to create, edit and delete my portfolios',
+  'As a user I want to be able to create, edit, and delete my portfolios',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   () => {
     let permIdOfExistingCompany: string;
     let permIdOfSecondCompany: string;
-    const portfolioName = `E2E Test Portfolio ${Date.now()}`;
-    const editedPortfolioName = `${portfolioName} Edited ${Date.now()}`;
+    const timestamp = Date.now();
+    const portfolioName = `E2E Test Portfolio ${timestamp}`;
+    const editedPortfolioName = `${portfolioName} Edited ${timestamp}`;
 
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
+        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${timestamp}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
-        const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${Date.now()}`);
+        const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${timestamp}`);
         permIdOfSecondCompany = assertDefined(secondCompanyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, secondCompanyToUpload);
       });

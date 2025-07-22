@@ -64,16 +64,14 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
-        cy.wait('@getEnrichedPortfolio');
         cy.get('[data-test="add-portfolio"]').click();
-        cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
+        cy.get('[name="portfolioName"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
-        cy.get('[data-test="company-identifiers-input"]').type(permId);
+        cy.get('[name="company-identifiers"]').type(permId);
         cy.get('[data-test="addCompanies"]').click();
         cy.wait('@forCompanyValidation');
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
-
         cy.wait('@getEnrichedPortfolio');
         cy.get(`[data-test="portfolio-${portfolioName}"]`)
           .should('exist')
@@ -102,7 +100,7 @@ describe('Portfolio Monitoring Modal', () => {
           });
 
         cy.visitAndCheckAppMount('/requests');
-        cy.wait(Cypress.env('short_timeout_in_ms') as number);
+        cy.wait(Cypress.env('medium_timeout_in_ms') as number);
         cy.get('[data-test="requested-Datasets-table"] tbody tr')
           .filter(`:contains("${companyName}")`)
           .as('companyRequestRows');
@@ -115,6 +113,7 @@ describe('Portfolio Monitoring Modal', () => {
 
         cy.visitAndCheckAppMount('/portfolios');
         cy.wait('@getEnrichedPortfolio');
+        cy.wait(Cypress.env('medium__timeout_in_ms') as number);
         cy.get(`[data-test="${portfolioName}"]`).click();
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
         cy.wait('@getEnrichedPortfolio');

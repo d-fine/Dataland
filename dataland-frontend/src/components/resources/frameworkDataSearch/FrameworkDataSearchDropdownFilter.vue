@@ -11,7 +11,6 @@
     @before-show="overlayVisible = true"
     @before-hide="overlayVisible = false"
     :placeholder="filterName"
-    :id="filterId"
   >
   </MultiSelect>
 </template>
@@ -40,10 +39,6 @@ export default defineComponent({
       default: () => [],
     },
     filterName: {
-      type: String,
-      default: '',
-    },
-    filterId: {
       type: String,
       default: '',
     },

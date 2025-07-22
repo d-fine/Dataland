@@ -56,16 +56,15 @@ describe('Component tests for the Dataland companies search page', function (): 
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       verifySearchResultTableExists();
-      cy.pause();
-      cy.get('div[id=createButtonAndPageTitle]').should('be.visible');
+      cy.get('div[class="button-container"]').should('be.visible');
 
       cy.scrollTo(0, 500, { duration: 200 });
       cy.get('input[id=search-bar-input]').should('exist');
-      cy.get('div[id=createButtonAndPageTitle]').should('not.exist');
+      cy.get('div[class="button-container"]').should('not.exist');
 
       cy.scrollTo(0, 0, { duration: 200 });
       cy.get('input[id=search-bar-input]').should('exist');
-      cy.get('div[id=createButtonAndPageTitle]').should('be.visible').click();
+      cy.get('div[class="button-container"]').should('be.visible').click();
     });
   });
 

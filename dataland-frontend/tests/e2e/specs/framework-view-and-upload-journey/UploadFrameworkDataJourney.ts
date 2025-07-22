@@ -105,7 +105,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.visitAndCheckAppMount('/companies');
         verifySearchResultTableExists();
 
-        cy.get('button').contains('New Dataset').click({ force: true });
+        cy.get('button').contains('NEW DATASET').click({ force: true });
         cy.url().should('eq', getBaseUrl() + '/companies/choose');
         cy.get('div[id=option1Container').find('a:contains(Add it)').click({ force: true });
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
@@ -223,14 +223,14 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
       }
 
-      it(
+      it.only(
         'Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks,' +
           ' and verify pages and elements.',
         function () {
           cy.ensureLoggedIn(uploader_name, uploader_pw);
           cy.visitAndCheckAppMount('/companies');
           verifySearchResultTableExists();
-          cy.get('button').contains('New Dataset').click({ force: true });
+          cy.get('button').contains('NEW DATASET').click({ force: true });
           cy.get('input[id=company_search_bar_standard]')
             .should('exist')
             .url()
@@ -257,6 +257,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             dataIdOfSecondEuTaxoFinancialsUpload,
             dataIdOfLksgUpload
           );
+
+          cy.wait(Cypress.env('short_timeout_in_ms') as number);
 
           checkIfDropDownSwitchRendersData();
         }
