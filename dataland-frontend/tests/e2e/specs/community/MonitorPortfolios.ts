@@ -67,9 +67,9 @@ describe('Portfolio Monitoring Modal', () => {
         cy.wait('@getEnrichedPortfolio');
         cy.get('[data-test="add-portfolio"]').click();
         cy.wait(Cypress.env('long_timeout_in_ms') as number);
-        cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
+        cy.get('[name="portfolioName"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
-        cy.get('[data-test="company-identifiers-input"]').type(permId);
+        cy.get('[name="company-identifiers"]').type(permId);
         cy.get('[data-test="addCompanies"]').click();
         cy.wait('@forCompanyValidation');
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
