@@ -113,5 +113,3 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
   }
 });
 </script>
-
-<style scoped></style>
