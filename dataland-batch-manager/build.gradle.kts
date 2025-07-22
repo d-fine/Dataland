@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.jackson.kotlin)
     implementation(libs.okhttp)
     implementation(libs.commons.io)
+    implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.security)
     implementation(Spring.boot.web)
     testImplementation(Spring.boot.test)
