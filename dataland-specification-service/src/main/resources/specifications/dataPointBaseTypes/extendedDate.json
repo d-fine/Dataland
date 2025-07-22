@@ -4,15 +4,15 @@
   "businessDefinition" : "Data point with an extended document reference as source, a date without a time-zone represented by a LocalDate. The date has to comply with ISO-8601.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedLocalDateDataPoint",
   "schema" : {
-    "value": "String",
-    "quality": "QualityOptions?",
-    "comment": "String",
+    "value" : "String",
+    "quality" : "QualityOptions?",
+    "comment" : "String",
     "dataSource" : {
       "page" : "String",
       "tagName" : "String",
       "fileName" : "String",
       "fileReference" : "String",
-      "publicationDate": "LocalDate"
+      "publicationDate" : "LocalDate"
     }
   },
   "example" : {

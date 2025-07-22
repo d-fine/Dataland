@@ -3,46 +3,46 @@
   "name" : "Aligned denominator data point with an extended source",
   "businessDefinition" : "Proportion of Taxonomy-aligned Economic Activity in the Denominator of the applicable KPI.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedDenominator>",
-  "schema": {
-    "taxonomyAlignedShareDenominatorNAndG426": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+  "schema" : {
+    "taxonomyAlignedShareDenominatorNAndG426" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominatorNAndG427": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominatorNAndG427" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominatorNAndG428": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominatorNAndG428" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominatorNAndG429": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominatorNAndG429" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominatorNAndG430": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominatorNAndG430" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominatorNAndG431": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominatorNAndG431" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominatorOtherActivities": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominatorOtherActivities" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     },
-    "taxonomyAlignedShareDenominator": {
-      "mitigationAndAdaption": "BigDecimal",
-      "mitigation": "BigDecimal",
-      "adaptation": "BigDecimal"
+    "taxonomyAlignedShareDenominator" : {
+      "mitigationAndAdaption" : "BigDecimal",
+      "mitigation" : "BigDecimal",
+      "adaptation" : "BigDecimal"
     }
   },
   "example" : {

@@ -3,16 +3,16 @@
   "name" : "General Integer data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source, and a integer value.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedIntegerDataPoint",
-  "schema": {
-    "value": "BigInteger",
-    "quality": "QualityOptions",
-    "comment": "String",
-    "dataSource": {
-      "page": "String",
-      "tagName": "String",
-      "fileName": "String",
-      "fileReference": "String",
-      "publicationDate": "LocalDate"
+  "schema" : {
+    "value" : "BigInteger",
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
     }
   },
   "example" : {
