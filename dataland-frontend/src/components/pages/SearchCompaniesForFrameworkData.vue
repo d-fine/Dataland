@@ -32,7 +32,7 @@
                 label="BULK DATA REQUEST"
                 data-test="bulkDataRequestButton"
                 @click="routeToBulkDataRequest()"
-                icon="pi pi-plus"
+                icon="pi pi-file"
               />
               <router-link v-if="hasUserUploaderRights" to="/companies/choose" data-test="newDatasetButton">
                 <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />

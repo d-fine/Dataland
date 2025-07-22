@@ -2,11 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="no-ui-message">
-      <div class="col-12 mb-2 bg-white">
-        <div class="text-left company-details px-4">
-          <h1 data-test="headerLabel">Bulk Data Request</h1>
-        </div>
-      </div>
+      <h1 data-test="headerLabel" class="header">Bulk Data Request</h1>
 
       <div class="col-12">
         <FormKit
@@ -17,7 +13,7 @@
           id="requestDataFormId"
           name="requestDataFormName"
         >
-          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper align-items-center">
+          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
               <div class="col-12">
                 <div class="status text-center">
@@ -409,8 +405,16 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.header {
+  width: 100%;
+  text-align: left;
+  margin: var(--spacing-lg);
+}
+
 .uploadFormWrapper {
   min-height: calc(100vh - 200px);
+  text-align: left;
+  background-color: var(--p-surface-50);
 
   .status {
     .status-text {
@@ -464,12 +468,6 @@ export default defineComponent({
   align-items: center;
 }
 
-.no-ui-message {
-  [data-message-type='ui'] {
-    display: none;
-  }
-}
-
 .status-container {
   display: flex;
   align-items: center;
@@ -491,80 +489,5 @@ export default defineComponent({
 
 .radius-1 {
   border-radius: var(--p-border-radius-xs);
-}
-
-.text-primary {
-  color: var(--main-color);
-}
-
-.text-danger {
-  color: var(--fk-color-error);
-  font-size: var(--font-size-xs);
-}
-
-.bg-white {
-  background-color: var(--default-neutral-white);
-}
-
-.gray-text {
-  color: var(--gray);
-}
-
-.red-text {
-  color: var(--red);
-}
-
-.green-text {
-  color: var(--green);
-}
-
-.primary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--btn-primary-color);
-  background: var(--btn-primary-bg);
-  border: 1px solid var(--btn-primary-bg);
-  margin: 0;
-  white-space: nowrap;
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  min-width: 10em;
-  width: fit-content;
-  justify-content: center;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: bottom;
-  flex-direction: row;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-  transition: all 0.2s;
-  border-radius: 0;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-
-  &:enabled:hover {
-    color: white;
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-  }
-
-  &:enabled:active {
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-  }
-
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: var(--btn-disabled-color);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
 }
 </style>
