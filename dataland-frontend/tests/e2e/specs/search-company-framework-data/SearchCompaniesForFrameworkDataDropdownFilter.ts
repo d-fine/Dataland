@@ -226,7 +226,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
         }
       );
-      it.only(
+      it(
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
           'search results, if at least one framework filter is set.',
