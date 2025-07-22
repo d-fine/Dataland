@@ -219,7 +219,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
       }
 
-      it.only(
+      it(
         'Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks,' +
           ' and verify pages and elements.',
         function () {
