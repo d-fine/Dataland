@@ -135,7 +135,7 @@ class CompanyRolesManagerTest {
                 companyRolesManager.assignCompanyRoleForCompanyToUser(
                     companyRole = CompanyRole.CompanyOwner,
                     companyId = UUID.randomUUID().toString(),
-                    userId = testUserId,
+                    userIdentifier = testUserId,
                 )
             }
         verifyNoInteractions(companyOwnershipAcceptedEmailMessageBuilder)
@@ -164,7 +164,7 @@ class CompanyRolesManagerTest {
         companyRolesManager.assignCompanyRoleForCompanyToUser(
             companyRole = CompanyRole.CompanyOwner,
             companyId = companyId,
-            userId = testUserId,
+            userIdentifier = testUserId,
         )
 
         Mockito

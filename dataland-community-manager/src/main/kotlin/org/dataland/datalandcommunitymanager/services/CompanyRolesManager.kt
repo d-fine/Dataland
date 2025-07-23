@@ -36,17 +36,21 @@ class CompanyRolesManager(
      * Assigns a company role for the specified company to the user.
      * @param companyRole that shall be assigned
      * @param companyId of the company for which the role is being assigned
-     * @param userId that is assigned the company role to
+     * @param userIdentifier identifier string for the user (either Dataland userId or email)
+     * @param identifierIsUserId whether userIdentifier is a Dataland userId (if not, it is an email)
      * @returns an entity that summarizes all current holders of the company role for the company
      */
     @Transactional
     fun assignCompanyRoleForCompanyToUser(
         companyRole: CompanyRole,
         companyId: String,
-        userId: String,
+        userIdentifier: String,
+        identifierIsUserId: Boolean,
     ): CompanyRoleAssignmentEntity {
         val companyName = companyInfoService.getValidCompanyName(companyId)
         val correlationId = UUID.randomUUID().toString()
+
+        val userId = if (identifierIsUserId) userIdentifier else ""
 
         val companyRoleAssignmentEntityOptional =
             companyRoleAssignmentRepository.findById(

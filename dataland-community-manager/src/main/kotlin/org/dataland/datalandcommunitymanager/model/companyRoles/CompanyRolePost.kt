@@ -4,15 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import java.util.UUID
 
 /**
- * --- Generic API model ---
- * DTO to represent the assignment of a company role for one company to one user
- * @param companyRole for which the assignment is valid
- * @param companyId of the company for which the company role is assigned
- * @param userId of the user that the company role has been assigned to
+ * Request body of the endpoint for posting a company role assignment.
  */
-data class CompanyRoleAssignment(
+data class CompanyRolePost(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
@@ -23,11 +20,17 @@ data class CompanyRoleAssignment(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
-    val companyId: String,
-    @field:JsonProperty(required = true)
+    val companyId: UUID,
+    @field:JsonProperty(required = false)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
         example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
     )
-    val userId: String,
+    val userId: UUID?,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_EMAIL_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_EMAIL_EXAMPLE,
+    )
+    val email: String?,
 )
