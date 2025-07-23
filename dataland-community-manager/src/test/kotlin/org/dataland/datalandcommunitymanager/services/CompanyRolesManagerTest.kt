@@ -1,12 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
@@ -20,74 +16,64 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
-import org.mockito.Mockito.doNothing
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verifyNoInteractions
-import org.mockito.Mockito.`when`
-import org.springframework.http.HttpStatus
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class CompanyRolesManagerTest {
     private lateinit var companyRolesManager: CompanyRolesManager
 
-    private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
-    private lateinit var mockCompanyRoleAssignmentEntity: CompanyRoleAssignmentEntity
+    private val mockCompanyInfoService = mock<CompanyInfoService>()
+    private val mockCompanyRoleAssignmentRepository = mock<CompanyRoleAssignmentRepository>()
+    private val mockCompanyOwnershipAcceptedEmailMessageBuilder = mock<CompanyOwnershipAcceptedEmailMessageBuilder>()
+    private val mockCompanyOwnershipRequestedEmailMessageBuilder = mock<CompanyOwnershipRequestedEmailMessageBuilder>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
 
-    private lateinit var companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder
-
-    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    private lateinit var mockCompanyInfoService: CompanyInfoService
-
+    private val existingCompanyId = "indeed-existing-company-id"
+    private val nonExistingCompanyId = "non-existing-company-id"
     private val testUserId = UUID.randomUUID().toString()
-
     private val testCompanyName = "Test Company AG"
-    private val testCompanyInformation =
-        CompanyInformation(
-            companyName = testCompanyName,
-            headquarters = "dummyHeadquarters",
-            identifiers = emptyMap(),
-            countryCode = "dummyCountryCode",
-        )
 
     @BeforeEach
     fun initializeCompanyRolesManager() {
-        mockCompanyRoleAssignmentRepository = mock(CompanyRoleAssignmentRepository::class.java)
-
-        companyOwnershipAcceptedEmailMessageBuilder = mock(CompanyOwnershipAcceptedEmailMessageBuilder::class.java)
-        `when`(
-            companyOwnershipAcceptedEmailMessageBuilder
-                .getNumberOfOpenDataRequestsForCompany(any(String::class.java)),
-        ).thenReturn(5)
-
-        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        mockCompanyInfoService = CompanyInfoService(mockCompanyDataControllerApi)
+        doReturn(5)
+            .whenever(mockCompanyOwnershipAcceptedEmailMessageBuilder)
+            .getNumberOfOpenDataRequestsForCompany(anyString())
 
         companyRolesManager =
             CompanyRolesManager(
                 mockCompanyInfoService,
                 mockCompanyRoleAssignmentRepository,
-                mock(CompanyOwnershipRequestedEmailMessageBuilder::class.java),
-                companyOwnershipAcceptedEmailMessageBuilder,
+                mockCompanyOwnershipRequestedEmailMessageBuilder,
+                mockCompanyOwnershipAcceptedEmailMessageBuilder,
+                mockKeycloakUserService,
             )
 
-        mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
-        `when`(mockCompanyRoleAssignmentRepository.save(any(CompanyRoleAssignmentEntity::class.java)))
-            .thenReturn(mockCompanyRoleAssignmentEntity)
-
+        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockCompanyRoleAssignmentRepository).save(any())
         doNothing()
-            .`when`(companyOwnershipAcceptedEmailMessageBuilder)
+            .whenever(mockCompanyOwnershipAcceptedEmailMessageBuilder)
             .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
-                anyString(),
-                anyString(), anyString(), anyString(),
+                anyString(), anyString(), anyString(), anyString(),
             )
     }
 
     @Test
     fun `check that a company ownership can only be requested for existing companies`() {
-        `when`(mockCompanyDataControllerApi.isCompanyIdValid("non-existing-company-id")).thenThrow(
-            ClientException("Client error", HttpStatus.NOT_FOUND.value()),
-        )
+        doThrow(
+            ResourceNotFoundApiException(
+                "Company not found",
+                "Dataland does not know the company ID $nonExistingCompanyId",
+            ),
+        ).whenever(mockCompanyInfoService).assertCompanyIdIsValid(nonExistingCompanyId)
+
         val exception =
             assertThrows<ResourceNotFoundApiException> {
                 companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(
@@ -99,10 +85,7 @@ class CompanyRolesManagerTest {
 
     @Test
     fun `check that a company ownership can only be requested if the user is not already a company owner`() {
-        val mockStoredCompany = mock(StoredCompany::class.java)
-        val existingCompanyId = "indeed-existing-company-id"
-        `when`(mockCompanyDataControllerApi.getCompanyById(existingCompanyId)).thenReturn(mockStoredCompany)
-        `when`(mockStoredCompany.companyInformation).thenReturn(testCompanyInformation)
+        doReturn(testCompanyName).whenever(mockCompanyInfoService).getValidCompanyName(existingCompanyId)
 
         val id =
             CompanyRoleAssignmentId(
@@ -110,7 +93,7 @@ class CompanyRolesManagerTest {
                 companyId = existingCompanyId,
                 userId = testUserId,
             )
-        `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(true)
+        doReturn(true).whenever(mockCompanyRoleAssignmentRepository).existsById(id)
 
         val mockAuthentication = TestUtils.mockSecurityContext("username", testUserId, DatalandRealmRole.ROLE_USER)
         val exception =
@@ -126,56 +109,46 @@ class CompanyRolesManagerTest {
     }
 
     @Test
-    fun `check that email for users becoming company company owner is not generated if company does not exist`() {
-        `when`(mockCompanyDataControllerApi.getCompanyById(anyString())).thenThrow(
-            ClientException("Client error", HttpStatus.NOT_FOUND.value()),
-        )
+    fun `check that email for users becoming company owner is not generated if company does not exist`() {
+        doThrow(
+            ResourceNotFoundApiException(
+                "Company not found",
+                "Dataland does not know the company ID $nonExistingCompanyId",
+            ),
+        ).whenever(mockCompanyInfoService).getValidCompanyName(nonExistingCompanyId)
         val exception =
             assertThrows<ResourceNotFoundApiException> {
                 companyRolesManager.assignCompanyRoleForCompanyToUser(
                     companyRole = CompanyRole.CompanyOwner,
-                    companyId = UUID.randomUUID().toString(),
+                    companyId = nonExistingCompanyId,
                     userIdentifier = testUserId,
                 )
             }
-        verifyNoInteractions(companyOwnershipAcceptedEmailMessageBuilder)
+        verifyNoInteractions(mockCompanyOwnershipAcceptedEmailMessageBuilder)
         assertTrue(exception.summary.contains("Company not found"))
     }
 
     @Test
     fun `check that email generated for users becoming company owner are generated`() {
-        val companyId = UUID.randomUUID().toString()
-        val storedCompany =
-            StoredCompany(
-                companyId = companyId,
-                companyInformation = testCompanyInformation,
-                dataRegisteredByDataland = listOf(),
-            )
-        `when`(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(storedCompany)
+        doReturn(testCompanyName).whenever(mockCompanyInfoService).getValidCompanyName(existingCompanyId)
 
         val id =
             CompanyRoleAssignmentId(
                 companyRole = CompanyRole.CompanyOwner,
-                companyId = companyId,
+                companyId = existingCompanyId,
                 userId = testUserId,
             )
-        `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(false)
+        doReturn(false).whenever(mockCompanyRoleAssignmentRepository).existsById(id)
 
         companyRolesManager.assignCompanyRoleForCompanyToUser(
             companyRole = CompanyRole.CompanyOwner,
-            companyId = companyId,
+            companyId = existingCompanyId,
             userIdentifier = testUserId,
         )
 
-        Mockito
-            .verify(companyOwnershipAcceptedEmailMessageBuilder, Mockito.times(1))
+        verify(mockCompanyOwnershipAcceptedEmailMessageBuilder, times(1))
             .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
+                anyString(), anyString(), anyString(), anyString(),
             )
     }
-
-    private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }
