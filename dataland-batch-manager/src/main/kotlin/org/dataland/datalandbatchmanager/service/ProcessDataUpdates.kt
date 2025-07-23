@@ -121,7 +121,7 @@ class ProcessDataUpdates
 //        }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 0 ? * WED") // TODO: Change back to "0 0 3 ? * SUN" for production
+        @Scheduled(cron = "0 30 7 ? * WED") // TODO: Change back to "0 0 3 ? * SUN" for production
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
             val doFullUpdate = true // flagFileGleif?.exists() ?: false
