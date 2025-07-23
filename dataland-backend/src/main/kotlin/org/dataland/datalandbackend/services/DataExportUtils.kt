@@ -229,8 +229,14 @@ class DataExportUtils
             return resultList
         }
 
+        /**
+         * Makes sure that all possible json paths are included in the ordered headers. This includes in particular the arrays
+         * for the eu taxonomy non financials framework
+         * @param orderedHeaderFields a set of column names used as the headers in the CSV derived by the schemata
+         * @return an expanded version of the ordered headers that now also contains the headers for repeating fields in an array
+         */
         private fun expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields: List<String>): List<String> {
-            val outputList = mutableListOf<String>()
+            val expandedOrderedHeaders = mutableListOf<String>()
             val arrayFields = mutableListOf<String>()
             // Iterate through input strings
             for ((index, input) in orderedHeaderFields.withIndex()) {
@@ -238,17 +244,22 @@ class DataExportUtils
                     arrayFields.add(input) // collect all properties of the aligned activities
                 } else {
                     // Add unmodified strings directly to the output list
-                    outputList.add(input)
+                    expandedOrderedHeaders.add(input)
                 }
                 // expand the output so that it contains all possible json paths for the activities array
                 if (input.contains(ACTIVITIES_PATTERN) && !orderedHeaderFields[index + 1].contains(ACTIVITIES_PATTERN)) {
-                    addAllArrayFieldsToOutput(arrayFields, outputList)
+                    addAllArrayFieldsToOutput(arrayFields, expandedOrderedHeaders)
                     arrayFields.clear()
                 }
             }
-            return outputList
+            return expandedOrderedHeaders
         }
 
+        /**
+         * Creates new entries in the ordered header in case the activities arrays are long
+         * @param arrayFields all attribute fields for one entry in an activities array
+         * @param outputList the list of ordered header fields that is appended with extra entries in case there are more activities
+         */
         private fun addAllArrayFieldsToOutput(
             arrayFields: MutableList<String>,
             outputList: MutableList<String>,
