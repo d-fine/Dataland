@@ -10,7 +10,7 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio">
+      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio" id="edit-button">
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
 
@@ -20,7 +20,7 @@
       <PrimeButton class="tertiary-button" @click="startTour">
         <i class="pi pi-info-circle pr-2" /> Start Tour
       </PrimeButton>
-      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
+      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored" id="monitor-button">
         <span class="material-icons-outlined fs-sm pr-1">verified</span>
         Portfolio actively monitored
       </div>
@@ -253,9 +253,26 @@ const isPremiumUser = ref(false);
 const tourSteps = ref([
   {
     target: '#download-button',
-    content: 'Download the portfolio data as a file.',
+    content: 'Download the portfolio data as in various file formats for your selected framework and reporting period.',
     params: {
       placement: 'bottom',
+      scrollTo: false,
+    },
+  },
+  {
+    target: '#edit-button',
+    content: 'Edit your portfolio by adding or removing companies and/or changing the name of the portfolio.',
+    params: {
+      placement: 'bottom',
+      scrollTo: false,
+    },
+  },
+  {
+    target: '#monitor-button',
+    content: 'Stay ahead by monitoring your portfolio for changes in ESG data.',
+    params: {
+      placement: 'bottom',
+      scrollTo: false,
     },
   },
 ]);
