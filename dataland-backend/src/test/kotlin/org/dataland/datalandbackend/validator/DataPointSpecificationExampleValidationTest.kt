@@ -100,7 +100,7 @@ class DataPointSpecificationExampleValidationTest
                 schema.isArray -> {
                     val array = objectMapper.createArrayNode()
                     val schemaElement = schema.firstOrNull()
-                    val exampleArray = example ?: objectMapper.createArrayNode()
+                    val exampleArray = example
                     if (exampleArray.isArray && schemaElement != null) {
                         exampleArray.forEach { exampleElement ->
                             array.add(buildJsonFromSchemaWithExample(schemaElement, exampleElement, objectMapper))
@@ -109,7 +109,7 @@ class DataPointSpecificationExampleValidationTest
                     array
                 }
                 schema.isTextual -> {
-                    example ?: objectMapper.nullNode()
+                    example
                 }
                 else -> objectMapper.nullNode()
             }
