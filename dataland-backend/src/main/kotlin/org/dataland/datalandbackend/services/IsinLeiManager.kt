@@ -58,7 +58,10 @@ class IsinLeiManager(
                         .map { id -> id.identifierValue }
                         .contains(mappingData.lei)
                 }
-            if (company == null) logger.info("Attention: The LEI ${mappingData.lei} was not found!!!!!!!!!!!!!!!!!")
+            if (company == null) {
+                logger.info("Attention: The LEI ${mappingData.lei} was not found!!!!!!!!!!!!!!!!!")
+                return@forEach
+            }
             entities.add(
                 IsinLeiEntity(
                     isin = mappingData.isin,
