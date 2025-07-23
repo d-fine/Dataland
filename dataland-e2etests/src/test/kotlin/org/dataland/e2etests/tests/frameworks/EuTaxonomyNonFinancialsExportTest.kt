@@ -45,7 +45,6 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                                     listOf(
                                         EuTaxonomyActivity(
                                             activityName = Activity.AcquisitionAndOwnershipOfBuildings,
-                                            share = RelativeAndAbsoluteFinancialShare(relativeShareInPercent = BigDecimal(10)),
                                         ),
                                         EuTaxonomyActivity(activityName = Activity.Afforestation),
                                     ),
@@ -72,7 +71,16 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                             ExtendedDataPointListEuTaxonomyActivity(
                                 value =
                                     listOf(
-                                        EuTaxonomyActivity(activityName = Activity.ConservationForestry),
+                                        EuTaxonomyActivity(
+                                            activityName = Activity.ConservationForestry,
+                                            share =
+                                                RelativeAndAbsoluteFinancialShare(
+                                                    relativeShareInPercent =
+                                                        BigDecimal(
+                                                            10,
+                                                        ),
+                                                ),
+                                        ),
                                     ),
                             ),
                     ),
