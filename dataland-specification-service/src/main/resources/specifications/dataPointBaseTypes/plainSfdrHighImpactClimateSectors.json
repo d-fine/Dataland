@@ -3,29 +3,29 @@
   "name" : "Applicable High Impact Climate Sectors",
   "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
   "validatedBy" : "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector,org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
-  "schema":{
-    "highImpactClimateSectorEnergyConsumptionInGWh": {
-      "value": "T",
-      "quality": "QualityOptions",
-      "comment": "String",
-      "dataSource": {
-        "page": "Integer",
-        "tagName": "String",
-        "fileName": "String",
-        "fileReference": "String",
-        "publicationDate": "LocalDate"
+  "schema" : {
+    "highImpactClimateSectorEnergyConsumptionInGWh" : {
+      "value" : "T",
+      "quality" : "QualityOptions",
+      "comment" : "String",
+      "dataSource" : {
+        "page" : "Integer",
+        "tagName" : "String",
+        "fileName" : "String",
+        "fileReference" : "String",
+        "publicationDate" : "LocalDate"
       }
     },
-    "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-      "value": "T",
-      "quality": "QualityOptions",
-      "comment": "String",
-      "dataSource": {
-        "page": "Integer",
-        "tagName": "String",
-        "fileName": "String",
-        "fileReference": "String",
-        "publicationDate": "LocalDate"
+    "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+      "value" : "T",
+      "quality" : "QualityOptions",
+      "comment" : "String",
+      "dataSource" : {
+        "page" : "Integer",
+        "tagName" : "String",
+        "fileName" : "String",
+        "fileReference" : "String",
+        "publicationDate" : "LocalDate"
       }
     }
   },

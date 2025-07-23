@@ -3,31 +3,31 @@
   "name" : "General aligned activities data point with an extended source",
   "businessDefinition" : "Absolute value and share of the revenue per activity that is taxonomy-aligned.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity>>",
-  "schema": {
-    "activityName": "Activity",
-    "naceCodes": "List<String>",
-    "share": {
-      "relativeShareInPercent": "Integer",
-      "absoluteShare": {
-        "amount": "Double",
-        "currency": "String"
+  "schema" : {
+    "activityName" : "Activity",
+    "naceCodes" : "List<String>",
+    "share" : {
+      "relativeShareInPercent" : "Integer",
+      "absoluteShare" : {
+        "amount" : "Double",
+        "currency" : "String"
       }
     },
-    "substantialContributionToClimateChangeMitigationInPercent": "BigDecimal",
-    "substantialContributionToClimateChangeAdaptationInPercent": "BigDecimal",
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": "BigDecimal",
-    "substantialContributionToTransitionToACircularEconomyInPercent": "BigDecimal",
-    "substantialContributionToPollutionPreventionAndControlInPercent": "BigDecimal",
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": "BigDecimal",
-    "dnshToClimateChangeMitigation": "YesNo",
-    "dnshToClimateChangeAdaptation": "YesNo",
-    "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "YesNo",
-    "dnshToTransitionToACircularEconomy": "YesNo",
-    "dnshToPollutionPreventionAndControl": "YesNo",
-    "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "YesNo",
-    "minimumSafeguards": "YesNo",
-    "enablingActivity": "YesNo",
-    "transitionalActivity": "YesNo"
+    "substantialContributionToClimateChangeMitigationInPercent" : "BigDecimal",
+    "substantialContributionToClimateChangeAdaptationInPercent" : "BigDecimal",
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" : "BigDecimal",
+    "substantialContributionToTransitionToACircularEconomyInPercent" : "BigDecimal",
+    "substantialContributionToPollutionPreventionAndControlInPercent" : "BigDecimal",
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" : "BigDecimal",
+    "dnshToClimateChangeMitigation" : "YesNo",
+    "dnshToClimateChangeAdaptation" : "YesNo",
+    "dnshToSustainableUseAndProtectionOfWaterAndMarineResources" : "YesNo",
+    "dnshToTransitionToACircularEconomy" : "YesNo",
+    "dnshToPollutionPreventionAndControl" : "YesNo",
+    "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems" : "YesNo",
+    "minimumSafeguards" : "YesNo",
+    "enablingActivity" : "YesNo",
+    "transitionalActivity" : "YesNo"
   },
   "example" : {
     "value" : [ {
