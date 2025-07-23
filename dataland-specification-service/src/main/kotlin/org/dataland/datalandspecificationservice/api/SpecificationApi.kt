@@ -142,7 +142,7 @@ interface SpecificationApi {
         value = ["/frameworks/{frameworkSpecificationId}/resolved-schema"],
         produces = ["application/json"],
     )
-    fun getDataPointBaseTypeSchema(
+    fun getResolvedFrameworkSpecification(
         @PathVariable("frameworkSpecificationId") frameworkSpecificationId: String,
     ): ResponseEntity<DataPointBaseTypeResolvedSchema>
 }
