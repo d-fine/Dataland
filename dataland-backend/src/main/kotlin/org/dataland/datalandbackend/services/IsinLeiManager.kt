@@ -52,12 +52,13 @@ class IsinLeiManager(
         val entities = mutableListOf<IsinLeiEntity>()
         isinLeiMappingData.forEach { mappingData ->
             val company =
-                companies?.first {
+                companies?.firstOrNull {
                     it.identifiers
                         .filter { id -> id.identifierType == IdentifierType.Lei }
                         .map { id -> id.identifierValue }
                         .contains(mappingData.lei)
                 }
+            if (company == null) logger.info("Attention: The LEI ${mappingData.lei} was not found!!!!!!!!!!!!!!!!!")
             entities.add(
                 IsinLeiEntity(
                     isin = mappingData.isin,
