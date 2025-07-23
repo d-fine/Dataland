@@ -7,7 +7,7 @@
     "value": [
       {
         "activityName": "Activity",
-        "naceCode": "List<String>",
+        "naceCodes": "List<String>",
         "share": {
           "relativeShareInPercent": "Integer",
           "absoluteShare": {
@@ -106,7 +106,8 @@
       "page": "5-7",
       "tagName": "date",
       "fileName": "AnnualReport2020.pdf",
-      "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+      "publicationDate": "2020-12-31"
     }
   }
 }
