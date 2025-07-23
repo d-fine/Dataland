@@ -7,11 +7,8 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
 
 /**
  * Implementation of a ISIN manager for Dataland
@@ -20,8 +17,6 @@ import java.util.concurrent.Executors
 class IsinLeiManager(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,
     @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
-    @Value("\${spring.datasource.hikari.maximum-pool-size}")
-    private val dataSourceMaximumPoolSize: Int,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -30,7 +25,6 @@ class IsinLeiManager(
      * This method clears all previous mappings and adds new ones.
      * @param isinLeiMappingData the list of ISIN-LEI mapping data to be put
      */
-    @Async
     fun putIsinLeiMapping(isinLeiMappingData: List<IsinLeiMappingData>) {
         logger.info("Start dropping previous entries")
         isinLeiTransactionalService.clearAllMappings()
@@ -82,18 +76,24 @@ class IsinLeiManager(
         data: List<IsinLeiMappingData>,
         chunkSize: Int = 10000,
     ) {
-        val executorService = Executors.newFixedThreadPool(dataSourceMaximumPoolSize)
         val chunks = data.chunked(chunkSize)
-        val tasks =
-            chunks.map { chunk ->
-                val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
-                val entities = convertToIsinLeiEntity(chunk, companies)
-                Callable<Void> {
-                    isinLeiTransactionalService.saveAllJdbcBatch(entities)
-                    null
-                }
-            }
+        chunks.map { chunk ->
+            val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
+            val entities = convertToIsinLeiEntity(chunk, companies)
+            saveAllJdbcBatchAsync(entities)
+        }
+    }
 
-        executorService.invokeAll(tasks)
+    /**
+     * Asynchronous method to save ISIN-LEI mappings in batches.
+     * @param data the ISIN-LEI mapping data to save
+     * @param batchSize the size of each batch to process
+     */
+    @Async
+    fun saveAllJdbcBatchAsync(
+        data: List<IsinLeiEntity>,
+        batchSize: Int = 50,
+    ) {
+        isinLeiTransactionalService.saveAllJdbcBatch(data, batchSize)
     }
 }
