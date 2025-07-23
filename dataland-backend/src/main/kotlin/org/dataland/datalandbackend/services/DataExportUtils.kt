@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.NonFinancialsMapping
 import org.dataland.datalandbackend.utils.NuclearAndGasMapping
@@ -56,6 +57,8 @@ class DataExportUtils
             private const val FIRST_PLACE = -3
             private const val SECOND_PLACE = -2
             private const val THIRD_PLACE = -1
+            private const val ACTIVITIES_STRING = "Activities"
+            private const val ACTIVITIES_PATTERN = "$ACTIVITIES_STRING.$VALUE.0."
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -135,8 +138,8 @@ class DataExportUtils
                         ),
                     )
                 }
-
-            val orderedHeaders = getOrderedHeaders(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDatasetParam)
+            val expandedOrderedHeaders = expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields.toList())
+            val orderedHeaders = getOrderedHeaders(nonEmptyHeaderFields, expandedOrderedHeaders, isAssembledDatasetParam)
             val readableHeaders =
                 if (includeAliases) {
                     applyAliasRenaming(orderedHeaders, frameworkTemplate ?: portfolioExportRows.first())
@@ -224,6 +227,37 @@ class DataExportUtils
                 }
             }
             return resultList
+        }
+
+        private fun expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields: List<String>): List<String> {
+            val outputList = mutableListOf<String>()
+            val arrayFields = mutableListOf<String>()
+            // Iterate through input strings
+            for ((index, input) in orderedHeaderFields.withIndex()) {
+                if (input.contains(ACTIVITIES_PATTERN)) {
+                    arrayFields.add(input) // collect all properties of the aligned activities
+                } else {
+                    // Add unmodified strings directly to the output list
+                    outputList.add(input)
+                }
+                // expand the output so that it contains all possible json paths for the activities array
+                if (input.contains(ACTIVITIES_PATTERN) && !orderedHeaderFields[index + 1].contains(ACTIVITIES_PATTERN)) {
+                    addAllArrayFieldsToOutput(arrayFields, outputList)
+                    arrayFields.clear()
+                }
+            }
+            return outputList
+        }
+
+        private fun addAllArrayFieldsToOutput(
+            arrayFields: MutableList<String>,
+            outputList: MutableList<String>,
+        ) {
+            for (activityIndex in 0..Activity.entries.size) {
+                for (t in arrayFields) {
+                    outputList.add(t.replace(ACTIVITIES_PATTERN, "$ACTIVITIES_STRING.$VALUE.$activityIndex."))
+                }
+            }
         }
 
         /**
