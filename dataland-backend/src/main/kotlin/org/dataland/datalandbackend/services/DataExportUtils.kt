@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.collections.map
 import kotlin.text.contains
-import kotlin.toString
 
 /**
  * The class holds methods which are used in the data export. Mainly it contains functions to map the
@@ -54,6 +53,9 @@ class DataExportUtils
             private const val VALUE = "value"
             private const val PREFIX = "$DATA."
             private const val SUFFIX = ".$VALUE"
+            private const val FIRST_PLACE = -3
+            private const val SECOND_PLACE = -2
+            private const val THIRD_PLACE = -1
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -110,7 +112,6 @@ class DataExportUtils
             val isAssembledDatasetParam = (frameworkTemplate != null)
 
             val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
-            // objectMapper.valueToTree<JsonNode>(resolvedSchemaNode.body?.resolvedSchema ?: emptyMap<String, Any>())
 
             val orderedHeaderFields =
                 if (isAssembledDatasetParam) {
@@ -118,16 +119,16 @@ class DataExportUtils
                     JsonUtils.getLeafNodeFieldNames(
                         resolvedSchemaNode ?: NullNode.instance,
                         keepEmptyFields = true,
-                        dropLastFieldName = true,
+                        dropLastFieldName = false,
                     )
                 } else {
                     LinkedHashSet(
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
                                 when {
-                                    it.startsWith("companyName") -> -3
-                                    it.startsWith("companyLei") -> -2
-                                    it.startsWith("reportingPeriod") -> -1
+                                    it.startsWith("companyName") -> FIRST_PLACE
+                                    it.startsWith("companyLei") -> SECOND_PLACE
+                                    it.startsWith("reportingPeriod") -> THIRD_PLACE
                                     else -> 0
                                 }
                             }.then(naturalOrder()),
@@ -229,7 +230,7 @@ class DataExportUtils
          * Replaces the old header names (json paths) with human-readable header names
          * @param csvData the data to be exported with the original json path headers
          * @param readableHeaders a map json path -> human-readable name
-         * @return The provided csv data with the himan-readable names
+         * @return The provided csv data with the hman-readable names
          */
         fun mapReadableHeadersToCsvData(
             csvData: List<Map<String, String?>>,
