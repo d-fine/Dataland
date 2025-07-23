@@ -206,6 +206,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(multiCompanyCsvExport)
 
         validateMultiCompanyExport(multiCompanyCsvExport, headers, "CSV")
+        frameworkSpecificValidationForCSVExportBothCompanies(headers)
     }
 
     /**
@@ -359,6 +360,9 @@ abstract class BaseExportTest<T> {
             companyWithNonNullFieldLei,
             exportType,
         )
+    }
+
+    open fun frameworkSpecificValidationForCSVExportBothCompanies(headers: List<String>) {
     }
 
     /**

@@ -1,15 +1,21 @@
 // EU Taxonomy Implementation
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.model.Activity
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
+import org.dataland.datalandbackend.openApiClient.model.RelativeAndAbsoluteFinancialShare
 import org.dataland.e2etests.utils.BaseExportTest
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.math.BigDecimal
 
 class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancialsData>() {
     private lateinit var fullTestData: EutaxonomyNonFinancialsData
@@ -31,11 +37,23 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                     fullTestData.general?.copy(
                         nfrdMandatory = null,
                     ),
-                revenue = null,
+                revenue =
+                    fullTestData.revenue?.copy(
+                        nonAlignedActivities =
+                            ExtendedDataPointListEuTaxonomyActivity(
+                                value =
+                                    listOf(
+                                        EuTaxonomyActivity(
+                                            activityName = Activity.AcquisitionAndOwnershipOfBuildings,
+                                            share = RelativeAndAbsoluteFinancialShare(relativeShareInPercent = BigDecimal(10)),
+                                        ),
+                                        EuTaxonomyActivity(activityName = Activity.Afforestation),
+                                    ),
+                            ),
+                    ),
                 capex = null,
                 opex = null,
             )
-
         // Create test data with null and non-null general fields
         testDataWithNonNullField =
             fullTestData.copy(
@@ -48,7 +66,16 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                                 comment = "test",
                             ),
                     ),
-                revenue = null,
+                revenue =
+                    fullTestData.revenue?.copy(
+                        nonAlignedActivities =
+                            ExtendedDataPointListEuTaxonomyActivity(
+                                value =
+                                    listOf(
+                                        EuTaxonomyActivity(activityName = Activity.ConservationForestry),
+                                    ),
+                            ),
+                    ),
                 capex = null,
                 opex = null,
             )
@@ -111,6 +138,24 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                 reportingPeriod = reportingPeriod,
                 companyId = companyId,
             )
+
+    fun containsInOrder(
+        headerList: List<String>,
+        subList: List<String>,
+    ): Boolean {
+        if (subList.size > headerList.size) return false
+        return headerList.windowed(subList.size).any { it == subList }
+    }
+
+    override fun frameworkSpecificValidationForCSVExportBothCompanies(headers: List<String>) {
+        val expectedColumnsInOrder =
+            listOf(
+                "data.revenue.nonAlignedActivities.value.0.activityName",
+                "data.revenue.nonAlignedActivities.value.0.share.relativeShareInPercent",
+                "data.revenue.nonAlignedActivities.value.1.activityName",
+            )
+        Assertions.assertTrue(containsInOrder(headers, expectedColumnsInOrder))
+    }
 
     @Test
     fun `test CSV export omits column for null field when only company with null value is exported`() {
