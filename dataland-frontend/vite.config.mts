@@ -76,6 +76,7 @@ export default defineConfig({
       '@clients': path.resolve(__dirname, './build/clients'),
       '@ct': path.resolve(__dirname, './tests/component'),
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
+      'vue3-tour/dist/vue3-tour.js': path.resolve(__dirname, 'node_modules/vue3-tour/dist/vue3-tour.js'),
     },
   },
   build: {

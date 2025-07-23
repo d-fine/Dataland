@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -9,7 +10,11 @@ import org.mockito.kotlin.mock
 class DataExportUtilsTest {
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportUtils = DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils)
+    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val dataExportUtils =
+        DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils).apply {
+            specificationApi = mockSpecificationApi
+        }
 
     @Test
     fun `stripFieldNames with known alias and suffixes`() {

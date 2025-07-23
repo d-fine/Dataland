@@ -14,8 +14,11 @@
         <i class="material-icons pr-2">edit</i> Edit Portfolio
       </PrimeButton>
 
-      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
+      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio" id="download-button">
         <i class="pi pi-download pr-2" /> Download Portfolio
+      </PrimeButton>
+      <PrimeButton class="tertiary-button" @click="startTour">
+        <i class="pi pi-info-circle pr-2" /> Start Tour
       </PrimeButton>
       <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
         <span class="material-icons-outlined fs-sm pr-1">verified</span>
@@ -34,6 +37,8 @@
         <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
       </div>
     </div>
+
+    <v-tour name="downloadTour" :steps="tourSteps" />
 
     <DataTable
       stripedRows
@@ -155,7 +160,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch } from 'vue';
+import { getCurrentInstance, inject, onMounted, ref, watch } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
@@ -244,6 +249,25 @@ const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
 const isPremiumUser = ref(false);
+
+const tourSteps = ref([
+  {
+    target: '#download-button',
+    content: 'Download the portfolio data as a file.',
+    params: {
+      placement: 'bottom',
+    },
+  },
+]);
+const instance = getCurrentInstance();
+
+/**
+ * Starts the tour for the download functionality.
+ * This function is called when the user clicks on the "Start Tour" button.
+ */
+function startTour(): void {
+  instance?.appContext.config.globalProperties.$tours?.downloadTour?.start();
+}
 
 onMounted(() => {
   void checkPremiumRole();

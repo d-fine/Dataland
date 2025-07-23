@@ -1,0 +1,1 @@
+declare module 'vue3-tour/dist/vue3-tour.js';

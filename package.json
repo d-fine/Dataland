@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "cypress-wait-until": "3.0.2"
+  },
+  "dependencies": {
+    "vue3-tour": "^1.0.3"
   }
 }
