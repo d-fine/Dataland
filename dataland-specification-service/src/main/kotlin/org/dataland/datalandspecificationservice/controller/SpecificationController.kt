@@ -87,7 +87,7 @@ class SpecificationController(
         return ResponseEntity.ok(dataPointBaseType.validatedBy)
     }
 
-    override fun getDataPointBaseTypeSchema(frameworkSpecificationId: String): ResponseEntity<DataPointBaseTypeResolvedSchema> {
+    override fun getResolvedFrameworkSpecification(frameworkSpecificationId: String): ResponseEntity<DataPointBaseTypeResolvedSchema> {
         val framework =
             database.frameworks[frameworkSpecificationId]
                 ?: throw ResourceNotFoundApiException(
