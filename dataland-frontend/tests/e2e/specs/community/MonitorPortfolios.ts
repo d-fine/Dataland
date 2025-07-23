@@ -47,26 +47,6 @@ describe('Portfolio Monitoring Modal', () => {
       });
 
       /**
-       * Recursively deletes portfolios until the specified total number is reached.
-       *
-       * @param index - The current index of the portfolio to delete.
-       * @param total - The initial total number of portfolios to delete.
-       */
-      function deleteNext(index: number, total: number): void {
-        if (index >= total) return;
-        cy.get('[data-test="edit-portfolio"]').first().click();
-        cy.get('[data-test="deleteButton"]').click();
-
-        // Wait until the tab count has decreased before continuing
-        cy.get('[data-test="portfolios"]')
-          .find('button.p-tab')
-          .should('have.length.lessThan', total + 1 - index)
-          .then(() => {
-            deleteNext(index + 1, total);
-          });
-      }
-
-      /**
        * Test function for creating portfolio and monitor it
        */
       function testPatchMonitoring({
@@ -84,15 +64,6 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
-        cy.get('[data-test="portfolios"]')
-          .find('button.p-tab')
-          .then(($buttons) => {
-            const total = $buttons.length - 1;
-
-            if (total > 0) {
-              deleteNext(0, total); // Start recursion
-            }
-          });
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
         cy.get('[data-test="add-portfolio"]').click();
