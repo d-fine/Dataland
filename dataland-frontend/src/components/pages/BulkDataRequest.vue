@@ -25,17 +25,18 @@
                   <template v-else>
                     <div class="status text-center col-8 col-offset-2">
                       <div class="status-wrapper">
-                        <div v-if="requestSuccessStatus == 'Success'" class="status-container">
-                          <em class="material-icons info-icon green-text mr-2">check_circle</em>
-                          <h1 class="status-text" data-test="requestStatusText">Success</h1>
+                        <div v-if="requestSuccessStatus == 'Success'" class="status-container status-success">
+                          <i class="pi pi-check-circle" /> <span data-test="requestStatusText">Success</span>
                         </div>
-                        <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container">
-                          <em class="material-icons info-icon info-color-text mr-2">info</em>
-                          <h1 class="status-text" data-test="requestStatusText">Partial Success</h1>
+                        <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container status-warn">
+                          <i class="pi pi-info-circle" /> <span data-test="requestStatusText">Partial Success</span>
                         </div>
-                        <div v-if="!isSuccessful || requestSuccessStatus == 'No Success'" class="status-container">
-                          <em class="material-icons info-icon red-text mr-2">error</em>
-                          <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+                        <div
+                          v-if="!isSuccessful || requestSuccessStatus == 'No Success'"
+                          class="status-container status-error"
+                        >
+                          <i class="pi pi-exclamation-circle" />
+                          <span data-test="requestStatusText">Request Unsuccessful</span>
                         </div>
                       </div>
                       <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
@@ -157,7 +158,7 @@
                     <PrimeButton
                       type="submit"
                       label="Submit"
-                      class="primary-button align-self-end"
+                      class="align-self-end"
                       name="submit_request_button"
                       @click="checkReportingPeriods()"
                     >
@@ -416,50 +417,11 @@ export default defineComponent({
   text-align: left;
   background-color: var(--p-surface-50);
 
-  .status {
-    .status-text {
-      font-weight: 700;
-      font-size: 48px;
-      line-height: 48px;
-      letter-spacing: 0.25px;
-    }
-
-    .info-icon {
-      font-size: 48px;
-    }
-  }
-
   div.summary-section {
     &.border-bottom {
       border-bottom: 1px solid #dadada;
     }
-
-    .summary-section-heading {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 20px;
-
-      .info-icon {
-        margin-bottom: -2px;
-        vertical-align: bottom;
-      }
-    }
-
-    .summary-section-data {
-      font-weight: 700;
-
-      .identifier {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 26px;
-        letter-spacing: 0.44px;
-      }
-    }
   }
-}
-
-.info-icon {
-  cursor: help;
 }
 
 .status-wrapper {
@@ -469,22 +431,36 @@ export default defineComponent({
 }
 
 .status-container {
-  display: flex;
-  align-items: center;
-}
+  font-weight: var(--font-weight-bold);
+  line-height: 3rem;
+  letter-spacing: 0.25px;
 
-.info-color-text {
-  color: var(--p-primary-color);
+  span {
+    font-size: 3rem;
+  }
+
+  i {
+    font-size: 2.5rem;
+    padding-right: var(--spacing-sm);
+  }
+
+  &.status-success {
+    color: var(--p-green-600);
+  }
+
+  &.status-warn {
+    color: var(--p-amber-500);
+  }
+
+  &.status-error {
+    color: var(--p-red-500);
+  }
 }
 
 .no-framework {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.paper-section {
-  background-color: var(--paper-white);
 }
 
 .radius-1 {

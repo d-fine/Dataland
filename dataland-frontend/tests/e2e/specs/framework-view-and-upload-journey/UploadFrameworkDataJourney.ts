@@ -39,7 +39,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       let dataIdOfLksgUpload: string;
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
-      before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
+      before(() => {
         let euTaxoFinancialPreparedFixture: FixtureData<EutaxonomyFinancialsData>;
         let lksgPreparedFixture: FixtureData<LksgData>;
         cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
@@ -53,50 +53,46 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           const lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
-            .then(() => {
-              return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
-            })
-            .then((storedCompany) => {
-              storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadFrameworkDataForPublicToolboxFramework(
-                EuTaxonomyFinancialsBaseFrameworkDefinition,
-                token,
-                storedCompanyForManyDatasetsCompany.companyId,
-                '2023',
-                euTaxoFinancialPreparedFixture.t
-              );
-            })
-            .then((dataMetaInformationOfFirstUpload) => {
-              dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
-              const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
-              // eslint-disable-next-line cypress/no-unnecessary-waiting
-              return cy
-                .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
-                .then(() => {
-                  return uploadFrameworkDataForPublicToolboxFramework(
-                    EuTaxonomyFinancialsBaseFrameworkDefinition,
-                    token,
-                    storedCompanyForManyDatasetsCompany.companyId,
-                    '2022',
-                    euTaxoFinancialPreparedFixture.t
-                  );
-                })
-                .then((dataMetaInformationOfSecondUpload) => {
-                  dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
-                  return uploadFrameworkDataForPublicToolboxFramework(
-                    LksgBaseFrameworkDefinition,
-                    token,
-                    storedCompanyForManyDatasetsCompany.companyId,
-                    generateReportingPeriod(),
-                    lksgPreparedFixture.t
-                  );
-                })
-                .then((dataMetaInformationLksgUpload) => {
-                  dataIdOfLksgUpload = dataMetaInformationLksgUpload.dataId;
-                });
-            });
+        getKeycloakToken(admin_name, admin_pw).then(async (token: string): Promise<void> => {
+          await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload));
+          storedCompanyForManyDatasetsCompany = await uploadCompanyViaApi(
+            token,
+            generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany)
+          );
+          dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = (
+            await uploadFrameworkDataForPublicToolboxFramework(
+              EuTaxonomyFinancialsBaseFrameworkDefinition,
+              token,
+              storedCompanyForManyDatasetsCompany.companyId,
+              '2023',
+              euTaxoFinancialPreparedFixture.t
+            )
+          ).dataId;
+
+          const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
+
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
+
+          dataIdOfSecondEuTaxoFinancialsUpload = (
+            await uploadFrameworkDataForPublicToolboxFramework(
+              EuTaxonomyFinancialsBaseFrameworkDefinition,
+              token,
+              storedCompanyForManyDatasetsCompany.companyId,
+              '2022',
+              euTaxoFinancialPreparedFixture.t
+            )
+          ).dataId;
+
+          dataIdOfLksgUpload = (
+            await uploadFrameworkDataForPublicToolboxFramework(
+              LksgBaseFrameworkDefinition,
+              token,
+              storedCompanyForManyDatasetsCompany.companyId,
+              generateReportingPeriod(),
+              lksgPreparedFixture.t
+            )
+          ).dataId;
         });
       });
 
@@ -223,7 +219,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
       }
 
-      it.only(
+      it(
         'Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks,' +
           ' and verify pages and elements.',
         function () {
