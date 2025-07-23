@@ -16,7 +16,7 @@ import jakarta.persistence.Table
     name = "isin_lei_mapping",
 )
 data class IsinLeiEntity(
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
     var company: StoredCompanyEntity?,
     @Id

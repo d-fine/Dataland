@@ -10,6 +10,9 @@ import java.sql.PreparedStatement
 import javax.sql.DataSource
 import kotlin.use
 
+/** Service for managing ISIN-LEI mappings in a transactional manner.
+ * This service provides methods to clear all mappings and save mappings in batches.
+ */
 @Service
 class IsinLeiTransactionalService(
     @Autowired private val dataSource: DataSource,

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.util.concurrent.TimeUnit
 
 /**
  * Provides access to different HttpClients
@@ -17,11 +18,13 @@ class HttpClients {
      */
     @Bean("AuthenticatedOkHttpClient")
     @ConditionalOnBean(KeycloakTokenManager::class)
+    @Suppress("MagicNumber")
     fun getAuthenticatedOkHttpClient(
         @Autowired keycloakTokenManager: KeycloakTokenManager,
     ): OkHttpClient =
         OkHttpClient()
             .newBuilder()
+            .readTimeout(10, TimeUnit.MINUTES)
             .addInterceptor {
                 val originalRequest = it.request()
                 val accessToken = keycloakTokenManager.getAccessToken()
