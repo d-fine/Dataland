@@ -10,7 +10,7 @@
       "tagName" : "String",
       "fileName" : "String",
       "fileReference" : "String",
-      "puplicationDate" : "LocalDate"
+      "publicationDate" : "LocalDate"
     },
     "provider" : "String"
   },
