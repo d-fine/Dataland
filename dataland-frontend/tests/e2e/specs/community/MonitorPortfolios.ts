@@ -64,6 +64,8 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
         cy.get('[data-test="add-portfolio"]').click();
         cy.get('[name="portfolioName"]').type(portfolioName);
         cy.get('[data-test="saveButton"]').should('be.disabled');
@@ -73,6 +75,8 @@ describe('Portfolio Monitoring Modal', () => {
         cy.get('[data-test="saveButton"]').should('not.be.disabled');
         cy.get('[data-test="saveButton"]').click();
         cy.wait('@getEnrichedPortfolio');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
         cy.get(`[data-test="portfolio-${portfolioName}"]`)
           .should('exist')
           .within(() => {
@@ -100,7 +104,8 @@ describe('Portfolio Monitoring Modal', () => {
           });
 
         cy.visitAndCheckAppMount('/requests');
-        cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
         cy.get('[data-test="requested-Datasets-table"] tbody tr')
           .filter(`:contains("${companyName}")`)
           .as('companyRequestRows');
@@ -113,7 +118,8 @@ describe('Portfolio Monitoring Modal', () => {
 
         cy.visitAndCheckAppMount('/portfolios');
         cy.wait('@getEnrichedPortfolio');
-        cy.wait(Cypress.env('medium__timeout_in_ms') as number);
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
         cy.get(`[data-test="${portfolioName}"]`).click();
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
         cy.wait('@getEnrichedPortfolio');
