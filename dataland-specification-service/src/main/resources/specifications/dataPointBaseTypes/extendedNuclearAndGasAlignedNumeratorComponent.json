@@ -1,112 +1,112 @@
 {
-  "id": "extendedNuclearAndGasAlignedNumeratorComponent",
-  "name": "Aligned numerator data point with an extended source",
-  "businessDefinition": "Proportion of Taxonomy-aligned Economic Activity in the Numerator of the applicable KPI.",
-  "validatedBy": "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedNumerator>",
-  "schema": {
-    "value": {
-      "taxonomyAlignedShareNumeratorNAndG426": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+  "id" : "extendedNuclearAndGasAlignedNumeratorComponent",
+  "name" : "Aligned numerator data point with an extended source",
+  "businessDefinition" : "Proportion of Taxonomy-aligned Economic Activity in the Numerator of the applicable KPI.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedNumerator>",
+  "schema" : {
+    "value" : {
+      "taxonomyAlignedShareNumeratorNAndG426" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumeratorNAndG427": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumeratorNAndG427" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumeratorNAndG428": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumeratorNAndG428" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumeratorNAndG429": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumeratorNAndG429" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumeratorNAndG430": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumeratorNAndG430" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumeratorNAndG431": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumeratorNAndG431" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumeratorOtherActivities": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumeratorOtherActivities" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       },
-      "taxonomyAlignedShareNumerator": {
-        "mitigationAndAdaptation": "BigDecimal",
-        "mitigation": "BigDecimal",
-        "adaptation": "BigDecimal"
+      "taxonomyAlignedShareNumerator" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
       }
     },
-    "quality": "QualityOptions",
-    "comment": "String",
-    "dataSource": {
-      "page": "String",
-      "tagName": "String",
-      "fileName": "String",
-      "fileReference": "String",
-      "publicationDate": "LocalDate"
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
     }
   },
-  "example": {
-    "value": {
-      "taxonomyAlignedShareNumeratorNAndG426": {
-        "mitigationAndAdaptation": 0.2,
-        "mitigation": 0.3,
-        "adaptation": 0.1
+  "example" : {
+    "value" : {
+      "taxonomyAlignedShareNumeratorNAndG426" : {
+        "mitigationAndAdaptation" : 0.2,
+        "mitigation" : 0.3,
+        "adaptation" : 0.1
       },
-      "taxonomyAlignedShareNumeratorNAndG427": {
-        "mitigationAndAdaptation": 1.2,
-        "mitigation": 0.4,
-        "adaptation": 0.2
+      "taxonomyAlignedShareNumeratorNAndG427" : {
+        "mitigationAndAdaptation" : 1.2,
+        "mitigation" : 0.4,
+        "adaptation" : 0.2
       },
-      "taxonomyAlignedShareNumeratorNAndG428": {
-        "mitigationAndAdaptation": 1,
-        "mitigation": null,
-        "adaptation": null
+      "taxonomyAlignedShareNumeratorNAndG428" : {
+        "mitigationAndAdaptation" : 1,
+        "mitigation" : null,
+        "adaptation" : null
       },
-      "taxonomyAlignedShareNumeratorNAndG429": {
-        "mitigationAndAdaptation": null,
-        "mitigation": null,
-        "adaptation": null
+      "taxonomyAlignedShareNumeratorNAndG429" : {
+        "mitigationAndAdaptation" : null,
+        "mitigation" : null,
+        "adaptation" : null
       },
-      "taxonomyAlignedShareNumeratorNAndG430": {
-        "mitigationAndAdaptation": 0.3,
-        "mitigation": 2.4,
-        "adaptation": 0.5
+      "taxonomyAlignedShareNumeratorNAndG430" : {
+        "mitigationAndAdaptation" : 0.3,
+        "mitigation" : 2.4,
+        "adaptation" : 0.5
       },
-      "taxonomyAlignedShareNumeratorNAndG431": {
-        "mitigationAndAdaptation": 0.2,
-        "mitigation": 0.5,
-        "adaptation": 0.6
+      "taxonomyAlignedShareNumeratorNAndG431" : {
+        "mitigationAndAdaptation" : 0.2,
+        "mitigation" : 0.5,
+        "adaptation" : 0.6
       },
-      "taxonomyAlignedShareNumeratorOtherActivities": {
-        "mitigationAndAdaptation": 1.1,
-        "mitigation": 1.4,
-        "adaptation": 1.1
+      "taxonomyAlignedShareNumeratorOtherActivities" : {
+        "mitigationAndAdaptation" : 1.1,
+        "mitigation" : 1.4,
+        "adaptation" : 1.1
       },
-      "taxonomyAlignedShareNumerator": {
-        "mitigationAndAdaptation": 4,
-        "mitigation": 5,
-        "adaptation": 2.5
+      "taxonomyAlignedShareNumerator" : {
+        "mitigationAndAdaptation" : 4,
+        "mitigation" : 5,
+        "adaptation" : 2.5
       }
     },
-    "quality": "Reported",
-    "comment": "",
-    "dataSource": {
-      "page": "125",
-      "tagName": null,
-      "fileName": "CompanyXYZ_Nuclear_And_Gas_Report_2024",
-      "fileReference": "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
-      "publicationDate": "2025-03-02"
+    "quality" : "Reported",
+    "comment" : "",
+    "dataSource" : {
+      "page" : "125",
+      "tagName" : null,
+      "fileName" : "CompanyXYZ_Nuclear_And_Gas_Report_2024",
+      "fileReference" : "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
+      "publicationDate" : "2025-03-02"
     }
   }
 }

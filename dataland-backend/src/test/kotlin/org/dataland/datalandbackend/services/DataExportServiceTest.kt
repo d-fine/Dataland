@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -12,11 +13,14 @@ import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.io.ByteArrayInputStream
@@ -41,7 +45,17 @@ class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportUtils = DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils)
+    private val dataExportUtils =
+        DataExportUtils(
+            mockDataPointUtils,
+            mockReferencedReportsUtils,
+        )
+    private val specificationApi = mock<SpecificationControllerApi>()
+
+    init {
+        dataExportUtils.specificationApi = specificationApi
+    }
+
     private val dataExportService = DataExportService(dataExportUtils)
 
     private val testDataProvider = TestDataProvider(objectMapper)
@@ -58,6 +72,8 @@ class DataExportServiceTest {
     private val companyExportDataLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
     private val companyExportDataLksgTestData =
         objectMapper.readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
+
+    // Add this property to your test class
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -223,11 +239,32 @@ class DataExportServiceTest {
     fun `check that the exported columns are ordered according to the specification`() {
         val testJsonWithOneValue = testDataProvider.createTestJsonWithBothValueAndQuality()
         val testJsonWithTwoValues = testDataProvider.createTestJsonWithTwoDataPoints()
+
+        val resolvedSchemaJson: JsonNode =
+            objectMapper.readTree(
+                """
+                {
+                  "$TEST_CATEGORY": {
+                    "$TEST_DATA_POINT_NAME": { "type": "number" },
+                    "$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET": { "type": "number" }
+                  }
+                }
+                """.trimIndent(),
+            )
+
+        val baseTypeSchema =
+            mock<DataPointBaseTypeResolvedSchema> {
+                on { resolvedSchema } doReturn resolvedSchemaJson
+            }
+
+        whenever(specificationApi.getDataPointBaseTypeSchema("lksg"))
+            .thenReturn(baseTypeSchema)
+
         whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
             FrameworkSpecification(
                 IdWithRef("testId", "testRef"),
                 "testFramework",
-                "testBusinessefinition",
+                "testBusinessDefinition",
                 testDataProvider.createTestSpecification(),
                 "testPath",
             ),
@@ -256,13 +293,29 @@ class DataExportServiceTest {
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        // check that columns are not ordered alphabetically, but according to the specification
-        val colsInCorrectOrder =
-            """"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.$VALUE_STRING"""" +
-                ""","data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.$VALUE_STRING""""
+
+        val headerLine = csvString.lineSequence().first()
+        val actualHeaders = headerLine.split(",")
+
+        val expectedHeaders =
+            listOf(
+                "companyName",
+                "companyLei",
+                "reportingPeriod",
+                "data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value",
+                "data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value",
+            )
+
+        expectedHeaders.forEach {
+            Assertions.assertTrue(actualHeaders.contains(it), "Expected column '$it' not found in CSV header")
+        }
+
+        val index1 = actualHeaders.indexOf("data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value")
+        val index2 = actualHeaders.indexOf("data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value")
+
         Assertions.assertTrue(
-            csvString.contains(colsInCorrectOrder),
-            "CSV does not contain the specified columns in the correct order",
+            index1 < index2,
+            "Expected '${expectedHeaders[3]}' to appear before '${expectedHeaders[4]}'",
         )
     }
 
