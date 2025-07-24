@@ -1,14 +1,14 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
     <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch
+    <ToggleSwitch
       class="form-field vertical-middle"
       v-model="isMonitoringActive"
       data-test="activateMonitoringToggle"
       @update:modelValue="onMonitoringToggled"
     />
-    <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
-    <Dropdown
+    <label for="reportingYearSelector"> Starting Period </label>
+    <Select
       v-model="selectedStartingYear"
       :options="reportingPeriodsOptions"
       option-label="label"
@@ -17,6 +17,8 @@
       placeholder="Select Starting Period"
       :disabled="!isMonitoringActive"
       @change="resetErrors"
+      class="w-full md:w-56"
+      :highlightOnSelect="false"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
       Please select Starting Period.
@@ -26,19 +28,20 @@
       <div
         v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
         :key="frameworkMonitoringOption.value"
-        class="framework-switch-row"
         data-test="frameworkSelection"
       >
-        <InputSwitch
-          class="form-field vertical-middle"
-          v-model="frameworkMonitoringOption.isActive"
-          :id="frameworkMonitoringOption.value"
-          @change="resetErrors"
-          :disabled="!isMonitoringActive"
-        />
-        <label :for="frameworkMonitoringOption.value" class="framework-label">
-          {{ frameworkMonitoringOption.label }}
-        </label>
+        <div class="framework-toggle-label">
+          <ToggleSwitch
+            v-model="frameworkMonitoringOption.isActive"
+            class="form-field vertical-middle"
+            data-test="valuesOnlySwitch"
+            @change="resetErrors"
+            :disabled="!isMonitoringActive"
+          />
+          <label :for="frameworkMonitoringOption.value" class="">
+            {{ frameworkMonitoringOption.label }}
+          </label>
+        </div>
       </div>
       <span class="gray-text font-italic text-xs ml-0 mb-3">
         EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
@@ -66,10 +69,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
+import Select from 'primevue/select';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import InputSwitch from 'primevue/inputswitch';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import ToggleSwitch from 'primevue/toggleswitch';
 
 type MonitoringOption = {
   value: string;
@@ -242,23 +245,18 @@ label {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.25rem;
 }
 
-.framework-switch-row {
+.framework-toggle-label {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.framework-switch-row :deep(.p-inputswitch) {
-  width: 2.6rem;
-  height: 1.2rem;
-}
-
-.framework-label {
-  margin: 0;
-  cursor: pointer;
+.framework-toggle-label .form-field {
+  min-width: max-content;
+  flex-shrink: 0;
 }
 
 .text-danger {
