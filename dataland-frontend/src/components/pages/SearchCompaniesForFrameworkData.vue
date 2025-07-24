@@ -6,6 +6,7 @@
         <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
           <FrameworkDataSearchBar
             id="frameworkDataSearchBar"
+            ref="frameworkDataSearchBar"
             v-model="currentSearchBarInput"
             :filter="currentCombinedFilter"
             :chunk-size="rowsPerPage"
@@ -88,6 +89,7 @@ export default defineComponent({
   setup() {
     return {
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       searchResults: ref(),
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
@@ -210,6 +212,7 @@ export default defineComponent({
         .getElementById('searchBarAndFiltersContainer')
         ?.classList.toggle('collapsed-search-container', document.documentElement.scrollTop >= 64);
       this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+      this.frameworkDataSearchBar?.closeOverlay();
       this.isSearchBarContainerCollapsed = document.documentElement.scrollTop >= 64;
     },
 

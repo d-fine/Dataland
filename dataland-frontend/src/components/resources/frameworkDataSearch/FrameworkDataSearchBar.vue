@@ -147,7 +147,7 @@ export default defineComponent({
     },
   },
 
-  data: function () {
+  data() {
     return {
       wereKeysPressed: false,
       currentFocusedOptionIndex: -1,
@@ -302,6 +302,14 @@ export default defineComponent({
       } else {
         this.areNotEnoughCharactersProvided = false;
       }
+    },
+
+    /**
+     * Invoked when autocomplete shall hide.
+     */
+    // eslint-disable-next-line vue/no-unused-properties
+    closeOverlay() {
+      this.autocomplete?.hide();
     },
   },
 });
