@@ -72,7 +72,8 @@ class IsinLeiManager(
      * @param data the ISIN-LEI mapping data to save
      * @param chunkSize the size of each chunk to process in parallel
      */
-    private fun saveAllJdbcBatchCallable(
+    @Async
+    fun saveAllJdbcBatchCallable(
         data: List<IsinLeiMappingData>,
         chunkSize: Int = 10000,
     ) {
@@ -80,7 +81,7 @@ class IsinLeiManager(
         chunks.map { chunk ->
             val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
             val entities = convertToIsinLeiEntity(chunk, companies)
-            saveAllJdbcBatchAsync(entities)
+            isinLeiTransactionalService.saveAllJdbcBatch(entities)
         }
     }
 
