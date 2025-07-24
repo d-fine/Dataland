@@ -254,7 +254,7 @@ class DataExportServiceTest {
             mock<DataPointBaseTypeResolvedSchema> {
                 on { resolvedSchema } doReturn resolvedSchemaJson
             }
-        whenever(specificationApi.getDataPointBaseTypeSchema("lksg"))
+        whenever(specificationApi.getResolvedFrameworkSpecification("lksg"))
             .thenReturn(baseTypeSchema)
         whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
             FrameworkSpecification(
