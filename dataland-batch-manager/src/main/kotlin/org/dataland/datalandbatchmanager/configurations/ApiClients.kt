@@ -52,6 +52,6 @@ class ApiClients(
      */
     @Bean
     fun getIsinLeiDataControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): IsinLeiDataControllerApi = IsinLeiDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+        @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
+    ): IsinLeiDataControllerApi = IsinLeiDataControllerApi(backendBaseUrl, patientAuthenticatedOkHttpClient)
 }

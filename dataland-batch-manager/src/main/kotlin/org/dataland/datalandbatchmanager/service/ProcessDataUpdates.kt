@@ -113,7 +113,7 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 30 1 * * *")
+        @Scheduled(cron = "0 15 14 * * *")
         private fun testIsinLeiMapping() {
             processUpdates()
         }
@@ -131,8 +131,8 @@ class ProcessDataUpdates
             gleifGoldenCopyIngestor.processIsinMappingFile()
             gleifGoldenCopyIngestor.processRelationshipFile(doFullUpdate)
 
-            flagFileGleif?.let { file ->
-                if (file.delete()) {
+            if (flagFileGleif?.exists() ?: false) {
+                if (flagFileGleif.delete()) {
                     logger.info("Flag file $flagFileGleif deleted successfully.")
                 } else {
                     logger.error("Flag file $flagFileGleif could not be deleted.")
