@@ -245,8 +245,8 @@ class DataExportServiceTest {
                 """
                 {
                   "$TEST_CATEGORY": {
-                    "$TEST_DATA_POINT_NAME": { "type": "number" },
-                    "$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET": { "type": "number" }
+                    "$TEST_DATA_POINT_NAME": { "value": "number" },
+                    "$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET": { "value": "number" }
                   }
                 }
                 """.trimIndent(),
@@ -302,8 +302,8 @@ class DataExportServiceTest {
                 "companyName",
                 "companyLei",
                 "reportingPeriod",
-                "data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value",
-                "data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value",
+                "\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value\"",
+                "\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value\"",
             )
 
         expectedHeaders.forEach {
