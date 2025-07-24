@@ -113,7 +113,7 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 30 */2 * * *")
+        @Scheduled(cron = "0 30 1 * * *")
         private fun testIsinLeiMapping() {
             processUpdates()
         }
