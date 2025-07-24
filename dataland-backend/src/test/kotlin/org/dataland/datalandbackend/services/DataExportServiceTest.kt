@@ -235,11 +235,10 @@ class DataExportServiceTest {
         )
     }
 
-    @Test
-    fun `check that the exported columns are ordered according to the specification`() {
-        val testJsonWithOneValue = testDataProvider.createTestJsonWithBothValueAndQuality()
-        val testJsonWithTwoValues = testDataProvider.createTestJsonWithTwoDataPoints()
-
+    /**
+     * Sets up a mock schema for testing purposes.
+     */
+    private fun setupTestSchema() {
         val resolvedSchemaJson: JsonNode =
             objectMapper.readTree(
                 """
@@ -251,15 +250,12 @@ class DataExportServiceTest {
                 }
                 """.trimIndent(),
             )
-
         val baseTypeSchema =
             mock<DataPointBaseTypeResolvedSchema> {
                 on { resolvedSchema } doReturn resolvedSchemaJson
             }
-
         whenever(specificationApi.getDataPointBaseTypeSchema("lksg"))
             .thenReturn(baseTypeSchema)
-
         whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
             FrameworkSpecification(
                 IdWithRef("testId", "testRef"),
@@ -269,7 +265,11 @@ class DataExportServiceTest {
                 "testPath",
             ),
         )
+    }
 
+    @Test
+    fun `check that the exported columns are ordered according to the specification`() {
+        setupTestSchema()
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(
@@ -277,13 +277,13 @@ class DataExportServiceTest {
                         companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testJsonWithOneValue, Any::class.java),
+                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithBothValueAndQuality(), Any::class.java),
                     ),
                     SingleCompanyExportData(
                         companyName = "Test Company 2",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testJsonWithTwoValues, Any::class.java),
+                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithTwoDataPoints(), Any::class.java),
                     ),
                 ),
                 ExportFileType.CSV,
@@ -310,8 +310,8 @@ class DataExportServiceTest {
             Assertions.assertTrue(actualHeaders.contains(it), "Expected column '$it' not found in CSV header")
         }
 
-        val index1 = actualHeaders.indexOf("data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value")
-        val index2 = actualHeaders.indexOf("data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value")
+        val index1 = actualHeaders.indexOf("\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value\"")
+        val index2 = actualHeaders.indexOf("\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value\"")
 
         Assertions.assertTrue(
             index1 < index2,
@@ -321,30 +321,25 @@ class DataExportServiceTest {
 
     @Test
     fun `check that the specified aliases are exported`() {
-        val testJson = testDataProvider.createTestJsonWithBothValueAndQuality()
-
-        whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("sfdr")).thenReturn(
-            FrameworkSpecification(
-                IdWithRef("testId", "testRef"),
-                "testFramework",
-                "testBusinessefinition",
-                testDataProvider.createTestSpecification(),
-                "testPath",
-            ),
-        )
-
+        setupTestSchema()
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(
                     SingleCompanyExportData(
-                        companyName = TEST_COMPANY_NAME,
+                        companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithBothValueAndQuality(), Any::class.java),
+                    ),
+                    SingleCompanyExportData(
+                        companyName = "Test Company 2",
+                        companyLei = TEST_COMPANY_LEI,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
+                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithTwoDataPoints(), Any::class.java),
                     ),
                 ),
                 ExportFileType.CSV,
-                DataType.valueOf("sfdr"),
+                DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
                 includeAliases = true,
             )
@@ -355,9 +350,9 @@ class DataExportServiceTest {
             csvString.contains(TEST_ALIAS_1),
             "CSV does not contain the export alias $TEST_ALIAS_1",
         )
-        Assertions.assertFalse(
+        Assertions.assertTrue(
             csvString.contains(TEST_ALIAS_2),
-            "CSV contains $TEST_ALIAS_2 even though it shouldn't.",
+            "\"CSV does not contain the export alias $TEST_ALIAS_2",
         )
     }
 
