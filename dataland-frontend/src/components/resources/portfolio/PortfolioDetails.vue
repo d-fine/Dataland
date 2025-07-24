@@ -17,11 +17,13 @@
         label="Download Portfolio"
         icon="pi pi-download"
       />
-
-      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
-        <span class="material-icons-outlined fs-sm pr-1">verified</span>
-        Portfolio actively monitored
-      </div>
+      <Tag
+        v-if="isMonitored"
+        data-test="verifiedCompanyOwnerBadge"
+        value="Portfolio actively monitored"
+        icon="pi pi-check-circle"
+        severity="success"
+      />
 
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
         <PrimeButton
@@ -172,6 +174,7 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
+import Tag from 'primevue/tag';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
