@@ -28,6 +28,7 @@ data class CompanyIdentifierEntity(
     @Enumerated(EnumType.STRING)
     @Column(name = "identifier_type")
     val identifierType: IdentifierType,
+    // Field has nullable type only for lazy loading - it cannot actually be null in the database due to `optional = false`.
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
     @JsonBackReference

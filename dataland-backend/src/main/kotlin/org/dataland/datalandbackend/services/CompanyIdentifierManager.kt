@@ -42,8 +42,8 @@ class CompanyIdentifierManager(
         } else {
             isinLeiRepository.findByIsin(identifier)
                 ?: throw ResourceNotFoundApiException(
-                    CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
-                    CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
+                    CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,
+                    CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier),
                 )
         }
     }
@@ -67,11 +67,19 @@ class CompanyIdentifierManager(
                 ).company!!
                 .companyId
         }
+        val repositoryResponse = isinLeiRepository.findByIsin(identifier)
 
-        return isinLeiRepository.findByIsin(identifier)?.company?.companyId
-            ?: throw ResourceNotFoundApiException(
-                CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
-                CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
-            )
+        return repositoryResponse?.company?.companyId
+            ?: throw if (repositoryResponse == null) {
+                ResourceNotFoundApiException(
+                    summary = CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,
+                    message = CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier),
+                )
+            } else {
+                ResourceNotFoundApiException(
+                    summary = CompanyIdentifierUtils.COMPANY_IDENTIFIER_WITHOUT_COMPANY_SUMMARY,
+                    message = CompanyIdentifierUtils.companyIdentifierWithoutCompanyMessage(identifierType, identifier),
+                )
+            }
     }
 }

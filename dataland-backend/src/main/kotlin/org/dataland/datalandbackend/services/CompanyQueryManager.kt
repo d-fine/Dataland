@@ -291,6 +291,8 @@ class CompanyQueryManager
 
         /**
          * A method to validate if a given list of identifiers corresponds to a company in Dataland.
+         * In case of broken ISIN-LEI table entries, the output does not distinguish whether the passed
+         * ISIN is not known to us at all or whether it exists but has a null associated company.
          * @param identifiers list of identifiers to validate
          * @return list of validation results
          */

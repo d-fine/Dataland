@@ -44,24 +44,21 @@ class IsinLeiManager(
     ): List<IsinLeiEntity> {
         val entities = mutableListOf<IsinLeiEntity>()
         isinLeiMappingData.forEach { mappingData ->
-            try {
-                val company =
-                    companies?.first {
-                        it.identifiers
-                            .filter { id -> id.identifierType == IdentifierType.Lei }
-                            .map { id -> id.identifierValue }
-                            .contains(mappingData.lei)
-                    }
-                entities.add(
-                    IsinLeiEntity(
-                        isin = mappingData.isin,
-                        company = company,
-                        lei = mappingData.lei,
-                    ),
-                )
-            } catch (e: NoSuchElementException) {
-                logger.error("Company with LEI ${mappingData.lei} could not be found: ${e.message}")
-            }
+            val company =
+                companies?.firstOrNull {
+                    it.identifiers
+                        .filter { id -> id.identifierType == IdentifierType.Lei }
+                        .map { id -> id.identifierValue }
+                        .contains(mappingData.lei)
+                }
+            if (company == null) logger.error("Attention: The LEI ${mappingData.lei} is unknown!!!!!!!!!")
+            entities.add(
+                IsinLeiEntity(
+                    isin = mappingData.isin,
+                    company = company,
+                    lei = mappingData.lei,
+                ),
+            )
         }
         return entities
     }

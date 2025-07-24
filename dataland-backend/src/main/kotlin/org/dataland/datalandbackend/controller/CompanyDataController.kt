@@ -124,8 +124,8 @@ class CompanyDataController
                 companyIdentifierManager.searchForCompanyIdentifier(identifierType, identifier)
             } catch (e: JpaObjectRetrievalFailureException) {
                 throw ResourceNotFoundApiException(
-                    CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
-                    CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
+                    CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,
+                    CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier),
                     e,
                 )
             }
@@ -142,10 +142,10 @@ class CompanyDataController
                 logger.info("Retrieved company ID: $companyId")
                 return ResponseEntity.ok(CompanyId(companyId))
             } catch (e: JpaObjectRetrievalFailureException) {
-                logger.info(CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier))
+                logger.info(CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier))
                 throw ResourceNotFoundApiException(
-                    CompanyIdentifierUtils.COMPANY_NOT_FOUND_SUMMARY,
-                    CompanyIdentifierUtils.companyNotFoundMessage(identifierType, identifier),
+                    CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,
+                    CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier),
                     e,
                 )
             }

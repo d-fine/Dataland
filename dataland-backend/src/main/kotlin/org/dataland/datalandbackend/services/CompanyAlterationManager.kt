@@ -62,6 +62,11 @@ class CompanyAlterationManager
             return storedCompanyRepository.save(newCompanyEntity)
         }
 
+        /**
+         * Checks whether there exist non-ISIN entries in the Company Identifiers Table corresponding to
+         * one of the identifiers from identifierMap, ignoring entries associated with storedCompanyEntity
+         * if ignoreSpecifiedCompany is true.
+         */
         private fun assertNoDuplicateNonIsinIdentifiersExist(
             storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
@@ -70,12 +75,15 @@ class CompanyAlterationManager
             val duplicateNonIsinIdentifiers =
                 companyIdentifierRepositoryInterface.findAllById(
                     identifierMap.flatMap { identifierPair ->
-                        identifierPair.value.map {
-                            CompanyIdentifierEntityId(
-                                identifierType = identifierPair.key,
-                                identifierValue = it,
-                            )
-                        }
+                        identifierPair.value
+                            .map {
+                                CompanyIdentifierEntityId(
+                                    identifierType = identifierPair.key,
+                                    identifierValue = it,
+                                )
+                            }.filter {
+                                it.identifierType != IdentifierType.Isin
+                            }
                     },
                 )
 
@@ -91,6 +99,11 @@ class CompanyAlterationManager
             }
         }
 
+        /**
+         * Checks whether there exist entries in the ISIN-LEI table with one of the ISINs
+         * from identifierMap, ignoring entries associated with storedCompanyEntity if
+         * ignoreSpecifiedCompany is true.
+         */
         private fun assertNoDuplicateIsinIdentifiersExist(
             storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
@@ -312,6 +325,9 @@ class CompanyAlterationManager
             companyInformation: CompanyInformation,
         ): StoredCompanyEntity {
             val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
+            assertNoDuplicateNonIsinIdentifiersExist(storedCompanyEntity, companyInformation.identifiers, true)
+            assertNoDuplicateSpecifiedLeisExist(companyInformation.identifiers)
+            assertNoDuplicateIsinIdentifiersExist(storedCompanyEntity, companyInformation.identifiers, true)
             logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
             storedCompanyEntity.companyName = companyInformation.companyName
             storedCompanyEntity.companyContactDetails = companyInformation.companyContactDetails

@@ -274,7 +274,9 @@ interface CompanyApi {
     ): ResponseEntity<StoredCompany>
 
     /**
-     * A method to update company information for one specific company identified by its company Id
+     * A method to update company information for one specific company identified by its company ID.
+     * Do NOT use this to fix broken ISIN-LEI table entries with null company (it will not work). Instead,
+     * do a full GLEIF update.
      * @param companyId identifier of the company in Dataland
      * @param companyInformationPatch includes the company information
      * @return updated information about the company
@@ -304,7 +306,8 @@ interface CompanyApi {
     ): ResponseEntity<StoredCompany>
 
     /**
-     * A method to update company information entirely
+     * A method to update company information entirely. Do NOT use this to fix broken ISIN-LEI table entries with
+     * null company (it will not work). Instead, do a full GLEIF update.
      * @param companyId identifier of the company in Dataland
      * @param companyInformation includes the company information
      * @return updated information about the company
