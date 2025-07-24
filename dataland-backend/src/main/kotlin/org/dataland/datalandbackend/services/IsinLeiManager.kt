@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 /**
@@ -72,7 +71,6 @@ class IsinLeiManager(
      * @param data the ISIN-LEI mapping data to save
      * @param chunkSize the size of each chunk to process in parallel
      */
-    @Async
     fun saveAllJdbcBatchCallable(
         data: List<IsinLeiMappingData>,
         chunkSize: Int = 10000,
@@ -83,18 +81,5 @@ class IsinLeiManager(
             val entities = convertToIsinLeiEntity(chunk, companies)
             isinLeiTransactionalService.saveAllJdbcBatch(entities)
         }
-    }
-
-    /**
-     * Asynchronous method to save ISIN-LEI mappings in batches.
-     * @param data the ISIN-LEI mapping data to save
-     * @param batchSize the size of each batch to process
-     */
-    @Async
-    fun saveAllJdbcBatchAsync(
-        data: List<IsinLeiEntity>,
-        batchSize: Int = 50,
-    ) {
-        isinLeiTransactionalService.saveAllJdbcBatch(data, batchSize)
     }
 }

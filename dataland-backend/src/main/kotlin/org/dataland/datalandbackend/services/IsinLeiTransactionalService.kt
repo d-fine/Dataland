@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.BatchUpdateException
@@ -37,6 +38,7 @@ class IsinLeiTransactionalService(
      * Method to save ISIN-LEI mappings in batches.
      * @param entities the ISIN-LEI mappings to save
      */
+    @Async
     @Transactional
     fun saveAllJdbcBatch(
         entities: List<IsinLeiEntity>,
