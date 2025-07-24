@@ -17,7 +17,7 @@
       placeholder="Select Starting Period"
       :disabled="!isMonitoringActive"
       @change="resetErrors"
-      class="w-full md:w-56"
+      class="w-10 md:w-40"
       :highlightOnSelect="false"
     />
     <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
