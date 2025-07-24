@@ -1,6 +1,6 @@
 <template>
   <div :data-test="dataTest">
-    <Dropdown
+    <PrimeSelect
       :options="displayOptions"
       v-bind:model-value="selectedOption"
       @update:model-value="handleInputChange($event)"
@@ -31,9 +31,8 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent, type PropType } from 'vue';
-import Dropdown from 'primevue/dropdown';
+import PrimeSelect from 'primevue/select';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import { isStringArray } from '@/utils/TypeScriptUtils';
 import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
@@ -61,7 +60,7 @@ export function convertOptionTypeToDropdownOptions(options: OptionType | null | 
 
 export default defineComponent({
   name: 'SingleSelectFormElement',
-  components: { Dropdown },
+  components: { PrimeSelect },
   props: {
     ...DropdownOptionFormFieldProps,
     inputClass: { type: String, default: 'long' },
@@ -89,7 +88,7 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedOption: this.modelValue as string | null,
+      selectedOption: this.modelValue as string | undefined,
     };
   },
   emits: ['update:modelValue'],
@@ -144,6 +143,7 @@ export default defineComponent({
      * @param newValue the value to change the selected option to
      */
     setSelectedOption(newValue: string | null) {
+      if (!newValue) return;
       this.selectedOption = newValue;
       this.$emit('update:modelValue', newValue);
     },
@@ -158,7 +158,8 @@ export default defineComponent({
      * Handler for changes in the formkit component (e.g. called if data got loaded)
      * @param newInput the new value in the field
      */
-    handleFormKitInputChange(newInput: string) {
+    handleFormKitInputChange(newInput: string | undefined) {
+      if (!newInput) return;
       this.setSelectedOption(newInput);
     },
 
