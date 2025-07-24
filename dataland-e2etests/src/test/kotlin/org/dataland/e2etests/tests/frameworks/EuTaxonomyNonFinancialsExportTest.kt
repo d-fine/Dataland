@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.Activity
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
@@ -30,7 +31,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
         // Get the full test data
         fullTestData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
 
-        // Create test data with an explicit null general field
+        // Create test data with an explicit null general field and aligned activities with only the activity name
         testDataWithNullField =
             fullTestData.copy(
                 general =
@@ -38,22 +39,11 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                         nfrdMandatory = null,
                     ),
                 revenue =
-                    fullTestData.revenue?.copy(
-                        nonAlignedActivities =
-                            ExtendedDataPointListEuTaxonomyActivity(
-                                value =
-                                    listOf(
-                                        EuTaxonomyActivity(
-                                            activityName = Activity.AcquisitionAndOwnershipOfBuildings,
-                                        ),
-                                        EuTaxonomyActivity(activityName = Activity.Afforestation),
-                                    ),
-                            ),
-                    ),
+                    getRevenueWithAlignedActivitiesWithOnlyOneField(),
                 capex = null,
                 opex = null,
             )
-        // Create test data with null and non-null general fields
+        // Create test data with null and non-null general fields and aligned activities with more than the activity name
         testDataWithNonNullField =
             fullTestData.copy(
                 general =
@@ -66,24 +56,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                             ),
                     ),
                 revenue =
-                    fullTestData.revenue?.copy(
-                        nonAlignedActivities =
-                            ExtendedDataPointListEuTaxonomyActivity(
-                                value =
-                                    listOf(
-                                        EuTaxonomyActivity(
-                                            activityName = Activity.ConservationForestry,
-                                            share =
-                                                RelativeAndAbsoluteFinancialShare(
-                                                    relativeShareInPercent =
-                                                        BigDecimal(
-                                                            10,
-                                                        ),
-                                                ),
-                                        ),
-                                    ),
-                            ),
-                    ),
+                    getRevenueWithAlignedActivitiesWithMoreFields(),
                 capex = null,
                 opex = null,
             )
@@ -91,6 +64,40 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
         // Setup companies and upload data using the base class method
         setupCompaniesAndData()
     }
+
+    private fun getRevenueWithAlignedActivitiesWithOnlyOneField(): EutaxonomyNonFinancialsRevenue? =
+        fullTestData.revenue?.copy(
+            nonAlignedActivities =
+                ExtendedDataPointListEuTaxonomyActivity(
+                    value =
+                        listOf(
+                            EuTaxonomyActivity(
+                                activityName = Activity.AcquisitionAndOwnershipOfBuildings,
+                            ),
+                            EuTaxonomyActivity(activityName = Activity.Afforestation),
+                        ),
+                ),
+        )
+
+    private fun getRevenueWithAlignedActivitiesWithMoreFields(): EutaxonomyNonFinancialsRevenue? =
+        fullTestData.revenue?.copy(
+            nonAlignedActivities =
+                ExtendedDataPointListEuTaxonomyActivity(
+                    value =
+                        listOf(
+                            EuTaxonomyActivity(
+                                activityName = Activity.ConservationForestry,
+                                share =
+                                    RelativeAndAbsoluteFinancialShare(
+                                        relativeShareInPercent =
+                                            BigDecimal(
+                                                10,
+                                            ),
+                                    ),
+                            ),
+                        ),
+                ),
+        )
 
     override fun getTestDataWithNullField(): EutaxonomyNonFinancialsData = testDataWithNullField
 

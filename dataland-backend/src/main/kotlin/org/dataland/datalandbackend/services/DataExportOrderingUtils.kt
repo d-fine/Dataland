@@ -2,21 +2,15 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackendutils.utils.JsonUtils
-import org.springframework.stereotype.Component
 
-@Component
-class OrderingUtils {
+/**
+ * This is a utility class which provided methods to make sure that the columns in the CSV and Excel export
+ * have the correct order
+ */
+class DataExportOrderingUtils private constructor() {
     companion object {
-        internal val STATIC_ALIASES =
-            mapOf(
-                "companyName" to "COMPANY_NAME",
-                "companyLei" to "COMPANY_LEI",
-                "reportingPeriod" to "REPORTING_PERIOD",
-            )
-        internal const val DATA = "data"
-        internal const val VALUE = "value"
-        internal const val ACTIVITIES_STRING = "Activities"
-        internal const val ACTIVITIES_PATTERN = "$ACTIVITIES_STRING.$VALUE.0."
+        private const val ACTIVITIES_STRING = "Activities"
+        private const val ACTIVITIES_PATTERN = "$ACTIVITIES_STRING.${DataExportUtils.Companion.VALUE}.0."
 
         /**
          * Creates the CSV schema based on the provided headers
@@ -34,7 +28,7 @@ class OrderingUtils {
             val resultList = mutableListOf<String>()
 
             if (isAssembledDataset) {
-                STATIC_ALIASES.keys.forEach { staticFieldName ->
+                DataExportUtils.Companion.STATIC_ALIASES.keys.forEach { staticFieldName ->
                     usedHeaderFields
                         .filter { usedHeaderField ->
                             usedHeaderField == staticFieldName
@@ -44,7 +38,9 @@ class OrderingUtils {
                 orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
                     usedHeaderFields
                         .filter { usedHeaderField ->
-                            usedHeaderField.startsWith(DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
+                            usedHeaderField.startsWith(
+                                DataExportUtils.Companion.DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry,
+                            )
                         }.forEach {
                             resultList.add(it)
                         }
@@ -86,15 +82,21 @@ class OrderingUtils {
         /**
          * Creates new entries in the ordered header in case the activities arrays are long
          * @param arrayFields all attribute fields for one entry in an activities array
-         * @param outputList the list of ordered header fields that is appended with extra entries in case there are more activities
+         * @param expandedOrderedHeaders the list of ordered header fields that is appended with extra entries in
+         * case there are more activities
          */
         fun addAllArrayFieldsToOutput(
-            arrayFields: MutableList<String>,
-            outputList: MutableList<String>,
+            arrayFields: List<String>,
+            expandedOrderedHeaders: MutableList<String>,
         ) {
             for (activityIndex in 0..Activity.entries.size) {
-                for (t in arrayFields) {
-                    outputList.add(t.replace(ACTIVITIES_PATTERN, "$ACTIVITIES_STRING.$VALUE.$activityIndex."))
+                for (field in arrayFields) {
+                    expandedOrderedHeaders.add(
+                        field.replace(
+                            ACTIVITIES_PATTERN,
+                            "$ACTIVITIES_STRING.${DataExportUtils.Companion.VALUE}.$activityIndex.",
+                        ),
+                    )
                 }
             }
         }

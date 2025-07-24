@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.services.OrderingUtils.Companion.expandOrderedHeadersForEuTaxonomyActivities
-import org.dataland.datalandbackend.services.OrderingUtils.Companion.getOrderedHeaders
+import org.dataland.datalandbackend.services.DataExportOrderingUtils.Companion.expandOrderedHeadersForEuTaxonomyActivities
+import org.dataland.datalandbackend.services.DataExportOrderingUtils.Companion.getOrderedHeaders
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.NonFinancialsMapping
 import org.dataland.datalandbackend.utils.NuclearAndGasMapping
@@ -41,25 +41,23 @@ class DataExportUtils
         }
 
         companion object {
-            private val STATIC_ALIASES =
+            val STATIC_ALIASES =
                 mapOf(
                     "companyName" to "COMPANY_NAME",
                     "companyLei" to "COMPANY_LEI",
                     "reportingPeriod" to "REPORTING_PERIOD",
                 )
-            private const val DATA = "data"
+            const val DATA = "data"
+            const val VALUE = "value"
             private const val ALIAS_EXPORT = "aliasExport"
             private const val QUALITY = "quality"
             private const val COMMENT = "comment"
             private const val DATA_SOURCE = "dataSource"
-            private const val VALUE = "value"
             private const val PREFIX = "$DATA."
             private const val SUFFIX = ".$VALUE"
             private const val FIRST_PLACE = -3
             private const val SECOND_PLACE = -2
             private const val THIRD_PLACE = -1
-            private const val ACTIVITIES_STRING = "Activities"
-            private const val ACTIVITIES_PATTERN = "$ACTIVITIES_STRING.$VALUE.0."
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
