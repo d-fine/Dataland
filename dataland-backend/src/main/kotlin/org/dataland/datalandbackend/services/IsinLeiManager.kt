@@ -73,10 +73,12 @@ class IsinLeiManager(
         chunkSize: Int = 10000,
     ) {
         val chunks = data.chunked(chunkSize)
-        chunks.map { chunk ->
-            val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
-            val entities = convertToIsinLeiEntity(chunk, companies)
-            isinLeiTransactionalService.saveAllJdbcBatch(entities)
-        }
+        val futures =
+            chunks.map { chunk ->
+                val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
+                val entities = convertToIsinLeiEntity(chunk, companies)
+                isinLeiTransactionalService.saveAllJdbcBatch(entities)
+            }
+        futures.forEach { it.join() }
     }
 }

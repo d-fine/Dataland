@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.BatchUpdateException
 import java.sql.PreparedStatement
+import java.util.concurrent.CompletableFuture
 import javax.sql.DataSource
 import kotlin.use
 
@@ -43,13 +44,14 @@ class IsinLeiTransactionalService(
     fun saveAllJdbcBatch(
         entities: List<IsinLeiEntity>,
         batchSize: Int = 50,
-    ) {
+    ): CompletableFuture<Void> {
         val sql = """INSERT INTO $tableName (company_id, isin, lei) VALUES (?, ?, ?)"""
         dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 executeBatchInsert(statement, entities, batchSize)
             }
         }
+        return CompletableFuture.completedFuture(null)
     }
 
     /**
