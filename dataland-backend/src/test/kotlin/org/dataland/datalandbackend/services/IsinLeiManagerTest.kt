@@ -123,7 +123,6 @@ class IsinLeiManagerTest(
             IsinLeiManager(
                 storedCompanyRepository = storedCompanyRepository,
                 isinLeiTransactionalService,
-                dataSourceMaximumPoolSize = 50,
             )
         dummyCompany1 = companyAlterationManager.addCompany(companyWithTestLei1)
         dummyCompany2 = companyAlterationManager.addCompany(companyWithTestLei2)
