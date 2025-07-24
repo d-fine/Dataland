@@ -6,18 +6,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleUserIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRolePost
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -51,14 +51,19 @@ interface CompanyRolesApi {
     @PostMapping(
         consumes = ["application/json"],
         produces = ["application/json"],
-        value = ["/company-role-assignments"],
+        value = ["/company-role-assignments/{role}/{companyId}/{userId}"],
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN')" +
             "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
     )
     fun assignCompanyRole(
-        @RequestBody companyRolePost: CompanyRolePost,
+        @CompanyRoleParameterRequired
+        @PathVariable("role") companyRole: CompanyRole,
+        @CompanyIdParameterRequired
+        @PathVariable("companyId") companyId: UUID,
+        @CompanyRoleUserIdParameterRequired
+        @PathVariable("userId") userId: UUID,
     ): ResponseEntity<CompanyRoleAssignment>
 
     /**

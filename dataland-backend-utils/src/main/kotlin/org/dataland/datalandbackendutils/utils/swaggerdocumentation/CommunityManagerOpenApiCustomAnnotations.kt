@@ -78,16 +78,6 @@ annotation class DataRequestIdParameterRequired
 )
 annotation class CompanyRoleParameterRequired
 
-/** UserId annotation for non-required */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
-    required = false,
-)
-annotation class CompanyRoleUserIdParameterNonRequired
-
 /** UserId annotation for required */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

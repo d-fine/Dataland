@@ -1,11 +1,8 @@
 package org.dataland.datalandcommunitymanager.controller
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.api.CompanyRolesApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRolePost
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -25,34 +22,20 @@ class CompanyRolesController(
 ) : CompanyRolesApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private fun isExactlyOneSpecified(
-        userId: UUID?,
-        email: String?,
-    ): Boolean {
-        if (userId == null && email == null) return false
-        return userId == null || email == null
-    }
-
-    override fun assignCompanyRole(companyRolePost: CompanyRolePost): ResponseEntity<CompanyRoleAssignment> {
-        companyRolePost.email?.validateIsEmailAddress()
-        if (!isExactlyOneSpecified(companyRolePost.userId, companyRolePost.email)) {
-            throw InvalidInputApiException(
-                summary = "Invalid input regarding userId and email.",
-                message = "Please specify exactly one of the parameters 'userId' and 'email'.",
-            )
-        }
+    override fun assignCompanyRole(
+        companyRole: CompanyRole,
+        companyId: UUID,
+        userId: UUID,
+    ): ResponseEntity<CompanyRoleAssignment> {
         logger.info(
-            "Received a request to assign the company role ${companyRolePost.companyRole} " +
-                "for company ${companyRolePost.companyId} to the user " +
-                if (companyRolePost.userId != null) "${companyRolePost.userId}" else "with email ${companyRolePost.email}",
+            "Received a request to assign the company role $companyRole for company $companyId to the user $userId",
         )
         return ResponseEntity.ok(
             companyRolesManager
                 .assignCompanyRoleForCompanyToUser(
-                    companyRolePost.companyRole,
-                    companyRolePost.companyId.toString(),
-                    companyRolePost.userId?.toString() ?: companyRolePost.email!!,
-                    companyRolePost.userId != null,
+                    companyRole,
+                    companyId.toString(),
+                    userId.toString(),
                 ).toApiModel(),
         )
     }
