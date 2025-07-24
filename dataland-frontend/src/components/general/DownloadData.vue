@@ -1,20 +1,23 @@
 <template data-test="downloadModal">
-  <div class="download-content d-flex flex-column align-items-center">
-    <FormKit type="form" class="formkit-wrapper" :actions="false">
-      <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">Framework</b>
+  <div class="download-content d-flex flex-column">
+      <label for="fileTypeSelector" class="header-styling">
+        Framework
       </label>
-      <FormKit
+      <Select
+        class="component-styling"
         :options="availableFrameworks"
         v-model="selectedFramework"
+        option-label="label"
+        option-value="value"
+        label="Framework"
         data-test="frameworkSelector"
         type="select"
-        name="frameworkSelector"
+        :highlightOnSelect="false"
         @input="onFrameworkChange"
       />
       <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
-      <label for="reportingYearSelector">
-        <b style="margin-bottom: 8px; font-weight: normal">Reporting period</b>
+      <label for="reportingYearSelector" class="header-styling">
+        Reporting Period
       </label>
       <div class="flex flex-wrap gap-2 py-2">
         <ToggleChipFormInputs
@@ -26,22 +29,25 @@
           class="toggle-chip-group"
         />
       </div>
-      <p v-show="showReportingPeriodError" class="text-danger" data-test="reportingYearError">
+      <p v-show="showReportingPeriodError" class="red-text" data-test="reportingYearError">
         Please select a reporting period.
       </p>
-      <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File Type</b>
+      <label for="reportingYearSelector" class="header-styling">
+        File type
       </label>
-      <FormKit
+      <Select
         v-model="selectedFileType"
         type="select"
-        name="fileTypeSelector"
         data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
+        option-label="label"
+        option-value="value"
         placeholder="Select a file type"
         @change="showFileTypeError = false"
+        style="margin-bottom:var(--spacing-md)"
+        :highlightOnSelect="false"
       />
-      <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
+      <p v-show="showFileTypeError" class="red-text" data-test="fileTypeError">Please select a file type.</p>
       <div class="flex align-content-start align-items-center">
         <ToggleSwitch
           v-model="keepValuesOnly"
@@ -67,7 +73,6 @@
       <span class="gray-text font-italic text-xs ml-0 mb-3">
         Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
       </span>
-    </FormKit>
     <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
       {{ dialogRef?.data?.downloadErrors }}
     </Message>
@@ -96,6 +101,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
+import Select from 'primevue/select';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -236,6 +242,20 @@ function checkIfShowErrors(): void {
 </script>
 
 <style scoped>
+
+.red-text {
+  color: var(--red);
+}
+
+.header-styling{
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.component-styling{
+  margin-bottom: var(--spacing-xs);
+  width: 100%;
+}
 .download-content {
   width: 20em;
   height: 100%;

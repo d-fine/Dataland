@@ -1,22 +1,24 @@
 <template>
   <div class="portfolio-dialog-content">
-    <FormKit
-      v-model="portfolioName"
-      type="text"
-      label="Portfolio Name"
-      name="portfolioName"
-      data-test="portfolio-name-input"
-      :placeholder="portfolioName"
-    />
-    <label class="formkit-label" for="company-identifiers">Add Company Identifiers</label>
-    <FormKit
+    <label for="fileTypeSelector" class="header-styling">
+      Portfolio Name
+    </label>
+    <InputText
+    v-model="portfolioName"
+    name="portfolioName"
+    data-test="portfolio-name-input"
+    :placeholder="portfolioName"
+    class="compenent-styling"/>
+    <label for="fileTypeSelector" class="header-styling">
+     Add company identifiers
+    </label>
+    <Textarea
       v-model="companyIdentifiersInput"
-      type="textarea"
       name="company-identifiers"
-      placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
-      :disabled="isCompaniesLoading"
       data-test="company-identifiers-input"
-    />
+      :disabled="isCompaniesLoading"
+      placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
+      class="compenent-styling"/>
     <PrimeButton
       type="button"
       label="Add Companies"
@@ -26,18 +28,20 @@
       data-test="addCompanies"
       style="margin-left: 1em; float: right"
     />
-    <p class="gray-text font-italic text-xs m-0">
+    <p class="gray-text font-italic text-xs m-0 mb-4">
       Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
     </p>
-    <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
+    <label for="fileTypeSelector" class="header-styling">
+      Company identifiers in portfolio
+    </label>
     <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
       <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
         <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
         {{ company.companyName }}
       </li>
     </ul>
-    <div data-test="error">
-      <p v-if="!isValidPortfolioUpload" class="formkit-message">
+    <div data-test="error" class="red-text">
+      <p v-if="!isValidPortfolioUpload">
         Please provide a portfolio name and at least one company.
       </p>
       <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
@@ -82,6 +86,8 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
 
 class CompanyIdAndName {
   companyId: string;
@@ -116,6 +122,10 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+
+console.log("NAME",portfolioName.value)
+console.log("FRAMEWORKS",portfolioFrameworks.value)
+console.log("COMPANIES",portfolioCompanies.value)
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -250,6 +260,22 @@ function processCompanyInputString(): string[] {
 </script>
 
 <style scoped lang="scss">
+
+.red-text {
+  color: var(--red);
+}
+
+.header-styling{
+  margin-bottom: var(--spacing-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.compenent-styling{
+  margin-bottom: var(--spacing-md);
+  width: 100%;
+}
+
+
 .portfolio-dialog-content {
   width: 28em;
   border-radius: 0.25rem;

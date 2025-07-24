@@ -1,13 +1,13 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
-    <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
+    <label for="monitoringToggle" class="header-styling"> Activate Monitoring </label>
     <ToggleSwitch
       class="form-field vertical-middle"
       v-model="isMonitoringActive"
       data-test="activateMonitoringToggle"
       @update:modelValue="onMonitoringToggled"
     />
-    <label for="reportingYearSelector"> Starting Period </label>
+    <label for="reportingYearSelector" class="header-styling"> Starting Period </label>
     <Select
       v-model="selectedStartingYear"
       :options="reportingPeriodsOptions"
@@ -20,10 +20,10 @@
       class="w-10 md:w-40"
       :highlightOnSelect="false"
     />
-    <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
+    <p v-show="showReportingPeriodsError" class="red-text" data-test="reportingPeriodsError">
       Please select Starting Period.
     </p>
-    <label for="frameworkSelector"> Frameworks </label>
+    <label for="frameworkSelector" class="header-styling"> Frameworks </label>
     <div class="framework-switch-group">
       <div
         v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
@@ -47,7 +47,7 @@
         EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
       </span>
     </div>
-    <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">
+    <p v-show="showFrameworksError" class="red-text" data-test="frameworkError">
       Please select at least one Framework.
     </p>
 
@@ -216,10 +216,19 @@ function prefillModal(): void {
 </script>
 
 <style scoped lang="scss">
+
+.red-text {
+  color: var(--red);
+}
+
+.header-styling{
+  font-weight: var(--font-weight-semibold)
+}
+
 .button-group-wrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 0.5rem;
 }
 
@@ -236,7 +245,7 @@ function prefillModal(): void {
 
 label {
   width: 100%;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   margin-top: 1em;
   padding: 0;
 }
@@ -245,7 +254,6 @@ label {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
 }
 
 .framework-toggle-label {
