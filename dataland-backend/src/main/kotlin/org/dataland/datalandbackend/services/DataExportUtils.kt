@@ -36,7 +36,7 @@ class DataExportUtils
         lateinit var specificationApi: SpecificationControllerApi
 
         private fun getResolvedSchemaNode(framework: String): JsonNode? {
-            val resolvedSchemaDto = specificationApi.getDataPointBaseTypeSchema(framework)
+            val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
             return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
         }
 

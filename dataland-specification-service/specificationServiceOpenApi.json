@@ -168,7 +168,7 @@
         "tags": [
           "specification-controller"
         ],
-        "operationId": "getDataPointBaseTypeSchema",
+        "operationId": "getResolvedFrameworkSpecification",
         "parameters": [
           {
             "name": "frameworkSpecificationId",
