@@ -7,6 +7,7 @@ import {
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
 import { nuclearAndGasViewConfiguration } from '@/frameworks/nuclear-and-gas/ViewConfig';
+import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants.ts';
 
 /**
  * Tests whether values in Nuclear and Gas tables are equal to their expected value
@@ -59,7 +60,7 @@ describe('Component Test for the nuclear and gas view Page with its components',
       'Nuclear and Gas Taxonomy-aligned Revenue (numerator)',
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.26 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
       preparedFixture.t.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator?.value
-        ?.taxonomyAlignedShareNumeratorNAndG426?.mitigation + ' %'
+        ?.taxonomyAlignedShareNumeratorNAndG426?.mitigationAndAdaptation + ' %'
     );
   });
 
@@ -76,5 +77,24 @@ describe('Component Test for the nuclear and gas view Page with its components',
       preparedFixture.t.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue?.value
         ?.taxonomyNonEligibleShareNAndG426 + ' %'
     );
+  });
+
+  it('Check that on the nuclear and gas view page the auxiliary data works as expected', () => {
+    const preparedFixture = getPreparedFixture(
+      'All-fields-defined-for-EU-NuclearAndGas-Framework',
+      preparedFixturesNuG
+    );
+
+    if (preparedFixture.t.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex) {
+      preparedFixture.t.general.taxonomyNonEligible.nuclearAndGasTaxonomyNonEligibleCapex.value = null;
+    }
+
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [
+      preparedFixture,
+    ]);
+    getSectionHead('Taxonomy-non-eligible').should('exist');
+    getCellValueContainer('Nuclear and Gas Taxonomy-non-eligible CapEx')
+      .contains(ONLY_AUXILIARY_DATA_PROVIDED)
+      .should('exist');
   });
 });

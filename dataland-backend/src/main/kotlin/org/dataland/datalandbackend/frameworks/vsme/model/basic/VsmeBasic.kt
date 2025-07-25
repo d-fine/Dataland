@@ -25,6 +25,7 @@ import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceRenumer
 /**
  * The data-model for the Basic section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasic(
     @field:Valid()
     val basisForPreparation: VsmeBasicBasisForPreparation? = null,

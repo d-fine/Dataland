@@ -1,5 +1,7 @@
 package org.dataland.datalandbackendutils.utils
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -11,7 +13,12 @@ object JsonUtils {
     /**
      * The object mapper used for testing.
      */
-    val defaultObjectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+    val defaultObjectMapper: ObjectMapper =
+        jacksonObjectMapper()
+            .findAndRegisterModules()
+            .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+            .setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+            .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
 
     /**
      * Return the path separator used in constructing node paths
@@ -27,29 +34,36 @@ object JsonUtils {
      * @param currentPath the current path
      * @return a mapping of the names of non-empty fields to their respective values
      */
-    fun getNonEmptyLeafNodesAsMapping(
+    fun getAllLeafNodesAsMapping(
         node: JsonNode,
         currentPath: String = "",
-    ): MutableMap<String, String> {
-        val result = mutableMapOf<String, String>()
+    ): MutableMap<String, String?> {
+        val result = mutableMapOf<String, String?>()
 
         when {
-            node.isValueNode && !node.isNull -> {
-                val nodeString = if (node.isTextual) node.textValue() else node.toString()
-                if (nodeString.isNotEmpty()) result[currentPath] = nodeString
+            node.isValueNode -> {
+                val nodeString =
+                    if (node.isTextual) {
+                        node.textValue()
+                    } else if (node.isNull) {
+                        null
+                    } else {
+                        node.toString()
+                    }
+                result[currentPath] = nodeString
             }
 
             node.isObject -> {
                 node.fields().forEachRemaining { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
-                    result.putAll(getNonEmptyLeafNodesAsMapping(value, newPath))
+                    result.putAll(getAllLeafNodesAsMapping(value, newPath))
                 }
             }
 
             node.isArray -> {
                 node.elements().withIndex().forEachRemaining { (index, element) ->
                     val newPath = if (currentPath.isEmpty()) "$index" else "$currentPath$JSON_PATH_SEPARATOR$index"
-                    result.putAll(getNonEmptyLeafNodesAsMapping(element, newPath))
+                    result.putAll(getAllLeafNodesAsMapping(element, newPath))
                 }
             }
         }

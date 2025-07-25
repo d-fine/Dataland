@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpec
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class LksgGeneral(
     @field:Valid()
     val masterData: LksgGeneralMasterData,
