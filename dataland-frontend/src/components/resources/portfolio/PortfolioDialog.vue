@@ -68,8 +68,7 @@
         :disabled="!isValidPortfolioUpload"
         :loading="isPortfolioSaving"
         @click="savePortfolio()"
-        class="primary-button"
-        :data-test="'saveButton'"
+        data-test="saveButton"
       />
     </div>
   </div>
