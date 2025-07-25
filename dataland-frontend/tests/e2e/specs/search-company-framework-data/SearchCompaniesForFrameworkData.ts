@@ -153,7 +153,7 @@ describeIf(
       });
     }
 
-    it.only('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
+    it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
