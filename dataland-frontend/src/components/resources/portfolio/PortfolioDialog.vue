@@ -4,7 +4,7 @@
       <p class="header-styling">Portfolio Name</p>
       <InputText
         v-model="portfolioName"
-        name="portfolioName"
+        name="portfolio-name"
         data-test="portfolio-name-input"
         :placeholder="portfolioName"
         fluid
@@ -124,7 +124,7 @@ const portfolioFrameworks = ref<string[]>([
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isValidPortfolioUpload = computed(
-  () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0,
+  () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
 
 onMounted(() => {
