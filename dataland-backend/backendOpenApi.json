@@ -98,10 +98,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -156,10 +158,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "requestBody": {
@@ -224,10 +228,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -278,10 +284,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "requestBody": {
@@ -348,14 +356,17 @@
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -364,14 +375,17 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "nonSourceable",
             "in": "query",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
             "required": false,
             "schema": {
               "type": "boolean"
@@ -687,6 +701,7 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "If true, data is not sent to QA.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -756,6 +771,7 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "If true, data is not sent to QA.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -825,6 +841,7 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "If true, data is not sent to QA.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -894,6 +911,7 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "If true, data is not sent to QA.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -963,6 +981,7 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "If true, data is not sent to QA.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -1034,6 +1053,7 @@
           {
             "name": "bypassQa",
             "in": "query",
+            "description": "If true, data is not sent to QA.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -1168,6 +1188,7 @@
           {
             "name": "dataTypes",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1180,6 +1201,7 @@
           {
             "name": "countryCodes",
             "in": "query",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1187,11 +1209,13 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "DE"
           },
           {
             "name": "sectors",
             "in": "query",
+            "description": "The industry or sector in which the company operates.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1199,24 +1223,29 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "Information Technology"
           },
           {
             "name": "chunkSize",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
             }
           },
           {
             "name": "chunkIndex",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 0
             }
           }
         ],
@@ -1339,6 +1368,12 @@
             "application/json": {
               "schema": {
                 "type": "array",
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+                "example": {
+                  "Lei": [
+                    "5493001KJX4BT0IHAG73"
+                  ]
+                },
                 "items": {
                   "type": "string"
                 }
@@ -1579,10 +1614,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -1637,10 +1674,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -1707,14 +1746,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "path",
+            "description": "The framework of the dataset on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -1723,10 +1765,12 @@
           {
             "name": "reportingPeriod",
             "in": "path",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -1779,6 +1823,7 @@
           {
             "name": "identifierType",
             "in": "path",
+            "description": "The type of identifier that is used.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/IdentifierType"
@@ -1787,10 +1832,12 @@
           {
             "name": "identifier",
             "in": "path",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -1855,6 +1902,7 @@
           {
             "name": "identifierType",
             "in": "path",
+            "description": "The type of identifier that is used.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/IdentifierType"
@@ -1863,10 +1911,12 @@
           {
             "name": "identifier",
             "in": "path",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -1919,10 +1969,12 @@
           {
             "name": "userId",
             "in": "path",
+            "description": "The Dataland user ID of the user who uploaded the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -2025,14 +2077,17 @@
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -2041,6 +2096,7 @@
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2050,14 +2106,17 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "uploaderUserIds",
             "in": "query",
+            "description": "A list of Dataland user IDs corresponding to the users who uploaded the data.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -2071,6 +2130,7 @@
           {
             "name": "qaStatus",
             "in": "query",
+            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2134,10 +2194,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -2149,6 +2211,10 @@
                   "type": "object",
                   "additionalProperties": {
                     "type": "string"
+                  },
+                  "description": "A map from data point IDs to the associated technical IDs.",
+                  "example": {
+                    "extendedEnumFiscalYearDeviation": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
                   }
                 }
               }
@@ -2197,35 +2263,41 @@
           {
             "name": "companyIds",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "frameworksOrDataPointTypes",
             "in": "query",
+            "description": "Either the framework of the wanted dataset or the dataPointType of the wanted data point.",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "sfdr"
           },
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -2657,10 +2729,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -2715,28 +2789,36 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
@@ -2744,6 +2826,16 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -2811,14 +2903,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2828,10 +2923,12 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -2889,18 +2986,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -2955,10 +3056,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -3013,28 +3116,36 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
@@ -3042,6 +3153,16 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -3109,14 +3230,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -3126,10 +3250,12 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -3187,18 +3313,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -3253,10 +3383,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -3311,28 +3443,36 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
@@ -3340,6 +3480,16 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -3407,14 +3557,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -3424,10 +3577,12 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -3485,18 +3640,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -3551,10 +3710,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -3609,28 +3770,36 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
@@ -3638,6 +3807,16 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -3705,14 +3884,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -3722,10 +3904,12 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -3783,18 +3967,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -3849,10 +4037,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -3907,28 +4097,36 @@
           {
             "name": "reportingPeriods",
             "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyIds",
             "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested.",
             "required": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
           },
           {
             "name": "fileFormat",
             "in": "query",
+            "description": "The file format for the data export.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/ExportFileType"
@@ -3936,6 +4134,16 @@
           },
           {
             "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
             "in": "query",
             "required": false,
             "schema": {
@@ -4003,14 +4211,17 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "showOnlyActive",
             "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -4020,10 +4231,12 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           }
         ],
         "responses": {
@@ -4081,18 +4294,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -4149,10 +4366,12 @@
           {
             "name": "dataPointId",
             "in": "path",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -4209,10 +4428,12 @@
           {
             "name": "dataPointId",
             "in": "path",
+            "description": "The unique identifier of the datapoint.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -4269,10 +4490,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -4332,10 +4555,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -4392,10 +4617,12 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -4407,6 +4634,10 @@
                   "type": "object",
                   "additionalProperties": {
                     "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
+                  },
+                  "description": "The amount of available reporting periods per framework.",
+                  "example": {
+                    "sfdr": 2
                   }
                 }
               }
@@ -4518,6 +4749,7 @@
           {
             "name": "dataTypes",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -4530,6 +4762,7 @@
           {
             "name": "countryCodes",
             "in": "query",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -4537,11 +4770,13 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "DE"
           },
           {
             "name": "sectors",
             "in": "query",
+            "description": "The industry or sector in which the company operates.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -4549,7 +4784,8 @@
               "items": {
                 "type": "string"
               }
-            }
+            },
+            "example": "Information Technology"
           }
         ],
         "responses": {
@@ -4903,10 +5139,12 @@
           {
             "name": "dataId",
             "in": "path",
+            "description": "The unique identifier of the dataset.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -4972,79 +5210,105 @@
         "type": "object",
         "properties": {
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "companyAlternativeNames": {
             "type": "array",
+            "description": "Any alternative names or abbreviations the company might be known by.",
             "nullable": true,
+            "example": [
+              "ABC Corp."
+            ],
             "items": {
               "type": "string"
             }
           },
           "companyContactDetails": {
             "type": "array",
+            "description": "The email addresses of the company.",
             "nullable": true,
             "example": [
-              "Test@test.com"
+              "test@example.com"
             ],
             "items": {
-              "type": "string",
-              "example": "[\"Test@test.com\"]"
+              "type": "string"
             }
           },
           "companyLegalForm": {
             "type": "string",
-            "nullable": true
+            "description": "The legal structure under which the company operates.",
+            "nullable": true,
+            "example": "Private Limited Company (Ltd)"
           },
           "headquarters": {
-            "type": "string"
+            "type": "string",
+            "description": "The city where the registered office of the company is located.",
+            "example": "Berlin"
           },
           "headquartersPostalCode": {
             "type": "string",
-            "nullable": true
+            "description": "The postal code of the headquarters.",
+            "nullable": true,
+            "example": "10123"
           },
           "sector": {
             "type": "string",
-            "nullable": true
+            "description": "The industry or sector in which the company operates.",
+            "nullable": true,
+            "example": "Information Technology"
           },
           "sectorCodeWz": {
             "type": "string",
-            "nullable": true
+            "description": "The industry classification code according to the NACE compliant WZ method.",
+            "nullable": true,
+            "example": "62.10.4"
           },
           "identifiers": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
+              "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
               "example": {
                 "Lei": [
-                  "ExampleLei"
+                  "5493001KJX4BT0IHAG73"
                 ]
               },
               "items": {
                 "type": "string",
-                "example": "{\"Lei\":[\"ExampleLei\"]}"
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+                "example": "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
               }
             },
+            "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
             "example": {
               "Lei": [
-                "ExampleLei"
+                "5493001KJX4BT0IHAG73"
               ]
             }
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "example": "DE"
           },
           "isTeaserCompany": {
             "type": "boolean",
+            "description": "A boolean indicating if the company is a teaser company.",
             "nullable": true
           },
           "website": {
             "type": "string",
-            "nullable": true
+            "description": "The official website URL of the company.",
+            "nullable": true,
+            "example": "www.abccorp.com"
           },
           "parentCompanyLei": {
             "type": "string",
-            "nullable": true
+            "description": "The LEI of the parent company if it exists.",
+            "nullable": true,
+            "example": "5493001KJX4BT0IHAG73"
           }
         }
       },
@@ -5061,39 +5325,53 @@
         "type": "object",
         "properties": {
           "dataId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "uploaderUserId": {
             "type": "string",
-            "nullable": true
+            "description": "The Dataland user ID of the user who uploaded the dataset.",
+            "nullable": true,
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "currentlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag indicating whether the dataset is currently active."
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
           "ref": {
             "type": "string",
-            "nullable": true
+            "description": "The direct link to the page displaying the specified dataset.",
+            "nullable": true,
+            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/eutaxonomy-non-financials/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
       "QaStatus": {
         "type": "string",
+        "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
         "enum": [
           "Pending",
           "Accepted",
@@ -5109,7 +5387,9 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyInformation": {
             "$ref": "#/components/schemas/CompanyInformation"
@@ -5133,19 +5413,26 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "isNonSourceable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason why there is no source available",
+            "example": "Parent Uploaded"
           }
         }
       },
@@ -5157,7 +5444,9 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "nullable": true
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "nullable": true,
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "nullable": true,
@@ -5169,15 +5458,22 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "nullable": true
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "nullable": true,
+            "example": "2023"
           },
           "onlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status."
           },
           "uploaderUserIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of Dataland user IDs corresponding to the users who uploaded the data.",
             "nullable": true,
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string",
               "format": "uuid"
@@ -5242,7 +5538,24 @@
               }
             ]
           }
-        }
+        },
+        "description": "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
+        "example": [
+          {
+            "value": "lifetime value",
+            "dataSource": {
+              "fileName": "Certification",
+              "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+            }
+          },
+          {
+            "value": "technologies",
+            "dataSource": {
+              "fileName": "Policy",
+              "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+            }
+          }
+        ]
       },
       "BaseDataPointYesNo": {
         "type": "object",
@@ -5263,7 +5576,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Has the sustainability report been prepared on a consolidated basis (i.e., the report includes information of the undertaking and its subsidiaries) or on an individual basis (i.e., the report is limited only to the information of the undertaking)?",
+        "example": "Yes"
       },
       "BaseDocumentReference": {
         "required": [
@@ -5358,7 +5673,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Please, disclose your total water withdrawal (in m^3), i.e., the amount of water drawn into the boundaries of the organisation (or facility); pay additional attention to sites located in areas of high water-stress.",
+        "example": "{\n      \"value\" : 100.5, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDocumentReference": {
         "required": [
@@ -5545,51 +5862,75 @@
           },
           "totalSealedAreaPreviousYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "totalSealedAreaReportingYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "relativeChangeSealedArea": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
+            "nullable": true,
+            "example": 13.52
           },
           "totalNatureOrientedAreaOnSitePreviousYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "totalNatureOrientedAreaOnSiteReportingYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "relativeChangeNatureOrientedOnSite": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
+            "nullable": true,
+            "example": 13.52
           },
           "totalNatureOrientedAreaOffSitePreviousYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "totalNatureOrientedAreaOffSiteReportingYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "relativeChangeNatureOrientedOffSite": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
+            "nullable": true,
+            "example": 13.52
           },
           "totalUseOfLandPreviousYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "totalUseOfLandReportingYearInHectare": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+            "nullable": true,
+            "example": 100.5
           },
           "relativeChangeLandUse": {
             "type": "number",
-            "nullable": true
+            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.",
+            "nullable": true,
+            "example": 13.52
           }
         }
       },
@@ -5598,7 +5939,9 @@
         "properties": {
           "energyFossilFuelsInMWh": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose your total energy consumption in MWh (in the reporting period) for fossil fuels.",
+            "nullable": true,
+            "example": 100.5
           },
           "electricityTotalInMWh": {
             "nullable": true,
@@ -5610,11 +5953,15 @@
           },
           "electricityNonRenewableInMWh": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the amount of electricity in MWh generated from non renewable sources.",
+            "nullable": true,
+            "example": 100.5
           },
           "electricityRenewableInMWh": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the amount of electricity in MWh generated from renewable sources.",
+            "nullable": true,
+            "example": 100.5
           },
           "totalEmissionsInTonnesOfCO2Equivalents": {
             "nullable": true,
@@ -5667,7 +6014,24 @@
         "properties": {
           "undertakenMeasures": {
             "type": "array",
+            "description": "Please, describe specific practices for transitioning towards a more sustainable economy in case you have them in place.",
             "nullable": true,
+            "example": [
+              {
+                "value": "lifetime value",
+                "dataSource": {
+                  "fileName": "Certification",
+                  "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+                }
+              },
+              {
+                "value": "technologies",
+                "dataSource": {
+                  "fileName": "Policy",
+                  "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+                }
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/BaseDataPointString"
             }
@@ -5679,23 +6043,33 @@
         "properties": {
           "totalWeightMaterialsInTonnes": {
             "type": "number",
-            "nullable": true
+            "description": "In case you operate manufacturing, construction and/or packaging processes, please provide the share of recycled content in your products and packaging (in per cent based on weight, during the reporting period) For this we require the total weight  (in tons, in the reporting year) of both recycled and overall materials used in products and packaging. \n\nMoreover, please provide the share of recycable content in your products and packaging (in per cent based on weight, during the reporting period). For this we require the  total weight  (in tons, in the reporting year) of both recycable materials used in products and packaging. ",
+            "nullable": true,
+            "example": 100.5
           },
           "weightRecycledMaterialsInTonnes": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the weight of recycled materials in tonnes.",
+            "nullable": true,
+            "example": 100.5
           },
           "percentageRecycledMaterials": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose percentage of recycled materials in regards to the total weight of maerials. ",
+            "nullable": true,
+            "example": 13.52
           },
           "weightRecyclableMaterialsInTonnes": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the weight of recycable materials in tonnes.",
+            "nullable": true,
+            "example": 100.5
           },
           "percentageRecyclableMaterials": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose percentage of recycable materials in regards to the total weight of maerials. ",
+            "nullable": true,
+            "example": 13.52
           },
           "measureWaste": {
             "nullable": true,
@@ -5716,6 +6090,8 @@
       },
       "VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions": {
         "type": "string",
+        "description": "Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.",
+        "example": "\"Option 1\"",
         "enum": [
           "WeightPreferred",
           "Volume"
@@ -5734,31 +6110,45 @@
           },
           "waterWithdrawalStressSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose your water withdrawal (in m^3) from sites with high water stress.",
+            "nullable": true,
+            "example": 100.5
           },
           "waterDischargeAllSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "If applicable, we aim to determine your water consumption (as the difference between water withdrawal and water discharge). Hence, please disclose your respective water discharge from your production processes.",
+            "nullable": true,
+            "example": 100.5
           },
           "waterDischargeStressSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose your water discharge (in m^3) from sites with high water stress.",
+            "nullable": true,
+            "example": 100.5
           },
           "rainwaterAllSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the amount of rainwater (in m^3) for all sites.",
+            "nullable": true,
+            "example": 100.5
           },
           "rainwaterStressSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the amount of rainwater (in m^3) for all sites with high water stress.",
+            "nullable": true,
+            "example": 100.5
           },
           "waterConsumptionAllSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the amount of water consumption (in m^3) for all sites.",
+            "nullable": true,
+            "example": 100.5
           },
           "waterConsumptionStressSitesInCubicMeters": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the amount of water consumption (in m^3) for all sites with high water stress.",
+            "nullable": true,
+            "example": 100.5
           }
         }
       },
@@ -5767,18 +6157,39 @@
         "properties": {
           "negativeEffects": {
             "type": "array",
+            "description": "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
             "nullable": true,
+            "example": [
+              {
+                "value": "lifetime value",
+                "dataSource": {
+                  "fileName": "Certification",
+                  "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+                }
+              },
+              {
+                "value": "technologies",
+                "dataSource": {
+                  "fileName": "Policy",
+                  "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+                }
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/BaseDataPointString"
             }
           },
           "numberOfConvictions": {
             "type": "number",
-            "nullable": true
+            "description": "In case of convictions and fines in the reporting period, please disclose the number of convictions and the total amount of fines incurred for the violation of anti-corruption or anti-bribery laws.",
+            "nullable": true,
+            "example": 100.5
           },
           "sumOfFinesInEuro": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the sum of all fines.",
+            "nullable": true,
+            "example": 100.5
           }
         }
       },
@@ -5795,59 +6206,87 @@
           },
           "numberOfEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfTemporaryContractEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfTemporaryContractEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfPermanentContractEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfPermanentContractEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfMaleEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfMaleEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberFemaleEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfFemaleEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfOtherEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfOtherEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfNotReportedEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfNotReportedEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
+            "nullable": true,
+            "example": 100.5
           },
           "employeesPerCountry": {
             "type": "array",
@@ -5863,39 +6302,57 @@
         "properties": {
           "totalHours": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the total number of hours worked in a year by all your employees.",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfAccidents": {
             "type": "integer",
-            "nullable": true
+            "description": "Please disclose the number of work related accidents in the reporting year.",
+            "nullable": true,
+            "example": 100
           },
           "accidentLevel": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide work-related accidents, namely the number of work related accidents per 100 full-time workers over a yearly timeframe (assuming 2000 work hours per worker per year).",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfTotalFatalitiesInFte": {
             "type": "integer",
-            "nullable": true
+            "description": "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
+            "nullable": true,
+            "example": 100
           },
           "numberOfTotalFatalitiesInHeadcount": {
             "type": "integer",
-            "nullable": true
+            "description": "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
+            "nullable": true,
+            "example": 100
           },
           "numberOfFatalitiesOfAccidentsInFte": {
             "type": "integer",
-            "nullable": true
+            "description": "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
+            "nullable": true,
+            "example": 100
           },
           "numberOfFatalitiesOfAccidentsInHeadcount": {
             "type": "integer",
-            "nullable": true
+            "description": "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
+            "nullable": true,
+            "example": 100
           },
           "numberOfHealthFatalitiesInFte": {
             "type": "integer",
-            "nullable": true
+            "description": "Please disclose the number of health fatalities in full time equilivants in the reporting year.",
+            "nullable": true,
+            "example": 100
           },
           "numberOfHealthFatalitiesInHeadcount": {
             "type": "integer",
-            "nullable": true
+            "description": "Please disclose the number of health fatalities in head count in the reporting year.",
+            "nullable": true,
+            "example": 100
           }
         }
       },
@@ -5904,15 +6361,21 @@
         "properties": {
           "numberOfMinimumWageEmployeesInFte": {
             "type": "number",
-            "nullable": true
+            "description": "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
+            "nullable": true,
+            "example": 100.5
           },
           "numberOfMinimumWageEmployeesInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
+            "nullable": true,
+            "example": 100.5
           },
           "percentageOfMinimumWageEmployees": {
             "type": "number",
-            "nullable": true
+            "description": "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
+            "nullable": true,
+            "example": 13.52
           },
           "majorityOfMinimumWageEmployees": {
             "nullable": true,
@@ -5924,15 +6387,21 @@
           },
           "entryLevelWageInEuro": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the entry level wage you pay.",
+            "nullable": true,
+            "example": 100.5
           },
           "minimumWageInEuro": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the minimum wage you pay.",
+            "nullable": true,
+            "example": 100.5
           },
           "wageRatio": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the ratio of entry level wage and minimum wage.",
+            "nullable": true,
+            "example": 100.5
           },
           "payGapBasis": {
             "nullable": true,
@@ -5944,72 +6413,106 @@
           },
           "grossPayMaleInEuro": {
             "type": "number",
-            "nullable": true
+            "description": "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male employees. ",
+            "nullable": true,
+            "example": 100.5
           },
           "grossPayFemaleInEuro": {
             "type": "number",
-            "nullable": true
+            "description": "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for female employees. ",
+            "nullable": true,
+            "example": 100.5
           },
           "totalWorkHoursMale": {
             "type": "number",
-            "nullable": true
+            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
+            "nullable": true,
+            "example": 100.5
           },
           "totalWorkHoursFemale": {
             "type": "number",
-            "nullable": true
+            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
+            "nullable": true,
+            "example": 100.5
           },
           "averageWorkHoursMale": {
             "type": "number",
-            "nullable": true
+            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
+            "nullable": true,
+            "example": 100.5
           },
           "averageWorkHoursFemale": {
             "type": "number",
-            "nullable": true
+            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
+            "nullable": true,
+            "example": 100.5
           },
           "averageHourlyPayMaleInEuroPerHour": {
             "type": "number",
-            "nullable": true
+            "description": "What is the average hourly pay for male employees?",
+            "nullable": true,
+            "example": 100.5
           },
           "averageHourlyPayFemaleInEuroPerHour": {
             "type": "number",
-            "nullable": true
+            "description": "What is the average hourly pay for female employees?",
+            "nullable": true,
+            "example": 100.5
           },
           "payGap": {
             "type": "number",
-            "nullable": true
+            "description": "What is your pay gap? ",
+            "nullable": true,
+            "example": 100.5
           },
           "numberBargainingAgreementsInFte": {
             "type": "number",
-            "nullable": true
+            "description": "Please state the number of employees covered by collective bargaining agreements.",
+            "nullable": true,
+            "example": 100.5
           },
           "numberBargainingAgreementsInHeadcount": {
             "type": "number",
-            "nullable": true
+            "description": "Please state the number of employees covered by collective bargaining agreements.",
+            "nullable": true,
+            "example": 100.5
           },
           "ratioBargainingAgreement": {
             "type": "number",
-            "nullable": true
+            "description": "Please provide the ratio of employees with a bargaining agreement with respect to all your employees.",
+            "nullable": true,
+            "example": 13.52
           },
           "totalTrainingHoursMale": {
             "type": "number",
-            "nullable": true
+            "description": "Please state the total numbers of annual training hours per male employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+            "nullable": true,
+            "example": 100.5
           },
           "totalTrainingHoursFemale": {
             "type": "number",
-            "nullable": true
+            "description": "Please state the total numbers of annual training hours per female employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+            "nullable": true,
+            "example": 100.5
           },
           "averageTrainingHoursMale": {
             "type": "number",
-            "nullable": true
+            "description": "Please state average numbers of annual training hours per male employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+            "nullable": true,
+            "example": 100.5
           },
           "averageTrainingHoursFemale": {
             "type": "number",
-            "nullable": true
+            "description": "Please state average numbers of annual training hours per female employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+            "nullable": true,
+            "example": 100.5
           }
         }
       },
       "VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions": {
         "type": "string",
+        "description": "You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.",
+        "example": "\"Option 1\"",
         "enum": [
           "FullTimeEquivalents",
           "HeadCount"
@@ -6017,6 +6520,8 @@
       },
       "VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions": {
         "type": "string",
+        "description": "Please, in the following provide pay rates and work hours. On which basis do you prefer to report?",
+        "example": "\"Option 1\"",
         "enum": [
           "Annual",
           "Weekly"
@@ -6184,6 +6689,8 @@
       },
       "YesNo": {
         "type": "string",
+        "description": "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
+        "example": "\"Yes\"",
         "enum": [
           "Yes",
           "No"
@@ -6239,7 +6746,9 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "description": "Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
+        "example": "{\n      \"value\" : 100.5,\n      \"currency\" : \"USD\",\n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\",\n      \"dataSource\" : {\n      \"page\" : \"5-7\",\n      \"tagName\" : \"monetaryAmount\",\n      \"fileName\" : \"AnnualReport2020.pdf\",\n      \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n    } "
       },
       "ExtendedDataPointBigInteger": {
         "type": "object",
@@ -6268,7 +6777,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
+        "example": "{\n      \"value\" : 100, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointYesNo": {
         "type": "object",
@@ -6301,7 +6812,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.",
+        "example": "{\n      \"value\" :  \"Yes\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "SfdrData": {
         "type": "object",
@@ -7154,6 +7667,7 @@
         "properties": {
           "dataDate": {
             "type": "string",
+            "description": "The year for which the data is reported.",
             "format": "date",
             "nullable": true
           },
@@ -7167,6 +7681,7 @@
           },
           "fiscalYearEnd": {
             "type": "string",
+            "description": "The date the fiscal year ends.",
             "format": "date",
             "nullable": true
           },
@@ -7188,6 +7703,8 @@
       },
       "SfdrGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "\"Option 1\"",
         "enum": [
           "Deviation",
           "NoDeviation"
@@ -7907,7 +8424,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Denominator of the applicable KPI - CapEx-based",
+        "example": "{\n      \"value\" : {\n      \"taxonomyAlignedShareDenominatorNAndG426\" : {\n        \"mitigationAndAdaptation\" : 0.2,\n        \"mitigation\" : 0.3,\n        \"adaptation\" : 0.1\n      },\n      \"taxonomyAlignedShareDenominatorNAndG427\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 0.4,\n        \"adaptation\" : 0.2\n      },\n      \"taxonomyAlignedShareDenominatorNAndG428\" : {\n        \"mitigationAndAdaptation\" : 1,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareDenominatorNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareDenominatorNAndG430\" : {\n        \"mitigationAndAdaptation\" : 0.3,\n        \"mitigation\" : 2.4,\n        \"adaptation\" : 0.5\n      },\n      \"taxonomyAlignedShareDenominatorNAndG431\" : {\n        \"mitigationAndAdaptation\" : 0.2,\n        \"mitigation\" : 0.5,\n        \"adaptation\" : 0.6\n      },\n      \"taxonomyAlignedShareDenominatorOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 1.1,\n        \"mitigation\" : 1.4,\n        \"adaptation\" : 1.1\n      },\n      \"taxonomyAlignedShareDenominator\" : {\n        \"mitigationAndAdaptation\" : 4,\n        \"mitigation\" : 5,\n        \"adaptation\" : 2.5\n      }\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointNuclearAndGasAlignedNumerator": {
         "type": "object",
@@ -7940,7 +8459,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - CapEx-based",
+        "example": "{\n      \"value\" : {\n      \"taxonomyAlignedShareNumeratorNAndG426\" : {\n        \"mitigationAndAdaptation\" : 5,\n        \"mitigation\" : 6,\n        \"adaptation\" : 4\n      },\n      \"taxonomyAlignedShareNumeratorNAndG427\" : {\n        \"mitigationAndAdaptation\" : 30,\n        \"mitigation\" : 8,\n        \"adaptation\" : 8\n      },\n      \"taxonomyAlignedShareNumeratorNAndG428\" : {\n        \"mitigationAndAdaptation\" : 25,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareNumeratorNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareNumeratorNAndG430\" : {\n        \"mitigationAndAdaptation\" : 7.5,\n        \"mitigation\" : 48,\n        \"adaptation\" : 20\n      },\n      \"taxonomyAlignedShareNumeratorNAndG431\" : {\n        \"mitigationAndAdaptation\" : 5,\n        \"mitigation\" : 10,\n        \"adaptation\" : 24\n      },\n      \"taxonomyAlignedShareNumeratorOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 27.5,\n        \"mitigation\" : 28,\n        \"adaptation\" : 44\n      },\n      \"taxonomyAlignedShareNumerator\" : {\n        \"mitigationAndAdaptation\" : 100,\n        \"mitigation\" : 100,\n        \"adaptation\" : 100\n      }\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
         "type": "object",
@@ -7973,7 +8494,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based",
+        "example": "{\n      \"value\" : {\n      \"taxonomyEligibleButNotAlignedShareNAndG426\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 1.3,\n        \"adaptation\" : 1.1\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG427\" : {\n        \"mitigationAndAdaptation\" : 2.2,\n        \"mitigation\" : 1.4,\n        \"adaptation\" : 1.2\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG428\" : {\n        \"mitigationAndAdaptation\" : 2,\n        \"mitigation\" : 1,\n        \"adaptation\" : 1\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG430\" : {\n        \"mitigationAndAdaptation\" : 1.3,\n        \"mitigation\" : 3.4,\n        \"adaptation\" : 1.5\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG431\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 1.5,\n        \"adaptation\" : 1.6\n      },\n      \"taxonomyEligibleButNotAlignedShareOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 2.2,\n        \"mitigation\" : 2.1,\n        \"adaptation\" : 2\n      },\n      \"taxonomyEligibleButNotAlignedShare\" : {\n        \"mitigationAndAdaptation\" : 10.1,\n        \"mitigation\" : 10.7,\n        \"adaptation\" : 8.4\n      }\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointNuclearAndGasNonEligible": {
         "type": "object",
@@ -8006,7 +8529,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based",
+        "example": "{\n      \"value\" : {\n      \"taxonomyNonEligibleShareNAndG426\" : 1.1,\n      \"taxonomyNonEligibleShareNAndG427\" : 1.2,\n      \"taxonomyNonEligibleShareNAndG428\" : 0.6,\n      \"taxonomyNonEligibleShareNAndG429\" : 0.5,\n      \"taxonomyNonEligibleShareNAndG430\" : 2.8,\n      \"taxonomyNonEligibleShareNAndG431\" : 1.2,\n      \"taxonomyNonEligibleShareOtherActivities\" : 1.9,\n      \"taxonomyNonEligibleShare\" : 9.3\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "NuclearAndGasAlignedDenominator": {
         "type": "object",
@@ -8510,7 +9035,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Have the contractual relationships with private security forces been designed in a way that they comply with the applicable legal framework? (Only in the case of private security forces)",
+        "example": "Yes"
       },
       "CompanyAssociatedDataLksgData": {
         "required": [
@@ -8690,7 +9217,9 @@
           },
           "hazardousWasteTransportPreventionOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent the transport of hazardous waste.",
+            "nullable": true,
+            "example": "\"This is some free text\""
           },
           "hazardousWasteDisposal": {
             "nullable": true,
@@ -8718,7 +9247,9 @@
           },
           "hazardousWasteDisposalOtherWasteImportDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
+            "nullable": true,
+            "example": "\"This is some free text\""
           }
         }
       },
@@ -8735,7 +9266,9 @@
           },
           "persistentOrganicPollutantsUsed": {
             "type": "string",
-            "nullable": true
+            "description": "If yes, which organic pollutants are used and/or produced?",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
             "nullable": true,
@@ -8779,7 +9312,9 @@
           },
           "persistentOrganicPollutantsUsePreventionOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent the use of persistent organic pollutants (POP).",
+            "nullable": true,
+            "example": "\"This is some free text\""
           }
         }
       },
@@ -8860,7 +9395,9 @@
           },
           "mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent the use of mercury and mercury waste.",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -8899,6 +9436,7 @@
         "properties": {
           "dataDate": {
             "type": "string",
+            "description": "The date until when the information collected is valid",
             "format": "date"
           },
           "headOfficeInGermany": {
@@ -8919,18 +9457,29 @@
           },
           "groupOfCompaniesName": {
             "type": "string",
-            "nullable": true
+            "description": "If yes, name of company group",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "industry": {
             "type": "array",
+            "description": "In which industry is your company primarily active (select all that apply)?",
             "nullable": true,
+            "example": [
+              "47.23",
+              "47.78"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "In which industry is your company primarily active (select all that apply)?",
+              "example": "[\"47.23\",\"47.78\"]"
             }
           },
           "numberOfEmployees": {
             "type": "number",
-            "nullable": true
+            "description": "Total number of employees (including temporary workers with assignment duration \u003e6 months)",
+            "nullable": true,
+            "example": 100.5
           },
           "seasonalOrMigrantWorkers": {
             "nullable": true,
@@ -8968,6 +9517,8 @@
       },
       "LksgGeneralMasterdataShareOfTemporaryWorkersOptions": {
         "type": "string",
+        "description": "What share of the total number of employees in your company is made up by temporary workers?",
+        "example": "\"Option 1\"",
         "enum": [
           "Smaller10",
           "Between10And25",
@@ -8988,7 +9539,9 @@
           },
           "capacity": {
             "type": "string",
-            "nullable": true
+            "description": "Production capacity per year, e.g. quantity with units.",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "productionViaSubcontracting": {
             "nullable": true,
@@ -9035,7 +9588,9 @@
           },
           "numberOfProductionSites": {
             "type": "number",
-            "nullable": true
+            "description": "How many production sites are there?",
+            "nullable": true,
+            "example": 100.5
           },
           "listOfProductionSites": {
             "type": "array",
@@ -9054,7 +9609,12 @@
           },
           "specificProcurement": {
             "type": "array",
+            "description": "Does your company have one of the specific procurement models?",
             "nullable": true,
+            "example": [
+              "Option 1",
+              "Option 2"
+            ],
             "items": {
               "$ref": "#/components/schemas/SpecificProcurementOptions"
             }
@@ -9111,6 +9671,8 @@
       },
       "LksgGeneralProductionspecificMarketOptions": {
         "type": "string",
+        "description": "Does your business focus predominantly on national or international markets?",
+        "example": "\"Option 1\"",
         "enum": [
           "National",
           "International",
@@ -9191,7 +9753,9 @@
           },
           "humanRightsStrategy": {
             "type": "string",
-            "nullable": true
+            "description": "In which relevant departments/business processes has the anchoring of the human rights strategy been ensured?",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "environmentalImpactPolicy": {
             "nullable": true,
@@ -9519,9 +10083,16 @@
           },
           "highRiskCountriesRawMaterialsLocation": {
             "type": "array",
+            "description": "From which conflict/high-risk regions do you source your raw materials?",
             "nullable": true,
+            "example": [
+              "TR",
+              "VN"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "From which conflict/high-risk regions do you source your raw materials?",
+              "example": "[\"TR\",\"VN\"]"
             }
           },
           "highRiskCountriesActivity": {
@@ -9534,9 +10105,16 @@
           },
           "highRiskCountries": {
             "type": "array",
+            "description": "Which ones?",
             "nullable": true,
+            "example": [
+              "TR",
+              "VN"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Which ones?",
+              "example": "[\"TR\",\"VN\"]"
             }
           },
           "highRiskCountriesProcurement": {
@@ -9549,9 +10127,16 @@
           },
           "highRiskCountriesProcurementName": {
             "type": "array",
+            "description": "Which ones?",
             "nullable": true,
+            "example": [
+              "TR",
+              "VN"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Which ones?",
+              "example": "[\"TR\",\"VN\"]"
             }
           }
         }
@@ -9609,7 +10194,9 @@
           },
           "complaintsNumber": {
             "type": "number",
-            "nullable": true
+            "description": "How many complaints have been received (for the reported fiscal year)?",
+            "nullable": true,
+            "example": 100.5
           },
           "complaintsRiskPosition": {
             "type": "array",
@@ -9946,7 +10533,9 @@
           },
           "worstFormsOfChildLaborForms": {
             "type": "string",
-            "nullable": true
+            "description": "Which of these worst forms of child labor are not prevented?",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "measuresForPreventionOfEmploymentUnderLocalMinimumAge": {
             "nullable": true,
@@ -10014,7 +10603,9 @@
           },
           "additionalChildLaborOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list any other measures (if available) you take to prevent the employment of children under the locally applicable minimum age?",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -10207,7 +10798,9 @@
           },
           "waterSavingMeasuresName": {
             "type": "string",
-            "nullable": true
+            "description": "If yes, which ones?",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "waterUseReductionPolicy": {
             "nullable": true,
@@ -10243,7 +10836,9 @@
           },
           "contaminationPreventionMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\u0027s access to sanitary facilities; Harms the health of any person",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -10260,7 +10855,9 @@
           },
           "employeeRepresentation": {
             "type": "number",
-            "nullable": true
+            "description": "What is your percentage of employees who are represented by trade unions?",
+            "nullable": true,
+            "example": 13.52
           },
           "freedomOfAssociationDisregardPrevention": {
             "nullable": true,
@@ -10312,7 +10909,9 @@
           },
           "freedomOfAssociationOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent the disregard for freedom of association.",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -10377,7 +10976,9 @@
           },
           "otherOshMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent the disregard for occupational health and safety?",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "under10WorkplaceAccidents": {
             "nullable": true,
@@ -10402,7 +11003,9 @@
           },
           "forcedLaborAndSlaveryPracticesSpecification": {
             "type": "string",
-            "nullable": true
+            "description": "Please specify which practices apply.",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "forcedLaborAndSlaveryPreventionMeasures": {
             "nullable": true,
@@ -10470,7 +11073,9 @@
           },
           "forcedLaborAndSlaveryPreventionOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list any other measures (if available) you take to prevent forced labor and slavery.",
+            "nullable": true,
+            "example": "\"This is some free text\""
           }
         }
       },
@@ -10543,7 +11148,9 @@
           },
           "unequalTreatmentPreventionOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent unequal treatment of employment.",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -10560,7 +11167,9 @@
           },
           "unlawfulEvictionAndTakingOfLandRisk": {
             "type": "string",
-            "nullable": true
+            "description": "If so, what exactly is the risk?",
+            "nullable": true,
+            "example": "\"This is a string\""
           },
           "unlawfulEvictionAndTakingOfLandMeasures": {
             "nullable": true,
@@ -10604,7 +11213,9 @@
           },
           "unlawfulEvictionAndTakingOfLandOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to avoid, reduce, mitigate, or remedy direct and indirect adverse impacts on the lands and natural resources of indigenous peoples and local communities.",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -10669,7 +11280,9 @@
           },
           "useOfPrivatePublicSecurityForcesMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list any other measures you are taking to prevent the use of private and/or public security forces that violate human rights.",
+            "nullable": true,
+            "example": "\"This is some free text\""
           }
         }
       },
@@ -10742,7 +11355,9 @@
           },
           "adequateWageOtherMeasuresDescription": {
             "type": "string",
-            "nullable": true
+            "description": "Please list other measures (if available) you take to prevent withholding adequate wages?",
+            "nullable": true,
+            "example": "\"This is a string\""
           }
         }
       },
@@ -10766,6 +11381,8 @@
       },
       "SpecificProcurementOptions": {
         "type": "string",
+        "description": "Does your company have one of the specific procurement models?",
+        "example": "[\"Option 1\",\"Option 2\"]",
         "enum": [
           "ShortLivedAndChangingBusinessRelationships",
           "HighPricePressure",
@@ -10963,7 +11580,9 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "description": "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
+        "example": "LimitedAssurance"
       },
       "CompanyAssociatedDataEutaxonomyNonFinancialsData": {
         "required": [
@@ -12245,7 +12864,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointListEuTaxonomyActivity": {
         "type": "object",
@@ -12277,7 +12898,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible",
+        "example": "{\n      \"value\" : [{\n      \"activityName\" : \"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions\",\n      \"naceCodes\" : [ \"E.38.11\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }, {\n      \"activityName\" : \"InfrastructureForRailTransport\",\n      \"naceCodes\" : [ \"C27.9\", \"C30.20\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }, {\n      \"activityName\" : \"LowCarbonAirportInfrastructure\",\n      \"naceCodes\" : [ \"F41.20\", \"F42.99\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }], \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointListEuTaxonomyAlignedActivity": {
         "type": "object",
@@ -12309,7 +12932,67 @@
               }
             ]
           }
-        }
+        },
+        "description": "Absolute value and share of taxonomy-aligned OpEx for the activity from total OpEx. ",
+        "example": [
+          {
+            "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+            "naceCodes": [
+              "E.38.11"
+            ],
+            "share": {
+              "relativeShareInPercent": 25,
+              "absoluteShare": {
+                "amount": 100.5,
+                "currency": "EUR"
+              }
+            },
+            "substantialContributionToClimateChangeMitigationInPercent": 10,
+            "substantialContributionToClimateChangeAdaptationInPercent": 5,
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
+            "substantialContributionToTransitionToACircularEconomyInPercent": 70,
+            "substantialContributionToPollutionPreventionAndControlInPercent": 2,
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
+            "dnshToClimateChangeMitigation": "Yes",
+            "dnshToClimateChangeAdaptation": "Yes",
+            "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+            "dnshToTransitionToACircularEconomy": "Yes",
+            "dnshToPollutionPreventionAndControl": "Yes",
+            "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+            "minimumSafeguards": "Yes",
+            "enablingActivity": "No",
+            "transitionalActivity": "Yes"
+          },
+          {
+            "activityName": "InfrastructureForRailTransport",
+            "naceCodes": [
+              "C27.9",
+              "C30.20"
+            ],
+            "share": {
+              "relativeShareInPercent": 25,
+              "absoluteShare": {
+                "amount": 100.5,
+                "currency": "EUR"
+              }
+            },
+            "substantialContributionToClimateChangeMitigationInPercent": 7,
+            "substantialContributionToClimateChangeAdaptationInPercent": 5,
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
+            "substantialContributionToTransitionToACircularEconomyInPercent": 70,
+            "substantialContributionToPollutionPreventionAndControlInPercent": 2,
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
+            "dnshToClimateChangeMitigation": "Yes",
+            "dnshToClimateChangeAdaptation": "Yes",
+            "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+            "dnshToTransitionToACircularEconomy": "Yes",
+            "dnshToPollutionPreventionAndControl": "Yes",
+            "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
+            "minimumSafeguards": "Yes",
+            "enablingActivity": "No",
+            "transitionalActivity": "Yes"
+          }
+        ]
       },
       "ExtendedDataPointLocalDate": {
         "type": "object",
@@ -12339,7 +13022,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "The date the fiscal year ends.",
+        "example": "{\n      \"value\" :  \"2007-03-05\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointYesNoNa": {
         "type": "object",
@@ -12372,7 +13057,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Are all Group legal entities covered in the reports?",
+        "example": "{\n      \"value\" :  \"Yes\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
@@ -14615,7 +15302,9 @@
               }
             ]
           }
-        }
+        },
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "UploadedDataPoint": {
         "required": [
@@ -14627,16 +15316,24 @@
         "type": "object",
         "properties": {
           "dataPoint": {
-            "type": "string"
+            "type": "string",
+            "description": "The data point as a JSON string.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoNfrdMandatory"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -14654,26 +15351,39 @@
         "type": "object",
         "properties": {
           "dataPointId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the datapoint.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoNfrdMandatory"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "currentlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean flag indicating whether the dataset is currently active."
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
@@ -14688,10 +15398,14 @@
         "type": "object",
         "properties": {
           "dataPoint": {
-            "type": "string"
+            "type": "string",
+            "description": "The data point as a JSON string.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoNfrdMandatory"
           }
         }
       },
@@ -14705,24 +15419,36 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "headquarters": {
-            "type": "string"
+            "type": "string",
+            "description": "The city where the registered office of the company is located.",
+            "example": "Berlin"
           },
           "countryCode": {
-            "type": "string"
+            "type": "string",
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "example": "DE"
           },
           "sector": {
             "type": "string",
-            "nullable": true
+            "description": "The industry or sector in which the company operates.",
+            "nullable": true,
+            "example": "Information Technology"
           },
           "lei": {
             "type": "string",
-            "nullable": true
+            "description": "The LEI of the company.",
+            "nullable": true,
+            "example": "5493001KJX4BT0IHAG73"
           }
         }
       },
@@ -14733,7 +15459,9 @@
         "type": "object",
         "properties": {
           "identifier": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique identifier to find a company.",
+            "example": "5493001KJX4BT0IHAG73"
           },
           "companyInformation": {
             "nullable": true,
@@ -14774,7 +15502,9 @@
         "type": "object",
         "properties": {
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -14783,78 +15513,108 @@
         "properties": {
           "companyName": {
             "type": "string",
-            "nullable": true
+            "description": "The official name of the company.",
+            "nullable": true,
+            "example": "ABC Corporation"
           },
           "companyAlternativeNames": {
             "type": "array",
+            "description": "Any alternative names or abbreviations the company might be known by.",
             "nullable": true,
+            "example": [
+              "ABC Corp."
+            ],
             "items": {
               "type": "string"
             }
           },
           "companyContactDetails": {
             "type": "array",
+            "description": "The email addresses of the company.",
             "nullable": true,
+            "example": [
+              "test@example.com"
+            ],
             "items": {
               "type": "string"
             }
           },
           "companyLegalForm": {
             "type": "string",
-            "nullable": true
+            "description": "The legal structure under which the company operates.",
+            "nullable": true,
+            "example": "Private Limited Company (Ltd)"
           },
           "headquarters": {
             "type": "string",
-            "nullable": true
+            "description": "The city where the registered office of the company is located.",
+            "nullable": true,
+            "example": "Berlin"
           },
           "headquartersPostalCode": {
             "type": "string",
-            "nullable": true
+            "description": "The postal code of the headquarters.",
+            "nullable": true,
+            "example": "10123"
           },
           "sector": {
             "type": "string",
-            "nullable": true
+            "description": "The industry or sector in which the company operates.",
+            "nullable": true,
+            "example": "Information Technology"
           },
           "sectorCodeWz": {
             "type": "string",
-            "nullable": true
+            "description": "The industry classification code according to the NACE compliant WZ method.",
+            "nullable": true,
+            "example": "62.10.4"
           },
           "identifiers": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
+              "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
               "example": {
                 "Lei": [
-                  "ExampleLei"
+                  "5493001KJX4BT0IHAG73"
                 ]
               },
               "items": {
                 "type": "string",
-                "example": "{\"Lei\":[\"ExampleLei\"]}"
+                "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
+                "example": "{\"Lei\":[\"5493001KJX4BT0IHAG73\"]}"
               }
             },
+            "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
             "nullable": true,
             "example": {
               "Lei": [
-                "ExampleLei"
+                "5493001KJX4BT0IHAG73"
               ]
             }
           },
           "countryCode": {
             "type": "string",
-            "nullable": true
+            "description": "The ISO 3166-1 alpha-2 code representing the country of origin.",
+            "nullable": true,
+            "example": "DE"
           },
           "isTeaserCompany": {
             "type": "boolean",
+            "description": "A boolean indicating if the company is a teaser company.",
             "nullable": true
           },
           "website": {
             "type": "string",
-            "nullable": true
+            "description": "The official website URL of the company.",
+            "nullable": true,
+            "example": "www.abccorp.com"
           },
           "parentCompanyLei": {
             "type": "string",
-            "nullable": true
+            "description": "The LEI of the parent company if it exists.",
+            "nullable": true,
+            "example": "5493001KJX4BT0IHAG73"
           }
         }
       },
@@ -14883,30 +15643,41 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "qualityStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
           "currentlyActive": {
             "type": "boolean",
+            "description": "Boolean flag indicating whether the dataset is currently active.",
             "nullable": true
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           }
         }
       },
@@ -14923,26 +15694,37 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "isNonSourceable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason why there is no source available",
+            "example": "Parent Uploaded"
           },
           "creationTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the dataset was created.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -14955,13 +15737,19 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -15083,10 +15871,14 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
@@ -15100,6 +15892,10 @@
           "countryCodes": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The list of country codes in ISO 3166-1 alpha-2 format.",
+            "example": [
+              "DE"
+            ],
             "items": {
               "type": "string"
             }
@@ -15107,6 +15903,10 @@
           "sectors": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The list of sectors.",
+            "example": [
+              "Information Technology"
+            ],
             "items": {
               "type": "string"
             }
@@ -15120,7 +15920,9 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
