@@ -38,7 +38,7 @@
             id="framework-filter"
             filter-placeholder="Search by Frameworks"
             class="search-filter"
-            max-selected-labels="1"
+            max-selected-labels=1
             selected-items-label="{0} frameworks"
           />
           <FrameworkDataSearchDropdownFilter
@@ -51,7 +51,7 @@
             id="framework-filter"
             filter-placeholder="Search by Request Status"
             class="search-filter"
-            max-selected-labels="1"
+            max-selected-labels=1
             selected-items-label="{0} request status"
           />
           <FrameworkDataSearchDropdownFilter
@@ -64,7 +64,7 @@
             id="framework-filter"
             filter-placeholder="Search by Priority"
             class="search-filter"
-            max-selected-labels="1"
+            max-selected-labels=1
             selected-items-label="{0} request priorities"
           />
           <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />

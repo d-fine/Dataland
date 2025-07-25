@@ -9,7 +9,7 @@
         filter-name="Sector"
         id="sector-filter"
         filter-placeholder="Search sectors"
-        max-selected-labels="1"
+        max-selected-labels=1
         selected-items-label="{0} sectors"
         class="search-filter"
         data-test="frameworkDataSearchDropdownFilterSector"
@@ -21,7 +21,7 @@
         filter-name="Country"
         id="country-filter"
         filter-placeholder="Search countries"
-        max-selected-labels="1"
+        max-selected-labels=1
         selected-items-label="{0} companies"
         class="search-filter"
       />
@@ -34,7 +34,7 @@
         id="framework-filter"
         filter-placeholder="Search frameworks"
         selected-items-label="{0} frameworks"
-        max-selected-labels="1"
+        max-selected-labels=1
         class="search-filter"
       />
       <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
