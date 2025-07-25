@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
-import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.e2etests.REVIEWER_EXTENDED_ROLES
 import org.dataland.e2etests.UPLOADER_EXTENDED_ROLES
@@ -340,10 +339,13 @@ class CompanyRolesControllerTest {
         currentAssignments = companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
         assertEquals(1, currentAssignments.size)
         assertEquals(
-            CompanyRoleAssignment(
+            CompanyRoleAssignmentExtended(
                 companyRole = CompanyRole.DataUploader,
                 companyId = companyId.toString(),
                 userId = dataUploaderUserId.toString(),
+                email = "",
+                firstName = null,
+                lastName = null,
             ),
             currentAssignments.first(),
         )
@@ -353,10 +355,13 @@ class CompanyRolesControllerTest {
         currentAssignments = companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
         assertEquals(1, currentAssignments.size)
         assertEquals(
-            CompanyRoleAssignment(
+            CompanyRoleAssignmentExtended(
                 companyRole = CompanyRole.Member,
                 companyId = companyId.toString(),
                 userId = dataUploaderUserId.toString(),
+                email = "",
+                firstName = null,
+                lastName = null,
             ),
             currentAssignments.first(),
         )
