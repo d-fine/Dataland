@@ -8,7 +8,7 @@
       :showToggleAll="false"
       :disabled="isLoading"
       data-test="portfolioSelectionMultiSelect"
-      :max-selected-labels=0
+      :max-selected-labels="0"
       :selected-items-label="selectedItemsLabel"
       :pt="{
         optionLabel: {
