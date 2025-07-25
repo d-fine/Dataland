@@ -172,6 +172,23 @@ export const DatalandPreset = definePreset(Aura, {
         }
       `,
     },
+    card: {
+      root: {
+        borderRadius: '{border.radius.xs}',
+        shadow: '0 1px 10px 0 {gray.300}, 0 1px 2px -1px {gray.300}',
+      },
+      body: {
+        padding: 'var(--spacing-xl)',
+      },
+      title: {
+        fontWeight: 'var(--font-weight-bold)',
+      },
+      css: () => `
+        .p-card-body {
+          text-align: left
+        }
+      `,
+    },
     checkbox: {
       root: {
         borderRadius: '{border.radius.none}',

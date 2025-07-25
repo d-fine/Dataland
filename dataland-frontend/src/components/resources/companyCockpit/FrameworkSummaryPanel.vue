@@ -1,151 +1,189 @@
 <template>
-  <div
-    :class="`summary-panel ${showViewDataButton && !useMobileView ? 'summary-panel--interactive' : ''}`"
+  <Card
     @click="onClickPanel"
+    class="summary-panel"
+    :class="{ 'summary-panel--highlight': (numberOfProvidedReportingPeriods ?? 0) > 0 }"
+    :pt="{
+      body: {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+        },
+      },
+      content: {
+        style: {
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+        },
+      },
+      footer: {
+        style: {
+          marginTop: 'auto',
+          paddingTop: '3rem',
+        },
+      },
+    }"
   >
-    <div>
-      <div class="summary-panel__title">
-        {{ title }}
-      </div>
-      <div class="summary-panel__subtitle" v-if="subtitle">
+    <template #title>{{ title }}</template>
+    <template #subtitle>
+      <template v-if="subtitle">
         {{ subtitle }}
-      </div>
-      <div class="summary-panel__subtitle-placeholder" v-else />
+      </template>
+      <div class="summary-panel__subtitle-placeholder" v-if="!subtitle" />
+    </template>
+    <template #content>
       <div class="summary-panel__separator" />
       <div>
-        <span class="summary-panel__data" v-if="props.numberOfProvidedReportingPeriods != undefined">
+        <span class="summary-panel__data" v-if="numberOfProvidedReportingPeriods != null">
           <span class="summary-panel__value" :data-test="`${framework}-panel-value`">
-            {{ props.numberOfProvidedReportingPeriods }}
+            {{ numberOfProvidedReportingPeriods }}
           </span>
-          <template v-if="props.numberOfProvidedReportingPeriods == 1"> Reporting Period</template>
+          <template v-if="numberOfProvidedReportingPeriods === 1"> Reporting Period</template>
           <template v-else> Reporting Periods</template>
         </span>
       </div>
-    </div>
-    <div>
-      <a
-        v-if="showViewDataButton && !useMobileView"
-        class="summary-panel__button"
-        @click="router.push(`/companies/${props.companyId}/frameworks/${props.framework}`)"
-        :data-test="`${framework}-view-data-button`"
-      >
-        VIEW DATA
-      </a>
-      <a
-        v-if="showProvideDataButton && !useMobileView"
-        class="summary-panel__button mt-2"
-        @click="router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
-        @pointerenter="onCursorEnterProvideButton"
-        @pointerleave="onCursorLeaveProvideButton"
-        :data-test="`${framework}-provide-data-button`"
-      >
-        PROVIDE DATA
-      </a>
-    </div>
-  </div>
+    </template>
+    <template #footer>
+      <div class="stacked-buttons">
+        <Button
+          v-if="showViewDataButton && !useMobileView"
+          @click="router.push(`/companies/${companyId}/frameworks/${framework}`)"
+          :data-test="`${framework}-view-data-button`"
+          label="VIEW DATA"
+          variant="outlined"
+        />
+        <Button
+          v-if="showProvideDataButton && !useMobileView"
+          @click="router.push(`/companies/${companyId}/frameworks/${framework}/upload`)"
+          @pointerenter="onCursorEnterProvideButton"
+          @pointerleave="onCursorLeaveProvideButton"
+          :data-test="`${framework}-provide-data-button`"
+          label="PROVIDE DATA"
+          variant="outlined"
+        />
+      </div>
+    </template>
+  </Card>
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue';
+import { computed, inject, ref } from 'vue';
+import router from '@/router';
 import { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import router from '@/router';
+import Card from 'primevue/card';
+import Button from 'primevue/button';
 
 const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
-  isUserAllowedToUpload: boolean | undefined;
+  isUserAllowedToUpload?: boolean;
 }>();
+
+const provideDataButtonHovered = ref(false);
+const injectedUseMobileView = inject<{ value: boolean }>('useMobileView');
+const useMobileView = computed(() => injectedUseMobileView?.value);
 
 const euTaxonomyFrameworks = new Set<DataTypeEnum>([
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.EutaxonomyNonFinancials,
   DataTypeEnum.NuclearAndGas,
 ]);
+
 const title = computed(() => {
-  if (!euTaxonomyFrameworks.has(props.framework)) {
-    return humanizeStringOrNumber(props.framework as string);
-  } else {
-    return 'EU Taxonomy';
-  }
+  return euTaxonomyFrameworks.has(props.framework) ? 'EU Taxonomy' : humanizeStringOrNumber(props.framework as string);
 });
+
 const subtitle = computed(() => {
-  if (!euTaxonomyFrameworks.has(props.framework)) {
-    return '';
-  } else if (props.framework == DataTypeEnum.EutaxonomyFinancials) {
-    return 'for financial companies';
-  } else if (props.framework == DataTypeEnum.NuclearAndGas) {
-    return 'for nuclear and gas';
-  } else {
-    return 'for non-financial companies';
+  if (!euTaxonomyFrameworks.has(props.framework)) return '';
+  switch (props.framework) {
+    case DataTypeEnum.EutaxonomyFinancials:
+      return 'for financial companies';
+    case DataTypeEnum.NuclearAndGas:
+      return 'for nuclear and gas';
+    default:
+      return 'for non-financial companies';
   }
 });
 
-const injectedUseMobileView = inject<{ value: boolean }>('useMobileView');
-const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
+const hasAccessibleViewPage = computed(
+  () => FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) && !!props.numberOfProvidedReportingPeriods
+);
 
-const showProvideDataButton = computed(() => {
-  return props.isUserAllowedToUpload && FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
-});
+const showProvideDataButton = computed(
+  () => props.isUserAllowedToUpload && FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework)
+);
 
-const showViewDataButton = computed(() => {
-  return !!hasAccessibleViewPage.value;
-});
-
-const hasAccessibleViewPage = computed(() => {
-  return FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) && props.numberOfProvidedReportingPeriods;
-});
-
-let provideDataButtonHovered: boolean = false;
+const showViewDataButton = computed(() => hasAccessibleViewPage.value);
 
 /**
- * If no other clickable component on the panel is hovered and the user can access the viewpage of the provided framework
- * the view page is visited
+ * Handles the panel click event. Navigates to the framework page if
+ * the "Provide Data" button is not hovered and the framework has an accessible view page.
  */
 function onClickPanel(): void {
-  if (!provideDataButtonHovered && hasAccessibleViewPage.value) {
+  if (!provideDataButtonHovered.value && hasAccessibleViewPage.value) {
     void router.push(`/companies/${props.companyId}/frameworks/${props.framework}`);
   }
 }
 
 /**
- * Sets flag for tracking the cursor hovered state of the provide data button to true
+ * Handles the pointer enter event on the "Provide Data" button.
  */
 function onCursorEnterProvideButton(): void {
-  provideDataButtonHovered = true;
+  provideDataButtonHovered.value = true;
 }
 
 /**
- * Sets flag for tracking the cursor hovered state of the provide data button to false
+ * Handles the pointer leave event on the "Provide Data" button.
  */
 function onCursorLeaveProvideButton(): void {
-  provideDataButtonHovered = false;
+  provideDataButtonHovered.value = false;
 }
 </script>
 
 <style scoped lang="scss">
-.summary-panel {
-  width: 100%;
-  background-color: var(--surface-card);
-  padding: var(--spacing-lg);
-  text-align: left;
-  box-shadow: 0 0 12px var(--gray-300);
+.stacked-buttons {
+  margin-top: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 282px;
+  gap: 0.75rem;
+}
 
-  &--interactive {
-    cursor: pointer;
-    box-shadow: 0 0 12px hsl(from var(--primary-color) h 40% l);
+.summary-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
+  .p-card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .p-card-content {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .p-card-footer {
+    margin-top: auto;
+    padding-top: 3rem;
+  }
+
+  &--highlight {
+    box-shadow: 0 1px 10px var(--p-orange-600);
+    transition: box-shadow 0.1s ease;
+
+    /* on hover, make it even bigger */
     &:hover {
-      box-shadow: 0 0 24px 2px hsl(from var(--primary-color) h 40% l);
+      box-shadow: 0 1px 18px var(--p-orange-600);
 
       .summary-panel__separator {
-        border-bottom-color: var(--primary-color);
+        border-bottom-color: var(--p-orange-500);
       }
     }
   }
@@ -174,23 +212,9 @@ function onCursorLeaveProvideButton(): void {
     }
   }
 
-  &__title {
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 27px;
-  }
-
-  &__subtitle {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21px;
-
-    margin-top: 8px;
-  }
-
   &__subtitle-placeholder {
     margin-top: 8px;
-    height: 21px;
+    height: 16px;
   }
 
   &__separator {
@@ -208,21 +232,6 @@ function onCursorLeaveProvideButton(): void {
 
   &__value {
     font-weight: 600;
-  }
-
-  &__button {
-    display: block;
-    cursor: pointer;
-    width: 100%;
-    color: var(--primary-color);
-    border: var(--primary-color) solid 2px;
-    text-decoration-line: none;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
   }
 }
 </style>
