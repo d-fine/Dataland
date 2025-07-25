@@ -100,7 +100,8 @@ function testDownloadPortfolio({
 
     const partialFileNamePrefix = 'data-export-EU Taxonomy Non-Financials';
 
-    cy.get('[data-test="fileTypeSelector"]').select(fileType);
+    cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+    cy.get('.p-select-list-container').contains(fileType).click();
     if (keepValuesOnly) {
       cy.get('[data-test="valuesOnlySwitch"]').click();
     }
@@ -183,7 +184,8 @@ describeIf(
       cy.visitAndCheckAppMount('/portfolios');
       cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
-      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
       reportingYearsToSelect.forEach((year) => {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
       });
@@ -212,8 +214,8 @@ describeIf(
     });
 
     it('Shows that not all reporting periods are clickable when data is missing', () => {
-      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
-
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
       cy.get('[data-test="listOfReportingPeriods"]').should('be.visible');
 
       unavailableYears.forEach((year) => {
