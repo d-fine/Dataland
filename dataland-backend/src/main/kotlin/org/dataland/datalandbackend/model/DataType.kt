@@ -44,6 +44,11 @@ data class DataType
              */
             val values: List<DataType>
                 get() = allowedDataTypes.map { valueOf(it) }
+
+            /**
+             * Checks if a given string is a representation of valid data type
+             */
+            fun isDataType(testString: String) = values.any { it.toString() == testString }
         }
 
         init {

@@ -357,4 +357,27 @@ interface MetaDataApi {
         @ReportingPeriodParameterNonRequired
         reportingPeriods: List<String>? = null,
     ): ResponseEntity<List<BasicDataDimensions>>
+
+    /**
+     * A method to retrieve all meta data for active datasets matching the provided data dimensions.
+     * @param dataDimensions a list of data dimensions to search for
+     */
+    @Operation(
+        summary = "Checks if active datasets are available.",
+        description =
+            "Checks if any active datasets are available applying the provided data dimensions " +
+                "and returns the corresponding meta data.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta data of active datasets."),
+        ],
+    )
+    @PostMapping(
+        value = ["/active-dataset-search"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun retrieveMetaDataOfActiveDatasets(
+        @RequestBody dataDimensions: List<BasicDataDimensions>,
+    ): ResponseEntity<List<DataMetaInformation>>
 }
