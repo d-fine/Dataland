@@ -1,13 +1,13 @@
+import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
+import router from '@/router';
+import { DataTypeEnum } from '@clients/backend';
 import {
   AccessStatus,
   type ExtendedStoredDataRequest,
   RequestPriority,
   RequestStatus,
 } from '@clients/communitymanager';
-import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { DataTypeEnum } from '@clients/backend';
-import router from '@/router';
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
 const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'STATUS'];
@@ -171,14 +171,14 @@ describe('Component tests for the data requests search page', function (): void 
     expectedHeaders.forEach((value) => {
       cy.get(`table th:contains(${value})`).should('exist');
     });
-    cy.get('[data-test="requested-Datasets-searchbar"]')
+    cy.get('[data-test="requested-datasets-searchbar"]')
       .should('exist')
       .should('not.be.disabled')
       .type(inputValue)
       .should('have.value', inputValue)
       .invoke('attr', 'placeholder')
       .should('contain', placeholder);
-    cy.get('[data-test="requested-Datasets-frameworks"]').should('exist');
+    cy.get('[data-test="requested-datasets-frameworks"]').should('exist');
   });
 
   it('Check the content of the data table', function (): void {
@@ -221,13 +221,13 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="requested-Datasets-searchbar"]')
+      cy.get('[data-test="requested-datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
         .clear()
         .type('companyNotAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('not.exist');
-      cy.get('[data-test="requested-Datasets-searchbar"]')
+      cy.get('[data-test="requested-datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
         .clear()
@@ -252,20 +252,24 @@ describe('Component tests for the data requests search page', function (): void 
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
-    }).then((mounted) => {
-      void mounted.wrapper.setData({
-        selectedFrameworks: [],
-      });
+    }).then(() => {
+      cy.get('[data-test="requested-datasets-frameworks"]')
+        .click()
+        .get('.p-multiselect-option')
+        .contains('LkSG')
+        .click();
+      cy.get('[data-test="requested-datasets-frameworks"]').click();
       expectedFrameworkNameSubstrings.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should('not.exist');
       });
-      cy.get('[data-test=reset-filter]').should('exist').click();
+      cy.get('[data-test="reset-filter"]').should('exist').click();
       expectedFrameworkNameSubstrings.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should('exist');
       });
       cy.get(`table tbody:contains("SME")`).should('not.exist');
     });
   });
+
   it('Check the functionality of rowClick event', function (): void {
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,

@@ -2,10 +2,9 @@
   <div :data-test="dataTest" class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
     <div data-test="toggleDataPointWrapper">
       <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
-        <InputSwitch
+        <ToggleSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
-          @click="handleToggleClick"
           v-model="dataPointIsAvailable"
         />
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
@@ -131,7 +130,7 @@
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
 import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
@@ -147,7 +146,7 @@ import type { DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 export default defineComponent({
   name: 'ExtendedDataPointFormField',
-  components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, UploadFormHeader, FormKit, ToggleSwitch },
   inject: {
     injectReportsNameAndReferences: {
       from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
@@ -248,12 +247,6 @@ export default defineComponent({
       }
     },
     /**
-     * Toggle dataPointIsAvailable variable value
-     */
-    handleToggleClick(): void {
-      this.dataPointIsAvailable = !this.dataPointIsAvailable;
-    },
-    /**
      * updateCurrentValue
      * @param checkboxValue checkboxValue
      */
@@ -270,3 +263,19 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.bordered-box {
+  border: 2px dotted var(--input-separator);
+  padding: 16px;
+}
+
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

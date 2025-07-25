@@ -251,3 +251,62 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.d-card {
+  background: var(--default-neutral-white);
+  padding: var(--spacing-md);
+  box-shadow: 0 0 3px 3px var(--shadow-color);
+}
+
+.top-border-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--input-separator);
+}
+
+.bottom-border-section-dots {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dotted var(--input-separator);
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+}
+</style>

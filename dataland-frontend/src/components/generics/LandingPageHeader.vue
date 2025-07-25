@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import AuthSection from '@/components/resources/newLandingPage/AuthSection.vue';
+import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 import type { Page } from '@/types/ContentTypes';
@@ -34,8 +34,6 @@ const isActiveAbout = computed(() => route.path === '/about');
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -66,7 +64,7 @@ const isActiveAbout = computed(() => route.path === '/about');
   }
 
   &__link {
-    color: var(--basic-dark);
+    color: var(--p-highlight-color);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -77,23 +75,24 @@ const isActiveAbout = computed(() => route.path === '/about');
     border-bottom: 2px solid transparent;
     &:hover,
     &.active-link {
-      color: var(--primary-orange);
-      border-bottom: 2px solid var(--primary-orange);
+      color: var(--p-primary-color);
+      border-bottom: 2px solid var(--p-primary-color);
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+@media screen and (max-width: 768px) {
   .header {
-    padding: 16px;
+    padding: 1rem;
     margin: 0;
     width: 100%;
     border-radius: 0;
-    &__logo {
+    flex-direction: column;
+    .header__logo {
       img {
         width: 79px;
       }
     }
-    &__navigation {
+    .header__navigation {
       display: none;
     }
   }

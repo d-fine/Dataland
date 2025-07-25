@@ -43,3 +43,8 @@ const handleDocumentDownload = async (): Promise<void> => {
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
 };
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

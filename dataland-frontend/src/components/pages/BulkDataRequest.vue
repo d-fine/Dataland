@@ -1,12 +1,8 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section no-ui-message">
-      <div class="col-12 mb-2 bg-white">
-        <div class="text-left company-details px-4">
-          <h1 data-test="headerLabel">Bulk Data Request</h1>
-        </div>
-      </div>
+    <TheContent class="no-ui-message">
+      <h1 data-test="headerLabel" class="header">Bulk Data Request</h1>
 
       <div class="col-12">
         <FormKit
@@ -17,7 +13,7 @@
           id="requestDataFormId"
           name="requestDataFormName"
         >
-          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper align-items-center">
+          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
               <div class="col-12">
                 <div class="status text-center">
@@ -29,17 +25,18 @@
                   <template v-else>
                     <div class="status text-center col-8 col-offset-2">
                       <div class="status-wrapper">
-                        <div v-if="requestSuccessStatus == 'Success'" class="status-container">
-                          <em class="material-icons info-icon green-text mr-2">check_circle</em>
-                          <h1 class="status-text" data-test="requestStatusText">Success</h1>
+                        <div v-if="requestSuccessStatus == 'Success'" class="status-container status-success">
+                          <i class="pi pi-check-circle" /> <span data-test="requestStatusText">Success</span>
                         </div>
-                        <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container">
-                          <em class="material-icons info-icon info-color-text mr-2">info</em>
-                          <h1 class="status-text" data-test="requestStatusText">Partial Success</h1>
+                        <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container status-warn">
+                          <i class="pi pi-info-circle" /> <span data-test="requestStatusText">Partial Success</span>
                         </div>
-                        <div v-if="!isSuccessful || requestSuccessStatus == 'No Success'" class="status-container">
-                          <em class="material-icons info-icon red-text mr-2">error</em>
-                          <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+                        <div
+                          v-if="!isSuccessful || requestSuccessStatus == 'No Success'"
+                          class="status-container status-error"
+                        >
+                          <i class="pi pi-exclamation-circle" />
+                          <span data-test="requestStatusText">Request Unsuccessful</span>
                         </div>
                       </div>
                       <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
@@ -49,6 +46,7 @@
                         @click="goToMyRequests()"
                         label="TO MY DATA REQUESTS"
                         class="uppercase p-button-outlined"
+                        data-test="go-to-my-requests-button"
                       />
                     </div>
                     <BulkDataRequestSummary
@@ -122,12 +120,16 @@
 
                     <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
                       Receive emails directly or via summary
-                      <InputSwitch
-                        class="p-inputswitch p-inputswitch-slider"
+                      <ToggleSwitch
                         style="display: block; margin: 1rem 0"
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
                         v-model="notifyMeImmediately"
+                        :pt="{
+                          input: {
+                            'data-test': 'notifyMeImmediatelyInputToClick',
+                          },
+                        }"
                       />
                       <label for="notifyMeImmediatelyInput">
                         <strong v-if="notifyMeImmediately">immediate update</strong>
@@ -156,7 +158,7 @@
                     <PrimeButton
                       type="submit"
                       label="Submit"
-                      class="primary-button align-self-end"
+                      class="align-self-end"
                       name="submit_request_button"
                       @click="checkReportingPeriods()"
                     >
@@ -195,7 +197,7 @@ import { FormKit } from '@formkit/vue';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -204,7 +206,7 @@ export default defineComponent({
     BulkDataRequestSummary,
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
-    InputSwitch,
+    ToggleSwitch,
     TheHeader,
     TheContent,
     TheFooter,
@@ -404,49 +406,20 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
+.header {
+  width: 100%;
+  text-align: left;
+  margin: var(--spacing-lg);
+}
 
 .uploadFormWrapper {
   min-height: calc(100vh - 200px);
-
-  .status {
-    .status-text {
-      font-weight: 700;
-      font-size: 48px;
-      line-height: 48px;
-      letter-spacing: 0.25px;
-    }
-
-    .info-icon {
-      font-size: 48px;
-    }
-  }
+  text-align: left;
+  background-color: var(--p-surface-50);
 
   div.summary-section {
     &.border-bottom {
       border-bottom: 1px solid #dadada;
-    }
-
-    .summary-section-heading {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 20px;
-
-      .info-icon {
-        margin-bottom: -2px;
-        vertical-align: bottom;
-      }
-    }
-
-    .summary-section-data {
-      font-weight: 700;
-
-      .identifier {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 26px;
-        letter-spacing: 0.44px;
-      }
     }
   }
 }
@@ -458,17 +431,39 @@ export default defineComponent({
 }
 
 .status-container {
-  display: flex;
-  align-items: center;
-}
+  font-weight: var(--font-weight-bold);
+  line-height: 3rem;
+  letter-spacing: 0.25px;
 
-.info-color-text {
-  color: variables.$orange-prime;
+  span {
+    font-size: 3rem;
+  }
+
+  i {
+    font-size: 2.5rem;
+    padding-right: var(--spacing-sm);
+  }
+
+  &.status-success {
+    color: var(--p-green-600);
+  }
+
+  &.status-warn {
+    color: var(--p-amber-500);
+  }
+
+  &.status-error {
+    color: var(--p-red-500);
+  }
 }
 
 .no-framework {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.radius-1 {
+  border-radius: var(--p-border-radius-xs);
 }
 </style>

@@ -17,7 +17,7 @@
             v-for="selection of selections"
             data-test="applicableHighImpactClimateSector"
             :key="selection"
-            class="bordered-box p-3 positionRelative col-12 mb-4"
+            class="bordered-box p-3 relative col-12 mb-4"
           >
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
@@ -95,3 +95,51 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.bordered-box {
+  border: 2px dotted var(--input-separator);
+  padding: 16px;
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.grid-2-form-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  > div:nth-child(even) {
+    border-left: 1px solid var(--table-border);
+    padding: 0 0 0 20px;
+  }
+
+  > div:nth-child(odd) {
+    border: 0 none;
+    padding: 0 20px 0 0;
+  }
+
+  grid-gap: 10px;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    > div:nth-child(even) {
+      border: 0 none;
+      padding: 0;
+    }
+    > div:nth-child(odd) {
+      padding: 0;
+    }
+    > div {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.gray-closeIcon {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: var(--gray);
+}
+</style>

@@ -2,65 +2,57 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="3">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+          <div class="container">
+            <div class="company-search" data-test="companySearchBarWithMessage">
+              <IconField id="company-search-bar">
+                <InputIcon class="pi pi-search" />
                 <InputText
                   data-test="companyNameSearchbar"
                   v-model="searchBarInput"
                   placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
+                  fluid
+                  variant="filled"
                 />
-              </span>
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <Calendar
-                  data-test="reportingPeriod"
-                  v-model="availableReportingPeriods"
-                  placeholder="Search by reporting period"
-                  :showIcon="true"
-                  :manualInput="false"
-                  view="year"
-                  dateFormat="yy"
-                  selectionMode="multiple"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="framework-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Frameworks"
-                class="ml-3"
-                style="margin: 15px"
-              />
-
-              <div class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </div>
-
-              <div class="flex align-items-center ml-auto" style="margin: 15px">
-                <span>{{ numberOfUnreviewedDatasets }}</span>
-              </div>
-            </span>
-            <div class="pb-2 ml-3 flex justify-content-start">
-              <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+              </IconField>
+              <Message severity="error" variant="simple" size="small" v-if="showNotEnoughCharactersWarning">
+                Please type at least 3 characters
+              </Message>
             </div>
+
+            <DatePicker
+              class="search-filter"
+              data-test="reportingPeriod"
+              v-model="availableReportingPeriods"
+              placeholder="Search by reporting period"
+              :showIcon="true"
+              :manualInput="false"
+              view="year"
+              dateFormat="yy"
+              selectionMode="multiple"
+            />
+
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              class="search-filter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="framework-picker"
+              id="framework-filter"
+              filter-placeholder="Search by Frameworks"
+              :max-selected-labels="1"
+              selected-items-label="{0} frameworks selected"
+            />
+
+            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
+            <Message
+              class="info-message"
+              variant="simple"
+              severity="secondary"
+              data-test="showingNumberOfUnreviewedDatasets"
+              >{{ numberOfUnreviewedDatasets }}</Message
+            >
           </div>
 
           <div class="col-12 text-left p-3">
@@ -153,10 +145,14 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';
 import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import PrimeButton from 'primevue/button';
+import Message from 'primevue/message';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
@@ -172,7 +168,11 @@ export default defineComponent({
     DataTable,
     Column,
     InputText,
-    Calendar,
+    InputIcon,
+    IconField,
+    PrimeButton,
+    DatePicker,
+    Message,
   },
   setup() {
     return {
@@ -352,8 +352,45 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+.container {
+  margin: 0;
+  width: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: start;
+
+  .company-search {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+  }
+
+  .search-filter {
+    width: 15%;
+    text-align: left;
+  }
+
+  .info-message:last-child {
+    margin-left: auto;
+    margin-top: var(--spacing-xs);
+  }
+}
+
 #qa-data-result tr:hover {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.text-primary {
+  color: var(--main-color);
 }
 </style>

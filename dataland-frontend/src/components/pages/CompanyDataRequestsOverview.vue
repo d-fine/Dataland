@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="5">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div
             id="searchBarAndFiltersContainer"
@@ -25,7 +25,7 @@
                 :available-items="availableFrameworks"
                 filter-name="Framework"
                 data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
+                id="framework-filter"
                 filter-placeholder="Search frameworks"
                 class="ml-3"
                 style="margin: 15px"
@@ -36,7 +36,7 @@
                 :available-items="availableAccessStatus"
                 filter-name="Access Status"
                 data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
+                id="framework-filter"
                 filter-placeholder="access status"
                 class="ml-3"
                 style="margin: 15px"
@@ -430,5 +430,25 @@ export default defineComponent({
 <style scoped>
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
 }
 </style>

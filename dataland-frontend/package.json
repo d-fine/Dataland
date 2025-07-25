@@ -28,6 +28,8 @@
     "@formkit/themes": "^1.6.9",
     "@formkit/vue": "^1.6.9",
     "@ibm/plex": "^6.4.1",
+    "@primeuix/themes": "^1.1.1",
+    "@primevue/core": "^4.3.6",
     "axios": "^1.10.0",
     "currency-codes": "^2.2.0",
     "i18n-iso-countries": "^7.14.0",
@@ -37,7 +39,7 @@
     "pinia-shared-state": "^1.0.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
-    "primevue": "~3.44.0",
+    "primevue": "^4.3.6",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
   },

@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :landingPage="landingPage" />
+  <LandingPageHeader :landingPage="landingPage" />
   <main role="main">
     <TheAboutIntro :sections="aboutPage?.sections" />
     <TheAboutPrinciples :sections="aboutPage?.sections" />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import TheHeader from '@/components/generics/TheNewHeader.vue';
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheAboutIntro from '@/components/resources/aboutPage/TheAboutIntro.vue';
 import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -21,11 +21,9 @@ const aboutPage: Page | undefined = content.pages.find((page) => page.url === '/
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 main {
   margin-top: 132px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: 768px) {
     margin-top: 80px;
   }
 }

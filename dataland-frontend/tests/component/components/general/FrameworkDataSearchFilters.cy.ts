@@ -17,25 +17,26 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       return cy.wrap(mounted.wrapper).as('vue');
     });
 
-    cy.get('#country-filter').click();
-    cy.get('span').contains('Germany').click();
-
-    cy.get('#sector-filter').click();
+    cy.get('[data-test="reset-filter"]').click();
+    cy.get('[data-test="frameworkDataSearchDropdownFilterSector"]').click();
     cy.get('span').contains('DummySector').click();
+    cy.get('.p-multiselect-overlay').invoke('hide');
 
     // Ignored as TS does not understand that "vue" is not a JQuery Component but rather the whole wrapper
+    cy.get('#country-filter').click();
+    cy.get('span').contains('Germany').click();
 
     // @ts-ignore
     cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
       const emittedCountryCodes = wrapper.emitted('update:selectedCountryCodes');
       expect(emittedCountryCodes).to.have.length;
       const emittedCountryCodesDefined = assertDefined(emittedCountryCodes);
-      expect(emittedCountryCodesDefined[0][0]).to.deep.equal(['DE']);
+      expect(emittedCountryCodesDefined[emittedCountryCodes.length - 1][0]).to.deep.equal(['DE']);
 
       const emittedSectors = wrapper.emitted('update:selectedSectors');
       expect(emittedSectors).to.have.length;
       const emittedSectorsDefined = assertDefined(emittedSectors);
-      expect(emittedSectorsDefined[0][0]).to.deep.equal(['DummySector']);
+      expect(emittedSectorsDefined[emittedSectors.length - 1][0]).to.deep.equal(['DummySector']);
     });
   });
 });

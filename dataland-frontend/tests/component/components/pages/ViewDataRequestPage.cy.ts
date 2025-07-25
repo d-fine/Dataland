@@ -235,8 +235,8 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="reopenModal"]').within(() => {
       cy.get('[data-test="reopenMessage"]').should('be.visible');
       cy.get('[data-test="reopenMessage"]').type('Make the test work, please!');
-      cy.get('[data-test="reopenButton"]').should('be.visible');
-      cy.get('[data-test="reopenButton"]').contains('REOPEN REQUEST').click();
+      cy.get('[data-test="reopenRequestButton"]').should('be.visible');
+      cy.get('[data-test="reopenRequestButton"]').contains('REOPEN REQUEST').click();
     });
     cy.get('[data-test="reopenModal"]').should('not.exist');
     cy.get('[data-test="reopenedModal"]').should('exist').should('be.visible').contains('CLOSE').click();

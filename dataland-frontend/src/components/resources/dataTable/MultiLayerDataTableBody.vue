@@ -52,8 +52,11 @@
           v-show="isVisible"
         >
           <td :colspan="dataAndMetaInfo.length + 1" :class="isTopLevel ? 'pl-2' : null">
-            <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
-            <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
+            <i
+              v-if="expandedSections.has(idx)"
+              class="pi pi-chevron-down p-icon p-row-toggler-icon absolute right-0 mr-3"
+            />
+            <i v-else class="pi pi-chevron-left p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <i
               v-if="shouldAddCrossedEyeSymbolToSectionLabel(cellOrSectionConfig) && inReviewMode"
               class="pi pi-eye-slash pr-1 text-red-500"
@@ -80,28 +83,17 @@
   </template>
 </template>
 
-<style scoped>
-.vertical-align-top {
-  vertical-align: top;
-}
-.header-column-width {
-  width: 30%;
-}
-</style>
-
 <script setup lang="ts" generic="T">
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
+import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import {
   isCellOrSectionVisible,
   type MLDTConfig,
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronLeftIcon from 'primevue/icons/chevronleft';
-import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
-import { computed, onMounted, ref } from 'vue';
-import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import Tooltip from 'primevue/tooltip';
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import { computed, onMounted, ref } from 'vue';
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
@@ -159,3 +151,16 @@ onMounted(() => {
   expandSectionsOnPageLoad();
 });
 </script>
+
+<style scoped>
+.info-icon {
+  cursor: help;
+}
+
+.vertical-align-top {
+  vertical-align: top;
+}
+.header-column-width {
+  width: 30%;
+}
+</style>

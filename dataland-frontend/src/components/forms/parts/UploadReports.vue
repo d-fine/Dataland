@@ -286,10 +286,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.p-button-edit-reports {
-  width: 1rem;
-  border-radius: 50%;
-  height: 1rem;
-  padding: 12px;
+.display-contents {
+  display: contents;
+}
+
+.bordered-box {
+  border: 2px dotted var(--input-separator);
+  padding: 16px;
 }
 </style>
