@@ -55,6 +55,9 @@ class CompanyRolesManagerTest {
         objectMapper
             .readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/dummyKeycloakUserInfo.json"))
     private val testUserId = dummyKeycloakUserInfo.userId
+    private val testEmail = dummyKeycloakUserInfo.email
+    private val testFirstName = dummyKeycloakUserInfo.firstName
+    private val testLastName = dummyKeycloakUserInfo.lastName
 
     private val deletedUserKeycloakUserInfo =
         objectMapper.readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/deletedUserKeycloakUserInfo.json"))
@@ -89,8 +92,12 @@ class CompanyRolesManagerTest {
             File("$filePathToTestFixtures/nonExistingCompanyRoleAssignmentId.json"),
         )
 
+    private val companyNotFound = "Company not found"
+    private val companyIdNotKnown = "Dataland does not know the company ID $nonExistingCompanyId"
+    private val companyRoleNotAssigned = "Company role is not assigned to user"
+
     @BeforeEach
-    fun setup() {
+    fun resetMocks() {
         reset(
             mockCompanyInfoService,
             mockCompanyRoleAssignmentRepository,
@@ -98,7 +105,10 @@ class CompanyRolesManagerTest {
             mockCompanyOwnershipRequestedEmailMessageBuilder,
             mockKeycloakUserService,
         )
+    }
 
+    @BeforeEach
+    fun setupMocks() {
         doReturn(5)
             .whenever(mockCompanyOwnershipAcceptedEmailMessageBuilder)
             .getNumberOfOpenDataRequestsForCompany(anyString())
@@ -114,16 +124,16 @@ class CompanyRolesManagerTest {
         doNothing().whenever(mockCompanyInfoService).assertCompanyIdIsValid(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland does not know the company ID $nonExistingCompanyId",
+                companyNotFound,
+                companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).assertCompanyIdIsValid(nonExistingCompanyId)
 
         doReturn(testCompanyName).whenever(mockCompanyInfoService).getValidCompanyName(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland does not know the company ID $nonExistingCompanyId",
+                companyNotFound,
+                companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).getValidCompanyName(nonExistingCompanyId)
 
@@ -146,7 +156,10 @@ class CompanyRolesManagerTest {
         doReturn(true)
             .whenever(mockCompanyRoleAssignmentRepository)
             .existsById(existingCompanyRoleAssignmentId)
+    }
 
+    @BeforeEach
+    fun initializeCompanyRolesManager() {
         companyRolesManager =
             CompanyRolesManager(
                 mockCompanyInfoService,
@@ -162,10 +175,10 @@ class CompanyRolesManagerTest {
         val exception =
             assertThrows<ResourceNotFoundApiException> {
                 companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(
-                    "non-existing-company-id",
+                    nonExistingCompanyId,
                 )
             }
-        assertTrue(exception.summary.contains("Company not found"))
+        assertTrue(exception.summary.contains(companyNotFound))
     }
 
     @Test
@@ -196,7 +209,7 @@ class CompanyRolesManagerTest {
                 )
             }
         verifyNoInteractions(mockCompanyOwnershipAcceptedEmailMessageBuilder)
-        assertTrue(exception.summary.contains("Company not found"))
+        assertTrue(exception.summary.contains(companyNotFound))
     }
 
     @Test
@@ -233,9 +246,9 @@ class CompanyRolesManagerTest {
                 companyRole = CompanyRole.CompanyOwner,
                 companyId = existingCompanyId,
                 userId = testUserId,
-                email = "test@example.com",
-                firstName = "Jane",
-                lastName = "Doe",
+                email = testEmail!!,
+                firstName = testFirstName,
+                lastName = testLastName,
             ),
             extendedCompanyRoleAssignments.first(),
         )
@@ -276,7 +289,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains("Company not found"))
+        assertTrue(exception.summary.contains(companyNotFound))
     }
 
     @Test
@@ -289,7 +302,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains("Company role is not assigned to user"))
+        assertTrue(exception.summary.contains(companyRoleNotAssigned))
     }
 
     @Test
@@ -319,7 +332,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains("Company not found"))
+        assertTrue(exception.summary.contains(companyNotFound))
     }
 
     @Test
@@ -332,7 +345,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains("Company role is not assigned to user"))
+        assertTrue(exception.summary.contains(companyRoleNotAssigned))
     }
 
     @Test
