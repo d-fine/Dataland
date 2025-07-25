@@ -24,7 +24,7 @@ data class CompanyRolePost(
     @field:JsonProperty(required = false)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: UUID?,
     @field:JsonProperty(required = false)

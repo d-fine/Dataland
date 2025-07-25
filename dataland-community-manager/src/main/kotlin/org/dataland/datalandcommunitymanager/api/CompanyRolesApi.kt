@@ -112,7 +112,7 @@ interface CompanyRolesApi {
         @RequestParam("userId", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
             required = false,
         )
         userId: UUID? = null,

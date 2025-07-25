@@ -52,7 +52,8 @@ class CompanyRolesManager(
         val companyName = companyInfoService.getValidCompanyName(companyId)
         val correlationId = UUID.randomUUID().toString()
 
-        val userId = if (identifierIsUserId) userIdentifier else keycloakUserService.findUserByEmail(userIdentifier)?.userId
+        val userId =
+            if (identifierIsUserId) userIdentifier else keycloakUserService.findUserByEmail(userIdentifier)?.userId
 
         if (userId == null) {
             throw ResourceNotFoundApiException(
@@ -218,6 +219,22 @@ class CompanyRolesManager(
                 "Company with $companyId has no company owner(s).",
             )
         }
+    }
+
+    /**
+     * Verifies if the user with the specified userId has the role CompanyOwner or MemberAdmin for
+     * at least one company on Dataland.
+     */
+    @Transactional(readOnly = true)
+    fun currentUserIsOwnerOrAdminOfAtLeastOneCompany(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId
+        if (userId == null) return false
+        return companyRoleAssignmentRepository
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null, userId = userId, companyRole = null,
+            ).any {
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)
+            }
     }
 
     /**

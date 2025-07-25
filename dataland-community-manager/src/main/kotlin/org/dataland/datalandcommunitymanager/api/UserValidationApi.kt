@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 
 /**
@@ -19,16 +18,16 @@ interface UserValidationApi {
      */
     @Operation(
         summary = "Obtain user-related information from an email address.",
-        description = "Based on an email address, return Dataland user ID, first and last name."
+        description = "Based on an email address, return Dataland user ID, first and last name.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved user information."),
             ApiResponse(
                 responseCode = "403",
-                description = "You do not have permission to query user information based on email addresses."
+                description = "You do not have permission to query user information based on email addresses.",
             ),
-            ApiResponse(responseCode = "404", description = "No Dataland user is registered under this email address.")
+            ApiResponse(responseCode = "404", description = "No Dataland user is registered under this email address."),
         ],
     )
     @PostMapping(
@@ -37,7 +36,7 @@ interface UserValidationApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-                "@CompanyRolesManager.getCompanyRoleAssignmentsByParameters(CompanyRole.ADMIN, null, DatalandAuthentication.fromContext().userId)"
+        "hasRole('ROLE_ADMIN') or @CompanyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany()",
     )
+    fun getUserInformationByEmailAddress(email: String)
 }
