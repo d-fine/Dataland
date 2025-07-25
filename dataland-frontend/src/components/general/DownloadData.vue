@@ -1,8 +1,7 @@
 <template data-test="downloadModal">
   <div class="download-content d-flex flex-column">
-      <label for="fileTypeSelector" class="header-styling">
-        Framework
-      </label>
+    <div>
+      <p class="header-styling">Framework</p>
       <Select
         class="component-styling"
         :options="availableFrameworks"
@@ -15,26 +14,32 @@
         :highlightOnSelect="false"
         @input="onFrameworkChange"
       />
-      <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
-      <label for="reportingYearSelector" class="header-styling">
-        Reporting Period
-      </label>
-      <div class="flex flex-wrap gap-2 py-2">
-        <ToggleChipFormInputs
-          :key="selectedFramework || 'no-framework'"
-          name="listOfReportingPeriods"
-          :selectedOptions="selectableReportingPeriodOptions"
-          :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
-          data-test="listOfReportingPeriods"
-          class="toggle-chip-group"
-        />
-      </div>
-      <p v-show="showReportingPeriodError" class="red-text" data-test="reportingYearError">
+      <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
+        Please select a framework.
+      </Message>
+    </div>
+    <div>
+      <p class="header-styling">Reporting Period</p>
+      <ToggleChipFormInputs
+        :key="selectedFramework || 'no-framework'"
+        name="listOfReportingPeriods"
+        :selectedOptions="selectableReportingPeriodOptions"
+        :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
+        data-test="listOfReportingPeriods"
+        class="toggle-chip-group"
+      />
+      <Message
+        v-if="showReportingPeriodError"
+        severity="error"
+        variant="simple"
+        size="small"
+        data-test="reportingYearError"
+      >
         Please select a reporting period.
-      </p>
-      <label for="reportingYearSelector" class="header-styling">
-        File type
-      </label>
+      </Message>
+    </div>
+    <div>
+      <p class="header-styling">File type</p>
       <Select
         v-model="selectedFileType"
         type="select"
@@ -44,35 +49,38 @@
         option-value="value"
         placeholder="Select a file type"
         @change="showFileTypeError = false"
-        style="margin-bottom:var(--spacing-md)"
         :highlightOnSelect="false"
+        fluid
       />
-      <p v-show="showFileTypeError" class="red-text" data-test="fileTypeError">Please select a file type.</p>
-      <div class="flex align-content-start align-items-center">
+      <Message v-if="showFileTypeError" severity="error" variant="simple" size="small" data-test="fileTypeError">
+        Please select a file type.
+      </Message>
+    </div>
+    <div>
+      <div class="toggle-switch-wrapper">
         <ToggleSwitch
           v-model="keepValuesOnly"
-          class="form-field vertical-middle"
           data-test="valuesOnlySwitch"
           @change="!keepValuesOnly ? (includeAlias = false) : includeAlias"
         />
-        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
+        <p data-test="portfolioExportValuesOnlyToggleCaption">Values only</p>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3" style="margin-bottom: 2rem; display: block">
+      <div class="dataland-info-text">
         Download only data values. Turn off to include additional details, e.g. comment, data source, etc. Only
         applicable for CSV and Excel file types.
-      </span>
-      <div class="flex align-content-start align-items-center">
-        <ToggleSwitch
-          v-model="includeAlias"
-          class="form-field vertical-middle"
-          data-test="includeAliasSwitch"
-          @change="includeAlias ? (keepValuesOnly = true) : keepValuesOnly"
-        />
-        <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten field names </span>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3">
-        Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
-      </span>
+    </div>
+    <div class="toggle-switch-wrapper">
+      <ToggleSwitch
+        v-model="includeAlias"
+        data-test="includeAliasSwitch"
+        @change="includeAlias ? (keepValuesOnly = true) : keepValuesOnly"
+      />
+      <p data-test="portfolioExportIncludeAliasToggleCaption">Shorten field names</p>
+    </div>
+    <div class="dataland-info-text">
+      Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
+    </div>
     <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
       {{ dialogRef?.data?.downloadErrors }}
     </Message>
@@ -242,20 +250,22 @@ function checkIfShowErrors(): void {
 </script>
 
 <style scoped>
-
-.red-text {
-  color: var(--red);
+.toggle-switch-wrapper {
+  display: flex;
+  align-items: center;
+  align-content: flex-start;
+  gap: var(--spacing-xs);
 }
 
-.header-styling{
-  margin-bottom: var(--spacing-xs);
+.header-styling {
   font-weight: var(--font-weight-bold);
 }
 
-.component-styling{
+.component-styling {
   margin-bottom: var(--spacing-xs);
   width: 100%;
 }
+
 .download-content {
   width: 20em;
   height: 100%;
@@ -265,6 +275,7 @@ function checkIfShowErrors(): void {
   display: flex;
   flex-direction: column;
 }
+
 .toggle-chip-group {
   display: flex;
   flex-wrap: wrap;
