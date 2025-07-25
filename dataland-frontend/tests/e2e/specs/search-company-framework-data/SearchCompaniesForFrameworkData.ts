@@ -27,7 +27,7 @@ describeIf(
   () => {
     /**
      * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
-     * format and the url includes the search term
+     * format, and the url includes the search term
      * @param inputValue the text to enter into the search bar
      */
     function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
@@ -153,13 +153,13 @@ describeIf(
       });
     }
 
-    it("Search with autocompletion for companies with 'abs' in it, click and use arrow keys, find searched company in recommendation", () => {
+    it.only('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
-            const testCompany = basicCompanyInformations[1];
+          (basicCompanyInformation: Array<BasicCompanyInformation>) => {
+            const testCompany = basicCompanyInformation[1];
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();
@@ -168,21 +168,22 @@ describeIf(
 
             verifySearchResultTableExists();
             cy.url().should('include', '/companies?input=abs');
-            cy.get('input[id=search-bar-input]').click({ force: true });
+            cy.scrollTo('top');
+            cy.get('input[id=search-bar-input]').click();
             cy.get('input[id=search-bar-input]').type(
               `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
             );
             cy.get('.p-autocomplete-list-container').should('exist');
-            cy.get('input[id=search-bar-input]').type('{downArrow}');
+            cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search-bar-input]').type('{downArrow}');
+            cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search-bar-input]').type('{upArrow}');
+            cy.get('input[id=search-bar-input]').type('{upArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search-bar-input]').click({ force: true });
+            cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
             cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
             assertSearchedCompanyNameIsUnique(testCompany);
 
