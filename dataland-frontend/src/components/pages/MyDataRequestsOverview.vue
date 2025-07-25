@@ -25,7 +25,7 @@
               id="framework-filter"
               filter-placeholder="Search frameworks"
               class="search-filter"
-              max-selected-labels="1"
+              :max-selected-labels="1"
               selected-items-label="{0} frameworks selected"
             />
 
@@ -38,7 +38,7 @@
               id="access-status-filter"
               filter-placeholder="access status"
               class="search-filter"
-              max-selected-labels="1"
+              :max-selected-labels="1"
               selected-items-label="{0} status selected"
             />
             <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />

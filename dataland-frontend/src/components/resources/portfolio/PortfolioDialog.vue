@@ -4,7 +4,7 @@
       <p class="header-styling">Portfolio Name</p>
       <InputText
         v-model="portfolioName"
-        name="portfolioName"
+        name="portfolio-name"
         data-test="portfolio-name-input"
         :placeholder="portfolioName"
         fluid
@@ -46,14 +46,12 @@
         </li>
       </ul>
     </div>
-    <div data-test="error" class="red-text">
-      <Message v-if="isValidPortfolioUpload" severity="error" variant="simple" size="small">
-        Please provide a portfolio name and at least one company.
-      </Message>
-      <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
-        {{ portfolioErrors }}
-      </Message>
-    </div>
+    <Message v-if="!isValidPortfolioUpload" severity="error" variant="simple" size="small">
+      Please provide a portfolio name and at least one company.
+    </Message>
+    <Message v-if="portfolioErrors" severity="error" :life="3000" data-test="unknown-portfolio-error">
+      {{ portfolioErrors }}
+    </Message>
     <div class="buttonbar">
       <PrimeButton
         v-if="portfolioId"
@@ -128,10 +126,6 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
-
-console.log('NAME', portfolioName.value);
-console.log('FRAMEWORKS', portfolioFrameworks.value);
-console.log('COMPANIES', portfolioCompanies.value);
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -310,9 +304,5 @@ i.pi-trash {
   color: var(--primary-color);
   margin-right: 0.25em;
   cursor: pointer;
-}
-
-.gray-text {
-  color: var(--gray);
 }
 </style>
