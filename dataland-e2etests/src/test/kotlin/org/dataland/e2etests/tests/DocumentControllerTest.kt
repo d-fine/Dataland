@@ -140,7 +140,7 @@ class DocumentControllerTest {
 
     private fun removeAllRolesFromUser(userId: UUID) {
         val rolesOfUser =
-            apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
+            apiAccessor.companyRolesControllerApi.getExtendedCompanyRoleAssignments(
                 null,
                 null,
                 userId,
