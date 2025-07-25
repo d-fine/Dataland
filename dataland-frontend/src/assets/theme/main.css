@@ -57,3 +57,9 @@ body {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
 }
+
+.dataland-info-text {
+  font-size: var(--font-size-xs);
+  color: var(--p-gray-600);
+  font-style: italic;
+}
