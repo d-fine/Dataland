@@ -99,7 +99,7 @@ describe('Check the portfolio dialog', function (): void {
       cy.get('[data-test="addCompanies"]').click();
       cy.wait('@validateCompanies').then(() => {
         // Check if error message is displayed
-        cy.get('[data-test="error"]').should('be.visible').and('contain.text', 'fail');
+        cy.get('[data-test="unknown-portfolio-error"]').should('be.visible').and('contain.text', 'fail');
       });
     });
   });

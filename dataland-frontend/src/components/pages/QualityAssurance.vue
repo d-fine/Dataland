@@ -41,7 +41,7 @@
               data-test="framework-picker"
               id="framework-filter"
               filter-placeholder="Search by Frameworks"
-              max-selected-labels=1
+              :max-selected-labels="1"
               selected-items-label="{0} frameworks selected"
             />
 
