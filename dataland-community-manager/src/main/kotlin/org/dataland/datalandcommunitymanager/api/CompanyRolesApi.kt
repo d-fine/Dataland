@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleUserIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterRequired
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.springframework.http.ResponseEntity
@@ -49,6 +49,7 @@ interface CompanyRolesApi {
         ],
     )
     @PostMapping(
+        consumes = ["application/json"],
         produces = ["application/json"],
         value = ["/company-role-assignments/{role}/{companyId}/{userId}"],
     )
@@ -61,7 +62,7 @@ interface CompanyRolesApi {
         @PathVariable("role") companyRole: CompanyRole,
         @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: UUID,
-        @UserIdParameterRequired
+        @CompanyRoleUserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     ): ResponseEntity<CompanyRoleAssignment>
 
@@ -95,23 +96,23 @@ interface CompanyRolesApi {
             "@SecurityUtilsService.isUserRequestingForOwnId(#userId)",
     )
     fun getCompanyRoleAssignments(
-        @RequestParam("role")
+        @RequestParam("role", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
             required = false,
         )
         companyRole: CompanyRole? = null,
-        @RequestParam("companyId")
+        @RequestParam("companyId", required = false)
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         companyId: UUID? = null,
-        @RequestParam("userId")
+        @RequestParam("userId", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
             required = false,
         )
         userId: UUID? = null,
@@ -155,11 +156,7 @@ interface CompanyRolesApi {
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyRoleUserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     )
 
@@ -207,11 +204,7 @@ interface CompanyRolesApi {
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyRoleUserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     )
 
@@ -241,7 +234,7 @@ interface CompanyRolesApi {
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
-        @RequestParam
+        @RequestParam("comment", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.OWNERSHIP_COMMENT_DESCRIPTION,
             example = CommunityManagerOpenApiDescriptionsAndExamples.OWNERSHIP_COMMENT_EXAMPLE,

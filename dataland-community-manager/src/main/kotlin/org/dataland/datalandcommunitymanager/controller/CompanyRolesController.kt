@@ -1,4 +1,5 @@
 package org.dataland.datalandcommunitymanager.controller
+
 import org.dataland.datalandcommunitymanager.api.CompanyRolesApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment

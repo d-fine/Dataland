@@ -187,7 +187,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1790,7 +1790,7 @@
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }

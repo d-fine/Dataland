@@ -27,12 +27,12 @@ data class StoredDataRequest(
     )
     val dataRequestId: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
         example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_DESCRIPTION,
+        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
         example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
     val userEmailAddress: String?,
