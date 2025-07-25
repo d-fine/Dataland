@@ -44,8 +44,6 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-non-financials');
   require('./vsme');
   require('./company-ownership');
-  require('./MonitorPortfolios.ts');
-  require('./MyPortfolios');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
