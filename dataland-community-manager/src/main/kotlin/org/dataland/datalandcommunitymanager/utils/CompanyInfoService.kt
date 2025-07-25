@@ -47,6 +47,7 @@ class CompanyInfoService(
      * @param companyId is the companyId to check for
      * @returns the name of the company if it could be found
      */
+    @Throws(ResourceNotFoundApiException::class)
     fun getValidCompanyName(companyId: String): String {
         try {
             return companyApi.getCompanyById(companyId).companyInformation.companyName
@@ -94,6 +95,7 @@ class CompanyInfoService(
      * @param companyId is the companyId to check for
      * @throws ResourceNotFoundApiException if the companyId is not valid
      */
+    @Throws(ResourceNotFoundApiException::class)
     fun assertCompanyIdIsValid(companyId: String) {
         try {
             return companyApi.isCompanyIdValid(companyId)

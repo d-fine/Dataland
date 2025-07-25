@@ -268,7 +268,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The unique identifier of the user.",
+            "description": "The ID of the user in the role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -342,7 +342,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The unique identifier of the user.",
+            "description": "The ID of the user in the role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1241,7 +1241,7 @@
         ],
         "summary": "Get company role assignments that match the provided filters.",
         "description": "Get company role assignments that match the provided filters. Endpoint fully accessible to all Dataland-Admins. Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
-        "operationId": "getCompanyRoleAssignments",
+        "operationId": "getExtendedCompanyRoleAssignments",
         "parameters": [
           {
             "name": "role",
@@ -1266,7 +1266,7 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The unique identifier of the user.",
+            "description": "The ID of the user in the role assignment.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1283,7 +1283,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
+                    "$ref": "#/components/schemas/CompanyRoleAssignmentExtended"
                   }
                 }
               }
@@ -1296,7 +1296,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
+                    "$ref": "#/components/schemas/CompanyRoleAssignmentExtended"
                   }
                 }
               }
@@ -1790,7 +1790,7 @@
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created the data request.",
+            "description": "The ID of the user in the role assignment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
@@ -2157,6 +2157,45 @@
             "description": "The count of existing data requests for this framework, reporting period, company and priority.",
             "format": "int64",
             "example": 23
+          }
+        }
+      },
+      "CompanyRoleAssignmentExtended": {
+        "required": [
+          "companyId",
+          "companyRole",
+          "email",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyRole": {
+            "$ref": "#/components/schemas/CompanyRole"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user in the role assignment.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user in the company role assignment.",
+            "example": "test@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user in the company role assignment.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user in the company role assignment.",
+            "example": "Doe"
           }
         }
       },

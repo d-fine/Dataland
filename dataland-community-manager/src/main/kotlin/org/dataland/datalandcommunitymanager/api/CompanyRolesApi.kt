@@ -12,6 +12,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterRequired
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -94,7 +95,7 @@ interface CompanyRolesApi {
             "@SecurityUtilsService.isUserMemberOfTheCompany(#companyId) or" +
             "@SecurityUtilsService.isUserRequestingForOwnId(#userId)",
     )
-    fun getCompanyRoleAssignments(
+    fun getExtendedCompanyRoleAssignments(
         @RequestParam("role")
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
@@ -111,11 +112,11 @@ interface CompanyRolesApi {
         @RequestParam("userId")
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
             required = false,
         )
         userId: UUID? = null,
-    ): ResponseEntity<List<CompanyRoleAssignment>>
+    ): ResponseEntity<List<CompanyRoleAssignmentExtended>>
 
     /**
      * A method to remove the assignment of a company role from a user
@@ -157,7 +158,7 @@ interface CompanyRolesApi {
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("userId") userId: UUID,
@@ -209,7 +210,7 @@ interface CompanyRolesApi {
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_EXAMPLE,
+            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("userId") userId: UUID,

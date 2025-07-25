@@ -6,13 +6,9 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityMan
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
- * --- Generic API model ---
- * DTO to represent the assignment of a company role for one company to one user
- * @param companyRole for which the assignment is valid
- * @param companyId of the company for which the company role is assigned
- * @param userId of the user that the company role has been assigned to
+ * An extension of CompanyRoleAssignment which additionally includes email, first name and last name.
  */
-data class CompanyRoleAssignment(
+data class CompanyRoleAssignmentExtended(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
@@ -30,4 +26,22 @@ data class CompanyRoleAssignment(
         example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_EMAIL_ADDRESS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+    )
+    val email: String,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_FIRST_NAME_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.FIRST_NAME_EXAMPLE,
+    )
+    val firstName: String?,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_LAST_NAME_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.LAST_NAME_EXAMPLE,
+    )
+    val lastName: String?,
 )

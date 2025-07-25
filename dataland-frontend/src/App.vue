@@ -17,7 +17,7 @@ import SessionDialog from '@/components/general/SessionDialog.vue';
 import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { type CompanyRoleAssignment } from '@clients/communitymanager';
+import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 
 const smallScreenBreakpoint = 768;
@@ -38,7 +38,7 @@ export default defineComponent({
 
       apiClientProvider: undefined as ApiClientProvider | undefined,
 
-      companyRoleAssignments: undefined as Array<CompanyRoleAssignment> | undefined,
+      companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
     };
   },
 
