@@ -104,7 +104,7 @@ export async function getCompanyRoleAssignmentsForCurrentUser(
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     if (userId) {
       companyRoleAssignments = (
-        await apiClientProvider.apiClients.companyRolesController.getCompanyRoleAssignments(
+        await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
           undefined,
           undefined,
           userId
