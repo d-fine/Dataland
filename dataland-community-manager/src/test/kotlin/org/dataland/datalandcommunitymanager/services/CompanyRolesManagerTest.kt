@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
@@ -33,11 +34,10 @@ class CompanyRolesManagerTest {
 
     private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
     private lateinit var mockCompanyRoleAssignmentEntity: CompanyRoleAssignmentEntity
-
     private lateinit var companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder
-
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var mockCompanyInfoService: CompanyInfoService
+    private lateinit var mockKeycloakUserService: KeycloakUserService
 
     private val testUserId = UUID.randomUUID().toString()
 
@@ -62,6 +62,7 @@ class CompanyRolesManagerTest {
 
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockCompanyInfoService = CompanyInfoService(mockCompanyDataControllerApi)
+        mockKeycloakUserService = mock(KeycloakUserService::class.java)
 
         companyRolesManager =
             CompanyRolesManager(
@@ -69,6 +70,7 @@ class CompanyRolesManagerTest {
                 mockCompanyRoleAssignmentRepository,
                 mock(CompanyOwnershipRequestedEmailMessageBuilder::class.java),
                 companyOwnershipAcceptedEmailMessageBuilder,
+                mockKeycloakUserService,
             )
 
         mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)

@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
+import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.e2etests.REVIEWER_EXTENDED_ROLES
 import org.dataland.e2etests.UPLOADER_EXTENDED_ROLES
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -330,7 +331,7 @@ class CompanyRolesControllerTest {
 
     @Test
     fun `assure that existing role assignments are deleted when a user gets assigned a new company role`() {
-        var currentAssignments: List<CompanyRoleAssignment>
+        var currentAssignments: List<CompanyRoleAssignmentExtended>
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)

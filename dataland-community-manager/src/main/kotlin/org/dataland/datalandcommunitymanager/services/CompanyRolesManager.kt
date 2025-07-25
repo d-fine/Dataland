@@ -3,8 +3,11 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
@@ -27,8 +30,19 @@ class CompanyRolesManager(
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyOwnershipRequestedEmailMessageBuilder: CompanyOwnershipRequestedEmailMessageBuilder,
     @Autowired private val companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder,
+    @Autowired private val keycloakUserService: KeycloakUserService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    companion object {
+        const val REVIEWER_USER_ID = "f7a02ff1-0dab-4e10-a908-7d775c1014ae"
+        const val UPLOADER_USER_ID = "c5ef10b1-de23-4a01-9005-e62ea226ee83"
+        const val PREMIUM_USER_ID = "68129cce-52e5-473e-bec9-90046eebc619"
+        const val ADMIN_USER_ID = "136a9394-4873-4a61-a25b-65b1e8e7cc2f"
+        const val READER_USER_ID = "18b67ecc-1176-4506-8414-1e81661017ca"
+    }
+
+    val technicalUserIds = listOf(REVIEWER_USER_ID, UPLOADER_USER_ID, PREMIUM_USER_ID, ADMIN_USER_ID, READER_USER_ID)
 
     val exceptionSummaryTextWhenRoleNotAssigned = "Company role is not assigned to user"
 
@@ -67,6 +81,35 @@ class CompanyRolesManager(
             }
             savedEntity
         }
+    }
+
+    /**
+     * Converts the given CompanyRoleAssignment objects to CompanyRoleAssignmentExtended objects by
+     * looking up the relevant info (email, first name, last name) via Keycloak. In cases where the
+     * corresponding user ID is not known to Keycloak (i.e., the returned KeycloakUserInfo has null
+     * email address and the user ID is not one of a technical user), a warning is logged and the
+     * entry is omitted from the returned list.
+     */
+    fun convertToExtendedCompanyRoleAssignments(companyRoleAssignments: List<CompanyRoleAssignment>): List<CompanyRoleAssignmentExtended> {
+        val extendedCompanyRoleAssignments = mutableListOf<CompanyRoleAssignmentExtended>()
+        companyRoleAssignments.forEach {
+            val keycloakUserInfo = keycloakUserService.getUser(it.userId)
+            if (keycloakUserInfo.email == null && it.userId !in technicalUserIds) {
+                logger.warn("The user ID ${it.userId} appears in table company_role_assignments but is unknown to Keycloak.")
+                return@forEach
+            }
+            extendedCompanyRoleAssignments.add(
+                CompanyRoleAssignmentExtended(
+                    companyRole = it.companyRole,
+                    companyId = it.companyId,
+                    userId = it.userId,
+                    email = keycloakUserInfo.email!!,
+                    firstName = keycloakUserInfo.firstName,
+                    lastName = keycloakUserInfo.lastName,
+                ),
+            )
+        }
+        return extendedCompanyRoleAssignments
     }
 
     private fun saveCompanyRoleAssignment(
