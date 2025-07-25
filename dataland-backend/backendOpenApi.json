@@ -20,6 +20,72 @@
     }
   ],
   "paths": {
+    "/isinleimapping/update": {
+      "put": {
+        "tags": [
+          "isin-lei-data-controller"
+        ],
+        "summary": "Update ISIN-LEI mapping entirely",
+        "description": "Replace all ISIN-LEI mappings with the given mappings.",
+        "operationId": "putIsinLeiMapping",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IsinLeiMappingData"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated ISIN-LEI mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}": {
       "get": {
         "tags": [
@@ -1254,6 +1320,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Company could not be added. Please check that the strings specified in companyContactDetails are valid email addresses, that there is no repetition among specified identifiers of the same kind, that all specified identifiers are new and that you did not specify more than one LEI."
           },
           "default": {
             "description": "An error occurred",
@@ -5116,6 +5185,21 @@
   },
   "components": {
     "schemas": {
+      "IsinLeiMappingData": {
+        "required": [
+          "isin",
+          "lei"
+        ],
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyInformation": {
         "required": [
           "companyName",
