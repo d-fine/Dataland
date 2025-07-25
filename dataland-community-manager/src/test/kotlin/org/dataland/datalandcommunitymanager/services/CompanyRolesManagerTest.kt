@@ -1,9 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
@@ -33,8 +35,8 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
+import java.io.File
 import java.util.Optional
-import java.util.UUID
 
 class CompanyRolesManagerTest {
     private lateinit var companyRolesManager: CompanyRolesManager
@@ -45,51 +47,32 @@ class CompanyRolesManagerTest {
     private val mockCompanyOwnershipRequestedEmailMessageBuilder = mock<CompanyOwnershipRequestedEmailMessageBuilder>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
 
-    private val existingCompanyId = "indeed-existing-company-id"
-    private val nonExistingCompanyId = "non-existing-company-id"
-    private val testUserId = UUID.randomUUID().toString()
-    private val deletedUserId = UUID.randomUUID().toString()
-    private val testCompanyName = "Test Company AG"
+    private val objectMapper = JsonUtils.defaultObjectMapper
+
+    private val filePathToTestFixtures = "./src/test/resources/companyRolesManager"
 
     private val dummyKeycloakUserInfo =
-        KeycloakUserInfo(
-            email = "test@example.com",
-            userId = testUserId,
-            firstName = "Jane",
-            lastName = "Doe",
-        )
+        objectMapper
+            .readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/dummyKeycloakUserInfo.json"))
+    private val testUserId = dummyKeycloakUserInfo.userId
 
     private val deletedUserKeycloakUserInfo =
-        KeycloakUserInfo(
-            email = null,
-            userId = deletedUserId,
-            firstName = null,
-            lastName = null,
-        )
+        objectMapper.readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/deletedUserKeycloakUserInfo.json"))
+    private val deletedUserId = deletedUserKeycloakUserInfo.userId
 
     private val dummyCompanyRoleAssignmentEntity =
-        CompanyRoleAssignmentEntity(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = existingCompanyId,
-            userId = testUserId,
+        objectMapper.readValue<CompanyRoleAssignmentEntity>(
+            File("$filePathToTestFixtures/dummyCompanyRoleAssignmentEntity.json"),
         )
-
+    private val existingCompanyId = dummyCompanyRoleAssignmentEntity.companyId
+    private val nonExistingCompanyId = "non-existing-company-id"
+    private val testCompanyName = "Test Company AG"
     private val dummyCompanyRoleAssignment = dummyCompanyRoleAssignmentEntity.toApiModel()
 
-    private val testCompanyRoleAssignmentId =
-        CompanyRoleAssignmentId(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = existingCompanyId,
-            userId = testUserId,
-        )
-
     private val companyRoleAssignmentEntityOfDeletedUser =
-        CompanyRoleAssignmentEntity(
-            companyRole = CompanyRole.Member,
-            companyId = existingCompanyId,
-            userId = deletedUserId,
+        objectMapper.readValue<CompanyRoleAssignmentEntity>(
+            File("$filePathToTestFixtures/companyRoleAssignmentEntityOfDeletedUser.json"),
         )
-
     private val companyRoleAssignmentOfDeletedUser =
         companyRoleAssignmentEntityOfDeletedUser.toApiModel()
 
@@ -97,17 +80,13 @@ class CompanyRolesManagerTest {
         listOf(dummyCompanyRoleAssignmentEntity, companyRoleAssignmentEntityOfDeletedUser)
 
     private val existingCompanyRoleAssignmentId =
-        CompanyRoleAssignmentId(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = existingCompanyId,
-            userId = testUserId,
+        objectMapper.readValue<CompanyRoleAssignmentId>(
+            File("$filePathToTestFixtures/existingCompanyRoleAssignmentId.json"),
         )
 
     private val nonExistingCompanyRoleAssignmentId =
-        CompanyRoleAssignmentId(
-            companyRole = CompanyRole.DataUploader,
-            companyId = existingCompanyId,
-            userId = testUserId,
+        objectMapper.readValue<CompanyRoleAssignmentId>(
+            File("$filePathToTestFixtures/nonExistingCompanyRoleAssignmentId.json"),
         )
 
     @BeforeEach
@@ -191,7 +170,7 @@ class CompanyRolesManagerTest {
 
     @Test
     fun `check that a company ownership can only be requested if the user is not already a company owner`() {
-        doReturn(true).whenever(mockCompanyRoleAssignmentRepository).existsById(testCompanyRoleAssignmentId)
+        doReturn(true).whenever(mockCompanyRoleAssignmentRepository).existsById(existingCompanyRoleAssignmentId)
 
         val mockAuthentication = TestUtils.mockSecurityContext("username", testUserId, DatalandRealmRole.ROLE_USER)
         val exception =
@@ -222,7 +201,7 @@ class CompanyRolesManagerTest {
 
     @Test
     fun `check that email generated for users becoming company owner are generated`() {
-        doReturn(false).whenever(mockCompanyRoleAssignmentRepository).existsById(testCompanyRoleAssignmentId)
+        doReturn(false).whenever(mockCompanyRoleAssignmentRepository).existsById(existingCompanyRoleAssignmentId)
         doReturn(Optional.empty<CompanyRoleAssignmentEntity>())
             .whenever(mockCompanyRoleAssignmentRepository)
             .findById(existingCompanyRoleAssignmentId)
