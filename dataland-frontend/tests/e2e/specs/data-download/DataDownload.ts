@@ -83,7 +83,8 @@ describeIf(
       if (!dropdownValue) {
         throw new Error(`Unsupported fileType: ${fileType}`);
       }
-      cy.get('[data-test="fileTypeSelector"]').select(dropdownValue);
+      cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains(dropdownValue).click();
       cy.get('button[data-test=downloadDataButtonInModal]').click();
     }
 

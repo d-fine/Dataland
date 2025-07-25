@@ -2,7 +2,7 @@
   <div class="download-content d-flex flex-column">
     <div>
       <p class="header-styling">Framework</p>
-      <Select
+      <PrimeSelect
         class="component-styling"
         :options="availableFrameworks"
         v-model="selectedFramework"
@@ -40,7 +40,7 @@
     </div>
     <div>
       <p class="header-styling">File type</p>
-      <Select
+      <PrimeSelect
         v-model="selectedFileType"
         type="select"
         data-test="fileTypeSelector"
@@ -109,7 +109,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
-import Select from 'primevue/select';
+import PrimeSelect from 'primevue/select';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
