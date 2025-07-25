@@ -1,57 +1,62 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
-    <label for="monitoringToggle" class="header-styling"> Activate Monitoring </label>
-    <ToggleSwitch
-      class="form-field vertical-middle"
-      v-model="isMonitoringActive"
-      data-test="activateMonitoringToggle"
-      @update:modelValue="onMonitoringToggled"
-    />
-    <label for="reportingYearSelector" class="header-styling"> Starting Period </label>
-    <Select
-      v-model="selectedStartingYear"
-      :options="reportingPeriodsOptions"
-      option-label="label"
-      option-value="value"
-      data-test="listOfReportingPeriods"
-      placeholder="Select Starting Period"
-      :disabled="!isMonitoringActive"
-      @change="resetErrors"
-      class="w-10 md:w-40"
-      :highlightOnSelect="false"
-    />
-    <p v-show="showReportingPeriodsError" class="red-text" data-test="reportingPeriodsError">
-      Please select Starting Period.
-    </p>
-    <label for="frameworkSelector" class="header-styling"> Frameworks </label>
-    <div class="framework-switch-group">
-      <div
-        v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
-        :key="frameworkMonitoringOption.value"
-        data-test="frameworkSelection"
-      >
-        <div class="framework-toggle-label">
-          <ToggleSwitch
-            v-model="frameworkMonitoringOption.isActive"
-            class="form-field vertical-middle"
-            data-test="valuesOnlySwitch"
-            @change="resetErrors"
-            :disabled="!isMonitoringActive"
-          />
-          <label :for="frameworkMonitoringOption.value" class="">
-            {{ frameworkMonitoringOption.label }}
-          </label>
+    <div>
+      <p class="header-styling">Activate Monitoring</p>
+      <ToggleSwitch
+        class="form-field vertical-middle"
+        v-model="isMonitoringActive"
+        data-test="activateMonitoringToggle"
+        @update:modelValue="onMonitoringToggled"
+      />
+    </div>
+    <div>
+      <p class="header-styling">Starting Period</p>
+      <Select
+        v-model="selectedStartingYear"
+        :options="reportingPeriodsOptions"
+        option-label="label"
+        option-value="value"
+        data-test="listOfReportingPeriods"
+        placeholder="Select Starting Period"
+        :disabled="!isMonitoringActive"
+        @change="resetErrors"
+        :highlightOnSelect="false"
+        fluid
+      />
+      <Message v-if="showReportingPeriodsError" severity="error" variant="simple" size="small">
+        Please select starting period.
+      </Message>
+    </div>
+    <div>
+      <p class="header-styling">Frameworks</p>
+      <div class="framework-switch-group">
+        <div
+          v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
+          :key="frameworkMonitoringOption.value"
+          data-test="frameworkSelection"
+        >
+          <div class="framework-toggle-label">
+            <ToggleSwitch
+              v-model="frameworkMonitoringOption.isActive"
+              class="form-field vertical-middle"
+              data-test="valuesOnlySwitch"
+              @change="resetErrors"
+              :disabled="!isMonitoringActive"
+            />
+            <p :for="frameworkMonitoringOption.value" class="">
+              {{ frameworkMonitoringOption.label }}
+            </p>
+          </div>
+        </div>
+        <div class="dataland-info-text">
+          EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
         </div>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3">
-        EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
-      </span>
     </div>
-    <p v-show="showFrameworksError" class="red-text" data-test="frameworkError">
-      Please select at least one Framework.
-    </p>
-
-    <div class="button-group-wrapper">
+    <Message v-if="showFrameworksError" severity="error" variant="simple" size="small">
+      Please select at least one framework.
+    </Message>
+    <div class="button-wrapper">
       <PrimeButton
         type="button"
         data-test="saveChangesButton"
@@ -73,6 +78,7 @@ import Select from 'primevue/select';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
+import Message from 'primevue/message';
 
 type MonitoringOption = {
   value: string;
@@ -215,39 +221,28 @@ function prefillModal(): void {
 }
 </script>
 
-<style scoped lang="scss">
-
-.red-text {
-  color: var(--red);
+<style scoped>
+.header-styling {
+  font-weight: var(--font-weight-semibold);
 }
 
-.header-styling{
-  font-weight: var(--font-weight-semibold)
-}
-
-.button-group-wrapper {
+.button-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
 }
 
 .portfolio-monitoring-content {
   width: 20rem;
   height: 100%;
-  border-radius: 0.25rem;
+  border-radius: var(--spacing-xxs);
   background-color: white;
-  padding: 0.5rem 1.5rem;
+  padding: var(--spacing-xs) var(--spacing-lg);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-label {
-  width: 100%;
-  margin-bottom: 0.5em;
-  margin-top: 1em;
-  padding: 0;
 }
 
 .framework-switch-group {
@@ -259,20 +254,6 @@ label {
 .framework-toggle-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.framework-toggle-label .form-field {
-  min-width: max-content;
-  flex-shrink: 0;
-}
-
-.text-danger {
-  color: var(--fk-color-error);
-  font-size: var(--font-size-xs);
-}
-
-.gray-text {
-  color: var(--gray);
+  gap: var(--spacing-xs);
 }
 </style>

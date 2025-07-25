@@ -312,7 +312,7 @@ async function setCompanyOwnershipStatus(): Promise<void> {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .inline-loading {
   width: 28rem;
 }
@@ -329,8 +329,8 @@ async function setCompanyOwnershipStatus(): Promise<void> {
     display: flex;
     flex-direction: row;
     justify-items: end;
-    align-items: end;
-    gap: 1rem;
+    align-items: center;
+    gap: var(--spacing-lg);
   }
 }
 
@@ -338,7 +338,7 @@ async function setCompanyOwnershipStatus(): Promise<void> {
   display: flex;
   flex-direction: row;
   justify-content: start;
-  gap: 1rem;
+  gap: var(--spacing-md);
   align-items: center;
   width: 100%;
 

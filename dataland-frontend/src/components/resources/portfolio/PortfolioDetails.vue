@@ -17,14 +17,6 @@
         label="Download Portfolio"
         icon="pi pi-download"
       />
-      <Tag
-        v-if="isMonitored"
-        data-test="verifiedCompanyOwnerBadge"
-        value="Portfolio actively monitored"
-        icon="pi pi-check-circle"
-        severity="success"
-      />
-
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
         <PrimeButton
           @click="openMonitoringModal()"
@@ -34,7 +26,13 @@
           label="Edit Monitoring"
         />
       </div>
-
+      <Tag
+        v-if="isMonitored"
+        data-test="verifiedCompanyOwnerBadge"
+        value="Portfolio actively monitored"
+        icon="pi pi-check-circle"
+        severity="success"
+      />
       <PrimeButton variant="text" @click="resetFilters" label="RESET FILTER" data-test="reset-filter" />
     </div>
 
