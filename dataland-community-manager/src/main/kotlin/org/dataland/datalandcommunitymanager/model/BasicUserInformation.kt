@@ -23,14 +23,14 @@ data class BasicUserInformation(
     val email: String? = null,
     @field:JsonProperty(required = false)
     @field:Schema(
-        description = "",
-        example = "",
+        description = CommunityManagerOpenApiDescriptionsAndExamples.GENERAL_FIRST_NAME_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.FIRST_NAME_EXAMPLE,
     )
     val firstName: String? = null,
     @field:JsonProperty(required = false)
     @field:Schema(
-        description = "",
-        example = "",
+        description = CommunityManagerOpenApiDescriptionsAndExamples.GENERAL_LAST_NAME_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.LAST_NAME_EXAMPLE,
     )
     val lastName: String? = null,
 )
