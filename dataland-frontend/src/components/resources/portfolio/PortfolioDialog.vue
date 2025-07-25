@@ -1,49 +1,55 @@
 <template>
   <div class="portfolio-dialog-content">
-    <label for="fileTypeSelector" class="header-styling">
-      Portfolio Name
-    </label>
-    <InputText
-    v-model="portfolioName"
-    name="portfolioName"
-    data-test="portfolio-name-input"
-    :placeholder="portfolioName"
-    class="compenent-styling"/>
-    <label for="fileTypeSelector" class="header-styling">
-     Add company identifiers
-    </label>
-    <Textarea
-      v-model="companyIdentifiersInput"
-      name="company-identifiers"
-      data-test="company-identifiers-input"
-      :disabled="isCompaniesLoading"
-      placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
-      class="compenent-styling"/>
-    <PrimeButton
-      type="button"
-      label="Add Companies"
-      icon="pi pi-plus"
-      :loading="isCompaniesLoading"
-      @click="addCompanies"
-      data-test="addCompanies"
-      style="margin-left: 1em; float: right"
-    />
-    <p class="gray-text font-italic text-xs m-0 mb-4">
-      Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
-    </p>
-    <label for="fileTypeSelector" class="header-styling">
-      Company identifiers in portfolio
-    </label>
-    <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
-      <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
-        <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
-        {{ company.companyName }}
-      </li>
-    </ul>
+    <div class="container">
+      <p class="header-styling">Portfolio Name</p>
+      <InputText
+        v-model="portfolioName"
+        name="portfolioName"
+        data-test="portfolio-name-input"
+        :placeholder="portfolioName"
+        fluid
+      />
+    </div>
+    <div class="container">
+      <p class="header-styling">Add company identifiers</p>
+      <Textarea
+        v-model="companyIdentifiersInput"
+        name="company-identifiers"
+        data-test="company-identifiers-input"
+        :disabled="isCompaniesLoading"
+        placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
+        rows="5"
+        class="no-resize"
+        fluid
+      />
+      <div class="company-info-container">
+        <p class="dataland-info-text">
+          Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
+        </p>
+        <PrimeButton
+          type="button"
+          label="Add Companies"
+          icon="pi pi-plus"
+          :loading="isCompaniesLoading"
+          @click="addCompanies"
+          data-test="addCompanies"
+          fluid
+        />
+      </div>
+    </div>
+    <div>
+      <p class="header-styling">Company identifiers in portfolio</p>
+      <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
+        <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
+          <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
+          {{ company.companyName }}
+        </li>
+      </ul>
+    </div>
     <div data-test="error" class="red-text">
-      <p v-if="!isValidPortfolioUpload">
+      <Message v-if="isValidPortfolioUpload" severity="error" variant="simple" size="small">
         Please provide a portfolio name and at least one company.
-      </p>
+      </Message>
       <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
         {{ portfolioErrors }}
       </Message>
@@ -123,9 +129,9 @@ const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
 
-console.log("NAME",portfolioName.value)
-console.log("FRAMEWORKS",portfolioFrameworks.value)
-console.log("COMPANIES",portfolioCompanies.value)
+console.log('NAME', portfolioName.value);
+console.log('FRAMEWORKS', portfolioFrameworks.value);
+console.log('COMPANIES', portfolioCompanies.value);
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -259,40 +265,38 @@ function processCompanyInputString(): string[] {
 }
 </script>
 
-<style scoped lang="scss">
-
-.red-text {
-  color: var(--red);
+<style scoped>
+.company-info-container {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
 }
 
-.header-styling{
+.no-resize {
+  resize: none;
+}
+
+.container {
   margin-bottom: var(--spacing-lg);
+}
+
+.header-styling {
   font-weight: var(--font-weight-bold);
 }
 
-.compenent-styling{
-  margin-bottom: var(--spacing-md);
-  width: 100%;
-}
-
-
 .portfolio-dialog-content {
   width: 28em;
-  border-radius: 0.25rem;
+  border-radius: var(--spacing-xxs);
   background-color: white;
-  padding: 1.5rem;
+  padding: var(--spacing-lg);
 }
 
 .buttonbar {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
   margin-top: 1em;
   margin-left: auto;
   justify-content: end;
-}
-
-label {
-  margin-top: 1.5em;
 }
 
 ul {
