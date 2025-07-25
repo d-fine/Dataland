@@ -23,8 +23,8 @@
         :highlightOnSelect="false"
         fluid
       />
-      <Message v-if="showReportingPeriodsError" severity="error" variant="simple" size="small">
-        Please select starting period.
+      <Message v-if="showReportingPeriodsError" severity="error" variant="simple" size="small" data-test="reportingPeriodsError">
+        Please select Starting Period.
       </Message>
     </div>
     <div>
@@ -53,8 +53,8 @@
         </div>
       </div>
     </div>
-    <Message v-if="showFrameworksError" severity="error" variant="simple" size="small">
-      Please select at least one framework.
+    <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
+      Please select at least one Framework.
     </Message>
     <div class="button-wrapper">
       <PrimeButton

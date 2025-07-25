@@ -59,7 +59,7 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('shows only reporting year error if framework selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-row')
+    cy.get('.framework-switch-group')
       .first()
       .within(() => {
         cy.get('input[type="checkbox"]').check().should('be.checked');
@@ -75,9 +75,9 @@ describe('Portfolio Monitoring Modal', function () {
   it('submits successfully when both year and framework are selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2023').click();
+    cy.contains('2024').click();
 
-    cy.get('.framework-switch-row')
+    cy.get('.framework-switch-group')
       .first()
       .within(() => {
         cy.get('input[type="checkbox"]').check();
@@ -90,7 +90,7 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy').find('input[type="checkbox"]').click();
 
-    cy.get('.gray-text').should(
+    cy.get('.dataland-info-text').should(
       'contain.text',
       'EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas'
     );
@@ -98,7 +98,7 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('toggle all frameworks on and off', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-row').each(($row) => {
+    cy.get('.framework-switch-group').each(($row) => {
       cy.wrap($row).within(() => {
         cy.get('input[type="checkbox"]').check().should('be.checked');
         cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
@@ -108,26 +108,16 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('dropdown lists all years in order', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
+    cy.get('[data-test="listOfReportingPeriods"]').find('.p-select-dropdown').click();
     ['2024', '2023', '2022', '2021', '2020', '2019'].forEach((year) => {
       cy.contains(year).should('exist');
     });
   });
+
   it('updates selectedStartingYear when dropdown changes', () => {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.get('[data-test="listOfReportingPeriods"]').click();
     cy.contains('2022').click();
-
     cy.get('[data-test="listOfReportingPeriods"]').should('contain.text', '2022');
-  });
-
-  it('toggles framework switches correctly', () => {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-row').each(($row) => {
-      cy.wrap($row).within(() => {
-        cy.get('input[type="checkbox"]').check().should('be.checked');
-        cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
-      });
-    });
   });
 });
