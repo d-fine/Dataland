@@ -18,11 +18,16 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
+  --spacing-none: 0rem;
   --spacing-xxs: 0.25rem;
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  --spacing-xxxl: 4rem;
+  --spacing-xxxxl: 5rem;
 
   /* MEDIA BREAKPOINTS */
   --breakpoint-small: 768px;
