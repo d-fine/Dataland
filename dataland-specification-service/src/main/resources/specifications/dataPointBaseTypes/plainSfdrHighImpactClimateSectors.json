@@ -3,6 +3,60 @@
   "name" : "Applicable High Impact Climate Sectors",
   "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
   "validatedBy" : "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector,org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
+  "schema" : {
+    "NaceCodeA" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeB" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    }
+  },
   "example" : {
     "NaceCodeA" : {
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
@@ -11,7 +65,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -22,7 +77,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -35,7 +91,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -46,7 +103,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -59,7 +117,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -70,7 +129,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -83,7 +143,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -94,7 +155,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -107,7 +169,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -118,7 +181,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -131,7 +195,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -142,7 +207,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -155,7 +221,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -166,7 +233,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -179,7 +247,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -190,7 +259,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -203,7 +273,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0
@@ -214,7 +285,8 @@
           "page" : 0,
           "tagName" : "string",
           "fileName" : "string",
-          "fileReference" : "string"
+          "fileReference" : "string",
+          "publicationDate" : "2023-10-01"
         },
         "comment" : "string",
         "value" : 0

@@ -1,14 +1,17 @@
 package org.dataland.datalandspecificationservice.controller
 
+import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.DataPointBaseType
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.datalandspecificationservice.api.SpecificationApi
+import org.dataland.datalandspecificationservice.model.DataPointBaseTypeResolvedSchema
 import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSpecification
 import org.dataland.datalandspecificationservice.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.model.FrameworkSpecification
 import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecification
+import org.dataland.datalandspecificationservice.model.getRef
 import org.dataland.datalandspecificationservice.model.toDto
 import org.dataland.datalandspecificationservice.model.toSimpleDto
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +27,8 @@ class SpecificationController(
     @Autowired val database: SpecificationDatabase,
     @Value("\${dataland.primary-url}") val datalandPrimaryUrl: String,
 ) : SpecificationApi {
+    val framworkNotFound = "The framework specification with the given id was not found in the database."
+
     private fun getRawDataPointSpecification(dataPointSpecificationId: String): DataPointType =
         database.dataPointTypes[dataPointSpecificationId]
             ?: throw ResourceNotFoundApiException(
@@ -42,7 +47,7 @@ class SpecificationController(
         if (!database.frameworks.containsKey(frameworkSpecificationId)) {
             throw ResourceNotFoundApiException(
                 "Framework Specification with id $frameworkSpecificationId not found",
-                "The framework specification with the given id was not found in the database.",
+                framworkNotFound,
             )
         }
     }
@@ -56,7 +61,7 @@ class SpecificationController(
             database.frameworks[frameworkSpecificationId]
                 ?: throw ResourceNotFoundApiException(
                     "Framework Specification with id $frameworkSpecificationId not found",
-                    "The framework specification with the given id was not found in the database.",
+                    framworkNotFound,
                 )
         return ResponseEntity.ok(frameworkSpecification.toDto(datalandPrimaryUrl, database))
     }
@@ -81,4 +86,45 @@ class SpecificationController(
         val dataPointBaseType = getRawDataPointBaseType(dataPointSpecification.dataPointBaseTypeId)
         return ResponseEntity.ok(dataPointBaseType.validatedBy)
     }
+
+    override fun getResolvedFrameworkSpecification(frameworkSpecificationId: String): ResponseEntity<DataPointBaseTypeResolvedSchema> {
+        val framework =
+            database.frameworks[frameworkSpecificationId]
+                ?: throw ResourceNotFoundApiException(
+                    "Framework Specification with id $frameworkSpecificationId not found",
+                    framworkNotFound,
+                )
+        val resolvedSchema = resolveSchema(framework.schema)
+        val dto =
+            DataPointBaseTypeResolvedSchema(
+                framework = framework.getRef(datalandPrimaryUrl),
+                name = framework.name,
+                businessDefinition = framework.businessDefinition,
+                resolvedSchema = resolvedSchema,
+                referencedReportJsonPath = framework.referencedReportJsonPath,
+            )
+        return ResponseEntity.ok(dto)
+    }
+
+    private fun resolveSchema(schema: JsonNode): Any =
+        when {
+            schema.isObject ->
+                schema.properties().asSequence().associate { (key, value) ->
+                    key to resolveSchema(value)
+                }
+
+            schema.isArray -> schema.map { resolveSchema(it) }
+
+            schema.isTextual -> {
+                val typeId = schema.asText()
+                val dataPointType = database.dataPointTypes[typeId]
+                requireNotNull(dataPointType) { "Datapoint type $typeId was not found." }
+                val baseType = database.dataPointBaseTypes[dataPointType.dataPointBaseTypeId]
+                requireNotNull(baseType) { "Base type ${dataPointType.dataPointBaseTypeId} was not found." }
+                requireNotNull(baseType.schema) { "Base type $baseType has no schema definition." }
+                baseType.schema
+            }
+
+            else -> schema
+        }
 }

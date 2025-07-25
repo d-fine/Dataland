@@ -44,3 +44,14 @@ data class DataPointBaseTypeSpecification(
     val example: JsonNode,
     val usedBy: List<IdWithRef>,
 )
+
+/**
+ * Schema for a data point base type.
+ */
+data class DataPointBaseTypeResolvedSchema(
+    val framework: IdWithRef,
+    val name: String,
+    val businessDefinition: String,
+    val resolvedSchema: Any,
+    val referencedReportJsonPath: String?,
+)

@@ -80,4 +80,12 @@ class SpecificationControllerTest(
             specificationController.getDataPointBaseType("non-existing-datapoint-type")
         }
     }
+
+    @Test
+    fun `returning schema for known base type`() {
+        val frameworkSpecificationId = "test-framework"
+        val response = specificationController.getResolvedFrameworkSpecification(frameworkSpecificationId)
+        assert(response.statusCode.is2xxSuccessful)
+        assert(response.body?.resolvedSchema.toString() == "{test1={test2={test3={\"testing\":\"Boolean\"}}}}")
+    }
 }

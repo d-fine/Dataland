@@ -206,6 +206,7 @@ abstract class BaseExportTest<T> {
         val headers = ExportTestUtils.readCsvHeaders(multiCompanyCsvExport)
 
         validateMultiCompanyExport(multiCompanyCsvExport, headers, "CSV")
+        frameworkSpecificValidationForCSVExportBothCompanies(headers)
     }
 
     /**
@@ -359,6 +360,16 @@ abstract class BaseExportTest<T> {
             companyWithNonNullFieldLei,
             exportType,
         )
+    }
+
+    /**
+     * This method is intentionally left empty.
+     * It serves as a placeholder for future implementation in subclasses.
+     */
+    open fun frameworkSpecificValidationForCSVExportBothCompanies(headers: List<String>) {
+        // This function can be overwritten in the export tests for the specific frameworks to test cases specific
+        // to those frameworks, e.g. the correct export of the activities arrays
+        // in the eutaxonomy non financials framework
     }
 
     /**

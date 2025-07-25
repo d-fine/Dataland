@@ -1,14 +1,18 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.services.DataExportOrderingUtils.Companion.expandOrderedHeadersForEuTaxonomyActivities
+import org.dataland.datalandbackend.services.DataExportOrderingUtils.Companion.getOrderedHeaders
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.NonFinancialsMapping
 import org.dataland.datalandbackend.utils.NuclearAndGasMapping
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.SfdrMapping
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.collections.map
@@ -28,21 +32,32 @@ class DataExportUtils
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
+        @Autowired
+        lateinit var specificationApi: SpecificationControllerApi
+
+        private fun getResolvedSchemaNode(framework: String): JsonNode? {
+            val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
+            return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
+        }
+
         companion object {
-            private val STATIC_ALIASES =
+            val STATIC_ALIASES =
                 mapOf(
                     "companyName" to "COMPANY_NAME",
                     "companyLei" to "COMPANY_LEI",
                     "reportingPeriod" to "REPORTING_PERIOD",
                 )
-            private const val DATA = "data"
+            const val DATA = "data"
+            const val VALUE = "value"
             private const val ALIAS_EXPORT = "aliasExport"
             private const val QUALITY = "quality"
             private const val COMMENT = "comment"
             private const val DATA_SOURCE = "dataSource"
-            private const val VALUE = "value"
             private const val PREFIX = "$DATA."
             private const val SUFFIX = ".$VALUE"
+            private const val FIRST_PLACE = -3
+            private const val SECOND_PLACE = -2
+            private const val THIRD_PLACE = -1
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -102,28 +117,28 @@ class DataExportUtils
 
             val orderedHeaderFields =
                 if (isAssembledDatasetParam) {
+                    val resolvedSchemaNode = getResolvedSchemaNode(dataType.toString())
                     JsonUtils.getLeafNodeFieldNames(
-                        frameworkTemplate,
+                        resolvedSchemaNode ?: NullNode.instance,
                         keepEmptyFields = true,
-                        dropLastFieldName = true,
+                        dropLastFieldName = false,
                     )
                 } else {
                     LinkedHashSet(
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
-                                @Suppress("MagicNumber")
                                 when {
-                                    it.startsWith("companyName") -> -3
-                                    it.startsWith("companyLei") -> -2
-                                    it.startsWith("reportingPeriod") -> -1
+                                    it.startsWith("companyName") -> FIRST_PLACE
+                                    it.startsWith("companyLei") -> SECOND_PLACE
+                                    it.startsWith("reportingPeriod") -> THIRD_PLACE
                                     else -> 0
                                 }
                             }.then(naturalOrder()),
                         ),
                     )
                 }
-
-            val orderedHeaders = getOrderedHeaders(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDatasetParam)
+            val expandedOrderedHeaders = expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields.toList())
+            val orderedHeaders = getOrderedHeaders(nonEmptyHeaderFields, expandedOrderedHeaders, isAssembledDatasetParam)
             val readableHeaders =
                 if (includeAliases) {
                     applyAliasRenaming(orderedHeaders, frameworkTemplate ?: portfolioExportRows.first())
@@ -175,49 +190,10 @@ class DataExportUtils
         }
 
         /**
-         * Creates the CSV schema based on the provided headers
-         * The first parameter determines which fields are used to create columns; the second parameter determines the
-         * order of the columns.
-         * @param orderedHeaderFields a set of column names used as the headers in the CSV in the correct order
-         * @return the csv schema builder
-         */
-        private fun getOrderedHeaders(
-            usedHeaderFields: Set<String>,
-            orderedHeaderFields: Collection<String>,
-            isAssembledDataset: Boolean,
-        ): List<String> {
-            require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
-            val resultList = mutableListOf<String>()
-
-            if (isAssembledDataset) {
-                STATIC_ALIASES.keys.forEach { staticFieldName ->
-                    usedHeaderFields
-                        .filter { usedHeaderField ->
-                            usedHeaderField == staticFieldName
-                        }.forEach { resultList.add(it) }
-                }
-
-                orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
-                    usedHeaderFields
-                        .filter { usedHeaderField ->
-                            usedHeaderField.startsWith(DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
-                        }.forEach {
-                            resultList.add(it)
-                        }
-                }
-            } else {
-                orderedHeaderFields.forEach {
-                    resultList.add(it)
-                }
-            }
-            return resultList
-        }
-
-        /**
          * Replaces the old header names (json paths) with human-readable header names
          * @param csvData the data to be exported with the original json path headers
          * @param readableHeaders a map json path -> human-readable name
-         * @return The provided csv data with the himan-readable names
+         * @return The provided csv data with the hman-readable names
          */
         fun mapReadableHeadersToCsvData(
             csvData: List<Map<String, String?>>,

@@ -3,6 +3,59 @@
   "name" : "Eligible but not aligned denominator data point with an extended source",
   "businessDefinition" : "Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity in the Denominator of the applicable KPI.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasEligibleButNotAligned>",
+  "schema" : {
+    "value" : {
+      "taxonomyEligibleButNotAlignedShareNAndG426" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG427" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG428" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG429" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG430" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG431" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareOtherActivities" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShare" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      }
+    },
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
   "example" : {
     "value" : {
       "taxonomyEligibleButNotAlignedShareNAndG426" : {

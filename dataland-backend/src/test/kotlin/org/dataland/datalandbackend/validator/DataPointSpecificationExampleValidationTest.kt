@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.validator
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.utils.DataPointValidator
@@ -55,4 +56,61 @@ class DataPointSpecificationExampleValidationTest
                 dataPointValidator.validateConsistency(example, validatedBy, "correlationId")
             }
         }
+
+        @ParameterizedTest(name = "Ensure the datapoint example {0} matches the schema structure and class")
+        @MethodSource("dataPointBaseTypeTestProvider")
+        fun `ensure the datapoint example matches the schema structure and class`(
+            ignored: String,
+            file: File,
+        ) {
+            val fileContents = objectMapper.readTree(file)
+            val schema = fileContents["schema"]
+            val example = fileContents["example"]
+            val validatedBy = fileContents["validatedBy"].asText()
+
+            requireNotNull(schema) { "Schema is missing in ${file.name}" }
+            requireNotNull(example) { "Example is missing in ${file.name}" }
+
+            val generated = buildJsonFromSchemaWithExample(schema, example, objectMapper)
+
+            assertDoesNotThrow {
+                dataPointValidator.validateConsistency(
+                    objectMapper.writeValueAsString(generated),
+                    validatedBy,
+                    "correlationId",
+                )
+            }
+        }
+
+        fun buildJsonFromSchemaWithExample(
+            schema: JsonNode,
+            example: JsonNode,
+            objectMapper: ObjectMapper,
+        ): JsonNode =
+            when {
+                schema.isObject -> {
+                    val objectNode = objectMapper.createObjectNode()
+                    schema.fieldNames().forEach { field ->
+                        val schemaField = schema[field]
+                        val exampleField = example.get(field)
+                        objectNode.set<JsonNode>(field, buildJsonFromSchemaWithExample(schemaField, exampleField, objectMapper))
+                    }
+                    objectNode
+                }
+                schema.isArray -> {
+                    val array = objectMapper.createArrayNode()
+                    val schemaElement = schema.firstOrNull()
+                    val exampleArray = example
+                    if (exampleArray.isArray && schemaElement != null) {
+                        exampleArray.forEach { exampleElement ->
+                            array.add(buildJsonFromSchemaWithExample(schemaElement, exampleElement, objectMapper))
+                        }
+                    }
+                    array
+                }
+                schema.isTextual -> {
+                    example
+                }
+                else -> objectMapper.nullNode()
+            }
     }
