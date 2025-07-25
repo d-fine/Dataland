@@ -4,14 +4,16 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 
 /**
  * Defines the community manager API regarding Keycloak user information
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface UserApi {
+interface UserValidationApi {
     /**
      * Thoughtful comment.
      */
@@ -29,9 +31,13 @@ interface UserApi {
             ApiResponse(responseCode = "404", description = "No Dataland user is registered under this email address.")
         ],
     )
-    @GetMapping(
-        value = "user-information/{email}",
+    @PostMapping(
+        value = ["user-validation"],
+        consumes = ["application/json"],
         produces = ["application/json"],
     )
-
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+                "@CompanyRolesManager.getCompanyRoleAssignmentsByParameters(CompanyRole.ADMIN, null, DatalandAuthentication.fromContext().userId)"
+    )
 }
