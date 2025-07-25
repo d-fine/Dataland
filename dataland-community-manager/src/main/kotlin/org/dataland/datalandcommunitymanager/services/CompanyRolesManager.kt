@@ -103,7 +103,7 @@ class CompanyRolesManager(
                     companyRole = it.companyRole,
                     companyId = it.companyId,
                     userId = it.userId,
-                    email = keycloakUserInfo.email!!,
+                    email = keycloakUserInfo.email ?: "dummyemail@example.com",
                     firstName = keycloakUserInfo.firstName,
                     lastName = keycloakUserInfo.lastName,
                 ),
