@@ -73,7 +73,7 @@
                     >
                       Receive emails directly or via summary
                       <ToggleSwitch
-                        style="display: block; margin: 1rem 0"
+                        style="display: block; margin: var(--spacing-md) 0"
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
                         v-model="notifyMeImmediately"
@@ -167,7 +167,7 @@
                     :dismissableMask="false"
                     :modal="true"
                     :closable="false"
-                    style="border-radius: 0.75rem; text-align: center; max-width: 400px"
+                    style="border-radius: var(--spacing-sm); text-align: center; max-width: 400px"
                     :show-header="false"
                     :draggable="false"
                     data-test="quotaReachedModal"
@@ -691,16 +691,16 @@ export default defineComponent({
       border-bottom: 1px solid var(--input-text-border-hover);
     }
     .p-multiselect-label {
-      padding: 0.75rem;
+      padding: var(--spacing-sm);
       &.p-placeholder {
         color: var(--text-color-secondary);
       }
     }
     .p-multiselect-trigger {
-      width: 2.5rem;
+      width: var(--spacing-xxl);
       .p-multiselect-trigger-icon {
         color: var(--text-color-secondary);
-        font-size: 0.75rem;
+        font-size: var(--spacing-sm);
       }
     }
   }
@@ -734,7 +734,7 @@ export default defineComponent({
     }
     .formkit-options {
       display: flex;
-      padding: 0.5rem 0 0 0;
+      padding: var(--spacing-xs) 0 0 0;
       .formkit-option:nth-child(n + 2) {
         margin-left: 10%;
       }
@@ -745,11 +745,11 @@ export default defineComponent({
     max-width: 100%;
   }
   .title {
-    margin: 0.25rem 0;
+    margin: var(--spacing-xxs) 0;
   }
   .subtitle {
     display: block;
-    padding-bottom: 1rem;
+    padding-bottom: var(--spacing-md);
     .form-field-label {
       h5 {
         font-size: var(--font-size-base);
@@ -760,13 +760,13 @@ export default defineComponent({
     display: flex;
     align-self: center;
     .info-icon {
-      margin-left: 0.5rem;
+      margin-left: var(--spacing-xs);
     }
     button {
       margin-left: auto;
     }
     h5 {
-      margin: 0.5rem 0;
+      margin: var(--spacing-xs) 0;
     }
     .asterisk {
       color: #ee1a1a;
@@ -774,16 +774,16 @@ export default defineComponent({
     .asterisk:before {
       content: ' ';
       display: inline-block;
-      width: 0.25rem;
+      width: var(--spacing-xxs);
     }
   }
   .middle-next-to-field {
     display: flex;
     align-self: center;
-    padding-bottom: 1rem;
+    padding-bottom: var(--spacing-md);
   }
   p {
-    margin: 0.25rem;
+    margin: var(--spacing-xxs);
   }
   .p-datepicker {
     width: 100%;
@@ -801,7 +801,7 @@ export default defineComponent({
     &[data-message-type='ui'] {
       text-align: center;
       width: 100%;
-      padding: 2rem;
+      padding: var(--spacing-xl);
       border: 1px solid var(--input-error);
     }
   }
@@ -818,14 +818,14 @@ export default defineComponent({
     font-weight: var(--font-weight-semibold);
     margin: var(--spacing-xxs);
     text-align: center;
-    min-width: 1.5rem;
-    border-radius: 1rem;
-    padding: 0.25rem 1rem;
+    min-width: var(--spacing-lg);
+    border-radius: var(--spacing-md);
+    padding: var(--spacing-xxs) var(--spacing-md);
     border: 1px solid var(--input-label-color);
     display: inline-flex;
     align-items: center;
     em {
-      margin-left: 0.5rem;
+      margin-left: var(--spacing-xs);
       cursor: pointer;
       &:hover {
         color: hsl(from var(--input-label-color) h s calc(l - 20));
@@ -833,13 +833,13 @@ export default defineComponent({
     }
   }
   .uploadFormSection {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     .form-field:not(:last-child) {
-      margin: 0 0 1rem 0;
-      padding: 0 0 1rem 0;
+      margin: 0 0 var(--spacing-md) 0;
+      padding: 0 0 var(--spacing-md) 0;
       border-bottom: 1px solid var(--input-separator);
     }
   }
@@ -850,10 +850,10 @@ export default defineComponent({
     .p-fileupload {
       .p-fileupload-content {
         border: none;
-        padding: 1rem;
+        padding: var(--spacing-md);
         align-items: center;
         .file-upload-item {
-          margin: 1rem 0;
+          margin: var(--spacing-md) 0;
         }
         button {
           margin-left: auto;
