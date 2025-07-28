@@ -2,6 +2,8 @@ package org.dataland.datalandcommunitymanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -73,17 +75,26 @@ interface CompanyRolesApi {
      * @returns the company role assignments for the specified company role and company
      */
     @Operation(
-        summary = "Get company role assignments that match the provided filters.",
+        summary = "Get extended company role assignments that match the provided filters.",
         description =
-            "Get company role assignments that match the provided filters. " +
-                "Endpoint fully accessible to all Dataland-Admins. " +
-                "Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. " +
-                "Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
+            "Get company role assignments extended by basic user information that match " +
+                "the provided filters. The endpoint is fully accessible to all Dataland Admins. " +
+                "Company Role Assignees can access the endpoint if the companyId filter is set to their company. " +
+                "Any Dataland user can access the endpoint if the userId filter is set to their userId.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company role assignments."),
-            ApiResponse(responseCode = "404", description = "The specified company does not exist on Dataland."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved extended company role assignments."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to make this query.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified company does not exist on Dataland.",
+                content = [Content(array = ArraySchema())],
+            ),
         ],
     )
     @GetMapping(

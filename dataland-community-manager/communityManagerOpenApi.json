@@ -1239,8 +1239,8 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Get company role assignments that match the provided filters.",
-        "description": "Get company role assignments that match the provided filters. Endpoint fully accessible to all Dataland-Admins. Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
+        "summary": "Get extended company role assignments that match the provided filters.",
+        "description": "Get company role assignments extended by basic user information that match the provided filters. The endpoint is fully accessible to all Dataland Admins. Company Role Assignees can access the endpoint if the companyId filter is set to their company. Any Dataland user can access the endpoint if the userId filter is set to their userId.",
         "operationId": "getExtendedCompanyRoleAssignments",
         "parameters": [
           {
@@ -1277,7 +1277,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company role assignments.",
+            "description": "Successfully retrieved extended company role assignments.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1289,18 +1289,11 @@
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
           "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignmentExtended"
-                  }
-                }
-              }
-            }
+            "description": "The specified company does not exist on Dataland."
           },
           "default": {
             "description": "An error occurred",
