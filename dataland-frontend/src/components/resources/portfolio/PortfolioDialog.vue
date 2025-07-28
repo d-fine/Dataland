@@ -25,7 +25,7 @@
           icon="pi pi-plus"
           :loading="isCompaniesLoading"
           @click="addCompanies"
-          data-test="addCompanies"
+          data-test="portfolio-dialog-add-companies"
           fluid
         />
       </div>
@@ -52,7 +52,7 @@
         icon="pi pi-trash"
         @click="deletePortfolio"
         class="primary-button deleteButton"
-        :data-test="'deleteButton'"
+        data-test="portfolio-dialog-delete-button"
         title="Delete the selected Portfolio"
       />
       <PrimeButton
@@ -61,7 +61,7 @@
         :disabled="!isValidPortfolioUpload"
         :loading="isPortfolioSaving"
         @click="savePortfolio()"
-        data-test="saveButton"
+        data-test="portfolio-dialog-save-button"
       />
     </div>
   </div>

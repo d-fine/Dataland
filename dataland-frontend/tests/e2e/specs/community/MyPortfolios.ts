@@ -13,25 +13,31 @@ describeIf(
   () => {
     let permIdOfExistingCompany: string;
     let permIdOfSecondCompany: string;
-    const timestamp = Date.now();
-    const portfolioName = `E2E Test Portfolio ${timestamp}`;
-    const editedPortfolioName = `${portfolioName} Edited ${timestamp}`;
+    const companyTimestamp = Date.now();
+    let portfolioTimestamp: number;
+    let portfolioName: string;
+    let editedPortfolioName: string;
 
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${timestamp}`);
+        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${companyTimestamp}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
-        const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${timestamp}`);
+        const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${companyTimestamp}`);
         permIdOfSecondCompany = assertDefined(secondCompanyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, secondCompanyToUpload);
       });
     });
 
     beforeEach(() => {
+      portfolioTimestamp = Date.now();
+      portfolioName = `E2E-Test-Portfolio-${portfolioTimestamp}`;
+      editedPortfolioName = `${portfolioName}-Edited-${portfolioTimestamp}`;
+
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
+      cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
     });
 
@@ -43,30 +49,31 @@ describeIf(
         cy.get('.p-dialog-header').contains('Add Portfolio');
         cy.get('.portfolio-dialog-content').within(() => {
           cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
-          cy.get('[data-test="saveButton"]').should('be.disabled');
-          cy.get('[data-test="company-identifiers-input"]').type(permIdOfExistingCompany);
-          cy.get('[data-test="addCompanies"]').click();
-          cy.get('[data-test="saveButton"]').should('not.be.disabled');
-          cy.get('[data-test="saveButton"]').click();
+          cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
+          cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
+          cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
+          cy.get('[data-test="portfolio-dialog-save-button"]').click({
+            timeout: Cypress.env('medium_timeout_in_ms') as number,
+          });
         });
       });
 
-      cy.wait('@getEnrichedPortfolio');
-
+      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="${portfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[data-test="portfolio-name-input"]').clear();
       cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
       cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
-      cy.get('[data-test="addCompanies"]').click();
-      cy.get('[data-test="saveButton"]').click();
+      cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+      cy.get('[data-test="portfolio-dialog-save-button"]').click();
       cy.get(`[data-test="${editedPortfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click();
 
       cy.window().then((win) => {
         cy.stub(win, 'confirm').returns(true);
       });
-      cy.get('[data-test="deleteButton"]').click();
+      cy.get('[data-test="portfolio-dialog-delete-button"]').click();
       cy.get(`[data-test="${editedPortfolioName}"]`).should('not.exist');
     });
   }

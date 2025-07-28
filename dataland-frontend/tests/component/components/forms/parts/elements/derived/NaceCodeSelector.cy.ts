@@ -1,8 +1,8 @@
-// @ts-nocheck
 import NaceCodeSelector from '@/components/forms/parts/elements/derived/NaceCodeSelector.vue';
 
 describe('Component tests for the NaceCodeSelector', () => {
   it('Ensure that NACE codes can by search and select and displayed correctly', () => {
+    //@ts-ignore
     cy.mountWithPlugins(NaceCodeSelector, {}).then(() => {
       cy.get('[data-test="NaceCodeSelectorInput"]').should('be.visible');
       cy.get('[data-test="NaceCodeSelectorInput"]').click();

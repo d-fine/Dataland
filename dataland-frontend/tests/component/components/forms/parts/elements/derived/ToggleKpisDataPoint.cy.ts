@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue';
 import {
   euTaxonomyKpiInfoMappings,
@@ -7,6 +6,7 @@ import {
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 describe('Component tests for toggle data point', () => {
   it('On the upload page, ensure that data point can be hidden and shown and the data will be assigned accordingly', () => {
+    //@ts-ignore
     cy.mountWithPlugins(DataPointFormWithToggle, {
       // @ts-ignore
       props: {

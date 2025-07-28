@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
@@ -12,6 +11,7 @@ describe('Component test for CurrencyDataPointFormField', () => {
   }
 
   it("Quality field should be 'Data quality' if the value field has no value and currency field should work as expected", () => {
+    //@ts-ignore
     cy.mountWithPlugins(CurrencyDataPointFormField, {}).then(() => {
       cy.get('[data-test="dataPointToggleButton"]').click();
       validateDataQualityField();

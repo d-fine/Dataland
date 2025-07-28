@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
@@ -91,10 +90,10 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     cy.intercept('POST', `/api/data/${dataType}*`, {
       statusCode: 200,
     });
+    //@ts-ignore
     cy.mountWithPlugins(createDataset, {
       keycloak: minimalKeycloakMock({}),
 
-      // @ts-ignore
       props: {
         companyID: companyId,
       },

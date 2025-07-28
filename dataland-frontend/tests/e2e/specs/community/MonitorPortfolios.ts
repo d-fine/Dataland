@@ -75,7 +75,7 @@ describe('Portfolio Monitoring Modal', () => {
         // cy.get('[data-test="add-portfolio"]').click();
         // cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         // cy.get('[data-test="saveButton"]').should('be.disabled');
-        // cy.get('[name="company-identifiers"]').type(permId);
+        // cy.get('[data-test="company-identifiers-input"]').type(permId);
         // cy.get('[data-test="addCompanies"]').click();
         // cy.wait('@forCompanyValidation');
         // cy.get('[data-test="saveButton"]').should('not.be.disabled');

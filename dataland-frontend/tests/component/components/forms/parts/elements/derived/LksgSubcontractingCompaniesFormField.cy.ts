@@ -1,8 +1,8 @@
-// @ts-nocheck
 import LksgSubcontractingCompaniesFormField from '@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue';
 
 describe('Component tests for the LksgSubcontractingCompaniesFormField', () => {
   it('Ensure that NACE codes can be selected for selected countries', () => {
+    //@ts-ignore
     cy.mountWithPlugins(LksgSubcontractingCompaniesFormField, {}).then(() => {
       cy.get('[data-pc-name="multiselect"]').should('be.visible').click();
       cy.get('[data-pc-name="multiselect"]')
