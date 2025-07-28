@@ -232,7 +232,9 @@ async function deletePortfolio(): Promise<void> {
 
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
-    dialogRef?.value.close();
+    dialogRef?.value.close({
+      isDeleted: true,
+    });
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }

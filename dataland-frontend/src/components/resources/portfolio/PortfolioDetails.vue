@@ -451,8 +451,10 @@ function openEditModal(): void {
       portfolio: enrichedPortfolio.value,
       isMonitoring: isMonitored.value,
     },
-    onClose() {
-      loadPortfolio();
+    onClose(options) {
+      if (!options?.data?.isDeleted) {
+        loadPortfolio();
+      }
       emit('update:portfolio-overview');
     },
   });
