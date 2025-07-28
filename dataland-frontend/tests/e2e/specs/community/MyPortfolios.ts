@@ -31,8 +31,8 @@ describeIf(
 
     beforeEach(() => {
       portfolioTimestamp = Date.now();
-      portfolioName = `E2E Test Portfolio ${portfolioTimestamp}`;
-      editedPortfolioName = `${portfolioName} Edited ${portfolioTimestamp}`;
+      portfolioName = `E2E-Test-Portfolio-${portfolioTimestamp}`;
+      editedPortfolioName = `${portfolioName}-Edited-${portfolioTimestamp}`;
 
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
