@@ -40,7 +40,7 @@ bouncy-castle = "1.70"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.2" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.3" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
