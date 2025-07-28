@@ -31,6 +31,13 @@ class SpecificationController(
         "Framework specification with id %s not found" to
             "Framework specification not found in database."
 
+    /**
+     * Throws a `ResourceNotFoundApiException` when a framework specification with the given ID
+     * cannot be found in the database.
+     *
+     * @param id The ID of the framework specification that could not be found.
+     * @return Nothing as this method always throws an exception.
+     */
     fun throwFrameworkNotFound(id: String): Nothing =
         throw ResourceNotFoundApiException(
             frameworkNotFoundError.first.format(id),
