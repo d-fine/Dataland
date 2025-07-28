@@ -41,7 +41,7 @@ describeIf(
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
     });
 
-    it.only('Creates, edits and deletes a portfolio', () => {
+    it('Creates, edits and deletes a portfolio', () => {
       cy.get('button[data-test="add-portfolio"]').click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
