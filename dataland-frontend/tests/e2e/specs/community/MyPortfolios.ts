@@ -59,10 +59,8 @@ describeIf(
         });
       });
 
-      cy.wait('@getEnrichedPortfolio');
-      cy.get(`[data-test="${portfolioName}"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
+      cy.wait(['@getPortolioNames', '@getEnrichedPortfolio']);
+      cy.get(`[data-test="${portfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[data-test="portfolio-name-input"]').clear();
       cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
