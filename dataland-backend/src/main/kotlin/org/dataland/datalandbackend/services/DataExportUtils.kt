@@ -55,9 +55,9 @@ class DataExportUtils
             private const val DATA_SOURCE = "dataSource"
             private const val PREFIX = "$DATA."
             private const val SUFFIX = ".$VALUE"
-            private const val FIRST_PLACE = -3
-            private const val SECOND_PLACE = -2
-            private const val THIRD_PLACE = -1
+            private const val COMPANY_NAME = -3
+            private const val COMPANY_LEI = -2
+            private const val REPORTING_PERIOD = -1
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -128,9 +128,9 @@ class DataExportUtils
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
                                 when {
-                                    it.startsWith("companyName") -> FIRST_PLACE
-                                    it.startsWith("companyLei") -> SECOND_PLACE
-                                    it.startsWith("reportingPeriod") -> THIRD_PLACE
+                                    it.startsWith("companyName") -> COMPANY_NAME
+                                    it.startsWith("companyLei") -> COMPANY_LEI
+                                    it.startsWith("reportingPeriod") -> REPORTING_PERIOD
                                     else -> 0
                                 }
                             }.then(naturalOrder()),
@@ -193,7 +193,7 @@ class DataExportUtils
          * Replaces the old header names (json paths) with human-readable header names
          * @param csvData the data to be exported with the original json path headers
          * @param readableHeaders a map json path -> human-readable name
-         * @return The provided csv data with the hman-readable names
+         * @return The provided csv data with the human-readable names
          */
         fun mapReadableHeadersToCsvData(
             csvData: List<Map<String, String?>>,

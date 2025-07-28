@@ -27,7 +27,7 @@ class SpecificationController(
     @Autowired val database: SpecificationDatabase,
     @Value("\${dataland.primary-url}") val datalandPrimaryUrl: String,
 ) : SpecificationApi {
-    val framworkNotFound = "The framework specification with the given id was not found in the database."
+    val frameworkNotFound = "Framework specification with given id found in database."
 
     private fun getRawDataPointSpecification(dataPointSpecificationId: String): DataPointType =
         database.dataPointTypes[dataPointSpecificationId]
@@ -47,7 +47,7 @@ class SpecificationController(
         if (!database.frameworks.containsKey(frameworkSpecificationId)) {
             throw ResourceNotFoundApiException(
                 "Framework Specification with id $frameworkSpecificationId not found",
-                framworkNotFound,
+                frameworkNotFound,
             )
         }
     }
@@ -61,7 +61,7 @@ class SpecificationController(
             database.frameworks[frameworkSpecificationId]
                 ?: throw ResourceNotFoundApiException(
                     "Framework Specification with id $frameworkSpecificationId not found",
-                    framworkNotFound,
+                    frameworkNotFound,
                 )
         return ResponseEntity.ok(frameworkSpecification.toDto(datalandPrimaryUrl, database))
     }
@@ -92,7 +92,7 @@ class SpecificationController(
             database.frameworks[frameworkSpecificationId]
                 ?: throw ResourceNotFoundApiException(
                     "Framework Specification with id $frameworkSpecificationId not found",
-                    framworkNotFound,
+                    frameworkNotFound,
                 )
         val resolvedSchema = resolveSchema(framework.schema)
         val dto =

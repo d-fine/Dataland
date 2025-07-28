@@ -73,8 +73,6 @@ class DataExportServiceTest {
     private val companyExportDataLksgTestData =
         objectMapper.readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
 
-    // Add this property to your test class
-
     @Test
     fun `minimal test for writing excel file`() {
         // Define constants for headers
@@ -352,7 +350,7 @@ class DataExportServiceTest {
         )
         Assertions.assertTrue(
             csvString.contains(TEST_ALIAS_2),
-            "\"CSV does not contain the export alias $TEST_ALIAS_2",
+            "CSV does not contain the export alias $TEST_ALIAS_2",
         )
     }
 

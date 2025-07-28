@@ -17,6 +17,8 @@ class DataExportOrderingUtils private constructor() {
          * The first parameter determines which fields are used to create columns; the second parameter determines the
          * order of the columns.
          * @param orderedHeaderFields a set of column names used as the headers in the CSV in the correct order
+         * @param usedHeaderFields a set of column names used as the headers in the CSV derived by the schmea
+         * @param isAssembledDataset  whether the dataset includes nested or structured data
          * @return the csv schema builder
          */
         fun getOrderedHeaders(
