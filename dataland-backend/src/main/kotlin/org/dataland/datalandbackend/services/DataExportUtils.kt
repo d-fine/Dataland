@@ -55,9 +55,9 @@ class DataExportUtils
             private const val DATA_SOURCE = "dataSource"
             private const val PREFIX = "$DATA."
             private const val SUFFIX = ".$VALUE"
-            private const val COMPANY_NAME = -3
-            private const val COMPANY_LEI = -2
-            private const val REPORTING_PERIOD = -1
+            private const val COMPANY_NAME_POSITION = -3
+            private const val COMPANY_LEI_POSITION = -2
+            private const val REPORTING_PERIOD_POSITION = -1
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -128,9 +128,9 @@ class DataExportUtils
                         nonEmptyHeaderFields.sortedWith(
                             compareBy<String> {
                                 when {
-                                    it.startsWith("companyName") -> COMPANY_NAME
-                                    it.startsWith("companyLei") -> COMPANY_LEI
-                                    it.startsWith("reportingPeriod") -> REPORTING_PERIOD
+                                    it.startsWith("companyName") -> COMPANY_NAME_POSITION
+                                    it.startsWith("companyLei") -> COMPANY_LEI_POSITION
+                                    it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
                                     else -> 0
                                 }
                             }.then(naturalOrder()),

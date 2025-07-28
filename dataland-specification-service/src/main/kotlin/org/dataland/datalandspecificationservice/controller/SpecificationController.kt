@@ -29,6 +29,16 @@ class SpecificationController(
 ) : SpecificationApi {
     val frameworkNotFound = "Framework specification with given id found in database."
 
+    val frameworkNotFoundError =
+        "Framework Specification with id %s not found" to
+            "Framework specification not found in database."
+
+    fun throwFrameworkNotFound(id: String): Nothing =
+        throw ResourceNotFoundApiException(
+            frameworkNotFoundError.first.format(id),
+            frameworkNotFoundError.second,
+        )
+
     private fun getRawDataPointSpecification(dataPointSpecificationId: String): DataPointType =
         database.dataPointTypes[dataPointSpecificationId]
             ?: throw ResourceNotFoundApiException(
@@ -45,10 +55,7 @@ class SpecificationController(
 
     override fun doesFrameworkSpecificationExist(frameworkSpecificationId: String) {
         if (!database.frameworks.containsKey(frameworkSpecificationId)) {
-            throw ResourceNotFoundApiException(
-                "Framework Specification with id $frameworkSpecificationId not found",
-                frameworkNotFound,
-            )
+            throwFrameworkNotFound(frameworkSpecificationId)
         }
     }
 
@@ -59,10 +66,7 @@ class SpecificationController(
     override fun getFrameworkSpecification(frameworkSpecificationId: String): ResponseEntity<FrameworkSpecification> {
         val frameworkSpecification =
             database.frameworks[frameworkSpecificationId]
-                ?: throw ResourceNotFoundApiException(
-                    "Framework Specification with id $frameworkSpecificationId not found",
-                    frameworkNotFound,
-                )
+                ?: throwFrameworkNotFound(frameworkSpecificationId)
         return ResponseEntity.ok(frameworkSpecification.toDto(datalandPrimaryUrl, database))
     }
 
@@ -90,10 +94,8 @@ class SpecificationController(
     override fun getResolvedFrameworkSpecification(frameworkSpecificationId: String): ResponseEntity<DataPointBaseTypeResolvedSchema> {
         val framework =
             database.frameworks[frameworkSpecificationId]
-                ?: throw ResourceNotFoundApiException(
-                    "Framework Specification with id $frameworkSpecificationId not found",
-                    frameworkNotFound,
-                )
+                ?: throwFrameworkNotFound(frameworkSpecificationId)
+
         val resolvedSchema = resolveSchema(framework.schema)
         val dto =
             DataPointBaseTypeResolvedSchema(
