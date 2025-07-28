@@ -28,6 +28,13 @@
     <p class="gray-text font-italic text-xs m-0">
       Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
     </p>
+    <PrimeButton
+      type="button"
+      label="Get help"
+      @click="openHelpDialog"
+      class="primary-button"
+      style="margin-left: 1em; float: right"
+    />
     <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
     <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
       <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
@@ -82,6 +89,8 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
 
 class CompanyIdAndName {
   companyId: string;
@@ -116,6 +125,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+const dialog = useDialog();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -166,6 +176,13 @@ async function addCompanies(): Promise<void> {
     isCompaniesLoading.value = false;
     companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
   }
+}
+
+/**
+ * Function to open the help dialog
+ */
+function openHelpDialog(): void {
+  dialog.open(GetHelpDialog);
 }
 
 /**
