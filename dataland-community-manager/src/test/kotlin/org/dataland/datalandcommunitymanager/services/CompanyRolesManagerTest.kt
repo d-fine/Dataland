@@ -18,7 +18,6 @@ import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -178,7 +177,7 @@ class CompanyRolesManagerTest {
                     nonExistingCompanyId,
                 )
             }
-        assertTrue(exception.summary.contains(companyNotFound))
+        assertEquals(exception.summary, companyNotFound)
     }
 
     @Test
@@ -195,7 +194,7 @@ class CompanyRolesManagerTest {
                     "",
                 )
             }
-        assertTrue(exception.summary.contains("User is already a company owner for company."))
+        assertEquals(exception.summary, "User is already a company owner for company.")
     }
 
     @Test
@@ -209,7 +208,7 @@ class CompanyRolesManagerTest {
                 )
             }
         verifyNoInteractions(mockCompanyOwnershipAcceptedEmailMessageBuilder)
-        assertTrue(exception.summary.contains(companyNotFound))
+        assertEquals(exception.summary, companyNotFound)
     }
 
     @Test
@@ -289,7 +288,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains(companyNotFound))
+        assertEquals(exception.summary, companyNotFound)
     }
 
     @Test
@@ -302,7 +301,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains(companyRoleNotAssigned))
+        assertEquals(exception.summary, companyRoleNotAssigned)
     }
 
     @Test
@@ -332,7 +331,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains(companyNotFound))
+        assertEquals(exception.summary, companyNotFound)
     }
 
     @Test
@@ -345,7 +344,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertTrue(exception.summary.contains(companyRoleNotAssigned))
+        assertEquals(exception.summary, companyRoleNotAssigned)
     }
 
     @Test
