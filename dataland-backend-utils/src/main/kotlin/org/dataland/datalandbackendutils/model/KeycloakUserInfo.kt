@@ -16,7 +16,7 @@ data class KeycloakUserInfo(
         example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
     val email: String?,
-    @JsonProperty("id", required = true)
+    @JsonProperty("id")
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.GENERAL_USER_ID_DESCRIPTION,
         example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
