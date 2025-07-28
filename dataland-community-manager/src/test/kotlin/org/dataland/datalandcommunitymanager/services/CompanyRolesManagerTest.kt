@@ -177,7 +177,7 @@ class CompanyRolesManagerTest {
                     nonExistingCompanyId,
                 )
             }
-        assertEquals(exception.summary, companyNotFound)
+        assertEquals(companyNotFound, exception.summary)
     }
 
     @Test
@@ -194,7 +194,7 @@ class CompanyRolesManagerTest {
                     "",
                 )
             }
-        assertEquals(exception.summary, "User is already a company owner for company.")
+        assertEquals("User is already a company owner for company.", exception.summary)
     }
 
     @Test
@@ -208,7 +208,7 @@ class CompanyRolesManagerTest {
                 )
             }
         verifyNoInteractions(mockCompanyOwnershipAcceptedEmailMessageBuilder)
-        assertEquals(exception.summary, companyNotFound)
+        assertEquals(companyNotFound, exception.summary)
     }
 
     @Test
@@ -288,7 +288,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(exception.summary, companyNotFound)
+        assertEquals(companyNotFound, exception.summary)
     }
 
     @Test
@@ -301,7 +301,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(exception.summary, companyRoleNotAssigned)
+        assertEquals(companyRoleNotAssigned, exception.summary)
     }
 
     @Test
@@ -331,7 +331,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(exception.summary, companyNotFound)
+        assertEquals(companyNotFound, exception.summary)
     }
 
     @Test
@@ -344,7 +344,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(exception.summary, companyRoleNotAssigned)
+        assertEquals(companyRoleNotAssigned, exception.summary)
     }
 
     @Test
