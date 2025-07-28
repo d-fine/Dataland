@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
@@ -28,7 +27,6 @@ class CompanyRolesManager(
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyOwnershipRequestedEmailMessageBuilder: CompanyOwnershipRequestedEmailMessageBuilder,
     @Autowired private val companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder,
-    @Autowired private val keycloakUserService: KeycloakUserService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -38,29 +36,17 @@ class CompanyRolesManager(
      * Assigns a company role for the specified company to the user.
      * @param companyRole that shall be assigned
      * @param companyId of the company for which the role is being assigned
-     * @param userIdentifier identifier string for the user (either Dataland userId or email)
-     * @param identifierIsUserId whether userIdentifier is a Dataland userId (if not, it is an email)
+     * @param userId of the user to whom a company role shall be assigned
      * @returns an entity that summarizes all current holders of the company role for the company
      */
     @Transactional
     fun assignCompanyRoleForCompanyToUser(
         companyRole: CompanyRole,
         companyId: String,
-        userIdentifier: String,
-        identifierIsUserId: Boolean = true,
+        userId: String,
     ): CompanyRoleAssignmentEntity {
         val companyName = companyInfoService.getValidCompanyName(companyId)
         val correlationId = UUID.randomUUID().toString()
-
-        val userId =
-            if (identifierIsUserId) userIdentifier else keycloakUserService.findUserByEmail(userIdentifier)?.userId
-
-        if (userId == null) {
-            throw ResourceNotFoundApiException(
-                summary = "Email not found.",
-                message = "There is no user on Dataland registered under the specified email address.",
-            )
-        }
 
         val companyRoleAssignmentEntityOptional =
             companyRoleAssignmentRepository.findById(
