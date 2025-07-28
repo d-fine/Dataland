@@ -1,8 +1,8 @@
-// @ts-nocheck
 import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue';
 
 describe('Component test for AlignedActivitiesFormField', () => {
   it('AlignedActivitiesFormField component works correctly', () => {
+    //@ts-ignore
     cy.mountWithPlugins(AlignedActivitiesFormField, {});
     cy.get('div[data-test="dataPointToggleButton"]').should('exist').click();
     cy.get('button[data-test="addNewProductButton"]').should('exist').click();

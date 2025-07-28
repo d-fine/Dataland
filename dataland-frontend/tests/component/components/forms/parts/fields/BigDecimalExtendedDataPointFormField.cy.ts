@@ -1,8 +1,8 @@
-// @ts-nocheck
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 
 describe('Component test for DataPointFormField', () => {
   it('Currency field should not visible when unit is hardcoded and Quality field should have no value if the value field has value', () => {
+    //@ts-ignore
     cy.mountWithPlugins(BigDecimalExtendedDataPointFormField, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         unit: 'Days',

@@ -1,9 +1,9 @@
-// @ts-nocheck
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component test for ClaimOwnershipPanel', () => {
   it('ClaimOwnershipPanel component works correctly for authenticated user', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       keycloak: minimalKeycloakMock({}),
       data() {
@@ -30,6 +30,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
       return Promise.resolve();
     };
     const registerSpy = cy.spy(mockedKeycloak, 'register');
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       keycloak: mockedKeycloak,
       data() {

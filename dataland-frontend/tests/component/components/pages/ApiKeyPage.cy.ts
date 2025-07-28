@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ApiKeysPage from '@/components/pages/ApiKeysPage.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';

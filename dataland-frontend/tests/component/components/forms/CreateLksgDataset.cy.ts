@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyAssociatedDataLksgData, type LksgData } from '@clients/backend';

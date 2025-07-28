@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
@@ -9,6 +8,7 @@ describe('check that the document link component works and is displayed correctl
     cy.intercept('**/documents/dummyFile**', {
       statusCode: 200,
     }).as('downloadComplete');
+    //@ts-ignore
     cy.mountWithPlugins(DocumentDownloadLink, {
       keycloak: minimalKeycloakMock({}),
 
@@ -29,6 +29,7 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that Download Progress Spinner appears for a logged in user if the prop changes', function (): void {
+    //@ts-ignore
     cy.mountWithPlugins(DocumentDownloadLink, {
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -53,6 +54,7 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that Download Progress Spinner disappears for a logged in user and the checkmark appears', function (): void {
+    //@ts-ignore
     cy.mountWithPlugins(DocumentDownloadLink, {
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -76,6 +78,7 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that Download Progress Checkmark disappears again for a logged in user', function (): void {
+    //@ts-ignore
     cy.mountWithPlugins(DocumentDownloadLink, {
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -97,6 +100,7 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that document download link behaves as expected for a non logged in user', function (): void {
+    //@ts-ignore
     cy.mountWithPlugins(DocumentDownloadLink, {
       keycloak: minimalKeycloakMock({
         authenticated: false,
@@ -116,12 +120,11 @@ describe('check that the document link component works and is displayed correctl
   });
 
   it('Check that the label does not display "page" when page number is null', function (): void {
+    //@ts-ignore
     cy.mountWithPlugins(DataPointDataTable, {
       keycloak: minimalKeycloakMock({
         authenticated: true,
       }),
-
-      props: {},
       data() {
         return {
           dialogData: {
