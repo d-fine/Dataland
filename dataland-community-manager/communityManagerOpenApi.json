@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/user-validation": {
+    "/user-validation/email": {
       "post": {
         "tags": [
           "user-validation-controller"

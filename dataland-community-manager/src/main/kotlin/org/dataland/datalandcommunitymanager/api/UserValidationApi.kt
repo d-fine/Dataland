@@ -50,7 +50,7 @@ interface UserValidationApi {
         ],
     )
     @PostMapping(
-        value = ["/user-validation"],
+        value = ["/user-validation/email"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
