@@ -33,7 +33,7 @@ tika = "3.2.0"
 poi = "5.4.1"
 jodconverter = "4.4.9"
 spring-boot = "3.5.3"
-spring-framework = "6.2.8"
+spring-framework = "6.2.9"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
 
