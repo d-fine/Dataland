@@ -42,6 +42,7 @@ describe('Portfolio Monitoring Modal', () => {
         cy.visitAndCheckAppMount('/portfolios');
         cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
         cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
+        cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
         cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
         cy.intercept('POST', '**/api/companies/validation').as('forCompanyValidation');
       });
@@ -52,8 +53,8 @@ describe('Portfolio Monitoring Modal', () => {
       function testPatchMonitoring({
         portfolioName,
         // companyName,
-        // permId,
-        // frameworkValue,
+        permId,
+        frameworkValue,
         // frameworkTitle,
         // frameworkSubtitles,
       }: {
@@ -64,51 +65,58 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
-        cy.get('[data-test="add-portfolio"]').click();
-        cy.get('.p-dialog-mask').within(() => {
-          cy.get('[data-test="saveButton"]').should('be.disabled');
+        cy.get('[data-test="add-portfolio"]').click({
+          timeout: Cypress.env('medium_timeout_in_ms'),
         });
-        cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
-        cy.get('[data-test="saveButton"]').should('be.disabled');
 
-        // cy.wait(5000);
-        // cy.get('[data-test="add-portfolio"]').click();
-        // cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
-        // cy.get('[data-test="saveButton"]').should('be.disabled');
-        // cy.get('[data-test="company-identifiers-input"]').type(permId);
-        // cy.get('[data-test="addCompanies"]').click();
-        // cy.wait('@forCompanyValidation');
-        // cy.get('[data-test="saveButton"]').should('not.be.disabled');
-        // cy.get('[data-test="saveButton"]').click();
-        // cy.wait('@getEnrichedPortfolio');
-        // // eslint-disable-next-line cypress/no-unnecessary-waiting
-        // cy.wait(5000);
-        // cy.get(`[data-test="portfolio-${portfolioName}"]`)
-        //   .should('exist')
-        //   .within(() => {
-        //     cy.get('[data-test="monitor-portfolio"]').click();
-        //   });
-        //
-        // cy.get('[data-test="activateMonitoringToggle"]').click();
-        // cy.get('[data-test="listOfReportingPeriods"]').click();
-        // cy.get('.p-select-option').contains('2023').click();
-        //
-        // cy.get('[data-test="frameworkSelection"]')
-        //   .contains('EU Taxonomy')
-        //   .parent()
-        //   .find('input[type="checkbox"]')
-        //   .click();
-        //
-        // cy.get('[data-test="saveChangesButton"]').click();
-        //
-        // cy.wait('@patchMonitoring')
-        //   .its('request.body')
-        //   .should((body) => {
-        //     expect(body.isMonitored).to.be.true;
-        //     expect(body.startingMonitoringPeriod).to.equal('2023');
-        //     expect(body.monitoredFrameworks).to.include(frameworkValue);
-        //   });
-        //
+        cy.get('.p-dialog').within(() => {
+          cy.get('.p-dialog-header').contains('Add Portfolio');
+          cy.get('.portfolio-dialog-content').within(() => {
+            cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
+            cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
+            cy.get('[data-test="company-identifiers-input"]:visible').type(permId);
+            cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+            cy.wait('@forCompanyValidation');
+            cy.get('[data-test="portfolio-dialog-save-button"]').click({
+              timeout: Cypress.env('medium_timeout_in_ms') as number,
+            });
+          });
+        });
+
+        cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+        cy.get(`[data-test="${portfolioName}"]`).click();
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({
+          timeout: Cypress.env('medium_timeout_in_ms') as number,
+        });
+        cy.get('[data-test="monitor-portfolio"]').click({
+          timeout: Cypress.env('medium_timeout_in_ms') as number,
+        });
+
+        cy.get('.p-dialog').within(() => {
+          cy.get('.p-dialog-header').contains(`Monitoring of`);
+          cy.get('.portfolio-dialog-content').within(() => {
+            cy.get('[data-test="activateMonitoringToggle"]').click();
+            cy.get('[data-test="listOfReportingPeriods"]').click();
+            cy.get('.p-select-option').contains('2023').click();
+            cy.get('[data-test="frameworkSelection"]')
+              .contains('EU Taxonomy')
+              .parent()
+              .find('input[type="checkbox"]')
+              .click();
+            cy.get('[data-test="saveChangesButton"]').click({
+              timeout: Cypress.env('medium_timeout_in_ms') as number,
+            });
+          });
+        });
+
+        cy.wait('@patchMonitoring')
+          .its('request.body')
+          .should((body) => {
+            expect(body.isMonitored).to.be.true;
+            expect(body.startingMonitoringPeriod).to.equal('2023');
+            expect(body.monitoredFrameworks).to.include(frameworkValue);
+          });
+
         // cy.visitAndCheckAppMount('/requests');
         // // eslint-disable-next-line cypress/no-unnecessary-waiting
         // cy.wait(1000);
