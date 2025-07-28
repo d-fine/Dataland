@@ -49,7 +49,6 @@ interface CompanyRolesApi {
         ],
     )
     @PostMapping(
-        consumes = ["application/json"],
         produces = ["application/json"],
         value = ["/company-role-assignments/{role}/{companyId}/{userId}"],
     )
