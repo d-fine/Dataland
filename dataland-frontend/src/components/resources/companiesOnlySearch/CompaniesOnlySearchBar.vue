@@ -19,6 +19,7 @@
         @item-select="$emit('selectCompany', $event.value)"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
+        :pt="autoCompletePassThrough"
       >
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -86,6 +87,10 @@ export default defineComponent({
     inputClass: {
       type: String,
       default: 'h-3rem d-framework-searchbar-input w-full',
+    },
+    autoCompletePassThrough: {
+      type: Object,
+      required: false,
     },
   },
 
