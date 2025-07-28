@@ -66,7 +66,11 @@
                         fluid
                       />
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately" class="header-styling">
+                    <BasicFormSection
+                      :data-test="'notifyMeImmediately'"
+                      header="Notify Me Immediately"
+                      class="header-styling"
+                    >
                       Receive emails directly or via summary
                       <ToggleSwitch
                         style="display: block; margin: 1rem 0"
@@ -82,7 +86,8 @@
                     <BasicFormSection
                       :data-test="'informationCompanyOwnership'"
                       header="Information about company ownership"
-                     class="header-styling">
+                      class="header-styling"
+                    >
                       <p v-if="hasCompanyAtLeastOneOwner">
                         This company has at least one company owner. <br />
                         The company company owner(s) will be informed about your data request.
@@ -233,7 +238,6 @@
 
 <script lang="ts">
 import contentData from '@/assets/content.json';
-import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
@@ -266,7 +270,6 @@ export default defineComponent({
   name: 'SingleDataRequest',
   components: {
     PrimeSelect,
-    SingleSelectFormElement,
     PrimeDialog,
     ToggleSwitch,
     BasicFormSection,
@@ -871,5 +874,6 @@ export default defineComponent({
   [data-message-type='ui'] {
     display: none;
   }
+  background: var(--el-list-item-bg);
 }
 </style>
