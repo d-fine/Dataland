@@ -27,7 +27,11 @@
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
                   <div class="col-12">
-                    <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period" class="Header Styling">
+                    <BasicFormSection
+                      :data-test="'reportingPeriods'"
+                      header="Select at least one reporting period"
+                      class="header-styling"
+                    >
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
@@ -44,21 +48,25 @@
                         Select at least one reporting period to submit your request
                       </p>
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
-                      <SingleSelectFormElement
+                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework" class="header-styling">
+                      <PrimeSelect
                         placeholder="Select framework"
                         v-model="frameworkName"
                         name="Framework"
                         :options="frameworkOptions"
+                        option-label="label"
+                        option-value="value"
                         validation="required"
                         :validation-messages="{
                           required: 'Select a framework to submit your request',
                         }"
                         required
                         data-test="datapoint-framework"
+                        :highlightOnSelect="false"
+                        fluid
                       />
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
+                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately" class="header-styling">
                       Receive emails directly or via summary
                       <ToggleSwitch
                         style="display: block; margin: 1rem 0"
@@ -74,14 +82,14 @@
                     <BasicFormSection
                       :data-test="'informationCompanyOwnership'"
                       header="Information about company ownership"
-                    >
+                     class="header-styling">
                       <p v-if="hasCompanyAtLeastOneOwner">
                         This company has at least one company owner. <br />
                         The company company owner(s) will be informed about your data request.
                       </p>
                       <p v-else>This company does not have a company owner yet.</p>
                     </BasicFormSection>
-                    <BasicFormSection header="Provide Contact Details">
+                    <BasicFormSection header="Provide Contact Details" class="header-styling">
                       <label for="Emails" class="label-with-optional">
                         <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
@@ -252,10 +260,12 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
+import PrimeSelect from 'primevue/select';
 
 export default defineComponent({
   name: 'SingleDataRequest',
   components: {
+    PrimeSelect,
     SingleSelectFormElement,
     PrimeDialog,
     ToggleSwitch,
@@ -540,6 +550,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.header-styling {
+  text-align: left;
+}
+
 .label-with-optional {
   display: flex;
   align-items: center;
