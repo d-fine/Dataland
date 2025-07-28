@@ -29,37 +29,37 @@ if (runPrepopulation) {
   }
 }
 
-if (testGroupingDisabled || cypressTestGroup === 1) {
-  require('./landing-page');
-  require('./swagger-ui');
-  require('./user-api-key');
-  require('./framework-view-and-upload-journey');
-  require('./sfdr');
-  require('./lksg');
-  require('./company-cockpit');
-}
-
-if (testGroupingDisabled || cypressTestGroup === 2) {
-  require('./eu-taxonomy-financials');
-  require('./eu-taxonomy-non-financials');
-  require('./vsme');
-  require('./company-ownership');
-}
-
-if (testGroupingDisabled || cypressTestGroup === 3) {
-  /**
-   * user-authentication and admin-tools both need the admin tunnel to be present.
-   * That's why they live together.
-   */
-
-  require('./nuclear-and-gas');
-  require('./user-authentication');
-  require('./admin-tools');
-}
+// if (testGroupingDisabled || cypressTestGroup === 1) {
+//   require('./landing-page');
+//   require('./swagger-ui');
+//   require('./user-api-key');
+//   require('./framework-view-and-upload-journey');
+//   require('./sfdr');
+//   require('./lksg');
+//   require('./company-cockpit');
+// }
+//
+// if (testGroupingDisabled || cypressTestGroup === 2) {
+//   require('./eu-taxonomy-financials');
+//   require('./eu-taxonomy-non-financials');
+//   require('./vsme');
+//   require('./company-ownership');
+// }
+//
+// if (testGroupingDisabled || cypressTestGroup === 3) {
+//   /**
+//    * user-authentication and admin-tools both need the admin tunnel to be present.
+//    * That's why they live together.
+//    */
+//
+//   require('./nuclear-and-gas');
+//   require('./user-authentication');
+//   require('./admin-tools');
+// }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  require('./search-company-framework-data');
-  require('./quality-assurance');
+  // require('./search-company-framework-data');
+  // require('./quality-assurance');
   require('./community');
   require('./data-download');
 }

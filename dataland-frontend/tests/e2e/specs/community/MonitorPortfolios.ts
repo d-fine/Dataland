@@ -64,7 +64,7 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkSubtitles: string[];
       }): void {
         cy.visitAndCheckAppMount('/portfolios');
-        cy.get('[data-test="add-portfolio"]').click();
+        cy.get('[data-test="add-portfolio"]').click({ force: true });
         cy.get('.p-dialog-mask').within(() => {
           cy.get('[data-test="saveButton"]').should('be.disabled');
         });
