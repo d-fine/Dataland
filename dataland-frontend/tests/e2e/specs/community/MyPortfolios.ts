@@ -61,19 +61,35 @@ describeIf(
 
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="${portfolioName}"]`).click();
-      cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
-      cy.get('[data-test="portfolio-name-input"]').clear();
-      cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
-      cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
-      cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-      cy.get('[data-test="portfolio-dialog-save-button"]').click();
+      cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      });
+      cy.get('.p-dialog').within(() => {
+        cy.get('.p-dialog-header').contains('Edit Portfolio');
+        cy.get('.portfolio-dialog-content').within(() => {
+          cy.get('[data-test="portfolio-name-input"]').clear();
+          cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
+          cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
+          cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.get('[data-test="portfolio-dialog-save-button"]').click({
+            timeout: Cypress.env('medium_timeout_in_ms') as number,
+          });
+        });
+      });
+
+      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+
       cy.get(`[data-test="${editedPortfolioName}"]`).click();
-      cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click();
+      cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      });
 
       cy.window().then((win) => {
         cy.stub(win, 'confirm').returns(true);
       });
-      cy.get('[data-test="portfolio-dialog-delete-button"]').click();
+      cy.get('[data-test="portfolio-dialog-delete-button"]').click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      });
       cy.get(`[data-test="${editedPortfolioName}"]`).should('not.exist');
     });
   }
