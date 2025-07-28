@@ -59,7 +59,7 @@ describeIf(
         });
       });
 
-      cy.wait(['@getPortolioNames', '@getEnrichedPortfolio']);
+      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="${portfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[data-test="portfolio-name-input"]').clear();
