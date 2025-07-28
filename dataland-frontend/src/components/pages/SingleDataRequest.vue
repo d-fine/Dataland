@@ -27,7 +27,7 @@
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
                   <div class="col-12">
-                    <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period">
+                    <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period" class="Header Styling">
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"

@@ -46,7 +46,7 @@
         <div v-if="isClaimPanelVisible" class="claim-pane">
           <ClaimOwnershipPanel :company-id="companyId" />
         </div>
-        <div class="frameworks-grid">
+        <div class="frameworks-grid" data-test="summaryPanels">
           <FrameworkSummaryPanel
             v-for="framework of frameworksToDisplay"
             :key="framework"
