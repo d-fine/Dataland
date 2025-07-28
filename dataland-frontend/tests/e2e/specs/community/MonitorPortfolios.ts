@@ -38,11 +38,12 @@ describe('Portfolio Monitoring Modal', () => {
       });
 
       beforeEach(() => {
+        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.visitAndCheckAppMount('/portfolios');
         cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
         cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
         cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
         cy.intercept('POST', '**/api/companies/validation').as('forCompanyValidation');
-        cy.ensureLoggedIn(admin_name, admin_pw);
       });
 
       /**
@@ -63,8 +64,7 @@ describe('Portfolio Monitoring Modal', () => {
         frameworkTitle: string;
         frameworkSubtitles: string[];
       }): void {
-        cy.visitAndCheckAppMount('/portfolios');
-        cy.get('[data-test="add-portfolio"]').click({ force: true });
+        cy.get('[data-test="add-portfolio"]').click();
         cy.get('.p-dialog-mask').within(() => {
           cy.get('[data-test="saveButton"]').should('be.disabled');
         });
@@ -73,7 +73,7 @@ describe('Portfolio Monitoring Modal', () => {
 
         // cy.wait(5000);
         // cy.get('[data-test="add-portfolio"]').click();
-        // cy.get('[name="portfolio-name"]').type(portfolioName);
+        // cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
         // cy.get('[data-test="saveButton"]').should('be.disabled');
         // cy.get('[name="company-identifiers"]').type(permId);
         // cy.get('[data-test="addCompanies"]').click();

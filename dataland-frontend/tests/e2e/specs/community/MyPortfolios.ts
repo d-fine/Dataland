@@ -35,14 +35,22 @@ describeIf(
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
     });
 
-    it('Creates, edits and deletes a portfolio', () => {
-      cy.get('[data-test="add-portfolio"]').click();
-      cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
-      cy.get('[data-test="saveButton"]').should('be.disabled');
-      cy.get('[data-test="company-identifiers-input"]').type(permIdOfExistingCompany);
-      cy.get('[data-test="addCompanies"]').click();
-      cy.get('[data-test="saveButton"]').should('not.be.disabled');
-      cy.get('[data-test="saveButton"]').click();
+    it.only('Creates, edits and deletes a portfolio', () => {
+      cy.get('button[data-test="add-portfolio"]').click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      });
+      cy.get('.p-dialog').within(() => {
+        cy.get('.p-dialog-header').contains('Add Portfolio');
+        cy.get('.portfolio-dialog-content').within(() => {
+          cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
+          cy.get('[data-test="saveButton"]').should('be.disabled');
+          cy.get('[data-test="company-identifiers-input"]').type(permIdOfExistingCompany);
+          cy.get('[data-test="addCompanies"]').click();
+          cy.get('[data-test="saveButton"]').should('not.be.disabled');
+          cy.get('[data-test="saveButton"]').click();
+        });
+      });
+
       cy.wait('@getEnrichedPortfolio');
 
       cy.get(`[data-test="${portfolioName}"]`).click();
