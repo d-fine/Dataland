@@ -22,16 +22,16 @@ kotlin = "2.0.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.18.0"
-junit-jupiter = "5.13.2"
+junit-jupiter = "5.13.4"
 log4j = "2.25.0"
 jackson = "2.18.4"
 logback = "1.5.18"
-flyway = "11.10.0"
+flyway = "11.10.3"
 cloudevents = "4.0.1"
 itext = "9.2.0"
 tika = "3.2.0"
 poi = "5.4.1"
-jodconverter = "4.4.9"
+jodconverter = "4.4.10"
 spring-boot = "3.5.3"
 spring-framework = "6.2.8"
 detekt = "1.23.8"
@@ -40,7 +40,7 @@ bouncy-castle = "1.70"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.2" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.3" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
