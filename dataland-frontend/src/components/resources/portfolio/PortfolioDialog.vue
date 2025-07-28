@@ -2,19 +2,12 @@
   <div class="portfolio-dialog-content">
     <div class="container">
       <p class="header-styling">Portfolio Name</p>
-      <InputText
-        v-model="portfolioName"
-        name="portfolio-name"
-        data-test="portfolio-name-input"
-        :placeholder="portfolioName"
-        fluid
-      />
+      <InputText v-model="portfolioName" data-test="portfolio-name-input" :placeholder="portfolioName" fluid />
     </div>
     <div class="container">
       <p class="header-styling">Add company identifiers</p>
       <Textarea
         v-model="companyIdentifiersInput"
-        name="company-identifiers"
         data-test="company-identifiers-input"
         :disabled="isCompaniesLoading"
         placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
@@ -68,8 +61,7 @@
         :disabled="!isValidPortfolioUpload"
         :loading="isPortfolioSaving"
         @click="savePortfolio()"
-        class="primary-button"
-        :data-test="'saveButton'"
+        data-test="saveButton"
       />
     </div>
   </div>

@@ -23,7 +23,13 @@
         :highlightOnSelect="false"
         fluid
       />
-      <Message v-if="showReportingPeriodsError" severity="error" variant="simple" size="small" data-test="reportingPeriodsError">
+      <Message
+        v-if="showReportingPeriodsError"
+        severity="error"
+        variant="simple"
+        size="small"
+        data-test="reportingPeriodsError"
+      >
         Please select Starting Period.
       </Message>
     </div>
