@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.model.BasicUserInformation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -18,7 +18,7 @@ class UserValidationService(
      * and, if so, returns basic information on that user gathered from Keycloak.
      * @email the email address to validate
      */
-    fun validateEmailAddress(email: String): BasicUserInformation {
+    fun validateEmailAddress(email: String): KeycloakUserInfo {
         val keycloakUserInfo = keycloakUserService.findUserByEmail(email)
         if (keycloakUserInfo == null) {
             throw ResourceNotFoundApiException(
@@ -26,11 +26,11 @@ class UserValidationService(
                 message = "There is no registered Dataland user with this email address.",
             )
         }
-        return BasicUserInformation(
-            keycloakUserInfo.userId,
-            keycloakUserInfo.email,
-            keycloakUserInfo.firstName,
-            keycloakUserInfo.lastName,
+        return KeycloakUserInfo(
+            userId = keycloakUserInfo.userId,
+            email = keycloakUserInfo.email,
+            firstName = keycloakUserInfo.firstName,
+            lastName = keycloakUserInfo.lastName,
         )
     }
 }
