@@ -182,7 +182,12 @@ async function addCompanies(): Promise<void> {
  * Function to open the help dialog
  */
 function openHelpDialog(): void {
-  dialog.open(GetHelpDialog);
+  dialog.open(GetHelpDialog, {
+    props: {
+      header: 'Request of Support',
+      modal: true,
+    },
+  });
 }
 
 /**
