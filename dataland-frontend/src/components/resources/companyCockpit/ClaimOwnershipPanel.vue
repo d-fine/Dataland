@@ -10,10 +10,10 @@
     }"
   >
     <template #title>
-      <span>Responsible for {{ companyName }}?</span>
+      <span data-test="claimOwnershipPanelHeading">Responsible for {{ companyName }}?</span>
       <PrimeButton
         data-test="claimOwnershipPanelLink"
-        label="Claim company ownership"
+        label="Claim company ownership."
         variant="link"
         @click="openDialog"
         :pt="{
