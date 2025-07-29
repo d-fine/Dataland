@@ -110,7 +110,7 @@
                       <p
                         v-show="displayContactsNotValidError"
                         class="text-danger"
-                        data-test="contectsNotValidErrorMessage"
+                        data-test="contactsNotValidErrorMessage"
                       >
                         You have to provide valid contacts to add a message to the request
                       </p>
