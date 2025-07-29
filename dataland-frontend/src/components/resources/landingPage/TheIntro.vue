@@ -30,9 +30,9 @@
       @focus="handleInputFocus"
       @blur="handleInputBlur"
       :autoCompletePassThrough="{
-          pcInputText: {
-            root: {
-              style: 'border: none',
+        pcInputText: {
+          root: {
+            style: 'border: none',
           },
         },
       }"

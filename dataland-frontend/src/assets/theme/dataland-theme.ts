@@ -58,11 +58,20 @@ export const DatalandPreset = definePreset(Aura, {
       950: '{orange.950}',
     },
     content: {
-      borderRadius: '{border.radius.none}',
+      borderRadius: '{border.radius.xs}',
     },
     list: {
       option: {
         borderRadius: '{border.radius.none}',
+      },
+    },
+    formField: {
+      borderRadius: '{border.radius.none}',
+    },
+    navigation: {
+      item: {
+        borderRadius: '{border.radius.none}',
+        padding: 'var(--spacing-md)',
       },
     },
     overlay: {
@@ -72,10 +81,8 @@ export const DatalandPreset = definePreset(Aura, {
       popover: {
         borderRadius: '{border.radius.none}',
       },
-    },
-    navigation: {
-      item: {
-        borderRadius: '{border.radius.none}',
+      modal: {
+        borderRadius: '{border.radius.xs}',
       },
     },
     colorScheme: {
@@ -104,16 +111,9 @@ export const DatalandPreset = definePreset(Aura, {
           background: '{surface.0}',
           color: '{surface.900}',
           borderColor: '{surface.200}',
-          borderRadius: '{border.radius.xs}',
           extend: {
             hoverBorderColor: '{surface.800}',
           },
-        },
-        highlight: {
-          background: '{slate.900}',
-          focusBackground: '{slate.900}',
-          color: '{surface.900}',
-          focusColor: '{surface.900}',
         },
         formField: {
           filledHoverBackground: '{surface.100}',
@@ -122,23 +122,22 @@ export const DatalandPreset = definePreset(Aura, {
           hoverBorderColor: '{surface.300}',
           focusBorderColor: '{primary.color}',
           invalidBorderColor: '{surface.0}',
-          borderRadius: '{border.radius.none}',
           shadow: 'none',
+        },
+        highlight: {
+          background: '{slate.900}',
+          focusBackground: '{slate.900}',
+          color: '{surface.900}',
+          focusColor: '{surface.900}',
         },
         navigation: {
           item: {
-            padding: 'var(--spacing-md)',
             color: '{primary.color}',
             focusColor: '{primary.color}',
             icon: {
               color: '{primary.color}',
               focusColor: '{primary.color}',
             },
-          },
-        },
-        overlay: {
-          modal: {
-            borderRadius: '{border.radius.xs}',
           },
         },
       },
@@ -197,8 +196,8 @@ export const DatalandPreset = definePreset(Aura, {
     },
     datatable: {
       headerCell: {
-        selectedColor: '{primary.color}',
         selectedBackground: '{content.background}',
+        selectedColor: '{primary.color}',
       },
     },
     menu: {
@@ -215,21 +214,21 @@ export const DatalandPreset = definePreset(Aura, {
         padding: '0',
       },
       tab: {
-        padding: '1.25rem 0',
-        margin: '0 1.25rem',
-        borderWidth: '0 0 2px 0',
         borderColor: '{surface.0}',
+        borderWidth: '0 0 2px 0',
         hoverBorderColor: '{content.hoverBorderColor}',
+        margin: '0 1.25rem',
+        padding: '1.25rem 0',
       },
       activeBar: {
-        height: '0',
         bottom: '0',
+        height: '0',
       },
     },
     paginator: {
       navButton: {
-        selectedBackground: '{primary.color}',
         borderRadius: '{border.radius.none}',
+        selectedBackground: '{primary.color}',
         selectedColor: '{primary.contrast.color}',
       },
     },
@@ -238,15 +237,15 @@ export const DatalandPreset = definePreset(Aura, {
     },
     tooltip: {
       root: {
+        borderRadius: '{border.radius.none}',
         maxWidth: '20rem',
         padding: 'var(--spacing-xs)',
-        borderRadius: '{border.radius.none}',
       },
       colorScheme: {
         light: {
           root: {
-            color: '{surface.50}',
             background: '{slate.700}',
+            color: '{surface.50}',
           },
         },
       },
