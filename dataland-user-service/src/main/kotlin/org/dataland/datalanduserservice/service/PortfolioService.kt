@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
+import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -22,6 +23,7 @@ class PortfolioService
     @Autowired
     constructor(
         private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
+        private val publisher: MessageQueuePublisherService,
         private val portfolioRepository: PortfolioRepository,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
@@ -203,4 +205,11 @@ class PortfolioService
             getAllPortfoliosForUser().map {
                 BasePortfolioName(it.portfolioId, it.portfolioName)
             }
+
+        /**
+         * Put support request on message queue
+         */
+        fun sendSupportRequestToPublisherService(supportRequestData: SupportRequestData) {
+            publisher.publishSupportRequest(supportRequestData)
+        }
     }

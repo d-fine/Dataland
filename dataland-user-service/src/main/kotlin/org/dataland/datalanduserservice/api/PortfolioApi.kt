@@ -13,6 +13,7 @@ import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.SupportRequestData
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -295,4 +296,25 @@ interface PortfolioApi {
         @PathVariable("portfolioId") portfolioId: String,
         @Valid @RequestBody portfolioMonitoringPatch: PortfolioMonitoringPatch,
     ): ResponseEntity<BasePortfolio>
+
+    /**
+     * A method to request support for portfolio creation e.g. by finding company identifiers
+     */
+    @Operation(
+        summary = "Request support creating a portfolio.",
+        description =
+            "Request support creating a portfolio on Dataland.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully requested support."),
+        ],
+    )
+    @PostMapping(
+        value = ["/portfolios/support"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postSupportRequest(
+        @RequestBody(required = true) supportRequestData: SupportRequestData,
+    )
 }
