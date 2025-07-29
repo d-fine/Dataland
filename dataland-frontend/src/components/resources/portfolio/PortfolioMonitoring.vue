@@ -54,7 +54,7 @@
             </p>
           </div>
         </div>
-        <div class="dataland-info-text">
+        <div class="dataland-info-text small">
           EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
         </div>
       </div>
