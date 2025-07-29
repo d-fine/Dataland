@@ -113,7 +113,6 @@ export default defineComponent({
 .p-datatable {
   border-radius: 0;
   background: var(--table-background-color);
-  color: var(--main-text-color);
 
   .border-left {
     border-left: 1px solid var(--table-border);
@@ -190,7 +189,6 @@ export default defineComponent({
   .headers-bg {
     background-color: var(--tables-headers-bg);
     display: table-cell;
-    width: var(--first-table-column-width);
   }
   .auto-headers-size {
     width: auto;
