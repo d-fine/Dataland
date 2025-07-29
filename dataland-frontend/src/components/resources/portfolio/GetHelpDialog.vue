@@ -43,6 +43,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isSendingMail = ref(false);
 const message = ref('');
 import { ref } from 'vue';
+import type { SupportRequestData } from '@clients/userservice';
 
 const topic = ref();
 const topics = ref([
@@ -51,12 +52,13 @@ const topics = ref([
 ]);
 
 /**
- * Add identifiers from companyIdentifierInput to list. Invalid Identifiers remain in the input text field.
+ * Send an email to request support
  */
 async function sendEmail(): Promise<void> {
+  const supportRequest: SupportRequestData = { topic: topic.value, message: message.value };
   try {
     isSendingMail.value = true;
-    await apiClientProvider.backendClients.companyDataController.postCompanyValidation([message.value]);
+    await apiClientProvider.apiClients.portfolioController.postSupportRequest(supportRequest);
   } catch (error) {
     console.log(error);
   } finally {
