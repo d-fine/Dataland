@@ -12,13 +12,14 @@ describe('Portfolio Monitoring Modal', () => {
       let permIdNonFinancial: string;
       let permIdFinancial: string;
       let permIdNoSector: string;
-      const timestamp = Date.now();
-      const nonFinancialPortfolio = `nonFinancialPortfolio ${timestamp}`;
-      const financialPortfolio = `financialPortfolio ${timestamp}`;
-      const nonSectorPortfolio = `NonSectorPortfolio ${timestamp}`;
-      const companyNameNonFinancial = `Test Co. NonFin ${timestamp}`;
-      const companyNameFinancial = `Test Co. Fin ${timestamp}`;
-      const companyNameNoSector = `Test Co. NoSec ${timestamp}`;
+      const companyTimestamp = Date.now();
+      let portfolioTimestamp: number;
+      let nonFinancialPortfolio: string;
+      let financialPortfolio: string;
+      let nonSectorPortfolio: string;
+      const companyNameNonFinancial = `Test Co. NonFin ${companyTimestamp}`;
+      const companyNameFinancial = `Test Co. Fin ${companyTimestamp}`;
+      const companyNameNoSector = `Test Co. NoSec ${companyTimestamp}`;
 
       before(() => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
@@ -45,6 +46,11 @@ describe('Portfolio Monitoring Modal', () => {
         cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
         cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
         cy.intercept('POST', '**/api/companies/validation').as('forCompanyValidation');
+
+        portfolioTimestamp = Date.now();
+        nonFinancialPortfolio = `nonFinancialPortfolio ${portfolioTimestamp}`;
+        financialPortfolio = `financialPortfolio ${portfolioTimestamp}`;
+        nonSectorPortfolio = `NonSectorPortfolio ${portfolioTimestamp}`;
       });
 
       /**
@@ -84,10 +90,17 @@ describe('Portfolio Monitoring Modal', () => {
 
         cy.get('.p-dialog').within(() => {
           cy.get('.p-dialog-header').contains(`Monitoring of`);
-          cy.get('.portfolio-dialog-content').within(() => {
+          cy.get('.portfolio-monitoring-content').within(() => {
             cy.get('[data-test="activateMonitoringToggle"]').click();
-            cy.get('[data-test="listOfReportingPeriods"]').click();
-            cy.get('.p-select-option').contains('2023').click();
+            cy.get('[data-test="listOfReportingPeriods"]').click({
+              timeout: Cypress.env('medium_timeout_in_ms') as number,
+            });
+          });
+        });
+        cy.get('.p-select-option').contains('2023').click();
+        cy.get('.p-dialog')
+          .find('.portfolio-monitoring-content')
+          .within(() => {
             cy.get('[data-test="frameworkSelection"]')
               .contains('EU Taxonomy')
               .parent()
@@ -97,7 +110,6 @@ describe('Portfolio Monitoring Modal', () => {
               timeout: Cypress.env('medium_timeout_in_ms') as number,
             });
           });
-        });
 
         cy.wait('@patchMonitoring')
           .its('request.body')
@@ -128,13 +140,13 @@ describe('Portfolio Monitoring Modal', () => {
           timeout: Cypress.env('medium_timeout_in_ms') as number,
         });
 
-        cy.get('.p-dialog').within(() => {
-          cy.get('.portfolio-dialog-content').within(() => {
+        cy.get('.p-dialog')
+          .find('.portfolio-dialog-content')
+          .within(() => {
             cy.get('[data-test="portfolio-dialog-delete-button"]').click({
               timeout: Cypress.env('medium_timeout_in_ms') as number,
             });
           });
-        });
 
         cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
         cy.get(`[data-test="${portfolioName}"]`).should('not.exist');

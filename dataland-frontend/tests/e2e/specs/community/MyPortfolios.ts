@@ -48,7 +48,8 @@ describeIf(
       cy.get('.p-dialog').within(() => {
         cy.get('.p-dialog-header').contains('Add Portfolio');
         cy.get('.portfolio-dialog-content').within(() => {
-          cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
+          cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
+          cy.pause();
           cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
           cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]').click();
@@ -68,9 +69,9 @@ describeIf(
         cy.get('.p-dialog-header').contains('Edit Portfolio');
         cy.get('.portfolio-dialog-content').within(() => {
           cy.get('[data-test="portfolio-name-input"]').clear();
-          cy.get('[data-test="portfolio-name-input"]').type(editedPortfolioName);
+          cy.get('[data-test="portfolio-name-input"]:visible').type(editedPortfolioName);
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
-          cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,
           });
