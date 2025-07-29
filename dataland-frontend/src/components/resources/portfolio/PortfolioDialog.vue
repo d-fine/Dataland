@@ -16,7 +16,7 @@
         fluid
       />
       <div class="company-info-container">
-        <p class="dataland-info-text">
+        <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
         </p>
         <PrimeButton

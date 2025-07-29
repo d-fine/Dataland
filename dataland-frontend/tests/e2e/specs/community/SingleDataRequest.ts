@@ -39,6 +39,7 @@ describeIf(
         });
       });
     }
+
     /**
      * Sets the status of a single data request from open to answered
      * @param companyId id of the company
@@ -55,6 +56,7 @@ describeIf(
         );
       });
     }
+
     before(() => {
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -91,13 +93,13 @@ describeIf(
       cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
       cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible');
       cy.get('[data-test="acceptConditionsCheckbox"]').click();
-      cy.get("button[type='submit']").click();
+      cy.get('button[type="submit"]').click();
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
       checkCompanyInfoSheet();
-      cy.get('[data-test=submittedDiv]').should('exist');
-      cy.get('[data-test=requestStatusText]').should('contain.text', 'Submitting your data request was successful.');
+      cy.get('[data-test="submittedDiv"]').should('exist');
+      cy.get('[data-test="requestStatusText"]').should('contain.text', 'Submitting your data request was successful.');
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should('contain', '/companies/');
       checkCompanyInfoSheet();
@@ -161,32 +163,32 @@ describeIf(
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      cy.get("[data-test='datapoint-framework']").click();
+      cy.get('[data-test="datapoint-framework"]').click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
       });
-      cy.get("[data-test='datapoint-framework']").click();
+      cy.get('[data-test="datapoint-framework"]').click();
     }
 
     /**
      * Checks basic validation
      */
     function checkValidation(): void {
-      cy.get("button[type='submit']").click();
-      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage']")
+      cy.get('button[type="submit"]').click();
+      cy.get('div[data-test="reportingPeriods"] p[data-test="reportingPeriodErrorMessage"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 
-      cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
+      cy.get('div[data-test="Frameworks"] p[data-test="frameworkErrorMessage"]')
         .should('be.visible')
-        .should('contain.text', 'Select a framework to submit your request');
+        .should('contain.text', 'Select at least one reporting period to submit your request');
     }
 
     /**
      * Checks if the information on the company banner is correct
      */
     function checkCompanyInfoSheet(): void {
-      cy.get("[data-test='companyNameTitle']").should('contain.text', testCompanyName);
+      cy.get('[data-test="companyNameTitle"]').should('contain.text', testCompanyName);
     }
   }
 );

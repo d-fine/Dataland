@@ -65,7 +65,7 @@
         />
         <p data-test="portfolioExportValuesOnlyToggleCaption">Values only</p>
       </div>
-      <div class="dataland-info-text">
+      <div class="dataland-info-text small">
         Download only data values. Turn off to include additional details, e.g. comment, data source, etc. Only
         applicable for CSV and Excel file types.
       </div>
@@ -78,7 +78,7 @@
       />
       <p data-test="portfolioExportIncludeAliasToggleCaption">Shorten field names</p>
     </div>
-    <div class="dataland-info-text">
+    <div class="dataland-info-text small">
       Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
     </div>
     <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">

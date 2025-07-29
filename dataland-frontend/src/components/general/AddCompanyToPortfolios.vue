@@ -17,7 +17,7 @@
       }"
     />
 
-    <p class="gray-text font-italic text-xs m-0 pb-2">
+    <p class="dataland-info-text small">
       Choose one or more portfolios you wish to add this company to. Portfolios already containing the company will not
       be modified.
     </p>
