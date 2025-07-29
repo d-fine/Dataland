@@ -601,4 +601,8 @@ export default defineComponent({
 .red-text {
   color: var(--red);
 }
+
+.no-ui-message {
+  background: var(--el-list-item-bg);
+}
 </style>
