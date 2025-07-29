@@ -80,7 +80,9 @@
                       header="Notify Me Immediately"
                       class="header-styling"
                     >
-                      Receive emails directly or via summary
+                      <div class="dataland-info-text normal">
+                        Receive emails directly or via summary
+                      </div>
                       <ToggleSwitch
                         style="display: block; margin: var(--spacing-md) 0"
                         data-test="notifyMeImmediatelyInput"
@@ -97,11 +99,11 @@
                       header="Information about company ownership"
                       class="header-styling"
                     >
-                      <p v-if="hasCompanyAtLeastOneOwner">
+                      <p v-if="hasCompanyAtLeastOneOwner" class="dataland-info-text normal">
                         This company has at least one company owner. <br />
                         The company company owner(s) will be informed about your data request.
                       </p>
-                      <p v-else>This company does not have a company owner yet.</p>
+                      <p v-else class="dataland-info-text normal">This company does not have a company owner yet.</p>
                     </BasicFormSection>
                     <BasicFormSection header="Provide Contact Details" class="header-styling">
                       <label for="Emails" class="label-with-optional">
@@ -121,13 +123,13 @@
                       >
                         You have to provide valid contacts to add a message to the request
                       </p>
-                      <p class="gray-text font-italic" style="text-align: left">
+                      <p class ="dataland-info-text normal">
                         By specifying contacts your data request will be directed accordingly.<br />
                         You can specify multiple comma separated email addresses.<br />
                         This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
-                      <p class="gray-text font-italic" style="text-align: left">
+                      <p class ="dataland-info-text normal">
                         If you don't have a specific contact person, no worries.<br />
                         We are committed to fulfilling your request to the best of our ability.
                       </p>
@@ -142,7 +144,7 @@
                         data-test="dataRequesterMessage"
                         v-bind:disabled="!allowAccessDataRequesterMessage"
                       />
-                      <p class="gray-text font-italic" style="text-align: left">
+                      <p class ="dataland-info-text normal">
                         Let your contacts know what exactly your are looking for.
                       </p>
                       <div v-show="allowAccessDataRequesterMessage">
