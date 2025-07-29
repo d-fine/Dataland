@@ -40,13 +40,9 @@
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
-                      <p
-                        v-if="selectedReportingPeriodsError"
-                        class="text-danger mt-2"
-                        data-test="reportingPeriodErrorMessage"
-                      >
+                      <Message v-if="selectedReportingPeriodsError" severity="error" variant="simple" size="small" data-test="reportingPeriodErrorMessage" style="margin-top: var(--spacing-xs)">
                         Select at least one reporting period to submit your request
-                      </p>
+                      </Message>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework" class="header-styling">
                       <PrimeSelect
@@ -58,15 +54,12 @@
                         option-value="value"
                         data-test="datapoint-framework"
                         :highlightOnSelect="false"
+                        @change="selectedFrameworkError = false"
                         fluid
                       />
-                      <p
-                        v-if="selectedFrameworkError"
-                        class="text-danger mt-2"
-                        data-test="frameworkErrorMessage"
-                      >
+                      <Message v-if="selectedFrameworkError" severity="error" variant="simple" size="small" data-test="frameworkErrorMessage" style="margin-top: var(--spacing-xs)">
                         Select a framework to submit your request
-                      </p>
+                      </Message>
                     </BasicFormSection>
                     <BasicFormSection
                       :data-test="'notifyMeImmediately'"
@@ -267,10 +260,12 @@ import PrimeDialog from 'primevue/dialog';
 import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 import PrimeSelect from 'primevue/select';
+import Message from 'primevue/message';
 
 export default defineComponent({
   name: 'SingleDataRequest',
   components: {
+    Message,
     PrimeSelect,
     PrimeDialog,
     ToggleSwitch,
@@ -576,320 +571,24 @@ export default defineComponent({
 .label-with-optional {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-md);
 }
 
 .optional-text {
   font-style: italic;
-  color: #e67f3f;
+  color: var(--p-orange-500);
   margin-left: 8px;
-}
-
-.years-container {
-  display: flex;
-  margin-top: 10px;
-}
-
-.years {
-  border: 2px solid black;
-  border-radius: 20px;
-  padding: 8px 16px;
-  margin-right: 10px;
-  background-color: white;
-  color: black;
-  cursor: pointer;
-}
-
-.years.selected {
-  background-color: #e67f3f;
-  color: black;
-  border-color: black;
-  font-weight: bold;
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
-.text-danger {
-  color: var(--fk-color-error);
-  font-size: var(--font-size-xs);
-}
-
-.bg-white {
-  background-color: var(--default-neutral-white);
-}
-
-.gray-text {
-  color: var(--gray);
-}
-
-.red-text {
-  color: var(--red);
 }
 
 .green-text {
   color: var(--green);
 }
 
-.uploadFormWrapper {
-  input[type='checkbox'],
-  input[type='radio'] {
-    display: grid;
-    place-content: center;
-    height: 18px;
-    width: 18px;
-    cursor: pointer;
-    margin: 0 10px 0 0;
-  }
-  input[type='checkbox'] {
-    background-color: var(--input-text-bg);
-    border: 2px solid var(--input-checked-color);
-    border-radius: 2px;
-  }
-  input[type='checkbox']:not(.p-radiobutton):checked {
-    background-color: var(--input-checked-color);
-  }
-  input[type='radio'],
-  input.p-radiobutton {
-    background-color: white;
-    border: 2px solid var(--input-label-color);
-    border-radius: 15px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  input.p-radiobutton:hover,
-  input.p-radiobutton:active,
-  input.p-radiobutton:checked {
-    border: 3px solid var(--input-label-color);
-  }
-  input[type='checkbox']::before,
-  input[type='radio']::before {
-    content: '';
-    width: 5px;
-    height: 7px;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    margin-top: -2px;
-    display: none;
-  }
-  input[type='checkbox']::before {
-    border-style: solid;
-    border-color: var(--input-text-bg);
-  }
-  input[type='radio']::before,
-  input.p-radiobutton::before {
-    border-style: solid;
-    border-color: var(--input-label-color);
-  }
-  input[type='checkbox']:checked::before,
-  input[type='radio']:checked::before {
-    display: block;
-  }
-  label[data-checked='true'] {
-    input[type='radio']::before,
-    input.p-radiobutton::before {
-      display: block;
-    }
-  }
-  .p-multiselect {
-    font-size: var(--font-size-base);
-    border-radius: 0;
-    background: var(--input-text-bg);
-    border-style: solid;
-    border-width: 0 0 1px 0;
-    border-color: var(--input-text-border);
-    box-shadow: none;
-    width: 100%;
-
-    &:focus-within {
-      outline: none;
-      border-bottom: 1px solid var(--input-text-border-hover);
-    }
-    .p-multiselect-label {
-      padding: var(--spacing-sm);
-      &.p-placeholder {
-        color: var(--text-color-secondary);
-      }
-    }
-    .p-multiselect-trigger {
-      width: var(--spacing-xxl);
-      .p-multiselect-trigger-icon {
-        color: var(--text-color-secondary);
-        font-size: var(--spacing-sm);
-      }
-    }
-  }
-  .w-100 {
-    width: 100px;
-  }
-  .short {
-    width: 33%;
-  }
-  .medium {
-    width: 66%;
-  }
-  .long {
-    width: 100%;
-  }
-  .shortish-hard {
-    width: 45%;
-    min-width: 45%;
-    max-width: 45%;
-  }
-  .normal-line-height {
-    line-height: normal;
-  }
-  .no-selection .p-dropdown-label {
-    color: #767676;
-  }
-  .yes-no-radio {
-    fieldset.formkit-fieldset {
-      border: 0;
-      padding: 0;
-    }
-    .formkit-options {
-      display: flex;
-      padding: var(--spacing-xs) 0 0 0;
-      .formkit-option:nth-child(n + 2) {
-        margin-left: 10%;
-      }
-    }
-  }
-  .formkit-wrapper,
-  .formkit-fieldset {
-    max-width: 100%;
-  }
-  .title {
-    margin: var(--spacing-xxs) 0;
-  }
-  .subtitle {
-    display: block;
-    padding-bottom: var(--spacing-md);
-    .form-field-label {
-      h5 {
-        font-size: var(--font-size-base);
-      }
-    }
-  }
-  .form-field-label {
-    display: flex;
-    align-self: center;
-    .info-icon {
-      margin-left: var(--spacing-xs);
-    }
-    button {
-      margin-left: auto;
-    }
-    h5 {
-      margin: var(--spacing-xs) 0;
-    }
-    .asterisk {
-      color: #ee1a1a;
-    }
-    .asterisk:before {
-      content: ' ';
-      display: inline-block;
-      width: var(--spacing-xxs);
-    }
-  }
-  .middle-next-to-field {
-    display: flex;
-    align-self: center;
-    padding-bottom: var(--spacing-md);
-  }
-  p {
-    margin: var(--spacing-xxs);
-  }
-  .p-datepicker {
-    width: 100%;
-    .p-button {
-      margin: 0;
-    }
-  }
-  .formFields {
-    background: var(--upload-form-bg);
-    padding: var(--spacing-lg);
-    margin-left: auto;
-    margin-bottom: 1rem;
-  }
-  .formkit-message {
-    &[data-message-type='ui'] {
-      text-align: center;
-      width: 100%;
-      padding: var(--spacing-xl);
-      border: 1px solid var(--input-error);
-    }
-  }
-  .hidden-input {
-    .formkit-wrapper {
-      visibility: hidden;
-      height: 0;
-    }
-  }
-  .form-list-item {
-    color: var(--input-label-color);
-    background: var(--el-list-item-bg);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    margin: var(--spacing-xxs);
-    text-align: center;
-    min-width: var(--spacing-lg);
-    border-radius: var(--spacing-md);
-    padding: var(--spacing-xxs) var(--spacing-md);
-    border: 1px solid var(--input-label-color);
-    display: inline-flex;
-    align-items: center;
-    em {
-      margin-left: var(--spacing-xs);
-      cursor: pointer;
-      &:hover {
-        color: hsl(from var(--input-label-color) h s calc(l - 20));
-      }
-    }
-  }
-  .uploadFormSection {
-    margin-bottom: var(--spacing-lg);
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    .form-field:not(:last-child) {
-      margin: 0 0 var(--spacing-md) 0;
-      padding: 0 0 var(--spacing-md) 0;
-      border-bottom: 1px solid var(--input-separator);
-    }
-  }
-  .uploaded-files {
-    .p-progressbar {
-      display: none;
-    }
-    .p-fileupload {
-      .p-fileupload-content {
-        border: none;
-        padding: var(--spacing-md);
-        align-items: center;
-        .file-upload-item {
-          margin: var(--spacing-md) 0;
-        }
-        button {
-          margin-left: auto;
-          width: 25px;
-          height: 25px;
-          padding: 0;
-        }
-      }
-    }
-  }
+.red-text {
+  color: var(--red);
 }
 
-.info-icon {
-  cursor: help;
-}
 
-.no-ui-message {
-  [data-message-type='ui'] {
-    display: none;
-  }
-  background: var(--el-list-item-bg);
-}
+
+
 </style>
