@@ -74,7 +74,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <SubmitSideBar>
+        <SubmitSideBar class="jumpLinks">
           <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
@@ -351,6 +351,31 @@ provide('listOfFilledKpis', listOfFilledKpis);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+  }
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 </style>

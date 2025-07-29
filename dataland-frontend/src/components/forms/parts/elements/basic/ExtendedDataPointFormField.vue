@@ -1,7 +1,7 @@
 <template>
-  <div :data-test="dataTest" class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
+  <div :data-test="dataTest" class="mb-3 p-0 -ml-2">
     <div data-test="toggleDataPointWrapper">
-      <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
+      <div class="px-2 py-3 vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
         <ToggleSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
@@ -16,17 +16,10 @@
           name="name"
           v-model="checkboxValue"
           :options="options"
+          ignore
           :outer-class="{
             'yes-no-radio': true,
           }"
-          :inner-class="{
-            'formkit-inner': false,
-          }"
-          :input-class="{
-            'formkit-input': false,
-            'p-radiobutton': true,
-          }"
-          :ignore="true"
           :plugins="[disabledOnMoreThanOne]"
           @input="updateCurrentValue($event)"
         />
@@ -264,16 +257,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.bordered-box {
-  border: 2px dotted var(--input-separator);
-  padding: 16px;
-}
-
-.next-to-each-other {
-  display: flex;
-  gap: 1rem;
-}
-
 .vertical-middle {
   display: flex;
   align-items: center;

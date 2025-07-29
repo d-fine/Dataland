@@ -58,8 +58,3 @@ const frameworkToUploadComponent = computed(() => {
   }
 });
 </script>
-<style scoped>
-.bg-white {
-  background-color: var(--default-neutral-white);
-}
-</style>

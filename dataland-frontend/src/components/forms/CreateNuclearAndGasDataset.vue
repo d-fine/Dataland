@@ -97,7 +97,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <SubmitSideBar>
+        <SubmitSideBar class="jumpLinks">
           <SubmitButton :formId="formId" />
           <div v-if="postNuclearAndGasDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
@@ -446,6 +446,31 @@ export default defineComponent({
       margin: 0 0 1rem 0;
       padding: 0 0 1rem 0;
       border-bottom: 1px solid var(--input-separator);
+    }
+  }
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
     }
   }
 }

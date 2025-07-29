@@ -40,14 +40,6 @@ export default defineComponent({
   margin-block-end: 0.5rem;
 }
 
-:deep(button.p-message-close) {
-  min-width: 0.5rem;
-}
-
-:deep(.p-message-wrapper) {
-  padding: 0.5rem;
-}
-
 .jumpLinks {
   left: auto;
   right: 0;
