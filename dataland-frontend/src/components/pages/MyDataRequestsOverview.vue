@@ -51,7 +51,7 @@
                 style="cursor: pointer"
                 :row-hover="true"
                 :loading="waitingForData"
-                data-test="requested-Datasets-table"
+                data-test="requested-datasets-table"
                 paginator
                 paginator-position="bottom"
                 :rows="datasetsPerPage"

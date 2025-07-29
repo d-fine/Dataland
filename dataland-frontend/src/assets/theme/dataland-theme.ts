@@ -26,7 +26,7 @@ export const DatalandPreset = definePreset(Aura, {
       600: '#ac4718',
       700: '#843716',
       800: '#5e2813',
-      900: '#5e2813',
+      900: '#391a0d',
       950: '#1a0900',
     },
     blue: {

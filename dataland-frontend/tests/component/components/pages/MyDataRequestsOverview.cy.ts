@@ -121,7 +121,7 @@ describe('Component tests for the data requests search page', function (): void 
     const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
     sortingColumHeader.forEach((value) => {
       cy.get(`table th:contains(${value})`).should('exist').click();
-      cy.get('[data-test="requested-Datasets-table"]')
+      cy.get('[data-test="requested-datasets-table"]')
         .find('tr')
         .find('td')
         .contains('a-company-that-will-always-be-sorted-to-top')
@@ -129,7 +129,7 @@ describe('Component tests for the data requests search page', function (): void 
         .invoke('index')
         .should('eq', 0);
       cy.get(`table th:contains(${value})`).should('exist').click();
-      cy.get('[data-test="requested-Datasets-table"]')
+      cy.get('[data-test="requested-datasets-table"]')
         .find('tr')
         .find('td')
         .contains('z-company-that-will-always-be-sorted-to-bottom')
@@ -149,7 +149,7 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
+      cy.get('[data-test="requested-datasets-table"]').should('not.exist');
       cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
       cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
     });
@@ -167,7 +167,7 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
     });
 
-    cy.get('[data-test="requested-Datasets-table"]').should('exist');
+    cy.get('[data-test="requested-datasets-table"]').should('exist');
     expectedHeaders.forEach((value) => {
       cy.get(`table th:contains(${value})`).should('exist');
     });
@@ -201,13 +201,13 @@ describe('Component tests for the data requests search page', function (): void 
     });
 
     expectedCompanys.forEach((value) => {
-      cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains(value).should('exist');
+      cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
     });
-    cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains('DummyName').should('not.exist');
+    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('DummyName').should('not.exist');
     expectedReportingPeriods.forEach((value) => {
-      cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains(value).should('exist');
+      cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
     });
-    cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
+    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
   });
 
   it('Check existence and functionality of searchbar and resolve button', function (): void {
@@ -280,7 +280,7 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="requested-Datasets-table"]').within(() => {
+      cy.get('[data-test="requested-datasets-table"]').within(() => {
         cy.get('tr:last').click();
       });
       cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
