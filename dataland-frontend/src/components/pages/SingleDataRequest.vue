@@ -40,7 +40,14 @@
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
-                      <Message v-if="selectedReportingPeriodsError" severity="error" variant="simple" size="small" data-test="reportingPeriodErrorMessage" style="margin-top: var(--spacing-xs)">
+                      <Message
+                        v-if="selectedReportingPeriodsError"
+                        severity="error"
+                        variant="simple"
+                        size="small"
+                        data-test="reportingPeriodErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
+                      >
                         Select at least one reporting period to submit your request
                       </Message>
                     </BasicFormSection>
@@ -57,7 +64,14 @@
                         @change="selectedFrameworkError = false"
                         fluid
                       />
-                      <Message v-if="selectedFrameworkError" severity="error" variant="simple" size="small" data-test="frameworkErrorMessage" style="margin-top: var(--spacing-xs)">
+                      <Message
+                        v-if="selectedFrameworkError"
+                        severity="error"
+                        variant="simple"
+                        size="small"
+                        data-test="frameworkErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
+                      >
                         Select a framework to submit your request
                       </Message>
                     </BasicFormSection>
@@ -576,7 +590,7 @@ export default defineComponent({
 
 .optional-text {
   font-style: italic;
-  color: var(--p-orange-500);
+  color: var(--p-primary-400);
   margin-left: 8px;
 }
 
@@ -587,8 +601,4 @@ export default defineComponent({
 .red-text {
   color: var(--red);
 }
-
-
-
-
 </style>

@@ -67,11 +67,10 @@ body {
   color: var(--p-gray-600);
   font-style: italic;
 
-  &.small{
+  &.small {
     font-size: var(--font-size-xs);
   }
-  &.normal{
+  &.normal {
     font-size: var(--font-size-base);
   }
-
 }

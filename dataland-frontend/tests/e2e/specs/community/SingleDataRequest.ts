@@ -182,7 +182,6 @@ describeIf(
       cy.get('div[data-test="Frameworks"] p[data-test="frameworkErrorMessage"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
-
     }
 
     /**
