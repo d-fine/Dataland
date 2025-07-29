@@ -260,5 +260,6 @@ export default defineComponent({
 .vertical-middle {
   display: flex;
   align-items: center;
+  gap: var(--spacing-md);
 }
 </style>

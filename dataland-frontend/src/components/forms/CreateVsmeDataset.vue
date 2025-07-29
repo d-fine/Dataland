@@ -1,7 +1,8 @@
 <template>
-  <Card class="col-12 page-wrapper-card p-3">
+  <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title>New Dataset - VSME</template>
     <template #content>
+      <div class="separator" />
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
@@ -61,9 +62,7 @@
                   <template v-if="subcategoryVisibilityMap.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="`${category.name}-${subcategory.name}`" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
-                      </div>
+                      <Tag :value="category.label.toUpperCase()" severity="secondary" />
                     </div>
 
                     <div class="col-9 formFields">
@@ -136,6 +135,7 @@ import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
+import Tag from 'primevue/tag';
 import DatePicker from 'primevue/datepicker';
 import type Keycloak from 'keycloak-js';
 import { type Category } from '@/utils/GenericFrameworkTypes';
