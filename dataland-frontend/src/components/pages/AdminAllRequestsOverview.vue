@@ -182,11 +182,11 @@
                 </template>
               </Column>
             </DataTable>
-            <!--            <div v-if="!waitingForData && currentDataRequests.length == 0">-->
-            <!--              <div class="d-center-div text-center px-7 py-4">-->
-            <!--                <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>-->
-            <!--              </div>-->
-            <!--            </div>-->
+            <div v-if="!waitingForData && currentDataRequests.length == 0">
+              <div class="d-center-div text-center px-7 py-4">
+                <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
+              </div>
+            </div>
           </div>
         </div>
       </TheContent>

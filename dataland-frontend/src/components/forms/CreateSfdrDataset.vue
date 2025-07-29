@@ -92,9 +92,8 @@
   </Card>
 </template>
 <script lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-
 // @ts-nocheck
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -228,7 +227,7 @@ export default defineComponent({
         if (currentDate === undefined) {
           return '';
         } else {
-          const currentDateSegments = currentDate.split('-');
+          const currentDateSegments = currentDate?.split('-');
           return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
@@ -341,9 +340,9 @@ export default defineComponent({
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
-      } catch (error) {
+      } catch (error: Error) {
         console.error(error);
-        if (error.message) {
+        if (error?.message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
