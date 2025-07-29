@@ -22,7 +22,7 @@
         id="country-filter"
         filter-placeholder="Search countries"
         :max-selected-labels="1"
-        selected-items-label="{0} companies"
+        selected-items-label="{0} countries"
         class="search-filter"
       />
       <Divider layout="vertical" />
@@ -60,6 +60,7 @@ import {
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import PrimeButton from 'primevue/button';
 import Divider from 'primevue/divider';
+import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
@@ -74,6 +75,18 @@ export default defineComponent({
     };
   },
   props: {
+    selectedFrameworks: {
+      type: Array as () => Array<DataTypeEnum>,
+      default: () => [],
+    },
+    selectedSectors: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
+    selectedCountryCodes: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
     showHeading: {
       type: Boolean,
       default: true,
@@ -193,7 +206,17 @@ export default defineComponent({
     },
   },
   mounted() {
-    void this.retrieveAvailableFilterOptions();
+    void this.retrieveAvailableFilterOptions().then(() => {
+      this.localSelectedCountries = this.availableCountries.filter((item) =>
+        this.selectedCountryCodes.includes(item.countryCode)
+      );
+      this.localSelectedSectors = this.availableSectors.filter((item) =>
+        this.selectedSectors.includes(item.displayName)
+      );
+      this.localSelectedFrameworks = this.availableFrameworks.filter((item) =>
+        this.selectedFrameworks.includes(item.frameworkDataType)
+      );
+    });
   },
 });
 </script>

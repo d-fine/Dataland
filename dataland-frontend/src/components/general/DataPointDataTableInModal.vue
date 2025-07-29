@@ -87,7 +87,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
 .info-icon {
   cursor: help;
 }
