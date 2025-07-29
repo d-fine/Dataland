@@ -50,21 +50,14 @@ describe('Portfolio Monitoring Modal', () => {
       /**
        * Test function for creating portfolio and monitor it
        */
-      function testPatchMonitoring({
-        portfolioName,
-        // companyName,
-        permId,
-        frameworkValue,
-        // frameworkTitle,
-        // frameworkSubtitles,
-      }: {
-        portfolioName: string;
-        companyName: string;
-        permId: string;
-        frameworkValue: string;
-        frameworkTitle: string;
-        frameworkSubtitles: string[];
-      }): void {
+      function testPatchMonitoring(
+        portfolioName: string,
+        companyName: string,
+        permId: string,
+        frameworkValue: string,
+        frameworkTitle: string,
+        frameworkSubtitles: string[]
+      ): void {
         cy.get('[data-test="add-portfolio"]').click({
           timeout: Cypress.env('medium_timeout_in_ms'),
         });
@@ -85,10 +78,7 @@ describe('Portfolio Monitoring Modal', () => {
 
         cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
         cy.get(`[data-test="${portfolioName}"]`).click();
-        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({
-          timeout: Cypress.env('medium_timeout_in_ms') as number,
-        });
-        cy.get('[data-test="monitor-portfolio"]').click({
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="monitor-portfolio"]`).click({
           timeout: Cypress.env('medium_timeout_in_ms') as number,
         });
 
@@ -117,61 +107,63 @@ describe('Portfolio Monitoring Modal', () => {
             expect(body.monitoredFrameworks).to.include(frameworkValue);
           });
 
-        // cy.visitAndCheckAppMount('/requests');
-        // // eslint-disable-next-line cypress/no-unnecessary-waiting
-        // cy.wait(1000);
-        // cy.get('[data-test="requested-Datasets-table"] tbody tr')
-        //   .filter(`:contains("${companyName}")`)
-        //   .as('companyRequestRows');
-        //
-        // cy.get('@companyRequestRows').filter(`:contains("${frameworkTitle}")`).should('have.length.at.least', 1);
-        //
-        // frameworkSubtitles.forEach((subtitle) => {
-        //   cy.get('@companyRequestRows').filter(`:contains("${subtitle}")`).should('have.length.at.least', 1);
-        // });
-        //
-        // cy.visitAndCheckAppMount('/portfolios');
-        // cy.wait('@getEnrichedPortfolio');
-        // // eslint-disable-next-line cypress/no-unnecessary-waiting
-        // cy.wait(1000);
-        // cy.get(`[data-test="${portfolioName}"]`).click();
-        // cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
-        // cy.wait('@getEnrichedPortfolio');
-        // cy.get('[data-test="deleteButton"]').click();
-        // cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
+        cy.wait(Cypress.env('long_timeout_in_ms'));
+        cy.visitAndCheckAppMount('/requests');
+
+        cy.get('[data-test="requested-datasets-table"] tbody tr')
+          .filter(`:contains("${companyName}")`)
+          .as('companyRequestRows');
+
+        cy.get('@companyRequestRows').filter(`:contains("${frameworkTitle}")`).should('have.length.at.least', 1);
+
+        frameworkSubtitles.forEach((subtitle) => {
+          cy.get('@companyRequestRows').filter(`:contains("${subtitle}")`).should('have.length.at.least', 1);
+        });
+
+        cy.visitAndCheckAppMount('/portfolios');
+        cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+
+        cy.get(`[data-test="${portfolioName}"]`).click();
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({
+          timeout: Cypress.env('medium_timeout_in_ms') as number,
+        });
+
+        cy.get('.p-dialog').within(() => {
+          cy.get('.portfolio-dialog-content').within(() => {
+            cy.get('[data-test="portfolio-dialog-delete-button"]').click({
+              timeout: Cypress.env('medium_timeout_in_ms') as number,
+            });
+          });
+        });
+
+        cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+        cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
       }
 
       it('Monitoring yields bulk data request when inputs are valid for non financial company', () => {
-        testPatchMonitoring({
-          portfolioName: nonFinancialPortfolio,
-          companyName: companyNameNonFinancial,
-          permId: permIdNonFinancial,
-          frameworkValue: 'eutaxonomy',
-          frameworkTitle: 'EU Taxonomy',
-          frameworkSubtitles: ['for non-financial companies', 'Nuclear and Gas'],
-        });
+        testPatchMonitoring(
+          nonFinancialPortfolio,
+          companyNameNonFinancial,
+          permIdNonFinancial,
+          'eutaxonomy',
+          'EU Taxonomy',
+          ['for non-financial companies', 'Nuclear and Gas']
+        );
       });
 
       it('Monitoring yields bulk data request when inputs are valid for financial company', () => {
-        testPatchMonitoring({
-          portfolioName: financialPortfolio,
-          companyName: companyNameFinancial,
-          permId: permIdFinancial,
-          frameworkValue: 'eutaxonomy',
-          frameworkTitle: 'EU Taxonomy',
-          frameworkSubtitles: ['for financial companies', 'Nuclear and Gas'],
-        });
+        testPatchMonitoring(financialPortfolio, companyNameFinancial, permIdFinancial, 'eutaxonomy', 'EU Taxonomy', [
+          'for financial companies',
+          'Nuclear and Gas',
+        ]);
       });
 
       it('Monitoring yields bulk data request when inputs are valid for non sector company', () => {
-        testPatchMonitoring({
-          portfolioName: nonSectorPortfolio,
-          companyName: companyNameNoSector,
-          permId: permIdNoSector,
-          frameworkValue: 'eutaxonomy',
-          frameworkTitle: 'EU Taxonomy',
-          frameworkSubtitles: ['for financial companies', 'for non-financial companies', 'Nuclear and Gas'],
-        });
+        testPatchMonitoring(nonSectorPortfolio, companyNameNoSector, permIdNoSector, 'eutaxonomy', 'EU Taxonomy', [
+          'for financial companies',
+          'for non-financial companies',
+          'Nuclear and Gas',
+        ]);
       });
     }
   );

@@ -59,7 +59,7 @@
                 style="cursor: pointer"
                 :rowHover="true"
                 :loading="waitingForData"
-                data-test="requested-Datasets-table"
+                data-test="requested-datasets-table"
                 paginator
                 paginator-position="bottom"
                 :rows="datasetsPerPage"
