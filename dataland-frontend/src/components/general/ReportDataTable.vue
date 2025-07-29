@@ -62,7 +62,6 @@ export default defineComponent({
 .p-datatable {
   border-radius: 0;
   background: var(--table-background-color);
-  color: var(--main-text-color);
 
   .border-left {
     border-left: 1px solid var(--table-border);

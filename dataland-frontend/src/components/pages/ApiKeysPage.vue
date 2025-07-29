@@ -356,10 +356,6 @@ export default defineComponent({
   }
 }
 
-.primary-color {
-  color: var(--main-color);
-}
-
 .p-component-overlay-enter {
   animation: p-component-overlay-enter-animation 150ms forwards;
 }
