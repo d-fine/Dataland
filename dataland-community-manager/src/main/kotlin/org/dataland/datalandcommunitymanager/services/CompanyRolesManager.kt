@@ -34,16 +34,6 @@ class CompanyRolesManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    companion object {
-        const val REVIEWER_USER_ID = "f7a02ff1-0dab-4e10-a908-7d775c1014ae"
-        const val UPLOADER_USER_ID = "c5ef10b1-de23-4a01-9005-e62ea226ee83"
-        const val PREMIUM_USER_ID = "68129cce-52e5-473e-bec9-90046eebc619"
-        const val ADMIN_USER_ID = "136a9394-4873-4a61-a25b-65b1e8e7cc2f"
-        const val READER_USER_ID = "18b67ecc-1176-4506-8414-1e81661017ca"
-    }
-
-    val technicalUserIds = listOf(REVIEWER_USER_ID, UPLOADER_USER_ID, PREMIUM_USER_ID, ADMIN_USER_ID, READER_USER_ID)
-
     val exceptionSummaryTextWhenRoleNotAssigned = "Company role is not assigned to user"
 
     /**
@@ -59,6 +49,12 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ): CompanyRoleAssignmentEntity {
+        if (!keycloakUserService.isKeycloakUserId(userId)) {
+            throw ResourceNotFoundApiException(
+                summary = "Unknown user ID",
+                message = "The user ID $userId does not exist on Keycloak.",
+            )
+        }
         val companyName = companyInfoService.getValidCompanyName(companyId)
         val correlationId = UUID.randomUUID().toString()
 
@@ -94,16 +90,13 @@ class CompanyRolesManager(
         val extendedCompanyRoleAssignments = mutableListOf<CompanyRoleAssignmentExtended>()
         companyRoleAssignments.forEach {
             val keycloakUserInfo = keycloakUserService.getUser(it.userId)
-            if (keycloakUserInfo.email == null && it.userId !in technicalUserIds) {
-                logger.warn("The user ID ${it.userId} appears in table company_role_assignments but is unknown to Keycloak.")
-                return@forEach
-            }
+
             extendedCompanyRoleAssignments.add(
                 CompanyRoleAssignmentExtended(
                     companyRole = it.companyRole,
                     companyId = it.companyId,
                     userId = it.userId,
-                    email = keycloakUserInfo.email ?: "",
+                    email = keycloakUserInfo.email,
                     firstName = keycloakUserInfo.firstName,
                     lastName = keycloakUserInfo.lastName,
                 ),

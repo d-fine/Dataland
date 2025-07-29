@@ -58,9 +58,7 @@ class CompanyRolesManagerTest {
     private val testFirstName = dummyKeycloakUserInfo.firstName
     private val testLastName = dummyKeycloakUserInfo.lastName
 
-    private val deletedUserKeycloakUserInfo =
-        objectMapper.readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/deletedUserKeycloakUserInfo.json"))
-    private val deletedUserId = deletedUserKeycloakUserInfo.userId
+    private val nonExistingUserId = "non-existing-user-id"
 
     private val dummyCompanyRoleAssignmentEntity =
         objectMapper.readValue<CompanyRoleAssignmentEntity>(
@@ -71,15 +69,8 @@ class CompanyRolesManagerTest {
     private val testCompanyName = "Test Company AG"
     private val dummyCompanyRoleAssignment = dummyCompanyRoleAssignmentEntity.toApiModel()
 
-    private val companyRoleAssignmentEntityOfDeletedUser =
-        objectMapper.readValue<CompanyRoleAssignmentEntity>(
-            File("$filePathToTestFixtures/companyRoleAssignmentEntityOfDeletedUser.json"),
-        )
-    private val companyRoleAssignmentOfDeletedUser =
-        companyRoleAssignmentEntityOfDeletedUser.toApiModel()
-
     private val companyRoleAssignmentEntityList =
-        listOf(dummyCompanyRoleAssignmentEntity, companyRoleAssignmentEntityOfDeletedUser)
+        listOf(dummyCompanyRoleAssignmentEntity)
 
     private val existingCompanyRoleAssignmentId =
         objectMapper.readValue<CompanyRoleAssignmentId>(
@@ -93,6 +84,7 @@ class CompanyRolesManagerTest {
 
     private val companyNotFound = "Company not found"
     private val companyIdNotKnown = "Dataland does not know the company ID $nonExistingCompanyId"
+    private val unknownUserId = "Unknown user ID"
     private val companyRoleNotAssigned = "Company role is not assigned to user"
 
     @BeforeEach
@@ -137,7 +129,8 @@ class CompanyRolesManagerTest {
         ).whenever(mockCompanyInfoService).getValidCompanyName(nonExistingCompanyId)
 
         doReturn(dummyKeycloakUserInfo).whenever(mockKeycloakUserService).getUser(testUserId)
-        doReturn(deletedUserKeycloakUserInfo).whenever(mockKeycloakUserService).getUser(deletedUserId)
+        doReturn(true).whenever(mockKeycloakUserService).isKeycloakUserId(testUserId)
+        doReturn(false).whenever(mockKeycloakUserService).isKeycloakUserId(nonExistingUserId)
 
         doReturn(companyRoleAssignmentEntityList)
             .whenever(mockCompanyRoleAssignmentRepository)
@@ -198,6 +191,20 @@ class CompanyRolesManagerTest {
     }
 
     @Test
+    fun `check that assignment of company roles does not work for unknown user IDs`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.assignCompanyRoleForCompanyToUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = existingCompanyId,
+                    userId = nonExistingUserId,
+                )
+            }
+
+        assertEquals(unknownUserId, exception.summary)
+    }
+
+    @Test
     fun `check that email for users becoming company owner is not generated if company does not exist`() {
         val exception =
             assertThrows<ResourceNotFoundApiException> {
@@ -212,7 +219,7 @@ class CompanyRolesManagerTest {
     }
 
     @Test
-    fun `check that email generated for users becoming company owner are generated`() {
+    fun `check that email generated for users becoming company owner is generated`() {
         doReturn(false).whenever(mockCompanyRoleAssignmentRepository).existsById(existingCompanyRoleAssignmentId)
         doReturn(Optional.empty<CompanyRoleAssignmentEntity>())
             .whenever(mockCompanyRoleAssignmentRepository)
@@ -234,9 +241,7 @@ class CompanyRolesManagerTest {
     fun `check that extension of company role assignments works as intended`() {
         val extendedCompanyRoleAssignments =
             companyRolesManager.convertToExtendedCompanyRoleAssignments(
-                listOf(
-                    dummyCompanyRoleAssignment, companyRoleAssignmentOfDeletedUser,
-                ),
+                listOf(dummyCompanyRoleAssignment),
             )
 
         assertEquals(1, extendedCompanyRoleAssignments.size)
@@ -272,10 +277,13 @@ class CompanyRolesManagerTest {
             }
 
         assertEquals(
-            2,
+            1,
             returnedCompanyRoleAssignmentEntities.size,
         )
-        assert(returnedCompanyRoleAssignmentEntities.containsAll(companyRoleAssignmentEntityList))
+        assertEquals(
+            dummyCompanyRoleAssignmentEntity,
+            returnedCompanyRoleAssignmentEntities.first(),
+        )
     }
 
     @Test

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -49,6 +50,11 @@ interface CompanyRolesApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully assigned company role."),
+            ApiResponse(
+                responseCode = "404",
+                description = "At least one of the specified IDs (user and company) is unknown.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PostMapping(
@@ -84,7 +90,10 @@ interface CompanyRolesApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved extended company role assignments."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved extended company role assignments.",
+            ),
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to make this query.",
