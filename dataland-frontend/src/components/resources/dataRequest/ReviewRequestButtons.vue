@@ -310,8 +310,8 @@ export default defineComponent({
 }
 
 .tab-menu button.active {
-  border-bottom: 2px solid #e67f3fff;
-  color: #e67f3fff;
+  border-bottom: 2px solid var(--p-primary-color);
+  color: var(--p-primary-color);
 }
 .message {
   width: 100%;

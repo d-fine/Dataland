@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
     <h1>Loading portfolio data...</h1>
-    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+    <DatalandProgressSpinner />
   </div>
   <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
     <h1>Error loading portfolio data</h1>
@@ -146,6 +146,7 @@
 </template>
 
 <script setup lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';

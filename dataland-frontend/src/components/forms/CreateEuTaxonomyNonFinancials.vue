@@ -9,7 +9,7 @@
       <div class="separator" />
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading Eu Taxonomy For Non Financials data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -124,6 +124,7 @@
   </Card>
 </template>
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -194,6 +195,7 @@ export default defineComponent({
   },
   name: 'CreateEuTaxonomyNonFinancials',
   components: {
+    DatalandProgressSpinner,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,

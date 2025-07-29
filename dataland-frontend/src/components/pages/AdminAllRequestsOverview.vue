@@ -84,7 +84,7 @@
 
         <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading...</p>
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          <DatalandProgressSpinner />
         </div>
 
         <div class="col-12 text-left p-3">
@@ -196,6 +196,7 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -232,6 +233,7 @@ import { defineComponent, inject, ref } from 'vue';
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
   components: {
+    DatalandProgressSpinner,
     DatalandTag,
     PrimeButton,
     AuthenticationWrapper,

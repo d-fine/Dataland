@@ -11,7 +11,7 @@
         <MiddleCenterDiv v-if="waitingForData" class="col-12">
           <div class="col-6 md:col-8 lg:col-12">
             <p class="font-medium text-xl">Loading Api Key information...</p>
-            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+            <DatalandProgressSpinner />
           </div>
         </MiddleCenterDiv>
 
@@ -147,6 +147,7 @@
 
 <script lang="ts">
 import BackButton from '@/components/general/BackButton.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -167,6 +168,7 @@ import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue'
 export default defineComponent({
   name: 'ApiKeysPage',
   components: {
+    DatalandProgressSpinner,
     AuthenticationWrapper,
     TheContent,
     TheHeader,

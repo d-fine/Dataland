@@ -175,7 +175,8 @@ describeIf(
      */
     function checkValidation(): void {
       cy.get('button[type="submit"]').click();
-      cy.get('div[data-test="reportingPeriods"] p[data-test="reportingPeriodErrorMessage"]')
+      cy.get('div[data-test="reportingPeriods"]')
+        .find('[data-test="reportingPeriodErrorMessage"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 

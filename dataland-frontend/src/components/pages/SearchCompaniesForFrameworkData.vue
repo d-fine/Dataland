@@ -45,7 +45,7 @@
 
         <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading...</p>
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          <DatalandProgressSpinner />
         </div>
 
         <FrameworkDataSearchResults
@@ -64,6 +64,7 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -96,6 +97,7 @@ export default defineComponent({
   },
   name: 'SearchCompaniesForFrameworkData',
   components: {
+    DatalandProgressSpinner,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
