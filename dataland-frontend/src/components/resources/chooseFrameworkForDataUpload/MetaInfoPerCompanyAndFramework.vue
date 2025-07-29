@@ -4,7 +4,7 @@
       <h4>{{ title + ' Datasets:' }}</h4>
       <div v-if="isWaitingForData" class="inline-loading text-center">
         <p class="font-medium text-xl">Loading...</p>
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
 
       <div v-else>
@@ -48,6 +48,7 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import { getDatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import router from '@/router';
@@ -64,7 +65,7 @@ import { defineComponent, inject, type PropType } from 'vue';
 
 export default defineComponent({
   name: 'MetaInfoPerCompanyAndFramework',
-  components: { PrimeButton, DatalandTag },
+  components: { DatalandProgressSpinner, PrimeButton, DatalandTag },
 
   props: {
     dataType: {
