@@ -43,7 +43,7 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Assign company role for the company to the user.",
         description =
-            "The company role for the specified company is being assigned to the user. " +
+            "The company role for the specified company is being assigned to the user, who must be known to Keycloak. " +
                 "Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, " +
                 "based on the company role that shall be assigned.",
     )

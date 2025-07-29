@@ -81,10 +81,7 @@ class CompanyRolesManager(
 
     /**
      * Converts the given CompanyRoleAssignment objects to CompanyRoleAssignmentExtended objects by
-     * looking up the relevant info (email, first name, last name) via Keycloak. In cases where the
-     * corresponding user ID is not known to Keycloak (i.e., the returned KeycloakUserInfo has null
-     * email address and the user ID is not one of a technical user), a warning is logged and the
-     * entry is omitted from the returned list.
+     * looking up the relevant info (email, first name, last name) via Keycloak.
      */
     fun convertToExtendedCompanyRoleAssignments(companyRoleAssignments: List<CompanyRoleAssignment>): List<CompanyRoleAssignmentExtended> {
         val extendedCompanyRoleAssignments = mutableListOf<CompanyRoleAssignmentExtended>()
