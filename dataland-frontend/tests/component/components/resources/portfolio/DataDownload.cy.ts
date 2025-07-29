@@ -34,14 +34,13 @@ describe('Check the Portfolio Download view', function (): void {
     });
 
     it('Check framework selection', function (): void {
-      cy.get('[data-test="frameworkSelector"]').should('exist');
-      cy.get('[data-test="frameworkSelector"]').select('SFDR');
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('SFDR').click();
     });
 
     it('Check file type selection', function (): void {
-      cy.get('[data-test="fileTypeSelector"]').should('exist');
-      cy.get('[data-test="fileTypeSelector"]').select(1);
-      cy.get('[data-test="fileTypeSelector"]').should('contain.text', 'Comma-separated Values');
+      cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('Comma-separated Values').click();
     });
 
     it('Check reporting period type selection', function (): void {
@@ -54,19 +53,19 @@ describe('Check the Portfolio Download view', function (): void {
 
     it('Check error message visibility when no reporting period selected', function (): void {
       cy.get('[data-test="downloadDataButtonInModal"]').click();
-      cy.get('[data-test="frameworkSelector"]').select('sfdr');
-      cy.get('[data-test="fileTypeSelector"]').select(1);
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('SFDR').click();
+      cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('Comma-separated Values').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
       cy.get('[data-test="reportingYearError"]').should('be.visible');
       cy.get('[data-test="reportingYearError"]').should('contain', 'Please select a reporting period.');
     });
-
     it('Check error message visibility when no file type selected', function (): void {
       cy.get('[data-test="downloadDataButtonInModal"]').click();
       cy.get('[data-test="fileTypeError"]').should('be.visible');
       cy.get('[data-test="fileTypeError"]').should('contain', 'Please select a file type.');
     });
-
     it('Check download button functionality', function (): void {
       cy.stub(window, 'XMLHttpRequest').callsFake(function () {
         return {
@@ -80,11 +79,11 @@ describe('Check the Portfolio Download view', function (): void {
           responseType: '',
         };
       });
-
-      cy.get('[data-test="frameworkSelector"]').select('sfdr');
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('SFDR').click();
       cy.get('[data-test="listOfReportingPeriods"]').contains('2024').click();
-      cy.get('[data-test="fileTypeSelector"]').select(1);
-
+      cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('Comma-separated Values').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
     });
   });

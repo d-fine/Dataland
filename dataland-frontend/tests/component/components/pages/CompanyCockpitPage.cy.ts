@@ -110,7 +110,10 @@ describe('Component test for the company cockpit', () => {
     cy.intercept('**/community/company-ownership/*', {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
     }).as('fetchCompanyOwnershipExistence');
-    cy.intercept('**/documents/**', (request) => {
+    cy.intercept('HEAD', `/community/company-role-assignments/CompanyOwner/${dummyCompanyId}/${dummyUserId}`, {
+      statusCode: 200,
+    }).as('checkUserCompanyOwnerRole');
+    cy.intercept('GET', '**/documents/**', (request) => {
       request.reply({
         statusCode: 200,
         body: [
@@ -201,11 +204,9 @@ describe('Component test for the company cockpit', () => {
     const frameworkName = 'vsme';
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     if (isUserCompanyOwner) {
-      cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should('exist');
+      cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
     } else {
-      cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-        'not.exist'
-      );
+      cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('not.exist');
     }
   }
 
@@ -247,12 +248,10 @@ describe('Component test for the company cockpit', () => {
       }
       if (isProvideDataButtonExpected) {
         if (frameworkName != 'lksg') {
-          cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-            'exist'
-          );
+          cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
         }
       } else {
-        cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
+        cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should(
           'not.exist'
         );
       }

@@ -27,7 +27,11 @@
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
                   <div class="col-12">
-                    <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period">
+                    <BasicFormSection
+                      :data-test="'reportingPeriods'"
+                      header="Select at least one reporting period"
+                      class="header-styling"
+                    >
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
@@ -44,24 +48,32 @@
                         Select at least one reporting period to submit your request
                       </p>
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
-                      <SingleSelectFormElement
+                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework" class="header-styling">
+                      <PrimeSelect
                         placeholder="Select framework"
                         v-model="frameworkName"
                         name="Framework"
                         :options="frameworkOptions"
+                        option-label="label"
+                        option-value="value"
                         validation="required"
                         :validation-messages="{
                           required: 'Select a framework to submit your request',
                         }"
                         required
                         data-test="datapoint-framework"
+                        :highlightOnSelect="false"
+                        fluid
                       />
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
+                    <BasicFormSection
+                      :data-test="'notifyMeImmediately'"
+                      header="Notify Me Immediately"
+                      class="header-styling"
+                    >
                       Receive emails directly or via summary
                       <ToggleSwitch
-                        style="display: block; margin: 1rem 0"
+                        style="display: block; margin: var(--spacing-md) 0"
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
                         v-model="notifyMeImmediately"
@@ -74,6 +86,7 @@
                     <BasicFormSection
                       :data-test="'informationCompanyOwnership'"
                       header="Information about company ownership"
+                      class="header-styling"
                     >
                       <p v-if="hasCompanyAtLeastOneOwner">
                         This company has at least one company owner. <br />
@@ -81,7 +94,7 @@
                       </p>
                       <p v-else>This company does not have a company owner yet.</p>
                     </BasicFormSection>
-                    <BasicFormSection header="Provide Contact Details">
+                    <BasicFormSection header="Provide Contact Details" class="header-styling">
                       <label for="Emails" class="label-with-optional">
                         <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
@@ -154,7 +167,7 @@
                     :dismissableMask="false"
                     :modal="true"
                     :closable="false"
-                    style="border-radius: 0.75rem; text-align: center; max-width: 400px"
+                    style="border-radius: var(--spacing-sm); text-align: center; max-width: 400px"
                     :show-header="false"
                     :draggable="false"
                     data-test="quotaReachedModal"
@@ -225,7 +238,6 @@
 
 <script lang="ts">
 import contentData from '@/assets/content.json';
-import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
@@ -252,11 +264,12 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
+import PrimeSelect from 'primevue/select';
 
 export default defineComponent({
   name: 'SingleDataRequest',
   components: {
-    SingleSelectFormElement,
+    PrimeSelect,
     PrimeDialog,
     ToggleSwitch,
     BasicFormSection,
@@ -540,6 +553,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.header-styling {
+  text-align: left;
+}
+
 .label-with-optional {
   display: flex;
   align-items: center;
@@ -674,16 +691,16 @@ export default defineComponent({
       border-bottom: 1px solid var(--input-text-border-hover);
     }
     .p-multiselect-label {
-      padding: 0.75rem;
+      padding: var(--spacing-sm);
       &.p-placeholder {
         color: var(--text-color-secondary);
       }
     }
     .p-multiselect-trigger {
-      width: 2.5rem;
+      width: var(--spacing-xxl);
       .p-multiselect-trigger-icon {
         color: var(--text-color-secondary);
-        font-size: 0.75rem;
+        font-size: var(--spacing-sm);
       }
     }
   }
@@ -717,7 +734,7 @@ export default defineComponent({
     }
     .formkit-options {
       display: flex;
-      padding: 0.5rem 0 0 0;
+      padding: var(--spacing-xs) 0 0 0;
       .formkit-option:nth-child(n + 2) {
         margin-left: 10%;
       }
@@ -728,11 +745,11 @@ export default defineComponent({
     max-width: 100%;
   }
   .title {
-    margin: 0.25rem 0;
+    margin: var(--spacing-xxs) 0;
   }
   .subtitle {
     display: block;
-    padding-bottom: 1rem;
+    padding-bottom: var(--spacing-md);
     .form-field-label {
       h5 {
         font-size: var(--font-size-base);
@@ -743,13 +760,13 @@ export default defineComponent({
     display: flex;
     align-self: center;
     .info-icon {
-      margin-left: 0.5rem;
+      margin-left: var(--spacing-xs);
     }
     button {
       margin-left: auto;
     }
     h5 {
-      margin: 0.5rem 0;
+      margin: var(--spacing-xs) 0;
     }
     .asterisk {
       color: #ee1a1a;
@@ -757,16 +774,16 @@ export default defineComponent({
     .asterisk:before {
       content: ' ';
       display: inline-block;
-      width: 0.25rem;
+      width: var(--spacing-xxs);
     }
   }
   .middle-next-to-field {
     display: flex;
     align-self: center;
-    padding-bottom: 1rem;
+    padding-bottom: var(--spacing-md);
   }
   p {
-    margin: 0.25rem;
+    margin: var(--spacing-xxs);
   }
   .p-datepicker {
     width: 100%;
@@ -784,7 +801,7 @@ export default defineComponent({
     &[data-message-type='ui'] {
       text-align: center;
       width: 100%;
-      padding: 2rem;
+      padding: var(--spacing-xl);
       border: 1px solid var(--input-error);
     }
   }
@@ -801,14 +818,14 @@ export default defineComponent({
     font-weight: var(--font-weight-semibold);
     margin: var(--spacing-xxs);
     text-align: center;
-    min-width: 1.5rem;
-    border-radius: 1rem;
-    padding: 0.25rem 1rem;
+    min-width: var(--spacing-lg);
+    border-radius: var(--spacing-md);
+    padding: var(--spacing-xxs) var(--spacing-md);
     border: 1px solid var(--input-label-color);
     display: inline-flex;
     align-items: center;
     em {
-      margin-left: 0.5rem;
+      margin-left: var(--spacing-xs);
       cursor: pointer;
       &:hover {
         color: hsl(from var(--input-label-color) h s calc(l - 20));
@@ -816,13 +833,13 @@ export default defineComponent({
     }
   }
   .uploadFormSection {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     .form-field:not(:last-child) {
-      margin: 0 0 1rem 0;
-      padding: 0 0 1rem 0;
+      margin: 0 0 var(--spacing-md) 0;
+      padding: 0 0 var(--spacing-md) 0;
       border-bottom: 1px solid var(--input-separator);
     }
   }
@@ -833,10 +850,10 @@ export default defineComponent({
     .p-fileupload {
       .p-fileupload-content {
         border: none;
-        padding: 1rem;
+        padding: var(--spacing-md);
         align-items: center;
         .file-upload-item {
-          margin: 1rem 0;
+          margin: var(--spacing-md) 0;
         }
         button {
           margin-left: auto;
@@ -857,5 +874,6 @@ export default defineComponent({
   [data-message-type='ui'] {
     display: none;
   }
+  background: var(--el-list-item-bg);
 }
 </style>

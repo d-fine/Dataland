@@ -25,10 +25,17 @@
 
     <CompaniesOnlySearchBar
       @select-company="router.push(`/companies/${$event.companyId}`)"
-      wrapper-class-additions="search"
       input-class="h-3rem search__field"
+      wrapper-class-additions="search"
       @focus="handleInputFocus"
       @blur="handleInputBlur"
+      :autoCompletePassThrough="{
+          pcInputText: {
+            root: {
+              style: 'border: none',
+          },
+        },
+      }"
     />
 
     <ButtonComponent
@@ -97,7 +104,7 @@ const handleInputBlur = (): void => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .intro {
   text-align: center;
   margin: 140px auto;
@@ -257,6 +264,32 @@ const handleInputBlur = (): void => {
 </style>
 
 <style lang="scss">
+.search__field {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding-left: 40px;
+  background: transparent;
+  font-weight: 600;
+
+  &::placeholder {
+    font-size: 16px;
+    font-style: normal;
+
+    line-height: 24px;
+    letter-spacing: 0.25px;
+    color: var(--grey-tones-600);
+  }
+
+  &:focus {
+    box-shadow: none !important;
+
+    &::placeholder {
+      color: var(--grey-tones-300);
+    }
+  }
+}
+
 .search {
   position: relative;
   margin: 80px auto 0;
@@ -273,32 +306,6 @@ const handleInputBlur = (): void => {
 
   & .p-inputwrapper {
     width: 100%;
-  }
-
-  &__field {
-    width: 100%;
-    border: none;
-    outline: none;
-    padding-left: 40px;
-    background: transparent;
-    font-weight: 600;
-
-    &::placeholder {
-      font-size: 16px;
-      font-style: normal;
-
-      line-height: 24px;
-      letter-spacing: 0.25px;
-      color: var(--grey-tones-600);
-    }
-
-    &:focus {
-      box-shadow: none !important;
-
-      &::placeholder {
-        color: var(--grey-tones-300);
-      }
-    }
   }
 
   &__autocomplete {
