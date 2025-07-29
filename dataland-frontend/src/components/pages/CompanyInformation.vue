@@ -2,7 +2,7 @@
   <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      <DatalandProgressSpinner />
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
       <div class="company-title-row">
@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';

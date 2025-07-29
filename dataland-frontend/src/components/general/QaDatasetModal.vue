@@ -3,7 +3,7 @@
     <div>{{ message }}</div>
     <div v-if="!reviewSubmitted" class="text-center px-7 py-4">
       <p class="font-medium text-xl">Submitting...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      <DatalandProgressSpinner />
     </div>
     <div v-if="reviewSubmitted" class="col-12 text-center">
       <SuccessMessage
@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { defineComponent, inject } from 'vue';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import PrimeButton from 'primevue/button';
@@ -37,7 +38,7 @@ import FailMessage from '@/components/messages/FailMessage.vue';
 import { QaStatus } from '@clients/backend';
 
 export default defineComponent({
-  components: { PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
+  components: { DatalandProgressSpinner, PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
   inject: ['dialogRef'],
   name: 'QADatasetModal',
   setup() {

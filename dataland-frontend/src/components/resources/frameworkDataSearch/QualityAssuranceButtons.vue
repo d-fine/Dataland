@@ -1,22 +1,19 @@
 <template>
   <PrimeButton
-    class="uppercase p-button-outlined p-button-sm mr-3"
     @click="setQaStatusTo($event, QaStatus.Rejected)"
     :disabled="reviewSubmitted"
     data-test="qaRejectButton"
-  >
-    <i class="material-icons"> clear </i>
-    <span class="d-letters pl-2"> Reject </span>
-  </PrimeButton>
+    icon="pi pi-times"
+    label="Reject"
+    variant="outlined"
+  />
   <PrimeButton
-    class="uppercase p-button p-button-sm"
     @click="setQaStatusTo($event, QaStatus.Accepted)"
     :disabled="reviewSubmitted"
     data-test="qaApproveButton"
-  >
-    <i class="material-icons"> done </i>
-    <span class="d-letters pl-2"> Approve </span>
-  </PrimeButton>
+    icon="pi pi-check"
+    label="Approve"
+  />
 </template>
 
 <script lang="ts">
@@ -72,8 +69,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-.d-letters {
-  letter-spacing: 0.05em;
-}
-</style>

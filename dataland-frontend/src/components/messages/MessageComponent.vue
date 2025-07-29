@@ -75,12 +75,10 @@ export default defineComponent({
   &.p-message-light-error {
     background: var(--default-neutral-white);
     border: 1px solid var(--message-error-border);
-    color: var(--main-text-color);
   }
   &.p-message-light-success {
     background: var(--default-neutral-white);
     border: 1px solid var(--message-success-border);
-    color: var(--main-text-color);
   }
   &.p-message-block {
     background: var(--message-block-bg);

@@ -229,7 +229,7 @@
                   <br />
                   <a
                     class="link"
-                    style="display: inline-flex; font-weight: bold; color: #e67f3f"
+                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
                     @click="openModalReopenRequest()"
                   >
                     Reopen request</a
@@ -245,7 +245,7 @@
                   <br />
                   <a
                     class="link"
-                    style="display: inline-flex; font-weight: bold; color: #e67f3f"
+                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
                     @click="withdrawRequest()"
                   >
                     Withdraw request</a

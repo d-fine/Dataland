@@ -229,7 +229,7 @@ export default defineComponent({
 
 .optional-text {
   font-style: italic;
-  color: #e67f3f;
+  color: var(--p-primary-color);
   margin-left: 8px;
 }
 
