@@ -50,6 +50,9 @@ export default defineComponent({
           header: this.content.displayValue.fieldLabel,
           modal: true,
           dismissableMask: true,
+          style: {
+            maxWidth: '80vw',
+          },
         },
         data: {
           dataPointDisplay: this.dataPointProperties,
