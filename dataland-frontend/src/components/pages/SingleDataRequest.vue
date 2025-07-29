@@ -590,7 +590,7 @@ export default defineComponent({
 
 .optional-text {
   font-style: italic;
-  color: var(--p-primary-400);
+  color: var(--p-primary-color);
   margin-left: 8px;
 }
 
