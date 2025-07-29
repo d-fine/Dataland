@@ -19,6 +19,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 [versions]
 
 kotlin = "2.0.0"
+// not possible to upgrade okhttp3 to v5 because kotlin v2.2.0 is required
 okhttp3 = "5.1.0"
 moshi = "1.15.2"
 mockito = "5.18.0"
