@@ -56,15 +56,17 @@
                         :options="frameworkOptions"
                         option-label="label"
                         option-value="value"
-                        validation="required"
-                        :validation-messages="{
-                          required: 'Select a framework to submit your request',
-                        }"
-                        required
                         data-test="datapoint-framework"
                         :highlightOnSelect="false"
                         fluid
                       />
+                      <p
+                        v-if="selectedFrameworkError"
+                        class="text-danger mt-2"
+                        data-test="frameworkErrorMessage"
+                      >
+                        Select a framework to submit your request
+                      </p>
                     </BasicFormSection>
                     <BasicFormSection
                       :data-test="'notifyMeImmediately'"
@@ -311,6 +313,7 @@ export default defineComponent({
       consentToMessageDataUsageGiven: false,
       errorMessage: '',
       selectedReportingPeriodsError: false,
+      selectedFrameworkError: false,
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
       reportingPeriodOptions: [
@@ -343,6 +346,9 @@ export default defineComponent({
     },
     companyIdentifier(): string {
       return router.currentRoute.value.params.companyId as string;
+    },
+    selectedFrameworks(): DataTypeEnum[] {
+      return this.frameworkName ? [this.frameworkName] : [];
     },
   },
   methods: {
@@ -432,12 +438,22 @@ export default defineComponent({
     },
 
     /**
+     * Checks whether at least one framework has been selected
+     */
+    checkIfAtLeastOneFrameworkSelected(): void {
+      if (!this.selectedFrameworks.length) {
+        this.selectedFrameworkError = true;
+      }
+    },
+
+    /**
      * checks if the forms are filled out correctly and updates the displayed warnings accordingly
      */
     checkPreSubmitConditions(): void {
       this.checkIfAtLeastOneReportingPeriodSelected();
       this.updateConditionsNotAcceptedError();
       this.updateContactsNotValidError();
+      this.checkIfAtLeastOneFrameworkSelected();
     },
 
     /**

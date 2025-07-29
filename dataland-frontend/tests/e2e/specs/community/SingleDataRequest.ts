@@ -177,7 +177,7 @@ describeIf(
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 
-      cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
+      cy.get("div[data-test='Framework'] p[data-test='frameworkErrorMessage']")
         .should('be.visible')
         .should('contain.text', 'Select a framework to submit your request');
     }
