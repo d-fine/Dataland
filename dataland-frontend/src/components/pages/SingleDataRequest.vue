@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="no-ui-message">
+    <TheContent>
       <CompanyInfoSheet
         :company-id="companyIdentifier"
         @fetched-company-information="handleFetchedCompanyInformation"
@@ -600,7 +600,7 @@ export default defineComponent({
   color: var(--red);
 }
 
-.no-ui-message {
-  background: var(--el-list-item-bg);
+.uploadFormWrapper {
+  background-color: var(--p-surface-50);
 }
 </style>
