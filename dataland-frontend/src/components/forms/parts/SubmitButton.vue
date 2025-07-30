@@ -54,8 +54,8 @@ export default defineComponent({
 
 <style scoped>
 .button-enabled {
-  outline: 2px solid #e67f3f;
-  outline-offset: 2px;
+  outline: var(--spacing-lg);
+  outline-offset: var(--spacing-lg);
 }
 
 .button-disabled {
