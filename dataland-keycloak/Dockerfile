@@ -7,7 +7,7 @@ COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM registry.access.redhat.com/ubi9@sha256:7a4818cdb8e0461d75d4bdfa42a355d3725bcc8cc0cc5d467021119d5962ce6b AS ubi-micro-build
+FROM registry.access.redhat.com/ubi9@sha256:e2ec76831504fcb2e3af8f243fba7a08398e343ee27296adcc8c80f82818b22d AS ubi-micro-build
 RUN mkdir -p /mnt/rootfs
 RUN dnf install --installroot /mnt/rootfs curl --releasever 9 --setopt install_weak_deps=false --nodocs -y; dnf --installroot /mnt/rootfs clean all
 
