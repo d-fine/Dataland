@@ -140,7 +140,7 @@
                       </label>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">
-                      <Textarea
+                      <PrimeVueTextarea
                         v-model="identifiersInString"
                         name="listOfCompanyIdentifiers"
                         placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
@@ -210,12 +210,12 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 import Message from 'primevue/message';
 import MultiSelect from 'primevue/multiselect';
-import Textarea from 'primevue/textarea';
+import PrimeVueTextarea from 'primevue/textarea';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
-    Textarea,
+    PrimeVueTextarea,
     MultiSelect,
     Message,
     BulkDataRequestSummary,
@@ -368,11 +368,7 @@ export default defineComponent({
      * @returns true if they are filled out correctly, false otherwise
      */
     preSubmitConditionsFulfilled(): boolean {
-      return (
-        !this.selectedFrameworksError &&
-        !this.selectedReportingPeriodsError &&
-        !this.identifierError
-      );
+      return !this.selectedFrameworksError && !this.selectedReportingPeriodsError && !this.identifierError;
     },
 
     /**
