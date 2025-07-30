@@ -1,6 +1,5 @@
 package org.dataland.datalanduserservice.service
 
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -78,8 +77,7 @@ class MessageQueuePublisherService
          * @param supportRequestData Contains topic and message of the request
          */
         fun publishSupportRequest(supportRequestData: SupportRequestData) {
-            val datalandAuthentication = DatalandAuthentication.fromContext()
-            val datalandJwtAuthentication = assertAuthenticationViaJwtToken(datalandAuthentication)
+            val datalandJwtAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
             val correlationId = UUID.randomUUID().toString()
 
             val internalEmailContentTable =
@@ -109,13 +107,5 @@ class MessageQueuePublisherService
                 ExchangeName.SEND_EMAIL,
                 RoutingKeyNames.EMAIL,
             )
-        }
-
-        private fun assertAuthenticationViaJwtToken(userAuthentication: DatalandAuthentication): DatalandJwtAuthentication {
-            if (userAuthentication !is DatalandJwtAuthentication) {
-                throw AuthenticationMethodNotSupportedException()
-            } else {
-                return userAuthentication
-            }
         }
     }

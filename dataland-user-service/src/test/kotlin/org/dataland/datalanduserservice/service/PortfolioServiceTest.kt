@@ -37,6 +37,7 @@ import java.util.UUID
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
     private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
+    private val mockPublisher = mock<MessageQueuePublisherService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
@@ -62,7 +63,7 @@ class PortfolioServiceTest {
         doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
         doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPublisher, mockPortfolioRepository)
     }
 
     /**
