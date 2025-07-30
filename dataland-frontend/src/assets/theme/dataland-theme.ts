@@ -133,7 +133,9 @@ export const DatalandPreset = definePreset(Aura, {
         list: {
           option: {
             selectedBackground: '{primary.color}',
+            selectedColor: '{primary.contrast.color}',
             selectedFocusBackground: '{primary.hoverColor}',
+            selectedFocusColor: '{primary.contrast.color}',
           },
         },
         navigation: {
