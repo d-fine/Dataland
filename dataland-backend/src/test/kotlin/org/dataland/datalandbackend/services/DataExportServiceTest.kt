@@ -44,34 +44,46 @@ const val QUALITY_STRING = "quality"
 class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
-    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportUtils =
-        DataExportUtils(
-            mockDataPointUtils,
-            mockReferencedReportsUtils,
-        )
-    private val specificationApi = mock<SpecificationControllerApi>()
-
-    init {
-        dataExportUtils.specificationApi = specificationApi
-    }
-
-    private val dataExportService = DataExportService(dataExportUtils)
+    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val dataExportService =
+        DataExportService(mockDataPointUtils, mock<ReferencedReportsUtilities>(), mockSpecificationApi)
 
     private val testDataProvider = TestDataProvider(objectMapper)
-    private val lksgTestData = testDataProvider.getLksgDataset()
 
     private val lksgCompanyExportTestData =
         SingleCompanyExportData(
             companyName = "test name",
             companyLei = UUID.randomUUID().toString(),
             reportingPeriod = TEST_REPORTING_PERIOD,
-            data = lksgTestData,
+            data = testDataProvider.getLksgDataset(),
         )
 
-    private val companyExportDataLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
     private val companyExportDataLksgTestData =
-        objectMapper.readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
+        objectMapper.readValue<SingleCompanyExportData<LksgData>>(File("./src/test/resources/dataExport/lksgDataInput.json"))
+
+    private val portfolioDataTwoCompanies =
+        listOf(
+            SingleCompanyExportData(
+                companyName = "Test Company 1",
+                companyLei = TEST_COMPANY_LEI,
+                reportingPeriod = TEST_REPORTING_PERIOD,
+                data =
+                    objectMapper.treeToValue(
+                        testDataProvider.createTestJsonWithBothValueAndQuality(),
+                        Any::class.java,
+                    ),
+            ),
+            SingleCompanyExportData(
+                companyName = "Test Company 2",
+                companyLei = TEST_COMPANY_LEI,
+                reportingPeriod = TEST_REPORTING_PERIOD,
+                data =
+                    objectMapper.treeToValue(
+                        testDataProvider.createTestJsonWithTwoDataPoints(),
+                        Any::class.java,
+                    ),
+            ),
+        )
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -252,7 +264,7 @@ class DataExportServiceTest {
             mock<DataPointBaseTypeResolvedSchema> {
                 on { resolvedSchema } doReturn resolvedSchemaJson
             }
-        whenever(specificationApi.getResolvedFrameworkSpecification("lksg"))
+        whenever(mockSpecificationApi.getResolvedFrameworkSpecification("lksg"))
             .thenReturn(baseTypeSchema)
         whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
             FrameworkSpecification(
@@ -270,20 +282,7 @@ class DataExportServiceTest {
         setupTestSchema()
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(
-                    SingleCompanyExportData(
-                        companyName = "Test Company 1",
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithBothValueAndQuality(), Any::class.java),
-                    ),
-                    SingleCompanyExportData(
-                        companyName = "Test Company 2",
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithTwoDataPoints(), Any::class.java),
-                    ),
-                ),
+                portfolioDataTwoCompanies,
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
@@ -327,13 +326,21 @@ class DataExportServiceTest {
                         companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithBothValueAndQuality(), Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithBothValueAndQuality(),
+                                Any::class.java,
+                            ),
                     ),
                     SingleCompanyExportData(
                         companyName = "Test Company 2",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithTwoDataPoints(), Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithTwoDataPoints(),
+                                Any::class.java,
+                            ),
                     ),
                 ),
                 ExportFileType.CSV,

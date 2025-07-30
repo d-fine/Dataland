@@ -1,82 +1,34 @@
-package org.dataland.datalandbackend.services
+package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
-import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.services.DataExportOrderingUtils.Companion.expandOrderedHeadersForEuTaxonomyActivities
-import org.dataland.datalandbackend.services.DataExportOrderingUtils.Companion.getOrderedHeaders
-import org.dataland.datalandbackend.utils.DataPointUtils
-import org.dataland.datalandbackend.utils.NonFinancialsMapping
-import org.dataland.datalandbackend.utils.NuclearAndGasMapping
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
-import org.dataland.datalandbackend.utils.SfdrMapping
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackendutils.utils.JsonUtils
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import kotlin.collections.map
-import kotlin.text.contains
 
 /**
- * The class holds methods which are used in the data export. Mainly it contains functions to map the
+ * This is a utility class. It holds methods which are used in the data export. Mainly it contains functions to map the
  * correct export aliases to the data that is to be exported. Export aliases for assembled datasets are provided
  * by the specification service, aliases for other datasets are hardcoded.
- *  @param dataPointUtils
- *  @param referencedReportsUtilities
  */
-@Component
-class DataExportUtils
-    @Autowired
-    constructor(
-        private val dataPointUtils: DataPointUtils,
-        private val referencedReportsUtilities: ReferencedReportsUtilities,
-    ) {
-        @Autowired
-        lateinit var specificationApi: SpecificationControllerApi
 
-        private fun getResolvedSchemaNode(framework: String): JsonNode? {
-            val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
-            return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
-        }
-
-        companion object {
-            val STATIC_ALIASES =
-                mapOf(
-                    "companyName" to "COMPANY_NAME",
-                    "companyLei" to "COMPANY_LEI",
-                    "reportingPeriod" to "REPORTING_PERIOD",
-                )
-            const val DATA = "data"
-            const val VALUE = "value"
-            private const val ALIAS_EXPORT = "aliasExport"
-            private const val QUALITY = "quality"
-            private const val COMMENT = "comment"
-            private const val DATA_SOURCE = "dataSource"
-            private const val PREFIX = "$DATA."
-            private const val SUFFIX = ".$VALUE"
-            private const val COMPANY_NAME_POSITION = -3
-            private const val COMPANY_LEI_POSITION = -2
-            private const val REPORTING_PERIOD_POSITION = -1
-        }
-
-        private val objectMapper = JsonUtils.defaultObjectMapper
-
-        /**
-         * Return the template of an assembled framework or null if the passed name refers to an old style framework
-         *
-         * @param framework the framework for which the template shall be returned
-         */
-        private fun getFrameworkTemplate(framework: String): JsonNode? {
-            return dataPointUtils.getFrameworkSpecificationOrNull(framework)?.let {
-                val frameworkTemplate = objectMapper.readTree(it.schema)
-                referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(
-                    frameworkTemplate,
-                    it.referencedReportJsonPath,
-                )
-                return frameworkTemplate
-            }
-        }
+class DataExportUtils private constructor() {
+    companion object {
+        val STATIC_ALIASES =
+            mapOf(
+                "companyName" to "COMPANY_NAME",
+                "companyLei" to "COMPANY_LEI",
+                "reportingPeriod" to "REPORTING_PERIOD",
+            )
+        const val DATA = "data"
+        const val VALUE = "value"
+        private const val ALIAS_EXPORT = "aliasExport"
+        private const val QUALITY = "quality"
+        private const val COMMENT = "comment"
+        private const val DATA_SOURCE = "dataSource"
+        private const val PREFIX = "$DATA."
+        private const val SUFFIX = ".$VALUE"
+        private const val ACTIVITIES_STRING = "Activities"
+        private const val ACTIVITIES_PATTERN = "$ACTIVITIES_STRING.$VALUE.0."
 
         /**
          * A data class containing the export data as a list of maps and the csv schema definition.
@@ -92,80 +44,6 @@ class DataExportUtils
             val csvData: List<Map<String, String?>>,
             val csvSchema: CsvSchema,
         )
-
-        /**
-         * Prepares the data structure for export formats (CSV and Excel)
-         * @param portfolioExportRows passed JSON objects to be exported
-         * @param dataType the datatype specifying the framework
-         * @param keepValueFieldsOnly if true, non value fields are stripped
-         * @param includeAliases if true, human-readable names are used if available
-         * @return PreparedExportData containing:
-         *   - the CSV data as a list of maps
-         *   - the CSV schema
-         *   - header fields with human-readable names
-         */
-        fun prepareExportData(
-            portfolioExportRows: List<JsonNode>,
-            dataType: DataType,
-            keepValueFieldsOnly: Boolean,
-            includeAliases: Boolean,
-        ): PreparedExportData {
-            val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-            val isAssembledDatasetParam = (frameworkTemplate != null)
-
-            val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
-
-            val orderedHeaderFields =
-                if (isAssembledDatasetParam) {
-                    val resolvedSchemaNode = getResolvedSchemaNode(dataType.toString())
-                    JsonUtils.getLeafNodeFieldNames(
-                        resolvedSchemaNode ?: NullNode.instance,
-                        keepEmptyFields = true,
-                        dropLastFieldName = false,
-                    )
-                } else {
-                    LinkedHashSet(
-                        nonEmptyHeaderFields.sortedWith(
-                            compareBy<String> {
-                                when {
-                                    it.startsWith("companyName") -> COMPANY_NAME_POSITION
-                                    it.startsWith("companyLei") -> COMPANY_LEI_POSITION
-                                    it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
-                                    else -> 0
-                                }
-                            }.then(naturalOrder()),
-                        ),
-                    )
-                }
-            val expandedOrderedHeaders = expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields.toList())
-            val orderedHeaders = getOrderedHeaders(nonEmptyHeaderFields, expandedOrderedHeaders, isAssembledDatasetParam)
-            val readableHeaders =
-                if (includeAliases) {
-                    applyAliasRenaming(orderedHeaders, frameworkTemplate ?: portfolioExportRows.first())
-                } else {
-                    orderedHeaders.associateWith { it }
-                }
-
-            val mappedCsvData = mapReadableHeadersToCsvData(csvData, readableHeaders)
-
-            val usedReadableHeaders =
-                mappedCsvData
-                    .flatMap { it.entries }
-                    .filterNot { it.value.isNullOrBlank() }
-                    .map { it.key }
-                    .toSet()
-
-            val filteredReadableHeaders = readableHeaders.filterValues { it in usedReadableHeaders }
-
-            val csvSchema =
-                createCsvSchemaBuilder(
-                    filteredReadableHeaders.values.toSet(),
-                    orderedHeaders.mapNotNull { filteredReadableHeaders[it] },
-                    isAssembledDatasetParam,
-                )
-
-            return PreparedExportData(mappedCsvData, csvSchema)
-        }
 
         /**
          * Applies alias renaming to a list of field headers based on a framework template.
@@ -312,7 +190,7 @@ class DataExportUtils
          * @param orderedHeaderFields a set of column names used as the headers in the CSV in the correct order
          * @return the csv schema builder
          */
-        private fun createCsvSchemaBuilder(
+        fun createCsvSchemaBuilder(
             usedHeaderFields: Set<String>,
             orderedHeaderFields: Collection<String?>,
             isAssembledDataset: Boolean,
@@ -418,4 +296,102 @@ class DataExportUtils
 
             return (listOf(aliasPrefix) + transformedSuffix).joinToString("_")
         }
+
+        /**
+         * Creates the CSV schema based on the provided headers
+         * The first parameter determines which fields are used to create columns; the second parameter determines the
+         * order of the columns.
+         * @param orderedHeaderFields a set of column names used as the headers in the CSV in the correct order
+         * @param usedHeaderFields a set of column names used as the headers in the CSV derived by the schmea
+         * @param isAssembledDataset  whether the dataset includes nested or structured data
+         * @return the csv schema builder
+         */
+        fun getOrderedHeaders(
+            usedHeaderFields: Set<String>,
+            orderedHeaderFields: Collection<String>,
+            isAssembledDataset: Boolean,
+        ): List<String> {
+            require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
+            val resultList = mutableListOf<String>()
+            val expandedOrderedHeaders =
+                expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields.toList())
+
+            if (isAssembledDataset) {
+                STATIC_ALIASES.keys.forEach { staticFieldName ->
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField == staticFieldName
+                        }.forEach { resultList.add(it) }
+                }
+
+                expandedOrderedHeaders.forEach { orderedHeaderFieldsEntry ->
+                    usedHeaderFields
+                        .filter { usedHeaderField ->
+                            usedHeaderField.startsWith(
+                                DATA + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry,
+                            )
+                        }.forEach {
+                            resultList.add(it)
+                        }
+                }
+            } else {
+                expandedOrderedHeaders.forEach {
+                    resultList.add(it)
+                }
+            }
+            return resultList
+        }
+
+        /**
+         * Makes sure that all possible json paths are included in the ordered headers. This includes in particular the arrays
+         * for the eu taxonomy non financials framework
+         * @param orderedHeaderFields a set of column names used as the headers in the CSV derived by the schemata
+         * @return an expanded version of the ordered headers that now also contains the headers for repeating fields in an array
+         */
+        fun expandOrderedHeadersForEuTaxonomyActivities(orderedHeaderFields: List<String>): List<String> {
+            val expandedOrderedHeaders = mutableListOf<String>()
+            val arrayFields = mutableListOf<String>()
+            // Iterate through input strings
+            for ((index, input) in orderedHeaderFields.withIndex()) {
+                if (input.contains(ACTIVITIES_PATTERN)) {
+                    arrayFields.add(input) // collect all properties of the aligned activities
+                } else {
+                    // Add unmodified strings directly to the output list
+                    expandedOrderedHeaders.add(input)
+                }
+                // expand the output so that it contains all possible json paths for the activities array
+                if (input.contains(ACTIVITIES_PATTERN) &&
+                    !orderedHeaderFields[index + 1].contains(
+                        ACTIVITIES_PATTERN,
+                    )
+                ) {
+                    addAllArrayFieldsToOutput(arrayFields, expandedOrderedHeaders)
+                    arrayFields.clear()
+                }
+            }
+            return expandedOrderedHeaders
+        }
+
+        /**
+         * Creates new entries in the ordered header in case the activities arrays are long
+         * @param arrayFields all attribute fields for one entry in an activities array
+         * @param expandedOrderedHeaders the list of ordered header fields that is appended with extra entries in
+         * case there are more activities
+         */
+        fun addAllArrayFieldsToOutput(
+            arrayFields: List<String>,
+            expandedOrderedHeaders: MutableList<String>,
+        ) {
+            for (activityIndex in 0..Activity.entries.size) {
+                for (field in arrayFields) {
+                    expandedOrderedHeaders.add(
+                        field.replace(
+                            ACTIVITIES_PATTERN,
+                            "${ACTIVITIES_STRING}.$VALUE.$activityIndex.",
+                        ),
+                    )
+                }
+            }
+        }
     }
+}
