@@ -136,7 +136,7 @@ describeIf(
           });
           deleteFile(filePath);
         }
-      }); // optional short delay
+      });
     }
 
     /**
