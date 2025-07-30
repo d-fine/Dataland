@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center gap-4 mb-8">
+    <div class="flex flex-col gap-2">
       <label for="topic" class="formkit-label">Choose a topic</label>
       <div class="card flex justify-content-center">
         <Dropdown
@@ -13,9 +13,9 @@
         />
       </div>
     </div>
-    <div class="flex items-center gap-4 mb-8">
+    <div class="flex flex-col gap-2">
       <label for="message" class="formkit-label">Your message to us</label>
-      <Textarea id="message" v-model="message" rows="5" cols="30" />
+      <Textarea id="message" v-model="message" placeholder="Your message" rows="5" cols="30" />
     </div>
     <Message v-if="emailSendingError" severity="error" class="m-0" :life="3000">
       {{ emailSendingError }}
@@ -23,12 +23,14 @@
     <Message v-if="emailSendingSuccess" severity="success" class="m-0" :life="3000">
       {{ emailSendingSuccess }}
     </Message>
+    <p v-if="!isValidMessage" class="formkit-message">Please choose a topic and enter a message to us.</p>
     <PrimeButton
       type="button"
       label="Send"
       @click="sendEmail"
       class="primary-button"
       :loading="isSendingMail"
+      :disabled="!isValidMessage"
       style="margin-left: 1em; float: right"
     />
   </div>
@@ -38,7 +40,7 @@
 import Textarea from 'primevue/textarea';
 import Dropdown from 'primevue/dropdown';
 import PrimeButton from 'primevue/button';
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
@@ -47,7 +49,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isSendingMail = ref(false);
-const message = ref('');
+const message = ref();
 import { ref } from 'vue';
 import type { SupportRequestData } from '@clients/userservice';
 import Message from 'primevue/message';
@@ -61,6 +63,7 @@ const topics = ref([
   { name: 'Other topic', code: 'Other' },
 ]);
 
+const isValidMessage = computed(() => message.value && topic.value.name);
 /**
  * Send an email to request support
  */
