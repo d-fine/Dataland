@@ -323,6 +323,7 @@ export default defineComponent({
 
 .frameworks-grid {
   display: grid;
+  cursor: pointer;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-xxl);
 

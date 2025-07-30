@@ -51,7 +51,7 @@
                         Select at least one reporting period to submit your request
                       </Message>
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework" class="header-styling">
+                    <BasicFormSection data-test="'selectFramework'" header="Select a framework" class="header-styling">
                       <PrimeSelect
                         placeholder="Select framework"
                         v-model="frameworkName"
@@ -80,9 +80,7 @@
                       header="Notify Me Immediately"
                       class="header-styling"
                     >
-                      <div class="dataland-info-text normal">
-                        Receive emails directly or via summary
-                      </div>
+                      <div class="dataland-info-text normal">Receive emails directly or via summary</div>
                       <ToggleSwitch
                         style="display: block; margin: var(--spacing-md) 0"
                         data-test="notifyMeImmediatelyInput"
@@ -123,13 +121,13 @@
                       >
                         You have to provide valid contacts to add a message to the request
                       </p>
-                      <p class ="dataland-info-text normal">
+                      <p class="dataland-info-text normal">
                         By specifying contacts your data request will be directed accordingly.<br />
                         You can specify multiple comma separated email addresses.<br />
                         This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
-                      <p class ="dataland-info-text normal">
+                      <p class="dataland-info-text normal">
                         If you don't have a specific contact person, no worries.<br />
                         We are committed to fulfilling your request to the best of our ability.
                       </p>
@@ -144,9 +142,7 @@
                         data-test="dataRequesterMessage"
                         v-bind:disabled="!allowAccessDataRequesterMessage"
                       />
-                      <p class ="dataland-info-text normal">
-                        Let your contacts know what exactly your are looking for.
-                      </p>
+                      <p class="dataland-info-text normal">Let your contacts know what exactly your are looking for.</p>
                       <div v-show="allowAccessDataRequesterMessage">
                         <div class="mt-3 flex">
                           <label class="tex-sm flex">
