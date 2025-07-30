@@ -107,7 +107,6 @@ export default defineComponent({
     localSelectedCountries: {
       deep: true,
       handler(newValue: Array<CountryCodeSelectableItem>) {
-        console.log('Watcher: localSelectedCountries changed:', newValue);
         this.$emit(
           'update:selectedCountryCodes',
           newValue.map((item) => item.countryCode)
