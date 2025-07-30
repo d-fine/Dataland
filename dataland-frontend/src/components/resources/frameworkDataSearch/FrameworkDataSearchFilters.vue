@@ -141,6 +141,10 @@ export default defineComponent({
       this.localSelectedFrameworks = [];
       this.localSelectedCountries = [];
       this.localSelectedSectors = [];
+
+      this.$emit('update:selectedCountryCodes', []);
+      this.$emit('update:selectedSectors', []);
+      this.$emit('update:selectedFrameworks', []);
     },
     /**
      * A helper function that closes all the dropdown filters
