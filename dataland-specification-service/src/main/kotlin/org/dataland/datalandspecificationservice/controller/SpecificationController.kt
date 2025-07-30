@@ -27,10 +27,6 @@ class SpecificationController(
     @Autowired val database: SpecificationDatabase,
     @Value("\${dataland.primary-url}") val datalandPrimaryUrl: String,
 ) : SpecificationApi {
-    private val frameworkNotFoundError =
-        "Framework specification with id %s not found" to
-            "Framework specification not found in database."
-
     /**
      * Throws a `ResourceNotFoundApiException` when a framework specification with the given ID
      * cannot be found in the database.
@@ -40,8 +36,8 @@ class SpecificationController(
      */
     private fun throwFrameworkNotFound(id: String): Nothing =
         throw ResourceNotFoundApiException(
-            frameworkNotFoundError.first.format(id),
-            frameworkNotFoundError.second,
+            "Framework specification with id $id not found.",
+            "Framework specification not found in database.",
         )
 
     private fun getRawDataPointSpecification(dataPointSpecificationId: String): DataPointType =
