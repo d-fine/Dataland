@@ -189,6 +189,8 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       statusCode: 200,
     }).as('addCompany');
 
+    cy.clock();
+
     mountComponent(getMockDialogRef(mockPortfolios, closeStub));
 
     cy.get('.p-multiselect').should('exist').click();
@@ -199,6 +201,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     cy.get('[data-test="saveButton"]').click();
 
     cy.wait('@addCompany').then(() => {
+      cy.tick(200000);
       cy.get('@closeStub').should('have.been.called');
     });
   });
