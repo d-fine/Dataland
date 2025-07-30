@@ -80,7 +80,7 @@ describeIf(
       cy.get('[data-test="datapoint-framework"]').find('span').should('have.text', 'LkSG');
     });
 
-    it.only('Fill out the request page and check correct validation, request and success message', () => {
+    it('Fill out the request page and check correct validation, request and success message', () => {
       cy.intercept('POST', '**/community/requests/single').as('postRequestData');
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
@@ -180,8 +180,7 @@ describeIf(
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 
-      cy.get('div[data-test="datapoint-framework"]')
-        .find('[data-test="frameworkErrorMessage"]')
+      cy.get('div[data-test="frameworkErrorMessage"]')
         .should('exist')
         .should('be.visible')
         .should('contain.text', 'Select a framework to submit your request');
