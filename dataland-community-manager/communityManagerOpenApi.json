@@ -161,7 +161,7 @@
           "company-roles-controller"
         ],
         "summary": "Assign company role for the company to the user.",
-        "description": "The company role for the specified company is being assigned to the user. Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
+        "description": "The company role for the specified company is being assigned to the user, who must be known to Keycloak. Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
         "operationId": "assignCompanyRole",
         "parameters": [
           {
@@ -206,6 +206,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "At least one of the specified IDs (user and company) is unknown."
           },
           "default": {
             "description": "An error occurred",
@@ -268,7 +271,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The unique identifier of the user.",
+            "description": "The ID of the user in the role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -342,7 +345,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The unique identifier of the user.",
+            "description": "The ID of the user in the role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1239,9 +1242,9 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Get company role assignments that match the provided filters.",
-        "description": "Get company role assignments that match the provided filters. Endpoint fully accessible to all Dataland-Admins. Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
-        "operationId": "getCompanyRoleAssignments",
+        "summary": "Get extended company role assignments that match the provided filters.",
+        "description": "Get company role assignments extended by basic user information that match the provided filters. The endpoint is fully accessible to all Dataland Admins. Company Role Assignees can access the endpoint if the companyId filter is set to their company. Any Dataland user can access the endpoint if the userId filter is set to their userId.",
+        "operationId": "getExtendedCompanyRoleAssignments",
         "parameters": [
           {
             "name": "role",
@@ -1266,7 +1269,7 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The unique identifier of the user.",
+            "description": "The ID of the user in the role assignment.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1277,30 +1280,23 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company role assignments.",
+            "description": "Successfully retrieved extended company role assignments.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
+                    "$ref": "#/components/schemas/CompanyRoleAssignmentExtended"
                   }
                 }
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
           "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
-                  }
-                }
-              }
-            }
+            "description": "The specified company does not exist on Dataland."
           },
           "default": {
             "description": "An error occurred",
@@ -1790,7 +1786,7 @@
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created the data request.",
+            "description": "The ID of the user in the role assignment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
@@ -2157,6 +2153,45 @@
             "description": "The count of existing data requests for this framework, reporting period, company and priority.",
             "format": "int64",
             "example": 23
+          }
+        }
+      },
+      "CompanyRoleAssignmentExtended": {
+        "required": [
+          "companyId",
+          "companyRole",
+          "email",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyRole": {
+            "$ref": "#/components/schemas/CompanyRole"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user in the role assignment.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user in the company role assignment.",
+            "example": "test@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user in the company role assignment.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user in the company role assignment.",
+            "example": "Doe"
           }
         }
       },
