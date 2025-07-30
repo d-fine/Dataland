@@ -6,7 +6,7 @@
       :class="dropdownExtended ? 'p-overlay-open' : ''"
       :aria-expanded="dropdownExtended"
     >
-      <span class="p-placeholder" data-test="chooseFrameworkLabel">
+      <span data-test="chooseFrameworkLabel">
         {{ humanizeStringOrNumber(dataType) }}
         <span class="p-dropdown-trigger-icon pi pi-angle-down" aria-hidden="true" data-pc-section="dropdownicon"></span>
       </span>
@@ -118,20 +118,24 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
   border-style: solid;
   border-color: var(--fill-dropdown-bg);
   border-radius: 8px;
+
   &.always-fill {
     background: var(--fill-dropdown-bg);
     color: var(--default-neutral-white);
+
     .p-dropdown-trigger {
       color: var(--default-neutral-white);
     }
   }
 
   &.p-overlay-open {
-    background: var(--fill-dropdown-hover-bg);
+    background: var(--brown-lighter);
+
     .p-dropdown-trigger {
       color: var(--fill-dropdown-hover-text);
     }
   }
+
   .p-dropdown-trigger {
     color: var(--fill-dropdown-hover-text);
   }
@@ -140,18 +144,22 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 .p-dropdown-panel {
   position: relative;
   background: var(--default-neutral-white);
+
   .p-dropdown-items {
     .p-dropdown-item {
       margin: 0;
       padding: 0.5rem 1rem;
       border: 0.1em solid var(--dropdown-options-bg);
-      color: var(--input-text-color);
-      background: transparent;
+      color: var(--p-content-color);
       transition:
         background-color 0.2s,
         border-color 0.2s,
         box-shadow 0.2s;
       border-radius: 0;
+
+      &:hover {
+        background: var(--p-surface-200);
+      }
 
       &.p-highlight {
         color: var(--input-text-bg);

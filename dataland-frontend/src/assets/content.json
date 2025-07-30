@@ -12,7 +12,7 @@
         {
           "title": "Intro",
           "text": ["Liberate Data - ", "Empower Autonomy.  ", "The alternative to data monopolies."],
-          "image": ["/static/logos/Dataland_D_svg_Logo.svg"],
+          "image": ["/static/logos/gfx_logo_d_orange_S.svg"],
           "cards": [
             {
               "icon": "/static/icons/Search.svg",
