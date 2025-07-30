@@ -1,295 +1,295 @@
 {
-  "id": "plainSfdrHighImpactClimateSectors",
-  "name": "Applicable High Impact Climate Sectors",
-  "businessDefinition": "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
-  "validatedBy": "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector,org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
-  "schema": {
-    "NaceCodeA": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "value": "BigDecimal",
-        "quality": "QualityOptions",
-        "comment": "String",
-        "dataSource": {
-          "page": "Integer",
-          "tagName": "String",
-          "fileName": "String",
-          "fileReference": "String",
-          "publicationDate": "LocalDate"
+  "id" : "plainSfdrHighImpactClimateSectors",
+  "name" : "Applicable High Impact Climate Sectors",
+  "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
+  "validatedBy" : "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector,org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
+  "schema" : {
+    "NaceCodeA" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
         }
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "value": "BigDecimal",
-        "quality": "QualityOptions",
-        "comment": "String",
-        "dataSource": {
-          "page": "Integer",
-          "tagName": "String",
-          "fileName": "String",
-          "fileReference": "String",
-          "publicationDate": "LocalDate"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
         }
       }
     },
-    "NaceCodeB": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "value": "BigDecimal",
-        "quality": "QualityOptions",
-        "comment": "String",
-        "dataSource": {
-          "page": "Integer",
-          "tagName": "String",
-          "fileName": "String",
-          "fileReference": "String",
-          "publicationDate": "LocalDate"
+    "NaceCodeB" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
         }
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "value": "BigDecimal",
-        "quality": "QualityOptions",
-        "comment": "String",
-        "dataSource": {
-          "page": "Integer",
-          "tagName": "String",
-          "fileName": "String",
-          "fileReference": "String",
-          "publicationDate": "LocalDate"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "Integer",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
         }
       }
     }
   },
-  "example": {
-    "NaceCodeA": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+  "example" : {
+    "NaceCodeA" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeB": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeB" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeC": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeC" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeD": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeD" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeE": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeE" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeF": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeF" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeG": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeG" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeH": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeH" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     },
-    "NaceCodeL": {
-      "highImpactClimateSectorEnergyConsumptionInGWh": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+    "NaceCodeL" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       },
-      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-        "quality": "Audited",
-        "dataSource": {
-          "page": 0,
-          "tagName": "date",
-          "fileName": "AnnualReport2020.pdf",
-          "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
-          "publicationDate": "2020-05-01"
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "quality" : "Audited",
+        "dataSource" : {
+          "page" : 0,
+          "tagName" : "date",
+          "fileName" : "AnnualReport2020.pdf",
+          "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+          "publicationDate" : "2020-05-01"
         },
-        "comment": "The value is reported by the company.",
-        "value": 0
+        "comment" : "The value is reported by the company.",
+        "value" : 0
       }
     }
   }
