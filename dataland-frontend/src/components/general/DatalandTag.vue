@@ -1,5 +1,6 @@
 <template>
   <Tag
+    v-if="severity"
     :severity="severity"
     :dt="{ colorScheme: { light: { primary: designToken } } }"
     :pt="{
@@ -109,7 +110,7 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
     case RequestStatus.Withdrawn:
       return slateTag;
     default:
-      throw TypeError('Invalid input for field "severity".');
+      return slateTag;
   }
 });
 </script>
