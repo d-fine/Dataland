@@ -17,9 +17,7 @@
         message="The resource you tried to access is not available. Please close the data pop-up."
         :closable="false"
       />
-      <PrimeButton class="uppercase p-button p-button-sm" @click="closeTheDialog()">
-        <span class="d-letters pl-2">CLOSE</span>
-      </PrimeButton>
+      <PrimeButton @click="closeTheDialog()" label="CLOSE" />
     </div>
   </MiddleCenterDiv>
 </template>

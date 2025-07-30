@@ -23,6 +23,6 @@ export default {
 </script>
 <style scoped>
 .text-primary {
-  color: var(--main-color);
+  color: var(--p-primary-color);
 }
 </style>

@@ -34,24 +34,22 @@
       data-test="saveButton"
       icon="pi pi-plus"
       :label="'Add company to portfolio' + (selectedPortfolios.length > 1 ? 's' : '')"
-    >
-    </PrimeButton>
+    />
   </div>
-  <SuccessMessage v-else success-message="Successfully added!" :closable="false" />
+  <Message v-else severity="success" size="large">Successfully added!</Message>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import MultiSelect from 'primevue/multiselect';
-import PrimeButton from 'primevue/button';
-import Message from 'primevue/message';
-import type Keycloak from 'keycloak-js';
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { AxiosError } from 'axios';
 import { type BasePortfolio } from '@clients/userservice';
-import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import { AxiosError } from 'axios';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import Message from 'primevue/message';
+import MultiSelect from 'primevue/multiselect';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
