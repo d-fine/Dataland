@@ -186,6 +186,7 @@ function openHelpDialog(): void {
     props: {
       header: 'Request of Support',
       modal: true,
+      style: { width: '22rem' },
     },
   });
 }

@@ -1,37 +1,35 @@
 <template>
-  <div>
-    <div class="flex flex-col gap-2">
-      <label for="topic" class="formkit-label">Choose a topic</label>
-      <div class="card flex justify-content-center">
-        <Dropdown
-          id="topic"
-          v-model="topic"
-          :options="topics"
-          optionLabel="name"
-          placeholder="Where do you need help with?"
-          class="w-full md:w-14rem"
-        />
-      </div>
+  <div class="container">
+    <div>
+      <p class="header-styling">Choose a topic</p>
+      <Dropdown
+        id="get-help-topic"
+        v-model="topic"
+        :options="topics"
+        optionLabel="name"
+        placeholder="Where do you need help with?"
+      />
     </div>
-    <div class="flex flex-col gap-2">
-      <label for="message" class="formkit-label">Your message to us</label>
-      <Textarea id="message" v-model="message" placeholder="Your message" rows="5" cols="30" />
+    <div>
+      <p class="header-styling">Your message to us</p>
+      <Textarea id="get-help-message" v-model="message" placeholder="Your message" rows="5" fluid />
     </div>
-    <Message v-if="emailSendingError" severity="error" class="m-0" :life="3000">
+    <Message v-if="emailSendingError" severity="error">
       {{ emailSendingError }}
     </Message>
-    <Message v-if="emailSendingSuccess" severity="success" class="m-0" :life="3000">
+    <Message v-if="emailSendingSuccess" severity="success">
       {{ emailSendingSuccess }}
     </Message>
-    <p v-if="!isValidMessage" class="formkit-message">Please choose a topic and enter a message to us.</p>
+    <Message v-if="!isValidMessage" severity="error" variant="simple" size="small"
+      >Please choose a topic and enter a message to us.</Message
+    >
     <PrimeButton
-      type="button"
       label="Send"
+      icon="pi pi-send"
+      class="send-button"
       @click="sendEmail"
-      class="primary-button"
       :loading="isSendingMail"
       :disabled="!isValidMessage"
-      style="margin-left: 1em; float: right"
     />
   </div>
 </template>
@@ -40,7 +38,7 @@
 import Textarea from 'primevue/textarea';
 import Dropdown from 'primevue/dropdown';
 import PrimeButton from 'primevue/button';
-import { computed, inject } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
@@ -50,7 +48,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const isSendingMail = ref(false);
 const message = ref();
-import { ref } from 'vue';
+
 import type { SupportRequestData } from '@clients/userservice';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
@@ -81,3 +79,29 @@ async function sendEmail(): Promise<void> {
   }
 }
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+#get-help-message {
+  resize: none;
+  width: 100%;
+}
+
+#get-help-topic {
+  width: 100%;
+}
+
+.header-styling {
+  font-weight: 700;
+}
+
+.send-button {
+  align-self: end;
+}
+</style>
