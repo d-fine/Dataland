@@ -78,37 +78,34 @@
                 :total-records="totalRecords"
                 @page="onPage($event)"
               >
-                <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
+                <Column header="DATA ID" class="w-2">
                   <template #body="slotProps">
                     {{ slotProps.data.dataId }}
                   </template>
                 </Column>
-                <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
+                <Column header="COMPANY NAME" class="w-2">
                   <template #body="slotProps">
                     {{ slotProps.data.companyName }}
                   </template>
                 </Column>
-                <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
+                <Column header="FRAMEWORK" class="w-2">
                   <template #body="slotProps">
                     {{ humanizeString(slotProps.data.framework) }}
                   </template>
                 </Column>
-                <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
+                <Column header="REPORTING PERIOD" class="w-2">
                   <template #body="slotProps">
                     {{ slotProps.data.reportingPeriod }}
                   </template>
                 </Column>
-                <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
+                <Column header="SUBMISSION DATE" class="w-2">
                   <template #body="slotProps">
                     {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
                   </template>
                 </Column>
-                <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
+                <Column field="reviewDataset" header="" class="w-2 qa-review-button">
                   <template #body>
-                    <div class="text-right text-primary no-underline font-bold">
-                      <span>REVIEW</span>
-                      <span class="ml-3">></span>
-                    </div>
+                    <PrimeButton label="REVIEW" icon="pi pi-chevron-right" icon-pos="right" variant="link" />
                   </template>
                 </Column>
               </DataTable>
@@ -380,7 +377,8 @@ export default defineComponent({
   }
 }
 
-#qa-data-result tr:hover {
+#qa-data-result tr,
+.table-cursor {
   cursor: pointer;
 }
 
@@ -392,7 +390,7 @@ export default defineComponent({
   background-color: white;
 }
 
-.text-primary {
-  color: var(--main-color);
+.qa-review-button {
+  text-align: end;
 }
 </style>

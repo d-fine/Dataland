@@ -36,7 +36,7 @@
       :label="'Add company to portfolio' + (selectedPortfolios.length > 1 ? 's' : '')"
     />
   </div>
-  <Message v-else severity="success" size="large">Successfully added!</Message>
+  <Message v-else severity="success" size="large" class="container">Successfully added!</Message>
 </template>
 
 <script setup lang="ts">
@@ -124,7 +124,7 @@ function closeDialog(): void {
   displaySuccessMessage.value = true;
   setTimeout(() => {
     dialogRef?.value.close();
-  }, 2000);
+  }, 200000);
 }
 </script>
 
@@ -135,6 +135,7 @@ function closeDialog(): void {
   flex-direction: column;
   gap: var(--spacing-sm);
   align-items: center;
+  margin-top: var(--spacing-xs);
 }
 
 .gray-text {

@@ -155,13 +155,17 @@
               <div class="card" data-test="card_requestIs">
                 <span style="display: flex; align-items: center">
                   <span class="card__title">Request is:</span>
-                  <span :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
-                    {{ getRequestStatusLabel(storedDataRequest.requestStatus) }}
-                  </span>
+                  <DatalandTag
+                    :severity="storedDataRequest.requestStatus || ''"
+                    :value="storedDataRequest.requestStatus"
+                    class="dataland-inline-tag"
+                  />
                   <span class="card__title">and Access is:</span>
-                  <span :class="accessStatusBadgeClass(storedDataRequest.accessStatus)" style="display: inline-flex">
-                    {{ storedDataRequest.accessStatus }}
-                  </span>
+                  <DatalandTag
+                    :severity="storedDataRequest.accessStatus || ''"
+                    :value="storedDataRequest.accessStatus"
+                    class="dataland-inline-tag"
+                  />
                   <span class="card__subtitle">
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                   </span>
@@ -262,6 +266,7 @@
 
 <script lang="ts">
 import BackButton from '@/components/general/BackButton.vue';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -276,7 +281,7 @@ import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel, patchDataRequest } from '@/utils/RequestUtils';
+import { patchDataRequest } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
@@ -288,6 +293,7 @@ import { defineComponent, inject } from 'vue';
 export default defineComponent({
   name: 'ViewDataRequest',
   components: {
+    DatalandTag,
     ReviewRequestButtons,
     TheContent,
     EmailDetails,
@@ -334,10 +340,7 @@ export default defineComponent({
     this.initializeComponent();
   },
   methods: {
-    getRequestStatusLabel,
-    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
-    badgeClass,
     getFrameworkSubtitle,
     frameworkHasSubTitle,
     getFrameworkTitle,
@@ -636,6 +639,10 @@ export default defineComponent({
       margin-bottom: 1rem;
     }
   }
+}
+
+.dataland-inline-tag {
+  margin: 0 var(--spacing-xs);
 }
 
 .info-icon {

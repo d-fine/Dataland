@@ -180,8 +180,7 @@ describeIf(
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 
-      cy.get('div[data-test="datapoint-framework"]')
-        .find('[data-test="frameworkErrorMessage"]')
+      cy.get('div[data-test="frameworkErrorMessage"]')
         .should('exist')
         .should('be.visible')
         .should('contain.text', 'Select a framework to submit your request');

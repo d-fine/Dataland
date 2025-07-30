@@ -10,11 +10,7 @@ export const singleDataRequestPage = {
   },
   chooseFrameworkLksg(): void {
     const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;
-    selectItemFromDropdownByValue(
-      cy.get('[data-test="selectFramework"]').should('exist').get('[data-test="datapoint-framework"]'),
-      'LkSG',
-      true
-    );
+    selectItemFromDropdownByValue(cy.get('[data-test="datapoint-framework"]'), 'LkSG', true);
     cy.get('[data-test="datapoint-framework"]').get('.p-select-dropdown').click();
     cy.get('.p-select-list').find('li').should('have.length', numberOfFrameworks);
     cy.get('[data-test="datapoint-framework"]').get('.p-select-dropdown').click();
