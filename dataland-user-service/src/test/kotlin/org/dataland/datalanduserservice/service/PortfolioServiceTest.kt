@@ -96,7 +96,7 @@ class PortfolioServiceTest {
     fun `verify that retrieving all portfolios for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         assertEquals(2, portfolioService.getAllPortfoliosForUser().size)
         assertEquals(
             listOf(dummyPortfolio.portfolioId, dummyPortfolio2.portfolioId),
@@ -181,7 +181,7 @@ class PortfolioServiceTest {
     fun `verify that portfolios can be retrieved for a user by his or her ID`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
         val portfolioList = portfolioService.getAllPortfoliosForUserById(dummyUserId)
         assertEquals(2, portfolioList.size)
@@ -252,7 +252,7 @@ class PortfolioServiceTest {
     fun `verify that retrieving all portfolio names for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         val expectedPortfolioNames = listOf(BasePortfolioName(dummyPortfolio), BasePortfolioName(dummyPortfolio2))
         val portfolioNames = assertDoesNotThrow { portfolioService.getAllPortfolioNamesForCurrentUser() }
         assertEquals(expectedPortfolioNames, portfolioNames)
