@@ -87,13 +87,3 @@ annotation class CompanyRoleParameterRequired
     required = false,
 )
 annotation class CompanyRoleUserIdParameterRequired
-
-/** Email annotation */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_EMAIL_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_EMAIL_EXAMPLE,
-    required = true,
-)
-annotation class CompanyRoleEmailParameterNonRequired
