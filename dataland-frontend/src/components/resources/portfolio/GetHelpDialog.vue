@@ -17,6 +17,12 @@
       <label for="message" class="formkit-label">Your message to us</label>
       <Textarea id="message" v-model="message" rows="5" cols="30" />
     </div>
+    <Message v-if="emailSendingError" severity="error" class="m-0" :life="3000">
+      {{ emailSendingError }}
+    </Message>
+    <Message v-if="emailSendingSuccess" severity="success" class="m-0" :life="3000">
+      {{ emailSendingSuccess }}
+    </Message>
     <PrimeButton
       type="button"
       label="Send"
@@ -44,7 +50,11 @@ const isSendingMail = ref(false);
 const message = ref('');
 import { ref } from 'vue';
 import type { SupportRequestData } from '@clients/userservice';
+import Message from 'primevue/message';
+import { AxiosError } from 'axios';
 
+const emailSendingError = ref('');
+const emailSendingSuccess = ref('');
 const topic = ref();
 const topics = ref([
   { name: 'Find identifiers', code: 'identifiers' },
@@ -55,11 +65,13 @@ const topics = ref([
  * Send an email to request support
  */
 async function sendEmail(): Promise<void> {
-  const supportRequest: SupportRequestData = { topic: topic.value, message: message.value };
+  const supportRequest: SupportRequestData = { topic: topic.value.name, message: message.value };
   try {
     isSendingMail.value = true;
     await apiClientProvider.apiClients.portfolioController.postSupportRequest(supportRequest);
+    emailSendingSuccess.value = 'Thank you for contacting us. We have received your request.';
   } catch (error) {
+    emailSendingError.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
   } finally {
     isSendingMail.value = false;
