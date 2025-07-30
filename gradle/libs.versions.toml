@@ -136,8 +136,39 @@ mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", versio
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
-# Awaitility
-awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
+awaitility = "org.awaitility:awaitility:4.2.2"
+
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+
+json = "org.json:json:20240303"
+
+spring-context = "org.springframework:spring-context:6.2.1"
+spring-test = "org.springframework:spring-test:6.2.1"
+
+spring-boot = "org.springframework.boot:spring-boot:3.4.1"
+
+spring-rabbit = "org.springframework.amqp:spring-rabbit:3.2.1"
+
+cloudevents-api = "io.cloudevents:cloudevents-api:4.0.1"
+
+cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:4.0.1"
+
+cloudevents-core = "io.cloudevents:cloudevents-core:4.0.1"
+
+#Requires Kotlin 2.1.0 or higher
+spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.5"
+
+spring-amqp = "org.springframework.amqp:spring-amqp:3.2.1"
+
+spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
+
+springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.1"
+
+jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
+freemarker = "org.freemarker:freemarker:2.3.34"
+
+
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.22.0"
 
 # JSON
 json = { group = "org.json", name = "json", version = "20250517" }
