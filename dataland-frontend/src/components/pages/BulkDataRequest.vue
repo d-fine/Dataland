@@ -76,37 +76,40 @@
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
-                      <p
+                      <Message
                         v-if="selectedReportingPeriodsError"
-                        class="text-danger mt-2"
+                        severity="error"
+                        variant="simple"
+                        size="small"
                         data-test="reportingPeriodErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
                       >
                         Select at least one reporting period.
-                      </p>
+                      </Message>
                     </BasicFormSection>
-
                     <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
-                      <MultiSelectFormFieldBindData
-                        name="FrameworkSelection"
-                        data-test="selectFrameworkSelect"
+                      <MultiSelect
                         placeholder="Select framework"
+                        v-model="selectedFrameworks"
+                        name="Framework"
                         :options="availableFrameworks"
-                        optionValue="value"
-                        optionLabel="label"
-                        v-model:selectedItemsBindInternal="selectedFrameworks"
-                        innerClass="long"
+                        option-label="label"
+                        option-value="value"
+                        data-test="datapoint-framework"
+                        @changed="selectedFrameworksError = false"
+                        :highlightOnSelect="false"
+                        fluid
                       />
-                      <FormKit
-                        :modelValue="selectedFrameworks.toString()"
-                        type="text"
-                        name="listOfFrameworkNames"
-                        validation="required"
-                        validation-label="List of framework names"
-                        :validation-messages="{
-                          required: 'Select at least one framework',
-                        }"
-                        :outer-class="{ 'hidden-input': true }"
-                      />
+                      <Message
+                        v-if="selectedFrameworksError"
+                        severity="error"
+                        variant="simple"
+                        size="small"
+                        data-test="reportingPeriodErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
+                      >
+                        Select at least one framework.
+                      </Message>
                       <div data-test="addedFrameworks" class="radius-1 w-full">
                         <span v-if="!selectedFrameworks.length" class="gray-text no-framework"
                           >No Frameworks added yet</span
@@ -160,7 +163,7 @@
                       label="Submit"
                       class="align-self-end"
                       name="submit_request_button"
-                      @click="checkReportingPeriods()"
+                      @click="checkErrors()"
                     >
                       NEXT
                     </PrimeButton>
@@ -177,7 +180,6 @@
 </template>
 
 <script lang="ts">
-import MultiSelectFormFieldBindData from '@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -199,12 +201,15 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
+import Message from 'primevue/message';
+import MultiSelect from 'primevue/multiselect';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
+    MultiSelect,
+    Message,
     BulkDataRequestSummary,
-    MultiSelectFormFieldBindData,
     AuthenticationWrapper,
     ToggleSwitch,
     TheHeader,
@@ -236,6 +241,7 @@ export default defineComponent({
       postBulkDataRequestObjectProcessed: false,
       message: '',
       selectedReportingPeriodsError: false,
+      selectedFrameworksError: false,
       reportingPeriods: [
         { name: '2024', value: false },
         { name: '2023', value: false },
@@ -271,11 +277,14 @@ export default defineComponent({
   methods: {
     humanizeStringOrNumber,
     /**
-     * Check whether reporting periods have been selected
+     * Check whether reporting periods and frameworks have been selected
      */
-    checkReportingPeriods(): void {
+    checkErrors(): void {
       if (!this.selectedReportingPeriods.length) {
         this.selectedReportingPeriodsError = true;
+      }
+      if (!this.selectedFrameworks.length) {
+        this.selectedFrameworksError = true;
       }
     },
     /**
