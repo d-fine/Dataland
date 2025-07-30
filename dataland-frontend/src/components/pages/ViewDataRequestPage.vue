@@ -1,9 +1,9 @@
 <template>
   <AuthenticationWrapper>
-    <BackButton />
     <TheContent class="min-h-screen flex sheet">
       <TheHeader />
       <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
+        <BackButton style="display: flex"/>
         <h1 class="text-left">Data Request</h1>
       </div>
 
