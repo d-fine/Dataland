@@ -45,18 +45,9 @@ class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportUtils =
-        DataExportUtils(
-            mockDataPointUtils,
-            mockReferencedReportsUtils,
-        )
-    private val specificationApi = mock<SpecificationControllerApi>()
-
-    init {
-        dataExportUtils.specificationApi = specificationApi
-    }
-
-    private val dataExportService = DataExportService(dataExportUtils)
+    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val dataExportService =
+        DataExportService(mockDataPointUtils, mockReferencedReportsUtils, mockSpecificationApi)
 
     private val testDataProvider = TestDataProvider(objectMapper)
     private val lksgTestData = testDataProvider.getLksgDataset()
@@ -252,7 +243,7 @@ class DataExportServiceTest {
             mock<DataPointBaseTypeResolvedSchema> {
                 on { resolvedSchema } doReturn resolvedSchemaJson
             }
-        whenever(specificationApi.getResolvedFrameworkSpecification("lksg"))
+        whenever(mockSpecificationApi.getResolvedFrameworkSpecification("lksg"))
             .thenReturn(baseTypeSchema)
         whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
             FrameworkSpecification(
@@ -275,13 +266,21 @@ class DataExportServiceTest {
                         companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithBothValueAndQuality(), Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithBothValueAndQuality(),
+                                Any::class.java,
+                            ),
                     ),
                     SingleCompanyExportData(
                         companyName = "Test Company 2",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithTwoDataPoints(), Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithTwoDataPoints(),
+                                Any::class.java,
+                            ),
                     ),
                 ),
                 ExportFileType.CSV,
@@ -327,13 +326,21 @@ class DataExportServiceTest {
                         companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithBothValueAndQuality(), Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithBothValueAndQuality(),
+                                Any::class.java,
+                            ),
                     ),
                     SingleCompanyExportData(
                         companyName = "Test Company 2",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testDataProvider.createTestJsonWithTwoDataPoints(), Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithTwoDataPoints(),
+                                Any::class.java,
+                            ),
                     ),
                 ),
                 ExportFileType.CSV,
