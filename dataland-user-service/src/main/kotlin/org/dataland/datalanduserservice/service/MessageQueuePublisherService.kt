@@ -6,16 +6,23 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.PortfolioUpdatePayload
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
+import org.dataland.datalandmessagequeueutils.messages.email.Value
+import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * Publisher Service for Portfolio Updates (Companies and Monitoring status).
  */
 @Service
-class MessageQueuePublisher
+class MessageQueuePublisherService
     @Autowired
     constructor(
         private val cloudEventMessageHandler: CloudEventMessageHandler,
@@ -62,6 +69,43 @@ class MessageQueuePublisher
                 correlationId = correlationId,
                 exchange = ExchangeName.USER_SERVICE_EVENTS,
                 routingKey = RoutingKeyNames.PORTFOLIO_UPDATE,
+            )
+        }
+
+        /**
+         * Method to publish a support request
+         * @param supportRequestData Contains topic and message of the request
+         */
+        fun publishSupportRequest(supportRequestData: SupportRequestData) {
+            val datalandJwtAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
+            val correlationId = UUID.randomUUID().toString()
+
+            val internalEmailContentTable =
+                InternalEmailContentTable(
+                    "User Portfolio Support Request",
+                    "A user has submitted a request for support.",
+                    listOf(
+                        "User" to Value.Text(datalandJwtAuthentication.userId),
+                        "E-Mail" to Value.Text(datalandJwtAuthentication.username),
+                        "First Name" to Value.Text(datalandJwtAuthentication.firstName),
+                        "Last Name" to Value.Text(datalandJwtAuthentication.lastName),
+                        "Topic" to Value.Text(supportRequestData.topic),
+                        "Message" to Value.Text(supportRequestData.message),
+                    ),
+                )
+            val message =
+                EmailMessage(
+                    internalEmailContentTable,
+                    listOf(EmailRecipient.Internal),
+                    listOf(EmailRecipient.InternalCc),
+                    emptyList(),
+                )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                objectMapper.writeValueAsString(message),
+                MessageType.SEND_EMAIL,
+                correlationId,
+                ExchangeName.SEND_EMAIL,
+                RoutingKeyNames.EMAIL,
             )
         }
     }

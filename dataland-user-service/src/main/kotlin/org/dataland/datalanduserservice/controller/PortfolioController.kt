@@ -6,6 +6,7 @@ import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
@@ -87,5 +88,9 @@ class PortfolioController
                     correlationId,
                 ),
             )
+        }
+
+        override fun postSupportRequest(supportRequestData: SupportRequestData) {
+            portfolioService.sendSupportRequestToPublisherService(supportRequestData)
         }
     }

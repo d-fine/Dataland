@@ -216,6 +216,59 @@
         ]
       }
     },
+    "/portfolios/support": {
+      "post": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Request support creating a portfolio.",
+        "description": "Request support creating a portfolio on Dataland.",
+        "operationId": "postSupportRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully requested support."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/": {
       "get": {
         "tags": [
@@ -963,6 +1016,25 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "SupportRequestData": {
+        "required": [
+          "message",
+          "topic"
+        ],
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "The topic of the request.",
+            "example": "Find identifiers."
+          },
+          "message": {
+            "type": "string",
+            "description": "The request message to dataland.",
+            "example": "I need help finding identifiers for company x, y, z to be able to add them to my portfolio."
           }
         }
       },
