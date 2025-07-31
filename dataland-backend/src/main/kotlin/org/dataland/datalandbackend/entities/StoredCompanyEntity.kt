@@ -12,6 +12,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
@@ -97,5 +98,26 @@ data class StoredCompanyEntity(
 
         identifierMap.values.forEach { it.sort() }
         return identifierMap
+    }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the contant of the applied [CompanyInformationPatch].
+     * This method does not update the identifiers of the company, as these are handled separately.
+     *
+     * @param patch the [CompanyInformationPatch] containing the new values to apply.
+     */
+    fun applyPatchWithoutIdentifiers(patch: CompanyInformationPatch) {
+        patch.companyName?.let { this.companyName = it }
+        patch.companyAlternativeNames?.let { this.companyAlternativeNames = it.toMutableList() }
+        patch.companyContactDetails?.let { this.companyContactDetails = it.toMutableList() }
+        patch.companyLegalForm?.let { this.companyLegalForm = it }
+        patch.headquarters?.let { this.headquarters = it }
+        patch.headquartersPostalCode?.let { this.headquartersPostalCode = it }
+        patch.sector?.let { this.sector = it }
+        patch.sectorCodeWz?.let { this.sectorCodeWz = it }
+        patch.countryCode?.let { this.countryCode = it }
+        patch.website?.let { this.website = it }
+        patch.isTeaserCompany?.let { this.isTeaserCompany = it }
+        patch.parentCompanyLei?.let { this.parentCompanyLei = it }
     }
 }

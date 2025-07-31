@@ -7,6 +7,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
  * The database entity for mapping ISINs to LEIs.
@@ -24,4 +25,14 @@ data class IsinLeiEntity(
     val isin: String,
     @Column(name = "lei", nullable = true, unique = false)
     val lei: String?,
-)
+) {
+    /**
+     * Function to cast this [IsinLeiEntity] into an [CompanyIdentifierEntity]
+     */
+    fun toCompanyIdentifierEntity(): CompanyIdentifierEntity =
+        CompanyIdentifierEntity(
+            identifierValue = isin,
+            identifierType = IdentifierType.Isin,
+            company = company,
+        )
+}

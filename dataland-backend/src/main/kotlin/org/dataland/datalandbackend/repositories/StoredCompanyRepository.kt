@@ -148,7 +148,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.identifiers WHERE company IN :companies",
+            "LEFT JOIN FETCH company.identifiers identifier " +
+            "WHERE company IN :companies AND identifier.identifierType != 'Isin'",
     )
     fun fetchNonIsinIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 

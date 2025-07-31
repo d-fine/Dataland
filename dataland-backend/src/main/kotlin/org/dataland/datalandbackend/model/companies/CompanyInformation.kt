@@ -101,4 +101,24 @@ data class CompanyInformation(
         example = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
     )
     val parentCompanyLei: String?,
-)
+) {
+    /**
+     * Converts this [CompanyInformation] to a [CompanyInformationPatch].
+     */
+    fun toCompanyInformationPatch(): CompanyInformationPatch =
+        CompanyInformationPatch(
+            companyName = companyName,
+            companyAlternativeNames = companyAlternativeNames,
+            companyContactDetails = companyContactDetails,
+            companyLegalForm = companyLegalForm,
+            headquarters = headquarters,
+            headquartersPostalCode = headquartersPostalCode,
+            sector = sector,
+            sectorCodeWz = sectorCodeWz,
+            identifiers = identifiers,
+            countryCode = countryCode,
+            isTeaserCompany = isTeaserCompany,
+            website = website,
+            parentCompanyLei = parentCompanyLei,
+        )
+}

@@ -46,4 +46,16 @@ interface IsinLeiRepository : JpaRepository<IsinLeiEntity, String> {
         companyId: StoredCompanyEntity,
         pageable: Pageable,
     ): Page<IsinLeiEntity>
+
+    /**
+     * Finds all ISIN-LEI entities by a list of ISINs that are not associated with a specific company.
+     *
+     * @param isins The list of ISINs to search for.
+     * @param excludedCompany The ID of the company to exclude from the results.
+     * @return A list of `IsinLeiEntity` matching the provided ISINs and not associated with the specified company.
+     */
+    fun findAllByIsinInAndCompanyIsNot(
+        isins: List<String>,
+        excludedCompany: StoredCompanyEntity,
+    ): List<IsinLeiEntity>
 }
