@@ -96,7 +96,7 @@
                         option-label="label"
                         option-value="value"
                         data-test="datapoint-framework"
-                        @changed="selectedFrameworksError = false"
+                        @change="selectedFrameworksError = false"
                         :highlightOnSelect="false"
                         fluid
                       />
@@ -139,20 +139,27 @@
                         <span v-else>weekly summary</span>
                       </label>
                     </BasicFormSection>
-
                     <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">
-                      <FormKit
+                      <PrimeVueTextarea
                         v-model="identifiersInString"
-                        type="textarea"
                         name="listOfCompanyIdentifiers"
-                        validation="required"
-                        validation-label="List of company identifiers"
-                        :validation-messages="{
-                          required: 'Provide at least one identifier',
-                        }"
-                        placeholder="E.g.: DE-000402625-0, SWE402626, DE-000402627-2, SWE402626,DE-0004026244"
+                        placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
+                        rows="5"
+                        class="no-resize"
+                        @changed="identifierError = false"
+                        fluid
                       />
-                      <span class="gray-text font-italic">
+                      <Message
+                        v-if="identifierError"
+                        severity="error"
+                        variant="simple"
+                        size="small"
+                        data-test="reportingPeriodErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
+                      >
+                        Provide at least one identifier.
+                      </Message>
+                      <span class="dataland-info-text small">
                         Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
                       </span>
                     </BasicFormSection>
@@ -203,10 +210,12 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 import Message from 'primevue/message';
 import MultiSelect from 'primevue/multiselect';
+import PrimeVueTextarea from 'primevue/textarea';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
+    PrimeVueTextarea,
     MultiSelect,
     Message,
     BulkDataRequestSummary,
@@ -241,6 +250,7 @@ export default defineComponent({
       postBulkDataRequestObjectProcessed: false,
       message: '',
       selectedReportingPeriodsError: false,
+      identifierError: false,
       selectedFrameworksError: false,
       reportingPeriods: [
         { name: '2024', value: false },
@@ -286,6 +296,9 @@ export default defineComponent({
       if (!this.selectedFrameworks.length) {
         this.selectedFrameworksError = true;
       }
+      if (!this.identifiers.length) {
+        this.identifierError = true;
+      }
     },
     /**
      * Remove framework from selected frameworks from array
@@ -321,9 +334,11 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
+      if (!this.preSubmitConditionsFulfilled()) {
+        return;
+      }
       this.processInput();
       this.submittingInProgress = true;
-
       try {
         const bulkDataRequestObject = this.collectDataToSend();
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
@@ -346,6 +361,14 @@ export default defineComponent({
         this.submittingInProgress = false;
         this.postBulkDataRequestObjectProcessed = true;
       }
+    },
+
+    /**
+     * Returns if the forms are filled out correctly
+     * @returns true if they are filled out correctly, false otherwise
+     */
+    preSubmitConditionsFulfilled(): boolean {
+      return !this.selectedFrameworksError && !this.selectedReportingPeriodsError && !this.identifierError;
     },
 
     /**
