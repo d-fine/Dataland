@@ -18,8 +18,8 @@ describe('Check the Get Help form', () => {
   it('Should validate the form: enable button when topic and message are provided', () => {
     // Select a topic
     cy.get('#get-help-topic').click();
-    cy.get('.p-dropdown-item').contains('Find identifiers').click();
-    cy.get('#get-help-topic').should('contain.text', 'Find identifiers');
+    cy.get('.p-dropdown-item').contains('Find company identifiers').click();
+    cy.get('#get-help-topic').should('contain.text', 'Find company identifiers');
 
     // Enter a message
     cy.get('#get-help-message').type('I need help with finding identifiers.');
@@ -43,7 +43,7 @@ describe('Check the Get Help form', () => {
 
     // Fill out the form
     cy.get('#get-help-topic').click();
-    cy.get('.p-dropdown-item').contains('Find identifiers').click();
+    cy.get('.p-dropdown-item').contains('Find company identifiers').click();
     cy.get('#get-help-message').type('I need help with finding identifiers.');
 
     // Send the email
