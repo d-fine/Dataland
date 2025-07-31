@@ -85,7 +85,7 @@
                 </Column>
                 <Column header="COMPANY NAME" class="w-2">
                   <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
+                    <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
                   </template>
                 </Column>
                 <Column header="FRAMEWORK" class="w-2">
