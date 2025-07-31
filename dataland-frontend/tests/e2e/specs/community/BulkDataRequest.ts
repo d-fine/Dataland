@@ -87,7 +87,7 @@ describeIf(
       chooseFirstReportingPeriod();
       chooseFrameworkByIndex(frameworkIndex);
 
-      cy.get('textarea[name="listOfCompanyIdentifiers"]').type(companyIdentifiers);
+      cy.get('textarea[name="listOfCompanyIdentifiers"]:visible').type(companyIdentifiers);
       additionalTodos();
       cy.get('button[type="submit"]').click();
 
@@ -105,7 +105,7 @@ describeIf(
       cy.get('[data-test="toggle-chip"]').first().click();
       cy.get('[data-test="toggle-chip"]').first().should('have.class', 'toggled');
 
-      cy.get('div[data-test="reportingPeriodsDiv"] p[data-test="reportingPeriodErrorMessage"]').should('not.exist');
+      cy.get('div[data-test="reportingPeriodsDiv"] [data-test="reportingPeriodErrorMessage"]').should('not.exist');
     }
 
     /**
