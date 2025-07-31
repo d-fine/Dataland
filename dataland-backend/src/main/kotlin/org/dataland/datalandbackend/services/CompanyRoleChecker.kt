@@ -61,7 +61,7 @@ class CompanyRoleChecker(
     fun hasCurrentUserAnyRoleForCompany(companyId: String): Boolean {
         val userId = UUID.fromString(DatalandAuthentication.fromContext().userId)
         val roles =
-            companyRolesControllerApi.getCompanyRoleAssignments(
+            companyRolesControllerApi.getExtendedCompanyRoleAssignments(
                 companyId = UUID.fromString(companyId),
                 userId = userId,
             )
@@ -154,7 +154,7 @@ class CompanyRoleChecker(
         val isUserReviewer = authContext.roles.contains(DatalandRealmRole.ROLE_REVIEWER)
         val isUserCompanyOwnerOrUploader =
             companyRolesControllerApi
-                .getCompanyRoleAssignments(null, companyUUID, userUUID)
+                .getExtendedCompanyRoleAssignments(null, companyUUID, userUUID)
                 .any { it.companyRole == CompanyRole.CompanyOwner || it.companyRole == CompanyRole.DataUploader }
 
         return isUserReviewer || isUserCompanyOwnerOrUploader
@@ -205,7 +205,7 @@ class CompanyRoleChecker(
 
         val companyRoles =
             companyRolesControllerApi
-                .getCompanyRoleAssignments(null, companyUUID, userUUID)
+                .getExtendedCompanyRoleAssignments(null, companyUUID, userUUID)
                 .map { it.companyRole }
 
         return if (companyRoles.contains(CompanyRole.CompanyOwner)) {

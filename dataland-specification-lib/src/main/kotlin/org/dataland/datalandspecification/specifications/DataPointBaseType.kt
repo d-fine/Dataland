@@ -10,6 +10,7 @@ data class DataPointBaseType(
     val name: String,
     val businessDefinition: String,
     val validatedBy: String,
+    val schema: JsonNode,
     val example: JsonNode,
 ) {
     /**
