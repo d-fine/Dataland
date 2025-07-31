@@ -89,6 +89,7 @@
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
                       <MultiSelect
+                        :show-toggle-all="false"
                         placeholder="Select framework"
                         v-model="selectedFrameworks"
                         name="Framework"
@@ -140,13 +141,13 @@
                       </label>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">
-                      <PrimeVueTextarea
+                      <PrimeTextarea
                         v-model="identifiersInString"
                         name="listOfCompanyIdentifiers"
                         placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
                         rows="5"
                         class="no-resize"
-                        @changed="identifierError = false"
+                        @value-change="identifierError = false"
                         fluid
                       />
                       <Message
@@ -165,13 +166,7 @@
                     </BasicFormSection>
                   </div>
                   <div class="col-12 flex justify-content-end">
-                    <PrimeButton
-                      type="submit"
-                      label="Submit"
-                      class="align-self-end"
-                      name="submit_request_button"
-                      @click="checkErrors()"
-                    >
+                    <PrimeButton type="submit" label="Submit" class="align-self-end" name="submit_request_button">
                       NEXT
                     </PrimeButton>
                   </div>
@@ -210,12 +205,12 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 import Message from 'primevue/message';
 import MultiSelect from 'primevue/multiselect';
-import PrimeVueTextarea from 'primevue/textarea';
+import PrimeTextarea from 'primevue/textarea';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
-    PrimeVueTextarea,
+    PrimeTextarea,
     MultiSelect,
     Message,
     BulkDataRequestSummary,
@@ -287,19 +282,15 @@ export default defineComponent({
   methods: {
     humanizeStringOrNumber,
     /**
-     * Check whether reporting periods and frameworks have been selected
+     * Check whether reporting periods and frameworks have been selected, and companyIdentifiers are not empty
      */
-    checkErrors(): void {
-      if (!this.selectedReportingPeriods.length) {
-        this.selectedReportingPeriodsError = true;
-      }
-      if (!this.selectedFrameworks.length) {
-        this.selectedFrameworksError = true;
-      }
-      if (!this.identifiers.length) {
-        this.identifierError = true;
-      }
+    formHasErrors(): boolean {
+      this.selectedReportingPeriodsError = !this.selectedReportingPeriods.length;
+      this.selectedFrameworksError = !this.selectedFrameworks.length;
+      this.identifierError = !this.identifiers.length;
+      return this.selectedReportingPeriodsError && this.selectedFrameworksError && this.identifierError;
     },
+
     /**
      * Remove framework from selected frameworks from array
      * @param it - framework to remove
@@ -307,6 +298,7 @@ export default defineComponent({
     removeItem(it: string) {
       this.selectedFrameworks = this.selectedFrameworks.filter((el) => el !== it);
     },
+
     /**
      * Builds a DataRequest object using the currently entered inputs and returns it
      * @returns the DataRequest object
@@ -320,6 +312,7 @@ export default defineComponent({
         notifyMeImmediately: this.notifyMeImmediately,
       };
     },
+
     /**
      * Converts the string inside the identifiers field into a list of identifiers
      */
@@ -334,10 +327,10 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      if (!this.preSubmitConditionsFulfilled()) {
+      this.processInput();
+      if (this.formHasErrors()) {
         return;
       }
-      this.processInput();
       this.submittingInProgress = true;
       try {
         const bulkDataRequestObject = this.collectDataToSend();
@@ -361,14 +354,6 @@ export default defineComponent({
         this.submittingInProgress = false;
         this.postBulkDataRequestObjectProcessed = true;
       }
-    },
-
-    /**
-     * Returns if the forms are filled out correctly
-     * @returns true if they are filled out correctly, false otherwise
-     */
-    preSubmitConditionsFulfilled(): boolean {
-      return !this.selectedFrameworksError && !this.selectedReportingPeriodsError && !this.identifierError;
     },
 
     /**
