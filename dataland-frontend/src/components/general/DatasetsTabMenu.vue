@@ -9,7 +9,9 @@
         :pt="{
           root: ({ props }) => {
             return {
-              style: props.disabled ? 'display: none' : '',
+              style: {
+                display: props.disabled ? 'none' : '',
+              },
             };
           },
         }"
@@ -122,5 +124,6 @@ function setVisibilityForAdminTab(): void {
   font-size: var(--font-size-base);
   color: inherit;
   text-decoration: inherit;
+  padding: var(--p-tabs-tab-padding);
 }
 </style>
