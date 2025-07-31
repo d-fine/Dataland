@@ -190,7 +190,6 @@ describeIf(
         .should('exist')
         .should('be.visible')
         .should('contain.text', 'Select at least one framework.');
-
     }
   }
 );
