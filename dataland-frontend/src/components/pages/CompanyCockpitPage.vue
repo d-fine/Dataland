@@ -95,7 +95,7 @@ import { documentNameOrId, documentPublicationDateOrEmpty, getPluralCategory } f
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
@@ -132,7 +132,7 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
       authenticated: inject<boolean>('authenticated'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
+      companyRoleAssignments: inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'),
       injectedUseMobileView: inject<boolean>('useMobileView'),
     };
   },
