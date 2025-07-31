@@ -1,9 +1,11 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
+import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -37,7 +39,8 @@ import java.util.UUID
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
     private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
-    private val mockPublisher = mock<MessageQueuePublisherService>()
+    private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
+    private val publisher = MessageQueuePublisherService(mockCloudEventMessageHandler)
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
@@ -63,7 +66,7 @@ class PortfolioServiceTest {
         doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
         doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPublisher, mockPortfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, publisher, mockPortfolioRepository)
     }
 
     /**
@@ -257,6 +260,20 @@ class PortfolioServiceTest {
         val expectedPortfolioNames = listOf(BasePortfolioName(dummyPortfolio), BasePortfolioName(dummyPortfolio2))
         val portfolioNames = assertDoesNotThrow { portfolioService.getAllPortfolioNamesForCurrentUser() }
         assertEquals(expectedPortfolioNames, portfolioNames)
+    }
+
+    @Test
+    fun `verify support request is published`() {
+        val supportRequestData = SupportRequestData(topic = "test topic", message = "test message")
+        portfolioService.sendSupportRequestToPublisherService(supportRequestData)
+
+        verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
+            body = any(),
+            type = any(),
+            correlationId = any(),
+            exchange = any(),
+            routingKey = any(),
+        )
     }
 
     /**
