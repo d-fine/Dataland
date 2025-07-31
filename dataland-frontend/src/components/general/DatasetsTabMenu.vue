@@ -35,14 +35,14 @@
 <script setup lang="ts">
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import Tab from 'primevue/tab';
 import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, type Ref, ref, watchEffect } from 'vue';
 
 interface TabInfo {
   label: string;
@@ -55,7 +55,7 @@ const { initialTabIndex } = defineProps<{
 }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const companyRoleAssignments = inject<Array<CompanyRoleAssignment>>('companyRoleAssignments');
+const companyRoleAssignments: Ref<Array<CompanyRoleAssignmentExtended>> | undefined = inject('companyRoleAssignments');
 const currentTabIndex = ref<number>(0);
 
 const tabs = ref<Array<TabInfo>>([
@@ -74,10 +74,7 @@ onMounted(() => {
   setVisibilityForAdminTab();
 });
 
-watch(
-  () => companyRoleAssignments,
-  () => setVisibilityForTabWithAccessRequestsForMyCompanies()
-);
+watchEffect(setVisibilityForTabWithAccessRequestsForMyCompanies);
 
 /**
  * Sets the visibility of the tab for Quality Assurance.
@@ -96,8 +93,8 @@ function setVisibilityForTabWithQualityAssurance(): void {
  * If the user does have any company ownership, the tab is shown. Else it stays invisible.
  */
 function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
-  if (!companyRoleAssignments?.length) return;
-  const companyOwnershipAssignments = companyRoleAssignments?.filter(
+  if (!companyRoleAssignments?.value?.length) return;
+  const companyOwnershipAssignments = companyRoleAssignments?.value.filter(
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {

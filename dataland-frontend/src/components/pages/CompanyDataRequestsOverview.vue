@@ -190,7 +190,11 @@ import {
 } from '@/utils/RequestsOverviewPageUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { AccessStatus, type CompanyRoleAssignment, type ExtendedStoredDataRequest } from '@clients/communitymanager';
+import {
+  AccessStatus,
+  type CompanyRoleAssignmentExtended,
+  type ExtendedStoredDataRequest,
+} from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -223,7 +227,7 @@ export default defineComponent({
       frameworkFilter: ref(),
       datasetsPerPage: 100,
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
+      companyRoleAssignments: inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'),
     };
   },
 
