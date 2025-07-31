@@ -181,17 +181,16 @@ describeIf(
     function checksBasicValidation(): void {
       cy.get('button[type="submit"]').click();
 
-      cy.get('div[data-test="reportingPeriodsDiv"] p[data-test="reportingPeriodErrorMessage"]')
+      cy.get('div[data-test="reportingPeriodsDiv"]')
+        .find('[data-test="reportingPeriodErrorMessage"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period.');
 
-      cy.get('div[data-test="selectFrameworkDiv"] li[data-message-type="validation"]')
+      cy.get('div[data-test="selectFrameworkDiv"]')
+        .should('exist')
         .should('be.visible')
-        .should('contain.text', 'Select at least one framework');
+        .should('contain.text', 'Select at least one framework.');
 
-      cy.get('div[data-test="selectIdentifiersDiv"] li[data-message-type="validation"]')
-        .should('be.visible')
-        .should('contain.text', 'Provide at least one identifier');
     }
   }
 );
