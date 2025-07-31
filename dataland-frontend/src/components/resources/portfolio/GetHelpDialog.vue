@@ -12,7 +12,13 @@
     </div>
     <div>
       <p class="header-styling">Your message to us</p>
-      <Textarea id="get-help-message" v-model="message" placeholder="Your message" rows="5" fluid />
+      <Textarea
+        id="get-help-message"
+        v-model="message"
+        placeholder="State for which companies you need help finding identifiers so that you can add them to your portfolio"
+        rows="5"
+        fluid
+      />
     </div>
     <Message v-if="emailSendingError" severity="error">
       {{ emailSendingError }}
@@ -21,8 +27,8 @@
       {{ emailSendingSuccess }}
     </Message>
     <Message v-if="!isValidMessage" severity="error" variant="simple" size="small"
-      >Please choose a topic and enter a message to us.</Message
-    >
+      >Please choose a topic and enter a message to us.
+    </Message>
     <PrimeButton
       label="Send"
       icon="pi pi-send"
@@ -57,11 +63,12 @@ const emailSendingError = ref('');
 const emailSendingSuccess = ref('');
 const topic = ref();
 const topics = ref([
-  { name: 'Find identifiers', code: 'identifiers' },
+  { name: 'Find company identifiers', code: 'identifiers' },
   { name: 'Other topic', code: 'Other' },
 ]);
 
 const isValidMessage = computed(() => message.value && topic.value.name);
+
 /**
  * Send an email to request support
  */

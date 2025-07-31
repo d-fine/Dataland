@@ -83,7 +83,7 @@ class MessageQueuePublisherService
             val internalEmailContentTable =
                 InternalEmailContentTable(
                     "User Portfolio Support Request",
-                    "A user has submitted a support request for portfolio creation.",
+                    "A user has submitted a request for support.",
                     listOf(
                         "User" to Value.Text(datalandJwtAuthentication.userId),
                         "E-Mail" to Value.Text(datalandJwtAuthentication.username),
