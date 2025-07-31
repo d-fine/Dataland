@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationR
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
-import org.dataland.datalandbackend.services.DataExportUtils
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointUtils
@@ -23,6 +22,7 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -51,9 +51,10 @@ internal class DataControllerTest {
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+    private val mockSpecificationApi = mock<SpecificationControllerApi>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
-    private val dataExportUtils = DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils)
-    private val dataExportService = DataExportService(dataExportUtils)
+    private val dataExportService =
+        DataExportService(mockDataPointUtils, mockReferencedReportsUtils, mockSpecificationApi)
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
