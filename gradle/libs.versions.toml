@@ -36,6 +36,7 @@ spring-boot = "3.5.4"
 spring-framework = "6.2.9"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
+testcontainers = "1.19.3"
 
 [libraries]
 
@@ -135,6 +136,10 @@ mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", versio
 
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
+
+# Testcontainers
+testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
 
 # Awaitility
 awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
