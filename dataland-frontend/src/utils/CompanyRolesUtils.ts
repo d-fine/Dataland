@@ -3,7 +3,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type AxiosError } from 'axios';
 import { waitForAndReturnResolvedKeycloakPromise } from '@/utils/KeycloakUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 
 /**
  * Check if current user has a certain company role for a company
@@ -98,13 +98,13 @@ export async function hasCompanyAtLeastOneCompanyOwner(
 export async function getCompanyRoleAssignmentsForCurrentUser(
   resolvedKeycloakPromise: Keycloak,
   apiClientProvider: ApiClientProvider
-): Promise<CompanyRoleAssignment[]> {
-  let companyRoleAssignments: CompanyRoleAssignment[] = [];
+): Promise<CompanyRoleAssignmentExtended[]> {
+  let companyRoleAssignments: CompanyRoleAssignmentExtended[] = [];
   if (resolvedKeycloakPromise) {
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     if (userId) {
       companyRoleAssignments = (
-        await apiClientProvider.apiClients.companyRolesController.getCompanyRoleAssignments(
+        await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
           undefined,
           undefined,
           userId

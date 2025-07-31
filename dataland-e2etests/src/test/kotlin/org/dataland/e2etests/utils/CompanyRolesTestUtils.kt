@@ -4,6 +4,7 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
+import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -31,7 +32,7 @@ class CompanyRolesTestUtils {
     fun validateCompanyOwnersForCompany(
         companyId: UUID,
         expectedCompanyOwnerUserIds: List<UUID>,
-        actualCompanyRoleAssignmentsResponse: List<CompanyRoleAssignment>,
+        actualCompanyRoleAssignmentsResponse: List<CompanyRoleAssignmentExtended>,
     ) {
         actualCompanyRoleAssignmentsResponse.forEach { companyRoleAssignment ->
             assertEquals(companyId.toString(), companyRoleAssignment.companyId)
@@ -93,7 +94,8 @@ class CompanyRolesTestUtils {
         companyRole: CompanyRole? = null,
         companyId: UUID? = null,
         userId: UUID? = null,
-    ): List<CompanyRoleAssignment> = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(companyRole, companyId, userId)
+    ): List<CompanyRoleAssignmentExtended> =
+        apiAccessor.companyRolesControllerApi.getExtendedCompanyRoleAssignments(companyRole, companyId, userId)
 
     fun removeCompanyRole(
         companyRole: CompanyRole,

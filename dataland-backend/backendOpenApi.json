@@ -560,6 +560,72 @@
         ]
       }
     },
+    "/metadata/active-dataset-search": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if active datasets are available.",
+        "description": "Checks if any active datasets are available applying the provided data dimensions and returns the corresponding meta data.",
+        "operationId": "retrieveMetaDataOfActiveDatasets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BasicDataDimensions"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta data of active datasets.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/internal/cached/public/get-batch": {
       "post": {
         "tags": [
@@ -5486,6 +5552,31 @@
                 "$ref": "#/components/schemas/QaStatus"
               }
             ]
+          }
+        }
+      },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -15725,31 +15816,6 @@
             "type": "string",
             "description": "The Dataland user ID of the user who uploaded the dataset.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          }
-        }
-      },
-      "BasicDataDimensions": {
-        "required": [
-          "companyId",
-          "dataType",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The framework of the dataset on Dataland.",
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
-            "example": "2023"
           }
         }
       },

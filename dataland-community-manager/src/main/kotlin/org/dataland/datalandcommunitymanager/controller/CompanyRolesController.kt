@@ -1,7 +1,9 @@
 package org.dataland.datalandcommunitymanager.controller
+
 import org.dataland.datalandcommunitymanager.api.CompanyRolesApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -39,11 +41,11 @@ class CompanyRolesController(
         )
     }
 
-    override fun getCompanyRoleAssignments(
+    override fun getExtendedCompanyRoleAssignments(
         companyRole: CompanyRole?,
         companyId: UUID?,
         userId: UUID?,
-    ): ResponseEntity<List<CompanyRoleAssignment>> {
+    ): ResponseEntity<List<CompanyRoleAssignmentExtended>> {
         logger.info(
             "Received a request to get company role assignments for company role $companyRole for company $companyId",
         )
@@ -51,7 +53,7 @@ class CompanyRolesController(
             companyRolesManager
                 .getCompanyRoleAssignmentsByParameters(companyRole, companyId?.toString(), userId?.toString())
         return ResponseEntity.ok(
-            entities.map { it.toApiModel() },
+            companyRolesManager.convertToExtendedCompanyRoleAssignments(entities.map { it.toApiModel() }),
         )
     }
 
