@@ -177,6 +177,7 @@ function onCursorLeaveProvideButton(): void {
   &--highlight {
     box-shadow: 0 1px 10px var(--p-orange-600);
     transition: box-shadow 0.1s ease;
+    cursor: pointer;
 
     /* on hover, make it even bigger */
     &:hover {

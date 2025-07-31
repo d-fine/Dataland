@@ -323,7 +323,6 @@ export default defineComponent({
 
 .frameworks-grid {
   display: grid;
-  cursor: pointer;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-xxl);
 
@@ -345,7 +344,6 @@ export default defineComponent({
     font-size: 16px;
     font-weight: 700;
     line-height: 21px;
-
     margin-top: 8px;
   }
 }
