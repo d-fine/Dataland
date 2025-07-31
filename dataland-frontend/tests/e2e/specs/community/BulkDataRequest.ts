@@ -114,7 +114,9 @@ describeIf(
      */
     function chooseFrameworkByIndex(index: number): void {
       const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;
-      cy.get('[data-test="datapoint-framework"]').find('.p-multiselect-label-container, .p-multiselect-trigger').click();
+      cy.get('[data-test="datapoint-framework"]')
+        .find('.p-multiselect-label-container, .p-multiselect-trigger')
+        .click();
       cy.get('.p-multiselect-overlay .p-multiselect-list-container li.p-multiselect-option').should(
         'have.length',
         numberOfFrameworks
@@ -190,7 +192,6 @@ describeIf(
         .should('exist')
         .should('be.visible')
         .should('contain.text', 'Select at least one framework.');
-
     }
   }
 );
