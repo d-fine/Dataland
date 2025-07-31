@@ -1,14 +1,19 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
+import org.dataland.datalandbackend.utils.DataExportUtils
+import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
@@ -23,10 +28,15 @@ import java.io.OutputStream
 class DataExportService
     @Autowired
     constructor(
-        private val dataExportUtils: DataExportUtils,
+        private val dataPointUtils: DataPointUtils,
+        private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val specificationApi: SpecificationControllerApi,
     ) {
         companion object {
             private const val HEADER_ROW_INDEX = 0
+            private const val COMPANY_NAME_POSITION = -3
+            private const val COMPANY_LEI_POSITION = -2
+            private const val REPORTING_PERIOD_POSITION = -1
         }
 
         private val objectMapper = JsonUtils.defaultObjectMapper
@@ -125,7 +135,7 @@ class DataExportService
             includeAliases: Boolean,
         ): InputStreamResource {
             val (aliasedCsvData, csvSchema) =
-                dataExportUtils.prepareExportData(
+                prepareExportData(
                     portfolioExportRows, dataType,
                     keepValueFieldsOnly, includeAliases,
                 )
@@ -152,7 +162,7 @@ class DataExportService
             includeAliases: Boolean,
         ): InputStreamResource {
             val (csvData, csvSchema) =
-                dataExportUtils.prepareExportData(
+                prepareExportData(
                     portfolioExportRows, dataType,
                     keepValueFieldsOnly, includeAliases,
                 )
@@ -192,4 +202,113 @@ class DataExportService
             val singleCompanyExportDataJson = objectMapper.writeValueAsString(singleCompanyExportData)
             return objectMapper.readTree(singleCompanyExportDataJson)
         }
+
+        /**
+         * Return the template of an assembled framework or null if the passed name refers to an old style framework
+         *
+         * @param framework the framework for which the template shall be returned
+         */
+        private fun getFrameworkTemplate(framework: String): JsonNode? {
+            return dataPointUtils.getFrameworkSpecificationOrNull(framework)?.let {
+                val frameworkTemplate = objectMapper.readTree(it.schema)
+                referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(
+                    frameworkTemplate,
+                    it.referencedReportJsonPath,
+                )
+                return frameworkTemplate
+            }
+        }
+
+        private fun getResolvedSchemaNode(framework: String): JsonNode? {
+            val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
+            return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
+        }
+
+        /**
+         * Prepares the data structure for export formats (CSV and Excel)
+         * @param portfolioExportRows passed JSON objects to be exported
+         * @param dataType the datatype specifying the framework
+         * @param keepValueFieldsOnly if true, non value fields are stripped
+         * @param includeAliases if true, human-readable names are used if available
+         * @return PreparedExportData containing:
+         *   - the CSV data as a list of maps
+         *   - the CSV schema
+         *   - header fields with human-readable names
+         */
+        fun prepareExportData(
+            portfolioExportRows: List<JsonNode>,
+            dataType: DataType,
+            keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
+        ): DataExportUtils.Companion.PreparedExportData {
+            val frameworkTemplate = getFrameworkTemplate(dataType.toString())
+            val isAssembledDatasetParam = (frameworkTemplate != null)
+
+            val (csvData, nonEmptyHeaderFields) =
+                DataExportUtils.Companion.getCsvDataAndNonEmptyFields(
+                    portfolioExportRows,
+                    keepValueFieldsOnly,
+                )
+
+            val orderedHeaderFields =
+                if (isAssembledDatasetParam) {
+                    val resolvedSchemaNode = getResolvedSchemaNode(dataType.toString())
+                    JsonUtils.getLeafNodeFieldNames(
+                        resolvedSchemaNode ?: NullNode.instance,
+                        keepEmptyFields = true,
+                        dropLastFieldName = false,
+                    )
+                } else {
+                    getOrderedHeaderFieldsForNonAssembledDataset(nonEmptyHeaderFields)
+                }
+            val orderedHeaders =
+                DataExportUtils.Companion.getOrderedHeaders(
+                    nonEmptyHeaderFields,
+                    orderedHeaderFields,
+                    isAssembledDatasetParam,
+                )
+            val readableHeaders =
+                if (includeAliases) {
+                    DataExportUtils.Companion.applyAliasRenaming(
+                        orderedHeaders,
+                        frameworkTemplate ?: portfolioExportRows.first(),
+                    )
+                } else {
+                    orderedHeaders.associateWith { it }
+                }
+
+            val mappedCsvData = DataExportUtils.Companion.mapReadableHeadersToCsvData(csvData, readableHeaders)
+
+            val usedReadableHeaders =
+                mappedCsvData
+                    .flatMap { it.entries }
+                    .filterNot { it.value.isNullOrBlank() }
+                    .map { it.key }
+                    .toSet()
+
+            val filteredReadableHeaders = readableHeaders.filterValues { it in usedReadableHeaders }
+
+            val csvSchema =
+                DataExportUtils.Companion.createCsvSchemaBuilder(
+                    filteredReadableHeaders.values.toSet(),
+                    orderedHeaders.mapNotNull { filteredReadableHeaders[it] },
+                    isAssembledDatasetParam,
+                )
+
+            return DataExportUtils.Companion.PreparedExportData(mappedCsvData, csvSchema)
+        }
+
+        private fun getOrderedHeaderFieldsForNonAssembledDataset(nonEmptyHeaderFields: Set<String>): LinkedHashSet<String> =
+            LinkedHashSet(
+                nonEmptyHeaderFields.sortedWith(
+                    compareBy<String> {
+                        when {
+                            it.startsWith("companyName") -> COMPANY_NAME_POSITION
+                            it.startsWith("companyLei") -> COMPANY_LEI_POSITION
+                            it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
+                            else -> 0
+                        }
+                    }.then(naturalOrder()),
+                ),
+            )
     }
