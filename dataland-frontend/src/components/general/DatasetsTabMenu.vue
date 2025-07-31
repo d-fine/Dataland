@@ -42,7 +42,7 @@ import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, type Ref, ref, watchEffect } from 'vue';
+import { inject, onMounted, ref, toValue, watchEffect } from 'vue';
 
 interface TabInfo {
   label: string;
@@ -55,7 +55,8 @@ const { initialTabIndex } = defineProps<{
 }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const companyRoleAssignments: Ref<Array<CompanyRoleAssignmentExtended>> | undefined = inject('companyRoleAssignments');
+
+const companyRoleAssignments = toValue(inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'));
 const currentTabIndex = ref<number>(0);
 
 const tabs = ref<Array<TabInfo>>([
@@ -93,8 +94,8 @@ function setVisibilityForTabWithQualityAssurance(): void {
  * If the user does have any company ownership, the tab is shown. Else it stays invisible.
  */
 function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
-  if (!companyRoleAssignments?.value?.length) return;
-  const companyOwnershipAssignments = companyRoleAssignments?.value.filter(
+  if (!companyRoleAssignments?.length) return;
+  const companyOwnershipAssignments = companyRoleAssignments?.filter(
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {
