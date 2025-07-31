@@ -58,8 +58,8 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  // require('./search-company-framework-data');
-  // require('./quality-assurance');
+  require('./search-company-framework-data');
+  require('./quality-assurance');
   require('./community');
   require('./data-download');
 }
