@@ -243,9 +243,9 @@ interface QaApi {
     fun getDataPointQaReviewInformation(
         @RequestParam
         @Parameter(
-            name = "companyName",
-            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            name = "companyId",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         companyId: String?,
