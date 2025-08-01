@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
@@ -39,6 +40,7 @@ import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.io.File
+import java.util.Optional
 
 class CompanyRolesManagerTest {
     private lateinit var companyRolesManager: CompanyRolesManager
@@ -119,6 +121,7 @@ class CompanyRolesManagerTest {
                 anyString(), anyString(), anyString(), anyString(),
             )
 
+        doNothing().whenever(mockCompanyInfoService).assertCompanyIdIsValid(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
                 companyNotFound,
@@ -133,6 +136,27 @@ class CompanyRolesManagerTest {
                 companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).getValidCompanyName(nonExistingCompanyId)
+
+        doReturn(dummyKeycloakUserInfo).whenever(mockKeycloakUserService).getUser(testUserId)
+        doReturn(true).whenever(mockKeycloakUserService).isKeycloakUserId(testUserId)
+        doReturn(false).whenever(mockKeycloakUserService).isKeycloakUserId(nonExistingUserId)
+
+        doReturn(companyRoleAssignmentEntityList)
+            .whenever(mockCompanyRoleAssignmentRepository)
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyRole = null, companyId = existingCompanyId, userId = null,
+            )
+
+        doReturn(Optional.empty<CompanyRoleAssignment>())
+            .whenever(mockCompanyRoleAssignmentRepository)
+            .findById(nonExistingCompanyRoleAssignmentId)
+
+        doReturn(false)
+            .whenever(mockCompanyRoleAssignmentRepository)
+            .existsById(nonExistingCompanyRoleAssignmentId)
+        doReturn(true)
+            .whenever(mockCompanyRoleAssignmentRepository)
+            .existsById(existingCompanyRoleAssignmentId)
     }
 
     @BeforeEach
