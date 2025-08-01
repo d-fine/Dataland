@@ -7,7 +7,7 @@ input[type="checkbox"], input[type="radio"]{
   height: 25px;
   width: 25px;
   background-color: white;
-  border: 3px solid #ff6813;
+  border: 3px solid var(--primary-color);
   border-radius: 5px;
   cursor: pointer;
 
@@ -16,7 +16,7 @@ input[type="checkbox"], input[type="radio"]{
     content: "";
     width: 5px;
     height: 10px;
-    border: solid #ff6813;
+    border: solid var(--primary-color);
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
     display: none;
