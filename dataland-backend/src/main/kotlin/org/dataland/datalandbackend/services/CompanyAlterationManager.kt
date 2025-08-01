@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
@@ -12,10 +13,8 @@ import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,6 +33,75 @@ class CompanyAlterationManager
         private val isinLeiRepository: IsinLeiRepository,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+
+        /**
+         * Method to add a company
+         * @param companyInformation denotes information of the company
+         * @return information of the newly created entry in the company data store of Dataland,
+         * including the generated company ID
+         */
+        @Transactional(rollbackFor = [InvalidInputApiException::class])
+        fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
+            val companyId = IdUtils.generateUUID()
+            logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
+            val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
+
+            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            savedCompany.identifiers = nonIsinIdentifiers.toMutableList()
+
+            logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
+            return savedCompany
+        }
+
+        /**
+         * Method to patch the information of a company.
+         * @param companyId the id of the company to patch
+         * @param patch the patch to apply to the company
+         * @return the updated company information object
+         */
+        @Transactional
+        fun patchCompany(
+            companyId: String,
+            patch: CompanyInformationPatch,
+        ): StoredCompanyEntity {
+            val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
+            logger.info("Patching Company ${storedCompanyEntity.companyName} with ID $companyId")
+
+            storedCompanyEntity.applyPatchWithoutIdentifiers(patch)
+            val patchedIdentifiers = patch.identifiers ?: emptyMap()
+            updateNonIsinIdentifiers(storedCompanyEntity, patchedIdentifiers)
+
+            if (patchedIdentifiers[IdentifierType.Isin] != null) {
+                replaceIsinIdentifiers(
+                    storedCompanyEntity = storedCompanyEntity,
+                    identifierMap = patchedIdentifiers,
+                )
+            }
+
+            return storedCompanyRepository.save(storedCompanyEntity)
+        }
+
+        /**
+         * Method to put the information of a company.
+         * @param companyId the id of the company to patch
+         * @param companyInformation denotes information of the company
+         * @return the updated company information object
+         */
+        @Transactional
+        fun putCompany(
+            companyId: String,
+            companyInformation: CompanyInformation,
+        ): StoredCompanyEntity {
+            val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
+            logger.info("Replacing Company ${storedCompanyEntity.companyName} with ID $companyId")
+
+            storedCompanyEntity.applyPutWithoutIdentifiers(companyInformation)
+            replaceNonIsinIdentifers(storedCompanyEntity = storedCompanyEntity, identifierMap = companyInformation.identifiers)
+            replaceIsinIdentifiers(storedCompanyEntity = storedCompanyEntity, identifierMap = companyInformation.identifiers)
+
+            return storedCompanyRepository.save(storedCompanyEntity)
+        }
 
         private fun createStoredCompanyEntityWithoutForeignReferences(
             companyId: String,
@@ -62,44 +130,53 @@ class CompanyAlterationManager
         }
 
         /**
-         * Asserts that none of the identifiers in [identifiers] is used outside of [storedCompanyEntity]
-         * @param storedCompanyEntity the company entity to be excluded from the check
-         * @param identifiers all identifiers to be checked given in a map format
+         * Asserts that there are no identifiers in use contained in the [identifierMap]. Only checks non-ISIN identifiers by default.
+         * Set [isinMode] to true to only check for ISIN identifiers.
+         *
+         * @param identifierMap contains the identifiers to check for duplicates
+         * @param isinMode controls if ISIN identifiers or non-ISIN identifiers are checked
          */
         private fun assertNoDuplicateIdentifiersExist(
-            storedCompanyEntity: StoredCompanyEntity,
-            identifiers: Map<IdentifierType, List<String>>,
+            identifierMap: Map<IdentifierType, List<String>>,
+            isinMode: Boolean = false,
         ) {
             val duplicates = mutableListOf<CompanyIdentifierEntity>()
-            identifiers.forEach { identifierType, identifiers ->
-                when (identifierType) {
-                    IdentifierType.Isin -> {
-                        duplicates.addAll(
-                            isinLeiRepository
-                                .findAllByIsinInAndCompanyIsNot(
-                                    identifiers, storedCompanyEntity,
-                                ).map { it.toCompanyIdentifierEntity() },
-                        )
-                    }
-                    else -> {
-                        duplicates.addAll(
-                            companyIdentifierRepositoryInterface
-                                .findByIdentifierTypeIsAndIdentifierValueInAndCompanyIsNot(
-                                    identifierType, identifiers, storedCompanyEntity,
-                                ),
-                        )
-                    }
-                }
+            if (isinMode) {
+                val isins = identifierMap[IdentifierType.Isin] ?: emptyList()
+                duplicates.addAll(isinLeiRepository.findAllById(isins).map { it.toCompanyIdentifierEntity() })
+            } else {
+                duplicates.addAll(
+                    companyIdentifierRepositoryInterface.findAllById(
+                        identifierMap.flatMap { identifierPair ->
+                            identifierPair.value.map {
+                                CompanyIdentifierEntityId(
+                                    identifierType = identifierPair.key,
+                                    identifierValue = it,
+                                )
+                            }
+                        },
+                    ),
+                )
             }
+
             if (duplicates.isNotEmpty()) {
                 throw DuplicateIdentifierApiException(duplicates)
             }
         }
 
+        /**
+         * Creates and associates non-ISIN identifiers with the given [storedCompanyEntity].
+         * If ISIN identifiers are present in the [identifierMap], they are ignored.
+         *
+         * @param storedCompanyEntity the company entity to associate the identifiers with
+         * @param identifierMap a map of identifier types to their values
+         */
         private fun createAndAssociateNonIsinIdentifiers(
             storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
         ): List<CompanyIdentifierEntity> {
+            assertNoDuplicateIdentifiersExist(identifierMap)
+
             val newNonIsinIdentifiers =
                 identifierMap
                     .flatMap { identifierPair ->
@@ -112,27 +189,26 @@ class CompanyAlterationManager
                     }.distinct()
                     .filter { it.identifierType != IdentifierType.Isin }
 
-            try {
-                return companyIdentifierRepositoryInterface
-                    .saveAllAndFlush(newNonIsinIdentifiers)
-                    .toList()
-            } catch (dataIntegrityViolationException: DataIntegrityViolationException) {
-                val cause = dataIntegrityViolationException.cause
-                if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
-                    // Cannot access the list of duplicate identifiers here because of hibernate caching.
-                    throw DuplicateIdentifierApiException(null)
-                }
-                throw dataIntegrityViolationException
-            }
+            return companyIdentifierRepositoryInterface
+                .saveAllAndFlush(newNonIsinIdentifiers)
+                .toList()
         }
 
+        /**
+         * Creates and associates ISIN identifiers with the given [storedCompanyEntity].
+         * If the [storedCompanyEntity] has a LEI it is recorded as well.
+         *
+         * @param storedCompanyEntity the company entity to associate the ISIN identifiers with
+         * @param identifierMap a map of identifier types to their values
+         */
         private fun createAndAssociateIsinIdentifiers(
             storedCompanyEntity: StoredCompanyEntity,
-            identifiers: Map<IdentifierType, List<String>>,
+            identifierMap: Map<IdentifierType, List<String>>,
         ) {
-            val isins = identifiers[IdentifierType.Isin]
-            val lei = identifiers[IdentifierType.Lei]?.firstOrNull()
+            val isins = identifierMap[IdentifierType.Isin]
+            val lei = storedCompanyEntity.identifiers.find { it.identifierType == IdentifierType.Lei }?.identifierValue
             if (isins.isNullOrEmpty()) return
+            assertNoDuplicateIdentifiersExist(identifierMap = identifierMap, isinMode = true)
 
             isinLeiRepository.saveAllAndFlush(
                 isins.map { isin ->
@@ -146,124 +222,39 @@ class CompanyAlterationManager
         }
 
         /**
-         * Method to add a company
-         * @param companyInformation denotes information of the company
-         * @return information of the newly created entry in the company data store of Dataland,
-         * including the generated company ID
+         * Replaces the non-ISIN identifiers of the given [storedCompanyEntity] with the identifiers from the [identifierMap].
+         * If [identifierMap] is empty, all existing non-ISIN identifiers are deleted.
+         *
+         * @param storedCompanyEntity the company entity whose non-ISIN identifiers are to be replaced
+         * @param identifierMap a map of identifier types to their new values
          */
-        @Transactional(rollbackFor = [InvalidInputApiException::class])
-        fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
-            val companyId = IdUtils.generateUUID()
-            logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
-            val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
-            assertNoDuplicateIdentifiersExist(storedCompanyEntity = savedCompany, identifiers = companyInformation.identifiers)
-            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
-            createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
-            savedCompany.identifiers = nonIsinIdentifiers.toMutableList()
-            logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
-            return savedCompany
-        }
-
-        /**
-         * Method to patch the information of a company.
-         * @param companyId the id of the company to patch
-         * @param patch the patch to apply to the company
-         * @return the updated company information object
-         */
-        @Transactional
-        fun patchCompany(
-            companyId: String,
-            patch: CompanyInformationPatch,
-        ): StoredCompanyEntity {
-            val patchedIdentifiers = patch.identifiers ?: emptyMap()
-            val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
-            assertNoDuplicateIdentifiersExist(storedCompanyEntity = storedCompanyEntity, identifiers = patchedIdentifiers)
-
-            logger.info("Patching Company ${storedCompanyEntity.companyName} with ID $companyId")
-            storedCompanyEntity.applyPatchWithoutIdentifiers(patch)
-            updateNonIsinIdentifers(storedCompanyEntity, patchedIdentifiers)
-
-            if (patchedIdentifiers[IdentifierType.Isin] != null) {
-                replaceIsinLeiEntities(
-                    storedCompanyEntity = storedCompanyEntity,
-                    newIsins = patchedIdentifiers[IdentifierType.Isin],
-                    lei = storedCompanyEntity.identifiers.find { it.identifierType == IdentifierType.Lei }?.identifierValue,
-                )
-            }
-
-            return storedCompanyRepository.save(storedCompanyEntity)
-        }
-
-        /**
-         * Method to put the information of a company.
-         * @param companyId the id of the company to patch
-         * @param companyInformation denotes information of the company
-         * @return the updated company information object
-         */
-        @Transactional
-        fun putCompany(
-            companyId: String,
-            companyInformation: CompanyInformation,
-        ): StoredCompanyEntity {
-            val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
-            assertNoDuplicateIdentifiersExist(storedCompanyEntity = storedCompanyEntity, identifiers = companyInformation.identifiers)
-            logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
-
-            storedCompanyEntity.applyPutWithoutIdentifiers(companyInformation)
-
+        private fun replaceNonIsinIdentifers(
+            storedCompanyEntity: StoredCompanyEntity,
+            identifierMap: Map<IdentifierType, List<String>>,
+        ) {
             companyIdentifierRepositoryInterface.deleteAllByCompany(storedCompanyEntity)
             storedCompanyEntity.identifiers = mutableListOf()
-
-            updateNonIsinIdentifers(storedCompanyEntity, companyInformation.identifiers)
-            replaceIsinLeiEntities(
-                storedCompanyEntity = storedCompanyEntity,
-                newIsins = companyInformation.identifiers[IdentifierType.Isin],
-                lei = companyInformation.identifiers[IdentifierType.Lei]?.firstOrNull(),
-            )
-
-            return storedCompanyRepository.save(storedCompanyEntity)
+            createAndAssociateNonIsinIdentifiers(storedCompanyEntity, identifierMap)
         }
 
         /**
-         * Replaces the non-ISIN company identifiers associated with [storedCompanyEntity] for the given [identifierType].
-         * If [newIdentifiers] is empty, the existing identifiers of that type are deleted without replacement.
+         * Replaces the ISIN identifiers of the given [storedCompanyEntity] with the identifiers from the [identifierMap].
+         * If [identifierMap] does not contain any ISINs, all existing ISIN identifiers are deleted.
          *
-         * @param storedCompanyEntity the company entity whose identifiers are to be replaced
-         * @param identifierType the type of identifier to replace
-         * @param newIdentifiers the new identifiers to associate with the company; if empty, existing identifiers are deleted
-         * @return a list of newly created [CompanyIdentifierEntity] instances for non-ISIN identifiers
+         * @param storedCompanyEntity the company entity whose ISIN identifiers are to be replaced
+         * @param identifierMap a map of identifier types to their new values
          */
-        private fun replaceNonIsinCompanyIdentifiers(
+        private fun replaceIsinIdentifiers(
             storedCompanyEntity: StoredCompanyEntity,
-            identifierType: IdentifierType,
-            newIdentifiers: List<String>,
-        ): List<CompanyIdentifierEntity> {
-            if (identifierType == IdentifierType.Isin) return emptyList()
-            companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(
-                storedCompanyEntity,
-                identifierType,
-            )
-            return createAndAssociateNonIsinIdentifiers(storedCompanyEntity, mapOf(identifierType to newIdentifiers))
-        }
-
-        /**
-         * Replaces the ISIN-LEI entities associated with [storedCompanyEntity]. If [newIsins] is null or empty,
-         * the existing ISIN-LEI entities are deleted without replacement.
-         *
-         * @param storedCompanyEntity the company entity whose ISIN-LEI entities are to be replaced
-         * @param newIsins the new ISINs to associate with the company; if null or empty, existing entities are deleted
-         * @param lei the LEI to associate with the new ISINs; if null or empty, no LEI is associated
-         */
-        private fun replaceIsinLeiEntities(
-            storedCompanyEntity: StoredCompanyEntity,
-            newIsins: List<String>?,
-            lei: String?,
+            identifierMap: Map<IdentifierType, List<String>>,
         ) {
             isinLeiRepository.deleteAllByCompany(storedCompanyEntity)
+            val newIsins = identifierMap[IdentifierType.Isin]
+            val lei = storedCompanyEntity.identifiers.find { it.identifierType == IdentifierType.Lei }?.identifierValue
             if (newIsins.isNullOrEmpty()) return
             createAndAssociateIsinIdentifiers(
                 storedCompanyEntity = storedCompanyEntity,
-                identifiers =
+                identifierMap =
                     mapOf(
                         IdentifierType.Isin to newIsins,
                         IdentifierType.Lei to if (lei.isNullOrEmpty()) emptyList() else listOf(lei),
@@ -272,26 +263,23 @@ class CompanyAlterationManager
         }
 
         /**
-         * Updates the non-ISIN identifiers of the given [storedCompanyEntity] based on the provided [identifiers] map.
+         * Updates the non-ISIN identifiers of the given [storedCompanyEntity] based on the provided [identifierMap] map.
          * Existing identifiers of each type are removed before adding the new ones. The in memory entity is updated as well.
          *
          * @param storedCompanyEntity the company entity whose identifiers are to be updated
-         * @param identifiers a map of identifier types to their new values
+         * @param identifierMap a map of identifier types to their new values
          */
-        private fun updateNonIsinIdentifers(
+        private fun updateNonIsinIdentifiers(
             storedCompanyEntity: StoredCompanyEntity,
-            identifiers: Map<IdentifierType, List<String>>,
+            identifierMap: Map<IdentifierType, List<String>>,
         ) {
-            identifiers.forEach { identifierType, identifierValues ->
+            identifierMap.forEach { identifierType, identifierValues ->
                 if (identifierType == IdentifierType.Isin) return@forEach
                 storedCompanyEntity.identifiers.removeIf { it.identifierType == identifierType }
-                storedCompanyEntity.identifiers.addAll(
-                    replaceNonIsinCompanyIdentifiers(
-                        storedCompanyEntity = storedCompanyEntity,
-                        identifierType = identifierType,
-                        newIdentifiers = identifierValues.distinct(),
-                    ),
-                )
+                companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(storedCompanyEntity, identifierType)
             }
+            storedCompanyEntity.identifiers.addAll(
+                createAndAssociateNonIsinIdentifiers(storedCompanyEntity = storedCompanyEntity, identifierMap = identifierMap),
+            )
         }
     }
