@@ -71,6 +71,7 @@ export default defineComponent({
         throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
       },
       companyRoleAssignments: computed(() => {
+        console.log('THIS IS YOUR COMPANY ROLE ASSIGNMENTS: ', this.companyRoleAssignments);
         return this.companyRoleAssignments;
       }),
       authenticated: computed(() => {
