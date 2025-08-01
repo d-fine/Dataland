@@ -62,6 +62,9 @@ export default defineComponent({
         );
       }
     },
+    companyRoleAssignments() {
+      console.log(this.companyRoleAssignments);
+    },
   },
 
   provide() {
@@ -138,11 +141,11 @@ export default defineComponent({
      * @param resolvedKeycloakPromise contains the login-status of the current user
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
-    handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+    async handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-        this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+        await this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
       }
     },
 
@@ -151,9 +154,10 @@ export default defineComponent({
      * @param resolvedKeycloakPromise contains the login-status of the current user
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
-    setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      void getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
-        (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
+    async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
+        resolvedKeycloakPromise,
+        apiClientProvider
       );
     },
 
