@@ -56,7 +56,7 @@ const { initialTabIndex } = defineProps<{
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const companyRoleAssignments = inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments');
+const companyRoleAssignments = toValue(inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'));
 const currentTabIndex = ref<number>(0);
 
 const tabs = ref<Array<TabInfo>>([
@@ -75,12 +75,7 @@ onMounted(() => {
   setVisibilityForAdminTab();
 });
 
-watchEffect(() => {
-  const assignments = toValue(companyRoleAssignments);
-  if (assignments && assignments.length) {
-    setVisibilityForTabWithAccessRequestsForMyCompanies();
-  }
-});
+watchEffect(setVisibilityForTabWithAccessRequestsForMyCompanies);
 
 /**
  * Sets the visibility of the tab for Quality Assurance.
