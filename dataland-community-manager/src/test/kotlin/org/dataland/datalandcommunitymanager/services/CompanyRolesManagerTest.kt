@@ -1,8 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
@@ -35,7 +38,7 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.UUID
+import java.io.File
 
 class CompanyRolesManagerTest {
     private lateinit var companyRolesManager: CompanyRolesManager
@@ -48,20 +51,46 @@ class CompanyRolesManagerTest {
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
 
-    private val existingCompanyId = "indeed-existing-company-id"
+    private val objectMapper = JsonUtils.defaultObjectMapper
+
+    private val filePathToTestFixtures = "./src/test/resources/companyRolesManager"
+
+    private val dummyKeycloakUserInfo =
+        objectMapper
+            .readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/dummyKeycloakUserInfo.json"))
+    private val testUserId = dummyKeycloakUserInfo.userId
+    private val testEmail = dummyKeycloakUserInfo.email
+    private val testFirstName = dummyKeycloakUserInfo.firstName
+    private val testLastName = dummyKeycloakUserInfo.lastName
+
+    private val nonExistingUserId = "non-existing-user-id"
+
+    private val dummyCompanyRoleAssignmentEntity =
+        objectMapper.readValue<CompanyRoleAssignmentEntity>(
+            File("$filePathToTestFixtures/dummyCompanyRoleAssignmentEntity.json"),
+        )
+    private val existingCompanyId = dummyCompanyRoleAssignmentEntity.companyId
     private val nonExistingCompanyId = "non-existing-company-id"
-    private val testUserId = UUID.randomUUID().toString()
     private val testCompanyName = "Test Company AG"
+    private val dummyCompanyRoleAssignment = dummyCompanyRoleAssignmentEntity.toApiModel()
+
+    private val companyRoleAssignmentEntityList =
+        listOf(dummyCompanyRoleAssignmentEntity)
 
     private val existingCompanyRoleAssignmentId =
-        CompanyRoleAssignmentId(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = existingCompanyId,
-            userId = testUserId,
+        objectMapper.readValue<CompanyRoleAssignmentId>(
+            File("$filePathToTestFixtures/existingCompanyRoleAssignmentId.json"),
+        )
+
+    private val nonExistingCompanyRoleAssignmentId =
+        objectMapper.readValue<CompanyRoleAssignmentId>(
+            File("$filePathToTestFixtures/nonExistingCompanyRoleAssignmentId.json"),
         )
 
     private val companyNotFound = "Company not found"
     private val companyIdNotKnown = "Dataland does not know the company ID $nonExistingCompanyId"
+    private val unknownUserId = "Unknown user ID"
+    private val companyRoleNotAssigned = "Company role is not assigned to user"
 
     @BeforeEach
     fun resetMocks() {
