@@ -1,66 +1,54 @@
 <template>
-  <div class="flex">
-    <div class="flex flex-column">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter by company</span>
-      <div class="next-to-each-other">
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedSectorsInt"
-          ref="sectorFilter"
-          :available-items="availableSectors"
-          filter-name="Sector"
-          filter-id="sector-filter"
-          filter-placeholder="Search sectors"
-        />
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedCountriesInt"
-          ref="countryFilter"
-          :available-items="availableCountries"
-          filter-name="Country"
-          filter-id="country-filter"
-          filter-placeholder="Search countries"
-          class="ml-3"
-        />
-      </div>
+  <div class="filter-container">
+    <div class="filter">
+      <label for="sector-filter" v-if="showHeading">Filter by company</label>
+      <FrameworkDataSearchDropdownFilter
+        v-model="localSelectedSectors"
+        ref="sectorFilter"
+        :available-items="availableSectors"
+        filter-name="Sector"
+        id="sector-filter"
+        filter-placeholder="Search sectors"
+        :max-selected-labels="1"
+        selected-items-label="{0} sectors"
+        class="search-filter"
+        data-test="frameworkDataSearchDropdownFilterSector"
+      />
+      <FrameworkDataSearchDropdownFilter
+        v-model="localSelectedCountries"
+        ref="countryFilter"
+        :available-items="availableCountries"
+        filter-name="Country"
+        id="country-filter"
+        filter-placeholder="Search countries"
+        :max-selected-labels="1"
+        selected-items-label="{0} countries"
+        class="search-filter"
+      />
+      <Divider layout="vertical" />
+      <FrameworkDataSearchDropdownFilter
+        v-model="localSelectedFrameworks"
+        ref="frameworkFilter"
+        :available-items="availableFrameworks"
+        filter-name="Framework"
+        id="framework-filter"
+        filter-placeholder="Search frameworks"
+        selected-items-label="{0} frameworks"
+        :max-selected-labels="1"
+        class="search-filter"
+      />
+      <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
+      <Divider layout="vertical" />
     </div>
-    <div class="flex flex-column ml-3">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter for available data sets</span>
-      <div class="flex flex-row align-items-center">
-        <div class="d-separator-left" />
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedFrameworksInt"
-          ref="frameworkFilter"
-          :available-items="availableFrameworks"
-          filter-name="Framework"
-          filter-id="framework-filter"
-          filter-placeholder="Search frameworks"
-          class="ml-3"
-        />
-        <div class="d-separator-left ml-3" />
-        <span class="ml-3 cursor-pointer text-primary font-semibold d-letters" @click="resetFilters">RESET</span>
-      </div>
-    </div>
+    <PrimeButton variant="link" @click="resetFilters" label="RESET" data-test="reset-filter" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.d-section-heading {
-  text-align: left;
-  font-size: 0.75rem;
-  color: #5a4f36;
-}
-
-.d-separator-left {
-  height: 2rem;
-  border-left: 1px solid #5a4f36;
-}
-</style>
 
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue';
 import { type ApiClientProvider } from '@/services/ApiClients';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import { type DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
@@ -70,10 +58,13 @@ import {
   type SelectableItem,
 } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import PrimeButton from 'primevue/button';
+import Divider from 'primevue/divider';
+import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
-  components: { FrameworkDataSearchDropdownFilter },
+  components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
   emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
   setup() {
     return {
@@ -103,48 +94,40 @@ export default defineComponent({
   },
   data() {
     return {
+      localSelectedCountries: [] as Array<CountryCodeSelectableItem>,
+      localSelectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      localSelectedSectors: [] as Array<SelectableItem>,
+
       availableCountries: [] as Array<CountryCodeSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableSectors: [] as Array<SelectableItem>,
     };
   },
-  computed: {
-    selectedCountriesInt: {
-      get(): Array<CountryCodeSelectableItem> {
-        return this.availableCountries.filter((countryCodeSelectableItem) =>
-          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode)
-        );
-      },
-      set(newValue: Array<CountryCodeSelectableItem>) {
+  watch: {
+    localSelectedCountries: {
+      deep: true,
+      handler(newValue: Array<CountryCodeSelectableItem>) {
         this.$emit(
           'update:selectedCountryCodes',
-          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode)
+          newValue.map((item) => item.countryCode)
         );
       },
     },
-    selectedFrameworksInt: {
-      get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((frameworkSelectableItem) =>
-          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType)
-        );
-      },
-      set(newValue: Array<FrameworkSelectableItem>) {
-        this.$emit(
-          'update:selectedFrameworks',
-          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType)
-        );
-      },
-    },
-    selectedSectorsInt: {
-      get(): Array<SelectableItem> {
-        return this.availableSectors.filter((selectableItem) =>
-          this.selectedSectors.includes(selectableItem.displayName)
-        );
-      },
-      set(newValue: Array<SelectableItem>) {
+    localSelectedSectors: {
+      deep: true,
+      handler(newValue: Array<SelectableItem>) {
         this.$emit(
           'update:selectedSectors',
-          newValue.map((selectableItem) => selectableItem.displayName)
+          newValue.map((item) => item.displayName)
+        );
+      },
+    },
+    localSelectedFrameworks: {
+      deep: true,
+      handler(newValue: Array<FrameworkSelectableItem>) {
+        this.$emit(
+          'update:selectedFrameworks',
+          newValue.map((item) => item.frameworkDataType)
         );
       },
     },
@@ -154,9 +137,13 @@ export default defineComponent({
      * Resets all the filters to their default values (i.e., deselects everything)
      */
     resetFilters() {
-      this.selectedFrameworksInt = [];
-      this.selectedCountriesInt = [];
-      this.selectedSectorsInt = [];
+      this.localSelectedFrameworks = [];
+      this.localSelectedCountries = [];
+      this.localSelectedSectors = [];
+
+      this.$emit('update:selectedCountryCodes', []);
+      this.$emit('update:selectedSectors', []);
+      this.$emit('update:selectedFrameworks', []);
     },
     /**
      * A helper function that closes all the dropdown filters
@@ -222,7 +209,51 @@ export default defineComponent({
     },
   },
   mounted() {
-    void this.retrieveAvailableFilterOptions();
+    void this.retrieveAvailableFilterOptions().then(() => {
+      this.localSelectedCountries = this.availableCountries.filter((item) =>
+        this.selectedCountryCodes.includes(item.countryCode)
+      );
+      this.localSelectedSectors = this.availableSectors.filter((item) =>
+        this.selectedSectors.includes(item.displayName)
+      );
+      this.localSelectedFrameworks = this.availableFrameworks.filter((item) =>
+        this.selectedFrameworks.includes(item.frameworkDataType)
+      );
+    });
   },
 });
 </script>
+
+<style scoped>
+.filter-container {
+  display: flex;
+  min-height: 5rem;
+  align-items: end;
+  width: 100%;
+
+  .filter {
+    display: grid;
+    gap: 0 var(--spacing-sm);
+
+    .search-filter {
+      width: 11rem;
+      text-align: left;
+    }
+
+    label {
+      grid-row: 1;
+      margin-bottom: var(--spacing-xs);
+      text-align: left;
+      font-size: var(--font-size-xs);
+
+      &:last-of-type {
+        grid-column-start: 4;
+      }
+    }
+
+    :not(label) {
+      grid-row: 2;
+    }
+  }
+}
+</style>

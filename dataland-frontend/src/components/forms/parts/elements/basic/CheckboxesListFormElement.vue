@@ -8,15 +8,8 @@
     :outer-class="{
       'yes-no-radio': true,
     }"
-    :inner-class="{
-      'formkit-inner': false,
-    }"
-    :input-class="{
-      'formkit-input': false,
-      'p-radiobutton': true,
-    }"
     :id="fieldName + name"
-    :ignore="true"
+    ignore
     :plugins="[disabledOnMoreThanOne]"
     @input="handleCheckboxSelectionByUser($event)"
   />

@@ -1,8 +1,8 @@
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import DatasetOverview from '@/components/pages/DatasetOverview.vue';
 import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesForFrameworkData.vue';
 import router from '@/router';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component tests for the DatasetOverview page', () => {
   it('Should not display the New Dataset button to non-uploader users', () => {
@@ -30,24 +30,17 @@ describe('Component tests for the DatasetOverview page', () => {
   });
 
   /**
-   * Get the selector for a tab given by input number
-   * @param tabIndex number identifying the tab
-   * @returns the selector to choose a tab
-   */
-  function getTabSelector(tabIndex: number): string {
-    return `.p-tabview-header[data-pc-index="${tabIndex}"]`;
-  }
-
-  /**
    * Validates the tab bar identified by the input
    * @param activeTabIndex number identifying the tab bar
    */
   function validateTabBar(activeTabIndex: number): void {
-    cy.get(getTabSelector(0)).should('have.text', 'COMPANIES');
-    cy.get(getTabSelector(1)).should('have.text', 'MY DATASETS');
-    for (let i = 0; i < 3; i++) {
-      cy.get(getTabSelector(i)).should((i != activeTabIndex ? 'not.' : '') + 'have.class', 'p-highlight');
-    }
+    cy.get('[data-pc-section="tablist"]').children().eq(0).should('have.text', 'COMPANIES');
+    cy.get('[data-pc-section="tablist"]').children().eq(1).should('have.text', 'MY DATASETS');
+    cy.get('[data-pc-section="tablist"]')
+      .children()
+      .each((tab, index) => {
+        cy.wrap(tab).should((index == activeTabIndex ? '' : 'not.') + 'have.class', 'p-tab-active');
+      });
   }
 
   it("Checks that the tab-bar is rendered correctly and that clicking on 'MY DATASETS' performs a router push", () => {
@@ -65,7 +58,7 @@ describe('Component tests for the DatasetOverview page', () => {
     }).then(() => {
       validateTabBar(0);
       cy.wait(100);
-      cy.get(getTabSelector(1)).click();
+      cy.get('[data-pc-section="tablist"]').children().eq(1).click();
       cy.get('@routerPush').should('have.been.calledWith', '/datasets');
       validateTabBar(1);
     });
@@ -89,7 +82,7 @@ describe('Component tests for the DatasetOverview page', () => {
     }).then(() => {
       validateTabBar(0);
       cy.wait(100);
-      cy.get(getTabSelector(2)).click();
+      cy.get('[data-pc-section="tablist"]').children().eq(2).click();
       cy.get('@routerPush').should('have.been.called');
       validateTabBar(2);
     });
@@ -106,7 +99,7 @@ describe('Component tests for the DatasetOverview page', () => {
     }).then(() => {
       validateTabBar(1);
       cy.wait(100);
-      cy.get(getTabSelector(0)).click();
+      cy.get('[data-pc-section="tablist"]').children().eq(0).click();
       cy.get('@routerPush').should('have.been.calledWith', '/companies');
       validateTabBar(0);
     });

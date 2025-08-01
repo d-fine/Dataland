@@ -1,6 +1,6 @@
 <template>
   <div :class="'grid ' + bgClass">
-    <div class="col-12 pl-4 pr-4">
+    <div class="col-12 p-4 text-left">
       <slot></slot>
     </div>
   </div>

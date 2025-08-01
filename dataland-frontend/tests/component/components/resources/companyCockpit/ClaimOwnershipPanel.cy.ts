@@ -1,9 +1,9 @@
-// @ts-nocheck
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component test for ClaimOwnershipPanel', () => {
   it('ClaimOwnershipPanel component works correctly for authenticated user', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       keycloak: minimalKeycloakMock({}),
       data() {
@@ -17,7 +17,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
         'Responsible for TestClaimOwnershipPanelCompany?'
       );
       cy.get("[data-test='claimOwnershipPanelLink']")
-        .should('have.text', ' Claim company ownership. ')
+        .should('have.text', 'Claim company ownership.')
         .click()
         .get('#claimOwnerShipDialog')
         .should('exist')
@@ -30,6 +30,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
       return Promise.resolve();
     };
     const registerSpy = cy.spy(mockedKeycloak, 'register');
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       keycloak: mockedKeycloak,
       data() {
@@ -42,9 +43,9 @@ describe('Component test for ClaimOwnershipPanel', () => {
         'have.text',
         'Responsible for TestClaimOwnershipPanelCompany?'
       );
-      cy.get("[data-test='claimOwnershipPanelLink']").should('have.text', ' Claim company ownership. ').click();
+      cy.get("[data-test='claimOwnershipPanelLink']").should('have.text', 'Claim company ownership.').click();
       cy.get("[data-test='claimOwnershipPanelLink']")
-        .should('have.text', ' Claim company ownership. ')
+        .should('have.text', 'Claim company ownership.')
         .click()
         .get('#claimOwnerShipDialog')
         .should('not.exist');

@@ -1,12 +1,13 @@
 <template>
-  <Card class="col-12 page-wrapper-card p-3">
+  <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title
       ><span data-test="pageWrapperTitle"> {{ editMode ? 'Edit ' : 'Create ' + frameworkTitle }} </span></template
     >
     <template #content>
+      <div class="separator" />
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading EU Taxonomy Financials data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -31,7 +32,7 @@
                   :is-required="true"
                 />
                 <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <Calendar
+                  <DatePicker
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
                     inputId="icon"
@@ -62,9 +63,7 @@
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
-                      </div>
+                      <Tag :value="category.label.toUpperCase()" severity="secondary" />
                     </div>
 
                     <div class="col-9 formFields">
@@ -98,7 +97,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <SubmitSideBar>
+        <SubmitSideBar class="jumpLinks">
           <SubmitButton :formId="formId" />
           <div v-if="postEuTaxonomyFinancialsDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
@@ -125,62 +124,63 @@
   </Card>
 </template>
 <script lang="ts">
-import { FormKit } from '@formkit/vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import Card from 'primevue/card';
-import { defineComponent, inject, computed } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import Tooltip from 'primevue/tooltip';
-import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import Calendar from 'primevue/calendar';
-import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { eutaxonomyFinancialsDataModel } from '@/frameworks/eutaxonomy-financials/UploadConfig';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import { type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import {
   type CompanyAssociatedDataEutaxonomyFinancialsData,
   type CompanyReport,
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
+import { FormKit } from '@formkit/vue';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Card from 'primevue/card';
+import DatePicker from 'primevue/datepicker';
+import Tooltip from 'primevue/tooltip';
+import Tag from 'primevue/tag';
+import { computed, defineComponent, inject } from 'vue';
 import { type LocationQueryValue, useRoute } from 'vue-router';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
-import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
-import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
-import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
-import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
-import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
-import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
-import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import InputSwitch from 'primevue/inputswitch';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
-import { smoothScroll } from '@/utils/SmoothScroll';
-import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
-import { type Subcategory } from '@/utils/GenericFrameworkTypes';
-import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
-import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
-import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
-import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
-import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
-import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
-import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
-import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
-import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
-import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
-import { getFilledKpis } from '@/utils/DataPoint';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
-import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
@@ -190,6 +190,7 @@ export default defineComponent({
   },
   name: 'CreateEuTaxonomyFinancials',
   components: {
+    DatalandProgressSpinner,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -198,8 +199,8 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
-    Calendar,
-    InputSwitch,
+    DatePicker,
+    Tag,
     InputTextFormField,
     NumberFormField,
     DateFormField,
@@ -404,3 +405,100 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+  .title {
+    margin: 0.25rem 0;
+  }
+  p {
+    margin: 0.25rem;
+  }
+  .formFields {
+    background: var(--upload-form-bg);
+    padding: var(--spacing-lg);
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    .form-field:not(:last-child) {
+      margin: 0 0 1rem 0;
+      padding: 0 0 1rem 0;
+      border-bottom: 1px solid var(--input-separator);
+    }
+  }
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+</style>

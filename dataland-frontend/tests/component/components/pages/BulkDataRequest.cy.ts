@@ -13,9 +13,9 @@ describe('Component tests for the BulkDataRequest page', () => {
       cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
       cy.get('[data-test="notifyMeImmediatelyInput"]').should('be.visible');
       cy.get('label').should('contain.text', 'summary');
-      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+      cy.get('[data-test="notifyMeImmediatelyInputToClick"]').click();
       cy.get('label').should('contain.text', 'immediate');
-      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
+      cy.get('[data-test="notifyMeImmediatelyInputToClick"]').click();
       cy.get('label').should('contain.text', 'summary');
     });
   });

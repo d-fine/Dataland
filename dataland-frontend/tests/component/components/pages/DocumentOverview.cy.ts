@@ -86,7 +86,7 @@ describe('Component test for the Document Overview', () => {
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
-    cy.get("[data-test='sheet']").should('exist').and('contain', companyInformationForTest.companyName);
+    cy.get("[data-test='company-info-sheet']").should('exist').and('contain', companyInformationForTest.companyName);
     cy.get("[data-test='documents-overview-table']").should('exist');
     cy.get("[data-test='documents-overview-table'] tbody tr")
       .should('have.length', Object.keys(mockFetchedDocuments).length)
@@ -117,12 +117,8 @@ describe('Component test for the Document Overview', () => {
     const numOfAllMultiSelectOptions = Object.keys(DocumentMetaInfoDocumentCategoryEnum).length;
 
     cy.get("[data-test='document-type-picker']").should('exist').click();
-    cy.get('.d-framework-data-search-dropdown')
-      .should('exist')
-      .within(() => {
-        cy.get('ul').children().should('have.length', numOfAllMultiSelectOptions);
-        cy.contains('li', stringInMultiSelect).should('exist').click();
-      });
+    cy.get('#document-type-filter_list').should('exist').children().should('have.length', numOfAllMultiSelectOptions);
+    cy.contains('li', stringInMultiSelect).should('exist').click();
 
     cy.get("[data-test='documents-overview-table']")
       .should('exist')

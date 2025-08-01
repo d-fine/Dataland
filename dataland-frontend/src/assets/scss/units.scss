@@ -1,18 +1,5 @@
-@use 'variables';
-
-//forms
-$input-text-fs: variables.$fs-base;
-$input-padding-fs: variables.$spacing-xs;
-$input-label-fs: variables.$fs-xs;
-$button-fs: variables.$fs-base;
-$button-fw: variables.$fw-semibold;
-$upload-form-radius: variables.$radius-xxs;
-$upload-form-padding: variables.$spacing-md;
-
-//typography
-$normal-weight: variables.$fw-normal; // 400
-$light-bold-weight: variables.$fw-medium; // 500
-$semi-bold-weight: variables.$fw-semibold; // 600
-
-//table
-$first-table-column-width: 30vw;
+// THIS FILE IS TARGETED TO BE REMOVED WHEN ALL VARIABLES DEFINED BECOME UNNECESSARY
+:root {
+  //table
+  --first-table-column-width: 30vw;
+}

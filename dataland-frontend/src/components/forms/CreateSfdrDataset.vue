@@ -1,10 +1,11 @@
 <template>
-  <Card class="col-12 page-wrapper-card p-3">
+  <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title>New Dataset - SFDR</template>
     <template #content>
+      <div class="separator" />
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading SFDR data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -32,9 +33,7 @@
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
-                      </div>
+                      <Tag :value="category.label.toUpperCase()" severity="secondary" />
                     </div>
 
                     <div class="col-9 formFields">
@@ -66,7 +65,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <SubmitSideBar>
+        <SubmitSideBar class="jumpLinks">
           <SubmitButton :formId="formId" />
           <div v-if="postSfdrDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
@@ -94,6 +93,7 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -102,9 +102,9 @@ import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
+import Tag from 'primevue/tag';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { sfdrDataModel } from '@/frameworks/sfdr/UploadConfig';
@@ -158,6 +158,7 @@ export default defineComponent({
   },
   name: 'CreateSfdrDataset',
   components: {
+    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
@@ -166,8 +167,8 @@ export default defineComponent({
     FailMessage,
     FormKit,
     Card,
+    Tag,
     PrimeButton,
-    Calendar,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
@@ -226,7 +227,7 @@ export default defineComponent({
         if (currentDate === undefined) {
           return '';
         } else {
-          const currentDateSegments = currentDate.split('-');
+          const currentDateSegments = currentDate?.split('-');
           return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
@@ -339,9 +340,9 @@ export default defineComponent({
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
-      } catch (error) {
+      } catch (error: Error) {
         console.error(error);
-        if (error.message) {
+        if (error?.message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
@@ -396,3 +397,44 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.separator {
+  width: 100%;
+  border-bottom: #e0dfde solid 1px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+</style>

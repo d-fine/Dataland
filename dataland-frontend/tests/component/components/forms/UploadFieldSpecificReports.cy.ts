@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
@@ -10,14 +9,16 @@ import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 const createSfdrDataset = {
   fillRequiredFields(): void {
     this.fillDateFieldWithFutureDate('dataDate');
-    cy.get('div[data-test="fiscalYearDeviation"]').get('input[value="Deviation"]').click();
+    cy.get('div[data-test="fiscalYearDeviation"]')
+      .find('input[value="Deviation"][value="Deviation"] + .formkit-decorator')
+      .click();
     this.fillDateFieldWithFutureDate('fiscalYearEnd');
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
-    cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-trigger').click();
+    cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-dropdown').click();
     cy.get(`input[name="${fieldName}"]`).should('not.be.visible');
-    cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
-    cy.get('div.p-datepicker').find('span:contains("11")').click();
+    cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
+    cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   },
 };
 
@@ -38,9 +39,13 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
    */
   function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
     new UploadDocuments('referencedReports').selectDummyFile(fileName, contentSize);
-    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).click();
+    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).within(
+      () => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      }
+    );
     selectItemFromDropdownByValue(
-      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] div[name='fileName']`),
+      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataReport']`),
       fileName
     );
   }
@@ -87,10 +92,10 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     cy.intercept('POST', `/api/data/${dataType}*`, {
       statusCode: 200,
     });
+    //@ts-ignore
     cy.mountWithPlugins(createDataset, {
       keycloak: minimalKeycloakMock({}),
 
-      // @ts-ignore
       props: {
         companyID: companyId,
       },

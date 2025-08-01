@@ -133,4 +133,8 @@ h1,
     top: 60vh;
   }
 }
+
+.text-primary {
+  color: var(--main-color);
+}
 </style>

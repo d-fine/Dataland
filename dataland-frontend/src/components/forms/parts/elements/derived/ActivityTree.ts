@@ -1449,7 +1449,7 @@ export const activityTree: Array<ActivityNode> = [
 export interface ActivityNode extends TreeNode {
   name?: string;
   value?: string;
-  key?: string;
+  key: string;
   sector?: string;
   type?: string;
   naceCodes?: Array<string>;

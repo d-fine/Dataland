@@ -1,4 +1,3 @@
-// @ts-nocheck
 import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type BasicCompanyInformation } from '@clients/backend';
@@ -14,6 +13,7 @@ describe("Component tests for 'no result text' on the level of company search re
   const keycloakMock = minimalKeycloakMock({});
 
   it("Check that 'no result text' is not appearing in case of a successful company search", () => {
+    //@ts-ignore
     cy.mountWithPlugins<typeof FrameworkDataSearchResults>(FrameworkDataSearchResults, {
       keycloak: keycloakMock,
     }).then((mounted) => {
@@ -26,6 +26,7 @@ describe("Component tests for 'no result text' on the level of company search re
   });
 
   it("Check that the 'no result text' appears if company search is not successful", () => {
+    //@ts-ignore
     cy.mountWithPlugins<typeof FrameworkDataSearchResults>(FrameworkDataSearchResults, {
       keycloak: keycloakMock,
     }).then(() => {

@@ -1,6 +1,6 @@
 <template>
   <div :data-test="dataTest">
-    <Dropdown
+    <PrimeSelect
       :options="displayOptions"
       v-bind:model-value="selectedOption"
       @update:model-value="handleInputChange($event)"
@@ -31,9 +31,8 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent, type PropType } from 'vue';
-import Dropdown from 'primevue/dropdown';
+import PrimeSelect from 'primevue/select';
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import { isStringArray } from '@/utils/TypeScriptUtils';
 import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
@@ -41,7 +40,7 @@ import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/Fo
 export type OptionType = string[] | DropdownOption[] | Record<string, string>;
 
 /**
- * Converts from a liberally choosen amount of formats to specify options
+ * Converts from a liberally chosen number of formats to specify options
  * to a unified DropDownOption interface for easier processing
  * @param options the input option in one of the desired formats
  * @returns the options converted to the unified format
@@ -61,7 +60,7 @@ export function convertOptionTypeToDropdownOptions(options: OptionType | null | 
 
 export default defineComponent({
   name: 'SingleSelectFormElement',
-  components: { Dropdown },
+  components: { PrimeSelect },
   props: {
     ...DropdownOptionFormFieldProps,
     inputClass: { type: String, default: 'long' },
@@ -89,7 +88,7 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedOption: this.modelValue as string | null,
+      selectedOption: this.modelValue as string | undefined,
     };
   },
   emits: ['update:modelValue'],
@@ -144,7 +143,7 @@ export default defineComponent({
      * @param newValue the value to change the selected option to
      */
     setSelectedOption(newValue: string | null) {
-      this.selectedOption = newValue;
+      this.selectedOption = newValue === null ? undefined : newValue;
       this.$emit('update:modelValue', newValue);
     },
     /**
@@ -158,7 +157,8 @@ export default defineComponent({
      * Handler for changes in the formkit component (e.g. called if data got loaded)
      * @param newInput the new value in the field
      */
-    handleFormKitInputChange(newInput: string) {
+    handleFormKitInputChange(newInput: string | undefined) {
+      if (!newInput) return;
       this.setSelectedOption(newInput);
     },
 
@@ -176,11 +176,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/variables';
-
 .bottom-line {
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-color: variables.$brown-lighter;
+  border-color: var(--brown-lighter);
 }
 </style>

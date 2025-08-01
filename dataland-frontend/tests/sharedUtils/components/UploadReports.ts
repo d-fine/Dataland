@@ -12,10 +12,10 @@ export class UploadReports extends UploadDocuments {
     cy.get(`${this.uploadReportsSelector} [data-test="report-to-upload-form"]`).each((element) => {
       cy.wrap(element)
         .find(`[data-test="publicationDate"] button`)
-        .should('have.class', 'p-datepicker-trigger')
+        .should('have.class', 'p-datepicker-dropdown')
         .click();
-      cy.get('div.p-datepicker').find('button[aria-label="Previous Month"]').click();
-      cy.get('div.p-datepicker').find(`span:contains("12")`).click();
+      cy.get('.p-datepicker-header').find('button[aria-label="Previous Month"]').click();
+      cy.get('.p-datepicker-day-view').find(`span:contains("12")`).click();
     });
   }
 

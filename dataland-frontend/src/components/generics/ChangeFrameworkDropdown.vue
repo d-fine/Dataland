@@ -6,7 +6,7 @@
       :class="dropdownExtended ? 'p-overlay-open' : ''"
       :aria-expanded="dropdownExtended"
     >
-      <span class="p-placeholder" data-test="chooseFrameworkLabel">
+      <span data-test="chooseFrameworkLabel">
         {{ humanizeStringOrNumber(dataType) }}
         <span class="p-dropdown-trigger-icon pi pi-angle-down" aria-hidden="true" data-pc-section="dropdownicon"></span>
       </span>
@@ -91,17 +91,6 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 </script>
 
 <style scoped>
-.p-dropdown-panel {
-  position: relative;
-}
-
-.fill-dropdown {
-  padding: 0.5rem;
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-}
-
 .p-dropdown-items {
   width: fit-content;
   display: block;
@@ -117,5 +106,66 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
 
 .p-dropdown-trigger-icon {
   margin-left: 1rem;
+}
+
+.fill-dropdown {
+  padding: 0.5rem;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  background: var(--default-neutral-white);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--fill-dropdown-bg);
+  border-radius: 8px;
+
+  &.always-fill {
+    background: var(--fill-dropdown-bg);
+    color: var(--default-neutral-white);
+
+    .p-dropdown-trigger {
+      color: var(--default-neutral-white);
+    }
+  }
+
+  &.p-overlay-open {
+    background: var(--brown-lighter);
+
+    .p-dropdown-trigger {
+      color: var(--fill-dropdown-hover-text);
+    }
+  }
+
+  .p-dropdown-trigger {
+    color: var(--fill-dropdown-hover-text);
+  }
+}
+
+.p-dropdown-panel {
+  position: relative;
+  background: var(--default-neutral-white);
+
+  .p-dropdown-items {
+    .p-dropdown-item {
+      margin: 0;
+      padding: 0.5rem 1rem;
+      border: 0.1em solid var(--dropdown-options-bg);
+      color: var(--p-content-color);
+      transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+      border-radius: 0;
+
+      &:hover {
+        background: var(--p-surface-200);
+      }
+
+      &.p-highlight {
+        color: var(--input-text-bg);
+        background: var(--input-text-border-hover);
+      }
+    }
+  }
 }
 </style>

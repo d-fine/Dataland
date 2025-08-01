@@ -4,7 +4,7 @@
       <h4>{{ title + ' Datasets:' }}</h4>
       <div v-if="isWaitingForData" class="inline-loading text-center">
         <p class="font-medium text-xl">Loading...</p>
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
 
       <div v-else>
@@ -23,7 +23,7 @@
           </div>
           <div>
             <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime) }}</span>
-            <DatasetStatusBadge :dataset-status="getDatasetStatus(dataMetaInfo)" />
+            <DatalandTag :severity="getDatasetStatus(dataMetaInfo)" :value="getDatasetStatus(dataMetaInfo)" />
           </div>
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
@@ -48,23 +48,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, inject } from 'vue';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import PrimeButton from 'primevue/button';
-import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
-import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import { getDatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
-import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import type Keycloak from 'keycloak-js';
-import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { isFrameworkPrivate } from '@/utils/Frameworks';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { CompanyRole } from '@clients/communitymanager';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject, type PropType } from 'vue';
 
 export default defineComponent({
   name: 'MetaInfoPerCompanyAndFramework',
-  components: { PrimeButton, DatasetStatusBadge },
+  components: { DatalandProgressSpinner, PrimeButton, DatalandTag },
 
   props: {
     dataType: {
@@ -169,3 +170,12 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+</style>

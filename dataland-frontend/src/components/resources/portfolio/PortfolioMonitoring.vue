@@ -1,58 +1,71 @@
 <template>
   <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
-    <label for="monitoringToggle" class="activate-monitoring"> Activate Monitoring </label>
-    <InputSwitch
-      class="form-field vertical-middle"
-      v-model="isMonitoringActive"
-      data-test="activateMonitoringToggle"
-      @update:modelValue="onMonitoringToggled"
-    />
-    <label for="reportingYearSelector" class="reporting-period-label"> Starting Period </label>
-    <Dropdown
-      v-model="selectedStartingYear"
-      :options="reportingPeriodsOptions"
-      option-label="label"
-      option-value="value"
-      data-test="listOfReportingPeriods"
-      placeholder="Select Starting Period"
-      :disabled="!isMonitoringActive"
-      @change="resetErrors"
-    />
-    <p v-show="showReportingPeriodsError" class="text-danger" data-test="reportingPeriodsError">
-      Please select Starting Period.
-    </p>
-    <label for="frameworkSelector"> Frameworks </label>
-    <div class="framework-switch-group">
-      <div
-        v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
-        :key="frameworkMonitoringOption.value"
-        class="framework-switch-row"
-        data-test="frameworkSelection"
-      >
-        <InputSwitch
-          class="form-field vertical-middle"
-          v-model="frameworkMonitoringOption.isActive"
-          :id="frameworkMonitoringOption.value"
-          @change="resetErrors"
-          :disabled="!isMonitoringActive"
-        />
-        <label :for="frameworkMonitoringOption.value" class="framework-label">
-          {{ frameworkMonitoringOption.label }}
-        </label>
-      </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3">
-        EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
-      </span>
+    <div>
+      <p class="header-styling">Activate Monitoring</p>
+      <ToggleSwitch
+        class="form-field vertical-middle"
+        v-model="isMonitoringActive"
+        data-test="activateMonitoringToggle"
+        @update:modelValue="onMonitoringToggled"
+      />
     </div>
-    <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">
+    <div>
+      <p class="header-styling">Starting Period</p>
+      <Select
+        v-model="selectedStartingYear"
+        :options="reportingPeriodsOptions"
+        option-label="label"
+        option-value="value"
+        data-test="listOfReportingPeriods"
+        placeholder="Select Starting Period"
+        :disabled="!isMonitoringActive"
+        @change="resetErrors"
+        :highlightOnSelect="false"
+        fluid
+      />
+      <Message
+        v-if="showReportingPeriodsError"
+        severity="error"
+        variant="simple"
+        size="small"
+        data-test="reportingPeriodsError"
+      >
+        Please select Starting Period.
+      </Message>
+    </div>
+    <div>
+      <p class="header-styling">Frameworks</p>
+      <div class="framework-switch-group">
+        <div
+          v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
+          :key="frameworkMonitoringOption.value"
+          data-test="frameworkSelection"
+        >
+          <div class="framework-toggle-label">
+            <ToggleSwitch
+              v-model="frameworkMonitoringOption.isActive"
+              class="form-field vertical-middle"
+              data-test="valuesOnlySwitch"
+              @change="resetErrors"
+              :disabled="!isMonitoringActive"
+            />
+            <p :for="frameworkMonitoringOption.value" class="">
+              {{ frameworkMonitoringOption.label }}
+            </p>
+          </div>
+        </div>
+        <div class="dataland-info-text small">
+          EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
+        </div>
+      </div>
+    </div>
+    <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
       Please select at least one Framework.
-    </p>
-
-    <div class="button-group-wrapper">
+    </Message>
+    <div class="button-wrapper">
       <PrimeButton
         type="button"
         data-test="saveChangesButton"
-        class="primary-button my-2 mr-2"
         label="SAVE CHANGES"
         icon="pi pi-save"
         @click="patchPortfolioMonitoring()"
@@ -67,10 +80,11 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
+import Select from 'primevue/select';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import InputSwitch from 'primevue/inputswitch';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import ToggleSwitch from 'primevue/toggleswitch';
+import Message from 'primevue/message';
 
 type MonitoringOption = {
   value: string;
@@ -213,52 +227,39 @@ function prefillModal(): void {
 }
 </script>
 
-<style scoped lang="scss">
-.button-group-wrapper {
+<style scoped>
+.header-styling {
+  font-weight: var(--font-weight-semibold);
+}
+
+.button-wrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
 }
 
 .portfolio-monitoring-content {
   width: 20rem;
   height: 100%;
-  border-radius: 0.25rem;
+  border-radius: var(--spacing-xxs);
   background-color: white;
-  padding: 0.5rem 1.5rem;
+  padding: var(--spacing-xs) var(--spacing-lg);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-label {
-  width: 100%;
-  margin-bottom: 1em;
-  margin-top: 1em;
-  padding: 0;
 }
 
 .framework-switch-group {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
 }
 
-.framework-switch-row {
+.framework-toggle-label {
   display: flex;
   align-items: center;
-  gap: 1rem;
-}
-
-.framework-switch-row :deep(.p-inputswitch) {
-  width: 2.6rem;
-  height: 1.2rem;
-}
-
-.framework-label {
-  margin: 0;
-  cursor: pointer;
+  gap: var(--spacing-xs);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section no-ui-message">
+    <TheContent>
       <CompanyInfoSheet
         :company-id="companyIdentifier"
         @fetched-company-information="handleFetchedCompanyInformation"
@@ -27,7 +27,11 @@
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
                   <div class="col-12">
-                    <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period">
+                    <BasicFormSection
+                      :data-test="'reportingPeriods'"
+                      header="Select at least one reporting period"
+                      class="header-styling"
+                    >
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
@@ -36,33 +40,49 @@
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
-                      <p
+                      <Message
                         v-if="selectedReportingPeriodsError"
-                        class="text-danger mt-2"
+                        severity="error"
+                        variant="simple"
+                        size="small"
                         data-test="reportingPeriodErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
                       >
                         Select at least one reporting period to submit your request
-                      </p>
+                      </Message>
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
-                      <SingleSelectFormElement
+                    <BasicFormSection data-test="'selectFramework'" header="Select a framework" class="header-styling">
+                      <PrimeSelect
                         placeholder="Select framework"
                         v-model="frameworkName"
                         name="Framework"
                         :options="frameworkOptions"
-                        validation="required"
-                        :validation-messages="{
-                          required: 'Select a framework to submit your request',
-                        }"
-                        required
+                        option-label="label"
+                        option-value="value"
                         data-test="datapoint-framework"
+                        :highlightOnSelect="false"
+                        @change="selectedFrameworkError = false"
+                        fluid
                       />
+                      <Message
+                        v-if="selectedFrameworkError"
+                        severity="error"
+                        variant="simple"
+                        size="small"
+                        data-test="frameworkErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
+                      >
+                        Select a framework to submit your request
+                      </Message>
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'notifyMeImmediately'" header="Notify Me Immediately">
-                      Receive emails directly or via summary
-                      <InputSwitch
-                        class="p-inputswitch p-inputswitch-slider"
-                        style="display: block; margin: 1rem 0"
+                    <BasicFormSection
+                      :data-test="'notifyMeImmediately'"
+                      header="Notify Me Immediately"
+                      class="header-styling"
+                    >
+                      <div class="dataland-info-text normal">Receive emails directly or via summary</div>
+                      <ToggleSwitch
+                        style="display: block; margin: var(--spacing-md) 0"
                         data-test="notifyMeImmediatelyInput"
                         inputId="notifyMeImmediatelyInput"
                         v-model="notifyMeImmediately"
@@ -75,14 +95,15 @@
                     <BasicFormSection
                       :data-test="'informationCompanyOwnership'"
                       header="Information about company ownership"
+                      class="header-styling"
                     >
-                      <p v-if="hasCompanyAtLeastOneOwner">
+                      <p v-if="hasCompanyAtLeastOneOwner" class="dataland-info-text normal">
                         This company has at least one company owner. <br />
                         The company company owner(s) will be informed about your data request.
                       </p>
-                      <p v-else>This company does not have a company owner yet.</p>
+                      <p v-else class="dataland-info-text normal">This company does not have a company owner yet.</p>
                     </BasicFormSection>
-                    <BasicFormSection header="Provide Contact Details">
+                    <BasicFormSection header="Provide Contact Details" class="header-styling">
                       <label for="Emails" class="label-with-optional">
                         <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
@@ -96,17 +117,17 @@
                       <p
                         v-show="displayContactsNotValidError"
                         class="text-danger"
-                        data-test="contectsNotValidErrorMessage"
+                        data-test="contactsNotValidErrorMessage"
                       >
                         You have to provide valid contacts to add a message to the request
                       </p>
-                      <p class="gray-text font-italic" style="text-align: left">
+                      <p class="dataland-info-text normal">
                         By specifying contacts your data request will be directed accordingly.<br />
                         You can specify multiple comma separated email addresses.<br />
                         This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
-                      <p class="gray-text font-italic" style="text-align: left">
+                      <p class="dataland-info-text normal">
                         If you don't have a specific contact person, no worries.<br />
                         We are committed to fulfilling your request to the best of our ability.
                       </p>
@@ -121,9 +142,7 @@
                         data-test="dataRequesterMessage"
                         v-bind:disabled="!allowAccessDataRequesterMessage"
                       />
-                      <p class="gray-text font-italic" style="text-align: left">
-                        Let your contacts know what exactly your are looking for.
-                      </p>
+                      <p class="dataland-info-text normal">Let your contacts know what exactly your are looking for.</p>
                       <div v-show="allowAccessDataRequesterMessage">
                         <div class="mt-3 flex">
                           <label class="tex-sm flex">
@@ -155,7 +174,7 @@
                     :dismissableMask="false"
                     :modal="true"
                     :closable="false"
-                    style="border-radius: 0.75rem; text-align: center; max-width: 400px"
+                    style="border-radius: var(--spacing-sm); text-align: center; max-width: 400px"
                     :show-header="false"
                     :draggable="false"
                     data-test="quotaReachedModal"
@@ -226,7 +245,6 @@
 
 <script lang="ts">
 import contentData from '@/assets/content.json';
-import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
@@ -251,15 +269,18 @@ import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
+import PrimeSelect from 'primevue/select';
+import Message from 'primevue/message';
 
 export default defineComponent({
   name: 'SingleDataRequest',
   components: {
-    SingleSelectFormElement,
+    Message,
+    PrimeSelect,
     PrimeDialog,
-    InputSwitch,
+    ToggleSwitch,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
@@ -299,6 +320,7 @@ export default defineComponent({
       consentToMessageDataUsageGiven: false,
       errorMessage: '',
       selectedReportingPeriodsError: false,
+      selectedFrameworkError: false,
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
       reportingPeriodOptions: [
@@ -331,6 +353,9 @@ export default defineComponent({
     },
     companyIdentifier(): string {
       return router.currentRoute.value.params.companyId as string;
+    },
+    selectedFrameworks(): DataTypeEnum[] {
+      return this.frameworkName ? [this.frameworkName] : [];
     },
   },
   methods: {
@@ -420,12 +445,22 @@ export default defineComponent({
     },
 
     /**
+     * Checks whether at least one framework has been selected
+     */
+    checkIfAtLeastOneFrameworkSelected(): void {
+      if (!this.selectedFrameworks.length) {
+        this.selectedFrameworkError = true;
+      }
+    },
+
+    /**
      * checks if the forms are filled out correctly and updates the displayed warnings accordingly
      */
     checkPreSubmitConditions(): void {
       this.checkIfAtLeastOneReportingPeriodSelected();
       this.updateConditionsNotAcceptedError();
       this.updateContactsNotValidError();
+      this.checkIfAtLeastOneFrameworkSelected();
     },
 
     /**
@@ -541,37 +576,31 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.header-styling {
+  text-align: left;
+}
+
 .label-with-optional {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-md);
 }
 
 .optional-text {
   font-style: italic;
-  color: #e67f3f;
+  color: var(--p-primary-color);
   margin-left: 8px;
 }
 
-.years-container {
-  display: flex;
-  margin-top: 10px;
+.green-text {
+  color: var(--green);
 }
 
-.years {
-  border: 2px solid black;
-  border-radius: 20px;
-  padding: 8px 16px;
-  margin-right: 10px;
-  background-color: white;
-  color: black;
-  cursor: pointer;
+.red-text {
+  color: var(--red);
 }
 
-.years.selected {
-  background-color: #e67f3f;
-  color: black;
-  border-color: black;
-  font-weight: bold;
+.uploadFormWrapper {
+  background-color: var(--p-surface-50);
 }
 </style>

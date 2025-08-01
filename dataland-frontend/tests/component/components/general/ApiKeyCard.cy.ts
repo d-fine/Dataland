@@ -1,9 +1,9 @@
-// @ts-nocheck
 import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component test for ApiKeyCard', () => {
   it("Should contain text 'The API Key expired' when Api Key is expired", () => {
+    //@ts-ignore
     cy.mountWithPlugins(ApiKeyCard, {
       data() {
         return {
@@ -17,6 +17,7 @@ describe('Component test for ApiKeyCard', () => {
     cy.get('div#existingApiKeyCard span').should('have.class', 'text-red-700');
   });
   it("Should contain text 'The API Key has no defined expiry date' when Api Key has no defined expiry date", () => {
+    //@ts-ignore
     cy.mountWithPlugins(ApiKeyCard, {
       data() {
         return {

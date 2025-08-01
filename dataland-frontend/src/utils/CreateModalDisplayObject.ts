@@ -50,6 +50,9 @@ export function createModalDisplayObject<T>({
           header: `${fieldLabel} (${typeLabels[kpiType]})`,
           modal: true,
           dismissableMask: true,
+          style: {
+            maxWidth: '80vw',
+          },
         },
         data: {
           listOfRowContents: activityList,

@@ -1,8 +1,8 @@
-// @ts-nocheck
 import ProcurementCategoryFormElement from '@/components/forms/parts/elements/derived/ProcurementCategoryFormElement.vue';
 
 describe('Component tests for the CreateLksgDataset that test dependent fields', () => {
   it('On the upload page, ensure that procurementCategories is displayed correctly', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ProcurementCategoryFormElement, {
       global: {
         provide: {

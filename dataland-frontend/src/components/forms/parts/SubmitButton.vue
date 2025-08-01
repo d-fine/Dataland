@@ -4,7 +4,7 @@
       data-test="submitButton"
       type="submit"
       :label="updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-      :class="formIsValid ? 'col-12 m-0' : 'button-disabled col-12 m-0'"
+      :class="formIsValid ? 'button-enabled col-12 m-0' : 'button-disabled col-12 m-0'"
       @click="submit"
     />
   </div>
@@ -51,3 +51,16 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.button-enabled {
+  outline: var(--spacing-lg);
+  outline-offset: var(--spacing-lg);
+}
+
+.button-disabled {
+  opacity: 0.4;
+  background: var(--btn-primary-bg) !important;
+  border: 0 !important;
+}
+</style>

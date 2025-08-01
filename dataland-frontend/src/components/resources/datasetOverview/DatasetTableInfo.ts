@@ -9,12 +9,14 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { getUserId } from '@/utils/KeycloakUtils';
 
-export enum DatasetStatus {
-  QaPending,
-  QaApproved,
-  QaRejected,
-  Superseded,
-}
+export const ExtendedQaStatus = {
+  Accepted: QaStatus.Accepted,
+  Rejected: QaStatus.Rejected,
+  Pending: QaStatus.Pending,
+  Superseded: 'Superseded',
+} as const;
+
+export type ExtendedQaStatus = (typeof ExtendedQaStatus)[keyof typeof ExtendedQaStatus];
 
 export class DatasetTableInfo {
   constructor(
@@ -24,7 +26,7 @@ export class DatasetTableInfo {
     readonly companyId: string,
     readonly dataId: string,
     readonly dataReportingPeriod: string,
-    readonly status: DatasetStatus
+    readonly status: ExtendedQaStatus
   ) {}
 }
 
@@ -33,7 +35,9 @@ export class DatasetTableInfo {
  * @param dataMetaInfo the dataset containing different status indicators (i.e QaStatus, currentlyActive,...)
  * @returns a unified DatasetStatus
  */
-export function getDatasetStatus(dataMetaInfo: DataMetaInformationForMyDatasets | DataMetaInformation): DatasetStatus {
+export function getDatasetStatus(
+  dataMetaInfo: DataMetaInformationForMyDatasets | DataMetaInformation
+): ExtendedQaStatus {
   let qaStatus: QaStatus;
   if ('qualityStatus' in dataMetaInfo) {
     qaStatus = dataMetaInfo.qualityStatus;
@@ -42,11 +46,11 @@ export function getDatasetStatus(dataMetaInfo: DataMetaInformationForMyDatasets 
   }
 
   if (qaStatus == QaStatus.Accepted) {
-    return dataMetaInfo.currentlyActive ? DatasetStatus.QaApproved : DatasetStatus.Superseded;
+    return dataMetaInfo.currentlyActive ? ExtendedQaStatus.Accepted : ExtendedQaStatus.Superseded;
   } else if (qaStatus == QaStatus.Rejected) {
-    return DatasetStatus.QaRejected;
+    return ExtendedQaStatus.Rejected;
   } else {
-    return DatasetStatus.QaPending;
+    return ExtendedQaStatus.Pending;
   }
 }
 

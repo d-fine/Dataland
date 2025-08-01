@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import { DataTypeEnum, QaStatus, type DataMetaInformation } from '@clients/backend';
 describe('Component Tests for DatasetDisplayStatusIndicator', () => {
@@ -18,6 +17,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
     supersededDataset.currentlyActive = false;
     supersededDataset.qaStatus = QaStatus.Accepted;
 
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {
@@ -43,6 +43,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
     datasetPendingReview.currentlyActive = false;
     datasetPendingReview.qaStatus = QaStatus.Pending;
 
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {
@@ -59,6 +60,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
   it('Should display a show all message when only one active dataset is viewed when multiview and multiple are available', () => {
     const otherReportingPeriod = structuredClone(acceptedAndActiveDataset);
     otherReportingPeriod.reportingPeriod = 'other-reporting-period';
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {
@@ -84,6 +86,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
   it('Should not display anything when only one active dataset is viewed when singleview and multiple are available', () => {
     const otherReportingPeriod = structuredClone(acceptedAndActiveDataset);
     otherReportingPeriod.reportingPeriod = 'other-reporting-period';
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {
@@ -101,6 +104,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
   });
 
   it('Should not display anything when only one active dataset is viewed when multiview and no other active are available', () => {
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {
@@ -121,6 +125,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
     rejectedDataset.currentlyActive = false;
     rejectedDataset.qaStatus = QaStatus.Rejected;
 
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {
@@ -141,6 +146,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
     rejectedDataset.currentlyActive = false;
     rejectedDataset.qaStatus = QaStatus.Rejected;
 
+    //@ts-ignore
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
       data() {
         return {

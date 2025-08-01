@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
@@ -8,6 +7,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
     cy.intercept('**/company-ownership/*', mockApiResponse);
   });
   it('ClaimOwnershipPanel component first page works correctly', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipDialog, {
       data() {
         return {
@@ -34,6 +34,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
     });
   });
   it('ClaimOwnershipPanel component second page works correctly', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipDialog, {
       data() {
         return {
@@ -59,6 +60,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
     });
   });
   it('ClaimOwnershipPanel component page works correctly when closed', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipDialog, {
       data() {
         return {

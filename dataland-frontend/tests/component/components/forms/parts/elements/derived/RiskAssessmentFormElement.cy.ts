@@ -8,14 +8,15 @@ describe('Component tests for the lksg Risk Assessments Form Element', () => {
         cy.get('[data-test="counteractingMeasures"]').should('exist');
         cy.get('[data-test="listedMeasures"]').should('not.exist');
 
-        cy.get('[data-test="counteractingMeasures"]').within(() => {
-          cy.get('input[value="Yes"]').should('exist').click();
-        });
+        cy.get('div[data-test="counteractingMeasures"]')
+          .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
+          .click();
         cy.get('[data-test="listedMeasures"]').should('exist');
 
-        cy.get('[data-test="counteractingMeasures"]').within(() => {
-          cy.get('input[value="No"]').should('exist').click();
-        });
+        cy.get('div[data-test="counteractingMeasures"]')
+          .find('input[type="checkbox"][value="No"] + .formkit-decorator')
+          .click();
+
         cy.get('[data-test="listedMeasures"]').should('not.exist');
       });
     }

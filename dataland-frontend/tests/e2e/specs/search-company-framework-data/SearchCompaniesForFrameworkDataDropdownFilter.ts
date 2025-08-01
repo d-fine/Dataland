@@ -41,31 +41,31 @@ describe('As a user, I expect the search functionality on the /companies page to
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
   const frameworkOne = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[0];
-  const frameworkTwo = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 4];
-  const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 5];
+  const frameworkTwo = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[1];
+  const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[2];
 
-  it('The framework filter synchronise between the search bar and the URL', { scrollBehavior: false }, () => {
+  it('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
     cy.visit('/companies').wait('@companies-meta-information');
     verifySearchResultTableExists();
     cy.url().should('eq', getBaseUrl() + '/companies');
     cy.get('#framework-filter').click();
-    cy.get('div.p-multiselect-panel')
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(frameworkOne)})`)
+    cy.get('.p-multiselect-list-container')
+      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkOne)})`)
       .click();
     verifySearchResultTableExists();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}`);
 
-    cy.get('.p-multiselect-items-wrapper').scrollTo('bottom');
+    cy.get('.p-multiselect-list-container').scrollTo('bottom');
 
-    cy.get('div.p-multiselect-panel')
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+    cy.get('.p-multiselect-list-container')
+      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
       .click();
     verifySearchResultTableExists();
 
-    cy.get('div.p-multiselect-panel')
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(frameworkThree)})`)
+    cy.get('div.p-multiselect-list-container')
+      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkThree)})`)
       .click();
     verifySearchResultTableExists();
     cy.url()
@@ -77,14 +77,14 @@ describe('As a user, I expect the search functionality on the /companies page to
           `&framework=${frameworkTwo}` +
           `&framework=${frameworkThree}`
       )
-      .get('div.p-multiselect-panel')
-      .find(`li.p-highlight:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .get('.p-multiselect-list-container')
+      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
       .click();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}` + `&framework=${frameworkThree}`);
   });
 
   describeIf(
-    '',
+    'Further tests for the company filters, only executed on database reset',
     {
       executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
       onlyExecuteOnDatabaseReset: true,
@@ -173,22 +173,21 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.visit('/companies').wait('@companies-meta-information');
       verifySearchResultTableExists();
       cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-panel').should('exist');
-
+      cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
-      cy.get('div.p-multiselect-panel').should('not.exist');
+      cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-panel').should('exist');
+      cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 600, { duration: 300 });
-      cy.get('div.p-multiselect-panel').should('not.exist');
+      cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-panel').should('exist');
+      cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
-      cy.get('div.p-multiselect-panel').should('not.exist');
+      cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-panel').find('li.p-multiselect-item').first().click();
+      cy.get('div.p-multiselect-overlay').find('li.p-multiselect-option').first().click();
       verifySearchResultTableExists();
-      cy.get('div.p-multiselect-panel').should('not.exist');
+      cy.get('div.p-multiselect-overlay').should('not.exist');
     }
   );
 
@@ -202,7 +201,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         cy.ensureLoggedIn(uploader_name, uploader_pw);
       });
 
-      const companyNameMarker = 'Data987654321';
+      const companyNameMarker = `Data${Date.now().toString()}`;
       it(
         'Upload a company without uploading framework data for it, assure that its sector appears as filter ' +
           'option, and check that the company appears in the autocomplete suggestions and in the ' +
@@ -220,10 +219,10 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
             'searchCompanyInput'
           );
-          cy.get('input[id=search_bar_top]').click({ scrollBehavior: false });
-          cy.get('input[id=search_bar_top]').type(companyNameMarker, { scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
           cy.wait('@searchCompanyInput', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(() => {
-            cy.get('.p-autocomplete-item').eq(0).get("span[class='font-normal']").contains(preFix).should('exist');
+            cy.get('.p-autocomplete-option').eq(0).find("span[class='font-normal']").contains(preFix).should('exist');
           });
         }
       );
@@ -240,29 +239,29 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
           cy.get('#framework-filter').click();
-          cy.get('div.p-multiselect-panel')
-            .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+          cy.get('div.p-multiselect-overlay')
+            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           verifySearchResultTableExists();
           cy.wait('@getFilterOptions', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
             verifySearchResultTableExists();
             cy.get('#sector-filter').click({ scrollBehavior: false });
             cy.get('input[placeholder="Search sectors"]').type(sector, { scrollBehavior: false });
-            cy.get('div.p-multiselect-panel').find("li:contains('No results found')").should('exist');
+            cy.get('div.p-multiselect-overlay').find("li:contains('No results found')").should('exist');
           });
           cy.intercept('**/api/companies*').as('searchCompany');
-          cy.get('input[id=search_bar_top]').click({ scrollBehavior: false });
-          cy.get('input[id=search_bar_top]').type(companyName, { scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').type(companyName, { scrollBehavior: false });
           cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
             const timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches = 1000;
             // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches);
-            cy.get('.p-autocomplete-item').should('not.exist');
+            cy.get('.p-autocomplete-option').should('not.exist');
           });
           cy.visit(`/companies?input=${companyName}`);
           cy.get('#framework-filter').click();
-          cy.get('div.p-multiselect-panel')
-            .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+          cy.get('div.p-multiselect-overlay')
+            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           cy.get("div[class='col-12 text-left']").should('contain.text', failureMessageOnAvailableDatasetsPage);
         }
@@ -286,17 +285,17 @@ describe('As a user, I expect the search functionality on the /companies page to
         cy.intercept({ url: `**searchString=${companyNameMarker}*`, times: 1 }).as(
           `searchCompanyInput_${frameworkToFilterFor}`
         );
-        cy.get('input[id=search_bar_top]').click({ scrollBehavior: false });
-        cy.get('input[id=search_bar_top]').type(companyNameMarker, { scrollBehavior: false });
+        cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+        cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
         cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
           if (isSearchStringExpectedInFirstAutocompleteResult) {
-            cy.get('.p-autocomplete-item')
+            cy.get('.p-autocomplete-option')
               .eq(0)
               .get("span[class='font-normal']")
               .contains(searchStringToType)
               .should('exist');
           } else {
-            cy.get('.p-autocomplete-item').should('not.exist');
+            cy.get('.p-autocomplete-option').should('not.exist');
           }
         });
       }

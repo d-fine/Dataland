@@ -2,137 +2,115 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="4">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="requested-Datasets-searchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
-                class="ml-3"
-                style="margin: 15px"
+          <div class="container">
+            <IconField id="company-search-bar" class="company-search">
+              <InputIcon class="pi pi-search" />
+              <InputText
+                data-test="requested-datasets-searchbar"
+                v-model="searchBarInput"
+                placeholder="Search by company name"
+                fluid
+                variant="filled"
               />
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedAccessStatus"
-                ref="frameworkFilter"
-                :available-items="availableAccessStatus"
-                filter-name="Access Status"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="access status"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <span class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </span>
-            </span>
+            </IconField>
+
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              ref="frameworkFilter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="requested-datasets-frameworks"
+              id="framework-filter"
+              filter-placeholder="Search frameworks"
+              class="search-filter"
+              :max-selected-labels="1"
+              selected-items-label="{0} frameworks selected"
+            />
+
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedAccessStatus"
+              ref="accessStatusFilter"
+              :available-items="availableAccessStatus"
+              filter-name="Access Status"
+              data-test="requested-datasets-access-status"
+              id="access-status-filter"
+              filter-placeholder="access status"
+              class="search-filter"
+              :max-selected-labels="1"
+              selected-items-label="{0} status selected"
+            />
+            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
           </div>
+
           <div class="col-12 text-left p-3">
             <div class="card">
               <DataTable
                 :value="displayedData"
                 style="cursor: pointer"
-                :rowHover="true"
+                :row-hover="true"
                 :loading="waitingForData"
-                data-test="requested-Datasets-table"
+                data-test="requested-datasets-table"
                 paginator
                 paginator-position="bottom"
                 :rows="datasetsPerPage"
                 lazy
                 :total-records="numberOfFilteredRequests"
-                @page="onPage($event)"
-                @sort="onSort($event)"
-                @row-click="onRowClick($event)"
+                @page="onPage"
+                @sort="onSort"
+                @row-click="onRowClick"
                 id="my-data-requests-overview-table"
               >
                 <Column header="COMPANY" field="companyName" :sortable="true">
-                  <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
-                  </template>
+                  <template #body="{ data }">{{ data.companyName }}</template>
                 </Column>
-                <Column header="FRAMEWORK" :sortable="true" field="dataType">
-                  <template #body="slotProps">
-                    <div>
-                      {{ getFrameworkTitle(slotProps.data.dataType) }}
-                    </div>
+                <Column header="FRAMEWORK" field="dataType" :sortable="true">
+                  <template #body="{ data }">
+                    <div>{{ getFrameworkTitle(data.dataType) }}</div>
                     <div
+                      v-if="frameworkHasSubTitle(data.dataType)"
                       data-test="framework-subtitle"
-                      v-if="frameworkHasSubTitle(slotProps.data.dataType)"
                       style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                     >
                       <br />
-                      {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+                      {{ getFrameworkSubtitle(data.dataType) }}
                     </div>
                   </template>
                 </Column>
                 <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-                  <template #body="slotProps">
-                    {{ slotProps.data.reportingPeriod }}
-                  </template>
+                  <template #body="{ data }">{{ data.reportingPeriod }}</template>
                 </Column>
                 <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
-                  <template #body="slotProps">
-                    <div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                    </div></template
-                  >
-                </Column>
-                <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
-                  <template #body="slotProps"
-                    ><div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
-                    </div>
+                  <template #body="{ data }">
+                    {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
                   </template>
                 </Column>
-                <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
-                  <template #body="slotProps">
-                    <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
-                    </div>
+                <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
+                  <template #body="{ data }">
+                    {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
                   </template>
                 </Column>
-                <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
-                  <template #body="slotProps">
-                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
-                      {{ slotProps.data.accessStatus }}
-                    </div>
+                <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
+                  <template #body="{ data }">
+                    <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
+                  </template>
+                </Column>
+                <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
+                  <template #body="{ data }">
+                    <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
                   </template>
                 </Column>
                 <Column field="resolve" header="">
-                  <template #body="slotProps">
+                  <template #body="{ data }">
                     <div
-                      v-if="slotProps.data.requestStatus == RequestStatus.Answered"
+                      v-if="data.requestStatus === RequestStatus.Answered"
                       class="text-right text-primary no-underline font-bold"
                     >
                       <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve"
                         >RESOLVE</span
                       >
-                      <span class="ml-3">></span>
+                      <span class="ml-3">&gt;</span>
                     </div>
                   </template>
                 </Column>
@@ -140,20 +118,17 @@
             </div>
           </div>
         </div>
-        <div v-if="!waitingForData && storedDataRequests.length == 0">
+
+        <div v-if="!waitingForData && storedDataRequests.length === 0">
           <div class="d-center-div text-center px-7 py-4">
             <p class="font-medium text-xl">You have not requested data yet.</p>
             <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <a @click="goToBulkDataRequestPage()" class="no-underline" data-test="bulkDataRequestButton">
-              <button
-                class="p-button p-component uppercase p-button p-button-sm mr-3"
-                type="button"
-                data-pc-name="button"
-                data-pc-section="root"
-              >
-                <i class="material-icons"> add_box </i><span class="d-letters pl-2"> BULK DATA REQUEST </span>
-              </button></a
-            >
+            <PrimeButton
+              label="BULK DATA REQUEST"
+              icon="pi pi-plus-circle"
+              data-test="bulkDataRequestButton"
+              @click="goToBulkDataRequestPage"
+            />
           </div>
         </div>
       </TheContent>
@@ -162,14 +137,15 @@
   </AuthenticationWrapper>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import router from '@/router';
+
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -178,10 +154,12 @@ import {
   retrieveAvailableAccessStatus,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import Column from 'primevue/column';
 import DataTable, {
   type DataTablePageEvent,
@@ -189,233 +167,238 @@ import DataTable, {
   type DataTableSortEvent,
 } from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
-import { defineComponent, inject, ref } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default defineComponent({
-  name: 'MyDataRequestsOverview',
-  computed: {
-    RequestStatus() {
-      return RequestStatus;
-    },
-  },
-  components: {
-    AuthenticationWrapper,
-    FrameworkDataSearchDropdownFilter,
-    DatasetsTabMenu,
-    TheFooter,
-    TheContent,
-    TheHeader,
-    DataTable,
-    Column,
-    InputText,
-  },
+const datasetsPerPage = 100;
 
-  setup() {
-    return {
-      frameworkFilter: ref(),
-      datasetsPerPage: 100,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
+const waitingForData = ref(true);
+const currentPage = ref(0);
+const storedDataRequests = ref<ExtendedStoredDataRequest[]>([]);
+const displayedData = ref<ExtendedStoredDataRequest[]>([]);
+const searchBarInput = ref('');
+const searchBarInputFilter = ref('');
 
-  data() {
-    return {
-      waitingForData: true,
-      currentPage: 0,
-      storedDataRequests: [] as ExtendedStoredDataRequest[],
-      displayedData: [] as ExtendedStoredDataRequest[],
-      searchBarInput: '',
-      searchBarInputFilter: '',
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableAccessStatus: [] as Array<SelectableItem>,
-      selectedAccessStatus: [] as Array<SelectableItem>,
-      numberOfFilteredRequests: 0,
-      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
-      sortOrder: 1,
-    };
-  },
-  mounted() {
-    this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableAccessStatus = retrieveAvailableAccessStatus();
-    this.getStoredRequestDataList().catch((error) => console.error(error));
-  },
-  watch: {
-    selectedFrameworks() {
-      this.updateCurrentDisplayedData();
-    },
-    selectedAccessStatus() {
-      this.updateCurrentDisplayedData();
-    },
-    waitingForData() {
-      this.updateCurrentDisplayedData();
-    },
-    searchBarInput(newSearch: string) {
-      this.searchBarInputFilter = newSearch;
-      this.updateCurrentDisplayedData();
-    },
-  },
-  methods: {
-    getRequestStatusLabel,
-    accessStatusBadgeClass,
-    badgeClass,
-    frameworkHasSubTitle,
-    getFrameworkTitle,
-    getFrameworkSubtitle,
-    convertUnixTimeInMsToDateString,
-    /**
-     * Navigates to the bulk data request page
-     * @returns the promise of the router push action
-     */
-    goToBulkDataRequestPage() {
-      const url = `/bulkdatarequest`;
-      return router.push(url);
-    },
+const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
+const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
 
-    /**
-     * Gets list of storedDataRequests
-     */
-    async getStoredRequestDataList() {
-      this.waitingForData = true;
-      this.storedDataRequests = [];
-      try {
-        if (this.getKeycloakPromise) {
-          this.storedDataRequests = (
-            await new ApiClientProvider(
-              this.getKeycloakPromise()
-            ).apiClients.requestController.getDataRequestsForRequestingUser()
-          ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      this.waitingForData = false;
-    },
-    /**
-     * Navigates to the view dataRequest page
-     * @param event contains column that was clicked
-     * @param event.data extended stored data request
-     * @param event.originalEvent needed to get the clicked cell
-     * @returns the promise of the router push action
-     */
-    onRowClick(event: DataTableRowClickEvent) {
-      const requestIdOfClickedRow = event.data.dataRequestId;
-      return router.push(`/requests/${requestIdOfClickedRow}`);
-    },
-    /**
-     * Sorts the list of storedDataRequests
-     * @param event contains column to sort and sortOrder
-     */
-    onSort(event: DataTableSortEvent) {
-      this.sortField = event.sortField as keyof ExtendedStoredDataRequest;
-      this.sortOrder = event.sortOrder ?? 1;
-      this.updateCurrentDisplayedData();
-    },
+const availableAccessStatus = ref<SelectableItem[]>([]);
+const selectedAccessStatus = ref<SelectableItem[]>([]);
 
-    /**
-     * Filterfunction for frameworks
-     * @param framework dataland framework
-     * @returns checks if given framework is selected
-     */
-    filterFramework(framework: string) {
-      for (const selectedFramework of this.selectedFrameworks) {
-        if (framework == selectedFramework.frameworkDataType) return true;
-      }
-      return false;
-    },
-    /**
-     * Filterfunction for access status
-     * @param accessStatus dataland framework
-     * @returns checks if given accessStatus is selected
-     */
-    filterAccessStatus(accessStatus: string) {
-      for (const selectedAccessStatus of this.selectedAccessStatus) {
-        if (accessStatus == selectedAccessStatus.displayName) return true;
-      }
-      return false;
-    },
-    /**
-     * Filterfunction for searchbar
-     * @param companyName dataland companyName
-     * @returns checks if given companyName contains searchbar text
-     */
-    filterSearchInput(companyName: string) {
-      const lowerCaseCompanyName = (companyName ?? '').toLowerCase();
-      const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
-      return lowerCaseCompanyName.includes(lowerCaseSearchString);
-    },
-    /**
-     * Resets selected frameworks and searchBarInput
-     */
-    resetFilterAndSearchBar() {
-      this.selectedFrameworks = [];
-      this.selectedAccessStatus = [];
-      this.searchBarInput = '';
-    },
-    /**
-     * Updates the displayedData
-     */
-    updateCurrentDisplayedData() {
-      this.displayedData = this.storedDataRequests.filter((dataRequest) =>
-        this.filterSearchInput(dataRequest.companyName)
-      );
-      if (this.selectedFrameworks.length > 0) {
-        this.displayedData = this.displayedData.filter((dataRequest) => this.filterFramework(dataRequest.dataType));
-      }
-      if (this.selectedAccessStatus.length > 0) {
-        this.displayedData = this.displayedData.filter((dataRequest) =>
-          this.filterAccessStatus(dataRequest.accessStatus)
-        );
-      }
-      this.displayedData.sort((a, b) => this.customCompareForExtendedStoredDataRequests(a, b));
-      this.numberOfFilteredRequests = this.displayedData.length;
-      this.displayedData = this.displayedData.slice(
-        this.datasetsPerPage * this.currentPage,
-        this.datasetsPerPage * (1 + this.currentPage)
-      );
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    },
-    /**
-     * Compares two extended stored data requests (sort field, request status, last modified, company name)
-     * @param a ExtendedStoredDataRequest to sort
-     * @param b ExtendedStoredDataRequest to sort
-     * @returns result of the comparison
-     */
-    customCompareForExtendedStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
-      const aValue = a[this.sortField] ?? '';
-      const bValue = b[this.sortField] ?? '';
+const numberOfFilteredRequests = ref(0);
+const sortField = ref<keyof ExtendedStoredDataRequest>('requestStatus');
+const sortOrder = ref(1);
 
-      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
-        if (aValue < bValue) return -1 * this.sortOrder;
-        if (aValue > bValue) return this.sortOrder;
-      }
+const frameworkFilter = ref();
+const accessStatusFilter = ref();
 
-      if (a.requestStatus != b.requestStatus)
-        return customCompareForRequestStatus(a.requestStatus, b.requestStatus, this.sortOrder);
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-      if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
-      if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
+const vueRouter = useRouter();
 
-      if (a.companyName < b.companyName) return -1 * this.sortOrder;
-      else return this.sortOrder;
-    },
-
-    /**
-     * Updates the data for the current page
-     * @param event event containing the new page
-     */
-    onPage(event: DataTablePageEvent) {
-      this.currentPage = event.page;
-      this.updateCurrentDisplayedData();
-    },
-  },
+onMounted(async () => {
+  availableFrameworks.value = retrieveAvailableFrameworks();
+  availableAccessStatus.value = retrieveAvailableAccessStatus();
+  await getStoredRequestDataList();
 });
+
+watch([selectedFrameworks, selectedAccessStatus, waitingForData], () => updateCurrentDisplayedData(), { deep: true });
+
+watch(searchBarInput, (newSearch) => {
+  searchBarInputFilter.value = newSearch;
+  updateCurrentDisplayedData();
+});
+
+/**
+ * Navigates to the bulk data request page.
+ */
+function goToBulkDataRequestPage(): void {
+  void vueRouter.push('/bulkdatarequest');
+}
+
+/**
+ * Retrieves and updates the list of stored data requests for the requesting user.
+ * Utilizes Keycloak authentication and the API client for fetching the data.
+ */
+async function getStoredRequestDataList(): Promise<void> {
+  waitingForData.value = true;
+  storedDataRequests.value.length = 0;
+  try {
+    if (getKeycloakPromise) {
+      storedDataRequests.value = (
+        await new ApiClientProvider(
+          getKeycloakPromise()
+        ).apiClients.requestController.getDataRequestsForRequestingUser()
+      ).data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  waitingForData.value = false;
+}
+
+/**
+ * Handles the click event on a row in the DataTable.
+ * Redirects the user to the details page for the clicked request.
+ *
+ * @param {DataTableRowClickEvent} event - The row click event containing data about the clicked row.
+ */
+function onRowClick(event: DataTableRowClickEvent): void {
+  const requestIdOfClickedRow = (event.data as ExtendedStoredDataRequest).dataRequestId;
+  void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
+}
+
+/**
+ * Handles the sorting of data in the DataTable component.
+ * Updates the sort field and order based on the event properties,
+ * and triggers the update of the currently displayed data.
+ *
+ * @param {DataTableSortEvent} event - The sorting event containing the sort field and sort order.
+ */
+function onSort(event: DataTableSortEvent): void {
+  sortField.value = event.sortField as keyof ExtendedStoredDataRequest;
+  sortOrder.value = event.sortOrder ?? 1;
+  updateCurrentDisplayedData();
+}
+
+/**
+ * Filters the selected frameworks to determine if a given framework matches any selection.
+ *
+ * @param {string} framework - The framework data type to check against the selected frameworks.
+ * @returns {boolean} True if the given framework matches a selected framework, false otherwise.
+ */
+function filterFramework(framework: string): boolean {
+  return selectedFrameworks.value.some((f) => f.frameworkDataType === framework);
+}
+
+/**
+ * Determines whether the specified access status matches any selected access status.
+ *
+ * @param {string} accessStatus - The access status to check.
+ * @returns {boolean} True if the specified access status matches a selected access status, false otherwise.
+ */
+function filterAccessStatus(accessStatus: string): boolean {
+  return selectedAccessStatus.value.some((s) => s.displayName === accessStatus);
+}
+
+/**
+ * Filters company names based on the search bar input.
+ *
+ * @param {string} companyName - The name of the company to be checked against the search input.
+ * @returns {boolean} True if the company name matches the search input, false otherwise.
+ */
+function filterSearchInput(companyName: string): boolean {
+  return (companyName ?? '').toLowerCase().includes(searchBarInputFilter.value.toLowerCase());
+}
+
+/**
+ * Resets all the filters and the search bar input to their default state.
+ * This clears the selected frameworks, selected access statuses, and search input values.
+ */
+function resetFilterAndSearchBar(): void {
+  selectedFrameworks.value = [];
+  selectedAccessStatus.value = [];
+  searchBarInput.value = '';
+}
+
+/**
+ * Updates the list of currently displayed data based on filters, sorting, and pagination.
+ * Filters the data requests by search input, selected frameworks, and access statuses.
+ * Sorts the filtered data using a custom comparison function.
+ * Updates the displayed data and scrolls to the top of the page.
+ */
+function updateCurrentDisplayedData(): void {
+  let data = storedDataRequests.value.filter((d) => filterSearchInput(d.companyName));
+
+  if (selectedFrameworks.value.length > 0) {
+    data = data.filter((d) => filterFramework(d.dataType));
+  }
+  if (selectedAccessStatus.value.length > 0) {
+    data = data.filter((d) => filterAccessStatus(d.accessStatus));
+  }
+
+  data.sort((a, b) => customCompareForExtendedStoredDataRequests(a, b));
+
+  numberOfFilteredRequests.value = data.length;
+
+  displayedData.value = data.slice(datasetsPerPage * currentPage.value, datasetsPerPage * (currentPage.value + 1));
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/**
+ * Custom comparison function for sorting `ExtendedStoredDataRequest` objects.
+ * Compares based on the current sort field, request status, last modified date, and company name.
+ *
+ * @param {ExtendedStoredDataRequest} a - The first data request object to compare.
+ * @param {ExtendedStoredDataRequest} b - The second data request object to compare.
+ * @returns {number} Comparison result: negative if `a` should precede `b`, positive if `b` should precede `a`, or zero if they are equal.
+ */
+function customCompareForExtendedStoredDataRequests(
+  a: ExtendedStoredDataRequest,
+  b: ExtendedStoredDataRequest
+): number {
+  const aValue = a[sortField.value] ?? '';
+  const bValue = b[sortField.value] ?? '';
+
+  if (sortField.value !== 'requestStatus') {
+    if (aValue < bValue) return -1 * sortOrder.value;
+    if (aValue > bValue) return sortOrder.value;
+  }
+
+  if (a.requestStatus !== b.requestStatus)
+    return customCompareForRequestStatus(a.requestStatus, b.requestStatus, sortOrder.value);
+
+  if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
+  if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
+
+  return a.companyName < b.companyName ? -1 * sortOrder.value : sortOrder.value;
+}
+
+/**
+ * Handles the pagination event in the DataTable component.
+ * Updates the current page based on the event properties and refreshes the displayed data.
+ *
+ * @param {DataTablePageEvent} event - The pagination event containing information about the current page.
+ */
+function onPage(event: DataTablePageEvent): void {
+  currentPage.value = event.page;
+  updateCurrentDisplayedData();
+}
 </script>
+
 <style scoped>
+.container {
+  margin: 0;
+  width: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: start;
+
+  .company-search {
+    width: 30%;
+  }
+
+  .search-filter {
+    width: 13%;
+    text-align: left;
+  }
+}
+
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.text-primary {
+  color: var(--main-color);
 }
 </style>

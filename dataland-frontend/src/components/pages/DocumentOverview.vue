@@ -16,14 +16,14 @@
         :available-items="availableDocumentTypes"
         filter-name="Types"
         data-test="document-type-picker"
-        filter-id="document-type-filter"
+        id="document-type-filter"
         filter-placeholder="Search by document type"
         style="margin: 0 1rem"
       />
       <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
     </div>
 
-    <TheContent class="paper-section flex flex-col p-3">
+    <TheContent class="flex flex-col p-3">
       <DataTable
         v-if="documentsFiltered && documentsFiltered.length > 0"
         data-test="documents-overview-table"
@@ -260,13 +260,6 @@ onMounted(() => {
 });
 </script>
 
-<style>
-/** This is used to turn off the search bar in the FrameworkDataSearchDropdownFilter, because there are only 4 elements here. **/
-.p-multiselect-header {
-  display: none !important;
-}
-</style>
-
 <style scoped lang="scss">
 .selection-header {
   padding: 0.25rem 0 1rem 0;
@@ -320,5 +313,54 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   flex-grow: 1;
+}
+
+.tertiary-button {
+  padding: 0 var(--spacing-md);
+  height: 2.25rem;
+  color: var(--main-color);
+  background: none;
+  border: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  min-width: 10em;
+  width: fit-content;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+  flex-direction: row;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:enabled:hover {
+    color: white;
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
+  }
+
+  &:enabled:active {
+    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 0;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
 }
 </style>
