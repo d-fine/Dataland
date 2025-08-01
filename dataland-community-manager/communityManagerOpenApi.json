@@ -28,16 +28,16 @@
         "summary": "Validate an email address and obtain user-related information from an email address.",
         "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
         "operationId": "postEmailAddressValidation",
-        "parameters": [
-          {
-            "name": "emailAddress",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/EmailAddress"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailAddress"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successfully validated the posted email address.",

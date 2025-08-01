@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.EmailAddress
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Defines the community manager API regarding validation of user information
@@ -57,5 +58,7 @@ interface UserValidationApi {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or @CompanyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany()",
     )
-    fun postEmailAddressValidation(emailAddress: EmailAddress): ResponseEntity<KeycloakUserInfo>
+    fun postEmailAddressValidation(
+        @RequestBody emailAddress: EmailAddress,
+    ): ResponseEntity<KeycloakUserInfo>
 }
