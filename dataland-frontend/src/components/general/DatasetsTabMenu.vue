@@ -71,12 +71,15 @@ const tabs = ref<Array<TabInfo>>([
 
 onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
+  debugger;
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
+  debugger;
 });
 
+debugger;
 watchEffect(setVisibilityForTabWithAccessRequestsForMyCompanies);
-
+debugger;
 /**
  * Sets the visibility of the tab for Quality Assurance.
  * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
@@ -94,12 +97,14 @@ function setVisibilityForTabWithQualityAssurance(): void {
  * If the user does have any company ownership, the tab is shown. Else it stays invisible.
  */
 function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
-  if (!companyRoleAssignments?.length) return;
   const companyOwnershipAssignments = companyRoleAssignments?.filter(
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
+  debugger;
   if (companyOwnershipAssignments) {
+    debugger;
     tabs.value[5].isVisible = companyOwnershipAssignments.length > 0;
+    debugger;
   }
 }
 

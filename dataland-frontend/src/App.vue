@@ -72,6 +72,7 @@ export default defineComponent({
       },
       companyRoleAssignments: computed(() => {
         return this.companyRoleAssignments;
+        debugger;
       }),
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
@@ -153,6 +154,7 @@ export default defineComponent({
      */
     async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
       this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider)
+      debugger;
     },
 
     /**
