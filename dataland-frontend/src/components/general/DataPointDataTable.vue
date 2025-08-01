@@ -133,18 +133,6 @@ export default defineComponent({
       width: var(--first-table-column-width);
     }
   }
-  .onlyHeaders {
-    tr {
-      display: flex;
-      width: calc(100vw - 58px);
-    }
-    tr th:not(.first-horizontal-headers-size) {
-      flex: 1;
-    }
-    .p-datatable-tbody {
-      display: none;
-    }
-  }
   tr {
     &:not(.p-rowgroup-header) {
       td {
