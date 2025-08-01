@@ -39,7 +39,7 @@ data class CompanyInformation(
                 example = BackendOpenApiDescriptionsAndExamples.COMPANY_ALTERNATIVE_NAMES_EXAMPLE,
             ),
     )
-    val companyAlternativeNames: List<String>?,
+    val companyAlternativeNames: List<String>? = null,
     @field:ArraySchema(
         arraySchema =
             Schema(
@@ -48,12 +48,12 @@ data class CompanyInformation(
                 example = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
             ),
     )
-    val companyContactDetails: List<String>?,
+    val companyContactDetails: List<String>? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.COMPANY_LEGAL_FORM_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.COMPANY_LEGAL_FORM_EXAMPLE,
     )
-    val companyLegalForm: String?,
+    val companyLegalForm: String? = null,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_DESCRIPTION,
@@ -64,17 +64,17 @@ data class CompanyInformation(
         description = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.HEADQUARTERS_POSTAL_CODE_EXAMPLE,
     )
-    val headquartersPostalCode: String?,
+    val headquartersPostalCode: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
     )
-    val sector: String?,
+    val sector: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.SECTOR_CODE_WZ_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.SECTOR_CODE_WZ_EXAMPLE,
     )
-    val sectorCodeWz: String?,
+    val sectorCodeWz: String? = null,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
@@ -90,15 +90,15 @@ data class CompanyInformation(
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IS_TEASER_COMPANY_DESCRIPTION,
     )
-    val isTeaserCompany: Boolean?,
+    val isTeaserCompany: Boolean? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.WEBSITE_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.WEBSITE_EXAMPLE,
     )
-    val website: String?,
+    val website: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
     )
-    val parentCompanyLei: String?,
+    val parentCompanyLei: String? = null,
 )

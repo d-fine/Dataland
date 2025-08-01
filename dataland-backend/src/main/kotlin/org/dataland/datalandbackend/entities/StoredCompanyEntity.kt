@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.entities
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.fasterxml.jackson.annotation.JsonValue
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
@@ -11,6 +12,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
@@ -43,6 +45,7 @@ data class StoredCompanyEntity(
     @Column(name = "sector_code_wz")
     var sectorCodeWz: String?,
     @OneToMany(mappedBy = "company")
+    @JsonManagedReference
     var identifiers: MutableList<CompanyIdentifierEntity>,
     @Column(name = "parent_company_lei")
     var parentCompanyLei: String?,
@@ -95,5 +98,47 @@ data class StoredCompanyEntity(
 
         identifierMap.values.forEach { it.sort() }
         return identifierMap
+    }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the contant of the applied [CompanyInformationPatch].
+     * This method does not update the identifiers of the company, as these are handled separately.
+     *
+     * @param patch the [CompanyInformationPatch] containing the new values to apply.
+     */
+    fun applyPatchWithoutIdentifiers(patch: CompanyInformationPatch) {
+        patch.companyName?.let { this.companyName = it }
+        patch.companyAlternativeNames?.let { this.companyAlternativeNames = it.toMutableList() }
+        patch.companyContactDetails?.let { this.companyContactDetails = it.toMutableList() }
+        patch.companyLegalForm?.let { this.companyLegalForm = it }
+        patch.headquarters?.let { this.headquarters = it }
+        patch.headquartersPostalCode?.let { this.headquartersPostalCode = it }
+        patch.sector?.let { this.sector = it }
+        patch.sectorCodeWz?.let { this.sectorCodeWz = it }
+        patch.countryCode?.let { this.countryCode = it }
+        patch.website?.let { this.website = it }
+        patch.isTeaserCompany?.let { this.isTeaserCompany = it }
+        patch.parentCompanyLei?.let { this.parentCompanyLei = it }
+    }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the content of the applied [CompanyInformation].
+     * This method does not update the identifiers of the company, as these are handled separately.
+     *
+     * @param put the [CompanyInformation] containing the new values to apply.
+     */
+    fun applyPutWithoutIdentifiers(put: CompanyInformation) {
+        companyName = put.companyName
+        companyAlternativeNames = put.companyAlternativeNames?.toMutableList()
+        companyContactDetails = put.companyContactDetails?.toMutableList()
+        companyLegalForm = put.companyLegalForm
+        headquarters = put.headquarters
+        headquartersPostalCode = put.headquartersPostalCode
+        sector = put.sector
+        sectorCodeWz = put.sectorCodeWz
+        countryCode = put.countryCode
+        website = put.website
+        isTeaserCompany = put.isTeaserCompany ?: false
+        parentCompanyLei = put.parentCompanyLei
     }
 }

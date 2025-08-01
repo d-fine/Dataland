@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for accessing the StoredCompany Entity
  */
-
+@Suppress("TooManyFunctions")
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     /**
      * A function for querying basic information for all companies with approved datasets
@@ -143,13 +143,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     ): List<CompanyIdAndName>
 
     /**
-     * Used for pre-fetching the identifiers field of a list of stored companies
+     * Used for pre-fetching the identifiers field of a list of stored companies. ISINs are no
+     * longer stored in the table company_identifiers, hence the name of the method.
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.identifiers WHERE company IN :companies",
+            "LEFT JOIN FETCH company.identifiers identifier " +
+            "WHERE company IN :companies AND (identifier.identifierType != 'Isin' OR identifier IS NULL)",
     )
-    fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+    fun fetchNonIsinIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
      * Used for pre-fetching the alternative company names field of a list of stored companies
@@ -210,4 +212,20 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun getCompanySubsidiariesByParentId(
         @Param("companyId") companyId: String,
     ): List<BasicCompanyInformation>
+
+    /**
+     * Finds a `StoredCompanyEntity` based on the identifier value (always a lei)
+     *
+     * @param leis The value of the identifier to search for.
+     * @return A List<StoredCompanyEntity> matching the given list of leis, or `null` if no match is found.
+     */
+    @Query
+    (
+        "SELECT company FROM  StoredCompanyEntity company " +
+            "JOIN FETCH company.identifiers companyIdentifierEntity " +
+            "WHERE companyIdentifierEntity.identifierValue in :leis ",
+    )
+    fun findCompaniesbyListOfLeis(
+        @Param("leis") leis: List<String>,
+    ): List<StoredCompanyEntity>?
 }

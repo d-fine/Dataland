@@ -43,8 +43,6 @@ class ProcessDataUpdates
         private var allGleifCompaniesIngestManualUpdateFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
         private val allNorthDataCompaniesIngestFlagFilePath: String?,
-        @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
-        private val savedIsinMappingFile: File,
     ) {
         companion object {
             const val MS_PER_S = 1000L
@@ -72,12 +70,6 @@ class ProcessDataUpdates
             if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
                 logger.info("Found flag file or force ingest flag for GLEIF.")
                 logFlagFileFoundAndDelete(flagFileGleif)
-                if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
-                    throw FileSystemException(
-                        file = savedIsinMappingFile,
-                        reason = "Unable to delete ISIN mapping file $savedIsinMappingFile",
-                    )
-                }
 
                 waitForBackend()
                 logger.info("Retrieving all company data available via GLEIF.")
@@ -121,6 +113,12 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 15 14 * * *")
+        private fun testIsinLeiMapping() {
+            processUpdates()
+        }
+
+        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 0 3 ? * SUN")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
@@ -130,11 +128,11 @@ class ProcessDataUpdates
 
             waitForBackend()
             gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullUpdate)
-            gleifGoldenCopyIngestor.processIsinMappingFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processIsinMappingFile()
             gleifGoldenCopyIngestor.processRelationshipFile(doFullUpdate)
 
-            flagFileGleif?.let { file ->
-                if (file.delete()) {
+            if (flagFileGleif?.exists() ?: false) {
+                if (flagFileGleif.delete()) {
                     logger.info("Flag file $flagFileGleif deleted successfully.")
                 } else {
                     logger.error("Flag file $flagFileGleif could not be deleted.")
