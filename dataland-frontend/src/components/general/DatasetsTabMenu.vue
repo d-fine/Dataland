@@ -42,7 +42,7 @@ import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, toValue, watch } from 'vue';
+import { inject, onMounted, ref, toValue, watchEffect } from 'vue';
 
 interface TabInfo {
   label: string;
@@ -56,7 +56,7 @@ const { initialTabIndex } = defineProps<{
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const companyRoleAssignments = inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments')!;
+const companyRoleAssignments = toValue(inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'));
 const currentTabIndex = ref<number>(0);
 
 const tabs = ref<Array<TabInfo>>([
@@ -75,9 +75,7 @@ onMounted(() => {
   setVisibilityForAdminTab();
 });
 
-watch(companyRoleAssignments, () => {
-  setVisibilityForTabWithAccessRequestsForMyCompanies();
-}, { immediate: true });
+watchEffect(setVisibilityForTabWithAccessRequestsForMyCompanies);
 
 /**
  * Sets the visibility of the tab for Quality Assurance.
@@ -97,12 +95,9 @@ function setVisibilityForTabWithQualityAssurance(): void {
  */
 function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
   if (!companyRoleAssignments?.length) return;
-
-  const companyOwnershipAssignments = companyRoleAssignments?.filter((roleAssignment) => {
-    debugger;
-    return roleAssignment.companyRole === CompanyRole.CompanyOwner;
-  });
-
+  const companyOwnershipAssignments = companyRoleAssignments?.filter(
+    (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
+  );
   if (companyOwnershipAssignments) {
     tabs.value[5].isVisible = companyOwnershipAssignments.length > 0;
   }
