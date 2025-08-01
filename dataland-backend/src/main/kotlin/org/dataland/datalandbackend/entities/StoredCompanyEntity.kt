@@ -120,4 +120,25 @@ data class StoredCompanyEntity(
         patch.isTeaserCompany?.let { this.isTeaserCompany = it }
         patch.parentCompanyLei?.let { this.parentCompanyLei = it }
     }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the content of the applied [CompanyInformation].
+     * This method does not update the identifiers of the company, as these are handled separately.
+     *
+     * @param put the [CompanyInformation] containing the new values to apply.
+     */
+    fun applyPutWithoutIdentifiers(put: CompanyInformation) {
+        companyName = put.companyName
+        companyAlternativeNames = put.companyAlternativeNames?.toMutableList()
+        companyContactDetails = put.companyContactDetails?.toMutableList()
+        companyLegalForm = put.companyLegalForm
+        headquarters = put.headquarters
+        headquartersPostalCode = put.headquartersPostalCode
+        sector = put.sector
+        sectorCodeWz = put.sectorCodeWz
+        countryCode = put.countryCode
+        website = put.website
+        isTeaserCompany = put.isTeaserCompany ?: false
+        parentCompanyLei = put.parentCompanyLei
+    }
 }

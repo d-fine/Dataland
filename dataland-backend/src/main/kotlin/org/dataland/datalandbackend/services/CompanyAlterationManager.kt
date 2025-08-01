@@ -209,7 +209,7 @@ class CompanyAlterationManager
             assertNoDuplicateIdentifiersExist(storedCompanyEntity = storedCompanyEntity, identifiers = companyInformation.identifiers)
             logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
 
-            storedCompanyEntity.applyPatchWithoutIdentifiers(companyInformation.toCompanyInformationPatch())
+            storedCompanyEntity.applyPutWithoutIdentifiers(companyInformation)
 
             companyIdentifierRepositoryInterface.deleteAllByCompany(storedCompanyEntity)
             storedCompanyEntity.identifiers = mutableListOf()

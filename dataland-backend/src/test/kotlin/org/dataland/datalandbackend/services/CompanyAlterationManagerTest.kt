@@ -72,40 +72,48 @@ class CompanyAlterationManagerTest {
     private val originalSectorCodeWz = "6201"
     private val originalSector = "Technology"
     private val originalCompanyContactDetails = listOf("original@company.com")
+    private val originalCompany =
+        CompanyInformation(
+            companyName = originalCompanyName,
+            companyAlternativeNames = originalAlternativeNames,
+            companyContactDetails = originalCompanyContactDetails,
+            companyLegalForm = "AG",
+            headquarters = originalHeadquarters,
+            headquartersPostalCode = "10115",
+            sector = originalSector,
+            sectorCodeWz = originalSectorCodeWz,
+            identifiers =
+                mapOf(
+                    IdentifierType.Lei to originalLei,
+                    IdentifierType.Duns to originalDuns,
+                    IdentifierType.Isin to originalIsin,
+                ),
+            countryCode = "DE",
+            isTeaserCompany = false,
+            website = "https://original-company.com",
+            parentCompanyLei = "PARENT123456789012",
+        )
+    private val newLei = listOf("NEW123456789012")
+    private val newName = "New Company Name"
+    private val newHeadquarters = "New Town"
+    private val newCountryCode = "CH"
+    private val newMinimalCompany =
+        CompanyInformation(
+            companyName = newName,
+            headquarters = newHeadquarters,
+            identifiers = mapOf(IdentifierType.Lei to originalLei),
+            countryCode = newCountryCode,
+        )
 
     private lateinit var existingCompany: StoredCompanyEntity
 
     @BeforeEach
     fun setup() {
-        val companyInformation =
-            CompanyInformation(
-                companyName = originalCompanyName,
-                companyAlternativeNames = originalAlternativeNames,
-                companyContactDetails = originalCompanyContactDetails,
-                companyLegalForm = "AG",
-                headquarters = originalHeadquarters,
-                headquartersPostalCode = "10115",
-                sector = originalSector,
-                sectorCodeWz = originalSectorCodeWz,
-                identifiers =
-                    mapOf(
-                        IdentifierType.Lei to originalLei,
-                        IdentifierType.Duns to originalDuns,
-                        IdentifierType.Isin to originalIsin,
-                    ),
-                countryCode = "DE",
-                isTeaserCompany = false,
-                website = "https://original-company.com",
-                parentCompanyLei = "PARENT123456789012",
-            )
-
-        existingCompany = companyAlterationManager.addCompany(companyInformation)
+        existingCompany = companyAlterationManager.addCompany(originalCompany)
     }
 
     @Test
     fun `patchCompany should correctly update basic company information while preserving original values if null is provided`() {
-        val newName = "Updated Company Name"
-        val newHeadquarters = "New Headquarters"
         val newAlternativeNames = listOf("Updated Alt Name 1", "Updated Alt Name 2")
         val newCompnyContactDetails = listOf("new@company.com", "another_new@company.com")
         val patch =
@@ -194,16 +202,12 @@ class CompanyAlterationManagerTest {
 
     @Test
     fun `check that creating or patching a company with existing identifiers throws an exception`() {
-        val newLei = listOf("NEW123456789012")
-        val newMinimalCompany =
-            CompanyInformation(
-                companyName = "New Company",
-                headquarters = "New Town",
-                identifiers =
-                    mapOf(
-                        IdentifierType.Lei to originalLei,
-                    ),
-                countryCode = "DE",
+        val patch =
+            CompanyInformationPatch(
+                companyName = newName,
+                headquarters = newHeadquarters,
+                identifiers = mapOf(IdentifierType.Lei to originalLei),
+                countryCode = newCountryCode,
             )
 
         assertThrows<DuplicateIdentifierApiException> {
@@ -214,7 +218,26 @@ class CompanyAlterationManagerTest {
         }
         val newCompany = companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
         assertThrows<DuplicateIdentifierApiException> {
-            companyAlterationManager.patchCompany(newCompany.companyId, patch = newMinimalCompany.toCompanyInformationPatch())
+            companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
+        }
+    }
+
+    @Test
+    fun `check that putting a company works as expected`() {
+        val putCompany = companyAlterationManager.putCompany(existingCompany.companyId, newMinimalCompany)
+        assertEquals(newMinimalCompany.companyName, putCompany.companyName)
+        assertEquals(newMinimalCompany.headquarters, putCompany.headquarters)
+        assertEquals(1, putCompany.identifiers.size)
+        assertEquals(IdentifierType.Lei, putCompany.identifiers.first().identifierType)
+        assertEquals(originalLei.first(), putCompany.identifiers.first().identifierValue)
+        assertEquals(newMinimalCompany.countryCode, putCompany.countryCode)
+        assertEquals(null, putCompany.sector)
+    }
+
+    @Test
+    fun `check that adding a company twice leads to the expected error message`() {
+        assertThrows<DuplicateIdentifierApiException> {
+            companyAlterationManager.addCompany(originalCompany)
         }
     }
 }
