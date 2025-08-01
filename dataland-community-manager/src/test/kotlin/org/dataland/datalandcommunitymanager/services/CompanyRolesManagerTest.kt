@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -265,6 +267,149 @@ class CompanyRolesManagerTest {
             assertTrue(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
         } else {
             assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+        }
+    }
+
+    @Test
+    fun `check that assignment of company roles does not work for unknown user IDs`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.assignCompanyRoleForCompanyToUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = existingCompanyId,
+                    userId = nonExistingUserId,
+                )
+            }
+
+        assertEquals(unknownUserId, exception.summary)
+    }
+
+    @Test
+    fun `check that extension of company role assignments works as intended`() {
+        val extendedCompanyRoleAssignments =
+            companyRolesManager.convertToExtendedCompanyRoleAssignments(
+                listOf(dummyCompanyRoleAssignment),
+            )
+
+        assertEquals(1, extendedCompanyRoleAssignments.size)
+        assertEquals(
+            CompanyRoleAssignmentExtended(
+                companyRole = CompanyRole.CompanyOwner,
+                companyId = existingCompanyId,
+                userId = testUserId,
+                email = testEmail!!,
+                firstName = testFirstName,
+                lastName = testLastName,
+            ),
+            extendedCompanyRoleAssignments.first(),
+        )
+    }
+
+    @Test
+    fun `check that retrieval of company roles does not work if company does not exist`() {
+        assertThrows<ResourceNotFoundApiException> {
+            companyRolesManager.getCompanyRoleAssignmentsByParameters(
+                companyRole = null, companyId = nonExistingCompanyId, userId = null,
+            )
+        }
+    }
+
+    @Test
+    fun `check that retrieval of company roles works if company does exist`() {
+        val returnedCompanyRoleAssignmentEntities =
+            assertDoesNotThrow {
+                companyRolesManager.getCompanyRoleAssignmentsByParameters(
+                    companyRole = null, companyId = existingCompanyId, userId = null,
+                )
+            }
+
+        assertEquals(
+            1,
+            returnedCompanyRoleAssignmentEntities.size,
+        )
+        assertEquals(
+            dummyCompanyRoleAssignmentEntity,
+            returnedCompanyRoleAssignmentEntities.first(),
+        )
+    }
+
+    @Test
+    fun `check that removal of company role does not work if company does not exist`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.removeCompanyRoleForCompanyFromUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = nonExistingCompanyId,
+                    userId = testUserId,
+                )
+            }
+        assertEquals(companyNotFound, exception.summary)
+    }
+
+    @Test
+    fun `check that removal of company role does not work if user does not have the role in the company`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.removeCompanyRoleForCompanyFromUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = existingCompanyId,
+                    userId = testUserId,
+                )
+            }
+        assertEquals(companyRoleNotAssigned, exception.summary)
+    }
+
+    @Test
+    fun `check that removal of company role works as intended for an existing company role`() {
+        doReturn(Optional.of(dummyCompanyRoleAssignmentEntity))
+            .whenever(mockCompanyRoleAssignmentRepository)
+            .findById(existingCompanyRoleAssignmentId)
+
+        assertDoesNotThrow {
+            companyRolesManager.removeCompanyRoleForCompanyFromUser(
+                companyRole = CompanyRole.CompanyOwner,
+                companyId = existingCompanyId,
+                userId = testUserId,
+            )
+        }
+
+        verify(mockCompanyRoleAssignmentRepository, times(1)).deleteById(existingCompanyRoleAssignmentId)
+    }
+
+    @Test
+    fun `check that validation of company role works as intended if company does not exist`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.validateIfCompanyRoleForCompanyIsAssignedToUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = nonExistingCompanyId,
+                    userId = testUserId,
+                )
+            }
+        assertEquals(companyNotFound, exception.summary)
+    }
+
+    @Test
+    fun `check that validation of company role works as intended if company role does not exist`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.validateIfCompanyRoleForCompanyIsAssignedToUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = existingCompanyId,
+                    userId = testUserId,
+                )
+            }
+        assertEquals(companyRoleNotAssigned, exception.summary)
+    }
+
+    @Test
+    fun `check that validation of company role works as intended if company role exists`() {
+        assertDoesNotThrow {
+            companyRolesManager.validateIfCompanyRoleForCompanyIsAssignedToUser(
+                companyRole = CompanyRole.CompanyOwner,
+                companyId = existingCompanyId,
+                userId = testUserId,
+            )
         }
     }
 }
