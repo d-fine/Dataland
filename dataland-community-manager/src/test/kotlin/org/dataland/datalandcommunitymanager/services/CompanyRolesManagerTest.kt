@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
@@ -45,6 +46,7 @@ class CompanyRolesManagerTest {
     private val mockCompanyOwnershipRequestedEmailMessageBuilder = mock<CompanyOwnershipRequestedEmailMessageBuilder>()
     private val mockDatalandJwtAuthentication = mock<DatalandJwtAuthentication>()
     private val mockSecurityContext = mock<SecurityContext>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private val existingCompanyId = "indeed-existing-company-id"
     private val nonExistingCompanyId = "non-existing-company-id"
@@ -70,6 +72,7 @@ class CompanyRolesManagerTest {
             mockCompanyOwnershipRequestedEmailMessageBuilder,
             mockDatalandJwtAuthentication,
             mockSecurityContext,
+            mockKeycloakUserService,
         )
     }
 
@@ -111,6 +114,7 @@ class CompanyRolesManagerTest {
                 mockCompanyRoleAssignmentRepository,
                 mockCompanyOwnershipRequestedEmailMessageBuilder,
                 mockCompanyOwnershipAcceptedEmailMessageBuilder,
+                mockKeycloakUserService,
             )
     }
 
