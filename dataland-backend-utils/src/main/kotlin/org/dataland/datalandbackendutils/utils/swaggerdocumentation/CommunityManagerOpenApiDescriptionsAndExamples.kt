@@ -30,9 +30,6 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user in the company role assignment."
     const val USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val COMPANY_ROLE_EMAIL_DESCRIPTION = "The email address of the user."
-    const val COMPANY_ROLE_EMAIL_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE
-
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
 
