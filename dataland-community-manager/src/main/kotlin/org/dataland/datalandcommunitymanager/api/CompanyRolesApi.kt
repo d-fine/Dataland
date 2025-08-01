@@ -2,6 +2,9 @@ package org.dataland.datalandcommunitymanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -12,6 +15,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleU
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -39,13 +43,18 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Assign company role for the company to the user.",
         description =
-            "The company role for the specified company is being assigned to the user. " +
+            "The company role for the specified company is being assigned to the user, who must be known to Keycloak. " +
                 "Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, " +
                 "based on the company role that shall be assigned.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully assigned company role."),
+            ApiResponse(
+                responseCode = "404",
+                description = "At least one of the specified IDs (user and company) is unknown.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PostMapping(
@@ -74,15 +83,27 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Get company role assignments that match the provided filters.",
         description =
-            "Get company role assignments that match the provided filters. " +
-                "Endpoint fully accessible to all Dataland-Admins. " +
-                "Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. " +
-                "Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
+            "Get company role assignments extended by basic user information that match " +
+                "the provided filters. The endpoint is fully accessible to all Dataland Admins. " +
+                "Company Role Assignees can access the endpoint if the companyId filter is set to their company. " +
+                "Any Dataland user can access the endpoint if the userId filter is set to their userId.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company role assignments."),
-            ApiResponse(responseCode = "404", description = "The specified company does not exist on Dataland."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved extended company role assignments.",
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to make this query.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified company does not exist on Dataland.",
+                content = [Content(array = ArraySchema())],
+            ),
         ],
     )
     @GetMapping(
@@ -94,8 +115,8 @@ interface CompanyRolesApi {
             "@SecurityUtilsService.isUserMemberOfTheCompany(#companyId) or" +
             "@SecurityUtilsService.isUserRequestingForOwnId(#userId)",
     )
-    fun getCompanyRoleAssignments(
-        @RequestParam("role", required = false)
+    fun getExtendedCompanyRoleAssignments(
+        @RequestParam("role")
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_DESCRIPTION,
             required = false,
@@ -115,7 +136,7 @@ interface CompanyRolesApi {
             required = false,
         )
         userId: UUID? = null,
-    ): ResponseEntity<List<CompanyRoleAssignment>>
+    ): ResponseEntity<List<CompanyRoleAssignmentExtended>>
 
     /**
      * A method to remove the assignment of a company role from a user

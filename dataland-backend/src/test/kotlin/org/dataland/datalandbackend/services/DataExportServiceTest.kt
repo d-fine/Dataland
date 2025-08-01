@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -12,11 +13,14 @@ import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.io.ByteArrayInputStream
@@ -40,24 +44,46 @@ const val QUALITY_STRING = "quality"
 class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
-    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
-    private val dataExportUtils = DataExportUtils(mockDataPointUtils, mockReferencedReportsUtils)
-    private val dataExportService = DataExportService(dataExportUtils)
+    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val dataExportService =
+        DataExportService(mockDataPointUtils, mock<ReferencedReportsUtilities>(), mockSpecificationApi)
 
     private val testDataProvider = TestDataProvider(objectMapper)
-    private val lksgTestData = testDataProvider.getLksgDataset()
 
     private val lksgCompanyExportTestData =
         SingleCompanyExportData(
             companyName = "test name",
             companyLei = UUID.randomUUID().toString(),
             reportingPeriod = TEST_REPORTING_PERIOD,
-            data = lksgTestData,
+            data = testDataProvider.getLksgDataset(),
         )
 
-    private val companyExportDataLksgInputFile = "./src/test/resources/dataExport/lksgDataInput.json"
     private val companyExportDataLksgTestData =
-        objectMapper.readValue<SingleCompanyExportData<LksgData>>(File(companyExportDataLksgInputFile))
+        objectMapper.readValue<SingleCompanyExportData<LksgData>>(File("./src/test/resources/dataExport/lksgDataInput.json"))
+
+    private val portfolioDataTwoCompanies =
+        listOf(
+            SingleCompanyExportData(
+                companyName = "Test Company 1",
+                companyLei = TEST_COMPANY_LEI,
+                reportingPeriod = TEST_REPORTING_PERIOD,
+                data =
+                    objectMapper.treeToValue(
+                        testDataProvider.createTestJsonWithBothValueAndQuality(),
+                        Any::class.java,
+                    ),
+            ),
+            SingleCompanyExportData(
+                companyName = "Test Company 2",
+                companyLei = TEST_COMPANY_LEI,
+                reportingPeriod = TEST_REPORTING_PERIOD,
+                data =
+                    objectMapper.treeToValue(
+                        testDataProvider.createTestJsonWithTwoDataPoints(),
+                        Any::class.java,
+                    ),
+            ),
+        )
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -219,36 +245,44 @@ class DataExportServiceTest {
         )
     }
 
-    @Test
-    fun `check that the exported columns are ordered according to the specification`() {
-        val testJsonWithOneValue = testDataProvider.createTestJsonWithBothValueAndQuality()
-        val testJsonWithTwoValues = testDataProvider.createTestJsonWithTwoDataPoints()
+    /**
+     * Sets up a mock schema for testing purposes.
+     */
+    private fun setupTestSchema() {
+        val resolvedSchemaJson: JsonNode =
+            objectMapper.readTree(
+                """
+                {
+                  "$TEST_CATEGORY": {
+                    "$TEST_DATA_POINT_NAME": { "value": "number" },
+                    "$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET": { "value": "number" }
+                  }
+                }
+                """.trimIndent(),
+            )
+        val baseTypeSchema =
+            mock<DataPointBaseTypeResolvedSchema> {
+                on { resolvedSchema } doReturn resolvedSchemaJson
+            }
+        whenever(mockSpecificationApi.getResolvedFrameworkSpecification("lksg"))
+            .thenReturn(baseTypeSchema)
         whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
             FrameworkSpecification(
                 IdWithRef("testId", "testRef"),
                 "testFramework",
-                "testBusinessefinition",
+                "testBusinessDefinition",
                 testDataProvider.createTestSpecification(),
                 "testPath",
             ),
         )
+    }
 
+    @Test
+    fun `check that the exported columns are ordered according to the specification`() {
+        setupTestSchema()
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(
-                    SingleCompanyExportData(
-                        companyName = "Test Company 1",
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testJsonWithOneValue, Any::class.java),
-                    ),
-                    SingleCompanyExportData(
-                        companyName = "Test Company 2",
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testJsonWithTwoValues, Any::class.java),
-                    ),
-                ),
+                portfolioDataTwoCompanies,
                 ExportFileType.CSV,
                 DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
@@ -256,42 +290,61 @@ class DataExportServiceTest {
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-        // check that columns are not ordered alphabetically, but according to the specification
-        val colsInCorrectOrder =
-            """"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.$VALUE_STRING"""" +
-                ""","data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.$VALUE_STRING""""
+
+        val headerLine = csvString.lineSequence().first()
+        val actualHeaders = headerLine.split(",")
+
+        val expectedHeaders =
+            listOf(
+                "companyName",
+                "companyLei",
+                "reportingPeriod",
+                "\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value\"",
+                "\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value\"",
+            )
+
+        expectedHeaders.forEach {
+            Assertions.assertTrue(actualHeaders.contains(it), "Expected column '$it' not found in CSV header")
+        }
+
+        val index1 = actualHeaders.indexOf("\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value\"")
+        val index2 = actualHeaders.indexOf("\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value\"")
+
         Assertions.assertTrue(
-            csvString.contains(colsInCorrectOrder),
-            "CSV does not contain the specified columns in the correct order",
+            index1 < index2,
+            "Expected '${expectedHeaders[3]}' to appear before '${expectedHeaders[4]}'",
         )
     }
 
     @Test
     fun `check that the specified aliases are exported`() {
-        val testJson = testDataProvider.createTestJsonWithBothValueAndQuality()
-
-        whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("sfdr")).thenReturn(
-            FrameworkSpecification(
-                IdWithRef("testId", "testRef"),
-                "testFramework",
-                "testBusinessefinition",
-                testDataProvider.createTestSpecification(),
-                "testPath",
-            ),
-        )
-
+        setupTestSchema()
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(
                     SingleCompanyExportData(
-                        companyName = TEST_COMPANY_NAME,
+                        companyName = "Test Company 1",
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
-                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithBothValueAndQuality(),
+                                Any::class.java,
+                            ),
+                    ),
+                    SingleCompanyExportData(
+                        companyName = "Test Company 2",
+                        companyLei = TEST_COMPANY_LEI,
+                        reportingPeriod = TEST_REPORTING_PERIOD,
+                        data =
+                            objectMapper.treeToValue(
+                                testDataProvider.createTestJsonWithTwoDataPoints(),
+                                Any::class.java,
+                            ),
                     ),
                 ),
                 ExportFileType.CSV,
-                DataType.valueOf("sfdr"),
+                DataType.valueOf("lksg"),
                 keepValueFieldsOnly = true,
                 includeAliases = true,
             )
@@ -302,9 +355,9 @@ class DataExportServiceTest {
             csvString.contains(TEST_ALIAS_1),
             "CSV does not contain the export alias $TEST_ALIAS_1",
         )
-        Assertions.assertFalse(
+        Assertions.assertTrue(
             csvString.contains(TEST_ALIAS_2),
-            "CSV contains $TEST_ALIAS_2 even though it shouldn't.",
+            "CSV does not contain the export alias $TEST_ALIAS_2",
         )
     }
 

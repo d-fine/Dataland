@@ -62,6 +62,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the Dataland user in question."
     const val DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
+    const val COMPANY_ROLE_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user in the company role assignment."
     const val USER_EMAIL_ADDRESS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE
 
     const val GENERAL_FIRST_NAME_DESCRIPTION = "The first name of the Dataland user in question."
@@ -69,6 +70,10 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val GENERAL_LAST_NAME_DESCRIPTION = "The last name of the Dataland user in question."
     const val LAST_NAME_EXAMPLE = "Doe"
+
+    const val COMPANY_ROLE_FIRST_NAME_DESCRIPTION = "The first name of the user in the company role assignment."
+
+    const val COMPANY_ROLE_LAST_NAME_DESCRIPTION = "The last name of the user in the company role assignment."
 
     const val CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the user created the data request."
     const val CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE

@@ -3,6 +3,25 @@
   "name" : "Eligible but not aligned denominator data point with an extended source",
   "businessDefinition" : "Proportion of Taxonomy-non-eligible Economic Activity in the Denominator of the applicable KPI.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasNonEligible>",
+  "schema" : {
+    "value" : {
+      "taxonomyNonEligibleShareNAndG426" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG427" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG428" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG429" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG430" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG431" : "BigDecimal",
+      "taxonomyNonEligibleShareOtherActivities" : "BigDecimal",
+      "taxonomyNonEligibleShare" : "BigDecimal"
+    },
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
   "example" : {
     "value" : {
       "taxonomyNonEligibleShareNAndG426" : 1.1,
