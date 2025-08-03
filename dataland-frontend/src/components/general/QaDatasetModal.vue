@@ -112,5 +112,4 @@ export default defineComponent({
 .submit-message .p-button {
   align-self: center; /* Centers just the button */
 }
-
 </style>

@@ -152,7 +152,10 @@ export default defineComponent({
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
     async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider)
+      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
+        resolvedKeycloakPromise,
+        apiClientProvider
+      );
     },
 
     /**
