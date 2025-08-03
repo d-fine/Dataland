@@ -19,7 +19,6 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
@@ -139,29 +138,25 @@ class CompanyQueryManager
                 resultLimit,
             )
 
-        private fun fetchIsinIdentifiers(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
-            storedCompanies.forEach { storedCompany ->
-                val isinsAsStrings =
-                    isinLeiRepository
-                        .findByCompany(
-                            storedCompany,
-                            PageRequest.of(0, isinChunkSize, Sort.by("isin").ascending()),
-                        ).content
-                        .map { it.isin }
-                isinsAsStrings.forEach {
-                    storedCompany.identifiers.add(
-                        CompanyIdentifierEntity(
-                            identifierValue = it,
-                            identifierType = IdentifierType.Isin,
-                            company = storedCompany,
-                        ),
+        private fun fetchIsinIdentifiers(storedCompany: StoredCompanyEntity): StoredCompanyEntity {
+            val isins =
+                isinLeiRepository
+                    .findByCompany(storedCompany, PageRequest.of(0, isinChunkSize))
+                    .content
+                    .map { it.isin }
+            val isinIdentifiers =
+                isins.map { isin ->
+                    CompanyIdentifierEntity(
+                        identifierValue = isin,
+                        identifierType = IdentifierType.Isin,
+                        company = storedCompany,
                     )
                 }
-            }
-            return storedCompanies
+            storedCompany.identifiers.addAll(isinIdentifiers)
+            return storedCompany
         }
 
-        private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> =
+        private fun fetchAllStoredCompanyFields(storedCompanies: StoredCompanyEntity): StoredCompanyEntity =
             storedCompanies
                 .let { companyRepository.fetchNonIsinIdentifiers(it) }
                 .let { fetchIsinIdentifiers(it) }
@@ -190,9 +185,7 @@ class CompanyQueryManager
         @Transactional
         fun getCompanyApiModelById(companyId: String): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
-            return fetchAllStoredCompanyFields(
-                listOf(searchResult),
-            ).first().toApiModel()
+            return fetchAllStoredCompanyFields(searchResult).toApiModel()
         }
 
         /**

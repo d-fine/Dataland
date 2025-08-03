@@ -4,6 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
@@ -15,6 +16,10 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 @Entity
 @Table(
     name = "isin_lei_mapping",
+    indexes = [
+        Index(name = "idx_isin_lei_company_id", columnList = "company_id"),
+        Index(name = "idx_isin_lei_lei", columnList = "lei"),
+    ],
 )
 data class IsinLeiEntity(
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

@@ -2,6 +2,7 @@ package org.dataland.datalanddataexporter.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
@@ -39,4 +40,12 @@ class ApiClients(
     fun getMetaDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the IsinLeiDataApi of the backend
+     */
+    @Bean
+    fun getIsinLeiDataApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): IsinLeiDataControllerApi = IsinLeiDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 }

@@ -8,9 +8,11 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.IsinLeiMappingData
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland-backend API regarding ISIN to LEI data mapping.
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/isinleimapping")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-fun interface IsinLeiDataApi {
+interface IsinLeiDataApi {
     /**
      * A method to update the ISIN-LEI mapping entirely
      * @param isinLeiMappingData ISIN-LEI mapping data
@@ -43,4 +45,28 @@ fun interface IsinLeiDataApi {
         @Valid @RequestBody
         isinLeiMappingData: List<IsinLeiMappingData>,
     ): ResponseEntity<Map<String?, String?>?>
+
+    /**
+     * A method to retrieve all ISINs registered for a given [lei]. If no ISINs are registered for the LEI, an empty list is returned.
+     * @param lei the LEI identifier to search for ISINs
+     * @return a list of ISINs associated with the given LEI
+     */
+    @Operation(
+        summary = "Retrieves all ISINs for a given LEI",
+        description = "All ISINs associated to the given LEI are returned. Returns empty list if no ISINs are registered for the LEI.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved all ISINs for the provided LEI."),
+        ],
+    )
+    @GetMapping(
+        value = ["/isins"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getIsinsByLei(
+        @RequestParam("lei")
+        lei: String,
+    ): ResponseEntity<List<String>>
 }

@@ -28,34 +28,22 @@ interface IsinLeiRepository : JpaRepository<IsinLeiEntity, String> {
     fun findByIsin(isin: String): IsinLeiEntity?
 
     /**
-     * Finds all ISIN-LEI entities by a list of ISINs.
+     * Finds ISIN-LEI entities associated to a given company, with pagination support.
      *
-     * @param isins The list of ISINs to search for.
-     * @return A list of `IsinLeiEntity` matching the provided ISINs.
-     */
-    fun findAllByIsinIn(isins: List<String>): List<IsinLeiEntity>
-
-    /**
-     * Finds all ISIN-LEI entities for a given company ID, with pagination support.
-     *
-     * @param companyId The ID of the company to search for.
+     * @param storedCompanyEntity The stored company to search for.
      * @param pageable The pagination information.
-     * @return A `Page` of `IsinLeiEntity` matching the provided company ID.
+     * @return A `Page` of `IsinLeiEntity` matching the provided stored company.
      */
     fun findByCompany(
-        companyId: StoredCompanyEntity,
+        storedCompanyEntity: StoredCompanyEntity,
         pageable: Pageable,
     ): Page<IsinLeiEntity>
 
     /**
-     * Finds all ISIN-LEI entities by a list of ISINs that are not associated with a specific company.
+     * Finds all ISIN-LEI entities by a specific LEI.
      *
-     * @param isins The list of ISINs to search for.
-     * @param excludedCompany The ID of the company to exclude from the results.
-     * @return A list of `IsinLeiEntity` matching the provided ISINs and not associated with the specified company.
+     * @param lei The LEI to search for.
+     * @return A list of `IsinLeiEntity` matching the provided LEI.
      */
-    fun findAllByIsinInAndCompanyIsNot(
-        isins: List<String>,
-        excludedCompany: StoredCompanyEntity,
-    ): List<IsinLeiEntity>
+    fun findAllByLei(lei: String): List<IsinLeiEntity>
 }

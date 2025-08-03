@@ -20,4 +20,6 @@ class IsinLeiDataController(
         isinLeiManager.putIsinLeiMapping(isinLeiMappingData)
         return ResponseEntity.ok(Collections.singletonMap("message", "Successfully received ISIN-LEI mapping data"))
     }
+
+    override fun getIsinsByLei(lei: String): ResponseEntity<List<String>> = ResponseEntity.ok(isinLeiManager.getIsinsByLei(lei))
 }

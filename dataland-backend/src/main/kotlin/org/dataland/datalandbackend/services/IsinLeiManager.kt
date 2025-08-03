@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 class IsinLeiManager(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,
     @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
+    @Autowired private val isinLeiRepository: IsinLeiRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -81,4 +83,11 @@ class IsinLeiManager(
             }
         futures.forEach { it.join() }
     }
+
+    /**
+     * Method to get all ISINs associated with a given LEI.
+     * @param lei the LEI to search for
+     * @return a list of ISINs associated with the given LEI (empty list if none are found)
+     */
+    fun getIsinsByLei(lei: String): List<String> = isinLeiRepository.findAllByLei(lei).map { it.isin }
 }

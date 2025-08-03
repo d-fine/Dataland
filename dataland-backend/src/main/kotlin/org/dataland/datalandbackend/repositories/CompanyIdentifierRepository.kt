@@ -30,21 +30,6 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
     fun getFirstByIdentifierValueIs(identifierValue: String): CompanyIdentifierEntity?
 
     /**
-     * Retrieve existing entries for a given [identifierType] that match any of the given [identifierValues]
-     * and are not associated with the [excludedCompany]
-     *
-     * @param identifierType the type of identifier to search for
-     * @param identifierValues a list of identifier values to match against
-     * @param excludedCompany the company to exclude from the search results
-     * @return A list of `CompanyIdentifierEntity` that match the criteria
-     */
-    fun findByIdentifierTypeIsAndIdentifierValueInAndCompanyIsNot(
-        identifierType: IdentifierType,
-        identifierValues: List<String>,
-        excludedCompany: StoredCompanyEntity,
-    ): List<CompanyIdentifierEntity>
-
-    /**
      * Auto generated function to obtain all company identifiers of a certain type given a collection of companies.
      */
     fun findCompanyIdentifierEntitiesByCompanyInAndIdentifierTypeIs(
