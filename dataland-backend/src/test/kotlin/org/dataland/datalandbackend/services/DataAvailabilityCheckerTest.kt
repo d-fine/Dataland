@@ -7,53 +7,36 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.utils.TestPostgresContainer
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @Testcontainers
 @Transactional
+@Rollback
 class DataAvailabilityCheckerTest {
     companion object {
         private const val REPORTING_PERIOD = "2023"
         private const val DATA_TYPE = "sfdr"
         private const val COMPANY_ID = "46b5374b-a720-43e6-9c5e-9dd92bd95b33"
 
-        @Container
-        @JvmStatic
-        val postgres: PostgreSQLContainer<*> =
-            PostgreSQLContainer("postgres:15-alpine")
-                .withDatabaseName("dataland_test")
-                .withUsername("test")
-                .withPassword("test")
-                .withReuse(true)
-
         @DynamicPropertySource
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", postgres::getJdbcUrl)
-            registry.add("spring.datasource.username", postgres::getUsername)
-            registry.add("spring.datasource.password", postgres::getPassword)
-            registry.add("spring.datasource.driver-class-name") { "org.postgresql.Driver" }
-            registry.add("spring.jpa.database-platform") { "org.hibernate.dialect.PostgreSQLDialect" }
-            registry.add("spring.jpa.hibernate.ddl-auto") { "create-drop" }
-            registry.add("spring.jpa.show-sql") { "false" }
-            registry.add("spring.jpa.properties.hibernate.format_sql") { "false" }
-            registry.add("spring.flyway.enabled") { "false" }
+            TestPostgresContainer.configureProperties(registry)
         }
     }
 
@@ -92,15 +75,6 @@ class DataAvailabilityCheckerTest {
     fun setUp() {
         dataAvailabilityChecker = DataAvailabilityChecker(entityManager)
         storedCompanyRepository.saveAndFlush(dummyCompany)
-    }
-
-    @AfterEach
-    fun tearDown() {
-        // Clean up test data after each test
-        dataMetaInformationRepository.deleteAll()
-        storedCompanyRepository.deleteAll()
-        entityManager.flush()
-        entityManager.clear()
     }
 
     @ParameterizedTest

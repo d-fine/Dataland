@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
+import org.dataland.datalandbackend.utils.TestPostgresContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -20,8 +21,6 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(classes = [DatalandBackend::class])
@@ -42,24 +41,10 @@ class CompanyAlterationManagerTest {
     private lateinit var companyQueryManager: CompanyQueryManager
 
     companion object {
-        @Container
-        @JvmStatic
-        val postgresContainer =
-            PostgreSQLContainer("postgres:15")
-                .withDatabaseName("dataland_test")
-                .withUsername("test")
-                .withPassword("test")
-
         @DynamicPropertySource
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", postgresContainer::getJdbcUrl)
-            registry.add("spring.datasource.username", postgresContainer::getUsername)
-            registry.add("spring.datasource.password", postgresContainer::getPassword)
-            registry.add("spring.jpa.hibernate.ddl-auto") { "create-drop" }
-            registry.add("spring.jpa.show-sql") { "false" }
-            registry.add("spring.jpa.properties.hibernate.format_sql") { "false" }
-            registry.add("spring.flyway.enabled") { "false" }
+            TestPostgresContainer.configureProperties(registry)
         }
     }
 

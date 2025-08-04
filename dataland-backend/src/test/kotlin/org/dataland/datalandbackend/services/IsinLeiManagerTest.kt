@@ -9,19 +9,22 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.utils.TestPostgresContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
+import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @Testcontainers
+@Transactional
+@Rollback
 class IsinLeiManagerTest(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,
     @Autowired private val isinLeiRepository: IsinLeiRepository,
@@ -30,27 +33,10 @@ class IsinLeiManagerTest(
     @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
 ) {
     companion object {
-        @Container
-        @JvmStatic
-        val postgres: PostgreSQLContainer<*> =
-            PostgreSQLContainer("postgres:15-alpine")
-                .withDatabaseName("dataland_test")
-                .withUsername("test")
-                .withPassword("test")
-                .withReuse(true)
-
         @DynamicPropertySource
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", postgres::getJdbcUrl)
-            registry.add("spring.datasource.username", postgres::getUsername)
-            registry.add("spring.datasource.password", postgres::getPassword)
-            registry.add("spring.datasource.driver-class-name") { "org.postgresql.Driver" }
-            registry.add("spring.jpa.database-platform") { "org.hibernate.dialect.PostgreSQLDialect" }
-            registry.add("spring.jpa.hibernate.ddl-auto") { "create-drop" }
-            registry.add("spring.jpa.show-sql") { "false" }
-            registry.add("spring.jpa.properties.hibernate.format_sql") { "false" }
-            registry.add("spring.flyway.enabled") { "false" }
+            TestPostgresContainer.configureProperties(registry)
         }
     }
 
@@ -76,40 +62,18 @@ class IsinLeiManagerTest(
     val companyWithTestLei1 =
         CompanyInformation(
             companyName = "Test Company 1",
-            companyAlternativeNames = null,
-            companyContactDetails = null,
-            companyLegalForm = null,
             countryCode = "DE",
             headquarters = "Berlin",
             headquartersPostalCode = "8",
-            sector = null,
-            sectorCodeWz = null,
-            website = null,
-            isTeaserCompany = null,
-            identifiers =
-                mapOf(
-                    IdentifierType.Lei to listOf(dummyLei1),
-                ),
-            parentCompanyLei = null,
+            identifiers = mapOf(IdentifierType.Lei to listOf(dummyLei1)),
         )
     val companyWithTestLei2 =
         CompanyInformation(
             companyName = "Test Company 2",
-            companyAlternativeNames = null,
-            companyContactDetails = null,
-            companyLegalForm = null,
             countryCode = "DE",
             headquarters = "Berlin",
             headquartersPostalCode = "8",
-            sector = null,
-            sectorCodeWz = null,
-            website = null,
-            isTeaserCompany = null,
-            identifiers =
-                mapOf(
-                    IdentifierType.Lei to listOf(dummyLei2),
-                ),
-            parentCompanyLei = null,
+            identifiers = mapOf(IdentifierType.Lei to listOf(dummyLei2)),
         )
 
     lateinit var isinLeiManager: IsinLeiManager
@@ -122,7 +86,8 @@ class IsinLeiManagerTest(
         isinLeiManager =
             IsinLeiManager(
                 storedCompanyRepository = storedCompanyRepository,
-                isinLeiTransactionalService,
+                isinLeiTransactionalService = isinLeiTransactionalService,
+                isinLeiRepository = isinLeiRepository,
             )
         dummyCompany1 = companyAlterationManager.addCompany(companyWithTestLei1)
         dummyCompany2 = companyAlterationManager.addCompany(companyWithTestLei2)
