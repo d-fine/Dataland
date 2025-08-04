@@ -7,7 +7,7 @@ describe('Component tests for the lksg Risk Assessments Form Element', () => {
       cy.mountWithPlugins(RiskAssessmentFormElement, {}).then(() => {
         cy.get('[data-test="counteractingMeasures"]').should('exist');
         cy.get('[data-test="listedMeasures"]').should('not.exist');
-
+        cy.pause();
         cy.get('div[data-test="counteractingMeasures"]').find('input[type="checkbox"][value="Yes"]').click();
         cy.get('[data-test="listedMeasures"]').should('exist');
 

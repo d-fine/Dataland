@@ -104,8 +104,14 @@
                   </template>
                 </Column>
                 <Column field="reviewDataset" header="" class="w-2 qa-review-button">
-                  <template #body>
-                    <PrimeButton label="REVIEW" icon="pi pi-chevron-right" icon-pos="right" variant="link" />
+                  <template #body="slotProps">
+                    <PrimeButton
+                      @click="goToQaViewPageByButton(slotProps.data)"
+                      label="REVIEW"
+                      icon="pi pi-chevron-right"
+                      icon-pos="right"
+                      variant="text"
+                    />
                   </template>
                 </Column>
               </DataTable>
@@ -288,6 +294,15 @@ export default defineComponent({
       const qaDataObject = event.data as QaReviewResponse;
       const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
       return router.push(qaUri);
+    },
+
+    /**
+     * Navigates to the view framework data page on a click on the row of the company
+     * @param qaDataObject stored information about the row
+     */
+    goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
+      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+      void this.$router.push(qaUri);
     },
 
     /**

@@ -23,7 +23,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
-        .find('input.p-radiobutton')
+        .find('input[type="checkbox"]')
         .eq(1)
         .click()
         .find('button[data-test="files-to-upload-remove"]')

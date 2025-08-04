@@ -55,7 +55,8 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
    * @param fieldName name of the field under which the report should be added
    */
   function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
-    cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[id*="-option-yes"]').check();
+    cy.pause();
+    cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[type="checkbox"][value="Yes"]').check();
     new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
   }
 
