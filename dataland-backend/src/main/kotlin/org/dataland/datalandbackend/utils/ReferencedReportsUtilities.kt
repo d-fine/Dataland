@@ -13,6 +13,7 @@ import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import kotlin.sequences.forEach
 
 /**
  * Utilities for handling referenced reports in a specification schema.
@@ -111,11 +112,13 @@ class ReferencedReportsUtilities {
                 allCompanyReports.add(foundReport)
             }
         } else {
-            val fields = contentNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(jsonField.value), allCompanyReports)
-            }
+            contentNode
+                .fieldNames()
+                .asSequence()
+                .map { fieldName -> fieldName to contentNode.get(fieldName) }
+                .forEach { (_, value) ->
+                    getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(value), allCompanyReports)
+                }
         }
     }
 
@@ -186,14 +189,16 @@ class ReferencedReportsUtilities {
                 (jsonNode as ObjectNode).put(FILE_NAME_FIELD, fileReferenceToFileName[fileReference])
             }
         } else {
-            val fields = jsonNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                updateJsonNodeWithDataFromReferencedReports(
-                    jsonField.value, fileReferenceToPublicationDate,
-                    fileReferenceToFileName, jsonField.key,
-                )
-            }
+            jsonNode
+                .fieldNames()
+                .asSequence()
+                .map { fieldName -> fieldName to jsonNode.get(fieldName) }
+                .forEach { (key, value) ->
+                    updateJsonNodeWithDataFromReferencedReports(
+                        value, fileReferenceToPublicationDate,
+                        fileReferenceToFileName, key,
+                    )
+                }
         }
     }
 
