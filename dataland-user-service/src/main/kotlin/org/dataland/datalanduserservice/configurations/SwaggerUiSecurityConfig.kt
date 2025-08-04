@@ -22,9 +22,8 @@ class SwaggerUiSecurityConfig {
     @Bean
     fun swaggerUiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .securityMatcher { request ->
-                request.servletPath.contains("/swagger-ui/")
-            } // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
+            .securityMatcher("/swagger-ui/**")
+            // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
             .headers { headers ->
                 headers.contentSecurityPolicy {
                     it.policyDirectives(
