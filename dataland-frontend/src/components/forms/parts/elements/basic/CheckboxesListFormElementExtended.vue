@@ -12,14 +12,14 @@
       <div class="px-2 pt-3" v-if="isYesNoVariant">
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
         <div class="yes-no-checkboxes">
-          <div v-for="(labelText, value) in options" :key="value" class="yes-no-option">
+          <div v-for="option in options" :key="option.value" class="yes-no-option">
             <Checkbox
               v-model="checkboxValue"
-              :inputId="`yes-no-${value}`"
-              :value="value"
+              :inputId="`yes-no-${option.value}`"
+              :value="option.value"
               @change="updateYesNoValue()"
             />
-            <label :for="`yes-no-${value}`">{{ labelText }}</label>
+            <label :for="`yes-no-${option.value}`">{{ option.label }}</label>
           </div>
         </div>
       </div>

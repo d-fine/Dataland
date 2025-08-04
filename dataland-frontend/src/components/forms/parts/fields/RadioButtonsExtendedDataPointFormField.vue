@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3" :data-test="name">
-    <ExtendedDataPointFormField
+    <CheckboxesListFormElementExtended
       :name="name"
       :description="description"
       :label="label"
@@ -15,11 +15,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { OptionsFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
-import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
+import CheckboxesListFormElementExtended from '@/components/forms/parts/elements/basic/CheckboxesListFormElementExtended.vue';
 
 export default defineComponent({
   name: 'RadioButtonsExtendedDataPointFormField',
-  components: { ExtendedDataPointFormField },
+  components: { CheckboxesListFormElementExtended },
   props: {
     ...OptionsFormFieldProps,
     isDataPointToggleable: {

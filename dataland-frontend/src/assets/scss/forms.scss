@@ -3,8 +3,8 @@
   input[type='radio']:not(.p-toggleswitch-input):not(.p-radiobutton) {
     display: grid;
     place-content: center;
-    height: 1rem;
-    width: 1rem;
+    height: 100%;
+    width: 100%;
     cursor: pointer;
     margin: 0 0.5rem 0 0;
   }
