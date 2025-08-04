@@ -18,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 
 /**
  * Configuration applied on all web endpoints defined for this
@@ -76,20 +75,17 @@ class WebSecurityConfig(
     @Suppress("SpreadOperator")
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
         val linksList = listStringToList(publicLinks) + listStringToList(internalLinks)
-        val linkMatchers = linksList.map { antMatcher(it) }.toTypedArray()
 
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers(*linkMatchers)
+                    .requestMatchers(*linksList.toTypedArray())
                     .permitAll()
                     .anyRequest()
                     .fullyAuthenticated()
-            }.logout {
-                it.disable()
-            }.csrf {
-                it.disable()
-            }.oauth2ResourceServer {
+            }.logout { it.disable() }
+            .csrf { it.disable() }
+            .oauth2ResourceServer {
                 it.authenticationManagerResolver(tokenAuthenticationManagerResolver())
             }
     }
