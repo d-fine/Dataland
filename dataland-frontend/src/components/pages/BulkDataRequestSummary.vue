@@ -31,7 +31,7 @@
               <Badge :value="section.items?.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
+          <div v-if="section.textBox" class="text-center p-1 mt-1 mb-3">
             {{ section.textBox }}
           </div>
           <div
