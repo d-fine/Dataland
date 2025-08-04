@@ -10,7 +10,6 @@ import java.sql.BatchUpdateException
 import java.sql.PreparedStatement
 import java.util.concurrent.CompletableFuture
 import javax.sql.DataSource
-import kotlin.use
 
 /** Service for managing ISIN-LEI mappings in a transactional manner.
  * This service provides methods to clear all mappings and save mappings in batches.
@@ -44,7 +43,7 @@ class IsinLeiTransactionalService(
     fun saveAllJdbcBatch(
         entities: List<IsinLeiEntity>,
         batchSize: Int = 50,
-    ): CompletableFuture<Void> {
+    ): CompletableFuture<Unit> {
         val sql = """INSERT INTO $tableName (company_id, isin, lei) VALUES (?, ?, ?)"""
         dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->

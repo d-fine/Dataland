@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.Optional
 
 /**
  * A JPA interface for accessing the CompanyIdentifier Entity
@@ -36,13 +35,4 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
         companies: Collection<StoredCompanyEntity>,
         identifierType: IdentifierType,
     ): MutableList<CompanyIdentifierEntity>
-
-    /**
-     * Finds a `CompanyIdentifierEntity` based on the identifier ID
-     *
-     * @param CompanyIdentifierEntityId The value of the identifier to search for.
-     * @return An `Optional` containing the `CompanyIdentifierEntity` matching the given identifier value and type,
-     * or empty if no match is found.
-     */
-    override fun findById(companyIdentifierEntityId: CompanyIdentifierEntityId): Optional<CompanyIdentifierEntity>
 }

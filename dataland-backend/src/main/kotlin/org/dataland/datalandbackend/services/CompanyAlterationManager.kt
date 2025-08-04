@@ -273,7 +273,7 @@ class CompanyAlterationManager
             storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
         ) {
-            identifierMap.forEach { identifierType, identifierValues ->
+            identifierMap.forEach { identifierType, _ ->
                 if (identifierType == IdentifierType.Isin) return@forEach
                 storedCompanyEntity.identifiers.removeIf { it.identifierType == identifierType }
                 companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(storedCompanyEntity, identifierType)

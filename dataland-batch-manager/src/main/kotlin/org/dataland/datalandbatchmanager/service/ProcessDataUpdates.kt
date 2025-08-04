@@ -112,6 +112,7 @@ class ProcessDataUpdates
             }
         }
 
+         // ToDo remove before merge
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 15 14 * * *")
         private fun testIsinLeiMapping() {
