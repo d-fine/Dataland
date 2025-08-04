@@ -234,7 +234,7 @@ class CompanyAlterationManager
         ) {
             companyIdentifierRepositoryInterface.deleteAllByCompany(storedCompanyEntity)
             storedCompanyEntity.identifiers = mutableListOf()
-            createAndAssociateNonIsinIdentifiers(storedCompanyEntity, identifierMap)
+            storedCompanyEntity.identifiers.addAll(createAndAssociateNonIsinIdentifiers(storedCompanyEntity, identifierMap))
         }
 
         /**

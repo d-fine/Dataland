@@ -19,6 +19,7 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.annotation.Transactional
+import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(classes = [DatalandBackend::class])
@@ -33,6 +34,10 @@ class IsinLeiManagerTest(
     @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
 ) {
     companion object {
+        @Container
+        @JvmStatic
+        val postgres = TestPostgresContainer.postgres
+
         @DynamicPropertySource
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {

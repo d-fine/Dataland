@@ -20,6 +20,7 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.annotation.Transactional
+import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.UUID
 
@@ -32,6 +33,10 @@ class DataAvailabilityCheckerTest {
         private const val REPORTING_PERIOD = "2023"
         private const val DATA_TYPE = "sfdr"
         private const val COMPANY_ID = "46b5374b-a720-43e6-9c5e-9dd92bd95b33"
+
+        @Container
+        @JvmStatic
+        val postgres = TestPostgresContainer.postgres
 
         @DynamicPropertySource
         @JvmStatic
