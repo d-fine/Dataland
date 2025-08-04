@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 
-class CompanyAlterationManagerTest: BaseIntegrationTest() {
+class CompanyAlterationManagerTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var companyAlterationManager: CompanyAlterationManager
 

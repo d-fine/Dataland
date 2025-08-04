@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 
-class DataAvailabilityCheckerTest: BaseIntegrationTest() {
+class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     companion object {
         private const val REPORTING_PERIOD = "2023"
         private const val DATA_TYPE = "sfdr"

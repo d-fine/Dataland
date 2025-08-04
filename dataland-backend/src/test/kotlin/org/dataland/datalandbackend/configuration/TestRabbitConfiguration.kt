@@ -15,16 +15,11 @@ import org.springframework.context.annotation.Profile
 @TestConfiguration
 @Profile("test")
 class TestRabbitConfiguration {
+    @Bean
+    @Primary
+    fun mockRabbitTemplate(): RabbitTemplate = Mockito.mock(RabbitTemplate::class.java)
 
     @Bean
     @Primary
-    fun mockRabbitTemplate(): RabbitTemplate {
-        return Mockito.mock(RabbitTemplate::class.java)
-    }
-
-    @Bean
-    @Primary  
-    fun mockAmqpTemplate(): AmqpTemplate {
-        return Mockito.mock(AmqpTemplate::class.java)
-    }
+    fun mockAmqpTemplate(): AmqpTemplate = Mockito.mock(AmqpTemplate::class.java)
 }
