@@ -110,7 +110,7 @@
                       label="REVIEW"
                       icon="pi pi-chevron-right"
                       icon-pos="right"
-                      variant="text"
+                      variant="link"
                     />
                   </template>
                 </Column>
