@@ -7,7 +7,6 @@ import org.dataland.keycloakAdapter.auth.DatalandApiKeyAuthentication
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Profile
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional
  * Triggers the migration of stored datasets to assembled datasets when the backend starts
  */
 @Service("AssembledDataMigrationTrigger")
-@Profile("!test")
 class AssembledDataMigrationTrigger
     @Autowired
     constructor(

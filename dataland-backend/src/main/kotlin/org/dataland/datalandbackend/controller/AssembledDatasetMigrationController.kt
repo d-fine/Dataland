@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.services.datapoints.AssembledDataMigrationMa
 import org.dataland.datalandbackend.services.datapoints.AssembledDataMigrationTrigger
 import org.dataland.datalandbackend.services.datapoints.DataControllerProviderService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController
  * Controller for the DataMigrationApi
  */
 @RestController
-@Profile("!test")
 class AssembledDatasetMigrationController
     @Autowired
     constructor(

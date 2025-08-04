@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.configuration.TestRabbitConfiguration
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
@@ -16,14 +15,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
-@SpringBootTest(classes = [DatalandBackend::class, TestRabbitConfiguration::class])
-@ActiveProfiles("test")
+@SpringBootTest(classes = [DatalandBackend::class])
 @Testcontainers
 class IsinLeiManagerTest(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,

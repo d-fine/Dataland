@@ -1,10 +1,8 @@
 package org.dataland.datalandbackend.utils
 
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.configuration.TestRabbitConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.annotation.Transactional
@@ -18,8 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
  * - Provides real PostgreSQL DB via container
  * - Enables transactions with rollback, i.e. all data is automatically reset in between tests
  */
-@SpringBootTest(classes = [DatalandBackend::class, TestRabbitConfiguration::class])
-@ActiveProfiles("test")
+@SpringBootTest(classes = [DatalandBackend::class])
 @Testcontainers
 @Transactional
 @Rollback
