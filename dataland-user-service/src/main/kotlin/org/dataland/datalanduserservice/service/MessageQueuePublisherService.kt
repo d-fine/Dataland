@@ -1,5 +1,6 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -12,11 +13,9 @@ import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailConten
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 /**
  * Publisher Service for Portfolio Updates (Companies and Monitoring status).
@@ -26,6 +25,7 @@ class MessageQueuePublisherService
     @Autowired
     constructor(
         private val cloudEventMessageHandler: CloudEventMessageHandler,
+        private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val objectMapper = defaultObjectMapper
@@ -76,19 +76,22 @@ class MessageQueuePublisherService
          * Method to publish a support request
          * @param supportRequestData Contains topic and message of the request
          */
-        fun publishSupportRequest(supportRequestData: SupportRequestData) {
-            val datalandJwtAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
-            val correlationId = UUID.randomUUID().toString()
+        fun publishSupportRequest(
+            supportRequestData: SupportRequestData,
+            correlationId: String,
+        ) {
+            val datalandJwtAuthentication = DatalandAuthentication.fromContext()
+            val keycloakUserInfo = keycloakUserService.getUser(datalandJwtAuthentication.userId)
 
             val internalEmailContentTable =
                 InternalEmailContentTable(
                     "User Portfolio Support Request",
                     "A user has submitted a request for support.",
                     listOf(
-                        "User" to Value.Text(datalandJwtAuthentication.userId),
-                        "E-Mail" to Value.Text(datalandJwtAuthentication.username),
-                        "First Name" to Value.Text(datalandJwtAuthentication.firstName),
-                        "Last Name" to Value.Text(datalandJwtAuthentication.lastName),
+                        "User" to Value.Text(keycloakUserInfo.userId),
+                        "E-Mail" to Value.Text(keycloakUserInfo.email ?: ""),
+                        "First Name" to Value.Text(keycloakUserInfo.firstName ?: ""),
+                        "Last Name" to Value.Text(keycloakUserInfo.lastName ?: ""),
                         "Topic" to Value.Text(supportRequestData.topic),
                         "Message" to Value.Text(supportRequestData.message),
                     ),
