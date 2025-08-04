@@ -124,12 +124,11 @@ class CsvExporter(
 
         validateConsistency(data, transformationRules, legacyRules, dataDimension)
 
-
         val lei = companyData.companyInformation.identifiers[LEI_IDENTIFIER]?.firstOrNull()
         val isinData = mutableListOf<Map<String, String>>()
         if (lei != null) {
             val isins = retryOnCommonApiErrors { isinLeiDataControllerApi.getIsinsByLei(lei) }
-            isinData += isins.map { isin -> mapOf(LEI_HEADER to lei, ISIN_HEADER to isin)}
+            isinData += isins.map { isin -> mapOf(LEI_HEADER to lei, ISIN_HEADER to isin) }
         }
         csvData += mapJsonToCsv(data, transformationRules)
         csvData += mapJsonToLegacyCsv(data, legacyRules)

@@ -2417,7 +2417,7 @@
           "isin-lei-data-controller"
         ],
         "summary": "Retrieves all ISINs for a given LEI",
-        "description": "All ISINs associated to the given LEI are returned. If no ISINs are registered for the LEI, an empty list is returned.",
+        "description": "All ISINs associated to the given LEI are returned. Returns empty list if no ISINs are registered for the LEI.",
         "operationId": "getIsinsByLei",
         "parameters": [
           {

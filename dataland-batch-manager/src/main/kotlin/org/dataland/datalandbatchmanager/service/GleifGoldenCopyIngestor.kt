@@ -1,5 +1,6 @@
 package org.dataland.datalandbatchmanager.service
 
+import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.IsinLeiMappingData
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.Locale
-import okhttp3.OkHttpClient
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
 import java.util.stream.StreamSupport
@@ -126,9 +126,10 @@ class GleifGoldenCopyIngestor(
                 // Use a controller with extended timeout to avoid timeouts for large files
                 IsinLeiDataControllerApi(
                     isinLeiDataControllerApi.baseUrl,
-                    (isinLeiDataControllerApi.client as OkHttpClient).newBuilder()
+                    (isinLeiDataControllerApi.client as OkHttpClient)
+                        .newBuilder()
                         .readTimeout(EXTENDED_TIMOUT_IN_MINUTES, TimeUnit.MINUTES)
-                        .build()
+                        .build(),
                 ).putIsinLeiMapping(isinLeiMappingData)
                 if (!newMappingFile.delete()) {
                     logger.error("failed to delete temporary mapping file $newMappingFile")
