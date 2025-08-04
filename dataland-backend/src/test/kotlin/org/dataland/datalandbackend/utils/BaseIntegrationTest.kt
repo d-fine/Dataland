@@ -26,7 +26,6 @@ import org.testcontainers.junit.jupiter.Testcontainers
 // Suppress is required as detekt wrongfully suggests to convert this class into an object which would break it
 @Suppress("UtilityClassWithPublicConstructor")
 abstract class BaseIntegrationTest {
-
     companion object {
         @Container
         @JvmStatic
