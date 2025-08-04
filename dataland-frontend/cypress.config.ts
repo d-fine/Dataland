@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress';
 import { promises, rmdir } from 'fs';
 import { createHash } from 'crypto';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 let returnEmail: string;
 let returnPassword: string;
@@ -12,7 +14,7 @@ export default defineConfig({
     prepopulate_timeout_s: 180,
     short_timeout_in_ms: 10000,
     medium_timeout_in_ms: 30000,
-    long_timeout_in_ms: 60000,
+    long_timeout_in_ms: 100000,
     mobile_device_viewport_height: 667,
     mobile_device_viewport_width: 300,
     AWAIT_PREPOPULATION_RETRIES: 250,
@@ -37,6 +39,7 @@ export default defineConfig({
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
   defaultCommandTimeout: 10000,
+  pageLoadTimeout: 120000,
   viewportHeight: 684,
   viewportWidth: 1536,
   video: false,
@@ -143,12 +146,23 @@ export default defineConfig({
           return content.includes(term);
         },
       });
+      on('task', {
+        async findFileByPrefix({ folder, prefix, extension }) {
+          const files = await readdir(folder);
+          const match = files.find((file) => file.startsWith(prefix) && file.endsWith(`.${extension}`));
+          if (!match) {
+            throw new Error(`No file found starting with '${prefix}' and ending with '.${extension}'`);
+          }
+          return join(folder, match);
+        },
+      });
 
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',
     downloadsFolder: 'cypress/downloads',
-    responseTimeout: 60000,
+    responseTimeout: 100000,
+    requestTimeout: 100000,
   },
   component: {
     devServer: {

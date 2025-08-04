@@ -9,12 +9,21 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
+ * Convert kebab case string to camelCase
+ * @param rawText is the string to be converted
+ * @returns the converted string in camel case
+ */
+export function convertKebabCaseToCamelCase(rawText: string): string {
+  return rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+}
+
+/**
  * convert kebab case string to pascal case string using regex
  * @param rawText is the string to be converted
  * @returns the converted string in pascal case
  */
 export function convertKebabCaseToPascalCase(rawText: string): string {
-  const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+  const camelCase = convertKebabCaseToCamelCase(rawText);
   return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 }
 
@@ -71,7 +80,6 @@ function humanizeViaMapping(rawText: string): string {
     lksg: 'LkSG',
     sfdr: 'SFDR',
     sme: 'SME',
-    p2p: 'WWF Pathways to Paris',
     inhouseproduction: 'In-house Production',
     contractprocessing: 'Contract Processing',
     hvcplastics: 'HVC Plastics',
@@ -121,10 +129,6 @@ export function getFrameworkTitle(framework: string): string {
       return 'EU Taxonomy';
     case DataTypeEnum.EutaxonomyNonFinancials:
       return 'EU Taxonomy';
-    case DataTypeEnum.P2p:
-      return 'WWF';
-    case DataTypeEnum.EsgDatenkatalog:
-      return 'ESG Datenkatalog';
     default:
       return humanizeStringOrNumber(framework);
   }
@@ -135,12 +139,7 @@ export function getFrameworkTitle(framework: string): string {
  * @returns boolean if framework has subtitle
  */
 export function frameworkHasSubTitle(framework: string): boolean {
-  return (
-    framework == DataTypeEnum.P2p ||
-    framework == DataTypeEnum.EutaxonomyFinancials ||
-    framework == DataTypeEnum.EutaxonomyNonFinancials ||
-    framework == DataTypeEnum.EsgDatenkatalog
-  );
+  return framework == DataTypeEnum.EutaxonomyFinancials || framework == DataTypeEnum.EutaxonomyNonFinancials;
 }
 /**
  * Return the subtitle of a framework
@@ -153,10 +152,6 @@ export function getFrameworkSubtitle(framework: string): string {
       return 'for financial companies';
     case DataTypeEnum.EutaxonomyNonFinancials:
       return 'for non-financial companies';
-    case DataTypeEnum.P2p:
-      return 'Pathways to Paris';
-    case DataTypeEnum.EsgDatenkatalog:
-      return 'für Corporate Schuldscheindarlehen';
     default:
       return '';
   }

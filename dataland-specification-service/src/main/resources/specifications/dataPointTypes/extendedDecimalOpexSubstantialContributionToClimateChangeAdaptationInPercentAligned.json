@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalOpexSubstantialContributionToClimateChangeAdaptationInPercentAligned",
+  "name" : "Substantial Contribution to Climate Change Adaptation In Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned proportion of OpEx substantially contributing to climate change adaptation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

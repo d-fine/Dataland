@@ -18,7 +18,9 @@ data class JsonSpecificationLeaf(
  * Utilities for working with JSON framework specifications.
  */
 object JsonSpecificationUtils {
-    private fun isTerminalNode(node: ObjectNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref")
+    private fun isTerminalNode(node: JsonNode): Boolean =
+        node.fieldNames().asSequence().toSet() == setOf("id", "ref", "aliasExport") ||
+            node.fieldNames().asSequence().toSet() == setOf("id", "ref")
 
     /**
      * Hydrates a JSON specification with data from a data function. During hydration, leaf nodes of the
@@ -63,8 +65,8 @@ object JsonSpecificationUtils {
      * @return A map of data point types to their corresponding data
      */
     fun dehydrateJsonSpecification(
-        jsonSpecification: ObjectNode,
-        dataObject: ObjectNode,
+        jsonSpecification: JsonNode,
+        dataObject: JsonNode,
     ): Map<String, JsonSpecificationLeaf> = dehydrateJsonSpecificationRecursive("", jsonSpecification, dataObject)
 
     /**
@@ -76,7 +78,7 @@ object JsonSpecificationUtils {
      */
     private fun dehydrateJsonSpecificationRecursive(
         currentPath: String,
-        currentSpecificationNode: ObjectNode,
+        currentSpecificationNode: JsonNode,
         currentDataNode: JsonNode,
     ): Map<String, JsonSpecificationLeaf> {
         val dataMap = mutableMapOf<String, JsonSpecificationLeaf>()
@@ -104,7 +106,7 @@ object JsonSpecificationUtils {
         fieldName: String,
         jsonNode: JsonNode,
         currentPath: String,
-        currentSpecificationNode: ObjectNode,
+        currentSpecificationNode: JsonNode,
     ): Map<String, JsonSpecificationLeaf> {
         val dataMap = mutableMapOf<String, JsonSpecificationLeaf>()
         if (!jsonNode.isNull) {

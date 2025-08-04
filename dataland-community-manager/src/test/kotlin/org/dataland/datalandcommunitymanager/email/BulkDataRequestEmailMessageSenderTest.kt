@@ -39,7 +39,7 @@ class BulkDataRequestEmailMessageSenderTest {
                         "9856177321",
                     "28f05156-e1ba-1ea8-8d1e-d4833f6c7afgh",
                 ),
-            dataTypes = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            dataTypes = setOf(DataTypeEnum.sfdr, DataTypeEnum.lksg),
             reportingPeriods = setOf("2020", "2023"),
         )
     private val acceptedCompanyIdentifiers =
@@ -47,7 +47,7 @@ class BulkDataRequestEmailMessageSenderTest {
             CompanyIdAndName(companyId = "AR8756188701,9856177321", companyName = companyName),
         )
     private val expectedReportingPeriods = Value.List(Value.Text("2020"), Value.Text("2023"), separator = ", ")
-    private val expectedFrameworks = Value.List(Value.Text("p2p"), Value.Text("lksg"), separator = ", ")
+    private val expectedFrameworks = Value.List(Value.Text("sfdr"), Value.Text("lksg"), separator = ", ")
 
     private val expectedCompanies =
         Value.List(

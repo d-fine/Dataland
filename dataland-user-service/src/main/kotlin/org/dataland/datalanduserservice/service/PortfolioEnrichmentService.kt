@@ -3,10 +3,9 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,51 +17,69 @@ import org.springframework.transaction.annotation.Transactional
 class PortfolioEnrichmentService
     @Autowired
     constructor(
-        private val portfolioService: PortfolioService,
         private val metaDataControllerApi: MetaDataControllerApi,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
-        private val logger = LoggerFactory.getLogger(PortfolioEnrichmentService::class.java)
+        private val majorFrameworks =
+            listOf("sfdr", "eutaxonomy-financials", "eutaxonomy-non-financials", "nuclear-and-gas")
 
         /**
          * Construct an enriched entry using the passed company information, framework and latest reporting period
          */
         private fun getEnrichedEntry(
             companyInformation: BasicCompanyInformation,
-            framework: String,
-            mostRecentDataYear: String?,
+            availableDataYearsStringPerFramework: Map<String, String?>,
         ) = EnrichedPortfolioEntry(
             companyId = companyInformation.companyId,
             companyName = companyInformation.companyName,
             sector = companyInformation.sector,
             countryCode = companyInformation.countryCode,
-            framework = framework,
             "",
-            "",
-            mostRecentDataYear,
+            mapOf(),
+            availableDataYearsStringPerFramework,
         )
 
         /**
-         * Return a mapping "(companyId, framework) --> latest available reporting period" for each combination of companies and frameworks
-         * @param companyIds the list of companies for which the latest available reporting period shall be returned
-         * @param dataTypes the list of frameworks for which the latest available reporting period shall be returned
+         * Return a mapping: (companyId) => ( mapping: (framework) => available reporting periods ) that has the
+         * passed companyIds as keys, and the inner mapping has the passed frameworks as keys.
+         * @param companyIds
+         * @param frameworks
          */
-        private fun getMostRecentReportingPeriodPerCompanyAndFramework(
+        private fun getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
             companyIds: List<String>,
-            dataTypes: List<String>,
-        ): Map<Pair<String, String>, String> {
+            frameworks: List<String>,
+        ): Map<String, Map<String, List<String>>> {
             val availableDataDimensions =
                 metaDataControllerApi.getAvailableDataDimensions(
                     companyIds = companyIds,
-                    frameworksOrDataPointTypes = dataTypes,
+                    frameworksOrDataPointTypes = frameworks,
                 )
-            return availableDataDimensions.groupBy { Pair(it.companyId, it.dataType) }.mapValues {
-                it.value.maxOf { it.reportingPeriod }
+
+            val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
+                availableDataDimensions
+                    .groupBy(
+                        { it.companyId },
+                        { Pair(it.dataType, it.reportingPeriod) },
+                    )
+
+            val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder =
+                mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod.mapValues {
+                    it.value.groupBy(
+                        { it.first },
+                        { it.second },
+                    )
+                }
+
+            return mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder.mapValues {
+                it.value.mapValues {
+                    it.value.sortedDescending()
+                }
             }
         }
 
         /**
-         * Return enriched portfolio entries for each combination of the passed companies and frameworks
+         * Return enriched portfolio entries for each passed company, using the passed frameworks as keys in the
+         * mapping fields frameworkHyphenatedNamesToDataRef and availableReportingPeriods of each entry.
          * @param companyIdList the list of companies for which entries shall be returned
          * @param frameworkList the list of frameworks for which entries shall be returned
          */
@@ -71,43 +88,52 @@ class PortfolioEnrichmentService
             frameworkList: List<String>,
         ): List<EnrichedPortfolioEntry> {
             val companyValidationResults = companyDataControllerApi.postCompanyValidation(companyIdList)
-            val mostRecentData = getMostRecentReportingPeriodPerCompanyAndFramework(companyIdList, frameworkList)
+            val mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
+                getMapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly(
+                    companyIdList,
+                    frameworkList,
+                )
             val enrichedEntries = mutableListOf<EnrichedPortfolioEntry>()
 
             companyValidationResults.forEach { validationResult ->
                 val companyInformation = validationResult.companyInformation ?: return@forEach
-                frameworkList.forEach { framework ->
-                    enrichedEntries.add(
-                        getEnrichedEntry(
-                            companyInformation,
-                            framework,
-                            mostRecentData[Pair(companyInformation.companyId, framework)],
-                        ),
-                    )
-                }
+                val mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly =
+                    mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsSortedDescendingly[companyInformation.companyId]
+                        ?: mapOf()
+                enrichedEntries.add(
+                    getEnrichedEntry(
+                        companyInformation,
+                        mapFromFrameworkToAvailableReportingPeriodsSortedDescendingly.mapValues {
+                            it.value.fold("") { concatenationSoFar, nextReportingPeriod ->
+                                if (concatenationSoFar.isEmpty()) {
+                                    nextReportingPeriod
+                                } else {
+                                    "$concatenationSoFar, $nextReportingPeriod"
+                                }
+                            }
+                        },
+                    ),
+                )
             }
             return enrichedEntries
         }
 
         /**
-         * Retrieve an enriched portfolio for a given portfolio ID
-         * @param portfolioId the portfolio identifier
+         * Retrieve an enriched portfolio for a given portfolio.
          */
         @Transactional(readOnly = true)
-        fun getEnrichedPortfolio(portfolioId: String): EnrichedPortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
-            logger.info("Retrieve enriched portfolio with portfolioId: $portfolioId for user with userId: $userId.")
-
-            val portfolio = portfolioService.getPortfolioForUser(portfolioId)
-            return EnrichedPortfolio(
-                portfolioId = portfolioId,
+        fun getEnrichedPortfolio(portfolio: BasePortfolio): EnrichedPortfolio =
+            EnrichedPortfolio(
+                portfolioId = portfolio.portfolioId,
                 portfolioName = portfolio.portfolioName,
                 userId = portfolio.userId,
                 entries =
                     getEnrichedEntries(
                         portfolio.companyIds.toList(),
-                        portfolio.frameworks.map { it.value }.toList(),
+                        majorFrameworks,
                     ),
+                isMonitored = portfolio.isMonitored,
+                startingMonitoringPeriod = portfolio.startingMonitoringPeriod,
+                monitoredFrameworks = portfolio.monitoredFrameworks,
             )
-        }
     }

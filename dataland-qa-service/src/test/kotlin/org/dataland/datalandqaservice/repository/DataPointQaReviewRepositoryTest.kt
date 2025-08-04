@@ -5,7 +5,6 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.datalandqaservice.utils.TestJwtSecurityConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -53,14 +52,6 @@ class DataPointQaReviewRepositoryTest {
             reportingPeriod = dummyReportingPeriod,
         )
 
-    private val emptyFilter =
-        DataPointQaReviewItemFilter(
-            companyId = null,
-            dataPointType = null,
-            reportingPeriod = null,
-            qaStatus = null,
-        )
-
     @Test
     fun `test getAllEntriesForTheReviewQueue`() {
         dataPointQaReviewRepository.save(getDummyEntity())
@@ -71,19 +62,6 @@ class DataPointQaReviewRepositoryTest {
 
         assertEquals(1, result.size)
         assertEquals(pendingEntity, result.first())
-    }
-
-    @Test
-    fun `check that setting the latest only flag works as expected`() {
-        val firstEntity = dataPointQaReviewRepository.save(getDummyEntity(qaStatus = QaStatus.Pending))
-        val secondEntity = dataPointQaReviewRepository.save(getDummyEntity())
-        val latestResults = dataPointQaReviewRepository.findByFilterLatestOnly(emptyFilter, 10, 0)
-        assertEquals(1, latestResults.size)
-        assertEquals(secondEntity, latestResults.first())
-        val allResults = dataPointQaReviewRepository.findByFilter(emptyFilter, 10, 0)
-        assertEquals(2, allResults.size)
-        assertEquals(secondEntity, allResults.first())
-        assertEquals(firstEntity, allResults.last())
     }
 
     @Test

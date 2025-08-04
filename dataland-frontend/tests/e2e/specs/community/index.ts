@@ -5,4 +5,6 @@ describe('Community pages tests', () => {
   require('./BulkDataRequest');
   require('./SingleDataRequest');
   require('./MyPortfolios');
+  require('../data-download/DownloadMyPortfolios.ts');
+  require('./MonitorPortfolios.ts');
 });

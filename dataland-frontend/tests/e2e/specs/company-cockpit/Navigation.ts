@@ -77,23 +77,18 @@ describeIf(
     it('From the company cockpit page visit an upload page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-summary-panel'] a`).click();
+      cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-provide-data-button']`).click();
       cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
       );
       submitButton.exists();
     });
-    it('From the company cockpit page claim company ownership via the panel and context menu', () => {
+    it('From the company cockpit page claim company ownership via the panel', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
-      cy.get("[data-test='contextMenuButton']").click();
-      cy.get("[data-test='contextMenuItem']").should('contain.text', 'Claim').click();
-      submitOwnershipClaimForCompanyAlpha(
-        'This is a test message for claiming ownership via context menu in company info'
-      );
     });
 
     /**

@@ -20,22 +20,93 @@
     }
   ],
   "paths": {
+    "/user-validation/email": {
+      "post": {
+        "tags": [
+          "user-validation-controller"
+        ],
+        "summary": "Validate an email address and obtain user-related information from an email address.",
+        "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
+        "operationId": "postEmailAddressValidation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailAddress"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully validated the posted email address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeycloakUserInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The posted string does not have the format of an email address."
+          },
+          "403": {
+            "description": "You do not have permission to query user information based on email addresses."
+          },
+          "404": {
+            "description": "No Dataland user is registered under this email address."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/single": {
       "post": {
         "tags": [
           "request-controller"
         ],
         "summary": "Send a single request",
-        "description": "A single of data requests for specific frameworks and companies is being sent.",
+        "description": "A single data request for a specific framework, a company, and one or multiple reporting periods is triggered.",
         "operationId": "postSingleDataRequest",
         "parameters": [
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -60,14 +131,7 @@
             }
           },
           "403": {
-            "description": "Only admins can impersonate another user.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SingleDataRequestResponse"
-                }
-              }
-            }
+            "description": "Only admins can impersonate another user."
           },
           "default": {
             "description": "An error occurred",
@@ -166,12 +230,13 @@
           "company-roles-controller"
         ],
         "summary": "Assign company role for the company to the user.",
-        "description": "The company role for the specified company is being assigned to the user. Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
+        "description": "The company role for the specified company is being assigned to the user, who must be known to Keycloak. Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
         "operationId": "assignCompanyRole",
         "parameters": [
           {
             "name": "role",
             "in": "path",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -180,20 +245,24 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -206,6 +275,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "At least one of the specified IDs (user and company) is unknown."
           },
           "default": {
             "description": "An error occurred",
@@ -248,6 +320,7 @@
           {
             "name": "role",
             "in": "path",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -256,20 +329,24 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -317,6 +394,7 @@
           {
             "name": "role",
             "in": "path",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -325,20 +403,24 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -391,19 +473,23 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "comment",
             "in": "query",
+            "description": "An accompanying comment to a company ownership request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "I am the CEO of this company, please make me its owner on Dataland."
           }
         ],
         "responses": {
@@ -451,11 +537,13 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -508,11 +596,13 @@
           {
             "name": "dataRequestId",
             "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -567,11 +657,13 @@
           {
             "name": "dataRequestId",
             "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -638,36 +730,44 @@
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
             "in": "path",
+            "description": "The framework of the dataset on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "sfdr"
           },
           {
             "name": "reportingPeriod",
             "in": "path",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "userId",
             "in": "path",
+            "description": "The ID of the user who created the data request.",
             "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -720,6 +820,7 @@
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -731,12 +832,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -744,30 +841,37 @@
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "emailAddress",
             "in": "query",
+            "description": "The email address of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "test@example.com"
           },
           {
             "name": "adminComment",
             "in": "query",
+            "description": "The admin comment of the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Should be processed with high priority."
           },
           {
             "name": "requestStatus",
             "in": "query",
+            "description": "The current request status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -780,6 +884,7 @@
           {
             "name": "accessStatus",
             "in": "query",
+            "description": "The current access status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -792,6 +897,7 @@
           {
             "name": "requestPriority",
             "in": "query",
+            "description": "The priority of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -804,22 +910,27 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "datalandCompanyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "chunkSize",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -830,6 +941,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -948,6 +1060,7 @@
           {
             "name": "dataType",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -959,12 +1072,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -972,30 +1081,37 @@
           {
             "name": "userId",
             "in": "query",
+            "description": "The ID of the user who created the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
             "name": "emailAddress",
             "in": "query",
+            "description": "The email address of the user who created this data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "test@example.com"
           },
           {
             "name": "adminComment",
             "in": "query",
+            "description": "The admin comment of the data request.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Should be processed with high priority."
           },
           {
             "name": "requestStatus",
             "in": "query",
+            "description": "The current request status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1008,6 +1124,7 @@
           {
             "name": "accessStatus",
             "in": "query",
+            "description": "The current access status of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1020,6 +1137,7 @@
           {
             "name": "requestPriority",
             "in": "query",
+            "description": "The priority of the data request.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1032,18 +1150,22 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "datalandCompanyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -1101,6 +1223,7 @@
           {
             "name": "dataTypes",
             "in": "query",
+            "description": "The framework of the dataset on Dataland.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1112,12 +1235,8 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
-                  "p2p",
                   "lksg",
-                  "additional-company-information",
-                  "vsme",
-                  "esg-datenkatalog",
-                  "heimathafen"
+                  "vsme"
                 ]
               }
             }
@@ -1125,14 +1244,17 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2023
           },
           {
             "name": "aggregatedPriority",
             "in": "query",
+            "description": "The aggregated data request priority.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/AggregatedRequestPriority"
@@ -1190,12 +1312,13 @@
           "company-roles-controller"
         ],
         "summary": "Get company role assignments that match the provided filters.",
-        "description": "Get company role assignments that match the provided filters. Endpoint fully accessible to all Dataland-Admins. Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
-        "operationId": "getCompanyRoleAssignments",
+        "description": "Get company role assignments extended by basic user information that match the provided filters. The endpoint is fully accessible to all Dataland Admins. Company Role Assignees can access the endpoint if the companyId filter is set to their company. Any Dataland user can access the endpoint if the userId filter is set to their userId.",
+        "operationId": "getExtendedCompanyRoleAssignments",
         "parameters": [
           {
             "name": "role",
             "in": "query",
+            "description": "One of the Dataland specific roles which a user can have with respect to a company on Dataland.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
@@ -1204,48 +1327,45 @@
           {
             "name": "companyId",
             "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "userId",
             "in": "query",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company role assignments.",
+            "description": "Successfully retrieved extended company role assignments.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
+                    "$ref": "#/components/schemas/CompanyRoleAssignmentExtended"
                   }
                 }
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
           "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
-                  }
-                }
-              }
-            }
+            "description": "The specified company does not exist on Dataland."
           },
           "default": {
             "description": "An error occurred",
@@ -1452,6 +1572,47 @@
   },
   "components": {
     "schemas": {
+      "EmailAddress": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          }
+        }
+      },
+      "KeycloakUserInfo": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          },
+          "id": {
+            "type": "string",
+            "description": "The Dataland user ID of the user in question.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the Dataland user in question.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the Dataland user in question.",
+            "example": "Doe"
+          }
+        }
+      },
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
@@ -1463,30 +1624,28 @@
         "properties": {
           "companyIdentifier": {
             "type": "string",
-            "example": "enterValidIdentifier"
+            "description": "Unique identifier to find a company.",
+            "example": "5493001KJX4BT0IHAG73"
           },
           "dataType": {
             "type": "string",
-            "example": "p2p",
+            "description": "The framework of the dataset on Dataland.",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "reportingPeriods": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods.",
             "example": [
-              "2022",
-              "2023"
+              "2023",
+              "2024"
             ],
             "items": {
               "type": "string"
@@ -1495,18 +1654,22 @@
           "contacts": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
-              "testuser@example.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
             }
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "A text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1520,22 +1683,38 @@
         "type": "object",
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "A text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
           },
           "reportingPeriodsOfStoredDataRequests": {
             "type": "array",
+            "description": "Reporting periods corresponding to the accepted and stored data requests.",
+            "example": [
+              "2023",
+              "2024"
+            ],
             "items": {
               "type": "string"
             }
           },
           "reportingPeriodsOfDuplicateDataRequests": {
             "type": "array",
+            "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
+            "example": [
+              "2022"
+            ],
             "items": {
               "type": "string"
             }
           },
           "reportingPeriodsOfStoredAccessRequests": {
             "type": "array",
+            "description": "Reporting periods corresponding to the accepted and stored access requests.",
+            "example": [
+              "2023",
+              "2024"
+            ],
             "items": {
               "type": "string"
             }
@@ -1554,8 +1733,11 @@
           "companyIdentifiers": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A set of identifiers for companies on Dataland by. Use Dataland company IDs, Leis or Isins for the best results. Requests will be posted for all companies that can be identified.",
             "example": [
-              "enterValidIdentifiers"
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28",
+              "5493001KJX4BT0IHAG73",
+              "US0378331005"
             ],
             "items": {
               "type": "string"
@@ -1564,8 +1746,13 @@
           "dataTypes": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A set of framework names. Use kebab-case names such as \"eutaxonomy-financials\". Using a framework name that cannot be identified will result in an error, and no requests will be created.",
             "example": [
-              "p2p",
+              "sfdr",
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "nuclear-and-gas",
+              "lksg",
               "vsme"
             ],
             "items": {
@@ -1575,28 +1762,26 @@
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
-                "p2p",
                 "lksg",
-                "additional-company-information",
-                "vsme",
-                "esg-datenkatalog",
-                "heimathafen"
+                "vsme"
               ]
             }
           },
           "reportingPeriods": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods.",
             "example": [
-              "2022",
-              "2023"
+              "2023",
+              "2024"
             ],
             "items": {
               "type": "string"
             }
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1611,24 +1796,31 @@
         "properties": {
           "acceptedDataRequests": {
             "type": "array",
+            "description": "Contains information about all accepted data requests",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "alreadyExistingNonFinalRequests": {
             "type": "array",
+            "description": "Contains information about all already existing data requests that are \"Open\" or \"Answered\".",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "alreadyExistingDatasets": {
             "type": "array",
+            "description": "Contains information about all already existing data sets",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
             "type": "array",
+            "description": "Contains all company identifiers that were rejected by Dataland",
+            "example": [
+              "5493001KJX4BT0IHAG73"
+            ],
             "items": {
               "type": "string"
             }
@@ -1646,22 +1838,34 @@
         "type": "object",
         "properties": {
           "userProvidedIdentifier": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifier (e.g., Dataland company ID or LEI) through which the user specified the respective company.",
+            "example": "5493001KJX4BT0IHAG73"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "framework": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "resourceId": {
-            "type": "string"
+            "type": "string",
+            "description": "A unique identifier of a resource on Dataland. In case of newly created or duplicate open requests, it identifies the newly created or original open request. In case of a request for an already existing dataset, it identifies that dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "resourceUrl": {
-            "type": "string"
+            "type": "string",
+            "description": "A URL pointing to the resource identified by resourceId.",
+            "example": "https://dataland.com/requests/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -1686,15 +1890,20 @@
             "$ref": "#/components/schemas/CompanyRole"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the user in the company role assignment.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
       "AccessStatus": {
         "type": "string",
+        "description": "The current access status of the data request.",
         "enum": [
           "Declined",
           "Granted",
@@ -1715,32 +1924,41 @@
           "contacts": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company contact email addresses specified by the user creating the request.",
             "example": [
-              "testuser@example.com"
+              "test@example.com"
             ],
             "items": {
               "type": "string"
             }
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "A text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "The admin comment of the data request.",
+            "example": "Should be processed with high priority."
           },
           "requestStatusChangeReason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason for the status change.",
+            "example": "The company has not published data for this reporting period yet."
           }
         }
       },
       "RequestPriority": {
         "type": "string",
+        "description": "The priority of the data request.",
         "enum": [
           "Low",
           "Baseline",
@@ -1750,6 +1968,7 @@
       },
       "RequestStatus": {
         "type": "string",
+        "description": "The current request status of the data request.",
         "enum": [
           "Open",
           "Answered",
@@ -1778,32 +1997,48 @@
         "type": "object",
         "properties": {
           "dataRequestId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data request on Dataland.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userEmailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
           },
           "notifyMeImmediately": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the user created the data request.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "datalandCompanyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "messageHistory": {
             "type": "array",
+            "description": "Information on the messages sent to company contacts regarding the data request.",
             "items": {
               "$ref": "#/components/schemas/StoredDataRequestMessageObject"
             }
@@ -1816,7 +2051,9 @@
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the data request has been modified the last time.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -1828,7 +2065,9 @@
             "$ref": "#/components/schemas/RequestPriority"
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "The admin comment of the data request.",
+            "example": "Should be processed with high priority."
           }
         }
       },
@@ -1842,18 +2081,27 @@
           "contacts": {
             "uniqueItems": true,
             "type": "array",
+            "description": "A list of company contact email addresses specified by the user creating the request.",
+            "example": [
+              "test@example.com"
+            ],
             "items": {
               "type": "string"
             }
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "A message specified by the user creating the request to be sent to the company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the message object was created.",
+            "format": "int64",
+            "example": 1751291891271
           }
-        }
+        },
+        "description": "Information on the messages sent to company contacts regarding the data request."
       },
       "StoredDataRequestStatusObject": {
         "required": [
@@ -1868,16 +2116,22 @@
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the status object was created.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
           },
           "requestStatusChangeReason": {
-            "type": "string"
+            "type": "string",
+            "description": "The reason for the status change.",
+            "example": "The company has not published data for this reporting period yet."
           },
           "answeringDataId": {
-            "type": "string"
+            "type": "string",
+            "description": "The data ID of the data set that answered the request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -1898,33 +2152,51 @@
         "type": "object",
         "properties": {
           "dataRequestId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data request on Dataland.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "userEmailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the user created the data request.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "datalandCompanyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) when the data request has been modified the last time.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -1936,7 +2208,9 @@
             "$ref": "#/components/schemas/RequestPriority"
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "The admin comment of the data request.",
+            "example": "Should be processed with high priority."
           }
         }
       },
@@ -1961,31 +2235,73 @@
         "properties": {
           "dataType": {
             "type": "string",
+            "description": "The framework of the dataset on Dataland.",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
-              "p2p",
               "lksg",
-              "additional-company-information",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen"
+              "vsme"
             ]
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
           },
           "datalandCompanyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "aggregatedPriority": {
             "$ref": "#/components/schemas/AggregatedRequestPriority"
           },
           "count": {
             "type": "integer",
-            "format": "int64"
+            "description": "The count of existing data requests for this framework, reporting period, company and priority.",
+            "format": "int64",
+            "example": 23
+          }
+        }
+      },
+      "CompanyRoleAssignmentExtended": {
+        "required": [
+          "companyId",
+          "companyRole",
+          "email",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyRole": {
+            "$ref": "#/components/schemas/CompanyRole"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The unique identifier of the user in the company role assignment.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user in the company role assignment.",
+            "example": "test@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user in the company role assignment.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user in the company role assignment.",
+            "example": "Doe"
           }
         }
       },

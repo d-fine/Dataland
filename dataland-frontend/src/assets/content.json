@@ -105,14 +105,17 @@
             "/static/logos/img_Atlas_Metrics.png",
             "/static/logos/img_bantleon.png",
             "/static/logos/img_bayern_invest.png",
+            "/static/logos/img_bayernlb.png",
             "/static/logos/img_bvi.png",
             "/static/logos/img_chom_capital.png",
             "/static/logos/img_deka.png",
+            "/static/logos/img_deutsche_rueck.png",
             "/static/logos/img_d-fine.png",
             "/static/logos/img_dydon_ai.png",
             "/static/logos/img_envoria.png",
             "/static/logos/img_eurodat.png",
             "/static/logos/img_Experience_One.png",
+            "/static/logos/img_financial_reports.png",
             "/static/logos/img_fmf.png",
             "/static/logos/img_gleif.png",
             "/static/logos/img_HansaInvest.png",
@@ -196,8 +199,8 @@
           ],
           "cards": [
             {
-              "title": "Pathways to Paris",
-              "text": "Captures companies’ progress on Paris-compatible transformation paths that are necessary to achieve the goals of the Paris climate protection agreement.",
+              "title": "VSME",
+              "text": "Captures companies' progress on material sustainability issues, enabling them to respond to capital providers and stakeholders efficiently and proportionally.",
               "date": "14th of August"
             },
             {
@@ -238,84 +241,6 @@
               "icon": "erik.breen@dataland.com",
               "title": "Inquiry about Dataland: Shortest way to fill data gaps and improve data quality",
               "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in learning more about your platform, its features, and how I can get involved.\n\nCould you please provide me with information regarding:\n1.      The purpose and mission of your website.\n2.      Key functionalities and features.\n3.      The different frameworks\n4.      How can I get data / provide data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
-            }
-          ]
-        },
-        {
-          "title": "Footer",
-          "text": ["Copyright © ", " Dataland"],
-          "image": ["/static/logos/gfx_logo_dataland_orange_S.svg"],
-          "cards": [
-            {
-              "title": "Tech Hub",
-              "links": [
-                {
-                  "text": "DATASETS",
-                  "url": "/api/swagger-ui/index.html"
-                },
-                {
-                  "text": "DOCUMENTS",
-                  "url": "/documents/swagger-ui/index.html"
-                },
-                {
-                  "text": "COMMUNITY",
-                  "url": "/community/swagger-ui/index.html"
-                },
-                {
-                  "text": "QUALITY ASSURANCE",
-                  "url": "/qa/swagger-ui/index.html"
-                },
-                {
-                  "text": "USERS",
-                  "url": "/users/swagger-ui/index.html"
-                }
-              ]
-            },
-            {
-              "title": "ESG Frameworks",
-              "links": [
-                {
-                  "text": "OVERVIEW",
-                  "url": "https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation"
-                }
-              ]
-            },
-            {
-              "title": "Follow Dataland",
-              "links": [
-                {
-                  "text": "LINKEDIN",
-                  "url": "https://www.linkedin.com/company/dataland-gmbh/"
-                }
-              ]
-            },
-            {
-              "title": "Legal",
-              "links": [
-                {
-                  "text": "LEGAL",
-                  "url": "/terms"
-                },
-                {
-                  "text": "IMPRINT",
-                  "url": "/imprint"
-                },
-                {
-                  "text": "DATA PRIVACY",
-                  "url": "/dataprivacy"
-                }
-              ]
-            },
-            {
-              "title": "Owned by:",
-              "text": "A Werte-Stiftung Company",
-              "links": [
-                {
-                  "text": "WERTESTIFTUNG.ORG",
-                  "url": "https://www.wertestiftung.org"
-                }
-              ],
-              "icon": "/static/logos/footer_wertestiftung.png"
             }
           ]
         }

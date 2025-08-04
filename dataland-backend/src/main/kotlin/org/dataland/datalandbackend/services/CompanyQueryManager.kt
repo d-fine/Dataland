@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Implementation of common read-only queries against company data
  * @param companyRepository  JPA for company data
  */
+@Suppress("TooManyFunctions")
 @Service("CompanyQueryManager")
 class CompanyQueryManager
     @Autowired
@@ -175,7 +176,10 @@ class CompanyQueryManager
          * @return a boolean signalling if the company is public or not
          */
         @Transactional
-        fun isCompanyPublic(companyId: String): Boolean = getCompanyByIdAndAssertExistence(companyId).isTeaserCompany
+        fun isCompanyPublic(companyId: String?): Boolean =
+            companyId?.let {
+                getCompanyByIdAndAssertExistence(it).isTeaserCompany
+            } ?: false
 
         /**
          * Get all reporting periods for which at least one active dataset of the specified company and data type exists
@@ -253,4 +257,31 @@ class CompanyQueryManager
             identifiers.map { getCompanyIdentifierValidationResult(it.trim()) }.distinctBy {
                 it.companyInformation?.companyId ?: it.identifier
             }
+
+        /**
+         * For a collection of company IDs return a map associating each ID with the corresponding BasicCompanyInformation.
+         */
+        @Transactional(readOnly = true)
+        fun getBasicCompanyInformationByIds(companyIds: Collection<String>): Map<String, BasicCompanyInformation?> {
+            val storedCompanies = companyRepository.findAllById(companyIds).associateBy { it.companyId }
+            val companyLeis =
+                companyIdentifierRepository
+                    .findCompanyIdentifierEntitiesByCompanyInAndIdentifierTypeIs(
+                        storedCompanies.values,
+                        IdentifierType.Lei,
+                    ).associateBy { it.company?.companyId }
+
+            return companyIds.associateWith { companyId ->
+                storedCompanies[companyId]?.let {
+                    BasicCompanyInformation(
+                        companyId = companyId,
+                        companyName = it.companyName,
+                        headquarters = it.headquarters,
+                        countryCode = it.countryCode,
+                        sector = it.sector,
+                        lei = companyLeis[companyId]?.identifierValue,
+                    )
+                }
+            }
+        }
     }

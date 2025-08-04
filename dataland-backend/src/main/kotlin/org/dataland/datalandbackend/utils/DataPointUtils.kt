@@ -1,11 +1,16 @@
 package org.dataland.datalandbackend.utils
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
@@ -25,6 +30,7 @@ class DataPointUtils
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
+        private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -82,6 +88,10 @@ class DataPointUtils
 
         /**
          * Retrieves all reporting periods with at least on active data point for a specific company and framework
+         *
+         * Generic data points (company "meta" information like "Number of Employees") are excluded to return only
+         * reporting periods with actual data.
+         *
          * @param companyId the ID of the company
          * @param framework the name of the framework
          * @return a set of all reporting periods with active data points or an empty set if none exist
@@ -89,15 +99,20 @@ class DataPointUtils
         fun getAllReportingPeriodsWithActiveDataPoints(
             companyId: String,
             framework: String,
-        ): Set<String> =
+        ): Set<String> {
             if (getFrameworkSpecificationOrNull(framework) == null) {
-                emptySet()
-            } else {
-                metaDataManager.getReportingPeriodsWithActiveDataPoints(
-                    dataPointTypes = getRelevantDataPointTypes(framework),
-                    companyId = companyId,
-                )
+                return emptySet()
             }
+
+            val relevantDataPoints = getRelevantDataPointTypes(framework).subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
+
+            return metaDataManager
+                .getActiveDataPointMetaInformation(
+                    dataPointTypes = relevantDataPoints,
+                    companyId = companyId,
+                ).map { it.reportingPeriod }
+                .toSet()
+        }
 
         /**
          * Retrieves all active data dimensions in regard to data points given the filter parameters
@@ -112,21 +127,122 @@ class DataPointUtils
             return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
         }
 
+        /**
+         * Retrieve all active framework-based data dimensions using the given DataDimensionFilter. If no framework is specified,
+         * all frameworks are taken into account.
+         * @param dataDimensionFilter the filter to use when searching for active data dimensions
+         * @return a list of active framework data dimensions
+         */
         private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
             val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
-            val frameworks = dataDimensionFilter.dataTypesOrDataPointTypes?.filter { allAssembledFrameworks.contains(it) } ?: emptyList()
+            val frameworks =
+                if (dataDimensionFilter.dataTypes.isNullOrEmpty()) {
+                    allAssembledFrameworks
+                } else {
+                    dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
+                }
+
             for (framework in frameworks) {
                 val activeDataPointMetaInformation =
                     metaDataManager.getActiveDataPointMetaInformationList(
                         DataDimensionFilter(
                             companyIds = dataDimensionFilter.companyIds,
-                            dataTypesOrDataPointTypes = getRelevantDataPointTypes(framework).toList(),
+                            dataTypes = getRelevantDataPointTypes(framework).toList(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
-                allRelevantDimensions.addAll(activeDataPointMetaInformation.map { it.toBasicDataDimensions(framework) })
+
+                activeDataPointMetaInformation
+                    .groupBy {
+                        Pair(it.companyId, it.reportingPeriod)
+                    }.values
+                    .forEach { metaInformationEntities ->
+                        if (DataAvailabilityIgnoredFieldsUtils
+                                .containsNonIgnoredDataPoints(metaInformationEntities.map { it.dataPointType })
+                        ) {
+                            allRelevantDimensions.addAll(
+                                metaInformationEntities.map {
+                                    it.toBasicDataDimensions(framework)
+                                },
+                            )
+                        }
+                    }
             }
             return allRelevantDimensions.distinct()
+        }
+
+        /**
+         * Return the template of a specific framework
+         * @param framework the framework for which the template shall be returned
+         */
+        fun getFrameworkTemplate(framework: String): JsonNode {
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
+            referencedReportsUtilities
+                .insertReferencedReportsIntoFrameworkSchema(
+                    frameworkTemplate,
+                    frameworkSpecification.referencedReportJsonPath,
+                )
+            return frameworkTemplate
+        }
+
+        /**
+         * Get basic data point dimensions (companyId, dataPointType, reportingPeriod) for given
+         * data dimensions (companyId, framework, reportingPeriod).
+         * @param dataDimensionsSet a set of data dimensions
+         * @return a map associating each passed data dimension with a list of corresponding data point dimensions
+         */
+        fun getBasicDataPointDimensionsForDataDimensions(
+            dataDimensionsSet: Set<BasicDataDimensions>,
+            correlationId: String,
+        ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
+            logger.info("Request data point dimensions for a set of data dimension objects. Correlation ID: $correlationId")
+            val dataDimensionsByFramework = dataDimensionsSet.groupBy { it.dataType }
+            val result = mutableMapOf<BasicDataDimensions, List<BasicDataPointDimensions>>()
+
+            dataDimensionsByFramework.entries.forEach { (framework, frameworkSpecificDataDimensions) ->
+                val relevantDataPointTypes = getRelevantDataPointTypes(framework)
+                result.putAll(
+                    frameworkSpecificDataDimensions.associateWith { dataDimension ->
+                        relevantDataPointTypes.map { dataPointType -> dataDimension.toBasicDataPointDimensions(dataPointType) }
+                    },
+                )
+            }
+
+            return result
+        }
+
+        /**
+         * Assemble a single data set using the provided list of uploaded data points and the framework template
+         * @param dataPoints the data points of the data set as retrieved from the internal storage
+         * @param frameworkTemplate the framework template to be used as a basis
+         */
+        fun assembleSingleDataSet(
+            dataPoints: Collection<UploadedDataPoint>,
+            frameworkTemplate: JsonNode,
+        ): String {
+            val referencedReports = mutableMapOf<String, CompanyReport>()
+            val allDataPoints =
+                dataPoints
+                    .associate {
+                        it.dataPointType to objectMapper.readTree(it.dataPoint)
+                    }.toMutableMap()
+
+            dataPoints.forEach {
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
+                    referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
+                }
+            }
+            allDataPoints[REFERENCED_REPORTS_ID] = objectMapper.valueToTree(referencedReports)
+
+            val datasetAsJsonNode =
+                JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) {
+                    allDataPoints[it]
+                }
+
+            return datasetAsJsonNode.toString()
         }
     }

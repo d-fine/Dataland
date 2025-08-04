@@ -77,7 +77,7 @@
           <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
           <p
             v-show="reopenMessageError && reopenMessage.length < 10"
-            class="text-danger text-xs"
+            class="text-danger"
             data-test="noMessageErrorMessage"
           >
             You have not provided a sufficient reason yet. Please provide a reason.
@@ -264,35 +264,35 @@
           </div>
         </div>
       </div>
-      <TheFooter :is-light-version="true" />
+      <TheFooter />
     </TheContent>
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import BackButton from '@/components/general/BackButton.vue';
+import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
+import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
+import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
+import { getCompanyName } from '@/utils/CompanyInformation.ts';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel, patchDataRequest } from '@/utils/RequestUtils';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { accessStatusBadgeClass, badgeClass, patchDataRequest, getRequestStatusLabel } from '@/utils/RequestUtils';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import InputSwitch from 'primevue/inputswitch';
-import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import TheContent from '@/components/generics/TheContent.vue';
-import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
-import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
-import router from '@/router';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
-import { getCompanyName } from '@/utils/CompanyInformation.ts';
-import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -650,6 +650,7 @@ export default defineComponent({
     }
   }
 }
+
 .two-columns {
   columns: 2;
   -webkit-columns: 2;

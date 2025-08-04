@@ -22,7 +22,7 @@ class TemplateComponentBuilderTest {
             category = "The Category",
             subCategory = "The Sub-Category",
             fieldName = "The name of the field",
-            combinedTooltip = "A super-duper helpfull tooltip",
+            combinedTooltip = "A super-duper helpful tooltip",
             component = "Date",
             options = "I need more options!",
             unit = "A Unit",
@@ -30,6 +30,7 @@ class TemplateComponentBuilderTest {
             dependency = "",
             showWhenValueIs = "",
             mandatoryField = TemplateYesNo.No,
+            aliasExport = "Export Name",
         )
     private val diagnosticManager = DiagnosticManager()
     private val componentFactories = listOf(DateComponentFactory(TemplateDiagnostic(diagnosticManager)))

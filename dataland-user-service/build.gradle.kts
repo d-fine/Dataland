@@ -29,6 +29,8 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
     implementation(libs.jackson.kotlin)
     implementation(libs.json)
     implementation(libs.log4j.api)
@@ -93,12 +95,14 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 }
 
 tasks.register("generateClients") {
+    description = "Generate all required clients"
     group = "clients"
     dependsOn("generateBackendClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
@@ -135,9 +139,4 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }

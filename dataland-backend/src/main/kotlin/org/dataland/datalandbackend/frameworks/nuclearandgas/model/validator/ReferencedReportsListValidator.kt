@@ -59,6 +59,14 @@ class ReferencedReportsListConstraintValidator :
             dataset.general?.general?.fossilGasRelatedActivitiesSection429?.dataSource?.fileReference,
             dataset.general?.general?.fossilGasRelatedActivitiesSection430?.dataSource?.fileReference,
             dataset.general?.general?.fossilGasRelatedActivitiesSection431?.dataSource?.fileReference,
+            dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedRevenueDenominator?.dataSource?.fileReference,
+            dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedCapexDenominator?.dataSource?.fileReference,
+            dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator?.dataSource?.fileReference,
+            dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedCapexNumerator?.dataSource?.fileReference,
+            dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedRevenue?.dataSource?.fileReference,
+            dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedCapex?.dataSource?.fileReference,
+            dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue?.dataSource?.fileReference,
+            dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex?.dataSource?.fileReference,
         )
     }
 }

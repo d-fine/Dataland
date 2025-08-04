@@ -1,22 +1,28 @@
 package org.dataland.datalanduserservice.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
+import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the portfolio API for Dataland users to manage their portfolios.
@@ -53,7 +59,7 @@ interface PortfolioApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolio."),
         ],
     )
     @GetMapping(
@@ -64,8 +70,71 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun getPortfolio(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<BasePortfolio>
+
+    /**
+     * Get all portfolios for a given user. This is an admin-only endpoint.
+     */
+    @Operation(
+        summary = "Get portfolios by userId.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/users/{userId}"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN')",
+    )
+    fun getPortfoliosForUser(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("userId") userId: String,
+    ): ResponseEntity<List<BasePortfolio>>
+
+    /**
+     * Get a paginated list of all portfolios that exist on Dataland. This is an admin-only endpoint.
+     */
+    @Operation(
+        summary = "Get a segment of all portfolios for the given chunk size and index.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved the requested chunk of portfolios."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/all"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN')",
+    )
+    fun getAllPortfolios(
+        @RequestParam(defaultValue = "100")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int,
+    ): ResponseEntity<List<BasePortfolio>>
 
     /**
      * Post a new portfolio.
@@ -76,6 +145,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully created a new portfolio."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PostMapping(
@@ -84,7 +154,7 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
@@ -100,6 +170,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully replaced existing portfolio."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
         ],
     )
     @PutMapping(
@@ -108,9 +179,14 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "(hasRole('ROLE_USER') and !#portfolioUpload.isMonitored) or hasRole('ROLE_PREMIUM_USER')",
     )
     fun replacePortfolio(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable(name = "portfolioId") portfolioId: String,
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
     ): ResponseEntity<BasePortfolio>
@@ -135,6 +211,11 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun deletePortfolio(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable(name = "portfolioId") portfolioId: String,
     ): ResponseEntity<Unit>
 
@@ -178,6 +259,40 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun getEnrichedPortfolio(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("portfolioId") portfolioId: String,
     ): ResponseEntity<EnrichedPortfolio>
+
+    /**
+     * Patches the monitoring of an existing portfolio.
+     */
+    @Operation(
+        summary = "Patches the monitoring status of a portfolio.",
+        description = "Updates the monitoring-related fields of an existing portfolio.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated monitoring."),
+            ApiResponse(responseCode = "403", description = "Only premium users can activate portfolio monitoring."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/portfolios/{portfolioId}/monitoring"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("(hasRole('ROLE_USER') and !#portfolioMonitoringPatch.isMonitored) or hasRole('ROLE_PREMIUM_USER')")
+    fun patchMonitoring(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("portfolioId") portfolioId: String,
+        @Valid @RequestBody portfolioMonitoringPatch: PortfolioMonitoringPatch,
+    ): ResponseEntity<BasePortfolio>
 }

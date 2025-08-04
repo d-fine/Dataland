@@ -17,7 +17,6 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
-import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
@@ -25,6 +24,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -66,19 +66,22 @@ class AssembledDataManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
+            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
-    private val dataPointUtils = DataPointUtils(testObjectMapper, specificationClient, metaDataManager)
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
+    private val dataPointUtils =
+        DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
 
     private val spyDataPointManager = spy(dataPointManager)
-    private val testDataProvider = TestDataProvider(testObjectMapper)
+    private val testDataProvider = TestDataProvider(defaultObjectMapper)
 
     private val assembledDataManager =
         AssembledDataManager(
-            dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
+            dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
             datasetDatapointRepository, spyDataPointManager,
-            ReferencedReportsUtilities(testObjectMapper), companyQueryManager, dataPointUtils,
+            referencedReportsUtilities,
+            companyQueryManager, dataPointUtils,
         )
 
     private val correlationId = "test-correlation-id"
@@ -86,9 +89,10 @@ class AssembledDataManagerTest {
     private val reportingPeriod = "2022"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
-    private val dataPointType = "extendedEnumFiscalYearDeviation"
+    private val dataPointType = "extendedEnumFiscalYearDeviationDummy"
     private val dataPointId = "test-data-point-1"
-    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
+    private val frameworkSpecification =
+        TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
     private val framework = "sfdr"
     private val dataDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
 
@@ -107,7 +111,8 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that processing a dataset works as expected`() {
-        val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
+        val expectedDataPointTypes =
+            listOf("extendedEnumFiscalYearDeviationDummy", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         whenever(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
@@ -174,7 +179,10 @@ class AssembledDataManagerTest {
         whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
 
-        val dynamicDataset = assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        val dynamicDataset =
+            assertDoesNotThrow {
+                assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
+            }
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
         assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
@@ -184,8 +192,8 @@ class AssembledDataManagerTest {
     fun `check that exceptions are thrown only in the expected cases in the context of dynamic datasets`() {
         doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
 
-        assertThrows<ResourceNotFoundApiException> {
-            assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        assertDoesNotThrow {
+            assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)
         }
 
         val invalidCompanyId = "invalid-company-id"
@@ -236,7 +244,7 @@ class AssembledDataManagerTest {
         )
 
         whenever(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<List<String>>(0)
+            val dataPointId = invocation.getArgument<Collection<String>>(0)
             dataPointId.map { dataPointId ->
                 DataPointMetaInformationEntity(
                     dataPointId = dataPointId,

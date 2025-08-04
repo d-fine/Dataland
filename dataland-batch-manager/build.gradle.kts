@@ -33,6 +33,9 @@ dependencies {
     implementation(Spring.boot.web)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
+    implementation("io.github.resilience4j:resilience4j-spring-boot2:2.3.0")
+    implementation("io.github.resilience4j:resilience4j-ratelimiter:2.3.0")
+    implementation("io.github.resilience4j:resilience4j-retry:2.3.0")
 }
 
 tasks.test {

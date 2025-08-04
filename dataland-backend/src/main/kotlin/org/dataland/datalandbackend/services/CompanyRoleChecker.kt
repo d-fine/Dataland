@@ -9,6 +9,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import java.util.UUID
 import kotlin.reflect.full.memberProperties
@@ -24,6 +25,8 @@ class CompanyRoleChecker(
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
+    private val logMessageBuilder = LogMessageBuilder()
+
     /**
      * Checks whether the currently authenticated user has a company role for a specified company.
      * @param companyId the ID of the company
@@ -58,7 +61,7 @@ class CompanyRoleChecker(
     fun hasCurrentUserAnyRoleForCompany(companyId: String): Boolean {
         val userId = UUID.fromString(DatalandAuthentication.fromContext().userId)
         val roles =
-            companyRolesControllerApi.getCompanyRoleAssignments(
+            companyRolesControllerApi.getExtendedCompanyRoleAssignments(
                 companyId = UUID.fromString(companyId),
                 userId = userId,
             )
@@ -151,7 +154,7 @@ class CompanyRoleChecker(
         val isUserReviewer = authContext.roles.contains(DatalandRealmRole.ROLE_REVIEWER)
         val isUserCompanyOwnerOrUploader =
             companyRolesControllerApi
-                .getCompanyRoleAssignments(null, companyUUID, userUUID)
+                .getExtendedCompanyRoleAssignments(null, companyUUID, userUUID)
                 .any { it.companyRole == CompanyRole.CompanyOwner || it.companyRole == CompanyRole.DataUploader }
 
         return isUserReviewer || isUserCompanyOwnerOrUploader
@@ -161,8 +164,14 @@ class CompanyRoleChecker(
      * Checks if the requesting user has the rights to upload data for the specified company
      */
     @Suppress("ReturnCount")
-    fun canUserUploadDataForCompany(companyId: String): Boolean {
+    fun canUserUploadDataForCompany(
+        companyId: String,
+        bypassQa: Boolean,
+    ): Boolean {
         val user = DatalandAuthentication.fromContextOrNull() ?: return false
+        if (bypassQa && !canUserBypassQa(companyId)) {
+            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
+        }
         val canUserUploadByGlobalRole = user.roles.contains(DatalandRealmRole.ROLE_UPLOADER)
         if (canUserUploadByGlobalRole) {
             // Early return to avoid unnecessary API calls
@@ -196,7 +205,7 @@ class CompanyRoleChecker(
 
         val companyRoles =
             companyRolesControllerApi
-                .getCompanyRoleAssignments(null, companyUUID, userUUID)
+                .getExtendedCompanyRoleAssignments(null, companyUUID, userUUID)
                 .map { it.companyRole }
 
         return if (companyRoles.contains(CompanyRole.CompanyOwner)) {

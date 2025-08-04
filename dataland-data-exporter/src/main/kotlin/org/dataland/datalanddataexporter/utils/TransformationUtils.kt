@@ -105,7 +105,7 @@ object TransformationUtils {
         node: JsonNode,
         transformationRules: Map<String, String>,
     ) {
-        val leafNodesInJsonNode: List<String> = JsonUtils.getNonArrayLeafNodeFieldNames(node)
+        val leafNodesInJsonNode: Collection<String> = JsonUtils.getNonArrayLeafNodeFieldNames(node)
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
             "Transformation rules do not cover all leaf nodes in the data."
@@ -122,14 +122,19 @@ object TransformationUtils {
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
     ) {
-        val legacyValuesNotCovered = legacyRules.values.filter { !transformationRules.keys.contains(it) }
+        val nonLiteralLegacyValues = legacyRules.values.filter { !it.startsWith("\"") && !it.endsWith("\"") }
+
+        val legacyValuesNotCovered = nonLiteralLegacyValues.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
             "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"
         }
 
-        val legacyKeysInTransformationValues = legacyRules.keys.filter { transformationRules.values.contains(it) }
-        require(legacyKeysInTransformationValues.isEmpty()) {
-            "Csv headers are not unique as legacy headers contain duplicates: $legacyKeysInTransformationValues"
+        val transformationHeaders = transformationRules.values.filter { it.isNotEmpty() }.toSet()
+        val legacyHeaders = legacyRules.keys.filter { it.isNotEmpty() }.toSet()
+
+        val duplicateHeaders = transformationHeaders.intersect(legacyHeaders)
+        require(duplicateHeaders.isEmpty()) {
+            "Csv headers are not unique as legacy headers contain duplicates: $duplicateHeaders"
         }
     }
 
@@ -164,7 +169,11 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         legacyRules.forEach { (csvHeader, jsonPath) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
+            if (jsonPath.startsWith("\"") && jsonPath.endsWith("\"")) {
+                csvData[csvHeader] = jsonPath.substring(1, jsonPath.length - 1)
+            } else {
+                csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
+            }
         }
         return csvData
     }

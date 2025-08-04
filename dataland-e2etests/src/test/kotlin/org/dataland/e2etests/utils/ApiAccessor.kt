@@ -8,13 +8,11 @@ import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataCo
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -22,7 +20,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
-import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
@@ -34,10 +31,15 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 
 class ApiAccessor {
+    companion object {
+        private const val UPLOAD_TIMEOUT_IN_S = 10L
+    }
+
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
@@ -111,21 +113,6 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForP2pData = FrameworkTestDataProvider.forFrameworkFixtures(PathwaysToParisData::class.java)
-
-    fun p2pUploaderFunction(
-        companyId: String,
-        p2pData: PathwaysToParisData,
-        reportingPeriod: String,
-        bypassQa: Boolean = true,
-    ): DataMetaInformation {
-        val companyAssociatedP2pData = CompanyAssociatedDataPathwaysToParisData(companyId, reportingPeriod, p2pData)
-        return dataControllerApiForP2pData.postCompanyAssociatedP2pData(
-            companyAssociatedP2pData, bypassQa,
-        )
-    }
-
     val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData = FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
 
@@ -143,8 +130,7 @@ class ApiAccessor {
 
     /**
      * Uploads each of the datasets provided in [frameworkDatasets] for each of the companies provided in
-     * [companyInfo] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
-     * times for the same company a wait of at least 1ms is necessary to avoid an error 500.
+     * [companyInfo] via [frameworkDataUploadFunction].
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         companyInfo: List<CompanyInformation>,
@@ -159,20 +145,20 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
-        val waitTimeBeforeNextUpload = if (frameworkDatasets.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val storedCompanyInfos = companyInfo.map { companyDataControllerApi.postCompany(it) }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
         frameworkDatasets.forEach { frameworkDataset ->
             companyInfo.zip(storedCompanyInfos).forEach { pair ->
-                val receivedDataMetaInformation =
-                    frameworkDataUploadFunction(
-                        pair.second.companyId, frameworkDataset, reportingPeriod, uploadConfig.bypassQa,
-                    )
-                listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
+                ApiAwait.waitForSuccess(UPLOAD_TIMEOUT_IN_S) {
+                    val receivedDataMetaInformation =
+                        frameworkDataUploadFunction(
+                            pair.second.companyId, frameworkDataset, reportingPeriod, uploadConfig.bypassQa,
+                        )
+                    listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
+                }
             }
-            Thread.sleep(waitTimeBeforeNextUpload)
         }
         if (ensureQaPassed) qaApiAccessor.ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo, metaDataControllerApi)
         return listOfUploadInfo
@@ -216,8 +202,6 @@ class ApiAccessor {
                 uploadDataset(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
             DataTypeEnum.eutaxonomyMinusFinancials ->
                 uploadDataset(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
-            DataTypeEnum.p2p ->
-                uploadDataset(testDataProviderForP2pData, this::p2pUploaderFunction)
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }
@@ -257,8 +241,6 @@ class ApiAccessor {
                 uploadCompaniesAndDatasets(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
             DataTypeEnum.eutaxonomyMinusFinancials ->
                 uploadCompaniesAndDatasets(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
-            DataTypeEnum.p2p ->
-                uploadCompaniesAndDatasets(testDataProviderForP2pData, this::p2pUploaderFunction)
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }

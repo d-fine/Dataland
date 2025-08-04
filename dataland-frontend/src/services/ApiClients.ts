@@ -11,9 +11,6 @@ import {
 } from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
-import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';
@@ -68,7 +65,7 @@ export class ApiClientProvider {
         return config;
       },
       (error) => {
-        return Promise.reject(new Error(error.message || 'Unknown error occurred'));
+        return Promise.reject(new Error(error.message ?? 'Unknown error occurred'));
       }
     );
   }
@@ -109,17 +106,5 @@ export class ApiClientProvider {
     return (constructor) => {
       return new constructor(undefined, basePath, this.axiosInstance);
     };
-  }
-
-  /**
-   * This function returns a promise to an api controller adaption that is unified across frameworks to allow
-   * for creation of generic components that work framework-independent.
-   * @param framework The identified of the framework
-   * @returns the unified API client
-   */
-  getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
-    framework: K
-  ): PublicFrameworkDataApi<FrameworkDataTypes[K]['data']> {
-    return getUnifiedFrameworkDataControllerFromConfiguration(framework, undefined, this.axiosInstance);
   }
 }

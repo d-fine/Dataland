@@ -1,0 +1,8 @@
+{
+  "id" : "extendedNuclearAndGasAlignedDenominatorComponentNuclearAndGasTaxonomyAlignedCapexDenominator",
+  "name" : "Nuclear and Gas Taxonomy-aligned CapEx (denominator)",
+  "businessDefinition" : "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Denominator of the applicable KPI - CapEx-based",
+  "dataPointBaseTypeId" : "extendedNuclearAndGasAlignedDenominatorComponent",
+  "frameworkOwnership" : [ "nuclear-and-gas" ],
+  "constraints" : null
+}

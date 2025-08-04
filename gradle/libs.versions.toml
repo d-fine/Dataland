@@ -1,44 +1,47 @@
 [plugins]
+
 com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "2.9" }
 io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 org-springframework-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.2.0" }
+org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "13.0.0" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
-org-sonarqube = { id = "org.sonarqube", version = "6.0.1.5171" }
+org-sonarqube = { id = "org.sonarqube", version = "6.2.0.5505" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
-com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.4.2" }
-org-openapi-generator = { id = "org.openapi.generator", version = "7.13.0" }
+com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.2" }
+org-openapi-generator = { id = "org.openapi.generator", version = "7.14.0" }
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.52.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 [versions]
+
 kotlin = "2.0.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
-mockito = "5.17.0"
-junit-jupiter = "5.12.2"
-log4j = "2.24.3"
-jackson = "2.18.3"
+mockito = "5.18.0"
+junit-jupiter = "5.13.4"
+log4j = "2.25.1"
+jackson = "2.18.4"
 logback = "1.5.18"
-flyway = "11.8.0"
+flyway = "11.10.3"
 cloudevents = "4.0.1"
-itext = "9.1.0"
-tika = "3.1.0"
+itext = "9.2.0"
+tika = "3.2.1"
 poi = "5.4.1"
-jodconverter = "4.4.8"
-spring-boot = "3.4.5"
-spring-framework = "6.2.6"
+jodconverter = "4.4.10"
+spring-boot = "3.5.4"
+spring-framework = "6.2.9"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
+testcontainers = "1.19.3"
 
 [libraries]
-# Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14" }
 
+# Gradle
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "8.14.3" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
@@ -90,13 +93,13 @@ spring-security-crypto = { module = "org.springframework.security:spring-securit
 spring-security-web = { module = "org.springframework.security:spring-security-web" }
 
 # Spring-related
-spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.2.1" }
+spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.3.0" }
 springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.6" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
 # PostgreSQL
-postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.5" }
+postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.7" }
 
 # H2
 h2 = { group = "com.h2database", name = "h2", version = "2.3.232" }
@@ -119,9 +122,9 @@ jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackso
 jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
 
 # Commons
-commons-io = { group = "commons-io", name = "commons-io", version = "2.19.0" }
-commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.18.0" }
-commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.13.1" }
+commons-io = { group = "commons-io", name = "commons-io", version = "2.20.0" }
+commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.19.0" }
+commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.14.0" }
 
 # PDFBox
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.5" }
@@ -129,19 +132,23 @@ pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.5" }
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.4.0" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.0.0" }
 
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
+
+# Testcontainers
+testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
 
 # Awaitility
 awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
 
 # JSON
-json = { group = "org.json", name = "json", version = "20250107" }
+json = { group = "org.json", name = "json", version = "20250517" }
 
 # Mailjet
-mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "5.2.6" }
+mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "6.0.0" }
 
 # Flyway
 flyway = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }

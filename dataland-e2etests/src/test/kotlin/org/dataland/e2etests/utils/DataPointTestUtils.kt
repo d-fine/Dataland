@@ -1,117 +1,33 @@
 package org.dataland.e2etests.utils
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.dataland.datalandbackend.openApiClient.infrastructure.BigDecimalAdapter
-import org.dataland.datalandbackend.openApiClient.infrastructure.BigIntegerAdapter
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-
-class IgnoreLocalDateAdapter : JsonAdapter<LocalDate>() {
-    override fun fromJson(reader: JsonReader): LocalDate? =
-        throw UnsupportedOperationException("This adapter should only be used for serialization")
-
-    override fun toJson(
-        writer: JsonWriter,
-        value: LocalDate?,
-    ) {
-        writer.nullValue()
-    }
-}
 
 /**
- * Asserts that the data of two objects are equal, ignoring date fields
- * @param expected The expected object
- * @param actual The actual object
+ * Function to assert that two objects are equal, ignoring the given keys.
+ * Comparison is done on the JSON representation of the objects using the JsonComparator
  */
-inline fun <reified T> assertDataEqualsIgnoringDates(
+inline fun <reified T> assertEqualsByJsonComparator(
     expected: T,
     actual: T,
-    referencedReportsGetter: (T) -> Map<String, CompanyReport>?,
+    jsonComparisonOptions: JsonComparator.JsonComparisonOptions = JsonComparator.JsonComparisonOptions(),
 ) {
-    val moshi =
-        Moshi
-            .Builder()
-            .add(BigDecimalAdapter())
-            .add(BigIntegerAdapter())
-            .add(LocalDate::class.java, IgnoreLocalDateAdapter())
-            .addLast(KotlinJsonAdapterFactory())
-    val jsonAdapter =
-        moshi
-            .build()
-            .adapter(T::class.java)
-    val referencedReportsAdapter =
-        moshi
-            .build()
-            .adapter(Map::class.java)
-
-    val referencedReportsFromActual = referencedReportsAdapter.toJson(referencedReportsGetter(actual))
-    val referencedReportsFromExpected = referencedReportsAdapter.toJson(referencedReportsGetter(expected))
-
-    var actualJson = jsonAdapter.toJson(actual)
-    if (referencedReportsFromActual != null) {
-        actualJson = actualJson.replace(referencedReportsFromActual, "null")
-    }
-
-    var expectedJson = jsonAdapter.toJson(expected)
-    if (referencedReportsFromExpected != null) {
-        expectedJson = expectedJson.replace(referencedReportsFromExpected, "null")
-    }
-
-    DataPointTestUtils.assertReferencedReportsEquals(referencedReportsGetter(expected), referencedReportsGetter(actual))
-    assertEquals(expectedJson, actualJson)
+    val differences =
+        JsonComparator.compareClasses(
+            expected,
+            actual,
+            jsonComparisonOptions,
+        )
+    assertEquals(0, differences.size, "Assertion failed. There are differences: $differences")
 }
 
 object DataPointTestUtils {
-    fun assertReferencedReportsEquals(
-        expected: Map<String, CompanyReport>?,
-        actual: Map<String, CompanyReport>?,
-    ) {
-        if (expected == null || actual == null) {
-            return assertEquals(actual, expected)
-        }
-
-        assertTrue(expected.keys == actual.keys)
-        expected.keys.forEach {
-            assertCompanyReportEquals(expected[it]!!, actual[it]!!)
-        }
-    }
-
-    private fun assertCompanyReportEquals(
-        expected: CompanyReport,
-        actual: CompanyReport,
-    ) {
-        assertEquals(expected.copy(publicationDate = null), actual.copy(publicationDate = null))
-    }
-
-    /**
-     * Asserts that the data of two SfdrData objects are equal, comparing the referenced reports directly
-     * but ignoring the publication dates in all other fields
-     * @param expected The expected SfdrData object
-     * @param actual The actual SfdrData object
-     */
-    fun assertSfdrDataEquals(
-        expected: SfdrData,
-        actual: SfdrData,
-    ) {
-        assertDataEqualsIgnoringDates(
-            expected,
-            actual,
-            { it.general?.general?.referencedReports },
-        )
-    }
-
     /**
      * Removes all entries from the QA report that are not attempted and null-ish
-     * @param qaReport The QA report to remove the entries from
+     * @param qaReport The QA report from which the entries are to be removed
      * @return The QA report with the entries removed
      */
     fun removeEmptyEntries(

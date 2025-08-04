@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter, type RouteComponent } from 'vue-router';
 
 const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/pages/CompanyCockpitPage.vue');
-const NewLandingPage = (): Promise<RouteComponent> => import('@/components/pages/NewLandingPage.vue');
+const NewLandingPage = (): Promise<RouteComponent> => import('@/components/pages/LandingPage.vue');
 import AboutPage from '@/components/pages/AboutPage.vue';
 
 const QualityAssurance = (): Promise<RouteComponent> => import('@/components/pages/QualityAssurance.vue');

@@ -12,24 +12,28 @@ describeIf(
   },
   () => {
     let permIdOfExistingCompany: string;
+    let permIdOfSecondCompany: string;
     const portfolioName = `E2E Test Portfolio ${Date.now()}`;
     const editedPortfolioName = `${portfolioName} Edited ${Date.now()}`;
-    const secondPortfolio = `Second E2E Test Portfolio ${Date.now()}`;
 
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
+        const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${Date.now()}`);
+        permIdOfSecondCompany = assertDefined(secondCompanyToUpload.identifiers[IdentifierType.PermId][0]);
+        await uploadCompanyViaApi(token, secondCompanyToUpload);
       });
     });
 
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
+      cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
     });
 
-    it('Creates, edits, and deletes a portfolio', () => {
+    it('Creates, edits and deletes a portfolio', () => {
       cy.get('[data-test="addNewPortfolio"]').click();
       cy.get('[name="portfolioName"]').type(portfolioName);
       cy.get('[data-test="saveButton"]').should('be.disabled');
@@ -38,22 +42,15 @@ describeIf(
       cy.get('[data-test="saveButton"]').should('not.be.disabled');
       cy.get('[data-test="saveButton"]').click();
 
-      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click({ force: true });
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click();
       cy.get('[name="portfolioName"]').clear();
       cy.get('[name="portfolioName"]').type(editedPortfolioName);
-      cy.get('[data-test="saveButton"]').click();
-
-      cy.get('[data-test="addNewPortfolio"]').click();
-      cy.get('[name="portfolioName"]').type(secondPortfolio);
-      cy.get('[data-test="saveButton"]').should('be.disabled');
-      cy.get('[name="company-identifiers"]').type(permIdOfExistingCompany);
+      cy.get('[name="company-identifiers"]').type(permIdOfSecondCompany);
       cy.get('[data-test="addCompanies"]').click();
-      cy.get('[data-test="saveButton"]').should('not.be.disabled');
       cy.get('[data-test="saveButton"]').click();
-
-      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click();
-      cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click();
+      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(editedPortfolioName).click({ force: true });
+      cy.get(`[data-test="portfolio-${editedPortfolioName}"] [data-test="edit-portfolio"]`).click({ force: true });
 
       cy.window().then((win) => {
         cy.stub(win, 'confirm').returns(true);

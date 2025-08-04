@@ -166,9 +166,8 @@ class DataAccessManagerTest {
     fun `validate that public datasets are always accessible`() {
         val dataTypes =
             listOf(
-                DataTypeEnum.lksg, DataTypeEnum.p2p, DataTypeEnum.sfdr,
+                DataTypeEnum.lksg, DataTypeEnum.sfdr,
                 DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-                DataTypeEnum.esgMinusDatenkatalog, DataTypeEnum.heimathafen,
             )
 
         dataTypes.forEach {

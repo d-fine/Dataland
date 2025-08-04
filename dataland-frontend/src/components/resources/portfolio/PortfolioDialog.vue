@@ -16,6 +16,7 @@
       :disabled="isCompaniesLoading"
     />
     <PrimeButton
+      type="button"
       label="Add Companies"
       icon="pi pi-plus"
       :loading="isCompaniesLoading"
@@ -74,7 +75,6 @@ import type {
   EnrichedPortfolio,
   EnrichedPortfolioEntry,
   PortfolioUpload,
-  PortfolioUploadFrameworksEnum,
 } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -103,6 +103,7 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -122,18 +123,9 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
-  portfolioFrameworks.value = getUniqueFrameworks(portfolio.entries);
+  enrichedPortfolio.value = portfolio;
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
 });
-
-/**
- * Retrieve array of frameworks from EnrichedPortfolioEntries
- */
-function getUniqueFrameworks(entries: EnrichedPortfolioEntry[]): string[] {
-  const frameworks = entries.map((entry) => entry.framework).filter(isFramework);
-  return Array.from(new Set(frameworks));
-}
-
 /**
  * Retrieve array of unique and sorted companyIdAndNames from EnrichedPortfolioEntry
  */
@@ -191,8 +183,12 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
-      frameworks: portfolioFrameworks.value as unknown as Set<PortfolioUploadFrameworksEnum>,
+      // as unknown as Set<string> cast required to ensure proper json is created
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
+      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
+      // as unknown as Set<string> cast required to ensure proper json is created
+      monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
@@ -240,14 +236,6 @@ async function deletePortfolio(): Promise<void> {
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }
-}
-
-/**
- * Type Guard to convince typescript that undefined is really filtered out.
- * @param framework
- */
-function isFramework(framework: string | undefined): framework is string {
-  return !!framework;
 }
 
 /**

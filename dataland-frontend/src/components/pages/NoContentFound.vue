@@ -8,27 +8,16 @@
       <router-link to="/" class="text-primary" title="back to landing page">Dataland</router-link>
     </p>
   </TheContent>
-  <TheFooter :is-light-version="true" :sections="footerContent" />
+  <TheFooter />
 </template>
 
 <script lang="ts">
-import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page, Section } from '@/types/ContentTypes';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 
 export default {
   name: 'NoContentFound',
   components: { TheHeader, TheContent, TheFooter },
-
-  data(): { footerContent: Section[] | undefined } {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
-    return {
-      footerContent,
-    };
-  },
 };
 </script>

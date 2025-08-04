@@ -56,7 +56,11 @@ dependencies {
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.postgresql)
     kapt(Spring.boot.configurationProcessor)
+    implementation("org.apache.poi:poi:5.4.1")
+    implementation("org.apache.poi:poi-ooxml:5.4.1")
 }
 
 openApi {
@@ -88,7 +92,7 @@ jacoco {
 tasks.register<Copy>("getTestData") {
     description = "Task to copy required testing data."
     group = "verification"
-    from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
+    from("$rootDir/testing/data/CompanyInformationWithLksgData.json")
     into(
         layout.buildDirectory
             .dir("resources/test")

@@ -73,13 +73,14 @@
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'listOfReportingPeriods'"
-                          :options="reportingPeriods"
+                          :selectedOptions="reportingPeriods"
+                          :available-options="reportingPeriods"
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
                       <p
                         v-if="selectedReportingPeriodsError"
-                        class="text-danger text-xs mt-2"
+                        class="text-danger mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
                         Select at least one reporting period.
@@ -169,35 +170,33 @@
         </FormKit>
       </div>
     </TheContent>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
+import MultiSelectFormFieldBindData from '@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue';
+import BasicFormSection from '@/components/general/BasicFormSection.vue';
+import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { SuccessStatus } from '@/types/SuccessStatus.ts';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
+import type { BulkDataRequest, BulkDataRequestDataTypesEnum, BulkDataRequestResponse } from '@clients/communitymanager';
 import { FormKit } from '@formkit/vue';
+import { AxiosError } from 'axios';
+import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import InputSwitch from 'primevue/inputswitch';
 import { defineComponent, inject } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import TheContent from '@/components/generics/TheContent.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import { SuccessStatus } from '@/types/SuccessStatus.ts';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import MultiSelectFormFieldBindData from '@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { AxiosError } from 'axios';
-import BasicFormSection from '@/components/general/BasicFormSection.vue';
-import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
-import type { BulkDataRequest, BulkDataRequestDataTypesEnum, BulkDataRequestResponse } from '@clients/communitymanager';
-import router from '@/router';
-import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
   name: 'BulkDataRequest',
@@ -221,9 +220,6 @@ export default defineComponent({
   },
 
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       bulkDataRequestModel: {},
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
@@ -237,7 +233,6 @@ export default defineComponent({
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
       message: '',
-      footerContent,
       selectedReportingPeriodsError: false,
       reportingPeriods: [
         { name: '2024', value: false },

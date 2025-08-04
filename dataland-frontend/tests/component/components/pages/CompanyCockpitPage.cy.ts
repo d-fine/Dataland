@@ -4,7 +4,7 @@ import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
   DataTypeEnum,
-  type HeimathafenData,
+  type LksgData,
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
@@ -40,9 +40,9 @@ describe('Component test for the company cockpit', () => {
   let allFrameworks: Set<DataTypeEnum>;
 
   before(function () {
-    cy.fixture('CompanyInformationWithHeimathafenData').then(function (jsonContent) {
-      const heimathafenFixtures = jsonContent as Array<FixtureData<HeimathafenData>>;
-      companyInformationForTest = heimathafenFixtures[0].companyInformation;
+    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
+      const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      companyInformationForTest = lksgFixtures[0].companyInformation;
     });
     cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
@@ -213,11 +213,13 @@ describe('Component test for the company cockpit', () => {
   /**
    * Validates the framework summary panels by asserting their existence and checking for their contents
    * @param isProvideDataButtonExpected determines if a provide-data-button is expected to be found in the panels
+   * @param isMobileViewActive determines whether the company cockpit page is in mobile view mode
    * @param frameworksToTest the frameworks that are tested for
    * @param isCompanyOwner is the current user company owner
    */
   function validateDisplayedFrameworkSummaryPanels(
     isProvideDataButtonExpected: boolean,
+    isMobileViewActive: boolean,
     frameworksToTest: Set<DataTypeEnum>,
     isCompanyOwner: boolean = false
   ): void {
@@ -235,12 +237,17 @@ describe('Component test for the company cockpit', () => {
         'contain',
         frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
+      if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0 && !isMobileViewActive) {
+        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('exist');
+      } else {
+        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('not.exist');
+      }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
         return;
       }
       if (isProvideDataButtonExpected) {
-        if (frameworkName != 'heimathafen') {
+        if (frameworkName != 'lksg') {
           cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
             'exist'
           );
@@ -281,19 +288,38 @@ describe('Component test for the company cockpit', () => {
    * Validates whether the displayed framework summary panels are as expected before, during and
    * after extension from the initially displayed four panels to all.
    */
-  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, isCompanyOwner: boolean = false): void {
-    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, initiallyDisplayedFrameworks, isCompanyOwner);
+  function validateFrameworkSummaryPanels(
+    isProvideDataButtonExpected: boolean,
+    isMobileViewActive: boolean = false,
+    isCompanyOwner: boolean = false
+  ): void {
+    validateDisplayedFrameworkSummaryPanels(
+      isProvideDataButtonExpected,
+      isMobileViewActive,
+      initiallyDisplayedFrameworks,
+      isCompanyOwner
+    );
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
     cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
-    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, allFrameworks, isCompanyOwner);
+    validateDisplayedFrameworkSummaryPanels(
+      isProvideDataButtonExpected,
+      isMobileViewActive,
+      allFrameworks,
+      isCompanyOwner
+    );
     cy.get('[data-test=toggleShowAll]').contains('SHOW LESS').click();
-    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, initiallyDisplayedFrameworks, isCompanyOwner);
+    validateDisplayedFrameworkSummaryPanels(
+      isProvideDataButtonExpected,
+      isMobileViewActive,
+      initiallyDisplayedFrameworks,
+      isCompanyOwner
+    );
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
   }
 
   it('Checks the latest documents', () => {
     mockRequestsOnMounted(false);
-    mountCompanyCockpitWithAuthentication(false, false, []);
+    mountCompanyCockpitWithAuthentication(true, false, []);
     // For each category a request is made.
     Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach(() => {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
@@ -302,7 +328,7 @@ describe('Component test for the company cockpit', () => {
       cy.get('[data-test="' + category + '"]')
         .should('exist')
         .and('contain', 'test_' + category)
-        .find('div[class=text-primary]')
+        .find('div[data-test=download-link-component]')
         .children('a')
         .then((children) => {
           expect(children[0]).to.contain('(2025-02-25)');
@@ -378,7 +404,7 @@ describe('Component test for the company cockpit', () => {
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-    validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected, false, true);
     validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
   it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
@@ -399,9 +425,10 @@ describe('Component test for the company cockpit', () => {
       validateVsmeFrameworkSummaryPanel(true);
     });
   });
-  it('Check the Vsme summary panel behaviour if the user is not company owner', () => {
-    const hasCompanyAtLeastOneOwner = true;
-    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+
+  KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+    it(`Check the Vsme summary panel behaviour if the user is not company owner, Case: ${keycloakRole}`, () => {
+      const hasCompanyAtLeastOneOwner = true;
       mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]);
       cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
@@ -427,6 +454,6 @@ describe('Component test for the company cockpit', () => {
     validateSearchBarExistence(false);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
   });
 });

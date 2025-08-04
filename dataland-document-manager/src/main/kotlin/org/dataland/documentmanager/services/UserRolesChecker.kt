@@ -27,7 +27,7 @@ class UserRolesChecker(
         val userId = DatalandAuthentication.fromContext().userId
         val roles =
             companyRolesControllerApi
-                .getCompanyRoleAssignments(
+                .getExtendedCompanyRoleAssignments(
                     null,
                     null,
                     UUID.fromString(userId),
