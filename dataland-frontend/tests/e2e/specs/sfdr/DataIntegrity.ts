@@ -99,19 +99,19 @@ describeIf(
         .should('exist')
         .should('contain.text', humanizeStringOrNumber(fieldData.quality));
       cy.get('div[data-test="protectedAreasExposure"]')
-        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="Yes"] + .formkit-decorator')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="Yes"]')
         .click();
       cy.get('div[data-test="protectedAreasExposure"]')
-        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"] + .formkit-decorator')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"]')
         .click();
       cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-select-label')
         .should('exist')
         .should('contain.text', humanizeStringOrNumber(fieldData.quality));
       cy.get('div[data-test="protectedAreasExposure"]')
-        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"] + .formkit-decorator')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"]')
         .click();
       cy.get('div[data-test="protectedAreasExposure"]')
-        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"] + .formkit-decorator')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"]')
         .click();
       cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-select-label')
         .should('exist')

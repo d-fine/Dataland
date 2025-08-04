@@ -139,7 +139,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
     cy.get('div[data-test="numberOfEmployees"] input[name="value"]').clear().type('333');
-    cy.get('div[data-test="nfrdMandatory"]').find('input[type="checkbox"][value="No"] + .formkit-decorator').click();
+    cy.get('div[data-test="nfrdMandatory"]').find('input[type="checkbox"][value="No"]').click();
     selectItemFromDropdownByIndex(cy.get('[data-test="nfrdMandatory"]').find('[data-test="dataQuality"]'), 2);
     cy.get('input[name="provider"]').clear().type('Assurance Provider');
     cy.get('div[label="General"]')

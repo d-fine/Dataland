@@ -9,23 +9,17 @@ describe('Component tests for the Nuclear and Gas that test dependent fields', (
    */
   function fillAndValidateGeneralSection(): void {
     cy.get('div[data-test="nuclearEnergyRelatedActivitiesSection426"]')
-      .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
+      .find('input[type="checkbox"][value="Yes"]')
       .click();
     cy.get('div[data-test="nuclearEnergyRelatedActivitiesSection427"]')
-      .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
+      .find('input[type="checkbox"][value="Yes"]')
       .click();
     cy.get('div[data-test="nuclearEnergyRelatedActivitiesSection428"]')
-      .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
+      .find('input[type="checkbox"][value="Yes"]')
       .click();
-    cy.get('div[data-test="fossilGasRelatedActivitiesSection429"]')
-      .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
-      .click();
-    cy.get('div[data-test="fossilGasRelatedActivitiesSection430"]')
-      .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
-      .click();
-    cy.get('div[data-test="fossilGasRelatedActivitiesSection431"]')
-      .find('input[type="checkbox"][value="Yes"] + .formkit-decorator')
-      .click();
+    cy.get('div[data-test="fossilGasRelatedActivitiesSection429"]').find('input[type="checkbox"][value="Yes"]').click();
+    cy.get('div[data-test="fossilGasRelatedActivitiesSection430"]').find('input[type="checkbox"][value="Yes"]').click();
+    cy.get('div[data-test="fossilGasRelatedActivitiesSection431"]').find('input[type="checkbox"][value="Yes"]').click();
   }
 
   /**
