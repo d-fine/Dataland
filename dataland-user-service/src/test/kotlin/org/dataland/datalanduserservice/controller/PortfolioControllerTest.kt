@@ -2,8 +2,13 @@
 
 package org.dataland.datalanduserservice.controller
 
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.SupportRequestData
+import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
@@ -22,6 +27,8 @@ import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
@@ -37,6 +44,10 @@ class PortfolioControllerTest {
     private val mockPortfolioMonitoringService = mock<PortfolioMonitoringService>()
     private lateinit var mockAuthentication: DatalandAuthentication
     private lateinit var portfolioController: PortfolioController
+
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
+    private val publisher = MessageQueuePublisherService(mockCloudEventMessageHandler, mockKeycloakUserService)
 
     private val username = "data_reader"
     private val userId = "user-id"
@@ -68,6 +79,7 @@ class PortfolioControllerTest {
                 mockValidator,
                 mockPortfolioEnrichmentService,
                 mockPortfolioMonitoringService,
+                publisher,
             )
     }
 
@@ -108,5 +120,27 @@ class PortfolioControllerTest {
         doReturn(portfolios).whenever(mockPortfolioService).getAllPortfolioNamesForCurrentUser()
         val response = assertDoesNotThrow { portfolioController.getAllPortfolioNamesForCurrentUser() }.body
         assertEquals(portfolios, response)
+    }
+
+    @Test
+    fun `verify support request is published`() {
+        val supportRequestData = SupportRequestData(topic = "test topic", message = "test message")
+        whenever(mockKeycloakUserService.getUser(any())).thenReturn(
+            KeycloakUserInfo(
+                userId = "test userId",
+                email = "test email",
+                firstName = "test firstName",
+                lastName = "test lastName",
+            ),
+        )
+        portfolioController.postSupportRequest(supportRequestData)
+
+        verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
+            body = any(),
+            type = any(),
+            correlationId = any(),
+            exchange = any(),
+            routingKey = any(),
+        )
     }
 }
