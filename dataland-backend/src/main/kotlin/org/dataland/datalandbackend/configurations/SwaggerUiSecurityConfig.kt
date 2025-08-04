@@ -23,7 +23,7 @@ class SwaggerUiSecurityConfig {
     fun swaggerUiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .securityMatcher { request ->
-                request.requestURI.startsWith("/swagger-ui/")
+                request.servletPath.contains("/swagger-ui/")
             }
             // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
             .headers { headers ->

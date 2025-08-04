@@ -13,7 +13,6 @@ import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDate
-import kotlin.sequences.forEach
 
 /**
  * Utilities for handling referenced reports in a specification schema.
