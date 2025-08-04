@@ -80,8 +80,8 @@ class MessageQueuePublisherService
             supportRequestData: SupportRequestData,
             correlationId: String,
         ) {
-            val datalandJwtAuthentication = DatalandAuthentication.fromContext()
-            val keycloakUserInfo = keycloakUserService.getUser(datalandJwtAuthentication.userId)
+            val datalandAuthentication = DatalandAuthentication.fromContext()
+            val keycloakUserInfo = keycloakUserService.getUser(datalandAuthentication.userId)
 
             val internalEmailContentTable =
                 InternalEmailContentTable(
