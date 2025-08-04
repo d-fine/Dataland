@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleUserIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterRequired
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
@@ -70,7 +70,7 @@ interface CompanyRolesApi {
         @PathVariable("role") companyRole: CompanyRole,
         @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: UUID,
-        @UserIdParameterRequired
+        @CompanyRoleUserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     ): ResponseEntity<CompanyRoleAssignment>
 
@@ -81,7 +81,7 @@ interface CompanyRolesApi {
      * @returns the company role assignments for the specified company role and company
      */
     @Operation(
-        summary = "Get extended company role assignments that match the provided filters.",
+        summary = "Get company role assignments that match the provided filters.",
         description =
             "Get company role assignments extended by basic user information that match " +
                 "the provided filters. The endpoint is fully accessible to all Dataland Admins. " +
@@ -122,14 +122,14 @@ interface CompanyRolesApi {
             required = false,
         )
         companyRole: CompanyRole? = null,
-        @RequestParam("companyId")
+        @RequestParam("companyId", required = false)
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         companyId: UUID? = null,
-        @RequestParam("userId")
+        @RequestParam("userId", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
             example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
@@ -176,11 +176,7 @@ interface CompanyRolesApi {
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyRoleUserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     )
 
@@ -228,11 +224,7 @@ interface CompanyRolesApi {
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
-        @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
-            required = true,
-        )
+        @CompanyRoleUserIdParameterRequired
         @PathVariable("userId") userId: UUID,
     )
 
@@ -262,7 +254,7 @@ interface CompanyRolesApi {
             required = true,
         )
         @PathVariable("companyId") companyId: UUID,
-        @RequestParam
+        @RequestParam("comment", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.OWNERSHIP_COMMENT_DESCRIPTION,
             example = CommunityManagerOpenApiDescriptionsAndExamples.OWNERSHIP_COMMENT_EXAMPLE,

@@ -14,12 +14,12 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AdminComment
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestUserEmailAddressParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestStatusParameterNonRequired
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserEmailAddressParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterNonRequired
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
@@ -253,7 +253,7 @@ interface RequestApi {
         @UserIdParameterNonRequired
         userId: String?,
         @RequestParam
-        @UserEmailAddressParameterNonRequired
+        @DataRequestUserEmailAddressParameterNonRequired
         emailAddress: String?,
         @RequestParam
         @AdminCommentParameterNonRequired
@@ -325,7 +325,7 @@ interface RequestApi {
         @UserIdParameterNonRequired
         userId: String?,
         @RequestParam
-        @UserEmailAddressParameterNonRequired
+        @DataRequestUserEmailAddressParameterNonRequired
         emailAddress: String?,
         @RequestParam
         @AdminCommentParameterNonRequired
