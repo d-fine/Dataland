@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.configuration.TestRabbitConfiguration
 import org.dataland.datalandbackend.entities.IsinLeiEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.IsinLeiMappingData
@@ -15,17 +16,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
-@SpringBootTest(classes = [DatalandBackend::class])
+@SpringBootTest(classes = [DatalandBackend::class, TestRabbitConfiguration::class])
+@ActiveProfiles("test")
 @Testcontainers
-@Transactional
-@Rollback
 class IsinLeiManagerTest(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,
     @Autowired private val isinLeiRepository: IsinLeiRepository,
@@ -33,6 +32,8 @@ class IsinLeiManagerTest(
     @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
     @Autowired private val isinLeiTransactionalService: IsinLeiTransactionalService,
 ) {
+    // Even though this class uses a test container for integration testing, it is not possible to use the BaseIntegrationTest class.
+    // The use of @Async does not work with the @Transactional and @Rollback annotations in the BaseIntegrationTest class.
     companion object {
         @Container
         @JvmStatic

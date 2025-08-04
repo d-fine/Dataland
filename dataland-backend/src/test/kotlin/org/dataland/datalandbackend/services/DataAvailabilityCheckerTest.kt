@@ -2,12 +2,11 @@ package org.dataland.datalandbackend.services
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
-import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
-import org.dataland.datalandbackend.utils.TestPostgresContainer
+import org.dataland.datalandbackend.utils.BaseIntegrationTest
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.junit.jupiter.api.BeforeEach
@@ -15,34 +14,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.UUID
 
-@SpringBootTest(classes = [DatalandBackend::class])
-@Testcontainers
-@Transactional
-@Rollback
-class DataAvailabilityCheckerTest {
+class DataAvailabilityCheckerTest: BaseIntegrationTest() {
     companion object {
         private const val REPORTING_PERIOD = "2023"
         private const val DATA_TYPE = "sfdr"
         private const val COMPANY_ID = "46b5374b-a720-43e6-9c5e-9dd92bd95b33"
-
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            TestPostgresContainer.configureProperties(registry)
-        }
     }
 
     @PersistenceContext

@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
 import org.dataland.datalandbackend.model.companies.CompanyInformation
@@ -8,7 +7,7 @@ import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
-import org.dataland.datalandbackend.utils.TestPostgresContainer
+import org.dataland.datalandbackend.utils.BaseIntegrationTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -16,19 +15,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
-@SpringBootTest(classes = [DatalandBackend::class])
-@Testcontainers
-@Transactional
-@Rollback
-class CompanyAlterationManagerTest {
+class CompanyAlterationManagerTest: BaseIntegrationTest() {
     @Autowired
     private lateinit var companyAlterationManager: CompanyAlterationManager
 
@@ -40,18 +28,6 @@ class CompanyAlterationManagerTest {
 
     @Autowired
     private lateinit var companyQueryManager: CompanyQueryManager
-
-    companion object {
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            TestPostgresContainer.configureProperties(registry)
-        }
-    }
 
     private val originalLei = listOf("ORIGINAL123456789012")
     private val originalDuns = listOf("123456789")
@@ -105,13 +81,13 @@ class CompanyAlterationManagerTest {
     @Test
     fun `patchCompany should correctly update basic company information while preserving original values if null is provided`() {
         val newAlternativeNames = listOf("Updated Alt Name 1", "Updated Alt Name 2")
-        val newCompnyContactDetails = listOf("new@company.com", "another_new@company.com")
+        val newCompanyContactDetails = listOf("new@company.com", "another_new@company.com")
         val patch =
             CompanyInformationPatch(
                 companyName = newName,
                 headquarters = newHeadquarters,
                 companyAlternativeNames = newAlternativeNames,
-                companyContactDetails = newCompnyContactDetails,
+                companyContactDetails = newCompanyContactDetails,
                 sectorCodeWz = null,
             )
 
