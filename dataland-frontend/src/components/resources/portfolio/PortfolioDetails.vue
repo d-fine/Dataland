@@ -20,10 +20,25 @@
       <PrimeButton class="tertiary-button" @click="startTour">
         <i class="pi pi-info-circle pr-2" /> Start Tour
       </PrimeButton>
+      <PrimeButton class="tertiary-button" @click="showStepper = true">
+        <i class="pi pi-question-circle pr-2" /> Portfolio Guide
+      </PrimeButton>
+      <Dialog v-model:visible="showStepper" modal header="Portfolio Guide" style="width: 50vw">
+        <Steps :model="stepperSteps" :activeStep="activeStep" />
+        <div class="mt-4">
+          <p v-if="activeStep < stepperDescriptions.length">{{ stepperDescriptions[activeStep] }}</p>
+        </div>
+        <div class="flex justify-between mt-4">
+          <PrimeButton label="Back" :disabled="activeStep === 0" @click="activeStep--" />
+          <PrimeButton label="Next" :disabled="activeStep === stepperSteps.length - 1" @click="activeStep++" />
+        </div>
+      </Dialog>
       <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored" id="monitor-button">
         <span class="material-icons-outlined fs-sm pr-1">verified</span>
         Portfolio actively monitored
       </div>
+
+
 
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
         <PrimeButton
@@ -278,6 +293,25 @@ const tourSteps = ref([
 ]);
 const instance = getCurrentInstance();
 
+const showStepper = ref(false);
+const activeStep = ref(0);
+
+const stepperSteps = [
+  { label: 'Edit' },
+  { label: 'Download' },
+  { label: 'Monitor' },
+  { label: 'Filter' },
+  { label: 'Frameworks' },
+];
+
+const stepperDescriptions = [
+  'Edit your portfolio to add or remove companies and modify the portfolio name.',
+  'Download portfolio data by selecting a framework, year, and format.',
+  'Enable monitoring to receive updates when data changes.',
+  'Use filters to narrow down the displayed portfolio entries by country, sector, and available reporting periods.',
+  'Framework columns show ESG data availability per company; click values for details.',
+];
+
 /**
  * Starts the tour for the download functionality.
  * This function is called when the user clicks on the "Start Tour" button.
@@ -285,6 +319,8 @@ const instance = getCurrentInstance();
 function startTour(): void {
   instance?.appContext.config.globalProperties.$tours?.downloadTour?.start();
 }
+
+
 
 onMounted(() => {
   void checkPremiumRole();

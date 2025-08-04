@@ -16,6 +16,8 @@ import { createPinia, type PiniaPlugin } from 'pinia';
 import { PiniaSharedState } from 'pinia-shared-state';
 import Vue3Tour from 'vue3-tour';
 import 'vue3-tour/dist/vue3-tour.css';
+import Steps from 'primevue/steps';
+import Dialog from 'primevue/dialog';
 
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
@@ -35,6 +37,8 @@ function instantiateVueApp(): void {
   app.use(PrimeVue);
   app.use(pinia);
   app.use(Vue3Tour);
+  app.component('Steps', Steps);
+  app.component('Dialog', Dialog);
 
   app.mount('#app');
 }
