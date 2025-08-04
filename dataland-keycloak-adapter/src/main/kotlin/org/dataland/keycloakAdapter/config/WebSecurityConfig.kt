@@ -83,9 +83,11 @@ class WebSecurityConfig(
                     .permitAll()
                     .anyRequest()
                     .fullyAuthenticated()
-            }.logout { it.disable() }
-            .csrf { it.disable() }
-            .oauth2ResourceServer {
+            }.logout {
+                it.disable()
+            }.csrf {
+                it.disable()
+            }.oauth2ResourceServer {
                 it.authenticationManagerResolver(tokenAuthenticationManagerResolver())
             }
     }
