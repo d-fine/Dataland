@@ -18,7 +18,7 @@ input[type="text"], input[type="password"] {
   &:valid,
   &:focus {
     outline: none;
-    border-bottom: 1px solid #ff6813;
+    border-bottom: 1px solid var(--primary-color);
   }
 
   ~ label {
@@ -39,7 +39,7 @@ input[type="text"], input[type="password"] {
     top: 2px;
     font-size: 12px;
     font-weight: bolder;
-    color: #ff6813;
+    color: var(--primary-color);
   }
 
   // Error cases

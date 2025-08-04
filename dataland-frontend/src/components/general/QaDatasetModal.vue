@@ -1,11 +1,11 @@
 <template>
-  <MiddleCenterDiv class="w-30 flex-direction-column">
+  <MiddleCenterDiv class="flex-direction-column">
     <div>{{ message }}</div>
     <div v-if="!reviewSubmitted" class="text-center px-7 py-4">
       <p class="font-medium text-xl">Submitting...</p>
       <DatalandProgressSpinner />
     </div>
-    <div v-if="reviewSubmitted" class="col-12 text-center">
+    <div v-if="reviewSubmitted" class="submit-message">
       <SuccessMessage
         v-if="reviewSuccessful"
         data-test="qaReviewSubmittedMessage"
@@ -101,7 +101,15 @@ export default defineComponent({
   flex-direction: column;
 }
 
-.d-letters {
-  letter-spacing: 0.05em;
+.submit-message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-md);
+  width: 100%;
+}
+
+.submit-message .p-button {
+  align-self: center; /* Centers just the button */
 }
 </style>

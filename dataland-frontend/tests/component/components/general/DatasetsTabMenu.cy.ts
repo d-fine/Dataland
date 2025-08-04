@@ -1,8 +1,9 @@
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { ref } from 'vue';
 
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
   enum AlwaysVisibleTabs {
@@ -19,6 +20,8 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   const dummyUserId = 'mock-user-id';
+  const dummyFirstName = 'mock-first-name';
+  const dummyEmail = 'mock@Company.com';
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
 
   /**
@@ -28,7 +31,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
    */
   function mountDatasetsTabMenuWithAuthentication(
     keycloakRoles: string[],
-    companyRoleAssignments: CompanyRoleAssignment[]
+    companyRoleAssignments: CompanyRoleAssignmentExtended[]
   ): void {
     getMountingFunction({
       keycloak: minimalKeycloakMock({
@@ -42,7 +45,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
       {
         global: {
           provide: {
-            companyRoleAssignments: companyRoleAssignments,
+            companyRoleAssignments: ref(companyRoleAssignments),
           },
         },
         props: {
@@ -88,11 +91,13 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   });
 
   it('Validate tabs for a logged-in Dataland-Reader with company ownership', function () {
-    const companyRoleAssignments: CompanyRoleAssignment[] = [
+    const companyRoleAssignments: CompanyRoleAssignmentExtended[] = [
       {
         companyRole: CompanyRole.CompanyOwner,
         companyId: dummyCompanyId,
         userId: dummyUserId,
+        firstName: dummyFirstName,
+        email: dummyEmail,
       },
     ];
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments);

@@ -89,6 +89,7 @@
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
                       <MultiSelect
+                        :show-toggle-all="false"
                         placeholder="Select framework"
                         v-model="selectedFrameworks"
                         name="Framework"
@@ -96,7 +97,7 @@
                         option-label="label"
                         option-value="value"
                         data-test="datapoint-framework"
-                        @changed="selectedFrameworksError = false"
+                        @change="selectedFrameworksError = false"
                         :highlightOnSelect="false"
                         fluid
                       />
@@ -139,32 +140,33 @@
                         <span v-else>weekly summary</span>
                       </label>
                     </BasicFormSection>
-
                     <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">
-                      <FormKit
+                      <PrimeTextarea
                         v-model="identifiersInString"
-                        type="textarea"
                         name="listOfCompanyIdentifiers"
-                        validation="required"
-                        validation-label="List of company identifiers"
-                        :validation-messages="{
-                          required: 'Provide at least one identifier',
-                        }"
-                        placeholder="E.g.: DE-000402625-0, SWE402626, DE-000402627-2, SWE402626,DE-0004026244"
+                        placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
+                        rows="5"
+                        class="no-resize"
+                        @value-change="identifierError = false"
+                        fluid
                       />
-                      <span class="gray-text font-italic">
+                      <Message
+                        v-if="identifierError"
+                        severity="error"
+                        variant="simple"
+                        size="small"
+                        data-test="reportingPeriodErrorMessage"
+                        style="margin-top: var(--spacing-xs)"
+                      >
+                        Provide at least one identifier.
+                      </Message>
+                      <span class="dataland-info-text small">
                         Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
                       </span>
                     </BasicFormSection>
                   </div>
                   <div class="col-12 flex justify-content-end">
-                    <PrimeButton
-                      type="submit"
-                      label="Submit"
-                      class="align-self-end"
-                      name="submit_request_button"
-                      @click="checkErrors()"
-                    >
+                    <PrimeButton type="submit" label="Submit" class="align-self-end" name="submit_request_button">
                       NEXT
                     </PrimeButton>
                   </div>
@@ -203,10 +205,12 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 import Message from 'primevue/message';
 import MultiSelect from 'primevue/multiselect';
+import PrimeTextarea from 'primevue/textarea';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
+    PrimeTextarea,
     MultiSelect,
     Message,
     BulkDataRequestSummary,
@@ -241,6 +245,7 @@ export default defineComponent({
       postBulkDataRequestObjectProcessed: false,
       message: '',
       selectedReportingPeriodsError: false,
+      identifierError: false,
       selectedFrameworksError: false,
       reportingPeriods: [
         { name: '2024', value: false },
@@ -277,16 +282,15 @@ export default defineComponent({
   methods: {
     humanizeStringOrNumber,
     /**
-     * Check whether reporting periods and frameworks have been selected
+     * Check whether reporting periods and frameworks have been selected, and companyIdentifiers are not empty
      */
-    checkErrors(): void {
-      if (!this.selectedReportingPeriods.length) {
-        this.selectedReportingPeriodsError = true;
-      }
-      if (!this.selectedFrameworks.length) {
-        this.selectedFrameworksError = true;
-      }
+    formHasErrors(): boolean {
+      this.selectedReportingPeriodsError = !this.selectedReportingPeriods.length;
+      this.selectedFrameworksError = !this.selectedFrameworks.length;
+      this.identifierError = !this.identifiers.length;
+      return this.selectedReportingPeriodsError && this.selectedFrameworksError && this.identifierError;
     },
+
     /**
      * Remove framework from selected frameworks from array
      * @param it - framework to remove
@@ -294,6 +298,7 @@ export default defineComponent({
     removeItem(it: string) {
       this.selectedFrameworks = this.selectedFrameworks.filter((el) => el !== it);
     },
+
     /**
      * Builds a DataRequest object using the currently entered inputs and returns it
      * @returns the DataRequest object
@@ -307,6 +312,7 @@ export default defineComponent({
         notifyMeImmediately: this.notifyMeImmediately,
       };
     },
+
     /**
      * Converts the string inside the identifiers field into a list of identifiers
      */
@@ -322,8 +328,10 @@ export default defineComponent({
      */
     async submitRequest(): Promise<void> {
       this.processInput();
+      if (this.formHasErrors()) {
+        return;
+      }
       this.submittingInProgress = true;
-
       try {
         const bulkDataRequestObject = this.collectDataToSend();
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients

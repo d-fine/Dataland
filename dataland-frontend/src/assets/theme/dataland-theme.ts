@@ -2,7 +2,7 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
 /**
- * In this file, we define the basic primeVue preset for Dataland.
+ * In this file, we define the basic PrimeVue preset for Dataland.
  * The Dataland design is derived from the Aura preset, and particular design tokens are overwritten. In particular, we
  * overwrite the primitive colors 'orange' and 'blue'.
  */

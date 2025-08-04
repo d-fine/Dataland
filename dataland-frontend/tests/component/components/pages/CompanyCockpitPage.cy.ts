@@ -9,7 +9,7 @@ import {
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { computed } from 'vue';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import {
   KEYCLOAK_ROLE_PREMIUM_USER,
@@ -31,6 +31,8 @@ describe('Component test for the company cockpit', () => {
   const dummyPublicationDates = ['2025-02-25', '2024-01-13', undefined];
   const dummyReportingPeriods = ['2025', '2024', '2023'];
   const dummyUserId = 'mock-user-id';
+  const dummyFirstName = 'mock-first-name';
+  const dummyEmail = 'mock@Company.com';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
     DataTypeEnum.EutaxonomyNonFinancials,
@@ -59,11 +61,13 @@ describe('Component test for the company cockpit', () => {
    * @param companyId of the company associated with the mock assignment
    * @returns a mock company role assignment
    */
-  function generateCompanyRoleAssignment(companyRole: CompanyRole, companyId: string): CompanyRoleAssignment {
+  function generateCompanyRoleAssignment(companyRole: CompanyRole, companyId: string): CompanyRoleAssignmentExtended {
     return {
       companyRole: companyRole,
       companyId: companyId,
       userId: dummyUserId,
+      firstName: dummyFirstName,
+      email: dummyEmail,
     };
   }
 
@@ -137,7 +141,7 @@ describe('Component test for the company cockpit', () => {
     isLoggedIn: boolean,
     isMobile: boolean,
     keycloakRoles?: string[],
-    companyRoleAssignments?: CompanyRoleAssignment[]
+    companyRoleAssignments?: CompanyRoleAssignmentExtended[]
   ): Cypress.Chainable {
     const chainable = getMountingFunction({
       keycloak: minimalKeycloakMock({

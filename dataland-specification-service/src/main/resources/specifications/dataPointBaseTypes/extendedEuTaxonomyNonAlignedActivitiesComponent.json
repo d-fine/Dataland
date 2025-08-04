@@ -3,6 +3,28 @@
   "name" : "General non-aligned activities data point with an extended source",
   "businessDefinition" : "Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<java.util.List<org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity>>",
+  "schema" : {
+    "value" : [ {
+      "activityName" : "Activity",
+      "naceCodes" : "List<String>",
+      "share" : {
+        "relativeShareInPercent" : "Integer",
+        "absoluteShare" : {
+          "amount" : "Double",
+          "currency" : "String"
+        }
+      }
+    } ],
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
   "example" : {
     "value" : [ {
       "activityName" : "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
@@ -41,7 +63,8 @@
       "page" : "5-7",
       "tagName" : "date",
       "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+      "publicationDate" : "2021-03-15"
     }
   }
 }
