@@ -68,9 +68,12 @@ describe('Portfolio Monitoring Modal', () => {
           timeout: Cypress.env('medium_timeout_in_ms'),
         });
 
-        cy.get('.p-dialog').within(() => {
-          cy.get('.p-dialog-header').contains('Add Portfolio');
-          cy.get('.portfolio-dialog-content').within(() => {
+        // Add portfolio dialog
+        cy.get('.p-dialog').find('.p-dialog-header').contains('Add Portfolio');
+
+        cy.get('.p-dialog')
+          .find('.portfolio-dialog-content')
+          .within(() => {
             cy.get('[data-test="portfolio-name-input"]').type(portfolioName);
             cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
             cy.get('[data-test="company-identifiers-input"]:visible').type(permId);
@@ -80,24 +83,28 @@ describe('Portfolio Monitoring Modal', () => {
               timeout: Cypress.env('medium_timeout_in_ms') as number,
             });
           });
-        });
 
+        // Navigate to portfolio and open monitoring
         cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
         cy.get(`[data-test="${portfolioName}"]`).click();
         cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="monitor-portfolio"]`).click({
           timeout: Cypress.env('medium_timeout_in_ms') as number,
         });
 
-        cy.get('.p-dialog').within(() => {
-          cy.get('.p-dialog-header').contains(`Monitoring of`);
-          cy.get('.portfolio-monitoring-content').within(() => {
+        // Monitoring dialog
+        cy.get('.p-dialog').find('.p-dialog-header').contains(`Monitoring of`);
+
+        cy.get('.p-dialog')
+          .find('.portfolio-monitoring-content')
+          .within(() => {
             cy.get('[data-test="activateMonitoringToggle"]').click();
             cy.get('[data-test="listOfReportingPeriods"]').click({
               timeout: Cypress.env('medium_timeout_in_ms') as number,
             });
           });
-        });
+
         cy.get('.p-select-option').contains('2023').click();
+
         cy.get('.p-dialog')
           .find('.portfolio-monitoring-content')
           .within(() => {
@@ -111,6 +118,7 @@ describe('Portfolio Monitoring Modal', () => {
             });
           });
 
+        // Assert patchMonitoring payload
         cy.wait('@patchMonitoring')
           .its('request.body')
           .should((body) => {
@@ -119,6 +127,7 @@ describe('Portfolio Monitoring Modal', () => {
             expect(body.monitoredFrameworks).to.include(frameworkValue);
           });
 
+        // Verify requests page
         cy.wait(Cypress.env('long_timeout_in_ms'));
         cy.visitAndCheckAppMount('/requests');
 
@@ -132,6 +141,7 @@ describe('Portfolio Monitoring Modal', () => {
           cy.get('@companyRequestRows').filter(`:contains("${subtitle}")`).should('have.length.at.least', 1);
         });
 
+        // Cleanup: delete portfolio
         cy.visitAndCheckAppMount('/portfolios');
         cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
 
