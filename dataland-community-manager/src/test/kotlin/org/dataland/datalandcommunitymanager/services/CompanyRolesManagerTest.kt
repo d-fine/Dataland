@@ -16,12 +16,17 @@ import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnership
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -34,6 +39,8 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import java.io.File
 import java.util.Optional
 
@@ -44,6 +51,8 @@ class CompanyRolesManagerTest {
     private val mockCompanyRoleAssignmentRepository = mock<CompanyRoleAssignmentRepository>()
     private val mockCompanyOwnershipAcceptedEmailMessageBuilder = mock<CompanyOwnershipAcceptedEmailMessageBuilder>()
     private val mockCompanyOwnershipRequestedEmailMessageBuilder = mock<CompanyOwnershipRequestedEmailMessageBuilder>()
+    private val mockDatalandJwtAuthentication = mock<DatalandJwtAuthentication>()
+    private val mockSecurityContext = mock<SecurityContext>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private val objectMapper = JsonUtils.defaultObjectMapper
@@ -94,6 +103,8 @@ class CompanyRolesManagerTest {
             mockCompanyRoleAssignmentRepository,
             mockCompanyOwnershipAcceptedEmailMessageBuilder,
             mockCompanyOwnershipRequestedEmailMessageBuilder,
+            mockDatalandJwtAuthentication,
+            mockSecurityContext,
             mockKeycloakUserService,
         )
     }
@@ -167,7 +178,7 @@ class CompanyRolesManagerTest {
         val exception =
             assertThrows<ResourceNotFoundApiException> {
                 companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(
-                    nonExistingCompanyId,
+                    "non-existing-company-id",
                 )
             }
         assertEquals(companyNotFound, exception.summary)
@@ -187,21 +198,7 @@ class CompanyRolesManagerTest {
                     "",
                 )
             }
-        assertEquals("User is already a company owner for company.", exception.summary)
-    }
-
-    @Test
-    fun `check that assignment of company roles does not work for unknown user IDs`() {
-        val exception =
-            assertThrows<ResourceNotFoundApiException> {
-                companyRolesManager.assignCompanyRoleForCompanyToUser(
-                    companyRole = CompanyRole.DataUploader,
-                    companyId = existingCompanyId,
-                    userId = nonExistingUserId,
-                )
-            }
-
-        assertEquals(unknownUserId, exception.summary)
+        assertTrue(exception.summary.contains("User is already a company owner for company."))
     }
 
     @Test
@@ -219,11 +216,8 @@ class CompanyRolesManagerTest {
     }
 
     @Test
-    fun `check that email generated for users becoming company owner is generated`() {
+    fun `check that email generated for users becoming company owner are generated`() {
         doReturn(false).whenever(mockCompanyRoleAssignmentRepository).existsById(existingCompanyRoleAssignmentId)
-        doReturn(Optional.empty<CompanyRoleAssignmentEntity>())
-            .whenever(mockCompanyRoleAssignmentRepository)
-            .findById(existingCompanyRoleAssignmentId)
 
         companyRolesManager.assignCompanyRoleForCompanyToUser(
             companyRole = CompanyRole.CompanyOwner,
@@ -235,6 +229,59 @@ class CompanyRolesManagerTest {
             .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 anyString(), anyString(), anyString(), anyString(),
             )
+    }
+
+    @Test
+    fun `check that an unauthenticated user is not considered owner or admin of any company`() {
+        doReturn(null).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+
+        assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = CompanyRole::class)
+    fun `check that the different company roles pass or fail the authorization check for user lookup by email as appropriate`(
+        companyRole: CompanyRole,
+    ) {
+        val companyOwnerUserId = "user-id-of-company-owner"
+        doReturn(companyOwnerUserId).whenever(mockDatalandJwtAuthentication).userId
+        doReturn(mockDatalandJwtAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+        doReturn(
+            listOf(
+                CompanyRoleAssignmentEntity(
+                    companyRole = companyRole,
+                    companyId = "dummy-company-id",
+                    userId = companyOwnerUserId,
+                ),
+            ),
+        ).whenever(mockCompanyRoleAssignmentRepository)
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null,
+                userId = companyOwnerUserId,
+                companyRole = null,
+            )
+
+        if (companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)) {
+            assertTrue(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+        } else {
+            assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+        }
+    }
+
+    @Test
+    fun `check that assignment of company roles does not work for unknown user IDs`() {
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.assignCompanyRoleForCompanyToUser(
+                    companyRole = CompanyRole.DataUploader,
+                    companyId = existingCompanyId,
+                    userId = nonExistingUserId,
+                )
+            }
+
+        assertEquals(unknownUserId, exception.summary)
     }
 
     @Test
