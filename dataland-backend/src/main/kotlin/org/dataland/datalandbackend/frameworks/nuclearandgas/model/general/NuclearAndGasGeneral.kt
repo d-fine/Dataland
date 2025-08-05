@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.taxon
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class NuclearAndGasGeneral(
     @field:Valid()
     val general: NuclearAndGasGeneralGeneral? = null,

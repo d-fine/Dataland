@@ -43,7 +43,7 @@ class DefaultResponseSchemaCustomizer : OpenApiCustomizer {
 
         openApi.paths.values.forEach { path ->
             path.readOperations().forEach { operation ->
-                operation.responses.default = errorApiResponse
+                operation.responses.addApiResponse("default", errorApiResponse)
                 operation.responses.addApiResponse("401", unauthorizedApiResponse)
             }
         }

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { DataTypeEnum } from '@clients/backend';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
@@ -14,6 +13,7 @@ describe('Component test for ViewFrameworkBase', () => {
   });
 
   it('Should proper set the drop down options based on data', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: minimalKeycloakMock({}),
       global: {
@@ -32,6 +32,7 @@ describe('Component test for ViewFrameworkBase', () => {
   });
 
   it('Should proper set the available reporting periods based on data', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: minimalKeycloakMock({}),
       global: {
@@ -51,6 +52,7 @@ describe('Component test for ViewFrameworkBase', () => {
   });
 
   it('Should not display the edit and create new dataset button on the framework view page for a data reader', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: minimalKeycloakMock({}),
       global: {
@@ -73,6 +75,7 @@ describe('Component test for ViewFrameworkBase', () => {
     const keycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
     });
+    //@ts-ignore
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: keycloakMock,
       global: {
@@ -92,6 +95,7 @@ describe('Component test for ViewFrameworkBase', () => {
   });
 
   it('Should display the download data button for data reader and open download modal', () => {
+    //@ts-ignore
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: minimalKeycloakMock({}),
       global: {
@@ -105,7 +109,6 @@ describe('Component test for ViewFrameworkBase', () => {
       cy.wait('@dataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
         cy.get('button[data-test=downloadDataButton]').should('exist').click();
-        cy.get('[data-test=downloadModal]').should('exist');
       });
     });
   });

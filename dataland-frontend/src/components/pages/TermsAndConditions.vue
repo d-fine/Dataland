@@ -1,14 +1,13 @@
 <template>
   <LegalPage>
     <div class="flex justify-content-start align-items-center">
-      <img src="/public/static/icons/uk_flag.jpg" height="20" alt="English" />
-      <InputSwitch
+      <img src="/static/icons/uk_flag.jpg" alt="English" />
+      <ToggleSwitch
         data-test="terms-language-toggle-button"
         v-model="languageGerman"
-        class="p-inputswitch-singlecolor"
         style="margin-left: 10px; margin-right: 10px"
       />
-      <img src="/public/static/icons/germany_flag.png" height="20" alt="German" />
+      <img src="/static/icons/germany_flag.png" alt="German" />
     </div>
 
     <div v-if="!languageGerman">
@@ -1161,11 +1160,11 @@
 <script lang="ts">
 import LegalPage from '@/components/generics/LegalPage.vue';
 import { computed, defineComponent } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 
 export default defineComponent({
   name: 'TermsAndConditions',
-  components: { LegalPage, InputSwitch },
+  components: { LegalPage, ToggleSwitch },
   data() {
     return {
       languageGerman: false,
@@ -1237,5 +1236,9 @@ p::before {
 h3 ~ p:not(:only-of-type)::before {
   counter-increment: subsubsection;
   content: counter(section) '.' counter(subsection) '.' counter(subsubsection) '. ';
+}
+
+img {
+  height: 20px;
 }
 </style>

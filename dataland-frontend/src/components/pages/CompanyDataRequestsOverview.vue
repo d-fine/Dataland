@@ -2,56 +2,36 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="5">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="requested-Datasets-searchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by requester"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
-                class="ml-3"
-                style="margin: 15px"
+          <div class="search-bar-and-filters-container">
+            <IconField class="request-company-search-bar-container">
+              <InputIcon class="pi pi-search" />
+              <InputText
+                data-test="requested-datasets-searchbar"
+                v-model="searchBarInput"
+                placeholder="Search by requester"
+                variant="filled"
+                fluid
               />
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedAccessStatus"
-                ref="frameworkFilter"
-                :available-items="availableAccessStatus"
-                filter-name="Access Status"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="access status"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <div class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </div>
-            </span>
+            </IconField>
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="requested-datasets-frameworks"
+              filter-placeholder="Search frameworks"
+            />
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedAccessStatus"
+              :available-items="availableAccessStatus"
+              filter-name="Access Status"
+              data-test="requested-datasets-frameworks"
+              filter-placeholder="access status"
+            />
+            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
           </div>
+
           <div class="col-12 text-left p-3">
             <div class="card">
               <DataTable
@@ -59,7 +39,7 @@
                 style="cursor: pointer"
                 :rowHover="true"
                 :loading="waitingForData"
-                data-test="requested-Datasets-table"
+                data-test="requested-datasets-table"
                 paginator
                 paginator-position="bottom"
                 :rows="datasetsPerPage"
@@ -95,12 +75,12 @@
                   <template #body="slotProps">
                     <div>
                       {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                    </div></template
-                  >
+                    </div>
+                  </template>
                 </Column>
                 <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
-                  <template #body="slotProps"
-                    ><div>
+                  <template #body="slotProps">
+                    <div>
                       {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
                     </div>
                   </template>
@@ -190,13 +170,19 @@ import {
 } from '@/utils/RequestsOverviewPageUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { AccessStatus, type CompanyRoleAssignment, type ExtendedStoredDataRequest } from '@clients/communitymanager';
+import {
+  AccessStatus,
+  type CompanyRoleAssignmentExtended,
+  type ExtendedStoredDataRequest,
+} from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import { defineComponent, inject, ref } from 'vue';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -216,14 +202,15 @@ export default defineComponent({
     DataTable,
     Column,
     InputText,
+    InputIcon,
+    IconField,
   },
 
   setup() {
     return {
-      frameworkFilter: ref(),
       datasetsPerPage: 100,
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
+      companyRoleAssignments: inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'),
     };
   },
 
@@ -430,5 +417,34 @@ export default defineComponent({
 <style scoped>
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.search-bar-and-filters-container {
+  margin-top: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-lg);
+  z-index: 100;
+  display: flex;
+  gap: var(--spacing-md);
+
+  .request-company-search-bar-container {
+    width: 25%;
+  }
 }
 </style>

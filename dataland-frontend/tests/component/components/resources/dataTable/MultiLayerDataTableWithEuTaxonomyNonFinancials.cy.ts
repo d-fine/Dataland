@@ -186,7 +186,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
             for (const reportKey in reportsForDataset) {
               cy.get(`[data-test='report-link-${reportKey}']`).first().click();
               cy.get(`[data-test='Report-Download-${reportKey}']`).contains(reportKey);
-              cy.get('button[data-pc-section="closebutton"]').last().click();
+              cy.get('button.p-dialog-close-button').last().click();
             }
           }
         }

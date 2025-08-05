@@ -68,11 +68,11 @@ function setupCompanyWithData(token: string, companyName: string, years: string[
 function createPortfolio(company1: StoredCompany, company2: StoredCompany, portfolioName: string): void {
   cy.ensureLoggedIn(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/portfolios');
-  cy.get('[data-test="addNewPortfolio"]').click();
-  cy.get('[name="portfolioName"]').type(portfolioName);
-  cy.get('[name="company-identifiers"]').type(`${company1.companyId},${company2.companyId}`);
-  cy.get('[data-test="addCompanies"]').click();
-  cy.get('[data-test="saveButton"]').click();
+  cy.get('[data-test="add-portfolio"]').click();
+  cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
+  cy.get('[data-test="company-identifiers-input"]').type(`${company1.companyId},${company2.companyId}`);
+  cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+  cy.get('[data-test="portfolio-dialog-save-button"]').click();
 }
 
 /**
@@ -100,11 +100,12 @@ function testDownloadPortfolio({
 
     const partialFileNamePrefix = 'data-export-EU Taxonomy Non-Financials';
 
-    cy.get('[data-test="fileTypeSelector"]').select(fileType);
+    cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+    cy.get('.p-select-list-container').contains(fileType).click();
     if (keepValuesOnly) {
       cy.get('[data-test="valuesOnlySwitch"]').click();
     }
-    cy.get('[data-test="downloadButton"]').click();
+    cy.get('[data-test="downloadDataButtonInModal"]').click();
 
     cy.wait(Cypress.env('medium_timeout_in_ms') as number);
     cy.task('findFileByPrefix', {
@@ -181,11 +182,12 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
-      cy.get('[data-test="portfolios"] [data-pc-name="tabpanel"]').contains(portfolioName).click();
+      cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
-      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
       reportingYearsToSelect.forEach((year) => {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click({ force: true });
+        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
       });
     });
 
@@ -212,8 +214,8 @@ describeIf(
     });
 
     it('Shows that not all reporting periods are clickable when data is missing', () => {
-      cy.get('[data-test="frameworkSelector"]').select('EU Taxonomy Non-Financials');
-
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
       cy.get('[data-test="listOfReportingPeriods"]').should('be.visible');
 
       unavailableYears.forEach((year) => {

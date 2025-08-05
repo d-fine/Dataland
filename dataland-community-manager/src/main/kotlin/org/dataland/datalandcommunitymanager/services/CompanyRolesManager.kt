@@ -3,8 +3,11 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
@@ -27,6 +30,7 @@ class CompanyRolesManager(
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyOwnershipRequestedEmailMessageBuilder: CompanyOwnershipRequestedEmailMessageBuilder,
     @Autowired private val companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder,
+    @Autowired private val keycloakUserService: KeycloakUserService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -36,7 +40,7 @@ class CompanyRolesManager(
      * Assigns a company role for the specified company to the user.
      * @param companyRole that shall be assigned
      * @param companyId of the company for which the role is being assigned
-     * @param userId that is assigned the company role to
+     * @param userId of the user to whom a company role shall be assigned
      * @returns an entity that summarizes all current holders of the company role for the company
      */
     @Transactional
@@ -45,6 +49,12 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ): CompanyRoleAssignmentEntity {
+        if (!keycloakUserService.isKeycloakUserId(userId)) {
+            throw ResourceNotFoundApiException(
+                summary = "Unknown user ID",
+                message = "The user ID $userId does not exist on Keycloak.",
+            )
+        }
         val companyName = companyInfoService.getValidCompanyName(companyId)
         val correlationId = UUID.randomUUID().toString()
 
@@ -67,6 +77,29 @@ class CompanyRolesManager(
             }
             savedEntity
         }
+    }
+
+    /**
+     * Converts the given CompanyRoleAssignment objects to CompanyRoleAssignmentExtended objects by
+     * looking up the relevant info (email, first name, last name) via Keycloak.
+     */
+    fun convertToExtendedCompanyRoleAssignments(companyRoleAssignments: List<CompanyRoleAssignment>): List<CompanyRoleAssignmentExtended> {
+        val extendedCompanyRoleAssignments = mutableListOf<CompanyRoleAssignmentExtended>()
+        companyRoleAssignments.forEach {
+            val keycloakUserInfo = keycloakUserService.getUser(it.userId)
+
+            extendedCompanyRoleAssignments.add(
+                CompanyRoleAssignmentExtended(
+                    companyRole = it.companyRole,
+                    companyId = it.companyId,
+                    userId = it.userId,
+                    email = keycloakUserInfo.email ?: "",
+                    firstName = keycloakUserInfo.firstName,
+                    lastName = keycloakUserInfo.lastName,
+                ),
+            )
+        }
+        return extendedCompanyRoleAssignments
     }
 
     private fun saveCompanyRoleAssignment(
@@ -205,6 +238,22 @@ class CompanyRolesManager(
                 "Company with $companyId has no company owner(s).",
             )
         }
+    }
+
+    /**
+     * Verifies if the user with the specified userId has the role CompanyOwner or MemberAdmin for
+     * at least one company on Dataland.
+     */
+    @Transactional(readOnly = true)
+    fun currentUserIsOwnerOrAdminOfAtLeastOneCompany(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId
+        if (userId == null) return false
+        return companyRoleAssignmentRepository
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null, userId = userId, companyRole = null,
+            ).any {
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)
+            }
     }
 
     /**

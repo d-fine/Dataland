@@ -18,7 +18,7 @@
 import { computed, inject, onMounted, ref, type Ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { nuclearAndGasActivityNames } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
 import type { NuclearAndGasNonEligible } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 import { formatPercentageNumberAsString } from '@/utils/Formatter';
@@ -65,9 +65,9 @@ const mainColumnDefinitions = computed(() => {
   } else {
     return [
       { field: 'economicActivity', header: 'Economic Activity' },
+      { field: 'mitigationAndAdaptation', header: 'CCM + CCA' },
       { field: 'mitigation', header: 'CCM' },
       { field: 'adaptation', header: 'CCA' },
-      { field: 'mitigationAndAdaptation', header: 'CCM + CCA' },
     ];
   }
 });
@@ -108,9 +108,9 @@ function generateRowContents(): void {
       ] as NuclearAndGasEnvironmentalObjective;
       listOfRowContents.value.push({
         economicActivity: listOfActivities[idx].description,
+        mitigationAndAdaptation: formatPercentageNumberAsString(objective?.mitigationAndAdaptation),
         mitigation: formatPercentageNumberAsString(objective?.mitigation),
         adaptation: formatPercentageNumberAsString(objective?.adaptation),
-        mitigationAndAdaptation: formatPercentageNumberAsString(objective?.mitigationAndAdaptation),
       });
     }
   });

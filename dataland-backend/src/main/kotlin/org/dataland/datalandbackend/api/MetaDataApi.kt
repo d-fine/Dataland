@@ -1,6 +1,9 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -13,6 +16,13 @@ import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoRespo
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -58,12 +68,33 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getListOfDataMetaInfo(
-        @RequestParam companyId: String? = null,
-        @RequestParam dataType: DataType? = null,
-        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam uploaderUserIds: Set<UUID>? = null,
-        @RequestParam qaStatus: QaStatus? = null,
+        @RequestParam
+        @CompanyIdParameterNonRequired
+        companyId: String? = null,
+        @RequestParam
+        @DataTypeParameterNonRequired
+        dataType: DataType? = null,
+        @RequestParam(defaultValue = "true")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
+            required = false,
+        )
+        showOnlyActive: Boolean,
+        @RequestParam
+        @ReportingPeriodParameterNonRequired
+        reportingPeriod: String? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.ALL_UPLOADER_USER_IDS_DESCRIPTION,
+            required = false,
+        )
+        uploaderUserIds: Set<UUID>? = null,
+        @RequestParam
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = false,
+        )
+        qaStatus: QaStatus? = null,
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
@@ -112,6 +143,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getDataMetaInfo(
+        @DataIdParameterRequired
         @PathVariable dataId: String,
     ): ResponseEntity<DataMetaInformation>
 
@@ -137,6 +169,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataMetaInfo(
+        @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
         @Valid @RequestBody(required = true)
         dataMetaInformationPatch: DataMetaInformationPatch,
@@ -153,7 +186,21 @@ interface MetaDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved list of data point IDs.",
+                content = [
+                    Content(
+                        schema =
+                            Schema(
+                                type = "object",
+                                additionalPropertiesSchema = String::class,
+                                description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_MAP_DESCRIPTION,
+                                example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_MAP_EXAMPLE,
+                            ),
+                    ),
+                ],
+            ),
         ],
     )
     @GetMapping(
@@ -162,6 +209,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getContainedDataPoints(
+        @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<Map<String, String>>
 
@@ -190,10 +238,21 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getInfoOnNonSourceabilityOfDatasets(
-        @RequestParam companyId: String? = null,
-        @RequestParam dataType: DataType? = null,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam nonSourceable: Boolean? = null,
+        @RequestParam
+        @CompanyIdParameterNonRequired
+        companyId: String? = null,
+        @RequestParam
+        @DataTypeParameterNonRequired
+        dataType: DataType? = null,
+        @RequestParam
+        @ReportingPeriodParameterNonRequired
+        reportingPeriod: String? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
+            required = false,
+        )
+        nonSourceable: Boolean? = null,
     ): ResponseEntity<List<SourceabilityInfoResponse>>
 
     /**
@@ -247,13 +306,25 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun isDataNonSourceable(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
+        @Parameter(
+            name = "dataType",
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = true,
+        )
         @PathVariable("dataType") dataType: DataType,
+        @Parameter(
+            name = "reportingPeriod",
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = true,
+        )
         @PathVariable("reportingPeriod") reportingPeriod: String,
     )
 
     /**
-     * A method to retrieve all available data dimensions filtered by the provided parameters.
+     * A method to retrieve all  available data dimensions filtered by the provided parameters.
      * @param companyIds a list of company identifiers to filter for
      * @param frameworksOrDataPointTypes a list of frameworks or data point types (or mixture thereof) to filter for
      * @param reportingPeriods a list of reporting periods to filter for
@@ -272,8 +343,41 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAvailableDataDimensions(
-        @RequestParam companyIds: List<String>? = null,
-        @RequestParam frameworksOrDataPointTypes: List<String>? = null,
-        @RequestParam reportingPeriods: List<String>? = null,
+        @RequestParam
+        @CompanyIdParameterNonRequired
+        companyIds: List<String>? = null,
+        @RequestParam
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE,
+            required = false,
+        )
+        frameworksOrDataPointTypes: List<String>? = null,
+        @RequestParam
+        @ReportingPeriodParameterNonRequired
+        reportingPeriods: List<String>? = null,
     ): ResponseEntity<List<BasicDataDimensions>>
+
+    /**
+     * A method to retrieve all meta data for active datasets matching the provided data dimensions.
+     * @param dataDimensions a list of data dimensions to search for
+     */
+    @Operation(
+        summary = "Checks if active datasets are available.",
+        description =
+            "Checks if any active datasets are available applying the provided data dimensions " +
+                "and returns the corresponding meta data.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta data of active datasets."),
+        ],
+    )
+    @PostMapping(
+        value = ["/active-dataset-search"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun retrieveMetaDataOfActiveDatasets(
+        @RequestBody dataDimensions: List<BasicDataDimensions>,
+    ): ResponseEntity<List<DataMetaInformation>>
 }

@@ -3,7 +3,7 @@
 
   <FormKit name="assurance" type="group">
     <!-- Level of assurance -->
-    <div class="form-field">
+    <div class="form-field" data-test="assurance-form-field">
       <div class="lg:col-4 md:col-6 col-12 p-0 formkit-outer normal-line-height">
         <SingleSelectFormField
           :label="euTaxonomyKpiNameMappings.assurance"
@@ -111,11 +111,14 @@ export default defineComponent({
       isMounted: false,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
-      assuranceData: {
-        None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
-        LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance),
-        ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
-      },
+      assuranceData: [
+        { value: 'None', label: humanizeStringOrNumber(AssuranceDataPointValueEnum.None) },
+        { value: 'LimitedAssurance', label: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance) },
+        {
+          value: 'ReasonableAssurance',
+          label: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
+        },
+      ],
       currentReportValue: null as string | null,
       pageForFileReference: undefined as string | undefined,
       noReportLabel: noReportLabel,
@@ -148,3 +151,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+</style>

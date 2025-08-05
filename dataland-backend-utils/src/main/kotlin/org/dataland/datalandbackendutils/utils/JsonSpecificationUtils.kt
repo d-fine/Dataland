@@ -18,7 +18,9 @@ data class JsonSpecificationLeaf(
  * Utilities for working with JSON framework specifications.
  */
 object JsonSpecificationUtils {
-    private fun isTerminalNode(node: JsonNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref")
+    private fun isTerminalNode(node: JsonNode): Boolean =
+        node.fieldNames().asSequence().toSet() == setOf("id", "ref", "aliasExport") ||
+            node.fieldNames().asSequence().toSet() == setOf("id", "ref")
 
     /**
      * Hydrates a JSON specification with data from a data function. During hydration, leaf nodes of the
@@ -42,7 +44,7 @@ object JsonSpecificationUtils {
         } else {
             val returnNode = JsonNodeFactory.instance.objectNode()
             var allNull = true
-            for ((fieldName, childSpecificationNode) in currentSpecificationNode.fields()) {
+            for ((fieldName, childSpecificationNode) in currentSpecificationNode.properties()) {
                 require(childSpecificationNode is ObjectNode) {
                     "Specification node must be an object node"
                 }
@@ -93,7 +95,7 @@ object JsonSpecificationUtils {
                     "Unexpected leaf at JSON path: $currentPath",
                 )
             }
-            for ((fieldName, jsonNode) in currentDataNode.fields()) {
+            for ((fieldName, jsonNode) in currentDataNode.properties()) {
                 dataMap.putAll(processNode(fieldName, jsonNode, currentPath, currentSpecificationNode))
             }
         }

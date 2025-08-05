@@ -1,48 +1,50 @@
 <template>
   <div class="portfolio-dialog-content">
-    <FormKit
-      v-model="portfolioName"
-      type="text"
-      label="Portfolio Name"
-      name="portfolioName"
-      :placeholder="portfolioName"
-    />
-    <label class="formkit-label" for="company-identifiers">Add Company Identifiers</label>
-    <FormKit
-      v-model="companyIdentifiersInput"
-      type="textarea"
-      name="company-identifiers"
-      placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
-      :disabled="isCompaniesLoading"
-    />
-    <PrimeButton
-      type="button"
-      label="Add Companies"
-      icon="pi pi-plus"
-      :loading="isCompaniesLoading"
-      @click="addCompanies"
-      class="primary-button"
-      data-test="addCompanies"
-      style="margin-left: 1em; float: right"
-    />
-    <p class="gray-text font-italic text-xs m-0">
-      Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
-    </p>
-    <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
-    <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
-      <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
-        <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
-        {{ company.companyName }}
-      </li>
-    </ul>
-    <div data-test="error">
-      <p v-if="!isValidPortfolioUpload" class="formkit-message">
-        Please provide a portfolio name and at least one company.
-      </p>
-      <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
-        {{ portfolioErrors }}
-      </Message>
+    <div class="container">
+      <p class="header-styling">Portfolio Name</p>
+      <InputText v-model="portfolioName" data-test="portfolio-name-input" :placeholder="portfolioName" fluid />
     </div>
+    <div class="container">
+      <p class="header-styling">Add company identifiers</p>
+      <Textarea
+        v-model="companyIdentifiersInput"
+        data-test="company-identifiers-input"
+        :disabled="isCompaniesLoading"
+        placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
+        rows="5"
+        class="no-resize"
+        fluid
+      />
+      <div class="company-info-container">
+        <p class="dataland-info-text small">
+          Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
+        </p>
+        <PrimeButton
+          type="button"
+          label="Add Companies"
+          icon="pi pi-plus"
+          :loading="isCompaniesLoading"
+          @click="addCompanies"
+          data-test="portfolio-dialog-add-companies"
+          fluid
+        />
+      </div>
+    </div>
+    <div>
+      <p class="header-styling">Company identifiers in portfolio</p>
+      <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
+        <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
+          <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
+          {{ company.companyName }}
+        </li>
+      </ul>
+    </div>
+    <Message v-if="!isValidPortfolioUpload" severity="error" variant="simple" size="small">
+      Please provide a portfolio name and at least one company.
+    </Message>
+    <Message v-if="portfolioErrors" severity="error" :life="3000" data-test="unknown-portfolio-error">
+      {{ portfolioErrors }}
+    </Message>
     <div class="buttonbar">
       <PrimeButton
         v-if="portfolioId"
@@ -50,9 +52,8 @@
         icon="pi pi-trash"
         @click="deletePortfolio"
         class="primary-button deleteButton"
-        :data-test="'deleteButton'"
+        data-test="portfolio-dialog-delete-button"
         title="Delete the selected Portfolio"
-        style="width: 1em; padding: 1em"
       />
       <PrimeButton
         label="Save Portfolio"
@@ -60,8 +61,7 @@
         :disabled="!isValidPortfolioUpload"
         :loading="isPortfolioSaving"
         @click="savePortfolio()"
-        class="primary-button"
-        :data-test="'saveButton'"
+        data-test="portfolio-dialog-save-button"
       />
     </div>
   </div>
@@ -82,6 +82,8 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
 
 class CompanyIdAndName {
   companyId: string;
@@ -231,8 +233,7 @@ async function deletePortfolio(): Promise<void> {
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
     dialogRef?.value.close({
-      deleted: true,
-      portfolioId: portfolioId.value,
+      isDeleted: true,
     });
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
@@ -252,29 +253,38 @@ function processCompanyInputString(): string[] {
 }
 </script>
 
-<style scoped lang="scss">
-.portfolio-dialog-content {
-  width: 28em;
-  border-radius: 0.25rem;
-  background-color: white;
-  padding: 1.5rem;
+<style scoped>
+.company-info-container {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
 }
 
-.deleteButton {
-  min-width: fit-content;
-  padding: 1em;
+.no-resize {
+  resize: none;
+}
+
+.container {
+  margin-bottom: var(--spacing-lg);
+}
+
+.header-styling {
+  font-weight: var(--font-weight-bold);
+}
+
+.portfolio-dialog-content {
+  width: 28em;
+  border-radius: var(--spacing-xxs);
+  background-color: white;
+  padding: var(--spacing-lg);
 }
 
 .buttonbar {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
   margin-top: 1em;
   margin-left: auto;
   justify-content: end;
-}
-
-label {
-  margin-top: 1.5em;
 }
 
 ul {

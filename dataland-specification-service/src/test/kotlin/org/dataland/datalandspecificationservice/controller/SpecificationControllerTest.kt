@@ -20,7 +20,7 @@ class SpecificationControllerTest(
     @Autowired val objectMapper: ObjectMapper,
 ) {
     @Test
-    fun `retrieving a framework specification should return a DTO with correct refs in schema`() {
+    fun `retrieving a framework specification should return a DTO with correct refs and alias in schema`() {
         val response = specificationController.getFrameworkSpecification("test-framework")
         assert(response.statusCode.is2xxSuccessful)
         val schema = objectMapper.readTree(response.body!!.schema)
@@ -32,6 +32,15 @@ class SpecificationControllerTest(
                 .path("ref")
                 .textValue() ==
                 "https://local-dev.dataland.com/specifications/data-point-types/test-datapoint-type",
+        )
+        assert(
+            schema
+                .path("test1")
+                .path("test2")
+                .path("test3")
+                .path("aliasExport")
+                .textValue() ==
+                "alias",
         )
     }
 
@@ -70,5 +79,13 @@ class SpecificationControllerTest(
         assertThrows<ResourceNotFoundApiException> {
             specificationController.getDataPointBaseType("non-existing-datapoint-type")
         }
+    }
+
+    @Test
+    fun `returning schema for known base type`() {
+        val frameworkSpecificationId = "test-framework"
+        val response = specificationController.getResolvedFrameworkSpecification(frameworkSpecificationId)
+        assert(response.statusCode.is2xxSuccessful)
+        assert(response.body?.resolvedSchema.toString() == "{test1={test2={test3={\"testing\":\"Boolean\"}}}}")
     }
 }

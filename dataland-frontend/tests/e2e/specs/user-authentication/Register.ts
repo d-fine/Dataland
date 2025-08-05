@@ -102,8 +102,8 @@ describe('As a user I want to be able to register for an account and be able to 
           }
           login(returnEmail, returnPassword);
           cy.visitAndCheckAppMount('/companies');
-          cy.get("div[id='profile-picture-dropdown-toggle']").click();
-          cy.get("a[id='profile-picture-dropdown-settings-button']").click();
+          cy.get("[data-test='user-profile-toggle']").click();
+          cy.get('.p-menu-item-link').contains('USER SETTINGS').click();
           // eslint-disable-next-line cypress/no-unnecessary-waiting
           cy.wait(100);
           cy.get("button:contains('Account security')").should('exist').click();

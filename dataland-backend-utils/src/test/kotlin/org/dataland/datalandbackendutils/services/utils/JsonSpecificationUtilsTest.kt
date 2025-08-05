@@ -17,7 +17,8 @@ class JsonSpecificationUtilsTest {
         {
             "field": {
                 "id": "field1",
-                "ref": "field1"
+                "ref": "field1",
+                "aliasExport": "field1"
             },
             "group": {
                 "subgroup": {

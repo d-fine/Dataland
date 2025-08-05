@@ -4,7 +4,7 @@
     <div class="form-field">
       <UploadFormHeader label="Publication Date" description="The publication date of the report." />
       <div class="md:col-6 col-12 p-0">
-        <Calendar
+        <DatePicker
           data-test="publicationDate"
           inputId="icon"
           :modelValue="publicationDateAsDate"
@@ -29,11 +29,11 @@
 import { defineComponent } from 'vue';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import { getHyphenatedDate } from '@/utils/DataFormatUtils';
 export default defineComponent({
   name: 'ReportFormElement',
-  components: { FormKit, UploadFormHeader, Calendar },
+  components: { FormKit, UploadFormHeader, DatePicker },
   data() {
     return {
       publicationDateAsDate: undefined as undefined | Date,

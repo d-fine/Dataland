@@ -7,11 +7,12 @@ import {
   DataTypeEnum,
   type LksgData,
   LksgDataControllerApi,
+  type RiskPositionType,
   type StoredCompany,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -61,7 +62,7 @@ describeIf(
                 cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetApproved();
+                    isDatasetAccepted();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
                     return new LksgDataControllerApi(new Configuration({ accessToken: token }))
@@ -126,13 +127,23 @@ describeIf(
     }
 
     /**
+     * Sorts the riskPositions Array by converting the
+     * elements into strings and explicitly defining a compare function
+     * @param riskPositions an array of risk positions
+     * @returns sorted riskPositions
+     */
+    function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
+      return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
+    }
+
+    /**
      * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
      * @param dataset frontend dataset to modify
      * @returns sorted frontend object
      */
     function sortComplaintsRiskObject(dataset: LksgData): LksgData {
-      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
-        element.riskPositions.sort()
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach(
+        (element) => (element.riskPositions = sortRiskPositions(element.riskPositions))
       );
       dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
         const comparisonA = a.specifiedComplaint;
