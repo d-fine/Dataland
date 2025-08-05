@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
     <h1>Loading portfolio data...</h1>
-    <DatalandProgressSpinner />
+    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
     <h1>Error loading portfolio data</h1>
@@ -10,31 +10,50 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton @click="openEditModal()" data-test="edit-portfolio" label="Edit Portfolio" icon="pi pi-pencil" />
-      <PrimeButton
-        @click="openDownloadModal()"
-        data-test="download-portfolio"
-        label="Download Portfolio"
-        icon="pi pi-download"
-      />
+      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio" id="edit-button">
+        <i class="material-icons pr-2">edit</i> Edit Portfolio
+      </PrimeButton>
+
+      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio" id="download-button">
+        <i class="pi pi-download pr-2" /> Download Portfolio
+      </PrimeButton>
+      <PrimeButton class="tertiary-button" @click="startTour">
+        <i class="pi pi-info-circle pr-2" /> Start Tour
+      </PrimeButton>
+      <PrimeButton class="tertiary-button" @click="showStepper = true">
+        <i class="pi pi-question-circle pr-2" /> Portfolio Guide
+      </PrimeButton>
+      <Dialog v-model:visible="showStepper" modal header="Portfolio Guide" style="width: 50vw">
+        <Steps :model="stepperSteps" :activeStep="activeStep" />
+        <div class="mt-4">
+          <p v-if="activeStep < stepperDescriptions.length">{{ stepperDescriptions[activeStep] }}</p>
+        </div>
+        <div class="flex justify-between mt-4">
+          <PrimeButton label="Back" :disabled="activeStep === 0" @click="activeStep--" />
+          <PrimeButton label="Next" :disabled="activeStep === stepperSteps.length - 1" @click="activeStep++" />
+        </div>
+      </Dialog>
+      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored" id="monitor-button">
+        <span class="material-icons-outlined fs-sm pr-1">verified</span>
+        Portfolio actively monitored
+      </div>
+
+
+
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
         <PrimeButton
+          class="primary-button"
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
-          icon="pi pi-bell"
-          label="Edit Monitoring"
-        />
+        >
+          <i class="pi pi-bell pr-2" /> EDIT MONITORING
+        </PrimeButton>
+        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
       </div>
-      <Tag
-        v-if="isMonitored"
-        data-test="verifiedCompanyOwnerBadge"
-        value="Portfolio actively monitored"
-        icon="pi pi-check-circle"
-        severity="success"
-      />
-      <PrimeButton variant="text" @click="resetFilters" label="RESET FILTER" data-test="reset-filter" />
     </div>
+
+    <v-tour name="downloadTour" :steps="tourSteps" />
 
     <DataTable
       stripedRows
@@ -72,35 +91,31 @@
       </Column>
       <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div data-test="countryFilterOverlay">
-            <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
-              <Checkbox
-                v-model="filterModel.value"
-                :inputId="country"
-                name="country"
-                :value="country"
-                data-test="countryFilterValue"
-                @change="filterCallback"
-              />
-              <label :for="country">{{ country }}</label>
-            </div>
+          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="country"
+              name="country"
+              :value="country"
+              data-test="countryFilterValue"
+              @change="filterCallback"
+            />
+            <label :for="country">{{ country }}</label>
           </div>
         </template>
       </Column>
       <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div data-test="sectorFilterOverlay">
-            <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
-              <Checkbox
-                v-model="filterModel.value"
-                :inputId="sector"
-                name="sector"
-                :value="sector"
-                data-test="sectorFilterValue"
-                @change="filterCallback"
-              />
-              <label :for="sector">{{ sector }}</label>
-            </div>
+          <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="sector"
+              name="sector"
+              :value="sector"
+              data-test="sectorFilterValue"
+              @change="filterCallback"
+            />
+            <label :for="sector">{{ sector }}</label>
           </div>
         </template>
       </Column>
@@ -117,27 +132,25 @@
           <a
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
             :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
+          >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
           >
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
-            <div
-              v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
-              :key="availableReportingPeriods"
-              class="filter-checkbox"
-            >
-              <Checkbox
-                v-model="filterModel.value"
-                :inputId="availableReportingPeriods"
-                name="availableReportingPeriods"
-                :value="availableReportingPeriods"
-                :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
-                @change="filterCallback"
-              />
-              <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
-            </div>
+          <div
+            v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
+            :key="availableReportingPeriods"
+            class="filter-checkbox"
+          >
+            <Checkbox
+              v-model="filterModel.value"
+              :inputId="availableReportingPeriods"
+              name="availableReportingPeriods"
+              :value="availableReportingPeriods"
+              :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+              @change="filterCallback"
+            />
+            <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
           </div>
         </template>
       </Column>
@@ -146,7 +159,6 @@
 </template>
 
 <script setup lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
@@ -155,15 +167,15 @@ import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/Str
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
+import { FilterMatchMode } from 'primevue/api';
 import PrimeButton from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch } from 'vue';
+import { getCurrentInstance, inject, onMounted, ref, watch } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
@@ -173,7 +185,6 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
-import Tag from 'primevue/tag';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -204,9 +215,9 @@ class PortfolioEntryPrepared {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
-          (portfolioEntry.availableReportingPeriods[framework]
-            ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
-            : undefined)
+        (portfolioEntry.availableReportingPeriods[framework]
+          ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
+          : undefined)
       );
     });
 
@@ -225,8 +236,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
-const countryOptions = ref<string[]>([]);
-const sectorOptions = ref<string[]>([]);
+const countryOptions = ref<string[]>(new Array<string>());
+const sectorOptions = ref<string[]>(new Array<string>());
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
@@ -253,6 +264,63 @@ const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
 const isPremiumUser = ref(false);
+
+const tourSteps = ref([
+  {
+    target: '#download-button',
+    content: 'Download the portfolio data as in various file formats for your selected framework and reporting period.',
+    params: {
+      placement: 'bottom',
+      scrollTo: false,
+    },
+  },
+  {
+    target: '#edit-button',
+    content: 'Edit your portfolio by adding or removing companies and/or changing the name of the portfolio.',
+    params: {
+      placement: 'bottom',
+      scrollTo: false,
+    },
+  },
+  {
+    target: '#monitor-button',
+    content: 'Stay ahead by monitoring your portfolio for changes in ESG data.',
+    params: {
+      placement: 'bottom',
+      scrollTo: false,
+    },
+  },
+]);
+const instance = getCurrentInstance();
+
+const showStepper = ref(false);
+const activeStep = ref(0);
+
+const stepperSteps = [
+  { label: 'Edit' },
+  { label: 'Download' },
+  { label: 'Monitor' },
+  { label: 'Filter' },
+  { label: 'Frameworks' },
+];
+
+const stepperDescriptions = [
+  'Edit your portfolio to add or remove companies and modify the portfolio name.',
+  'Download portfolio data by selecting a framework, year, and format.',
+  'Enable monitoring to receive updates when data changes.',
+  'Use filters to narrow down the displayed portfolio entries by country, sector, and available reporting periods.',
+  'Framework columns show ESG data availability per company; click values for details.',
+];
+
+/**
+ * Starts the tour for the download functionality.
+ * This function is called when the user clicks on the "Start Tour" button.
+ */
+function startTour(): void {
+  instance?.appContext.config.globalProperties.$tours?.downloadTour?.start();
+}
+
+
 
 onMounted(() => {
   void checkPremiumRole();
@@ -452,10 +520,8 @@ function openEditModal(): void {
       portfolio: enrichedPortfolio.value,
       isMonitoring: isMonitored.value,
     },
-    onClose(options) {
-      if (!options?.data?.isDeleted) {
-        loadPortfolio();
-      }
+    onClose() {
+      loadPortfolio();
       emit('update:portfolio-overview');
     },
   });
@@ -530,7 +596,7 @@ function openMonitoringModal(): void {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 label {
   margin-left: 0.5em;
 }
@@ -554,20 +620,50 @@ a:after {
   font-weight: bold;
 }
 
-.button_bar {
-  display: flex;
-  margin: var(--spacing-md) 0;
-  padding: var(--spacing-md);
-  gap: 1rem;
-  align-items: center;
-  background-color: var(--p-surface-50);
+:deep(.p-inputtext) {
+  background: none;
 }
 
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
+:deep(.p-column-filter) {
+  margin: 0.5rem;
+}
+
+:deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
+  color: inherit;
+}
+
+.selection-button {
+  background: white;
+  color: #5a4f36;
+  border: 2px solid #5a4f36;
+  border-radius: 0.5em;
+  height: 2.25rem;
+}
+
+.button_bar {
+  display: flex;
+  margin: 1rem;
+  gap: 1rem;
+  align-items: center;
+
+  :last-child {
+    margin-left: auto;
+  }
+}
+
+.monitor-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+
+  :deep(.p-inputswitch) {
+    transform: scale(1.3);
+    margin-left: 0.3rem; /* push it right so it’s not clipped */
+  }
+
+  span {
+    white-space: nowrap;
+  }
 }
 </style>

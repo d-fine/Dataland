@@ -2,6 +2,7 @@
   <LandingPageHeader :landingPage="landingPage" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
+    <ThePortfolio :sections="landingPage?.sections" />
     <TheQuotes :sections="landingPage?.sections" />
     <TheBrands :sections="landingPage?.sections" />
     <TheStruggle :sections="landingPage?.sections" />
@@ -30,6 +31,7 @@ import TheGetInTouch from '@/components/resources/landingPage/TheGetInTouch.vue'
 import TheFooter from '@/components/generics/TheFooter.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
+import ThePortfolio from '@/components/resources/landingPage/ThePortfolio.vue';
 
 const content: Content = contentData;
 const landingPage: Page | undefined = content.pages.find((page) => page.url === '/');

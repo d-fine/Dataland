@@ -4,21 +4,23 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
-import DynamicDialog from 'primevue/dynamicdialog';
-import Keycloak from 'keycloak-js';
+import SessionDialog from '@/components/general/SessionDialog.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { useSharedSessionStateStore } from '@/stores/Stores';
+import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import {
   SessionDialogMode,
   startSessionSetIntervalFunctionAndReturnItsId,
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from '@/utils/SessionTimeoutUtils';
-import SessionDialog from '@/components/general/SessionDialog.vue';
-import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
-import { useSharedSessionStateStore } from '@/stores/Stores';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
+import { type CompanyRoleAssignment } from '@clients/communitymanager';
+import type Keycloak from 'keycloak-js';
+import DynamicDialog from 'primevue/dynamicdialog';
+import { computed, defineComponent, ref } from 'vue';
+//@ts-ignore
+// eslint-disable-next-line no-restricted-imports
+import { minimalKeycloakMock } from '../tests/component/testUtils/Keycloak';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -38,7 +40,7 @@ export default defineComponent({
 
       apiClientProvider: undefined as ApiClientProvider | undefined,
 
-      companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
+      companyRoleAssignments: undefined as Array<CompanyRoleAssignment> | undefined,
     };
   },
 
@@ -113,7 +115,12 @@ export default defineComponent({
      * @returns a promise which resolves to the Keycloak adaptor object
      */
     initKeycloak(): Promise<Keycloak> {
-      const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      //const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      const keycloak = minimalKeycloakMock({
+        userId: 'dummyUser',
+        roles: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_REVIEWER', 'ROLE_UPLOADER'],
+        authenticated: true,
+      });
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({
@@ -142,7 +149,7 @@ export default defineComponent({
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-        void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+        this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
       }
     },
 
@@ -151,10 +158,9 @@ export default defineComponent({
      * @param resolvedKeycloakPromise contains the login-status of the current user
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
-    async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
-        resolvedKeycloakPromise,
-        apiClientProvider
+    setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      void getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
+        (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
       );
     },
 
