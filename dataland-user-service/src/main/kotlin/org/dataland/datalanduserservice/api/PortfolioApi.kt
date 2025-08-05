@@ -302,9 +302,9 @@ interface PortfolioApi {
      * A method to request support for portfolio creation e.g. by finding company identifiers
      */
     @Operation(
-        summary = "Request support creating a portfolio.",
+        summary = "Request support for creating a portfolio.",
         description =
-            "Request support creating a portfolio on Dataland.",
+            "Request support for creating a portfolio on Dataland.",
     )
     @ApiResponses(
         value = [
