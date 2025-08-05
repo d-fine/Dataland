@@ -28,13 +28,7 @@
     <p class="gray-text font-italic text-xs m-0">
       Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
     </p>
-    <PrimeButton
-      type="button"
-      label="Get help"
-      @click="openHelpDialog"
-      class="primary-button"
-      style="margin-left: 1em; float: right"
-    />
+    <PrimeButton type="button" label="Get help" @click="openHelpDialog" class="primary-button" />
     <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
     <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
       <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
