@@ -221,8 +221,8 @@
         "tags": [
           "portfolio-controller"
         ],
-        "summary": "Request support creating a portfolio.",
-        "description": "Request support creating a portfolio on Dataland.",
+        "summary": "Request support for creating a portfolio.",
+        "description": "Request support for creating a portfolio on Dataland.",
         "operationId": "postSupportRequest",
         "requestBody": {
           "content": {
@@ -1028,12 +1028,12 @@
         "properties": {
           "topic": {
             "type": "string",
-            "description": "The topic of the request.",
-            "example": "Find identifiers."
+            "description": "The topic of the request for help.",
+            "example": "Find company identifiers."
           },
           "message": {
             "type": "string",
-            "description": "The request message to dataland.",
+            "description": "The help request message to dataland.",
             "example": "I need help finding identifiers for company x, y, z to be able to add them to my portfolio."
           }
         }
