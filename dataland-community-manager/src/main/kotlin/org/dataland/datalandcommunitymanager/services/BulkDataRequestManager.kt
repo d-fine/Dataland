@@ -181,7 +181,8 @@ class BulkDataRequestManager(
 
         return if (dataDimensions.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)
-            return (query.resultList as List<DataRequestEntity>)
+            return query.resultList
+                .filterIsInstance<DataRequestEntity>()
         } else {
             emptyList()
         }
