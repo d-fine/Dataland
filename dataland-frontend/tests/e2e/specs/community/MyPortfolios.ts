@@ -13,6 +13,7 @@ describeIf(
   () => {
     let permIdOfExistingCompany: string;
     let permIdOfSecondCompany: string;
+    const invalidCompanyId = ',this1san1nval1d1d';
     const companyTimestamp = Date.now();
     let portfolioTimestamp: number;
     let portfolioName: string;
@@ -49,10 +50,11 @@ describeIf(
         cy.get('.p-dialog-header').contains('Add Portfolio');
         cy.get('.portfolio-dialog-content').within(() => {
           cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
-          cy.pause();
           cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
           cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
+          cy.get('[data-test="company-identifiers-input"]:visible').type(invalidCompanyId);
           cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
           cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,

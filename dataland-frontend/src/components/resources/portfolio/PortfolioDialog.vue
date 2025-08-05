@@ -14,7 +14,13 @@
         rows="5"
         class="no-resize"
         fluid
+        @change="showIdentifierError = false"
       />
+      <div v-if="showIdentifierError">
+        <Message severity="error" data-test="invalidIdentifierErrorMessage" variant="simple" size="small">
+          Identifiers left in dialog couldn't be added to Portfolio.
+        </Message>
+      </div>
       <div class="company-info-container">
         <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
@@ -99,6 +105,7 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const companyIdentifiersInput = ref('');
+const showIdentifierError = ref(false);
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
@@ -168,6 +175,9 @@ async function addCompanies(): Promise<void> {
   } finally {
     isCompaniesLoading.value = false;
     companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
+  }
+  if (invalidIdentifiers.length > 0) {
+    showIdentifierError.value = true;
   }
 }
 
