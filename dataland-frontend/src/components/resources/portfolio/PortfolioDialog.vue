@@ -14,7 +14,7 @@
         rows="5"
         class="no-resize"
         fluid
-        @change="showIdentifierError = false"
+        @focus="showIdentifierError = false"
       />
       <div v-if="showIdentifierError">
         <Message severity="error" data-test="invalidIdentifierErrorMessage" variant="simple" size="small">
