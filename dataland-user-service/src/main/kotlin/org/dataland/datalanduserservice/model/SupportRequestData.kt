@@ -12,14 +12,14 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceO
 data class SupportRequestData(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.REQUEST_TOPIC,
-        example = UserServiceOpenApiDescriptionsAndExamples.REQUEST_TOPIC_EXAMPLE,
+        description = UserServiceOpenApiDescriptionsAndExamples.HELP_REQUEST_TOPIC,
+        example = UserServiceOpenApiDescriptionsAndExamples.HELP_REQUEST_TOPIC_EXAMPLE,
     )
     val topic: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.REQUEST_MESSAGE,
-        example = UserServiceOpenApiDescriptionsAndExamples.REQUEST_MESSAGE_EXAMPLE,
+        description = UserServiceOpenApiDescriptionsAndExamples.HELP_REQUEST_MESSAGE,
+        example = UserServiceOpenApiDescriptionsAndExamples.HELP_REQUEST_MESSAGE_EXAMPLE,
     )
     val message: String,
 )

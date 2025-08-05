@@ -42,8 +42,8 @@ object UserServiceOpenApiDescriptionsAndExamples {
             "\"https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
             "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"}"
 
-    const val REQUEST_TOPIC = "The topic of the request."
-    const val REQUEST_TOPIC_EXAMPLE = "Find identifiers."
-    const val REQUEST_MESSAGE = "The request message to dataland."
-    const val REQUEST_MESSAGE_EXAMPLE = "I need help finding identifiers for company x, y, z to be able to add them to my portfolio."
+    const val HELP_REQUEST_TOPIC = "The topic of the request for help."
+    const val HELP_REQUEST_TOPIC_EXAMPLE = "Find company identifiers."
+    const val HELP_REQUEST_MESSAGE = "The help request message to dataland."
+    const val HELP_REQUEST_MESSAGE_EXAMPLE = "I need help finding identifiers for company x, y, z to be able to add them to my portfolio."
 }
