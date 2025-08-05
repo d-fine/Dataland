@@ -119,7 +119,8 @@ class CsvExporterTest {
 
     private fun setupMockIsinLeiDataControllerApi(): IsinLeiDataControllerApi {
         val mockIsinLeiDataControllerApi = mock(IsinLeiDataControllerApi::class.java)
-        `when`(mockIsinLeiDataControllerApi.getIsinsByLei(lei = any())
+        `when`(
+            mockIsinLeiDataControllerApi.getIsinsByLei(lei = any()),
         ).thenReturn(listOf("mockIsin1", "mockIsin2"))
         return mockIsinLeiDataControllerApi
     }
