@@ -47,7 +47,7 @@
         data-test="reset-filter"
         @click="resetFilters()"
         variant="text"
-        label="Reset"
+        label="RESET"
       />
     </div>
 
