@@ -4,9 +4,11 @@
     <p>
       Dataland GmbH
       <br />
-      Paul-Ehrlich-Straße 51
+      Am Steinernen Stock 1
       <br />
-      60596 Frankfurt am Main
+      Briefkasten Nr. 8
+      <br />
+      60320 Frankfurt am Main
     </p>
     <p>Vertretungsberechtige Geschäftsführer: Frederik Christiaan Breen, Dr. Moritz Benjamin Kiese</p>
     <p>
