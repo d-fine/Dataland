@@ -2098,14 +2098,14 @@
         "operationId": "getDataPointQaReviewInformation",
         "parameters": [
           {
-            "name": "companyName",
+            "name": "companyId",
             "in": "query",
-            "description": "The official name of the company.",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "ABC Corporation"
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "dataType",
