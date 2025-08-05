@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheNewHeader.vue';
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import contentData from '@/assets/content.json';
 import type { Content } from '@/types/ContentTypes';
 import { defineComponent } from 'vue';
@@ -22,7 +22,7 @@ const content: Content = contentData;
 export default defineComponent({
   name: 'LegalPage',
   components: {
-    TheHeader,
+    TheHeader: LandingPageHeader,
     TheFooter,
   },
   data() {
@@ -34,8 +34,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
 .static-content {
   display: flex;
   flex-direction: column;
@@ -46,8 +44,12 @@ export default defineComponent({
 main {
   margin-top: 122px;
   margin-bottom: 52px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: 768px) {
     margin-top: 82px;
   }
+}
+
+.w-10 {
+  width: 10vw;
 }
 </style>

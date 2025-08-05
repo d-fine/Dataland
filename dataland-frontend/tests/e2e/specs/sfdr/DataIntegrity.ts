@@ -71,17 +71,20 @@ describeIf(
      * @param reportToReference The name of the report to reference
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
-      cy.get('div[data-test="applicableHighImpactClimateSectors"]').find('div.p-multiselect-trigger').click();
-      cy.get('li.p-multiselect-item')
+      cy.get('div[data-test="applicableHighImpactClimateSectors"]').find('div.p-multiselect-dropdown').click();
+      cy.get('.p-multiselect-option')
         .eq(sectorCardIndex)
         .invoke('attr', 'aria-selected')
         .then((ariaSelected) => {
           if (ariaSelected === 'false') {
-            cy.get('li.p-multiselect-item').eq(sectorCardIndex).click();
+            cy.get('.p-multiselect-option').eq(sectorCardIndex).click();
           }
         });
       selectItemFromDropdownByValue(
-        cy.get('div[data-test="applicableHighImpactClimateSector"]').find('div[name="fileName"]').eq(sectorCardIndex),
+        cy
+          .get('div[data-test="applicableHighImpactClimateSector"]')
+          .find('[data-test="dataReport"]')
+          .eq(sectorCardIndex),
         reportToReference
       );
     }
@@ -92,17 +95,25 @@ describeIf(
      */
     function testYesNoExtendedDataPointFormField(fieldData: ExtendedDataPoint<string>): void {
       cy.get('[data-test="protectedAreasExposure"]')
-        .find('div[data-test="dataQuality"] span.p-dropdown-label')
+        .find('div[data-test="dataQuality"] span.p-select-label')
         .should('exist')
         .should('contain.text', humanizeStringOrNumber(fieldData.quality));
-      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
-      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-dropdown-label')
+      cy.get('div[data-test="protectedAreasExposure"]')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="Yes"]')
+        .click();
+      cy.get('div[data-test="protectedAreasExposure"]')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"]')
+        .click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-select-label')
         .should('exist')
         .should('contain.text', humanizeStringOrNumber(fieldData.quality));
-      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-dropdown-label')
+      cy.get('div[data-test="protectedAreasExposure"]')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"]')
+        .click();
+      cy.get('div[data-test="protectedAreasExposure"]')
+        .find('div[data-test="toggleDataPointWrapper"] input[type="checkbox"][value="No"]')
+        .click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-select-label')
         .should('exist')
         .should('contain.text', humanizeStringOrNumber(fieldData.quality));
     }
@@ -124,11 +135,11 @@ describeIf(
      */
     function setQualityInSfdrUploadForm(): void {
       selectItemFromDropdownByIndex(
-        cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]').find('div[name="quality"]'),
+        cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]').find('[data-test="dataQuality"]'),
         3
       );
       selectItemFromDropdownByIndex(
-        cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('div[name="quality"]'),
+        cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('[data-test="dataQuality"]'),
         3
       );
     }

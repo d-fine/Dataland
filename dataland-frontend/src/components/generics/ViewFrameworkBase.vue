@@ -1,6 +1,6 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
-  <TheContent class="paper-section min-h-screen">
+  <TheContent class="min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
@@ -24,7 +24,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -36,7 +36,7 @@
             </div>
           </div>
 
-          <div class="flex align-content-end align-items-center">
+          <div class="button-container">
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
               :meta-info="singleDataMetaInfoToDisplay"
@@ -44,39 +44,33 @@
             />
 
             <PrimeButton
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="DOWNLOAD DATA"
+              aria-label="Download data"
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
-            >
-              <span class="px-2 py-1">DOWNLOAD DATA</span>
-            </PrimeButton>
+              label="Download Data"
+              icon="pi pi-download"
+            />
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="EDIT DATA"
+              aria-label="Edit data"
               @click="editDataset"
               data-test="editDatasetButton"
-            >
-              <span class="px-2 py-1">EDIT DATA</span>
-              <span
-                v-if="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay"
-                class="material-icons-outlined"
-                >arrow_drop_down</span
-              >
-            </PrimeButton>
+              label="Edit Data"
+              :icon="
+                availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
+                  ? 'pi pi-chevron-down'
+                  : 'pi pi-pencil'
+              "
+              :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+            />
             <router-link
               v-if="hasUserUploaderRights"
               :to="targetLinkForAddingNewDataset"
-              class="no-underline ml-3"
               data-test="gotoNewDatasetButton"
             >
-              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                <span class="material-icons-outlined px-2">queue</span>
-                <span class="px-2">NEW DATASET</span>
-              </PrimeButton>
+              <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="New Dataset" />
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
@@ -126,9 +120,9 @@ import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import OverlayPanel from 'primevue/overlaypanel';
-import { computed, inject, onMounted, provide, watch, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
@@ -161,15 +155,6 @@ const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 
-provide(
-  'hideEmptyFields',
-  computed(() => hideEmptyFields.value)
-);
-provide(
-  'mapOfReportingPeriodToActiveDataset',
-  computed(() => mapOfReportingPeriodToActiveDataset.value)
-);
-
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
   for (const d of activeDataForCurrentCompanyAndFramework.value) {
@@ -177,6 +162,9 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
   }
   return map;
 });
+
+provide('hideEmptyFields', hideEmptyFields);
+provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
@@ -460,3 +448,18 @@ function downloadData(): void {
   });
 }
 </script>
+<style scoped>
+.button-container {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

@@ -1,3 +1,4 @@
+import { DatalandPreset } from '@/assets/theme/dataland-theme.ts';
 import { routes } from '@/router';
 import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
@@ -45,6 +46,7 @@ declare global {
         wrapper: VueWrapper<InstanceType<T>>;
         component: VueWrapper<InstanceType<T>>['vm'];
       }>;
+
       /**
        * Helper mount function for Vue Components utilizing the DynamicDialog component
        * @param component Vue Component or JSX Element to mount
@@ -81,7 +83,14 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   options.global = options.global ?? {};
   options.global.plugins = options.global.plugins ?? [];
   options.global.plugins.push(createPinia());
-  options.global.plugins.push(PrimeVue);
+  options.global.plugins.push([
+    PrimeVue,
+    {
+      theme: {
+        preset: DatalandPreset,
+      },
+    },
+  ]);
   options.global.plugins.push(DialogService);
   options.global.provide = options.global.provide ?? {};
 

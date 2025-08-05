@@ -13,3 +13,8 @@
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

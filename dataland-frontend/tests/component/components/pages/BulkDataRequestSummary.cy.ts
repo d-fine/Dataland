@@ -1,9 +1,9 @@
-//@ts-nocheck
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 describe('Component tests for the BulkDataRequestSummary page', () => {
   it('Should display the BulkRequestSummary with internal data', () => {
+    //@ts-ignore
     cy.mountWithPlugins(BulkDataRequestSummary, {
       keycloak: minimalKeycloakMock({}),
       props: {
@@ -43,7 +43,7 @@ describe('Component tests for the BulkDataRequestSummary page', () => {
               resourceUrl: 'https://dataland.com/request-2',
             },
           ],
-        } as BulkDataRequestSummary,
+        },
       },
     }).then(() => {
       cy.get('.summary-section-heading').contains('CREATED REQUESTS').should('exist').click();
