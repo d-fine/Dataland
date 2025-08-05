@@ -21,6 +21,7 @@ import java.util.UUID
 /**
  * RestController for the Portfolio API
  */
+@Suppress("TooManyFunctions")
 @RestController
 class PortfolioController
     @Autowired

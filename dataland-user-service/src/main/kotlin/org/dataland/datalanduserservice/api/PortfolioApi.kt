@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam
 /**
  * Defines the portfolio API for Dataland users to manage their portfolios.
  */
+@Suppress("TooManyFunctions")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface PortfolioApi {
