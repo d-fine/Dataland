@@ -4,8 +4,8 @@
       <p class="header-styling">Choose a topic</p>
       <Dropdown
         id="get-help-topic"
-        v-model="topic"
-        :options="topics"
+        v-model="selectedTopic"
+        :options="availableTopics"
         optionLabel="name"
         placeholder="Where do you need help with?"
       />
@@ -15,18 +15,18 @@
       <Textarea
         id="get-help-message"
         v-model="message"
-        placeholder="State for which companies you need help finding identifiers so that you can add them to your portfolio"
+        placeholder="Please state for which companies you need help finding identifiers to add them to your portfolio"
         rows="5"
         fluid
       />
     </div>
     <Message v-if="emailSendingError" severity="error">
-      {{ emailSendingError }}
+      {{ emailSendingMessage }}
     </Message>
     <Message v-if="emailSendingSuccess" severity="success">
-      {{ emailSendingSuccess }}
+      {{ emailSendingMessage }}
     </Message>
-    <Message v-if="!isValidMessage" severity="error" variant="simple" size="small"
+    <Message v-if="!isValidForm" severity="error" variant="simple" size="small"
       >Please choose a topic and enter a message to us.
     </Message>
     <PrimeButton
@@ -35,7 +35,7 @@
       class="send-button"
       @click="sendEmail"
       :loading="isSendingMail"
-      :disabled="!isValidMessage"
+      :disabled="!isValidForm"
     />
   </div>
 </template>
@@ -53,33 +53,35 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isSendingMail = ref(false);
-const message = ref();
+const message = ref('');
 
 import type { SupportRequestData } from '@clients/userservice';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 
-const emailSendingError = ref('');
-const emailSendingSuccess = ref('');
-const topic = ref();
-const topics = ref([
-  { name: 'Find company identifiers', code: 'identifiers' },
-  { name: 'Other topic', code: 'Other' },
-]);
+const emailSendingError = ref<boolean>();
+const emailSendingSuccess = ref<boolean>();
+const emailSendingMessage = ref('');
+const selectedTopic = ref();
+const availableTopics = ref([{ name: 'Find company identifiers' }, { name: 'Other topic' }]);
 
-const isValidMessage = computed(() => message.value && topic.value.name);
+const isValidForm = computed(() => message.value && selectedTopic.value.name);
 
 /**
  * Send an email to request support
  */
 async function sendEmail(): Promise<void> {
-  const supportRequest: SupportRequestData = { topic: topic.value.name, message: message.value };
+  const supportRequest: SupportRequestData = { topic: selectedTopic.value.name, message: message.value };
   try {
     isSendingMail.value = true;
     await apiClientProvider.apiClients.portfolioController.postSupportRequest(supportRequest);
-    emailSendingSuccess.value = 'Thank you for contacting us. We have received your request.';
+    emailSendingError.value = false;
+    emailSendingSuccess.value = true;
+    emailSendingMessage.value = 'Thank you for contacting us. We have received your request.';
   } catch (error) {
-    emailSendingError.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
+    emailSendingError.value = true;
+    emailSendingSuccess.value = false;
+    emailSendingMessage.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
   } finally {
     isSendingMail.value = false;
