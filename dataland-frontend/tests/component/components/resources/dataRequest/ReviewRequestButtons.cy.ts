@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ReviewRequestButtonsComponent from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
@@ -91,11 +90,9 @@ describe('Component tests for the data request review buttons', function (): voi
   }
   /**
    * Mount review request button component with given props
-   * @param companyId companyId
-   * @param framework framework
-   * @param map mapOfReportingPeriodToActiveDataset
    */
   function mountReviewRequestButtons(): void {
+    //@ts-ignore
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
 

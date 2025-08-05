@@ -2,71 +2,63 @@
   <AuthenticationWrapper>
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="3">
-      <TheContent class="min-h-screen paper-section relative">
+      <TheContent class="min-h-screen relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+          <div class="container">
+            <div class="company-search" data-test="companySearchBarWithMessage">
+              <IconField id="company-search-bar">
+                <InputIcon class="pi pi-search" />
                 <InputText
                   data-test="companyNameSearchbar"
                   v-model="searchBarInput"
                   placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
+                  fluid
+                  variant="filled"
                 />
-              </span>
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <Calendar
-                  data-test="reportingPeriod"
-                  v-model="availableReportingPeriods"
-                  placeholder="Search by reporting period"
-                  :showIcon="true"
-                  :manualInput="false"
-                  view="year"
-                  dateFormat="yy"
-                  selectionMode="multiple"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="framework-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Frameworks"
-                class="ml-3"
-                style="margin: 15px"
-              />
-
-              <div class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </div>
-
-              <div class="flex align-items-center ml-auto" style="margin: 15px">
-                <span>{{ numberOfUnreviewedDatasets }}</span>
-              </div>
-            </span>
-            <div class="pb-2 ml-3 flex justify-content-start">
-              <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+              </IconField>
+              <Message severity="error" variant="simple" size="small" v-if="showNotEnoughCharactersWarning">
+                Please type at least 3 characters
+              </Message>
             </div>
+
+            <DatePicker
+              class="search-filter"
+              data-test="reportingPeriod"
+              v-model="availableReportingPeriods"
+              placeholder="Search by reporting period"
+              :showIcon="true"
+              :manualInput="false"
+              view="year"
+              dateFormat="yy"
+              selectionMode="multiple"
+            />
+
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              class="search-filter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="framework-picker"
+              id="framework-filter"
+              filter-placeholder="Search by Frameworks"
+              :max-selected-labels="1"
+              selected-items-label="{0} frameworks selected"
+            />
+
+            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
+            <Message
+              class="info-message"
+              variant="simple"
+              severity="secondary"
+              data-test="showingNumberOfUnreviewedDatasets"
+              >{{ numberOfUnreviewedDatasets }}</Message
+            >
           </div>
 
           <div class="col-12 text-left p-3">
             <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
               <p class="font-medium text-xl">Loading data to be reviewed...</p>
-              <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+              <DatalandProgressSpinner />
             </div>
 
             <div class="card">
@@ -86,37 +78,40 @@
                 :total-records="totalRecords"
                 @page="onPage($event)"
               >
-                <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
+                <Column header="DATA ID" class="w-2">
                   <template #body="slotProps">
                     {{ slotProps.data.dataId }}
                   </template>
                 </Column>
-                <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
+                <Column header="COMPANY NAME" class="w-2">
                   <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
+                    <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
                   </template>
                 </Column>
-                <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
+                <Column header="FRAMEWORK" class="w-2">
                   <template #body="slotProps">
                     {{ humanizeString(slotProps.data.framework) }}
                   </template>
                 </Column>
-                <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
+                <Column header="REPORTING PERIOD" class="w-2">
                   <template #body="slotProps">
                     {{ slotProps.data.reportingPeriod }}
                   </template>
                 </Column>
-                <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
+                <Column header="SUBMISSION DATE" class="w-2">
                   <template #body="slotProps">
                     {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
                   </template>
                 </Column>
-                <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
-                  <template #body>
-                    <div class="text-right text-primary no-underline font-bold">
-                      <span>REVIEW</span>
-                      <span class="ml-3">></span>
-                    </div>
+                <Column field="reviewDataset" header="" class="w-2 qa-review-button">
+                  <template #body="slotProps">
+                    <PrimeButton
+                      @click="goToQaViewPageByButton(slotProps.data)"
+                      label="REVIEW"
+                      icon="pi pi-chevron-right"
+                      icon-pos="right"
+                      variant="link"
+                    />
                   </template>
                 </Column>
               </DataTable>
@@ -136,6 +131,7 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -153,15 +149,20 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';
 import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import PrimeButton from 'primevue/button';
+import Message from 'primevue/message';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'QualityAssurance',
   components: {
+    DatalandProgressSpinner,
     DatasetsTabMenu,
     AuthorizationWrapper,
     TheFooter,
@@ -172,7 +173,11 @@ export default defineComponent({
     DataTable,
     Column,
     InputText,
-    Calendar,
+    InputIcon,
+    IconField,
+    PrimeButton,
+    DatePicker,
+    Message,
   },
   setup() {
     return {
@@ -292,6 +297,15 @@ export default defineComponent({
     },
 
     /**
+     * Navigates to the view framework data page on a click on the row of the company
+     * @param qaDataObject stored information about the row
+     */
+    goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
+      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+      void this.$router.push(qaUri);
+    },
+
+    /**
      * Resets selected frameworks and searchBarInput
      */
     resetFilterAndSearchBar() {
@@ -352,8 +366,46 @@ export default defineComponent({
 });
 </script>
 
-<style>
-#qa-data-result tr:hover {
+<style scoped>
+.container {
+  margin: 0;
+  width: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: start;
+
+  .company-search {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+  }
+
+  .search-filter {
+    width: 15%;
+    text-align: left;
+  }
+
+  .info-message:last-child {
+    margin-left: auto;
+    margin-top: var(--spacing-xs);
+  }
+}
+
+#qa-data-result tr,
+.table-cursor {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.qa-review-button {
+  text-align: end;
 }
 </style>

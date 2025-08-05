@@ -86,29 +86,16 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
-.p-datatable-table {
-  border-spacing: 0;
-  border-collapse: collapse;
-  tr {
-    border-bottom: 1px solid #e3e2df;
-    &:last-child {
-      border: none;
-    }
-    td {
-      padding: 0.5rem;
-      border: none;
-      &.nowrap {
-        white-space: nowrap;
-      }
-    }
-    th {
-      &.headers-bg {
-        width: 2rem;
-        padding-right: 1rem;
-        font-weight: normal;
-      }
-    }
-  }
+<style lang="scss">
+.info-icon {
+  cursor: help;
+}
+
+.p-component-overlay-enter {
+  animation: p-component-overlay-enter-animation 150ms forwards;
+}
+
+.p-component-overlay-leave {
+  animation: p-component-overlay-leave-animation 150ms forwards;
 }
 </style>

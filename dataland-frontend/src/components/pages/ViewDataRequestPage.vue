@@ -3,8 +3,7 @@
     <TheContent class="min-h-screen flex sheet">
       <TheHeader />
       <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
-        <BackButton />
-
+        <BackButton style="display: flex" />
         <h1 class="text-left">Data Request</h1>
       </div>
 
@@ -87,15 +86,7 @@
             to the data provider.
           </p>
         </FormKit>
-        <div>
-          <PrimeButton
-            data-test="reopenRequestButton"
-            @click="reopenRequest()"
-            style="width: 100%; justify-content: center"
-          >
-            <span class="d-letters" style="text-align: center" data-test="reopenButton"> REOPEN REQUEST </span>
-          </PrimeButton>
-        </div>
+        <PrimeButton data-test="reopenRequestButton" @click="reopenRequest()" label="REOPEN REQUEST" />
       </PrimeDialog>
 
       <PrimeDialog
@@ -124,7 +115,7 @@
         </div>
       </PrimeDialog>
 
-      <div class="py-4 paper-section">
+      <div class="py-4">
         <div class="grid col-9 justify-content-around">
           <div class="col-4">
             <div class="card" data-test="card_requestDetails">
@@ -164,13 +155,17 @@
               <div class="card" data-test="card_requestIs">
                 <span style="display: flex; align-items: center">
                   <span class="card__title">Request is:</span>
-                  <span :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
-                    {{ getRequestStatusLabel(storedDataRequest.requestStatus) }}
-                  </span>
+                  <DatalandTag
+                    :severity="storedDataRequest.requestStatus || ''"
+                    :value="storedDataRequest.requestStatus"
+                    class="dataland-inline-tag"
+                  />
                   <span class="card__title">and Access is:</span>
-                  <span :class="accessStatusBadgeClass(storedDataRequest.accessStatus)" style="display: inline-flex">
-                    {{ storedDataRequest.accessStatus }}
-                  </span>
+                  <DatalandTag
+                    :severity="storedDataRequest.accessStatus || ''"
+                    :value="storedDataRequest.accessStatus"
+                    class="dataland-inline-tag"
+                  />
                   <span class="card__subtitle">
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                   </span>
@@ -189,7 +184,7 @@
                 <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
                 <div class="card__separator" />
                 Receive emails directly or via summary
-                <InputSwitch
+                <ToggleSwitch
                   style="margin: 1rem 0"
                   data-test="notifyMeImmediatelyInput"
                   inputId="notifyMeImmediatelyInput"
@@ -237,7 +232,7 @@
                   <br />
                   <a
                     class="link"
-                    style="display: inline-flex; font-weight: bold; color: #e67f3f"
+                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
                     @click="openModalReopenRequest()"
                   >
                     Reopen request</a
@@ -253,7 +248,7 @@
                   <br />
                   <a
                     class="link"
-                    style="display: inline-flex; font-weight: bold; color: #e67f3f"
+                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
                     @click="withdrawRequest()"
                   >
                     Withdraw request</a
@@ -271,6 +266,7 @@
 
 <script lang="ts">
 import BackButton from '@/components/general/BackButton.vue';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -285,24 +281,25 @@ import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel, patchDataRequest } from '@/utils/RequestUtils';
+import { patchDataRequest } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'ViewDataRequest',
   components: {
+    DatalandTag,
     ReviewRequestButtons,
     TheContent,
     EmailDetails,
     PrimeDialog,
     PrimeButton,
-    InputSwitch,
+    ToggleSwitch,
     BackButton,
     AuthenticationWrapper,
     TheHeader,
@@ -343,10 +340,7 @@ export default defineComponent({
     this.initializeComponent();
   },
   methods: {
-    getRequestStatusLabel,
-    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
-    badgeClass,
     getFrameworkSubtitle,
     frameworkHasSubTitle,
     getFrameworkTitle,
@@ -595,13 +589,10 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-@use '@/assets/scss/variables';
-
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
-  padding: variables.$spacing-md;
-  border-radius: variables.$radius-xxs;
+  padding: var(--spacing-lg);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -610,12 +601,11 @@ export default defineComponent({
   margin-top: 1rem;
 }
 
-:deep {
+:deep(*) {
   .card {
     width: 100%;
     background-color: var(--surface-card);
-    padding: variables.$spacing-md;
-    border-radius: variables.$radius-xxs;
+    padding: var(--spacing-lg);
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -651,10 +641,64 @@ export default defineComponent({
   }
 }
 
+.dataland-inline-tag {
+  margin: 0 var(--spacing-xs);
+}
+
+.info-icon {
+  cursor: help;
+}
+
 .two-columns {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
   list-style-type: none;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+
+.gray-text {
+  color: var(--gray);
+}
+
+.green-text {
+  color: var(--green);
+}
+
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+
+  &.--underlined {
+    text-decoration: underline;
+  }
 }
 </style>
