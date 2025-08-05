@@ -31,8 +31,8 @@
         >
           <i class="pi pi-bell pr-2" /> EDIT MONITORING
         </PrimeButton>
-        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
       </div>
+      <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
     </div>
 
     <DataTable
