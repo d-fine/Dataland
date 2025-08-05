@@ -2,12 +2,14 @@ package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.IsinLeiMappingData
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -16,6 +18,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -84,5 +87,29 @@ class GleifGoldenCopyIngestorTest {
         assertEquals("2222", result[1].isin)
         assertEquals("2000", result[1].lei)
         tempFile.deleteOnExit()
+    }
+
+    @Test
+    fun `processIsinMappingFile calls dependencies and deletes file`() {
+        lateinit var capturedFile: File
+
+        whenever(mockGleifApiAccessor.getFullIsinMappingFile(any())).thenAnswer {
+            val file = it.arguments[0] as File
+            capturedFile = file
+            file.writeText(isinLeiContent.trimIndent())
+        }
+        val ingestorSpy = spy(gleifGoldenCopyIngestor)
+        doReturn(listOf(IsinLeiMappingData("1111", "1000"), IsinLeiMappingData("1111", "1000")))
+            .whenever(
+                ingestorSpy,
+            ).extractIsinLeiMapping(any())
+
+        ingestorSpy.processIsinMappingFile()
+
+        verify(mockGleifApiAccessor, times(1)).getFullIsinMappingFile(any())
+        verify(mockIsinLeiDataControllerApi, times(1)).putIsinLeiMapping(any())
+        verify(ingestorSpy, times(1)).extractIsinLeiMapping(any())
+
+        assertFalse(capturedFile.exists(), "The mapping file should be deleted after processing")
     }
 }

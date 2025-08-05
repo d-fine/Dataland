@@ -1,6 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.IsinLeiMappingData
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.ForkJoinPool
-import java.util.concurrent.TimeUnit
 import java.util.stream.StreamSupport
 import kotlin.time.Duration
 import kotlin.time.measureTime
@@ -31,7 +29,6 @@ class GleifGoldenCopyIngestor(
 ) {
     companion object {
         const val UPLOAD_THREAD_POOL_SIZE = 32
-        const val EXTENDED_TIMOUT_IN_MINUTES = 10L
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -123,14 +120,7 @@ class GleifGoldenCopyIngestor(
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
                 val isinLeiMappingData = extractIsinLeiMapping(newMappingFile)
                 logger.info("Extracted ${isinLeiMappingData.size} ISIN-LEI mappings from file $newMappingFile.")
-                // Use a controller with extended timeout to avoid timeouts for large files
-                IsinLeiDataControllerApi(
-                    isinLeiDataControllerApi.baseUrl,
-                    (isinLeiDataControllerApi.client as OkHttpClient)
-                        .newBuilder()
-                        .readTimeout(EXTENDED_TIMOUT_IN_MINUTES, TimeUnit.MINUTES)
-                        .build(),
-                ).putIsinLeiMapping(isinLeiMappingData)
+                isinLeiDataControllerApi.putIsinLeiMapping(isinLeiMappingData)
                 if (!newMappingFile.delete()) {
                     logger.error("failed to delete temporary mapping file $newMappingFile")
                 }

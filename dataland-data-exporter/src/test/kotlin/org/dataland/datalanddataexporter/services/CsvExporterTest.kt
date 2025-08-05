@@ -1,6 +1,7 @@
 package org.dataland.datalanddataexporter.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -35,6 +36,7 @@ class CsvExporterTest {
     private lateinit var mockMetadataControllerApi: MetaDataControllerApi
     private lateinit var mockSfdrDataControllerApi: SfdrDataControllerApi
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    private lateinit var mockIsinLeiDataControllerApi: IsinLeiDataControllerApi
 
     private val outputDirectory = "./src/test/resources/csv/output"
 
@@ -126,6 +128,7 @@ class CsvExporterTest {
                 metaDataControllerApi = mockMetadataControllerApi,
                 sfdrDataControllerApi = mockSfdrDataControllerApi,
                 companyDataControllerApi = mockCompanyDataControllerApi,
+                isinLeiDataControllerApi = mockIsinLeiDataControllerApi,
             )
     }
 
