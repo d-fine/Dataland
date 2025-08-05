@@ -1,0 +1,519 @@
+// THIS FILE IS TARGETED TO BE REMOVED WHEN ALL VARIABLES DEFINED BECOME UNNECESSARY
+.uploadFormWrapper {
+  input[type='checkbox']:not(.p-toggleswitch-input):not(.p-radiobutton),
+  input[type='radio']:not(.p-toggleswitch-input):not(.p-radiobutton) {
+    display: grid;
+    place-content: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    margin: 0 0.5rem 0 0;
+  }
+
+  input[type='checkbox']:not(.p-toggleswitch-input) {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+
+  input[type='checkbox']:not(.p-toggleswitch-input):not(.p-radiobutton):checked {
+    background-color: var(--input-checked-color);
+  }
+
+  input[type='radio']:not(.p-toggleswitch-input),
+  input.p-radiobutton {
+    background-color: white;
+    border: 2px solid var(--input-label-color);
+    border-radius: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  input.p-radiobutton:hover,
+  input.p-radiobutton:active,
+  input.p-radiobutton:checked {
+    border: 3px solid var(--input-label-color);
+  }
+
+  input[type='checkbox']:not(.p-toggleswitch-input)::before,
+  input[type='radio']:not(.p-toggleswitch-input):not(.p-radiobutton)::before,
+  input.p-radiobutton::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+
+  input[type='checkbox']:not(.p-toggleswitch-input)::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+
+  input[type='radio']:not(.p-toggleswitch-input)::before,
+  input.p-radiobutton::before {
+    border-style: solid;
+    border-color: var(--input-label-color);
+  }
+
+  input[type='checkbox']:not(.p-toggleswitch-input):checked::before,
+  input[type='radio']:not(.p-toggleswitch-input):not(.p-radiobutton):checked::before,
+  input.p-radiobutton:checked::before {
+    display: block;
+  }
+
+  label[data-checked='true'] {
+    input[type='radio']::before,
+    input.p-radiobutton::before {
+      display: block;
+    }
+  }
+
+  .p-multiselect {
+    border-radius: 0;
+    background: var(--input-text-bg);
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: var(--input-text-border);
+    box-shadow: none;
+    width: 100%;
+
+    &:focus-within {
+      outline: none;
+      border-bottom: 1px solid var(--input-text-border) -hover;
+    }
+
+    .p-multiselect-label {
+      padding: 0.75rem;
+
+      &.p-placeholder {
+        color: var(--text-color-secondary);
+      }
+    }
+
+    .p-multiselect-trigger {
+      width: 2.5rem;
+
+      .p-multiselect-trigger-icon {
+        color: var(--text-color-secondary);
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  .w-100 {
+    width: 100px;
+  }
+
+  .short {
+    width: 33%;
+  }
+
+  .medium {
+    width: 66%;
+  }
+
+  .long {
+    width: 100%;
+  }
+
+  .shortish-hard {
+    width: 45%;
+    min-width: 45%;
+    max-width: 45%;
+  }
+
+  .normal-line-height {
+    line-height: normal;
+  }
+
+  .no-selection .p-dropdown-label {
+    color: #767676;
+  }
+
+  .yes-no-radio {
+    fieldset.formkit-fieldset {
+      border: 0;
+      padding: 0;
+    }
+
+    .formkit-options {
+      display: flex;
+      padding: 0.5rem 0 0 0;
+
+      .formkit-option:nth-child(n + 2) {
+        margin-left: 10%;
+      }
+    }
+  }
+
+  .formkit-wrapper,
+  .formkit-fieldset {
+    max-width: 100%;
+  }
+
+  .title {
+    margin: 0.25rem 0;
+  }
+
+  .subtitle {
+    display: block;
+    padding-bottom: 1rem;
+
+    .form-field-label {
+      h5 {
+        font-size: var(--font-size-base);
+      }
+    }
+  }
+
+  .form-field-label {
+    display: flex;
+    align-self: center;
+
+    .info-icon {
+      margin-left: 0.5rem;
+    }
+
+    button {
+      margin-left: auto;
+    }
+
+    h5 {
+      margin: 0.5rem 0;
+    }
+
+    .asterisk {
+      color: #ee1a1a;
+    }
+
+    .asterisk:before {
+      content: ' ';
+      display: inline-block;
+      width: 0.25rem;
+    }
+  }
+
+  .middle-next-to-field {
+    display: flex;
+    align-self: center;
+    padding-bottom: 1rem;
+  }
+
+  p {
+    margin: 0.25rem;
+  }
+
+  .p-calendar {
+    width: 100%;
+
+    .p-button {
+      margin: 0;
+    }
+  }
+
+  .formFields {
+    background: var(--upload-form-bg);
+    border-radius: var(--p-border-radius-xs);
+    padding: var(--spacing-md);
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+
+  .formkit-message {
+    &[data-message-type='ui'] {
+      text-align: center;
+      width: 100%;
+      padding: 2rem;
+      border: 1px solid var(--input-error);
+    }
+  }
+
+  .hidden-input .formkit-wrapper {
+    visibility: hidden;
+    height: 0;
+  }
+
+  .form-list-item {
+    color: var(--input-label-color);
+    background: var(--el-list-item-bg);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--spacing-xxs);
+    text-align: center;
+    min-width: 1.5rem;
+    border-radius: 1rem;
+    padding: 0.25rem 1rem;
+    border: 1px solid var(--input-label-color);
+    display: inline-flex;
+    align-items: center;
+
+    em {
+      margin-left: 0.5rem;
+      cursor: pointer;
+
+      &:hover {
+        color: hsl(from var(--input-label-color) h s calc(l - 20));
+      }
+    }
+  }
+
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .form-field:not(:last-child) {
+      margin: 0 0 1rem 0;
+      padding: 0 0 1rem 0;
+      border-bottom: 1px solid var(--input-separator);
+    }
+  }
+
+  .uploaded-files {
+    .p-progressbar {
+      display: none;
+    }
+
+    .p-fileupload {
+      .p-fileupload-content {
+        border: none;
+        padding: 1rem;
+        align-items: center;
+
+        .file-upload-item {
+          margin: 1rem 0;
+        }
+
+        button {
+          margin-left: auto;
+          width: 25px;
+          height: 25px;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+.p-datatable,
+.p-datatable.p-datatable-scrollable {
+  border-radius: 0;
+  background: var(--table-background-color);
+
+  .border-left {
+    border-left: 1px solid var(--table-border);
+  }
+
+  .border-right {
+    border-right: 1px solid var(--table-border);
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid var(--table-border);
+  }
+
+  .horizontal-headers-size {
+    background-color: #fff;
+
+    &:first-of-type {
+      width: var(--first-table-column-width);
+    }
+  }
+
+  .onlyHeaders {
+    tr {
+      display: flex;
+      width: calc(100vw - 58px);
+    }
+
+    tr th:not(.first-horizontal-headers-size) {
+      flex: 1;
+    }
+
+    .p-datatable-tbody {
+      display: none;
+    }
+  }
+
+  tr {
+    &:not(.p-rowgroup-header) {
+      td {
+        border-bottom: 1px solid var(--table-border);
+      }
+    }
+
+    &:hover {
+      background: var(--table-background-hover-color);
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 1rem;
+    }
+  }
+
+  .p-datatable-tbody {
+    tr {
+      border-color: hsl(from var(--table-border-dark) h s 45%);
+    }
+
+    .info-icon {
+      float: right;
+      max-width: 20%;
+    }
+
+    .table-left-label {
+      float: left;
+      max-width: 80%;
+    }
+  }
+
+  .p-sortable-column {
+    .p-sortable-column-icon {
+      color: var(--table-icon-color);
+      margin-left: 0.5rem;
+    }
+
+    &.p-highlight {
+      background: var(--table-background-color);
+      color: var(--main-color);
+
+      .p-sortable-column-icon {
+        color: var(--main-color);
+      }
+    }
+  }
+
+  .headers-bg {
+    background-color: var(--tables-headers-bg);
+    display: table-cell;
+    width: var(--first-table-column-width);
+  }
+
+  .auto-headers-size {
+    width: auto;
+  }
+
+  .p-rowgroup-header {
+    background-color: var(--table-background-hover-color-light);
+    cursor: pointer;
+
+    &.p-topmost-header {
+      background-color: var(--tables-headers-bg);
+    }
+
+    td {
+      position: relative;
+      width: var(--first-table-column-width);
+
+      button {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        margin-top: -7px;
+      }
+    }
+  }
+
+  .p-datatable-thead {
+    z-index: 1;
+
+    tr {
+      box-shadow: none;
+
+      &:hover {
+        background: var(--table-background-color);
+      }
+    }
+  }
+
+  &.activities-data-table {
+    $col-activity-width: 300px;
+    $col-nace-codes-width: 70px;
+
+    .group-row-header {
+      background-color: var(--tables-headers-bg);
+      border-bottom: 1px solid var(--table-border);
+
+      .p-column-header-content {
+        justify-content: center;
+      }
+
+      &:not(:first-of-type) {
+        border-left: 1px solid var(--table-border);
+      }
+    }
+
+    .first-group-column:not(:first-of-type) {
+      border-left: 1px solid var(--table-border);
+    }
+
+    .non-frozen-header {
+      vertical-align: top;
+    }
+
+    .frozen-row-header {
+      vertical-align: top;
+      background-color: var(--tables-headers-bg);
+    }
+
+    .col-activity {
+      width: $col-activity-width;
+      min-width: $col-activity-width;
+    }
+
+    .col-nace-codes {
+      width: $col-nace-codes-width;
+      min-width: $col-nace-codes-width;
+      border-right: 1px solid var(--table-border);
+    }
+
+    .col-value {
+      width: 160px;
+      min-width: 160px;
+    }
+
+    .col-percentage {
+      min-width: 6rem;
+    }
+  }
+}
+
+.border-bottom-table {
+  border-bottom: 1px solid var(--table-border);
+}
+
+.table-cell-alignment {
+  display: flex;
+  flex-direction: column;
+}
+
+.indentation {
+  span {
+    padding-left: 1rem;
+  }
+}
+
+.p-column-filter-overlay {
+  background: #ffffff;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.5rem;
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0 4px 6px -1px,
+    rgba(0, 0, 0, 0.1) 0 2px 4px -2px;
+  min-width: 12.5rem;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+
+  .p-column-filter-buttonbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}

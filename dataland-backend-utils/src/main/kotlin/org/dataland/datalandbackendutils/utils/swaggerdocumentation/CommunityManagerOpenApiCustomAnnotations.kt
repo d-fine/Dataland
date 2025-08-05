@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+    description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
     example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     required = false,
 )
@@ -16,11 +16,11 @@ annotation class UserIdParameterNonRequired
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_DESCRIPTION,
+    description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
     example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     required = false,
 )
-annotation class UserEmailAddressParameterNonRequired
+annotation class DataRequestUserEmailAddressParameterNonRequired
 
 /** AdminComment annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
@@ -82,8 +82,8 @@ annotation class CompanyRoleParameterRequired
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+    description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
     example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     required = true,
 )
-annotation class UserIdParameterRequired
+annotation class CompanyRoleUserIdParameterRequired

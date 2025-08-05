@@ -190,6 +190,7 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   e2etests:
@@ -545,6 +546,8 @@ services:
       POSTGRES_USER: community_manager
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
+    command:
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   specification-service:
@@ -642,7 +645,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:fbe21607052bb5c298674f2fd8cf044a63aa3ddf50b81627f894f91f40f50bcb
+    image: postgres:alpine@sha256:6567bca8d7bc8c82c5922425a0baee57be8402df92bae5eacad5f01ae9544daa
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data

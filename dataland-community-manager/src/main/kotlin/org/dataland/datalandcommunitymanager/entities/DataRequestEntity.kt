@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.entities
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -31,8 +32,10 @@ data class DataRequestEntity(
     val datalandCompanyId: String,
     var notifyMeImmediately: Boolean,
     @OneToMany(mappedBy = "dataRequest")
+    @JsonManagedReference
     var messageHistory: List<MessageEntity>,
     @OneToMany(mappedBy = "dataRequest")
+    @JsonManagedReference
     var dataRequestStatusHistory: List<RequestStatusEntity>,
     var lastModifiedDate: Long,
     var requestPriority: RequestPriority,

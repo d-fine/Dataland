@@ -3,6 +3,59 @@
   "name" : "Aligned denominator data point with an extended source",
   "businessDefinition" : "Proportion of Taxonomy-aligned Economic Activity in the Denominator of the applicable KPI.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedDenominator>",
+  "schema" : {
+    "value" : {
+      "taxonomyAlignedShareDenominatorNAndG426" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominatorNAndG427" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominatorNAndG428" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominatorNAndG429" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominatorNAndG430" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominatorNAndG431" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominatorOtherActivities" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyAlignedShareDenominator" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      }
+    },
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
   "example" : {
     "value" : {
       "taxonomyAlignedShareDenominatorNAndG426" : {
@@ -47,7 +100,7 @@
       }
     },
     "quality" : "Reported",
-    "comment" : "",
+    "comment" : "Issued by company XYZ in their Nuclear and Gas Report 2024.",
     "dataSource" : {
       "page" : "125",
       "tagName" : null,

@@ -18,12 +18,6 @@ export const submitButton = {
       expect($input).to.not.have.class('button-disabled');
     });
   },
-  buttonIsAddDataButton(): void {
-    cy.get(submitButtonSelector).contains('ADD DATA').should('exist');
-  },
-  buttonIsUpdateDataButton(): void {
-    cy.get(submitButtonSelector).contains('UPDATE DATA').should('exist');
-  },
   clickButton(): void {
     cy.get(submitButtonSelector).click();
   },

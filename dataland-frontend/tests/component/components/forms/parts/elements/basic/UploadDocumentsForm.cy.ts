@@ -1,11 +1,10 @@
-// @ts-nocheck
 import UploadDocumentsForm from '@/components/forms/parts/elements/basic/UploadDocumentsForm.vue';
 import { UploadDocuments } from '@sharedUtils/components/UploadDocuments';
 
 describe('Component tests for the UploadDocumentsForm', () => {
   it('Check that error messages are displayed only under the right circumstances', () => {
     const uploadDocuments = new UploadDocuments();
-
+    //@ts-ignore
     cy.mountWithPlugins(UploadDocumentsForm, {
       data() {
         return {

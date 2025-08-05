@@ -1,8 +1,8 @@
-// @ts-nocheck
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 
 describe('test IntegerExtendedDataPointFormField for entries', () => {
   it('Form field should exist and entries to form field should be integer and nothing else', () => {
+    //@ts-ignore
     cy.mountWithPlugins(IntegerExtendedDataPointFormField, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         name: 'foo',

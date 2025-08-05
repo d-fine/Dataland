@@ -3,5 +3,6 @@
   "name" : "General deviation enum",
   "businessDefinition" : "Can only have values 'Deviation' and 'NoDeviation'.",
   "validatedBy" : "org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation",
+  "schema" : "org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation",
   "example" : "NoDeviation"
 }

@@ -121,7 +121,7 @@ describeIf(
     function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
       cy.get('input#company_search_bar_standard').scrollIntoView();
       cy.get('input#company_search_bar_standard').type(searchTerm);
-      cy.get('[data-pc-section="panel"]').contains(searchTerm).click();
+      cy.get('[data-pc-section="list"]').contains(searchTerm).click();
     }
   }
 );

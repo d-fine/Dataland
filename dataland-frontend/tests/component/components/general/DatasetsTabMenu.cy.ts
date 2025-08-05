@@ -1,8 +1,9 @@
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { ref } from 'vue';
 
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
   enum AlwaysVisibleTabs {
@@ -19,6 +20,8 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   const dummyUserId = 'mock-user-id';
+  const dummyFirstName = 'mock-first-name';
+  const dummyEmail = 'mock@Company.com';
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
 
   /**
@@ -28,7 +31,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
    */
   function mountDatasetsTabMenuWithAuthentication(
     keycloakRoles: string[],
-    companyRoleAssignments: CompanyRoleAssignment[]
+    companyRoleAssignments: CompanyRoleAssignmentExtended[]
   ): void {
     getMountingFunction({
       keycloak: minimalKeycloakMock({
@@ -36,16 +39,20 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         roles: keycloakRoles,
         userId: dummyUserId,
       }),
-    })(DatasetsTabMenu, {
-      global: {
-        provide: {
-          companyRoleAssignments: companyRoleAssignments,
+    })(
+      //@ts-ignore
+      DatasetsTabMenu,
+      {
+        global: {
+          provide: {
+            companyRoleAssignments: ref(companyRoleAssignments),
+          },
         },
-      },
-      props: {
-        initialTabIndex: 0,
-      },
-    });
+        props: {
+          initialTabIndex: 0,
+        },
+      }
+    );
     assertCompaniesTabIsHighlighted();
   }
 
@@ -56,14 +63,14 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
    */
   function isTabVisible(textInTab: string, isTabExpectedToBeVisible: boolean): void {
     const visibilityAssertion = isTabExpectedToBeVisible ? 'be.visible' : 'not.be.visible';
-    cy.get('li[data-pc-name="tabpanel"]').contains(textInTab).should(visibilityAssertion);
+    cy.get('[data-pc-name="tablist"]').contains(textInTab).should(visibilityAssertion);
   }
 
   /**
    * Asserts if the 'Companies' tab is highlighted
    */
   function assertCompaniesTabIsHighlighted(): void {
-    cy.get(`li[data-pc-name="tabpanel"][data-p-active="true"]`).contains(AlwaysVisibleTabs.Companies).should('exist');
+    cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.Companies).should('exist');
   }
 
   /**
@@ -84,11 +91,13 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   });
 
   it('Validate tabs for a logged-in Dataland-Reader with company ownership', function () {
-    const companyRoleAssignments: CompanyRoleAssignment[] = [
+    const companyRoleAssignments: CompanyRoleAssignmentExtended[] = [
       {
         companyRole: CompanyRole.CompanyOwner,
         companyId: dummyCompanyId,
         userId: dummyUserId,
+        firstName: dummyFirstName,
+        email: dummyEmail,
       },
     ];
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments);
