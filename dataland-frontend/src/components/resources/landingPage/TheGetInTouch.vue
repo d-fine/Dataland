@@ -1,19 +1,14 @@
 <template>
-  <section
-    v-if="getInTouchSection && getInTouchSection.cards"
-    class="getintouch"
-    role="region"
-    aria-labelledby="getintouch-heading"
-  >
+  <section v-if="getInTouchSection && getInTouchSection.cards" class="getintouch" aria-labelledby="getintouch-heading">
     <div class="getintouch__wrapper">
       <h2 id="getintouch-heading" class="getintouch__title">
         {{ getInTouchSection.text[0] }}
         <span v-if="getInTouchSection.text[1]"> {{ getInTouchSection.text[1] }}</span>
       </h2>
-      <div v-if="getInTouchSection.cards[1]" class="getintouch__image" role="img" aria-label="Contact Image">
+      <div v-if="getInTouchSection.cards[1]" class="getintouch__image">
         <img :src="getInTouchSection.cards[1].icon" :alt="getInTouchSection.cards[1].title" />
       </div>
-      <div class="getintouch__text" grid-column="15 / 17">
+      <div class="getintouch__text">
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
         <ButtonComponent
@@ -31,7 +26,7 @@
 import { computed } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import { openEmailClient } from '@/utils/Email';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -41,14 +36,16 @@ const getInTouchSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 .getintouch {
   padding: 140px 0 200px;
   align-items: center;
   display: flex;
   flex-direction: column;
   background-color: #1f1f1f;
+
+  &__text {
+    grid-column: 15 / 17;
+  }
 
   &__wrapper {
     display: grid;
@@ -70,6 +67,7 @@ const getInTouchSection = computed(() => {
 
   &__image {
     grid-column: 5 / 8;
+
     img {
       width: 100%;
       max-height: 320px;
@@ -77,7 +75,9 @@ const getInTouchSection = computed(() => {
     }
   }
 
-  &__text {
+  &__text,
+  &__text-title,
+  &__text-text {
     grid-column: 8 / 14;
     text-align: left;
     font-size: 22.123px;
@@ -89,19 +89,23 @@ const getInTouchSection = computed(() => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     p {
       margin: 0;
     }
+
     &-text {
-      color: var(--primary-orange);
+      color: var(--p-primary-color);
     }
+
     &-button {
       margin-top: 32px;
       width: fit-content;
     }
   }
 }
-@media only screen and (max-width: newVariables.$large) {
+
+@media only screen and (max-width: 1440px) {
   .getintouch {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -109,6 +113,7 @@ const getInTouchSection = computed(() => {
       padding: 0 22px;
       width: 100%;
     }
+
     &__title {
       grid-column: 3 /11;
     }
@@ -122,9 +127,11 @@ const getInTouchSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$medium) {
+
+@media only screen and (max-width: 1024px) {
   .getintouch {
     padding: 80px 0;
+
     &__image {
       grid-column: 3 / 7;
     }
@@ -134,19 +141,23 @@ const getInTouchSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+
+@media only screen and (max-width: 768px) {
   .getintouch {
     &__wrapper {
       gap: 24px 16px;
       padding: 0 16px;
     }
+
     &__title {
       grid-column: 1 / -1;
       font-size: 40px;
     }
+
     &__image {
       grid-column: 1 / -1;
       text-align: left;
+
       img {
         max-width: 320px;
       }

@@ -54,7 +54,7 @@ object JsonUtils {
             }
 
             node.isObject -> {
-                node.fields().forEachRemaining { (fieldName, value) ->
+                node.properties().forEach { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
                     result.putAll(getAllLeafNodesAsMapping(value, newPath))
                 }
@@ -101,7 +101,7 @@ object JsonUtils {
             }
 
             node.isObject -> {
-                node.fields().forEachRemaining { (fieldName, value) ->
+                node.properties().forEach { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
                     leafNodeFieldNames.addAll(getLeafNodeFieldNames(value, newPath, ignoreArrays, keepEmptyFields, dropLastFieldName))
                 }

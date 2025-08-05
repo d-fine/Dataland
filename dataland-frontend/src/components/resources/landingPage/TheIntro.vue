@@ -2,7 +2,6 @@
   <section
     v-if="introSection"
     class="intro"
-    role="region"
     aria-label="Introduction"
     :style="isMobile && inputFocused ? { marginTop: '0' } : {}"
   >
@@ -16,21 +15,27 @@
     />
 
     <h1 class="intro__text" v-show="!inputFocused || !isMobile">
-      <template v-for="(part, index) in introSection.text" :key="index">
-        <span v-if="index === 0 || index === 2">{{ part }}</span>
-        <template v-else>{{ part }}</template>
-      </template>
+      <span class="intro__text" v-for="(part, index) in introSection.text" :key="index">
+        {{ part }}
+        <br v-if="index === 1" />
+      </span>
     </h1>
     <div class="intro__blurred-overlay" v-if="inputFocused && isMobile"></div>
     <div v-if="inputFocused && isMobile" class="back-button" @click="handleInputBlur">Back</div>
 
     <CompaniesOnlySearchBar
       @select-company="router.push(`/companies/${$event.companyId}`)"
-      wrapper-class-additions="search"
       input-class="h-3rem search__field"
-      icon-class="pi pi-search search__icon"
+      wrapper-class-additions="search"
       @focus="handleInputFocus"
       @blur="handleInputBlur"
+      :autoCompletePassThrough="{
+        pcInputText: {
+          root: {
+            style: 'border: none',
+          },
+        },
+      }"
     />
 
     <ButtonComponent
@@ -46,7 +51,7 @@
 import { computed, ref, watch, onUnmounted } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import router from '@/router';
 
 const props = defineProps<{ sections?: Section[] }>();
@@ -99,22 +104,22 @@ const handleInputBlur = (): void => {
 };
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
+<style lang="scss">
 .intro {
   text-align: center;
   margin: 140px auto;
   max-width: 1007px;
   position: relative;
   z-index: 1;
+
   &__img {
     width: 85px;
     height: auto;
     margin-bottom: 42px;
   }
+
   &__text {
-    color: var(--basic-dark);
+    color: var(--p-highlight-color);
     text-align: center;
     font-size: 100px;
     font-style: normal;
@@ -125,6 +130,7 @@ const handleInputBlur = (): void => {
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
+
     span:last-of-type {
       display: block;
       font-size: 48px;
@@ -132,20 +138,24 @@ const handleInputBlur = (): void => {
       margin-top: 80px;
     }
   }
+
   .button-component.about__button {
     display: none;
   }
 }
-@media only screen and (max-width: newVariables.$large) {
+
+@media only screen and (max-width: 1440px) {
   .intro {
     &__img {
       margin-bottom: 31px;
     }
+
     &__text {
       font-size: 64px;
       line-height: 78px;
       max-width: 750px;
       margin: 0 auto;
+
       span:last-of-type {
         font-size: 40px;
         font-weight: 600;
@@ -157,7 +167,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .intro {
     &__text {
       font-size: 48px;
@@ -166,6 +176,7 @@ const handleInputBlur = (): void => {
       letter-spacing: unset;
       margin: 0 auto;
       font-weight: 600;
+
       span:last-of-type {
         font-size: 32px;
         line-height: 40px;
@@ -174,23 +185,27 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .intro {
     margin: 64px auto;
     padding-inline: 16px;
+
     &__img {
       width: 54px;
       margin-bottom: 48px;
     }
+
     &__text {
       font-size: 40px;
       line-height: 48px;
       max-width: 328px;
+
       span:last-of-type {
         font-size: 24px;
         line-height: 32px;
       }
     }
+
     .back-button {
       position: absolute;
       top: -44px;
@@ -204,6 +219,7 @@ const handleInputBlur = (): void => {
       font-weight: 600;
       line-height: 24px;
       letter-spacing: 0.25px;
+
       &::before {
         content: '';
         display: block;
@@ -216,20 +232,24 @@ const handleInputBlur = (): void => {
         transform: rotateY(180deg) translateY(-50%);
       }
     }
+
     .button-component.about__button {
       display: block;
       background-color: transparent;
       margin: 3em auto;
-      color: var(--basic-dark);
-      border-color: var(--basic-dark);
+      color: var(--p-highlight-color);
+      border-color: var(--p-primary-contrast-color);
+
       &:hover {
-        border-color: var(--primary-orange);
-        color: var(--primary-orange);
+        border-color: var(--p-primary-color);
+        color: var(--p-primary-color);
       }
     }
+
     & .search {
       z-index: 20;
     }
+
     &__blurred-overlay {
       position: fixed;
       top: 0;
@@ -244,7 +264,31 @@ const handleInputBlur = (): void => {
 </style>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables' as *;
+.search__field {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding-left: 40px;
+  background: transparent;
+  font-weight: 600;
+
+  &::placeholder {
+    font-size: 16px;
+    font-style: normal;
+
+    line-height: 24px;
+    letter-spacing: 0.25px;
+    color: var(--grey-tones-600);
+  }
+
+  &:focus {
+    box-shadow: none !important;
+
+    &::placeholder {
+      color: var(--grey-tones-300);
+    }
+  }
+}
 
 .search {
   position: relative;
@@ -264,29 +308,6 @@ const handleInputBlur = (): void => {
     width: 100%;
   }
 
-  &__field {
-    width: 100%;
-    border: none;
-    outline: none;
-    padding-left: 40px;
-    background: transparent;
-    font-weight: 600;
-    &::placeholder {
-      font-size: 16px;
-      font-style: normal;
-
-      line-height: 24px;
-      letter-spacing: 0.25px;
-      color: var(--grey-tones-600);
-    }
-    &:focus {
-      box-shadow: none !important;
-      &::placeholder {
-        color: var(--grey-tones-300);
-      }
-    }
-  }
-
   &__autocomplete {
     transform-origin: top !important;
     margin: 27px 0;
@@ -300,19 +321,22 @@ const handleInputBlur = (): void => {
     background: var(--default-neutral-white);
     box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
-    @media only screen and (max-width: $large) {
+    @media only screen and (max-width: 1440px) {
       max-width: 701px !important;
       width: calc(100% + 52px) !important;
     }
+
     ul.p-autocomplete-items {
       max-height: calc(400px - 27px);
       overflow-y: auto;
       border-radius: 8px;
       border: 2px solid var(--grey-tones-100);
       background: var(--default-neutral-white);
+
       li.p-autocomplete-item {
         height: 4rem;
         position: relative;
+
         &:after {
           content: '';
           height: 2px;
@@ -322,17 +346,21 @@ const handleInputBlur = (): void => {
           bottom: 0;
           left: 1.5em;
         }
+
         &:last-child:after {
           content: none;
         }
+
         &:hover {
           background-color: var(--grey-tones-100) !important;
         }
+
         i.pi.pi-search.pl-3 {
           padding-left: 2em !important;
         }
       }
     }
+
     ul.p-autocomplete-items.pt-0 {
       display: none;
     }
@@ -343,13 +371,15 @@ const handleInputBlur = (): void => {
     pointer-events: none;
   }
 }
-@media only screen and (max-width: $large) {
+
+@media only screen and (max-width: 1440px) {
   .search {
     margin-top: 31px;
     max-width: 701px;
   }
 }
-@media only screen and (max-width: $small) {
+
+@media only screen and (max-width: 768px) {
   .search__autocomplete {
     padding: 0;
     top: 47px !important;
@@ -361,13 +391,16 @@ const handleInputBlur = (): void => {
     box-shadow: none;
     backdrop-filter: unset;
     max-height: 100vw !important;
+
     ul.p-autocomplete-items {
       border-radius: 0;
       background: none;
       border: 0;
+
       li.p-autocomplete-item i.pi.pi-search.pl-3 {
         padding-left: 1.7em !important;
       }
+
       li.p-autocomplete-item:after {
         width: calc(100% - 3em);
         left: 1.5em;

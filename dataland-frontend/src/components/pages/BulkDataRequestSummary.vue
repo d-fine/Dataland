@@ -31,7 +31,7 @@
               <Badge :value="section.items?.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
+          <div v-if="section.textBox" class="text-center p-1 mt-1 mb-3">
             {{ section.textBox }}
           </div>
           <div
@@ -136,8 +136,6 @@ const sections = [
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
-
 .border-bottom {
   border-bottom: 1px solid #dadada;
 }
@@ -167,7 +165,15 @@ div.summary-section {
 }
 
 .info-color {
-  color: variables.$orange-prime;
+  color: var(--p-primary-color);
+}
+
+.green-text {
+  color: var(--p-green-500);
+}
+
+.red-text {
+  color: var(--p-red-500);
 }
 
 .bold-text {
@@ -178,5 +184,26 @@ div.summary-section {
   display: grid;
   grid-template-columns: 2fr 4fr 2fr 4fr 2fr;
   gap: 1px;
+}
+
+.middle-center-div {
+  flex: 1;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.info-icon {
+  cursor: help;
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
 }
 </style>

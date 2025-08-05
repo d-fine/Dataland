@@ -1,11 +1,5 @@
 <template>
-  <section
-    v-if="howItWorksSection"
-    class="howitworks"
-    role="region"
-    aria-labelledby="howitworks-heading"
-    data-test="howitworks"
-  >
+  <section v-if="howItWorksSection" class="howitworks" aria-labelledby="howitworks-heading" data-test="howitworks">
     <div class="howitworks__wrapper">
       <h2 id="howitworks-heading" class="howitworks__title">
         {{ sectionText }}
@@ -20,11 +14,13 @@
         :scroll-screen-width-limit="1800"
         :slide-width="slideWidth"
       >
-        <div v-for="(slide, index) in slides" :key="index" role="listitem" class="howitworks__slide">
-          <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
-          <p class="howitworks__slide-text">{{ slide.text }}</p>
-          <p class="howitworks__slide-index">0{{ index + 1 }}</p>
-        </div>
+        <ul class="howitworks__list">
+          <li v-for="(slide, index) in slides" :key="index" class="howitworks__slide">
+            <h3 class="howitworks__slide-title">{{ slide.title }}</h3>
+            <p class="howitworks__slide-text">{{ slide.text }}</p>
+            <p class="howitworks__slide-index">0{{ index + 1 }}</p>
+          </li>
+        </ul>
       </SlideShow>
     </div>
   </section>
@@ -58,11 +54,19 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables';
+.howitworks__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
 
 .howitworks {
   padding: 200px 0;
-  background-color: var(--primary-orange);
+  background-color: var(--p-primary-color);
 
   &__wrapper {
     position: relative;
@@ -125,7 +129,7 @@ onUnmounted(() => {
     -webkit-box-flex: 0;
     padding: 64px 40px 32px 40px;
     flex-direction: column;
-    background: #f6f6f6;
+    background: var(--grey-tones-100);
     gap: 24px;
     text-align: left;
 
@@ -189,7 +193,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(203, 203, 203, 0.24);
-    background-color: #fff;
+    background-color: var(--default-neutral-white);
     cursor: pointer;
 
     &:hover {
@@ -220,7 +224,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$extra-large) {
+@media only screen and (max-width: 1800px) {
   .howitworks {
     padding: 120px 0 64px;
 
@@ -260,7 +264,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .howitworks {
     &__title {
       font-size: 40px;
@@ -268,7 +272,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .howitworks {
     padding: 80px 0;
     &__wrapper {

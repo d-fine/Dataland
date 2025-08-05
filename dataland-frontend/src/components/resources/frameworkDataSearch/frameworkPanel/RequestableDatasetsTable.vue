@@ -101,3 +101,14 @@ async function submitDataRequestsForSelection(): Promise<void> {
   }
 }
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.button-disabled {
+  opacity: 0.4;
+  background: var(--btn-primary-bg) !important;
+  border: 0 !important;
+}
+</style>

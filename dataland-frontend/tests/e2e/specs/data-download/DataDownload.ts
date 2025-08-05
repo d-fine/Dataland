@@ -56,9 +56,9 @@ describeIf(
     /**
      * Visit framework data page, select download format and click download button
      * @param fileType Needs to be one of the identifiers of an ExportFileTypes
-     * @param includeAliases specifies if aliases are to be exported
+     * @param useAliases specifies if aliases are to be exported
      */
-    function visitPageAndClickDownloadButton(fileType: string, includeAliases: boolean = false): void {
+    function visitPageAndClickDownloadButton(fileType: string, useAliases: boolean = false): void {
       const fileTypeMap: Record<string, string> = {
         JSON: 'JavaScript Object Notation (.json)',
         CSV: 'Comma-separated Values (.csv)',
@@ -68,22 +68,23 @@ describeIf(
       cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
 
       cy.get('button[data-test=downloadDataButton]').should('exist').click();
-      cy.get('[data-test="listOfReportingPeriods"]')
-        .contains(reportingPeriod)
-        .should('be.visible')
-        .click({ force: true });
-      if (!includeAliases) {
-        cy.get('[data-test="includeAliasSwitch"]').should('have.class', 'p-inputswitch-checked').click({ force: true });
-        cy.get('[data-test="includeAliasSwitch"]').should('not.have.class', 'p-inputswitch-checked');
+      cy.get('[data-test="listOfReportingPeriods"]').contains(reportingPeriod).should('be.visible').click();
+      if (useAliases) {
+        cy.get('[data-test="includeAliasSwitch"]').should('have.class', 'p-toggleswitch-checked');
       } else {
-        cy.get('[data-test="includeAliasSwitch"]').should('have.class', 'p-inputswitch-checked');
+        cy.get('[data-test="includeAliasSwitch"]')
+          .should('have.class', 'p-toggleswitch-checked')
+          .find('.p-toggleswitch-input')
+          .click();
+        cy.get('[data-test="includeAliasSwitch"]').should('not.have.class', 'p-toggleswitch-checked');
       }
 
       const dropdownValue = fileTypeMap[fileType.toUpperCase()];
       if (!dropdownValue) {
         throw new Error(`Unsupported fileType: ${fileType}`);
       }
-      cy.get('[data-test="fileTypeSelector"]').select(dropdownValue);
+      cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains(dropdownValue).click();
       cy.get('button[data-test=downloadDataButtonInModal]').click();
     }
 
@@ -114,9 +115,9 @@ describeIf(
      *
      * @param partialFileNamePrefix
      * @param fileExtension
-     * @param includeAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
+     * @param useAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
-    function verifyAliases(partialFileNamePrefix: string, fileExtension: string, includeAliases: boolean): void {
+    function verifyAliases(partialFileNamePrefix: string, fileExtension: string, useAliases: boolean): void {
       cy.wait(Cypress.env('medium_timeout_in_ms') as number);
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
@@ -125,7 +126,7 @@ describeIf(
       }).then((filePath) => {
         if (typeof filePath === 'string') {
           cy.readFile(filePath).then((txt) => {
-            if (includeAliases) {
+            if (useAliases) {
               expect(txt).to.contain('COMPANY_NAME');
               expect(txt).to.not.contain('companyName');
             } else {
@@ -135,7 +136,7 @@ describeIf(
           });
           deleteFile(filePath);
         }
-      }); // optional short delay
+      });
     }
 
     /**
@@ -188,16 +189,16 @@ describeIf(
 
     it('Download data as CSV file, check that an alias exists and delete it afterwards', () => {
       const frameworkLabel = getFrameworkLabel();
-      const includeAliases = true;
-      visitPageAndClickDownloadButton(ExportFileType.Csv.toString(), includeAliases);
-      verifyAliases(`data-export-${frameworkLabel}`, ExportFileTypeInformation.CSV.fileExtension, includeAliases);
+      const useAliases = true;
+      visitPageAndClickDownloadButton(ExportFileType.Csv.toString(), useAliases);
+      verifyAliases(`data-export-${frameworkLabel}`, ExportFileTypeInformation.CSV.fileExtension, useAliases);
     });
 
     it('Download data as CSV file, check that a non-alias column name exists and delete it afterwards', () => {
       const frameworkLabel = getFrameworkLabel();
-      const includeAliases = false;
-      visitPageAndClickDownloadButton(ExportFileType.Csv.toString(), includeAliases);
-      verifyAliases(`data-export-${frameworkLabel}`, ExportFileTypeInformation.CSV.fileExtension, includeAliases);
+      const useAliases = false;
+      visitPageAndClickDownloadButton(ExportFileType.Csv.toString(), useAliases);
+      verifyAliases(`data-export-${frameworkLabel}`, ExportFileTypeInformation.CSV.fileExtension, useAliases);
     });
 
     it('Download data as EXCEL file, check for appropriate size and delete it afterwards', () => {
