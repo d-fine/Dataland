@@ -168,6 +168,14 @@ div.summary-section {
   color: var(--p-primary-color);
 }
 
+.green-text {
+  color: var(--p-green-500);
+}
+
+.red-text {
+  color: var(--p-red-500);
+}
+
 .bold-text {
   font-weight: bold;
 }

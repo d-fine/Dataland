@@ -5,7 +5,7 @@
     class="flex w-full info-bar"
     style="min-height: 2rem"
   >
-    <span class="flex-1">{{ warningMessage }}</span>
+    <span class="flex-1 text-center">{{ warningMessage }}</span>
     <router-link
       v-if="existsAcceptedVersion && link"
       :to="link"
@@ -96,13 +96,11 @@ export default defineComponent({
 
 <style scoped>
 .info-bar {
-  background: var(--bg-text-primary);
-  border-color: var(--info-bar-bg);
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: inset 0 0 24px -20px var(--gray);
   text-transform: uppercase;
   color: var(--main-color);
+  border-color: var(--info-bar-bg);
+  border-style: solid;
+  border-width: var(--spacing-xxxs);
   font-weight: bold;
   margin: 0.5rem 0;
   align-items: center;
