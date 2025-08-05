@@ -34,7 +34,9 @@ class DataAvailabilityChecker(
 
         return if (dimensionsToProcess.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
-            return (query.resultList as List<DataMetaInformationEntity>).map { it.toApiModel() }
+            return query.resultList
+                .filterIsInstance<DataMetaInformationEntity>()
+                .map { it.toApiModel() }
         } else {
             emptyList()
         }

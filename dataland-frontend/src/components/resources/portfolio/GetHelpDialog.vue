@@ -93,7 +93,7 @@ async function sendEmail(): Promise<void> {
 .container {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-md);
   justify-content: center;
 }
 
@@ -107,7 +107,7 @@ async function sendEmail(): Promise<void> {
 }
 
 .header-styling {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .send-button {

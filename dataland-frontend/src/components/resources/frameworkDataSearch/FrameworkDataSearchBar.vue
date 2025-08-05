@@ -1,74 +1,72 @@
 <template>
-  <div class="grid">
-    <div class="col-8 text-left">
-      <span class="p-fluid">
-        <span class="p-input-icon-left p-input-icon-right">
-          <i
-            class="pi pi-search d-framework-searchbar-input-icon"
-            aria-hidden="true"
-            style="z-index: 20; color: #958d7c"
-          />
-          <AutoComplete
-            :inputId="searchBarId"
-            ref="autocomplete"
-            v-model="searchBarInput"
-            :suggestions="autocompleteArrayDisplayed"
-            optionLabel="companyName"
-            :autoOptionFocus="false"
-            :min-length="3"
-            placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
-            inputClass="h-3rem d-framework-searchbar-input"
-            panelClass="d-framework-searchbar-panel"
-            style="z-index: 10"
-            @complete="searchCompanyName"
-            @keydown="noteThatAKeyWasPressed"
-            @keydown.down="getCurrentFocusedOptionIndex"
-            @keydown.up="getCurrentFocusedOptionIndex"
-            @item-select="handleItemSelect"
-            @keyup.enter="executeSearchIfNoItemFocused"
-            @focus="setCurrentFocusedOptionIndexToDefault"
-          >
-            <template #option="slotProps">
-              <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
-            </template>
+  <div class="flex">
+    <div class="text-left col-10">
+      <IconField>
+        <InputIcon class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+        <AutoComplete
+          :autofocus="true"
+          ref="autocomplete"
+          v-model="searchBarInput"
+          :suggestions="autocompleteArrayDisplayed"
+          optionLabel="companyName"
+          :autoOptionFocus="false"
+          :min-length="3"
+          input-id="search-bar-input"
+          placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
+          inputClass="h-3rem d-framework-searchbar-input"
+          panelClass="d-framework-searchbar-panel"
+          variant="filled"
+          :fluid="true"
+          @complete="searchCompanyName"
+          @keydown="noteThatAKeyWasPressed"
+          @keydown.down="getCurrentFocusedOptionIndex"
+          @keydown.up="getCurrentFocusedOptionIndex"
+          @item-select="handleItemSelect"
+          @keyup.enter="executeSearchIfNoItemFocused"
+          @focus="setCurrentFocusedOptionIndexToDefault"
+        >
+          <template #option="slotProps">
+            <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+            <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+          </template>
 
-            <template #footer>
-              <ul
-                class="p-autocomplete-items pt-0"
-                v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
-              >
-                <li class="p-autocomplete-item" @click="executeSearchIfNoItemFocused">
-                  <span class="text-primary font-medium underline pl-3"> View all results </span>
-                </li>
-              </ul>
-            </template>
-          </AutoComplete>
-        </span>
-        <div class="mt-2">
-          <span class="red-text" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
-        </div>
-      </span>
+          <template #footer>
+            <PrimeButton
+              v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
+              severity="secondary"
+              @click="executeSearchIfNoItemFocused"
+              label="View all results"
+              fluid
+              data-test="view-all-results-button"
+            />
+          </template>
+        </AutoComplete>
+      </IconField>
+    </div>
+    <div class="col-2 mt-2 justify-content-center text-left">
+      <span class="text-danger" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import AutoComplete from 'primevue/autocomplete';
 import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
-import {
-  getCompanyDataForFrameworkDataSearchPage,
-  type FrameworkDataSearchFilterInterface,
-  getNumberOfCompaniesForFrameworkDataSearchPage,
-  getCompanyDataForFrameworkDataSearchPageWithoutFilters,
-} from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
-import { defineComponent, inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { useRoute } from 'vue-router';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
 import router from '@/router';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import {
+  type FrameworkDataSearchFilterInterface,
+  getCompanyDataForFrameworkDataSearchPage,
+  getCompanyDataForFrameworkDataSearchPageWithoutFilters,
+  getNumberOfCompaniesForFrameworkDataSearchPage,
+} from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import AutoComplete from 'primevue/autocomplete';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject, ref } from 'vue';
 
 /**
  * This interface defines the internal state of the autocomplete component
@@ -76,7 +74,9 @@ import router from '@/router';
  */
 export interface AutoCompleteInternalState {
   focusedOptionIndex: number | null;
+
   hide(): void;
+
   $refs: {
     focusInput: HTMLInputElement;
   };
@@ -90,15 +90,11 @@ export default defineComponent({
     };
   },
   name: 'FrameworkDataSearchBar',
-  components: { AutoComplete, SearchResultHighlighter },
+  components: { AutoComplete, SearchResultHighlighter, IconField, InputIcon, PrimeButton },
 
   emits: ['companies-received', 'search-confirmed'],
 
   props: {
-    searchBarId: {
-      type: String,
-      default: 'framework_data_search_bar_standard',
-    },
     chunkSize: {
       type: Number,
       default: null,
@@ -130,15 +126,9 @@ export default defineComponent({
   mounted() {
     this.searchBarInput = this.filter?.companyNameFilter ?? '';
     void this.queryCompany();
-    if (!this.route.query.input) {
-      this.focusOnSearchBar();
-    }
   },
 
   watch: {
-    searchBarId() {
-      this.focusOnSearchBar();
-    },
     searchBarInput(newValue: string) {
       this.validateSearchBarInput();
       this.saveCurrentSearchStringIfValid(newValue);
@@ -157,7 +147,7 @@ export default defineComponent({
     },
   },
 
-  data: function () {
+  data() {
     return {
       wereKeysPressed: false,
       currentFocusedOptionIndex: -1,
@@ -165,7 +155,6 @@ export default defineComponent({
       latestValidSearchString: '',
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
-      route: useRoute(),
       notEnoughCharactersWarningTimeoutId: 0,
       areNotEnoughCharactersProvided: false,
     };
@@ -203,13 +192,6 @@ export default defineComponent({
     },
 
     /**
-     * Focuses the search bar
-     */
-    focusOnSearchBar() {
-      this.autocomplete?.$refs?.focusInput.focus();
-    },
-
-    /**
      * Called when an item is selected from the dropdown. Navigates to the company cockpit page for the selected company
      * @param event the click event
      * @param event.value the company that was clicked on
@@ -226,7 +208,6 @@ export default defineComponent({
     executeSearchIfNoItemFocused() {
       if (!this.areNotEnoughCharactersProvided && this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         this.autocomplete?.hide();
-        this.autocomplete?.$refs.focusInput.blur();
         this.$emit('search-confirmed', this.searchBarInput);
         void this.queryCompany();
       }
@@ -322,6 +303,14 @@ export default defineComponent({
         this.areNotEnoughCharactersProvided = false;
       }
     },
+
+    /**
+     * Invoked when autocomplete shall hide.
+     */
+    // eslint-disable-next-line vue/no-unused-properties
+    closeOverlay() {
+      this.autocomplete?.hide();
+    },
   },
 });
 
@@ -340,3 +329,9 @@ function areAllFiltersDeactivated(
   return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
 }
 </script>
+<style scoped>
+.text-danger {
+  color: var(--fk-color-error);
+  font-size: var(--font-size-xs);
+}
+</style>

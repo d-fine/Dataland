@@ -11,7 +11,7 @@
 import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
 import { inject, type Ref, ref } from 'vue';
 import { type DataMetaInformation } from '@clients/backend';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 

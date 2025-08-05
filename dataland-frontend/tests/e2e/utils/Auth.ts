@@ -7,8 +7,8 @@ export function logout(): void {
     .as('apikey')
     .visitAndCheckAppMount('/api-key')
     .wait('@apikey', { timeout: Cypress.env('short_timeout_in_ms') as number });
-  cy.get("div[id='profile-picture-dropdown-toggle']").click();
-  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
+  cy.get("[data-test='user-profile-toggle']").click();
+  cy.get('.p-menu-item-link').contains('LOG OUT').click();
   cy.url().should('eq', getBaseUrl() + '/');
   cy.get("a[aria-label='Login to account']").should('exist').should('be.visible');
 }

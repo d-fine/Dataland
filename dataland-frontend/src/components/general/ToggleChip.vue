@@ -61,13 +61,13 @@ export default defineComponent({
   cursor: pointer;
 
   &:hover {
-    border-color: var(--fk-color-primary);
-    color: var(--fk-color-primary);
+    border-color: var(--p-primary-color);
+    color: var(--p-primary-color);
   }
 
   &.toggled {
-    border-color: var(--fk-color-primary);
-    background-color: var(--fk-color-primary);
+    border-color: var(--p-primary-color);
+    background-color: var(--p-primary-color);
 
     .label {
       color: white;
