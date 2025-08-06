@@ -18,7 +18,7 @@
       />
       <div v-if="showIdentifierError">
         <Message severity="error" data-test="invalidIdentifierErrorMessage" variant="simple" size="small">
-          Identifiers left in dialog couldn't be added to Portfolio.
+          Identifiers left in the dialog couldn't be added to the portfolio.
         </Message>
       </div>
       <div class="company-info-container">
