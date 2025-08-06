@@ -366,7 +366,7 @@ export default defineComponent({
       const numberOfAccepted = this.bulkDataRequestResponse.acceptedDataRequests.length;
       const numberOfExisting =
         this.bulkDataRequestResponse.alreadyExistingDatasets.length +
-        this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length;
+        this.bulkDataRequestResponse.alreadyExistingRequests.length;
       const numberOfRejected = this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
 
       this.message =
@@ -384,7 +384,7 @@ export default defineComponent({
     calculateRequestSuccessStatus(bulkDataRequestResponse: BulkDataRequestResponse) {
       const sumOfAllRequestedData =
         bulkDataRequestResponse.acceptedDataRequests.length +
-        bulkDataRequestResponse.alreadyExistingNonFinalRequests.length +
+        bulkDataRequestResponse.alreadyExistingRequests.length +
         bulkDataRequestResponse.alreadyExistingDatasets.length +
         bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
 

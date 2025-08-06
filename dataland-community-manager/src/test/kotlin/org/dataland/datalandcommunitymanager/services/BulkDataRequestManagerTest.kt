@@ -109,7 +109,7 @@ class BulkDataRequestManagerTest {
     ) {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAccepted, response.acceptedDataRequests)
-        assertEquals(expectedAlreadyExistingNonFinal, response.alreadyExistingNonFinalRequests)
+        assertEquals(expectedAlreadyExistingNonFinal, response.alreadyExistingRequests)
         assertEquals(expectedAlreadyExistingDatasets, response.alreadyExistingDatasets)
         assertEquals(expectedRejected, response.rejectedCompanyIdentifiers)
     }

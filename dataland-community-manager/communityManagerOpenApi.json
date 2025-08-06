@@ -1789,7 +1789,7 @@
         "required": [
           "acceptedDataRequests",
           "alreadyExistingDatasets",
-          "alreadyExistingNonFinalRequests",
+          "alreadyExistingRequests",
           "rejectedCompanyIdentifiers"
         ],
         "type": "object",
@@ -1801,7 +1801,7 @@
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
-          "alreadyExistingNonFinalRequests": {
+          "alreadyExistingRequests": {
             "type": "array",
             "description": "Contains information about all already existing data requests that are \"Open\" or \"Answered\".",
             "items": {
