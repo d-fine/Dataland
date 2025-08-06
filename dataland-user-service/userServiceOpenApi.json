@@ -236,7 +236,8 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully requested support."
+            "description": "Successfully requested support.",
+            "content": {}
           },
           "default": {
             "description": "An error occurred",
