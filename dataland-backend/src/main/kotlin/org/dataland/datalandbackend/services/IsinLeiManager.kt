@@ -31,7 +31,7 @@ class IsinLeiManager(
         isinLeiTransactionalService.clearAllMappings()
         logger.info("Dropped previous entries")
         logger.info("Preparing to add new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
-        saveAllJdbcBatchCallable(isinLeiMappingData)
+        processIsinLeiMappingData(isinLeiMappingData)
         logger.info("Added new ISIN-LEI mappings: ${isinLeiMappingData.size} entries")
     }
 
@@ -67,14 +67,14 @@ class IsinLeiManager(
 
     /**
      * Method to save ISIN-LEI mappings in chunks using a callable for asynchronous execution.
-     * @param data the ISIN-LEI mapping data to save
+     * @param isinLeiMappingData the ISIN-LEI mapping data to save
      * @param chunkSize the size of each chunk to process in parallel
      */
-    fun saveAllJdbcBatchCallable(
-        data: List<IsinLeiMappingData>,
+    fun processIsinLeiMappingData(
+        isinLeiMappingData: List<IsinLeiMappingData>,
         chunkSize: Int = 10000,
     ) {
-        val chunks = data.chunked(chunkSize)
+        val chunks = isinLeiMappingData.chunked(chunkSize)
         val futures =
             chunks.map { chunk ->
                 val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())

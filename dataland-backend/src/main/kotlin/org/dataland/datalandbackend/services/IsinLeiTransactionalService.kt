@@ -36,6 +36,10 @@ class IsinLeiTransactionalService(
         }
     }
 
+    /**
+     * Method to save ISIN-LEI mappings in batches using JPA/Hibernate.
+     * @param entities the ISIN-LEI mappings to save
+     */
     @Async
     @Transactional
     fun saveAllJpaHibernate(entities: List<IsinLeiEntity>): CompletableFuture<Unit> {
