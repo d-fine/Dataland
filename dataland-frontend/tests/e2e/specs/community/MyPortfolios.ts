@@ -61,7 +61,8 @@ describeIf(
           cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
           cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
           cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-          cy.wait('@companyValidation');
+          cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
+          cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
           cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,

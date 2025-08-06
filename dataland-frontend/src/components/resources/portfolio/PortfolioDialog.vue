@@ -156,6 +156,7 @@ async function addCompanies(): Promise<void> {
     const companyValidationResults = (
       await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
+
     const validIdentifiers: CompanyIdAndName[] = companyValidationResults
       .filter((validationResult) => validationResult.companyInformation)
       .map((validEntry): CompanyIdAndName => {
@@ -168,16 +169,17 @@ async function addCompanies(): Promise<void> {
       .filter((validationResult) => !validationResult.companyInformation)
       .map((it) => it.identifier);
 
+    if (invalidIdentifiers.length > 0) {
+      showIdentifierError.value = true;
+    }
+
+    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
     portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
   } finally {
     isCompaniesLoading.value = false;
-    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
-  }
-  if (invalidIdentifiers.length > 0) {
-    showIdentifierError.value = true;
   }
 }
 
