@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * Publisher Service for Portfolio Updates (Companies and Monitoring status).
+ * Publisher Service for Portfolio Updates.
  */
 @Service
 class MessageQueuePublisherService
