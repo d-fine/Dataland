@@ -37,7 +37,6 @@ import java.util.UUID
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
     private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
-
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
