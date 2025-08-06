@@ -44,7 +44,7 @@ object JsonSpecificationUtils {
         } else {
             val returnNode = JsonNodeFactory.instance.objectNode()
             var allNull = true
-            for ((fieldName, childSpecificationNode) in currentSpecificationNode.fields()) {
+            for ((fieldName, childSpecificationNode) in currentSpecificationNode.properties()) {
                 require(childSpecificationNode is ObjectNode) {
                     "Specification node must be an object node"
                 }
@@ -95,7 +95,7 @@ object JsonSpecificationUtils {
                     "Unexpected leaf at JSON path: $currentPath",
                 )
             }
-            for ((fieldName, jsonNode) in currentDataNode.fields()) {
+            for ((fieldName, jsonNode) in currentDataNode.properties()) {
                 dataMap.putAll(processNode(fieldName, jsonNode, currentPath, currentSpecificationNode))
             }
         }

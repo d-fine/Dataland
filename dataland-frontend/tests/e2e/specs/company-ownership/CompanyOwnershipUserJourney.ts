@@ -23,7 +23,7 @@ describeIf(
       FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
         cy.get(frameworkSummaryPanelSelector).should('exist');
-        cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should('exist');
+        cy.get(`[data-test="${frameworkName}-provide-data-button"]`).should('exist');
       });
     }
 
@@ -50,7 +50,7 @@ describeIf(
       cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
       cy.scrollTo('top');
       checkFrameworks();
-      cy.get(`div[data-test="lksg-summary-panel"] a[data-test="lksg-provide-data-button"]`).should('exist').click();
+      cy.get(`[data-test="lksg-provide-data-button"]`).should('exist').click();
       cy.get(`div[data-pc-section="title"]`).should('contain', 'New Dataset - LkSG');
     });
   }

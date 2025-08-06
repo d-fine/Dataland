@@ -10,6 +10,6 @@ export function verifyOnSingleRequestPage(company: string, emailChecked: boolean
   cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Openand Access is:Public since');
   cy.get('[data-test="notifyMeImmediatelyInput"]').should(
     (emailChecked ? '' : 'not.') + 'have.class',
-    'p-inputswitch-checked'
+    'p-toggleswitch-checked'
   );
 }

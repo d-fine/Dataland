@@ -80,7 +80,7 @@ object JsonComparator {
     private fun isNestedFullyNullObject(node: JsonNode): Boolean =
         node.isObject &&
             node
-                .fields()
+                .properties()
                 .asSequence()
                 .all { isFullyNullObject(it.value) }
 
