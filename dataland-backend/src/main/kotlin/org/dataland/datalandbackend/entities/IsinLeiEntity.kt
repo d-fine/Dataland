@@ -28,7 +28,7 @@ data class IsinLeiEntity(
     @Id
     @Column(name = "isin", nullable = false, unique = true)
     val isin: String,
-    @Column(name = "lei", nullable = true, unique = false)
+    @Column(name = "lei")
     val lei: String?,
 ) {
     /**
