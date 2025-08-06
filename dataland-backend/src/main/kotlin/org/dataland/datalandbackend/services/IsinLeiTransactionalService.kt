@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.IsinLeiEntity
+import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Async
@@ -17,6 +18,7 @@ import javax.sql.DataSource
 @Service
 class IsinLeiTransactionalService(
     @Autowired private val dataSource: DataSource,
+    @Autowired private val isinLeiRepository: IsinLeiRepository,
 ) {
     private val tableName = "isin_lei_mapping"
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -32,6 +34,13 @@ class IsinLeiTransactionalService(
                 statement.executeUpdate(sql)
             }
         }
+    }
+
+    @Async
+    @Transactional
+    fun saveAllJpaHibernate(entities: List<IsinLeiEntity>): CompletableFuture<Unit> {
+        isinLeiRepository.saveAll(entities)
+        return CompletableFuture.completedFuture(null)
     }
 
     /**
