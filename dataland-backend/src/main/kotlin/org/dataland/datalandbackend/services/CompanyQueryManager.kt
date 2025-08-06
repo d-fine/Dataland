@@ -156,13 +156,10 @@ class CompanyQueryManager
             return storedCompany
         }
 
-        private fun fetchAllStoredCompanyFields(storedCompanies: StoredCompanyEntity): StoredCompanyEntity =
-            storedCompanies
-                .let { companyRepository.fetchNonIsinIdentifiers(it) }
-                .let { fetchIsinIdentifiers(it) }
-                .let { companyRepository.fetchAlternativeNames(it) }
-                .let { companyRepository.fetchCompanyContactDetails(it) }
-                .let { companyRepository.fetchCompanyAssociatedByDataland(it) }
+        private fun fetchAllStoredCompanyFields(storedCompany: StoredCompanyEntity): StoredCompanyEntity =
+            fetchIsinIdentifiers(
+                companyRepository.fetchAllNonIsinFields(storedCompany),
+            )
 
         private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {
             assertCompanyIdExists(companyId)
