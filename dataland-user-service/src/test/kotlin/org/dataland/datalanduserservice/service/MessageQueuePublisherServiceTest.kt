@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -29,11 +30,7 @@ class MessageQueuePublisherServiceTest {
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
 
-    private val messageQueuePublisherService =
-        MessageQueuePublisherService(
-            cloudEventMessageHandler = mockCloudEventMessageHandler,
-            keycloakUserService = mockKeycloakUserService,
-        )
+    private lateinit var messageQueuePublisherService: MessageQueuePublisherService
     private val mockSecurityContext = mock<SecurityContext>()
 
     private val testUserId = "test-user-id"
@@ -54,6 +51,12 @@ class MessageQueuePublisherServiceTest {
 
     @BeforeEach
     fun setup() {
+        reset(mockCloudEventMessageHandler, mockKeycloakUserService)
+        messageQueuePublisherService =
+            MessageQueuePublisherService(
+                cloudEventMessageHandler = mockCloudEventMessageHandler,
+                keycloakUserService = mockKeycloakUserService,
+            )
         resetSecurityContext()
     }
 
