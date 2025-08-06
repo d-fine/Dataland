@@ -317,5 +317,5 @@ interface PortfolioApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postSupportRequest(
         @RequestBody(required = true) supportRequestData: SupportRequestData,
-    )
+    ): ResponseEntity<Unit>
 }

@@ -93,8 +93,9 @@ class PortfolioController
             )
         }
 
-        override fun postSupportRequest(supportRequestData: SupportRequestData) {
+        override fun postSupportRequest(supportRequestData: SupportRequestData): ResponseEntity<Unit> {
             val correlationId = UUID.randomUUID().toString()
             messageQueuePublisherService.publishSupportRequest(supportRequestData, correlationId)
+            return ResponseEntity.status(HttpStatus.CREATED).build()
         }
     }
