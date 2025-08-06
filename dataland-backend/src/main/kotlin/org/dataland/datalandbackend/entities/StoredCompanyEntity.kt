@@ -44,7 +44,7 @@ data class StoredCompanyEntity(
     var sector: String?,
     @Column(name = "sector_code_wz")
     var sectorCodeWz: String?,
-    @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL])
     @JsonManagedReference
     var identifiers: MutableList<CompanyIdentifierEntity>,
     @Column(name = "parent_company_lei")

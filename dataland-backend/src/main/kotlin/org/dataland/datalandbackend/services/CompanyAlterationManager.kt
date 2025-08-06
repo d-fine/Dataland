@@ -44,14 +44,14 @@ class CompanyAlterationManager
         fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
             val companyId = IdUtils.generateUUID()
             logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
-            val newCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
+            val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
 
-            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(newCompany, companyInformation.identifiers)
-            createAndAssociateIsinIdentifiers(newCompany, companyInformation.identifiers)
-            newCompany.identifiers = nonIsinIdentifiers.toMutableList()
+            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            savedCompany.identifiers = nonIsinIdentifiers.toMutableList()
 
             logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
-            return storedCompanyRepository.save(newCompany)
+            return savedCompany
         }
 
         /**
@@ -170,7 +170,7 @@ class CompanyAlterationManager
                     parentCompanyLei = companyInformation.parentCompanyLei,
                 )
 
-            return newCompanyEntity
+            return storedCompanyRepository.save(newCompanyEntity)
         }
 
         /**
