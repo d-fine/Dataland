@@ -45,7 +45,12 @@
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body>
-          <span class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span> </span>
+          <PrimeButton
+            label="VIEW"
+            iconPos="right"
+            icon="pi pi-angle-right"
+            variant="link"
+          />
         </template>
       </Column>
     </DataTable>
@@ -67,10 +72,11 @@ import Tag from 'primevue/tag';
 import { defineComponent, type PropType } from 'vue';
 import { type BasicCompanyInformation } from '@clients/backend';
 import router from '@/router';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'FrameworkDataSearchResults',
-  components: { DataTable, Column, Tag },
+  components: { DataTable, Column, Tag, PrimeButton },
   emits: ['page-update'],
   directives: {
     tooltip: Tooltip,

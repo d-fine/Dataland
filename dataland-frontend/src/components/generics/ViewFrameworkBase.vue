@@ -59,7 +59,7 @@
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
-              label="Download Data"
+              label="DOWNLOAD DATA"
               icon="pi pi-download"
             />
 
@@ -68,7 +68,7 @@
               aria-label="Edit data"
               @click="editDataset"
               data-test="editDatasetButton"
-              label="Edit Data"
+              label="EDIT DATA"
               :icon="
                 availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
                   ? 'pi pi-chevron-down'
@@ -81,7 +81,7 @@
               :to="targetLinkForAddingNewDataset"
               data-test="gotoNewDatasetButton"
             >
-              <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="New Dataset" />
+              <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">

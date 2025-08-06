@@ -42,10 +42,9 @@
                       <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
 
                       <PrimeButton
-                        type="button"
                         @click="goToMyRequests()"
                         label="TO MY DATA REQUESTS"
-                        class="uppercase p-button-outlined"
+                        variant="outlined"
                         data-test="go-to-my-requests-button"
                       />
                     </div>

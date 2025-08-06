@@ -65,6 +65,7 @@
         @click="toggleShowAll"
         :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
         style="margin-left: auto"
+        variant="link"
         />
       </div>
     </div>
