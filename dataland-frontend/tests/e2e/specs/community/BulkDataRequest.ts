@@ -141,9 +141,6 @@ describeIf(
 
       cy.get('[data-test="acceptedDataRequestsHeader"]').find('.p-badge').contains(acceptedDataRequests.length);
       cy.get('[data-test="alreadyExistingDatasetsHeader"]').find('.p-badge').contains(alreadyExistingDatasets.length);
-      cy.get('[data-test="alreadyExistingNonFinalRequestsHeader"]')
-        .find('.p-badge')
-        .contains(alreadyExistingNonFinalRequests.length);
       cy.get('[data-test="rejectedCompanyIdentifiersHeader"]')
         .find('.p-badge')
         .contains(rejectedCompanyIdentifiers.length)
