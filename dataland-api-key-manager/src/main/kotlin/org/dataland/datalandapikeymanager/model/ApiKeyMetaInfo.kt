@@ -24,10 +24,10 @@ data class ApiKeyMetaInfo(
     @field:JsonProperty(required = false)
     val validationMessage: String? = null,
 ) {
-    constructor(apiKeyEntity: ApiKeyEntity, active: Boolean?, validationMessage: String?) :
+    constructor(apiKeyEntity: ApiKeyEntity, keycloakRoles: List<String>?, active: Boolean?, validationMessage: String?) :
         this(
             apiKeyEntity.keycloakUserId,
-            apiKeyEntity.keycloakRoles,
+            keycloakRoles,
             apiKeyEntity.expiryDate,
             active,
             validationMessage,

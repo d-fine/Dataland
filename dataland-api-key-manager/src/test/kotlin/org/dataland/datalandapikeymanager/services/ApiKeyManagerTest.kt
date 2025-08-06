@@ -26,7 +26,7 @@ class ApiKeyManagerTest(
         val secret = testApiKeyUtility.generateApiKeySecret()
         val parsedApiKey = ParsedApiKey(keycloakUserId, secret)
         val encodedSecret = testApiKeyUtility.encodeSecret(secret)
-        val testDataEntity = ApiKeyEntity(encodedSecret, keycloakUserId, listOf("READER"), expiryTime)
+        val testDataEntity = ApiKeyEntity(encodedSecret, keycloakUserId, expiryTime)
         testApiKeyRepository.save(testDataEntity)
         return testApiKeyUtility.convertToApiKey(parsedApiKey)
     }
