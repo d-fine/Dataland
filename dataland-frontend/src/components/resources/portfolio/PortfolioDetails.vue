@@ -168,7 +168,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@primevue/core/api';
 import PrimeButton from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';

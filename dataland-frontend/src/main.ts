@@ -1,21 +1,21 @@
+import { DatalandPreset } from '@/assets/theme/dataland-theme.ts';
+import { defaultConfig, plugin } from '@formkit/vue';
+import { createPinia, type PiniaPlugin } from 'pinia';
+import { PiniaSharedState } from 'pinia-shared-state';
+import PrimeVue from 'primevue/config';
+import DialogService from 'primevue/dialogservice';
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; // use this for icons embedded in inputs and declarative elements such as menus -> decent alignment
 import 'material-icons/iconfont/material-icons.css'; // prefer these icons in most cases such as stand-alone or in buttons -> recommended by UI/UX
 import 'primeflex/primeflex.min.css';
-import './assets/scss/global.scss';
-import './assets/css/ibm-plex-sans.scss';
+import '@/assets/fonts/ibm-plex-sans.scss';
+import '@/assets/theme/main.css';
 import '@formkit/themes/genesis';
-import { plugin, defaultConfig } from '@formkit/vue';
 import router from './router';
-import PrimeVue from 'primevue/config';
-import DialogService from 'primevue/dialogservice';
-import { createPinia, type PiniaPlugin } from 'pinia';
-import { PiniaSharedState } from 'pinia-shared-state';
 import Vue3Tour from 'vue3-tour';
-import 'vue3-tour/dist/vue3-tour.css';
+import'vue3-tour/dist/vue3-tour.css';
 import Steps from 'primevue/steps';
 import Dialog from 'primevue/dialog';
 
@@ -34,11 +34,18 @@ function instantiateVueApp(): void {
   app.use(plugin, defaultConfig);
   app.use(DialogService);
   app.use(router);
-  app.use(PrimeVue);
+  app.use(PrimeVue, {
+    theme: {
+      preset: DatalandPreset,
+      options: {
+        darkModeSelector: 'none',
+      },
+    },
+  });
   app.use(pinia);
   app.use(Vue3Tour);
-  app.component('Steps', Steps);
-  app.component('Dialog', Dialog);
+  app.component('Steps',Steps);
+  app.component('Dialog',Dialog);
 
   app.mount('#app');
 }
