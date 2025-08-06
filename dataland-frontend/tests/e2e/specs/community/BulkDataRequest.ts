@@ -136,7 +136,7 @@ describeIf(
       const bulkDataRequestResponse = interception.response.body as BulkDataRequestResponse;
       const acceptedDataRequests = bulkDataRequestResponse.acceptedDataRequests;
       const alreadyExistingDatasets = bulkDataRequestResponse.alreadyExistingDatasets;
-      const alreadyExistingNonFinalRequests = bulkDataRequestResponse.alreadyExistingNonFinalRequests;
+      const alreadyExistingNonFinalRequests = bulkDataRequestResponse.alreadyExistingRequests;
       const rejectedCompanyIdentifiers = bulkDataRequestResponse.rejectedCompanyIdentifiers;
 
       cy.get('[data-test="acceptedDataRequestsHeader"]').find('.p-badge').contains(acceptedDataRequests.length);
