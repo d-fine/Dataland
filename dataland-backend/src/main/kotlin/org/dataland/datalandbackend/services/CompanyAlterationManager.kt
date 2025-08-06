@@ -44,14 +44,14 @@ class CompanyAlterationManager
         fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
             val companyId = IdUtils.generateUUID()
             logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
-            val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
+            val newCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
 
-            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
-            createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
-            savedCompany.identifiers = nonIsinIdentifiers.toMutableList()
+            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(newCompany, companyInformation.identifiers)
+            createAndAssociateIsinIdentifiers(newCompany, companyInformation.identifiers)
+            newCompany.identifiers = nonIsinIdentifiers.toMutableList()
 
             logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
-            return savedCompany
+            return storedCompanyRepository.save(newCompany)
         }
 
         /**
@@ -68,16 +68,7 @@ class CompanyAlterationManager
             val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
             logger.info("Patching Company ${storedCompanyEntity.companyName} with ID $companyId")
 
-            storedCompanyEntity.applyPatchWithoutIdentifiers(patch)
-            val patchedIdentifiers = patch.identifiers ?: emptyMap()
-            updateNonIsinIdentifiers(storedCompanyEntity, patchedIdentifiers)
-
-            if (patchedIdentifiers[IdentifierType.Isin] != null) {
-                replaceIsinIdentifiers(
-                    storedCompanyEntity = storedCompanyEntity,
-                    identifierMap = patchedIdentifiers,
-                )
-            }
+            applyPatch(storedCompanyEntity, patch)
 
             return storedCompanyRepository.save(storedCompanyEntity)
         }
@@ -96,11 +87,64 @@ class CompanyAlterationManager
             val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
             logger.info("Replacing Company ${storedCompanyEntity.companyName} with ID $companyId")
 
-            storedCompanyEntity.applyPutWithoutIdentifiers(companyInformation)
-            replaceNonIsinIdentifers(storedCompanyEntity = storedCompanyEntity, identifierMap = companyInformation.identifiers)
-            replaceIsinIdentifiers(storedCompanyEntity = storedCompanyEntity, identifierMap = companyInformation.identifiers)
+            applyPut(storedCompanyEntity, companyInformation)
 
             return storedCompanyRepository.save(storedCompanyEntity)
+        }
+
+        private fun applyPatch(
+            storedCompanyEntity: StoredCompanyEntity,
+            patch: CompanyInformationPatch,
+        ) {
+            patch.companyName?.let { storedCompanyEntity.companyName = it }
+            patch.companyAlternativeNames?.let { storedCompanyEntity.companyAlternativeNames = it.toMutableList() }
+            patch.companyContactDetails?.let { storedCompanyEntity.companyContactDetails = it.toMutableList() }
+            patch.companyLegalForm?.let { storedCompanyEntity.companyLegalForm = it }
+            patch.headquarters?.let { storedCompanyEntity.headquarters = it }
+            patch.headquartersPostalCode?.let { storedCompanyEntity.headquartersPostalCode = it }
+            patch.sector?.let { storedCompanyEntity.sector = it }
+            patch.sectorCodeWz?.let { storedCompanyEntity.sectorCodeWz = it }
+            patch.countryCode?.let { storedCompanyEntity.countryCode = it }
+            patch.website?.let { storedCompanyEntity.website = it }
+            patch.isTeaserCompany?.let { storedCompanyEntity.isTeaserCompany = it }
+            patch.parentCompanyLei?.let { storedCompanyEntity.parentCompanyLei = it }
+
+            val patchedIdentifiers = patch.identifiers ?: emptyMap()
+            patchIdentifiers(storedCompanyEntity, patchedIdentifiers)
+        }
+
+        private fun patchIdentifiers(
+            storedCompanyEntity: StoredCompanyEntity,
+            patchedIdentifiers: Map<IdentifierType, List<String>>,
+        ) {
+            updateNonIsinIdentifiers(storedCompanyEntity, patchedIdentifiers)
+
+            if (patchedIdentifiers[IdentifierType.Isin] != null) {
+                replaceIsinIdentifiers(
+                    storedCompanyEntity = storedCompanyEntity,
+                    identifierMap = patchedIdentifiers,
+                )
+            }
+        }
+
+        private fun applyPut(
+            storedCompanyEntity: StoredCompanyEntity,
+            put: CompanyInformation,
+        ) {
+            storedCompanyEntity.companyName = put.companyName
+            storedCompanyEntity.companyAlternativeNames = put.companyAlternativeNames?.toMutableList()
+            storedCompanyEntity.companyContactDetails = put.companyContactDetails?.toMutableList()
+            storedCompanyEntity.companyLegalForm = put.companyLegalForm
+            storedCompanyEntity.headquarters = put.headquarters
+            storedCompanyEntity.headquartersPostalCode = put.headquartersPostalCode
+            storedCompanyEntity.sector = put.sector
+            storedCompanyEntity.sectorCodeWz = put.sectorCodeWz
+            storedCompanyEntity.countryCode = put.countryCode
+            storedCompanyEntity.website = put.website
+            storedCompanyEntity.isTeaserCompany = put.isTeaserCompany ?: false
+            storedCompanyEntity.parentCompanyLei = put.parentCompanyLei
+            replaceNonIsinIdentifers(storedCompanyEntity = storedCompanyEntity, identifierMap = put.identifiers)
+            replaceIsinIdentifiers(storedCompanyEntity = storedCompanyEntity, identifierMap = put.identifiers)
         }
 
         private fun createStoredCompanyEntityWithoutForeignReferences(
@@ -126,7 +170,7 @@ class CompanyAlterationManager
                     parentCompanyLei = companyInformation.parentCompanyLei,
                 )
 
-            return storedCompanyRepository.save(newCompanyEntity)
+            return newCompanyEntity
         }
 
         /**
