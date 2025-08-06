@@ -28,7 +28,7 @@
           data-test="portfolio-dialog-add-companies"
           fluid
         />
-        <PrimeButton type="button" label="Get help" @click="openHelpDialog" fluid />
+        <PrimeButton type="button" label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
       </div>
     </div>
     <div>

@@ -2,7 +2,7 @@
   <div class="container">
     <div>
       <p class="header-styling">Choose a topic</p>
-      <Dropdown
+      <Select
         id="get-help-topic"
         v-model="selectedTopic"
         :options="availableTopics"
@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import Textarea from 'primevue/textarea';
-import Dropdown from 'primevue/dropdown';
+import Select from 'primevue/dropdown';
 import PrimeButton from 'primevue/button';
 import { computed, inject, ref } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';

@@ -30,7 +30,7 @@ class PortfolioController
         private val validator: Validator,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
         private val portfolioMonitoringService: PortfolioMonitoringService,
-        private val publisher: MessageQueuePublisherService,
+        private val messageQueuePublisherService: MessageQueuePublisherService,
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
@@ -95,6 +95,6 @@ class PortfolioController
 
         override fun postSupportRequest(supportRequestData: SupportRequestData) {
             val correlationId = UUID.randomUUID().toString()
-            publisher.publishSupportRequest(supportRequestData, correlationId)
+            messageQueuePublisherService.publishSupportRequest(supportRequestData, correlationId)
         }
     }
