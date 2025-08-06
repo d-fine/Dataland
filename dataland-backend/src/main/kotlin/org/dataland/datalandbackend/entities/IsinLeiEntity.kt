@@ -22,9 +22,9 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
     ],
 )
 data class IsinLeiEntity(
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
-    var company: StoredCompanyEntity?,
+    var company: StoredCompanyEntity,
     @Id
     @Column(name = "isin", nullable = false, unique = true)
     val isin: String,

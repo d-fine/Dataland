@@ -53,14 +53,17 @@ class IsinLeiManager(
                         .map { id -> id.identifierValue }
                         .contains(mappingData.lei)
                 }
-            if (company == null) logger.error("Attention: The LEI ${mappingData.lei} is unknown!!!!!!!!!")
-            entities.add(
-                IsinLeiEntity(
-                    isin = mappingData.isin,
-                    company = company,
-                    lei = mappingData.lei,
-                ),
-            )
+            if (company == null) {
+                logger.error("Attention: The LEI ${mappingData.lei} is unknown!!!!!!!!!")
+            } else {
+                entities.add(
+                    IsinLeiEntity(
+                        isin = mappingData.isin,
+                        company = company,
+                        lei = mappingData.lei,
+                    ),
+                )
+            }
         }
         return entities
     }
