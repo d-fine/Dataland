@@ -40,6 +40,7 @@ describeIf(
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
+      cy.intercept('POST', '**/api/companies/validation').as('companyValidation');
     });
 
     it('Creates, edits and deletes a portfolio', () => {
@@ -54,11 +55,13 @@ describeIf(
           cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
           cy.get('[data-test="company-identifiers-input"]:visible').type(invalidCompanyId);
           cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.wait('@companyValidation');
           cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
           cy.get('[data-test="company-identifiers-input"]:visible').clear();
           cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
           cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
           cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.wait('@companyValidation');
           cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,
