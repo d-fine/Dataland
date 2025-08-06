@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CompanyInformationComponent from '@/components/pages/CompanyInformation.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type CompanyInformation, type VsmeData } from '@clients/backend';
@@ -75,6 +74,7 @@ describe('Component tests for the company info sheet', function (): void {
   it('Check visibility of company information', function () {
     mockRequestsOnMounted();
     cy.spy(router, 'push').as('routerPush');
+    //@ts-ignore
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
       router,

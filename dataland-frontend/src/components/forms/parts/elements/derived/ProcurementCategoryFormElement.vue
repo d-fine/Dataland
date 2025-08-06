@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
-      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isActive" />
+      <ToggleSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isActive" />
       <h5 data-test="dataPointToggleTitle" class="m-2">
         {{ label }}
       </h5>
@@ -85,7 +85,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import { FormKit } from '@formkit/vue';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
@@ -106,7 +106,7 @@ export default defineComponent({
     },
   },
   components: {
-    InputSwitch,
+    ToggleSwitch,
     FormKit,
     UploadFormHeader,
     MultiSelectFormFieldBindData,
@@ -152,3 +152,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

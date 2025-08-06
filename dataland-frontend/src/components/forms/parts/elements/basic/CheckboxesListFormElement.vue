@@ -1,25 +1,15 @@
 <template>
-  <FormKit
-    type="checkbox"
-    :key="key"
-    :name="name"
-    v-model="checkboxValue"
-    :options="options"
-    :outer-class="{
-      'yes-no-radio': true,
-    }"
-    :inner-class="{
-      'formkit-inner': false,
-    }"
-    :input-class="{
-      'formkit-input': false,
-      'p-radiobutton': true,
-    }"
-    :id="fieldName + name"
-    :ignore="true"
-    :plugins="[disabledOnMoreThanOne]"
-    @input="handleCheckboxSelectionByUser($event)"
-  />
+  <div class="yes-no-checkboxes">
+    <div v-for="option in options" :key="option.value" class="yes-no-option">
+      <Checkbox
+        v-model="checkboxValue"
+        :inputId="`yes-no-${option.value}`"
+        :value="option.value"
+        @change="updateYesNoValue()"
+      />
+      <label :for="`yes-no-${option.value}`">{{ option.label }}</label>
+    </div>
+  </div>
   <FormKit
     type="text"
     :name="name"
@@ -36,29 +26,20 @@
 // @ts-nocheck
 import { defineComponent } from 'vue';
 import { FormKit } from '@formkit/vue';
-import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
+import Checkbox from 'primevue/checkbox';
 
 export default defineComponent({
   name: 'CheckboxesListFormElement',
-  components: { FormKit },
+  components: { FormKit, Checkbox },
   data() {
     return {
-      key: 0,
       shouldBeIgnoredByFormKit: false,
       currentValue: null as string | null,
       checkboxValue: [] as Array<string>,
+      yesNoValue: undefined as string | undefined,
     };
   },
   methods: {
-    disabledOnMoreThanOne,
-    /**
-     * Handles the input event in the checkboxes
-     * @param newCheckboxValue is the selected value in the checkbox that triggered this @input event
-     */
-    handleCheckboxSelectionByUser(newCheckboxValue: [string]) {
-      const newCheckboxValueAsString = newCheckboxValue[0];
-      this.updateCurrentValue(newCheckboxValueAsString);
-    },
     /**
      * Updates the currentValue when the checkboxes value has been changed
      * @param newCheckBoxValue is the new value in the checkbox
@@ -67,10 +48,17 @@ export default defineComponent({
       if (newCheckBoxValue && newCheckBoxValue !== '') {
         this.shouldBeIgnoredByFormKit = false;
         this.currentValue = newCheckBoxValue;
-        this.checkboxValue = [newCheckBoxValue];
       } else {
         this.shouldBeIgnoredByFormKit = !this.validation.includes('is:');
         this.currentValue = null;
+      }
+    },
+    /**
+     * updateCurrentValue
+     */
+    updateYesNoValue() {
+      if (!this.checkboxValue.length) {
+        this.yesNoValue = undefined;
       }
     },
   },
@@ -78,6 +66,22 @@ export default defineComponent({
     currentValue(newVal: string) {
       this.updateCurrentValue(newVal);
       this.$emit('updateCheckboxValue', this.currentValue);
+    },
+
+    checkboxValue(newArr: string[]) {
+      if (newArr.length > 1) {
+        const last = newArr[newArr.length - 1];
+        this.checkboxValue = [last];
+        this.yesNoValue = last;
+      } else if (newArr.length === 1) {
+        const [only] = newArr;
+        if (this.yesNoValue !== only) {
+          this.yesNoValue = only;
+        }
+      } else {
+        this.yesNoValue = undefined;
+      }
+      this.updateCurrentValue(this.yesNoValue);
     },
   },
   emits: ['updateCheckboxValue'],
@@ -101,10 +105,35 @@ export default defineComponent({
     validationMessages: {
       type: Object as () => { is: string },
     },
-    fieldName: {
-      type: String,
-      default: '',
-    },
   },
 });
 </script>
+<style scoped>
+.yes-no-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.yes-no-checkboxes {
+  display: flex;
+  gap: 7rem;
+  align-items: center;
+}
+
+.yes-no-checkboxes input[type='checkbox']:hover {
+  /* pointer cursor on the box itself */
+  cursor: pointer;
+}
+
+.yes-no-checkboxes label {
+  /* smooth transition if you like */
+  transition: background-color 0.2s ease;
+}
+
+.yes-no-checkboxes label:hover {
+  /* pointer + background on hover */
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>
