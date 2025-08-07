@@ -270,8 +270,8 @@ class CompanyQueryManager
                 companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)?.company?.let {
                     buildCompanyIdentifierValidationResult(identifier, it)
                 } ?: isinLeiRepository.findByIsin(identifier)?.let {
-                    val companyId = it.company?.companyId
-                    if (companyId != null && checkCompanyIdExists(companyId)) {
+                    val companyId = it.company.companyId
+                    if (checkCompanyIdExists(companyId)) {
                         buildCompanyIdentifierValidationResult(
                             identifier,
                             getCompanyByIdAndAssertExistence(companyId),
@@ -306,7 +306,7 @@ class CompanyQueryManager
                     .findCompanyIdentifierEntitiesByCompanyInAndIdentifierTypeIs(
                         storedCompanies.values,
                         IdentifierType.Lei,
-                    ).associateBy { it.company?.companyId }
+                    ).associateBy { it.company.companyId }
 
             return companyIds.associateWith { companyId ->
                 storedCompanies[companyId]?.let {
