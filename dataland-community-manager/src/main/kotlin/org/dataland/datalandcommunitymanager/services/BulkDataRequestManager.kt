@@ -167,7 +167,7 @@ class BulkDataRequestManager(
         while (iterator.hasNext()) {
             val dimension = iterator.next()
             val existingRequestId =
-                utils.getRequestIdForDataRequestWithNonFinalStatus(
+                utils.getRequestIdForDataRequest(
                     dimension.companyId,
                     dimension.dataType,
                     dimension.reportingPeriod,

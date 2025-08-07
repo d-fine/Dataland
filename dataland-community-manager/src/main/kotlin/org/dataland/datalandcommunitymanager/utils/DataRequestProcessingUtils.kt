@@ -169,7 +169,6 @@ class DataRequestProcessingUtils
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
-            requestStatus: RequestStatus,
         ): List<DataRequestEntity>? {
             val foundRequests =
                 dataRequestRepository
@@ -182,45 +181,40 @@ class DataRequestProcessingUtils
                     companyId,
                     framework,
                     reportingPeriod,
-                    requestStatus,
                 )
             }
             return foundRequests
         }
 
         /**
-         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
+         * Checks whether a request already exists on Dataland
          * @param companyId the company ID of the data request
          * @param framework the framework of the data request
          * @param reportingPeriod the reporting period of the data request
          * @return true if the data request already exists for the current user, false otherwise
          */
-        fun existsDataRequestWithNonFinalStatus(
+        fun existsDataRequest(
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
             userId: String,
         ): Boolean {
-            val openDataRequests =
+            val existingDataRequests =
                 findAlreadyExistingDataRequestForUser(
-                    userId, companyId, framework, reportingPeriod, RequestStatus.Open,
+                    userId, companyId, framework, reportingPeriod,
                 )
-            val answeredDataRequests =
-                findAlreadyExistingDataRequestForUser(
-                    userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
-                )
-            return !(openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty())
+            return !(existingDataRequests.isNullOrEmpty())
         }
 
         /**
-         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
+         * Checks whether a request already exists on Dataland
          * and returns the request id
          * @param companyId the company ID of the data request
          * @param framework the framework of the data request
          * @param reportingPeriod the reporting period of the data request
          * @return the requestId if a request in non-final status exists, else null
          */
-        fun getRequestIdForDataRequestWithNonFinalStatus(
+        fun getRequestIdForDataRequest(
             companyId: String,
             framework: DataTypeEnum,
             reportingPeriod: String,
@@ -228,11 +222,7 @@ class DataRequestProcessingUtils
             val foundRequests = mutableListOf<DataRequestEntity>()
             val userId = DatalandAuthentication.fromContext().userId
             findAlreadyExistingDataRequestForUser(
-                userId, companyId, framework, reportingPeriod, RequestStatus.Open,
-            )?.forEach { foundRequests.add(it) }
-
-            findAlreadyExistingDataRequestForUser(
-                userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
+                userId, companyId, framework, reportingPeriod,
             )?.forEach { foundRequests.add(it) }
 
             return foundRequests.firstOrNull()?.dataRequestId

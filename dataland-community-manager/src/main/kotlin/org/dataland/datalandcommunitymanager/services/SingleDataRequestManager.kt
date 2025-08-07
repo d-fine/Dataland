@@ -158,7 +158,7 @@ class SingleDataRequestManager
                     contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
-            } else if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
+            } else if (dataRequestProcessingUtils.existsDataRequest(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
