@@ -28,7 +28,7 @@ data class BulkDataRequestResponse(
         arraySchema =
             Schema(
                 implementation = ResourceResponse::class,
-                description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION,
+                description = CommunityManagerOpenApiDescriptionsAndExamples.ALREADY_EXISTING_REQUESTS_DESCRIPTION,
             ),
     )
     val alreadyExistingRequests: List<ResourceResponse>,
