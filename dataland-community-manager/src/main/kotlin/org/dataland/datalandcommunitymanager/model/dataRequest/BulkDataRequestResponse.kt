@@ -9,7 +9,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityMan
  * --- API model ---
  * Contains all relevant info that a user should receive as response when posting a bulk data request to Dataland.
  * @param acceptedDataRequests contains information about all accepted data requests
- * @param alreadyExistingRequests contains information about all already existing non-final data requests
+ * @param alreadyExistingRequests contains information about all already existing data requests
  * @param alreadyExistingDatasets contains information about all already existing data sets
  * @param rejectedCompanyIdentifiers contains all company identifiers that were rejected by Dataland
  */
