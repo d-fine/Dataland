@@ -275,8 +275,9 @@ class CompanyAlterationManager
             storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
         ) {
+            storedCompanyEntity.clearIdentifiers()
             companyIdentifierRepositoryInterface.deleteAllByCompany(storedCompanyEntity)
-            storedCompanyEntity.replaceIdentifiers(createNonIsinIdentifiers(storedCompanyEntity, identifierMap))
+            storedCompanyEntity.addIdentifiers(createNonIsinIdentifiers(storedCompanyEntity, identifierMap))
         }
 
         /**

@@ -44,7 +44,7 @@ data class StoredCompanyEntity(
     var sector: String?,
     @Column(name = "sector_code_wz")
     var sectorCodeWz: String?,
-    @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL], orphanRemoval = true)
     @JsonManagedReference
     var identifiers: MutableList<CompanyIdentifierEntity>,
     @Column(name = "parent_company_lei")
@@ -118,16 +118,5 @@ data class StoredCompanyEntity(
      */
     fun clearIdentifiers() {
         this.identifiers.clear()
-    }
-
-    /**
-     * Replaces the current identifiers with a new list of identifiers.
-     * This will clear existing identifiers and add the new ones.
-     *
-     * @param identifiers the new list of identifiers to set
-     */
-    fun replaceIdentifiers(identifiers: List<CompanyIdentifierEntity>) {
-        clearIdentifiers()
-        addIdentifiers(identifiers)
     }
 }
