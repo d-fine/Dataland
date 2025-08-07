@@ -6,12 +6,16 @@ import org.dataland.datalandapikeymanager.entities.ApiKeyEntity
 import org.dataland.datalandapikeymanager.repositories.ApiKeyRepository
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.apikey.ParsedApiKey
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest(classes = [DatalandApiKeyManager::class], properties = ["spring.profiles.active=nodb"])
 @Transactional
@@ -21,8 +25,11 @@ class ApiKeyManagerTest(
     @Autowired val testApiKeyRepository: ApiKeyRepository,
     @Autowired val testApiKeyUtility: ApiKeyUtility,
 ) {
+    @MockitoBean
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val keycloakUserId = "dummyUserId"
+
     private fun createApiKeyWithExpiry(expiryTime: Long?): String {
-        val keycloakUserId = "dummyUserId"
         val secret = testApiKeyUtility.generateApiKeySecret()
         val parsedApiKey = ParsedApiKey(keycloakUserId, secret)
         val encodedSecret = testApiKeyUtility.encodeSecret(secret)
@@ -40,6 +47,7 @@ class ApiKeyManagerTest(
             responseMessage,
             "The expired api key was unexpectedly validated.",
         )
+        Mockito.verify(mockKeycloakUserService, Mockito.times(1)).getUserRoleNames(keycloakUserId)
     }
 
     @Test
@@ -50,5 +58,6 @@ class ApiKeyManagerTest(
             "The API key you provided was successfully validated.",
             responseMessage,
         )
+        Mockito.verify(mockKeycloakUserService, Mockito.times(1)).getUserRoleNames(keycloakUserId)
     }
 }
