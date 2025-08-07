@@ -23,24 +23,11 @@
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
           icon="pi pi-bell"
-          label="Active Monitoring"
+          label="Activate Monitoring"
         />
       </div>
 
-      <Tag
-        v-if="isMonitored"
-        data-test="is-monitored-badge"
-        value="Portfolio actively monitored"
-        icon="pi pi-check-circle"
-        severity="success"
-      />
-      <Tag
-        v-else
-        data-test="is-not-monitored-badge"
-        value="Portfolio not actively monitored"
-        icon="pi pi-times-circle"
-        severity="danger"
-      />
+      <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
 
       <Button
         class="reset-button-align-right"
@@ -179,7 +166,7 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch, computed } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
@@ -268,6 +255,12 @@ const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
 const isPremiumUser = ref(false);
+
+const monitoredTagAttributes = computed(() => ({
+  value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
+  icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
+  severity: isMonitored.value ? 'success' : 'danger',
+}));
 
 onMounted(() => {
   void checkPremiumRole();
