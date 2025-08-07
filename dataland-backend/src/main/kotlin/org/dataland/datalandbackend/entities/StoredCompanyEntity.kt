@@ -99,4 +99,35 @@ data class StoredCompanyEntity(
         identifierMap.values.forEach { it.sort() }
         return identifierMap
     }
+
+    /**
+     * Adds a list of identifiers to the company entity.
+     * The identifiers will be linked to this company entity.
+     *
+     * @param identifiers the list of identifiers to add
+     */
+    fun addIdentifiers(identifiers: List<CompanyIdentifierEntity>) {
+        this.identifiers.addAll(identifiers)
+        for (identifierEntity in identifiers) {
+            identifierEntity.company = this
+        }
+    }
+
+    /**
+     * Clears all identifiers from the company entity.
+     */
+    fun clearIdentifiers() {
+        this.identifiers.clear()
+    }
+
+    /**
+     * Replaces the current identifiers with a new list of identifiers.
+     * This will clear existing identifiers and add the new ones.
+     *
+     * @param identifiers the new list of identifiers to set
+     */
+    fun replaceIdentifiers(identifiers: List<CompanyIdentifierEntity>) {
+        clearIdentifiers()
+        addIdentifiers(identifiers)
+    }
 }

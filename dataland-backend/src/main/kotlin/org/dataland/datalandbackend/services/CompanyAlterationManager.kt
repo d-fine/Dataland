@@ -44,11 +44,12 @@ class CompanyAlterationManager
         fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
             val companyId = IdUtils.generateUUID()
             logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
-            val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
+            val newCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)
 
-            val nonIsinIdentifiers = createAndAssociateNonIsinIdentifiers(savedCompany, companyInformation.identifiers)
+            val nonIsinIdentifiers = createNonIsinIdentifiers(newCompany, companyInformation.identifiers)
+            newCompany.addIdentifiers(nonIsinIdentifiers)
+            val savedCompany = storedCompanyRepository.save(newCompany)
             createAndAssociateIsinIdentifiers(savedCompany, companyInformation.identifiers)
-            savedCompany.identifiers = nonIsinIdentifiers.toMutableList()
 
             logger.info("Company ${companyInformation.companyName} with ID $companyId saved to database.")
             return savedCompany
@@ -170,7 +171,7 @@ class CompanyAlterationManager
                     parentCompanyLei = companyInformation.parentCompanyLei,
                 )
 
-            return storedCompanyRepository.save(newCompanyEntity)
+            return newCompanyEntity
         }
 
         /**
@@ -215,7 +216,7 @@ class CompanyAlterationManager
          * @param storedCompanyEntity the company entity to associate the identifiers with
          * @param identifierMap a map of identifier types to their values
          */
-        private fun createAndAssociateNonIsinIdentifiers(
+        private fun createNonIsinIdentifiers(
             storedCompanyEntity: StoredCompanyEntity,
             identifierMap: Map<IdentifierType, List<String>>,
         ): List<CompanyIdentifierEntity> {
@@ -233,9 +234,7 @@ class CompanyAlterationManager
                     }.distinct()
                     .filter { it.identifierType != IdentifierType.Isin }
 
-            return companyIdentifierRepositoryInterface
-                .saveAllAndFlush(newNonIsinIdentifiers)
-                .toList()
+            return newNonIsinIdentifiers
         }
 
         /**
@@ -277,8 +276,7 @@ class CompanyAlterationManager
             identifierMap: Map<IdentifierType, List<String>>,
         ) {
             companyIdentifierRepositoryInterface.deleteAllByCompany(storedCompanyEntity)
-            storedCompanyEntity.identifiers = mutableListOf()
-            storedCompanyEntity.identifiers.addAll(createAndAssociateNonIsinIdentifiers(storedCompanyEntity, identifierMap))
+            storedCompanyEntity.replaceIdentifiers(createNonIsinIdentifiers(storedCompanyEntity, identifierMap))
         }
 
         /**
@@ -322,8 +320,8 @@ class CompanyAlterationManager
                 storedCompanyEntity.identifiers.removeIf { it.identifierType == identifierType }
                 companyIdentifierRepositoryInterface.deleteAllByCompanyAndIdentifierType(storedCompanyEntity, identifierType)
             }
-            storedCompanyEntity.identifiers.addAll(
-                createAndAssociateNonIsinIdentifiers(storedCompanyEntity = storedCompanyEntity, identifierMap = identifierMap),
+            storedCompanyEntity.addIdentifiers(
+                createNonIsinIdentifiers(storedCompanyEntity = storedCompanyEntity, identifierMap = identifierMap),
             )
         }
     }
