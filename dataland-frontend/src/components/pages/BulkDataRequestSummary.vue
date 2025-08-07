@@ -120,8 +120,8 @@ const sections = [
     iconColor: 'info-color',
     items: props.bulkDataRequestResponse?.alreadyExistingRequests,
     linkText: 'VIEW REQUEST',
-    dataTestHeader: 'alreadyExistingNonFinalRequestsHeader',
-    dataTestContent: 'alreadyExistingNonFinalRequestsContent',
+    dataTestHeader: 'alreadyExistingRequestsHeader',
+    dataTestContent: 'alreadyExistingRequestsContent',
   },
   {
     title: 'REJECTED IDENTIFIERS',

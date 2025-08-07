@@ -136,7 +136,7 @@ describeIf(
       const bulkDataRequestResponse = interception.response.body as BulkDataRequestResponse;
       const acceptedDataRequests = bulkDataRequestResponse.acceptedDataRequests;
       const alreadyExistingDatasets = bulkDataRequestResponse.alreadyExistingDatasets;
-      const alreadyExistingNonFinalRequests = bulkDataRequestResponse.alreadyExistingRequests;
+      const alreadyExistingRequests = bulkDataRequestResponse.alreadyExistingRequests;
       const rejectedCompanyIdentifiers = bulkDataRequestResponse.rejectedCompanyIdentifiers;
 
       cy.get('[data-test="acceptedDataRequestsHeader"]').find('.p-badge').contains(acceptedDataRequests.length);
@@ -148,9 +148,9 @@ describeIf(
 
       cy.get('[data-test="acceptedDataRequestsContent"]').should('have.length', acceptedDataRequests.length);
       cy.get('[data-test="alreadyExistingDatasetsContent"]').should('have.length', alreadyExistingDatasets.length);
-      cy.get('[data-test="alreadyExistingNonFinalRequestsContent"]').should(
+      cy.get('[data-test="alreadyExistingRequestsContent"]').should(
         'have.length',
-        alreadyExistingNonFinalRequests.length
+        alreadyExistingRequests.length
       );
       cy.get('[data-test="rejectedCompanyIdentifiersContent"]').should('contain.text', '');
       cy.get('[data-test="rejectedCompanyIdentifiersContent"]').within(($div) => {
