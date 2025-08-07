@@ -148,10 +148,7 @@ describeIf(
 
       cy.get('[data-test="acceptedDataRequestsContent"]').should('have.length', acceptedDataRequests.length);
       cy.get('[data-test="alreadyExistingDatasetsContent"]').should('have.length', alreadyExistingDatasets.length);
-      cy.get('[data-test="alreadyExistingRequestsContent"]').should(
-        'have.length',
-        alreadyExistingRequests.length
-      );
+      cy.get('[data-test="alreadyExistingRequestsContent"]').should('have.length', alreadyExistingRequests.length);
       cy.get('[data-test="rejectedCompanyIdentifiersContent"]').should('contain.text', '');
       cy.get('[data-test="rejectedCompanyIdentifiersContent"]').within(($div) => {
         const identifiers: string[] = $div
