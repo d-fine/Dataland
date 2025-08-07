@@ -1803,7 +1803,7 @@
           },
           "alreadyExistingRequests": {
             "type": "array",
-            "description": "Contains information about all already existing data requests that are \"Open\" or \"Answered\".",
+            "description": "Contains information about all already existing data requests.",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
