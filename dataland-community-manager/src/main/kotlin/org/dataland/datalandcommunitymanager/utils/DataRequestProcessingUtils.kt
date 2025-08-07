@@ -175,9 +175,7 @@ class DataRequestProcessingUtils
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                         userId, companyId, framework.value, reportingPeriod,
-                    )?.filter {
-                        it.requestStatus == requestStatus
-                    }
+                    )
             if (!foundRequests.isNullOrEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                     userId,
