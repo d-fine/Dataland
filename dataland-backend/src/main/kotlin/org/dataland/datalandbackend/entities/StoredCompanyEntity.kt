@@ -13,6 +13,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
@@ -44,7 +45,7 @@ data class StoredCompanyEntity(
     var sector: String?,
     @Column(name = "sector_code_wz")
     var sectorCodeWz: String?,
-    @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = [CascadeType.ALL])
     @JsonManagedReference
     var identifiers: MutableList<CompanyIdentifierEntity>,
     @Column(name = "parent_company_lei")
@@ -116,6 +117,13 @@ data class StoredCompanyEntity(
     /**
      * Clears all identifiers from the company entity.
      */
+    fun removeIdentifiers(identifiers: List<CompanyIdentifierEntity>) {
+        this.identifiers.removeAll(identifiers)
+    }
+
+    /**
+     * Clears all identifiers from the company entity.
+     */
     fun clearIdentifiers() {
         this.identifiers.clear()
     }
@@ -130,4 +138,83 @@ data class StoredCompanyEntity(
         clearIdentifiers()
         addIdentifiers(identifiers)
     }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the contant of the applied [CompanyInformationPatch].
+     * @param patch the [CompanyInformationPatch] containing the new values to apply.
+     */
+    fun applyPatch(
+        storedCompanyEntity: StoredCompanyEntity,
+        patch: CompanyInformationPatch,
+    ) {
+        patch.companyName?.let { storedCompanyEntity.companyName = it }
+        patch.companyAlternativeNames?.let { storedCompanyEntity.companyAlternativeNames = it.toMutableList() }
+        patch.companyContactDetails?.let { storedCompanyEntity.companyContactDetails = it.toMutableList() }
+        patch.companyLegalForm?.let { storedCompanyEntity.companyLegalForm = it }
+        patch.headquarters?.let { storedCompanyEntity.headquarters = it }
+        patch.headquartersPostalCode?.let { storedCompanyEntity.headquartersPostalCode = it }
+        patch.sector?.let { storedCompanyEntity.sector = it }
+        patch.sectorCodeWz?.let { storedCompanyEntity.sectorCodeWz = it }
+        patch.countryCode?.let { storedCompanyEntity.countryCode = it }
+        patch.website?.let { storedCompanyEntity.website = it }
+        patch.isTeaserCompany?.let { storedCompanyEntity.isTeaserCompany = it }
+        patch.parentCompanyLei?.let { storedCompanyEntity.parentCompanyLei = it }
+
+        val patchedIdentifiers = patch.identifiers ?: emptyMap()
+        this.removeIdentifiers(findNonIsinIdentifiersToRemove(patchedIdentifiers))
+        this.addIdentifiers(
+            findNonIsinIdentifiers(patchedIdentifiers),
+        )
+    }
+
+    /**
+     * Updates the non-ISIN identifiers of the given [storedCompanyEntity] based on the provided [identifierMap] map.
+     * Existing identifiers of each type are removed before adding the new ones. The in memory entity is updated as well.
+     *
+     * @param storedCompanyEntity the company entity whose identifiers are to be updated
+     * @param identifierMap a map of identifier types to their new values
+     */
+    private fun findNonIsinIdentifiersToRemove(identifierMap: Map<IdentifierType, List<String>>): List<CompanyIdentifierEntity> {
+        val nonIsinIdentifiersToRemove = mutableListOf<CompanyIdentifierEntity>()
+        identifierMap.forEach { identifierType, _ ->
+            if (identifierType == IdentifierType.Isin) return@forEach
+            nonIsinIdentifiersToRemove.addAll(this.identifiers.filter { it.identifierType == identifierType })
+        }
+        return nonIsinIdentifiersToRemove
+    }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the content of the applied [CompanyInformation].
+     * @param put the [CompanyInformation] containing the new values to apply.
+     */
+    fun applyPut(put: CompanyInformation) {
+        val newNonIsinIdentifiers =
+            findNonIsinIdentifiers(put.identifiers)
+
+        this.companyName = put.companyName
+        this.companyAlternativeNames = put.companyAlternativeNames?.toMutableList()
+        this.companyContactDetails = put.companyContactDetails?.toMutableList()
+        this.companyLegalForm = put.companyLegalForm
+        this.headquarters = put.headquarters
+        this.headquartersPostalCode = put.headquartersPostalCode
+        this.sector = put.sector
+        this.sectorCodeWz = put.sectorCodeWz
+        this.countryCode = put.countryCode
+        this.website = put.website
+        this.isTeaserCompany = put.isTeaserCompany ?: false
+        this.parentCompanyLei = put.parentCompanyLei
+        this.replaceIdentifiers(newNonIsinIdentifiers)
+    }
+
+    private fun findNonIsinIdentifiers(identifierMap: Map<IdentifierType, List<String>>): List<CompanyIdentifierEntity> =
+        identifierMap
+            .flatMap { identifierPair ->
+                identifierPair.value.map {
+                    CompanyIdentifierEntity(
+                        identifierType = identifierPair.key, identifierValue = it,
+                        company = this, isNew = true,
+                    )
+                }
+            }.distinct()
+            .filter { it.identifierType != IdentifierType.Isin }
 }
