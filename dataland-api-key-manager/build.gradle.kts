@@ -45,6 +45,7 @@ dependencies {
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
+    implementation(libs.flyway.core)
 }
 
 openApi {
