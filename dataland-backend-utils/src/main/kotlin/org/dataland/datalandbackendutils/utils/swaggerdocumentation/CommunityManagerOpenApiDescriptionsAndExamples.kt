@@ -49,8 +49,8 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 
-    const val ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION =
-        "Contains information about all already existing data requests that are \"Open\" or \"Answered\"."
+    const val ALREADY_EXISTING_REQUESTS_DESCRIPTION =
+        "Contains information about all already existing data requests regardless of their status."
 
     const val ALREADY_EXISTING_DATASETS_DESCRIPTION = "Contains information about all already existing data sets"
 
