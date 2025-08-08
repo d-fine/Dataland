@@ -44,7 +44,7 @@ fun checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(
 ) {
     Assertions.assertEquals(
         expectedNumberOfAlreadyExistingRequests,
-        requestResponse.alreadyExistingNonFinalRequests.size,
+        requestResponse.alreadyExistingRequests.size,
     )
 }
 
