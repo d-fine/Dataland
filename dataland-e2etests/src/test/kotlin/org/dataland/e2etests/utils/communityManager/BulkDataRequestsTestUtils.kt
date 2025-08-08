@@ -38,12 +38,12 @@ fun checkThatNumberOfRejectedIdentifiersIsAsExpected(
     checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
 }
 
-fun checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(
+fun checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(
     requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAlreadyExistingNonFinalRequests: Int,
+    expectedNumberOfAlreadyExistingRequests: Int,
 ) {
     Assertions.assertEquals(
-        expectedNumberOfAlreadyExistingNonFinalRequests,
+        expectedNumberOfAlreadyExistingRequests,
         requestResponse.alreadyExistingNonFinalRequests.size,
     )
 }

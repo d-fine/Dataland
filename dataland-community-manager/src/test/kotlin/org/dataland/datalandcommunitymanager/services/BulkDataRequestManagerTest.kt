@@ -103,13 +103,13 @@ class BulkDataRequestManagerTest {
 
     private fun assertResponse(
         expectedAccepted: List<ResourceResponse>? = emptyList(),
-        expectedAlreadyExistingNonFinal: List<ResourceResponse>? = emptyList(),
+        expectedAlreadyExistingRequest: List<ResourceResponse>? = emptyList(),
         expectedAlreadyExistingDatasets: List<ResourceResponse>? = emptyList(),
         expectedRejected: List<String>? = emptyList(),
     ) {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAccepted, response.acceptedDataRequests)
-        assertEquals(expectedAlreadyExistingNonFinal, response.alreadyExistingNonFinalRequests)
+        assertEquals(expectedAlreadyExistingRequest, response.alreadyExistingRequests)
         assertEquals(expectedAlreadyExistingDatasets, response.alreadyExistingDatasets)
         assertEquals(expectedRejected, response.rejectedCompanyIdentifiers)
     }
@@ -179,7 +179,7 @@ class BulkDataRequestManagerTest {
         whenever(mockEntityManager.createNativeQuery(any(), any<Class<DataRequestEntity>>()))
             .thenReturn(mockQuery)
 
-        assertResponse(expectedAlreadyExistingNonFinal = expectedAlreadyExistingDataRequest)
+        assertResponse(expectedAlreadyExistingRequest = expectedAlreadyExistingDataRequest)
     }
 
     @Test
