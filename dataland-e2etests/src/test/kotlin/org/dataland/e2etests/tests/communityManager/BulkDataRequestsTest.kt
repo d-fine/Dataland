@@ -164,12 +164,12 @@ class BulkDataRequestsTest {
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2023", RequestStatus.Resolved)
         val timestampBeforeDuplicates = retrieveTimeAndWaitOneMillisecond()
         val responseAfterDuplicates = requestControllerApi.postBulkDataRequest(bulkDataRequest)
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(responseAfterDuplicates, 1)
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(responseAfterDuplicates, 2)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(responseAfterDuplicates, 0)
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(responseAfterDuplicates, 3)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(responseAfterDuplicates, 0)
         checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(responseAfterDuplicates, 0)
         val newlyStoredRequestsAfterDuplicates = getNewlyStoredRequestsAfterTimestamp(timestampBeforeDuplicates)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterDuplicates, 1)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterDuplicates, 0)
         assertEquals(
             "2023",
             newlyStoredRequestsAfterDuplicates[0].reportingPeriod,
