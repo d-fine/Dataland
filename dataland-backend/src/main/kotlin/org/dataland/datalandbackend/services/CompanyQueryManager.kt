@@ -158,7 +158,7 @@ class CompanyQueryManager
 
         private fun fetchAllStoredCompanyFields(storedCompanies: StoredCompanyEntity): StoredCompanyEntity =
             storedCompanies
-                .let { companyRepository.fetchNonIsinIdentifiers(it) ?: it }
+                .let { companyRepository.fetchNonIsinIdentifiers(it) }
                 .let { fetchIsinIdentifiers(it) }
                 .let { companyRepository.fetchAlternativeNames(it) }
                 .let { companyRepository.fetchCompanyContactDetails(it) }

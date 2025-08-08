@@ -151,7 +151,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "LEFT JOIN FETCH company.identifiers identifier " +
             "WHERE company = :storedCompany AND (identifier.identifierType != 'Isin' OR identifier IS NULL)",
     )
-    fun fetchNonIsinIdentifiers(storedCompany: StoredCompanyEntity): StoredCompanyEntity?
+    fun fetchNonIsinIdentifiers(storedCompany: StoredCompanyEntity): StoredCompanyEntity
 
     /**
      * Used for pre-fetching the alternative company names field of a single stored company
