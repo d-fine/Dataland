@@ -15,7 +15,7 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     /**
      * Retrieve all portfolios for userId
      */
-    fun getAllByUserId(userId: String): List<PortfolioEntity>
+    fun getAllByUserIdOrderByCreationTimestampAsc(userId: String): List<PortfolioEntity>
 
     /**
      * Get specific portfolio by portfolioId
