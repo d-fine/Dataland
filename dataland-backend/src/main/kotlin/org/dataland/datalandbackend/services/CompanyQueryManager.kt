@@ -182,7 +182,7 @@ class CompanyQueryManager
          * @param companyId
          * @return the StoredCompany object of the retrieved company
          */
-        @Transactional
+        @Transactional(readOnly = true)
         fun getCompanyApiModelById(companyId: String): StoredCompany {
             val searchResult = getCompanyByIdAndAssertExistence(companyId)
             return fetchAllStoredCompanyFields(searchResult).toApiModel()
