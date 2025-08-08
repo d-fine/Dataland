@@ -37,7 +37,7 @@
           <div
             v-if="
               section.items === props.bulkDataRequestResponse?.acceptedDataRequests ||
-              section.items === props.bulkDataRequestResponse?.alreadyExistingNonFinalRequests ||
+              section.items === props.bulkDataRequestResponse?.alreadyExistingRequests ||
               section.items === props.bulkDataRequestResponse?.alreadyExistingDatasets
             "
           >
@@ -118,10 +118,10 @@ const sections = [
     title: 'SKIPPED REQUESTS - REQUEST ALREADY EXISTS',
     icon: 'info',
     iconColor: 'info-color',
-    items: props.bulkDataRequestResponse?.alreadyExistingNonFinalRequests,
+    items: props.bulkDataRequestResponse?.alreadyExistingRequests,
     linkText: 'VIEW REQUEST',
-    dataTestHeader: 'alreadyExistingNonFinalRequestsHeader',
-    dataTestContent: 'alreadyExistingNonFinalRequestsContent',
+    dataTestHeader: 'alreadyExistingRequestsHeader',
+    dataTestContent: 'alreadyExistingRequestsContent',
   },
   {
     title: 'REJECTED IDENTIFIERS',

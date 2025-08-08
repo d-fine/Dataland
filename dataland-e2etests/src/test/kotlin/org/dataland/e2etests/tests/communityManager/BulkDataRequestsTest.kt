@@ -11,7 +11,7 @@ import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsEx
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAcceptedDataRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected
-import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected
+import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.generateCompaniesWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.communityManager.generateMapWithOneRandomValueForEachIdentifierType
@@ -24,8 +24,8 @@ import org.dataland.e2etests.utils.communityManager.getUniqueDatalandCompanyIdFo
 import org.dataland.e2etests.utils.communityManager.retrieveDataRequestIdForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.communityManager.sendBulkRequestWithEmptyInputAndCheckErrorMessage
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -57,7 +57,7 @@ class BulkDataRequestsTest {
             response,
             identifiers.size * dataTypes.size * reportingPeriods.size,
         )
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
         checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
@@ -93,7 +93,7 @@ class BulkDataRequestsTest {
                 ),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, validIdentifiers.size)
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
         checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, invalidIdentifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
@@ -126,7 +126,7 @@ class BulkDataRequestsTest {
                 ),
             )
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
         checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 1)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
@@ -140,7 +140,7 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post a bulk data request with and check that duplicates are only stored if previous in final status`() {
+    fun `post a bulk data request and check that duplicates are only stored if previous is in final status`() {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = leiForCompany, isins = listOf(isinForCompany))
@@ -155,25 +155,25 @@ class BulkDataRequestsTest {
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(bulkDataRequest)
         checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, reportingPeriods.size)
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
         checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, reportingPeriods.size)
+        retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2021", RequestStatus.NonSourceable)
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2022", RequestStatus.Answered)
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2023", RequestStatus.Resolved)
         val timestampBeforeDuplicates = retrieveTimeAndWaitOneMillisecond()
         val responseAfterDuplicates = requestControllerApi.postBulkDataRequest(bulkDataRequest)
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(responseAfterDuplicates, 1)
-        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(responseAfterDuplicates, 2)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(responseAfterDuplicates, 0)
+        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(responseAfterDuplicates, 3)
         checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(responseAfterDuplicates, 0)
         checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(responseAfterDuplicates, 0)
         val newlyStoredRequestsAfterDuplicates = getNewlyStoredRequestsAfterTimestamp(timestampBeforeDuplicates)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterDuplicates, 1)
-        assertEquals(
-            "2023",
-            newlyStoredRequestsAfterDuplicates[0].reportingPeriod,
-            "The reporting period of the one newly stored request is not as expected.",
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterDuplicates, 0)
+        assertTrue(
+            newlyStoredRequestsAfterDuplicates.isEmpty(),
+            "No new requests should be stored when duplicates are found.",
         )
     }
 
