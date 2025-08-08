@@ -130,7 +130,7 @@ describe('Check the portfolio details view', function (): void {
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
         cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'Activate Monitoring');
-        cy.get('[data-test="is-not-monitored-badge"]')
+        cy.get('[data-test="is-monitored-badge"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio not actively monitored');
         cy.get('[data-test="is-monitored-badge"]').should('not.exist');
