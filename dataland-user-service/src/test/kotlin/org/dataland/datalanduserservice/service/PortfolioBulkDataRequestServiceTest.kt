@@ -19,7 +19,7 @@ import org.mockito.kotlin.whenever
 import java.time.Instant
 
 class PortfolioBulkDataRequestServiceTest {
-    private val mockPublisher = mock<MessageQueuePublisher>()
+    private val mockPublisher = mock<MessageQueuePublisherService>()
     private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
     private lateinit var portfolioBulkDataRequestService: PortfolioBulkDataRequestService
 

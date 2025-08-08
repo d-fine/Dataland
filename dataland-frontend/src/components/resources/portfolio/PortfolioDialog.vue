@@ -35,6 +35,7 @@
           fluid
         />
       </div>
+      <PrimeButton type="button" label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
     </div>
     <div>
       <p class="header-styling">Company identifiers in portfolio</p>
@@ -88,6 +89,8 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 
@@ -125,6 +128,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+const dialog = useDialog();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -181,6 +185,19 @@ async function addCompanies(): Promise<void> {
   } finally {
     isCompaniesLoading.value = false;
   }
+}
+
+/**
+ * Function to open the help dialog
+ */
+function openHelpDialog(): void {
+  dialog.open(GetHelpDialog, {
+    props: {
+      header: 'Request of Support',
+      modal: true,
+      style: { width: '22rem' },
+    },
+  });
 }
 
 /**
