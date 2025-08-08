@@ -222,6 +222,7 @@ jobs:
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_formatci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
@@ -243,6 +244,7 @@ jobs:
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
@@ -329,6 +331,7 @@ jobs:
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
