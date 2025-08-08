@@ -119,7 +119,7 @@ describe('Check the portfolio details view', function (): void {
       });
     });
   });
-  it('Check Monitoring Button and Not Monitored Badge for premium user', function (): void {
+  it('Check Monitoring Button and Not Monitored Tag for premium user', function (): void {
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
     // @ts-ignore
     cy.mountWithPlugins(PortfolioDetails, {
@@ -130,14 +130,14 @@ describe('Check the portfolio details view', function (): void {
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
         cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'Activate Monitoring');
-        cy.get('[data-test="is-monitored-badge"]')
+        cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio not actively monitored');
-        cy.get('[data-test="is-monitored-badge"]').should('not.exist');
+        cy.get('[data-test="is-monitored-tag"]').should('not.exist');
       });
     });
   });
-  it('Check Monitored Badge for premium user', function (): void {
+  it('Check Monitored Tag for premium user', function (): void {
     cy.intercept('**/users/portfolios/*/enriched-portfolio', {
       ...portfolioFixture,
       isMonitored: true,
