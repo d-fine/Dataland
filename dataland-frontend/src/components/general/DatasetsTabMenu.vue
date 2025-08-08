@@ -1,5 +1,5 @@
 <template>
-  <Tabs :value="initialTabIndex">
+  <Tabs :value="initialTabIndex" @update:value="onTabChange" :key="currentTabIndex">
     <TabList>
       <Tab
         v-for="tab in tabs"
@@ -16,7 +16,7 @@
           },
         }"
       >
-        <router-link :to="tab.route" class="tab-as-router-link">{{ tab.label }}</router-link>
+        {{ tab.label }}
       </Tab>
     </TabList>
     <TabPanels>
@@ -26,7 +26,7 @@
         :value="tabs.indexOf(tab)"
         :disabled="!(tabs.indexOf(tab) == currentTabIndex || (tab.isVisible ?? true))"
       >
-        <slot v-if="tabs.indexOf(tab) == initialTabIndex" />
+        <slot v-if="tabs.indexOf(tab) == currentTabIndex" />
       </TabPanel>
     </TabPanels>
   </Tabs>
@@ -43,6 +43,9 @@ import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
 import { inject, onMounted, ref, type Ref, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 interface TabInfo {
   label: string;
@@ -50,9 +53,7 @@ interface TabInfo {
   isVisible: boolean;
 }
 
-const { initialTabIndex } = defineProps<{
-  initialTabIndex: number;
-}>();
+const initialTabIndex = ref<number>(0);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -87,6 +88,12 @@ function setVisibilityForTabWithQualityAssurance(): void {
       tabs.value[3].isVisible = hasUserReviewerRights;
     })
     .catch((error) => console.log(error));
+}
+
+function onTabChange(newIndex: number | string) {
+  currentTabIndex.value = newIndex as number;
+  const route = tabs.value[newIndex as number].route;
+  void router.push(route);
 }
 
 /**
