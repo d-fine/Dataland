@@ -133,7 +133,6 @@ describe('Check the portfolio details view', function (): void {
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio not actively monitored');
-        cy.get('[data-test="is-monitored-tag"]').should('not.exist');
       });
     });
   });
