@@ -2,82 +2,104 @@
   <TheHeader v-if="!useMobileView" />
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <div class="card-container">
-      <div class="left-pane">
-        <Card>
-          <template #title>Latest Documents</template>
-          <template #content>
-            <div class="card__separator" />
-            <div
-              v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum"
-              :key="category"
-              :data-test="category"
-            >
-              <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
-              <div v-if="getDocumentData(category).length === 0">-</div>
-              <div v-else>
-                <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                  <DocumentDownloadLink
-                    :document-download-info="{
-                      downloadName: documentNameOrId(document),
-                      fileReference: document.documentId,
-                    }"
-                    :label="documentNameOrId(document)"
-                    :suffix="documentPublicationDateOrEmpty(document)"
-                    show-icon
+    <Tabs v-model:value="activeTab">
+      <TabList
+        v-if="showTabs"
+        :pt="{
+          tabList: {
+            style: 'display: flex; justify-content: center;',
+          },
+        }"
+      >
+        <Tab value="datasets">Datasets</Tab>
+        <Tab value="users">Users</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="datasets">
+          <div class="card-container">
+            <div class="left-pane">
+              <Card>
+                <template #title>Latest Documents</template>
+                <template #content>
+                  <div class="card__separator" />
+                  <div
+                    v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum"
+                    :key="category"
+                    :data-test="category"
+                  >
+                    <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
+                    <div v-if="getDocumentData(category).length === 0">-</div>
+                    <div v-else>
+                      <div v-for="document in getDocumentData(category)" :key="document.documentId">
+                        <DocumentDownloadLink
+                          :document-download-info="{
+                            downloadName: documentNameOrId(document),
+                            fileReference: document.documentId,
+                          }"
+                          :label="documentNameOrId(document)"
+                          :suffix="documentPublicationDateOrEmpty(document)"
+                          show-icon
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <template #footer>
+                  <PrimeButton
+                    label="VIEW ALL DOCUMENTS"
+                    variant="text"
+                    icon="pi pi-chevron-right"
+                    icon-pos="right"
+                    @click="routeToDocuments"
                   />
-                </div>
+                </template>
+              </Card>
+            </div>
+
+            <div class="right-pane">
+              <div v-if="isClaimPanelVisible" class="claim-pane">
+                <ClaimOwnershipPanel :company-id="companyId" />
+              </div>
+              <div class="frameworks-grid" data-test="summaryPanels">
+                <FrameworkSummaryPanel
+                  v-for="framework of frameworksToDisplay"
+                  :key="framework"
+                  :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+                  :company-id="companyId"
+                  :framework="framework"
+                  :number-of-provided-reporting-periods="
+                    aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+                  "
+                  :data-test="`${framework}-summary-panel`"
+                />
+              </div>
+              <div
+                class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
+                @click="toggleShowAll"
+                style="margin-left: auto"
+              >
+                <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
+                  {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
+                </span>
+                <i class="material-icons text-primary">
+                  {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
+                </i>
               </div>
             </div>
-          </template>
-          <template #footer>
-            <PrimeButton
-              label="VIEW ALL DOCUMENTS"
-              variant="text"
-              icon="pi pi-chevron-right"
-              icon-pos="right"
-              @click="routeToDocuments"
-            />
-          </template>
-        </Card>
-      </div>
-
-      <div class="right-pane">
-        <div v-if="isClaimPanelVisible" class="claim-pane">
-          <ClaimOwnershipPanel :company-id="companyId" />
-        </div>
-        <div class="frameworks-grid" data-test="summaryPanels">
-          <FrameworkSummaryPanel
-            v-for="framework of frameworksToDisplay"
-            :key="framework"
-            :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
-            :company-id="companyId"
-            :framework="framework"
-            :number-of-provided-reporting-periods="
-              aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
-            "
-            :data-test="`${framework}-summary-panel`"
-          />
-        </div>
-        <div
-          class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
-          @click="toggleShowAll"
-          style="margin-left: auto"
-        >
-          <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
-            {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
-          </span>
-          <i class="material-icons text-primary">
-            {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
-          </i>
-        </div>
-      </div>
-    </div>
+          </div>
+        </TabPanel>
+        <TabPanel v-if="showTabs" value="users">
+          <CompanyRolesCard v-for="role in roles" :key="role" :companyId="companyId" :role="role" />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   </TheContent>
   <TheFooter />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, reactive, computed, watch, onMounted, inject, unref } from 'vue';
+import type { Ref } from 'vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -89,201 +111,173 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { isFrameworkPublic } from '@/utils/Frameworks';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { documentNameOrId, documentPublicationDateOrEmpty, getPluralCategory } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
-import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
+import type { AggregatedFrameworkDataSummary, DataTypeEnum } from '@clients/backend';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
-import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Card from 'primevue/card';
-import { defineComponent, inject } from 'vue';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
+import { useRouter } from 'vue-router';
+import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
 
-export default defineComponent({
-  name: 'CompanyCockpitPage',
+const props = defineProps<{ companyId: string }>();
 
-  components: {
-    DocumentDownloadLink,
-    ClaimOwnershipPanel,
-    CompanyInfoSheet,
-    FrameworkSummaryPanel,
-    PrimeButton,
-    TheContent,
-    TheHeader,
-    TheFooter,
-    Card,
-  },
+// Injected dependencies
+import type Keycloak from 'keycloak-js';
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+const authenticated = inject<boolean>('authenticated')!;
+const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
+  'companyRoleAssignmentsExtended',
+  ref([])
+);
 
-  props: {
-    companyId: {
-      type: String,
-      required: true,
-    },
-  },
+// State
+const router = useRouter();
+const activeTab = ref<'datasets' | 'users'>('datasets');
+const showTabs = ref(true);
+const aggregatedFrameworkDataSummary = ref<{ [key in DataTypeEnum]: AggregatedFrameworkDataSummary }>();
+const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
+const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
+const isUserCompanyOwnerOrUploader = ref(false);
+const isUserKeycloakUploader = ref(false);
+const isUserCompanyMember = ref(false);
+const isUserDatalandAdmin = ref(false);
+const isAnyCompanyOwnerExisting = ref(false);
+const showAllFrameworks = ref(false);
+const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
+Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
+  latestDocuments[`latest${category}`] = [];
+});
+const chunkSize = 3;
 
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      authenticated: inject<boolean>('authenticated'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'),
-      injectedUseMobileView: inject<boolean>('useMobileView'),
-    };
-  },
+const roles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.CompanyOwner, CompanyRole.DataUploader];
 
-  data() {
-    const latestDocuments: Record<string, DocumentMetaInfoResponse[]> = {};
-    Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach((key) => {
-      latestDocuments[`latest${key}`] = [];
-    });
-    return {
-      aggregatedFrameworkDataSummary: undefined as
-        | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
-        | undefined,
-      FRAMEWORKS_ALL: ALL_FRAMEWORKS_IN_DISPLAYED_ORDER,
-      FRAMEWORKS_MAIN: MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
-      DocumentMetaInfoDocumentCategoryEnum,
-      isUserCompanyOwnerOrUploader: false,
-      isUserKeycloakUploader: false,
-      isAnyCompanyOwnerExisting: false,
-      hasUserAnyRoleInCompany: false,
-      showAllFrameworks: false,
-      latestDocuments,
-      chunkSize: 3,
-    };
-  },
+// Computed
+const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
+const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
+const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
 
-  computed: {
-    useMobileView() {
-      return this.injectedUseMobileView;
-    },
-    isClaimPanelVisible() {
-      return !this.isAnyCompanyOwnerExisting && isCompanyIdValid(this.companyId);
-    },
-    frameworksToDisplay() {
-      return this.showAllFrameworks ? this.FRAMEWORKS_ALL : this.FRAMEWORKS_MAIN;
-    },
-  },
+// Helpers
+/**
+ * Returns the document data array for a given category.
+ * @param category - The document category key.
+ * @returns An array of DocumentMetaInfoResponse objects.
+ */
+const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategoryEnum): DocumentMetaInfoResponse[] => {
+  return latestDocuments[`latest${category}`] || [];
+};
 
-  watch: {
-    async companyId(newCompanyId, oldCompanyId) {
-      if (newCompanyId !== oldCompanyId) {
-        try {
-          await this.getAggregatedFrameworkDataSummary();
-          await this.getMetaInfoForLatestDocuments();
-          await this.setUserRights();
-        } catch (error) {
-          console.error('Error fetching data for new company:', error);
-        }
-      }
-    },
-    async authenticated() {
-      await this.setUserRights();
-    },
-  },
+/**
+ * Fetches the aggregated framework data summary for the current company.
+ * Updates the aggregatedFrameworkDataSummary ref with the response.
+ */
+async function getAggregatedFrameworkDataSummary(): Promise<void> {
+  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.companyDataController;
+  const response = await api.getAggregatedFrameworkDataSummary(props.companyId);
+  aggregatedFrameworkDataSummary.value = response.data;
+}
 
-  created() {
-    void this.setUserRights();
-  },
+/**
+ * Fetches the latest document meta-information for each document category.
+ * Populates the latestDocuments reactive object with the results.
+ */
+async function getMetaInfoForLatestDocuments(): Promise<void> {
+  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.documentController;
+  for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
+    const result = await api.searchForDocumentMetaInformation(props.companyId, new Set([value]), undefined, chunkSize);
+    latestDocuments[`latest${value}`] = result.data;
+  }
+}
 
-  mounted() {
-    void this.getAggregatedFrameworkDataSummary();
-    void this.getMetaInfoForLatestDocuments();
-  },
+/**
+ * Navigates to the document overview page for the current company.
+ */
+function routeToDocuments(): void {
+  void router.push({ path: `/companies/${props.companyId}/documents` });
+}
 
-  methods: {
-    documentPublicationDateOrEmpty,
-    documentNameOrId,
-    getPluralCategory,
+/**
+ * Determines if the user is allowed to upload for a given framework.
+ * @param framework - The framework data type.
+ * @returns True if the user can upload, false otherwise.
+ */
+function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
+  return isUserCompanyOwnerOrUploader.value || (isFrameworkPublic(framework) && isUserKeycloakUploader.value);
+}
 
-    /**
-     * Retrieves the aggregated framework data summary
-     */
-    async getAggregatedFrameworkDataSummary(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
-      this.aggregatedFrameworkDataSummary = (
-        await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
-      ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
-    },
+/**
+ * Sets user rights and roles for the current company.
+ * Updates isAnyCompanyOwnerExisting, isUserCompanyOwnerOrUploader, and isUserKeycloakUploader.
+ */
+async function setUserRights(): Promise<void> {
+  isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
+  const assignments = unref(companyRoleAssignmentsRef) ?? [];
+  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
+  isUserCompanyOwnerOrUploader.value =
+    roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+  isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
+  isUserCompanyMember.value = roles.length > 0;
+  isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  showTabs.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
+}
 
-    /**
-     * Retrieves the latest documents metadata
-     */
-    async getMetaInfoForLatestDocuments() {
-      try {
-        const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-          .documentController;
-        for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
-          const categorySet = new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>([value]);
-          const metaInformation = await documentControllerApi.searchForDocumentMetaInformation(
-            this.companyId,
-            categorySet,
-            undefined,
-            this.chunkSize
-          );
-          this.latestDocuments[`latest${value}`] = metaInformation.data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
+/**
+ * Toggles the display of all frameworks.
+ */
+function toggleShowAll(): void {
+  showAllFrameworks.value = !showAllFrameworks.value;
+}
 
-    /**
-     * get document categories
-     */
-    getDocumentData(category: keyof typeof DocumentMetaInfoDocumentCategoryEnum) {
-      const key = `latest${category}`;
-      return this.latestDocuments[key] || [];
-    },
+// Watchers
+watch(
+  () => props.companyId,
+  async (newId, oldId) => {
+    if (newId !== oldId) {
+      await getAggregatedFrameworkDataSummary();
+      await getMetaInfoForLatestDocuments();
+      await setUserRights();
+    }
+  }
+);
 
-    /**
-     * Sends the user to the documents overview
-     */
-    routeToDocuments(): void {
-      void this.$router.push({ path: `/companies/${this.companyId}/documents` });
-    },
+watch(authenticated, async () => {
+  await setUserRights();
+});
 
-    /**
-     * Checks if the user is allowed to upload datasets for the framework
-     * @param framework to check for
-     * @returns a boolean as the result of this check
-     */
-    isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserCompanyOwnerOrUploader || (isFrameworkPublic(framework) && this.isUserKeycloakUploader);
-    },
+watch(showTabs, (val) => {
+  if (!val) activeTab.value = 'datasets';
+});
 
-    /**
-     * Set user access rights
-     */
-    async setUserRights() {
-      this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
-      const companyRoleAssignmentsOfUser = this.companyRoleAssignments;
-      if (companyRoleAssignmentsOfUser) {
-        const companyRolesForCompanyId = companyRoleAssignmentsOfUser
-          .filter((it) => it.companyId === this.companyId)
-          .map((it) => it.companyRole);
-        this.hasUserAnyRoleInCompany = companyRolesForCompanyId.length > 0;
-        this.isUserCompanyOwnerOrUploader =
-          companyRolesForCompanyId.includes(CompanyRole.CompanyOwner) ||
-          companyRolesForCompanyId.includes(CompanyRole.DataUploader);
-      }
-      this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
-    },
+watch(activeTab, (val) => {
+  const base = `/companies/${props.companyId}`;
+  void router.replace({ path: val === 'users' ? `${base}/users` : base });
+});
 
-    /**
-     * Expands or collapses the framework tiles
-     */
-    toggleShowAll() {
-      this.showAllFrameworks = !this.showAllFrameworks;
-    },
-  },
+// Lifecycle
+onMounted(async () => {
+  await setUserRights();
+  await getAggregatedFrameworkDataSummary();
+  await getMetaInfoForLatestDocuments();
+  const path = router.currentRoute.value.path;
+  if (path.endsWith('/users') && !showTabs.value) {
+    activeTab.value = 'datasets';
+    void router.replace({ path: `/companies/${props.companyId}` });
+  } else {
+    activeTab.value = path.endsWith('/users') ? 'users' : 'datasets';
+  }
 });
 </script>
 
