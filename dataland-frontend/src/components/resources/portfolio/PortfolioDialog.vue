@@ -296,6 +296,9 @@ function processCompanyInputString(): string[] {
 }
 
 .container {
+  display: flex; /* Use Flexbox for alignment */
+  flex-wrap: wrap; /* Ensure elements wrap as needed */
+  gap: var(--spacing-md); /* Adds consistent spacing between elements */
   margin-bottom: var(--spacing-lg);
 }
 
@@ -319,10 +322,11 @@ function processCompanyInputString(): string[] {
 }
 
 .button-col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  width: 50%;
+  margin-left: auto; /* Aligns this entire div to the right */
+  display: flex; /* Retain stack alignment for buttons inside */
+  flex-direction: column; /* Ensure buttons are vertical */
+  gap: var(--spacing-md); /* Consistent button spacing */
+  width: 50%; /* Optional width preservation */
 }
 
 ul {
