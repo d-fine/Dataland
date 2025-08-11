@@ -89,7 +89,7 @@
           </div>
         </TabPanel>
         <TabPanel v-if="showTabs" value="users">
-          <CompanyRolesCard v-for="role in roles" :key="role" :companyId="companyId" :role="role" />
+          <CompanyRolesCard v-for="role in companyRoles" :key="role" :companyId="companyId" :role="role" />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -140,7 +140,7 @@ import type Keycloak from 'keycloak-js';
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<Ref<boolean>>('authenticated', ref(false));
 const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
-  'companyRoleAssignmentsExtended',
+  'companyRoleAssignments',
   ref([])
 );
 
@@ -166,7 +166,7 @@ Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
 });
 const chunkSize = 3;
 
-const roles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.CompanyOwner, CompanyRole.DataUploader];
+const companyRoles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.CompanyOwner, CompanyRole.DataUploader];
 
 // Computed
 const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
@@ -228,10 +228,16 @@ function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
 async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
   const assignments = unref(companyRoleAssignmentsRef) ?? [];
+  console.debug('[CompanyCockpitPage] Company role assignments for %s:', props.companyId, assignments);
   const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
+
+  const userRolesNames = roles.map((role) => (CompanyRole as never)[role] ?? role);
+  console.debug('[CompanyCockpitPage] User roles for %s:', props.companyId, roles, userRolesNames);
   isUserCompanyOwnerOrUploader.value =
     roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+  console.debug('[CompanyCockpitPage] isUserCompanyOwnerOrUploader %s:', props.companyId, isUserCompanyOwnerOrUploader);
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
+
   isUserCompanyMember.value = roles.length > 0;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   showTabs.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
@@ -271,6 +277,7 @@ watch(activeTab, (val) => {
 
 // Lifecycle
 onMounted(async () => {
+  console.debug('[CompanyCockpitPage] Mounted with AssignmentRef:', companyRoleAssignmentsRef.value);
   await setUserRights();
   await getAggregatedFrameworkDataSummary();
   await getMetaInfoForLatestDocuments();
