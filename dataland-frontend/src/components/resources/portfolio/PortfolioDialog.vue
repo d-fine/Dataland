@@ -19,6 +19,8 @@
         <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
         </p>
+      </div>
+      <div class="button-col">
         <PrimeButton
           type="button"
           label="Add Companies"
@@ -28,8 +30,8 @@
           data-test="portfolio-dialog-add-companies"
           fluid
         />
+        <PrimeButton type="button" label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
       </div>
-      <PrimeButton type="button" label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
     </div>
     <div>
       <p class="header-styling">Company identifiers in portfolio</p>
@@ -302,6 +304,13 @@ function processCompanyInputString(): string[] {
   margin-top: 1em;
   margin-left: auto;
   justify-content: end;
+}
+
+.button-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 50%;
 }
 
 ul {

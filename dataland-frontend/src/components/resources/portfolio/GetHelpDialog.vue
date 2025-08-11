@@ -35,30 +35,27 @@
       class="send-button"
       @click="sendEmail"
       :loading="isSendingMail"
-      :disabled="!isValidForm"
+      :disabled="!isValidForm || emailSendingSuccess || isSendingMail"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import Textarea from 'primevue/textarea';
-import Select from 'primevue/dropdown';
+import Select from 'primevue/select';
 import PrimeButton from 'primevue/button';
 import { computed, inject, ref } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-const isSendingMail = ref(false);
-const message = ref('');
-
 import type { SupportRequestData } from '@clients/userservice';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const isSendingMail = ref(false);
+const message = ref('');
 const emailSendingError = ref<boolean>();
 const emailSendingSuccess = ref<boolean>();
 const emailSendingMessage = ref('');
@@ -66,7 +63,6 @@ const selectedTopic = ref();
 const availableTopics = ref([{ name: 'Find company identifiers' }, { name: 'Other topic' }]);
 
 const isValidForm = computed(() => message.value && selectedTopic.value.name);
-
 /**
  * Send an email to request support
  */
