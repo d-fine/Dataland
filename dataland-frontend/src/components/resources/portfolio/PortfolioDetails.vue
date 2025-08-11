@@ -10,30 +10,32 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton @click="openEditModal()" data-test="edit-portfolio" label="Edit Portfolio" icon="pi pi-pencil" />
-      <PrimeButton
+      <Button @click="openEditModal()" data-test="edit-portfolio" label="Edit Portfolio" icon="pi pi-pencil" />
+      <Button
         @click="openDownloadModal()"
         data-test="download-portfolio"
         label="Download Portfolio"
         icon="pi pi-download"
       />
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
-        <PrimeButton
+        <Button
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
           icon="pi pi-bell"
-          label="Edit Monitoring"
+          label="Activate Monitoring"
         />
       </div>
-      <Tag
-        v-if="isMonitored"
-        data-test="verifiedCompanyOwnerBadge"
-        value="Portfolio actively monitored"
-        icon="pi pi-check-circle"
-        severity="success"
+
+      <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+
+      <Button
+        class="reset-button-align-right"
+        data-test="reset-filter"
+        @click="resetFilters()"
+        variant="text"
+        label="RESET"
       />
-      <PrimeButton variant="text" @click="resetFilters" label="RESET FILTER" data-test="reset-filter" />
     </div>
 
     <DataTable
@@ -157,13 +159,14 @@ import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/ba
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
-import PrimeButton from 'primevue/button';
+import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
+import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch, computed } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
@@ -173,7 +176,6 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
-import Tag from 'primevue/tag';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -253,6 +255,12 @@ const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
 const isPremiumUser = ref(false);
+
+const monitoredTagAttributes = computed(() => ({
+  value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
+  icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
+  severity: isMonitored.value ? 'success' : 'danger',
+}));
 
 onMounted(() => {
   void checkPremiumRole();
@@ -569,5 +577,9 @@ a:after {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
+}
+
+.reset-button-align-right {
+  margin-left: auto;
 }
 </style>

@@ -14,7 +14,13 @@
         rows="5"
         class="no-resize"
         fluid
+        @focus="showIdentifierError = false"
       />
+      <div v-if="showIdentifierError">
+        <Message severity="error" data-test="invalidIdentifierErrorMessage" variant="simple" size="small">
+          Identifiers left in the dialog couldn't be added to the portfolio.
+        </Message>
+      </div>
       <div class="company-info-container">
         <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
@@ -104,6 +110,7 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const companyIdentifiersInput = ref('');
+const showIdentifierError = ref(false);
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
@@ -155,6 +162,7 @@ async function addCompanies(): Promise<void> {
     const companyValidationResults = (
       await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
+
     const validIdentifiers: CompanyIdAndName[] = companyValidationResults
       .filter((validationResult) => validationResult.companyInformation)
       .map((validEntry): CompanyIdAndName => {
@@ -167,13 +175,17 @@ async function addCompanies(): Promise<void> {
       .filter((validationResult) => !validationResult.companyInformation)
       .map((it) => it.identifier);
 
+    if (invalidIdentifiers.length > 0) {
+      showIdentifierError.value = true;
+    }
+
+    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
     portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
   } finally {
     isCompaniesLoading.value = false;
-    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
   }
 }
 
