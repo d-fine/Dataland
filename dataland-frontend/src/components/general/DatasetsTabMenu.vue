@@ -135,13 +135,3 @@ function setVisibilityForAdminTab(): void {
     .catch((error) => console.log(error));
 }
 </script>
-
-<style scoped>
-.tab-as-router-link {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-base);
-  color: inherit;
-  text-decoration: inherit;
-  padding: var(--p-tabs-tab-padding);
-}
-</style>

@@ -2,6 +2,7 @@ import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesF
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { prepareSimpleDataSearchStoredCompanyArray } from '@ct/testUtils/PrepareDataSearchStoredCompanyArray';
 import { type BasicCompanyInformation } from '@clients/backend';
+import { createRouter, createMemoryHistory, type Router } from 'vue-router';
 
 /**
  * Loads mocked data as the intercept response and mounts the component
@@ -21,8 +22,20 @@ function mockDataAndMountComponent(mockedResponse?: BasicCompanyInformation[]): 
   const keycloakMock = minimalKeycloakMock({
     roles: ['ROLE_USER', 'ROLE_UPLOADER', 'ROLE_REVIEWER'],
   });
+
+  const createTestRouter = (): Router  => {
+    return createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: '/companies', component: { template: '<div>Companies</div>' } }],
+    });
+  };
+
+  const router = createTestRouter();
+  void router.push('/companies');
+
   cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
     keycloak: keycloakMock,
+    router: router,
   }).then((mounted) => {
     void mounted.wrapper.setData({
       resultArray: mockDataSearchStoredCompanyArray,
