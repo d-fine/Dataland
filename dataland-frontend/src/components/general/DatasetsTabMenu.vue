@@ -85,7 +85,7 @@ watchEffect(() => {
  * Updates the current tab index based on current route.
  */
 function updateCurrentTabFromRoute(): void {
-  currentTabIndex.value = tabs.value.findIndex((tab) => tab.route === route.path)
+  currentTabIndex.value = tabs.value.findIndex((tab) => tab.route === route.path);
 }
 
 /**
