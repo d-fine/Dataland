@@ -57,8 +57,6 @@ describe('Component tests for the DatasetOverview page', () => {
       router: router,
     }).then(() => {
       validateTabBar(0);
-      void router.push('/datasets');
-      void router.isReady();
       cy.wait(100);
       cy.get('[data-pc-section="tablist"]').children().eq(1).click();
       cy.get('@routerPush').should('have.been.calledWith', '/datasets');
@@ -94,16 +92,15 @@ describe('Component tests for the DatasetOverview page', () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept('**/api/companies?**', []);
     cy.spy(router, 'push').as('routerPush');
-
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
       router: router,
     }).then(() => {
       void router.push('/datasets');
       void router.isReady();
-      validateTabBar(1); // 'MY DATASETS' aktiv
+      validateTabBar(1);
       cy.wait(100);
-      cy.get('[data-pc-section="tablist"]').children().eq(0).click(); // Klick auf 'COMPANIES'
+      cy.get('[data-pc-section="tablist"]').children().eq(0).click();
       cy.get('@routerPush').should('have.been.calledWith', '/companies');
       validateTabBar(0);
     });
