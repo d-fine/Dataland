@@ -10,8 +10,7 @@ import org.flywaydb.core.api.migration.Context
 class V8__GenerateIsinLeiIndex : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
-            "CREATE EXTENSION pg_trgm; " +
-                "CREATE INDEX idx_isin " +
+            "CREATE INDEX idx_isin " +
                 "ON isin_lei_mapping " +
                 "USING gin (isin gin_trgm_ops);",
         )
