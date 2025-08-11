@@ -25,18 +25,18 @@
         <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
         </p>
-      </div>
-      <div class="button-col">
-        <PrimeButton
-          type="button"
-          label="Add Companies"
-          icon="pi pi-plus"
-          :loading="isCompaniesLoading"
-          @click="addCompanies"
-          data-test="portfolio-dialog-add-companies"
-          fluid
-        />
-        <PrimeButton type="button" label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
+        <div class="button-col">
+          <PrimeButton
+            type="button"
+            label="Add Companies"
+            icon="pi pi-plus"
+            :loading="isCompaniesLoading"
+            @click="addCompanies"
+            data-test="portfolio-dialog-add-companies"
+            fluid
+          />
+          <PrimeButton type="button" label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
+        </div>
       </div>
     </div>
     <div>
@@ -60,7 +60,6 @@
         label="Delete Portfolio"
         icon="pi pi-trash"
         @click="deletePortfolio"
-        class="primary-button deleteButton"
         data-test="portfolio-dialog-delete-button"
         title="Delete the selected Portfolio"
       />
@@ -296,9 +295,6 @@ function processCompanyInputString(): string[] {
 }
 
 .container {
-  display: flex; /* Use Flexbox for alignment */
-  flex-wrap: wrap; /* Ensure elements wrap as needed */
-  gap: var(--spacing-md); /* Adds consistent spacing between elements */
   margin-bottom: var(--spacing-lg);
 }
 
@@ -322,11 +318,12 @@ function processCompanyInputString(): string[] {
 }
 
 .button-col {
-  margin-left: auto; /* Aligns this entire div to the right */
-  display: flex; /* Retain stack alignment for buttons inside */
-  flex-direction: column; /* Ensure buttons are vertical */
-  gap: var(--spacing-md); /* Consistent button spacing */
-  width: 50%; /* Optional width preservation */
+  margin-top: var(--spacing-lg);
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
 }
 
 ul {
