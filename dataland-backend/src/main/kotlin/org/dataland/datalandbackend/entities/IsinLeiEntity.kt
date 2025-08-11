@@ -17,8 +17,8 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 @Table(
     name = "isin_lei_mapping",
     indexes = [
-        Index(name = "idx_company_id", columnList = "company_id"),
-        Index(name = "idx_lei", columnList = "lei"),
+        Index(name = "idx_isin_lei_company_id", columnList = "company_id"),
+        Index(name = "idx_isin_lei_lei", columnList = "lei"),
     ],
 )
 data class IsinLeiEntity(
