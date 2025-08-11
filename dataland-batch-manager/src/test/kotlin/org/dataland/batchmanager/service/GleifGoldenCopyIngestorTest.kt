@@ -3,8 +3,8 @@ package org.dataland.batchmanager.service
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
-import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
@@ -32,7 +32,7 @@ import java.io.PrintWriter
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GleifGoldenCopyIngestorTest {
     private val mockGleifApiAccessor = mock(GleifApiAccessor::class.java)
-    private val mockCsvParser = mock(CsvParser::class.java)
+    private val mockCompanyInformationParser = mock(CompanyInformationParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockActuatorApi = mock(ActuatorApi::class.java)
     private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
@@ -99,7 +99,7 @@ class GleifGoldenCopyIngestorTest {
     @BeforeEach
     fun setupTest() {
         reset(mockGleifApiAccessor)
-        reset(mockCsvParser)
+        reset(mockCompanyInformationParser)
         reset(mockCompanyUploader)
         reset(mockActuatorApi)
         reset(mockIsinDeltaBuilder)
@@ -112,9 +112,9 @@ class GleifGoldenCopyIngestorTest {
 
         val mockFile = mock(File::class.java)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mockFile)
-        `when`(mockCsvParser.getCsvStreamFromZip(mockFile)).thenReturn(bufferedReader)
-        `when`(mockCsvParser.readGleifCompanyDataFromBufferedReader(bufferedReader)).thenReturn(
-            CsvParser().readGleifCompanyDataFromBufferedReader(bufferedReader),
+        `when`(mockCompanyInformationParser.getCsvStreamFromZip(mockFile)).thenReturn(bufferedReader)
+        `when`(mockCompanyInformationParser.readGleifCompanyDataFromBufferedReader(bufferedReader)).thenReturn(
+            CompanyInformationParser().readGleifCompanyDataFromBufferedReader(bufferedReader),
         )
 
         companyIngestor.prepareGleifDeltaFile()
@@ -130,7 +130,7 @@ class GleifGoldenCopyIngestorTest {
         val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockGleifApiAccessor, mockCompanyInformationParser, mockCompanyUploader, mockIsinDeltaBuilder,
                 mockRelationshipExtractor,
                 oldFile,
             )
@@ -139,13 +139,13 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun`test replacement of delta mapping file`() {
+    fun `test replacement of delta mapping file`() {
         val flagFile = File.createTempFile("test", ".csv")
         flagFile.deleteOnExit()
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockGleifApiAccessor, mockCompanyInformationParser, mockCompanyUploader, mockIsinDeltaBuilder,
                 mockRelationshipExtractor,
                 oldFile,
             )
@@ -162,12 +162,12 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun`test failing of file deletion`() {
+    fun `test failing of file deletion`() {
         val flagFile = File.createTempFile("flagFile", ".csv")
         flagFile.deleteOnExit()
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockGleifApiAccessor, mockCompanyInformationParser, mockCompanyUploader, mockIsinDeltaBuilder,
                 mockRelationshipExtractor,
                 oldFile,
             )

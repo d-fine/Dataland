@@ -22,7 +22,7 @@ import kotlin.time.measureTime
 @Component
 class GleifGoldenCopyIngestor(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
-    @Autowired private val gleifParser: CsvParser,
+    @Autowired private val gleifParser: CompanyInformationParser,
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
     @Autowired private val relationshipExtractor: RelationshipExtractor,
@@ -123,7 +123,7 @@ class GleifGoldenCopyIngestor(
     }
 
     private fun uploadCompanies(zipFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
+        val gleifDataStream = gleifParser.getXmlStreamFromZip(zipFile)
         val gleifIterable = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)

@@ -1,5 +1,6 @@
 package org.dataland.datalandbatchmanager.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
@@ -16,7 +17,7 @@ import java.util.zip.ZipInputStream
  * Class to read in the zipped CSV file and return buffered GleifCompanyInformation objects
  */
 @Component
-class CsvParser {
+class CompanyInformationParser {
     /**
      * Reads the zipped CSV file and returns the content as buffered reader
      * @param zipFile The file containing the CSV file to be parsed
@@ -24,21 +25,34 @@ class CsvParser {
      */
     fun getCsvStreamFromZip(zipFile: File): BufferedReader {
         val zipInputStream = ZipInputStream(zipFile.inputStream())
-        return getCsvFromInputStream(zipInputStream)
+        return getDataFromInputStream(zipInputStream)
     }
 
-    private fun getCsvFromInputStream(zipInputStream: ZipInputStream): BufferedReader {
+    /**
+     * Reads the zipped XML file and returns the content as buffered reader
+     * @param zipFile The file containing the XML file to be parsed
+     * @return the content of the XML file as buffered reader
+     */
+    fun getXmlStreamFromZip(zipFile: File): BufferedReader {
+        val zipInputStream = ZipInputStream(zipFile.inputStream())
+        return getDataFromInputStream(zipInputStream, ".xml")
+    }
+
+    private fun getDataFromInputStream(
+        zipInputStream: ZipInputStream,
+        fileEnding: String = ".csv",
+    ): BufferedReader {
         var zipEntry = zipInputStream.nextEntry
-        var foundCsv = false
+        var foundFileType = false
         while (zipEntry != null) {
-            if (zipEntry.name.endsWith(".csv")) {
-                foundCsv = true
+            if (zipEntry.name.endsWith(fileEnding)) {
+                foundFileType = true
                 break
             }
             zipEntry = zipInputStream.nextEntry
         }
-        require(foundCsv) {
-            "The downloaded ZIP file does not contain a CSV file"
+        require(foundFileType) {
+            "The downloaded ZIP file does not contain a $fileEnding file"
         }
 
         val inputStreamReader = InputStreamReader(zipInputStream, "UTF-8")
@@ -65,7 +79,7 @@ class CsvParser {
             "Could not find zipped CSV file in zip file"
         }
         val zipStreamTwo = ZipInputStream(zipInputStream)
-        return getCsvFromInputStream(zipStreamTwo)
+        return getDataFromInputStream(zipStreamTwo)
     }
 
     /**
@@ -73,7 +87,7 @@ class CsvParser {
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding T objects
      */
-    private final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
+    private final inline fun <reified T> readCsVDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
         Iterable<T> {
             CsvMapper()
                 .registerModule(kotlinModule())
@@ -83,12 +97,22 @@ class CsvParser {
         }
 
     /**
+     * Transforms the streamed CSV content into an iterable of objects of class T
+     * @param bufferedReader the input stream read from the csv file
+     * @return An iterable of the corresponding T objects
+     */
+    private final inline fun <reified T> readXmlDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
+        Iterable<T> {
+            ObjectMapper().registerModule(kotlinModule()).readerFor(T::class.java).readValues(bufferedReader)
+        }
+
+    /**
      * Transforms the streamed CSV content into an iterable of objects of GleifRelationshipInformation
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding objects
      */
     fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifRelationshipInformation> =
-        readDataFromBufferedReader(bufferedReader)
+        readCsVDataFromBufferedReader(bufferedReader)
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of GleifCompanyInformation
@@ -96,7 +120,7 @@ class CsvParser {
      * @return An iterable of the corresponding objects
      */
     fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifCompanyInformation> =
-        readDataFromBufferedReader(bufferedReader)
+        readXmlDataFromBufferedReader(bufferedReader)
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of NorthDataCompanyInformation
@@ -104,5 +128,5 @@ class CsvParser {
      * @return An iterable of the corresponding objects
      */
     fun readNorthDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<NorthDataCompanyInformation> =
-        readDataFromBufferedReader(bufferedReader)
+        readCsVDataFromBufferedReader(bufferedReader)
 }
