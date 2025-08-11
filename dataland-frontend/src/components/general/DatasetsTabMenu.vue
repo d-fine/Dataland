@@ -87,7 +87,9 @@ watchEffect(() => {
 function updateCurrentTabFromRoute(): void {
   const index = tabs.value.findIndex((tab) => tab.route === route.path);
   if (index === -1) {
-    void router.replace(tabs.value[0].route);
+    router.push(route).catch((err) => {
+      console.error('Navigation error when changing tabs:', err);
+    });
     currentTabIndex.value = 0;
   } else {
     currentTabIndex.value = index;
@@ -100,7 +102,9 @@ function updateCurrentTabFromRoute(): void {
 function onTabChange(newIndex: number | string): void {
   currentTabIndex.value = newIndex as number;
   const route = tabs.value[newIndex as number].route;
-  void router.push(route);
+  router.push(route).catch((err) => {
+    console.error('Navigation error when changing tabs:', err);
+  });
 }
 
 /**
