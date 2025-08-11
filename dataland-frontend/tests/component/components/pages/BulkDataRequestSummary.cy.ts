@@ -33,7 +33,7 @@ describe('Component tests for the BulkDataRequestSummary page', () => {
               resourceUrl: 'https://dataland.com/request-1',
             },
           ],
-          alreadyExistingNonFinalRequests: [
+          alreadyExistingRequests: [
             {
               userProvidedIdentifier: '789',
               companyName: 'Company C',
@@ -64,7 +64,7 @@ describe('Component tests for the BulkDataRequestSummary page', () => {
         cy.get('.text-primary').contains('VIEW DATA').should('exist');
       });
 
-      cy.get('[data-test="alreadyExistingNonFinalRequestsContent"]').within(() => {
+      cy.get('[data-test="alreadyExistingRequestsContent"]').within(() => {
         cy.get('.bold-text').contains('Company C').should('exist');
         cy.get('.text-primary').contains('VIEW REQUEST').should('exist');
       });
