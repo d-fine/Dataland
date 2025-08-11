@@ -11,8 +11,8 @@
           },
         }"
       >
-        <Tab value="datasets">Datasets</Tab>
-        <Tab value="users">Users</Tab>
+        <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
+        <Tab value="users" data-test="usersTab">Users</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
@@ -138,7 +138,7 @@ const props = defineProps<{ companyId: string }>();
 // Injected dependencies
 import type Keycloak from 'keycloak-js';
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-const authenticated = inject<boolean>('authenticated')!;
+const authenticated = inject<Ref<boolean>>('authenticated', ref(false));
 const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
   'companyRoleAssignmentsExtended',
   ref([])
@@ -148,7 +148,10 @@ const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | u
 const router = useRouter();
 const activeTab = ref<'datasets' | 'users'>('datasets');
 const showTabs = ref(true);
-const aggregatedFrameworkDataSummary = ref<{ [key in DataTypeEnum]: AggregatedFrameworkDataSummary }>();
+
+type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
+
+const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
 const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
 const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 const isUserCompanyOwnerOrUploader = ref(false);
@@ -187,7 +190,7 @@ const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategory
 async function getAggregatedFrameworkDataSummary(): Promise<void> {
   const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.companyDataController;
   const response = await api.getAggregatedFrameworkDataSummary(props.companyId);
-  aggregatedFrameworkDataSummary.value = response.data;
+  aggregatedFrameworkDataSummary.value = response.data as SummaryByType;
 }
 
 /**
