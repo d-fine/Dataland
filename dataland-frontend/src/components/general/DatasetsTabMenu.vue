@@ -1,5 +1,5 @@
 <template>
-  <Tabs :value="initialTabIndex" @update:value="onTabChange" :key="currentTabIndex">
+  <Tabs :value="currentTabIndex" @update:value="onTabChange">
     <TabList>
       <Tab
         v-for="tab in tabs"
@@ -43,9 +43,8 @@ import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
 import { inject, onMounted, ref, type Ref, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import { useRoute } from 'vue-router';
+import router from '@/router';
 
 interface TabInfo {
   label: string;
@@ -53,8 +52,7 @@ interface TabInfo {
   isVisible: boolean;
 }
 
-const initialTabIndex = ref<number>(0);
-
+const route = useRoute();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
@@ -75,9 +73,30 @@ onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
+  updateCurrentTabFromRoute();
 });
 
-watchEffect(setVisibilityForTabWithAccessRequestsForMyCompanies);
+watchEffect(() => {
+  setVisibilityForTabWithAccessRequestsForMyCompanies();
+  updateCurrentTabFromRoute();
+});
+
+/**
+ * Updates the current tab index based on current route.
+ */
+function updateCurrentTabFromRoute(): void {
+  currentTabIndex.value = tabs.value.findIndex((tab) => tab.route === route.path)
+}
+
+/**
+ * Handles the tab change event.
+ */
+function onTabChange(newIndex: number | string): void {
+  currentTabIndex.value = newIndex as number;
+  const route = tabs.value[newIndex as number].route;
+  void router.push(route);
+}
+
 /**
  * Sets the visibility of the tab for Quality Assurance.
  * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
@@ -88,12 +107,6 @@ function setVisibilityForTabWithQualityAssurance(): void {
       tabs.value[3].isVisible = hasUserReviewerRights;
     })
     .catch((error) => console.log(error));
-}
-
-function onTabChange(newIndex: number | string) {
-  currentTabIndex.value = newIndex as number;
-  const route = tabs.value[newIndex as number].route;
-  void router.push(route);
 }
 
 /**
