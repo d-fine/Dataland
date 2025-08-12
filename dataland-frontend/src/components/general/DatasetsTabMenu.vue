@@ -43,7 +43,6 @@ import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
 import { inject, onMounted, ref, type Ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
 import router from '@/router';
 
 interface TabInfo {
@@ -52,12 +51,14 @@ interface TabInfo {
   isVisible: boolean;
 }
 
-const route = useRoute();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const currentTabIndex = ref<number>(0);
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
 const companyRoleAssignments = inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments');
-const currentTabIndex = ref<number>(0);
+const { initialTabIndex } = defineProps<{
+  initialTabIndex: number;
+}>();
 
 const tabs = ref<Array<TabInfo>>([
   { label: 'COMPANIES', route: '/companies', isVisible: true },
@@ -73,32 +74,17 @@ onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
-  updateCurrentTabFromRoute();
+  currentTabIndex.value = initialTabIndex ?? 0;
 });
 
 watchEffect(() => {
   setVisibilityForTabWithAccessRequestsForMyCompanies();
-  updateCurrentTabFromRoute();
 });
-
-/**
- * Updates the current tab index based on current route.
- */
-function updateCurrentTabFromRoute(): void {
-  const index = tabs.value.findIndex((tab) => tab.route === route.path);
-  if (index === -1) {
-    router.push('/nocontent').catch(console.error);
-    return;
-  } else {
-    currentTabIndex.value = index;
-  }
-}
 
 /**
  * Handles the tab change event.
  */
 function onTabChange(newIndex: number | string): void {
-  currentTabIndex.value = newIndex as number;
   const route = tabs.value[newIndex as number].route;
   router.push(route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
