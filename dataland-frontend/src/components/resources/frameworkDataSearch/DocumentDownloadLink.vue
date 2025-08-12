@@ -18,17 +18,17 @@
       <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
       <span class="pr-2">
         <i
-          v-if="showIcon"
+          v-if="showIcon && (percentCompleted === 0 || percentCompleted === undefined)"
           class="pi pi-download pl-1"
           data-test="download-icon"
-          aria-hidden="true"
-          style="font-size: 12px; margin: auto"
         ></i>
-        <span v-if="percentCompleted! > 0 && percentCompleted! < 100">
-          ({{ percentCompleted }}%)
-           <i   class="pi pi-spin pi-spinner"></i>
-        </span>
+        <i
+          v-else-if="showIcon && percentCompleted! > 0 && percentCompleted! < 100"
+          class="pi pi-spin pi-spinner"
+          style="margin-left:var(--spacing-xs)"
+        ></i>
 
+        <span v-if="percentCompleted! > 0 && percentCompleted! < 100"> ({{ percentCompleted }}%) </span>
       </span>
     </a>
     <span
