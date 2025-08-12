@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
  * Data class combining the information found in the GLEIF LEI and RR files
  */
 data class GleifCompanyCombinedInformation(
-    val gleifCompanyInformation: GleifCompanyInformation,
+    val gleifLeiRecord: LEIRecord,
     val finalParentLei: String? = null,
 ) : ExternalCompanyInformation {
     /**
@@ -17,19 +17,19 @@ data class GleifCompanyCombinedInformation(
      */
     override fun toCompanyPost(): CompanyInformation =
         CompanyInformation(
-            companyName = gleifCompanyInformation.companyName,
+            companyName = gleifLeiRecord.entity.legalName,
             companyContactDetails = null,
             companyAlternativeNames = null,
             companyLegalForm = null,
-            countryCode = gleifCompanyInformation.countryCode,
-            headquarters = gleifCompanyInformation.headquarters,
-            headquartersPostalCode = gleifCompanyInformation.headquartersPostalCode,
+            countryCode = gleifLeiRecord.entity.headquartersAddress.country,
+            headquarters = gleifLeiRecord.entity.headquartersAddress.city,
+            headquartersPostalCode = gleifLeiRecord.entity.headquartersAddress.postalCode,
             sector = null,
             sectorCodeWz = null,
             website = null,
             identifiers =
                 mapOf(
-                    "Lei" to listOf(gleifCompanyInformation.lei),
+                    "Lei" to listOf(gleifLeiRecord.lei),
                 ),
             parentCompanyLei = finalParentLei,
         )
@@ -47,19 +47,19 @@ data class GleifCompanyCombinedInformation(
         }
 
         return CompanyInformationPatch(
-            companyName = gleifCompanyInformation.companyName,
-            countryCode = gleifCompanyInformation.countryCode,
-            headquarters = gleifCompanyInformation.headquarters,
-            headquartersPostalCode = gleifCompanyInformation.headquartersPostalCode,
+            companyName = gleifLeiRecord.entity.legalName,
+            countryCode = gleifLeiRecord.entity.headquartersAddress.country,
+            headquarters = gleifLeiRecord.entity.headquartersAddress.city,
+            headquartersPostalCode = gleifLeiRecord.entity.headquartersAddress.postalCode,
             identifiers =
                 mapOf(
-                    "Lei" to listOf(gleifCompanyInformation.lei),
+                    "Lei" to listOf(gleifLeiRecord.lei),
                 ),
             parentCompanyLei = finalParentLei,
         )
     }
 
     override fun getNameAndIdentifier(): String =
-        "${gleifCompanyInformation.companyName} " +
-            " (LEI: ${gleifCompanyInformation.lei})"
+        "${gleifLeiRecord.entity.legalName} " +
+            " (LEI: ${gleifLeiRecord.lei})"
 }

@@ -1,8 +1,10 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
+import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.HeadquartersAddress
+import org.dataland.datalandbatchmanager.model.LEIRecord
 import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
@@ -69,8 +71,18 @@ class GleifGoldenCopyIngestorTest {
 
     private val emptyGleifCompanyCombinedInformation =
         GleifCompanyCombinedInformation(
-            GleifCompanyInformation(
-                headquarters = "", companyName = "", headquartersPostalCode = "", lei = "", countryCode = "",
+            LEIRecord(
+                lei = "",
+                entity =
+                    Entity(
+                        legalName = "",
+                        headquartersAddress =
+                            HeadquartersAddress(
+                                city = "",
+                                postalCode = "",
+                                country = "",
+                            ),
+                    ),
             ),
         )
 
@@ -112,7 +124,7 @@ class GleifGoldenCopyIngestorTest {
 
         val mockFile = mock(File::class.java)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mockFile)
-        `when`(mockCompanyInformationParser.getCsvStreamFromZip(mockFile)).thenReturn(bufferedReader)
+        `when`(mockCompanyInformationParser.getXmlStreamFromZip(mockFile)).thenReturn(bufferedReader)
         `when`(mockCompanyInformationParser.readGleifCompanyDataFromBufferedReader(bufferedReader)).thenReturn(
             CompanyInformationParser().readGleifCompanyDataFromBufferedReader(bufferedReader),
         )
@@ -127,7 +139,7 @@ class GleifGoldenCopyIngestorTest {
     }
 
     private fun commonMock(): Pair<BufferedReader, MockedStatic<File>> {
-        val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
+        val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
         companyIngestor =
             GleifGoldenCopyIngestor(
                 mockGleifApiAccessor, mockCompanyInformationParser, mockCompanyUploader, mockIsinDeltaBuilder,

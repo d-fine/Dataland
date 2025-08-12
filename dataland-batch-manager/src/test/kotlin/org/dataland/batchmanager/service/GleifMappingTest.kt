@@ -2,8 +2,10 @@ package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.HeadquartersAddress
+import org.dataland.datalandbatchmanager.model.LEIRecord
 import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -13,50 +15,49 @@ import java.io.FileReader
 
 @ComponentScan(basePackages = ["org.dataland"])
 class GleifMappingTest {
-    private val expectedGleifCompanyInformation =
-        GleifCompanyInformation(
-            companyName = "CompanyName",
-            countryCode = "CompanyCountry",
-            headquarters = "CompanyCity",
-            headquartersPostalCode = "CompanyPostalCode",
+    private val expectedGleifRecord =
+        LEIRecord(
             lei = "DummyLei",
+            entity =
+                Entity(
+                    legalName = "CompanyName",
+                    headquartersAddress =
+                        HeadquartersAddress(
+                            city = "CompanyCity",
+                            postalCode = "CompanyPostalCode",
+                            country = "CompanyCountry",
+                        ),
+                ),
         )
 
     private val expectedCompanyInformation =
         CompanyInformation(
-            companyName = expectedGleifCompanyInformation.companyName,
+            companyName = expectedGleifRecord.entity.legalName,
             companyContactDetails = null,
             companyAlternativeNames = null,
             companyLegalForm = null,
-            countryCode = expectedGleifCompanyInformation.countryCode,
-            headquarters = expectedGleifCompanyInformation.headquarters,
-            headquartersPostalCode = expectedGleifCompanyInformation.headquartersPostalCode,
+            countryCode = expectedGleifRecord.entity.headquartersAddress.country,
+            headquarters = expectedGleifRecord.entity.headquartersAddress.city,
+            headquartersPostalCode = expectedGleifRecord.entity.headquartersAddress.postalCode,
             sector = null,
             website = null,
             identifiers =
                 mapOf(
-                    IdentifierType.Lei.value to listOf(expectedGleifCompanyInformation.lei),
+                    IdentifierType.Lei.value to listOf(expectedGleifRecord.lei),
                 ),
         )
 
     @Test
     fun `check that parsing the test file results in the expected company information objects`() {
-        val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
-        var gleifCompanyInformation = GleifCompanyInformation("", "", "", "", "")
-        val gleifIterable = CompanyInformationParser().readGleifCompanyDataFromBufferedReader(input)
-        gleifIterable.forEach {
-            gleifCompanyInformation =
-                GleifCompanyInformation(
-                    it.companyName, it.headquarters,
-                    it.headquartersPostalCode, it.lei, it.countryCode,
-                )
-        }
-        println(gleifCompanyInformation.companyName)
-        val companyInformation = GleifCompanyCombinedInformation(gleifCompanyInformation).toCompanyPost()
+        val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
+        val gleifRecord = CompanyInformationParser().readGleifCompanyDataFromBufferedReader(input).leiRecords.first()
+
+        println(gleifRecord.entity.legalName)
+        val companyInformation = GleifCompanyCombinedInformation(gleifRecord).toCompanyPost()
         println(companyInformation)
         Assertions.assertEquals(
-            expectedGleifCompanyInformation,
-            gleifCompanyInformation,
+            expectedGleifRecord,
+            gleifRecord,
             "The gleifCompanyInformation created based on the test csv file is not as expected.",
         )
         Assertions.assertEquals(

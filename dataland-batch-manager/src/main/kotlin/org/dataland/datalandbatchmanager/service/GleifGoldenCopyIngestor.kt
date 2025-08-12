@@ -124,14 +124,14 @@ class GleifGoldenCopyIngestor(
 
     private fun uploadCompanies(zipFile: File) {
         val gleifDataStream = gleifParser.getXmlStreamFromZip(zipFile)
-        val gleifIterable = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream)
+        val gleifRecords = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream).leiRecords
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {
             uploadThreadPool
                 .submit {
                     StreamSupport
-                        .stream(gleifIterable.spliterator(), true)
+                        .stream(gleifRecords.spliterator(), true)
                         .forEach {
                             companyUploader.uploadOrPatchSingleCompany(
                                 GleifCompanyCombinedInformation(

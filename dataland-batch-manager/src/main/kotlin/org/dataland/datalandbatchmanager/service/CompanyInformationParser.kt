@@ -1,10 +1,10 @@
 package org.dataland.datalandbatchmanager.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifLEIData
 import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.springframework.stereotype.Component
@@ -101,10 +101,10 @@ class CompanyInformationParser {
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding T objects
      */
-    private final inline fun <reified T> readXmlDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
-        Iterable<T> {
-            ObjectMapper().registerModule(kotlinModule()).readerFor(T::class.java).readValues(bufferedReader)
-        }
+    private final inline fun <reified T> readXmlDataFromBufferedReader(bufferedReader: BufferedReader): T {
+        val xmlMapper = XmlMapper().registerModule(kotlinModule())
+        return xmlMapper.readValue(bufferedReader, T::class.java)
+    }
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of GleifRelationshipInformation
@@ -114,13 +114,15 @@ class CompanyInformationParser {
     fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifRelationshipInformation> =
         readCsVDataFromBufferedReader(bufferedReader)
 
+    /*fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifCompanyInformation> =
+        readCsVDataFromBufferedReader(bufferedReader)*/
+
     /**
-     * Transforms the streamed CSV content into an iterable of objects of GleifCompanyInformation
-     * @param bufferedReader the input stream read from the csv file
-     * @return An iterable of the corresponding objects
+     * Transforms the streamed xml content into an GleifLEIData object
+     * @param bufferedReader the input stream read from the xml file
+     * @return The GleifLEIData object
      */
-    fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifCompanyInformation> =
-        readXmlDataFromBufferedReader(bufferedReader)
+    fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader): GleifLEIData = readXmlDataFromBufferedReader(bufferedReader)
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of NorthDataCompanyInformation
