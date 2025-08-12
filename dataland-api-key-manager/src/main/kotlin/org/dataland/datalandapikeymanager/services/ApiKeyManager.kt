@@ -134,7 +134,7 @@ class ApiKeyManager(
                     active = true,
                     keycloakUserId = keycloakUserId,
                     expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
-                    keycloakRoles = keycloakUserService.getUserRoleNames(keycloakUserId),
+                    keycloakRoles = keycloakUserService.getCompositeUserRoleNames(keycloakUserId),
                 )
             } else {
                 ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey)
@@ -174,7 +174,7 @@ class ApiKeyManager(
             if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
                 ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
             } else {
-                val userRolesNames = keycloakUserService.getUserRoleNames(apiKeyEntity.keycloakUserId)
+                val userRolesNames = keycloakUserService.getCompositeUserRoleNames(apiKeyEntity.keycloakUserId)
                 if (!isApiKeyExpired(apiKeyEntity.expiryDate)) {
                     ApiKeyMetaInfo(apiKeyEntity, userRolesNames, true, validationMessageSuccess)
                 } else {
