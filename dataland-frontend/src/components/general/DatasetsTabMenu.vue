@@ -87,10 +87,8 @@ watchEffect(() => {
 function updateCurrentTabFromRoute(): void {
   const index = tabs.value.findIndex((tab) => tab.route === route.path);
   if (index === -1) {
-    router.push(route).catch((err) => {
-      console.error('Navigation error when changing tabs:', err);
-    });
-    currentTabIndex.value = 0;
+    router.push('/no-content-found').catch(console.error);
+    return;
   } else {
     currentTabIndex.value = index;
   }
