@@ -3,15 +3,10 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import type Keycloak from 'keycloak-js';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type BasicCompanyInformation } from '@clients/backend';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import router from '@/router';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
-
-beforeEach(() => {
-  void router.push('/companies');
-  return router.isReady();
-});
 
 before(function () {
   cy.fixture('DataSearchStoredCompanyMocks').then(function (jsonContent) {
@@ -30,7 +25,7 @@ describe('Component tests for the Dataland companies search page', function (): 
    * @param keycloakMock to be used for the login status
    */
   function verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock: Keycloak): void {
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
       router: router,
@@ -44,7 +39,6 @@ describe('Component tests for the Dataland companies search page', function (): 
   it('Check static layout of the search page', function () {
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: minimalKeycloakMock({}),
-      router: router,
     }).then(() => {
       const placeholder = 'Search company by name or identifier (e.g. PermID, LEI, ...)';
       const inputValue = 'A company name';
@@ -60,7 +54,6 @@ describe('Component tests for the Dataland companies search page', function (): 
   it('Check correct behaviour of search bar when scrolling', { scrollBehavior: false }, function () {
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: minimalKeycloakMock({}),
-      router: router,
     }).then(() => {
       verifySearchResultTableExists();
       cy.get('div[class="button-container"]').should('be.visible');
@@ -81,7 +74,6 @@ describe('Component tests for the Dataland companies search page', function (): 
     () => {
       cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
         keycloak: minimalKeycloakMock({}),
-        router: router,
       }).then(() => {
         const inputValue1 = 'ABCDEFG';
         const inputValue2 = 'XYZ';

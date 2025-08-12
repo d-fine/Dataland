@@ -2,12 +2,6 @@ import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesF
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { prepareSimpleDataSearchStoredCompanyArray } from '@ct/testUtils/PrepareDataSearchStoredCompanyArray';
 import { type BasicCompanyInformation } from '@clients/backend';
-import router from '@/router';
-
-beforeEach(() => {
-  void router.push('/companies');
-  return router.isReady();
-});
 
 /**
  * Loads mocked data as the intercept response and mounts the component
@@ -27,10 +21,8 @@ function mockDataAndMountComponent(mockedResponse?: BasicCompanyInformation[]): 
   const keycloakMock = minimalKeycloakMock({
     roles: ['ROLE_USER', 'ROLE_UPLOADER', 'ROLE_REVIEWER'],
   });
-
   cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
     keycloak: keycloakMock,
-    router: router,
   }).then((mounted) => {
     void mounted.wrapper.setData({
       resultArray: mockDataSearchStoredCompanyArray,
