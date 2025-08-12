@@ -450,7 +450,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="usersTab"]').should('not.exist');
   });
 
-  it.only('Users Page is visible for a CompanyOwner', () => {
+  it('Users Page is visible for a CompanyOwner', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
     mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
