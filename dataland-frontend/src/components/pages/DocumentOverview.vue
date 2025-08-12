@@ -61,12 +61,21 @@
         </Column>
         <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
           <template #body="tableRow">
-            <DocumentDownloadButton
-              :document-download-info="{
-                downloadName: documentNameOrId(tableRow.data),
-                fileReference: tableRow.data.documentId,
-              }"
-              style="display: grid; grid-template-columns: 8.25em; justify-items: center; grid-template-rows: 1.75em"
+            <PrimeButton
+              :label="
+                activeDownloadId === tableRow.data.documentId && percentCompleted! > 0
+                  ? `DOWNLOAD (${percentCompleted}%)`
+                  : 'DOWNLOAD'
+              "
+              data-test="downloadDocumentButton"
+              @click="
+                handleDocumentDownload({
+                  fileReference: tableRow.data.documentId,
+                  downloadName: documentNameOrId(tableRow.data),
+                })
+              "
+              icon="pi pi-download"
+              style="width: 12rem"
             />
           </template>
         </Column>
@@ -89,7 +98,6 @@ import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
-import DocumentDownloadButton from '@/components/resources/frameworkDataSearch/DocumentDownloadButton.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
@@ -107,6 +115,12 @@ import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
 import { inject, onMounted, ref, watch } from 'vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import PrimeButton from 'primevue/button';
+import {
+  createNewPercentCompletedRef,
+  type DocumentDownloadInfo,
+  downloadDocument,
+} from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 
 const props = defineProps<{
   companyId: string;
@@ -134,6 +148,9 @@ watch(selectedDocumentType, () => {
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 
+const percentCompleted = createNewPercentCompletedRef() ?? ref(0);
+const activeDownloadId = ref<string | null>(null);
+
 /**
  * Get list of documents using the filter for document category
  */
@@ -156,6 +173,15 @@ async function getAllDocumentsForFilters(): Promise<void> {
     waitingForData.value = false;
     updateCurrentDisplayedData(false);
   }
+}
+
+/**
+ * Handles the download of documents
+ */
+async function handleDocumentDownload(documentDownloadInfo: DocumentDownloadInfo): Promise<void> {
+  activeDownloadId.value = documentDownloadInfo.fileReference;
+  await downloadDocument(documentDownloadInfo, getKeycloakPromise, percentCompleted);
+  activeDownloadId.value = null;
 }
 
 /**

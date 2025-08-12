@@ -23,9 +23,11 @@
           data-test="download-icon"
           aria-hidden="true"
           style="font-size: 12px; margin: auto"
-        />
+        ></i>
+        <span v-if="percentCompleted! > 0 && percentCompleted! < 100">
+          ({{ percentCompleted }}%)
+        </span>
       </span>
-      <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
     <span
       v-else
@@ -55,7 +57,6 @@ import {
   downloadIsInProgress,
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
