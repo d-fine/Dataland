@@ -26,7 +26,9 @@
         ></i>
         <span v-if="percentCompleted! > 0 && percentCompleted! < 100">
           ({{ percentCompleted }}%)
+           <i   class="pi pi-spin pi-spinner"></i>
         </span>
+
       </span>
     </a>
     <span
