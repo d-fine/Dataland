@@ -8,10 +8,11 @@ import {
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import {
+  KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
@@ -153,7 +154,7 @@ describe('Component test for the company cockpit', () => {
       global: {
         provide: {
           useMobileView: computed((): boolean => isMobile),
-          companyRoleAssignments: companyRoleAssignments,
+          companyRoleAssignments: ref(companyRoleAssignments),
         },
       },
       props: {
@@ -242,9 +243,9 @@ describe('Component test for the company cockpit', () => {
         frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
       if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0 && !isMobileViewActive) {
-        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('exist');
+        cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('exist');
       } else {
-        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('not.exist');
+        cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('not.exist');
       }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
@@ -435,5 +436,31 @@ describe('Component test for the company cockpit', () => {
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
+  });
+
+  it('Users Page has to be visible for Dataland Admins', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
+    cy.get('[data-test="usersTab"]').should('be.visible').click();
+  });
+
+  it('Users Page is not visible for non Dataland Admins', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
+    cy.get('[data-test="usersTab"]').should('not.exist');
+  });
+
+  it.only('Users Page is visible for a CompanyOwner', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test=sfdr-summary-panel]').should('not.be.visible');
+    cy.get('[data-test="company-roles-card"]').should('be.visible');
+    cy.get('[data-test="datasetsTab"]').click();
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
   });
 });

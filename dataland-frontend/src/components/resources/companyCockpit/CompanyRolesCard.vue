@@ -1,5 +1,6 @@
 <template>
   <Card
+    data-test="company-roles-card"
     class="mb-4"
     :pt="{
       root: {
