@@ -101,22 +101,33 @@ loki.source.docker "default" {
 // ---------------------------------------------------------------------------------------------------------------------
 
 loki.process "add_labels" {
-    // Extract the value of the desired labels from the log line
-    stage.logfmt {
-        // Mapping fields from your logs
-        mapping = {
-           "extracted_level" = "level",
-           "extracted_status" = "status",
-           "extracted_httpStatus" ="httpStatus",
-        }
-    }
+    // Only process lines that contain valid logfmt patterns
+    stage.match {
+        selector = "{job=\"docker_containers\"}"
+        // Match lines that contain key=value patterns (basic logfmt check)
+        pipeline_name = "logfmt_lines"
 
-    stage.labels {
-        // Use the extracted values as the labels
-        values = {
-           "level" = "extracted_level",
-           "status" = "extracted_status",
-           "httpStatus" = "extracted_httpStatus",
+        stage.regex {
+            expression = ".*\\w+=\\w+.*"
+        }
+
+        // Extract the value of the desired labels from the log line
+        stage.logfmt {
+            // Mapping fields from your logs
+            mapping = {
+               "extracted_level" = "level",
+               "extracted_status" = "status",
+               "extracted_httpStatus" ="httpStatus",
+            }
+        }
+
+        stage.labels {
+            // Use the extracted values as the labels
+            values = {
+               "level" = "extracted_level",
+               "status" = "extracted_status",
+               "httpStatus" = "extracted_httpStatus",
+            }
         }
     }
 
