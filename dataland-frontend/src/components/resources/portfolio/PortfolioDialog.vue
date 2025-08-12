@@ -27,7 +27,6 @@
         </p>
         <div class="button-col">
           <PrimeButton
-            type="button"
             label="Add Companies"
             icon="pi pi-plus"
             :loading="isCompaniesLoading"
