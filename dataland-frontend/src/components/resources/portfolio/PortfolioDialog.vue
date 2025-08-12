@@ -25,15 +25,17 @@
         <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
         </p>
-        <PrimeButton
-          type="button"
-          label="Add Companies"
-          icon="pi pi-plus"
-          :loading="isCompaniesLoading"
-          @click="addCompanies"
-          data-test="portfolio-dialog-add-companies"
-          fluid
-        />
+        <div class="button-col">
+          <PrimeButton
+            label="Add Companies"
+            icon="pi pi-plus"
+            :loading="isCompaniesLoading"
+            @click="addCompanies"
+            data-test="portfolio-dialog-add-companies"
+            fluid
+          />
+          <PrimeButton label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
+        </div>
       </div>
     </div>
     <div>
@@ -57,7 +59,6 @@
         label="Delete Portfolio"
         icon="pi pi-trash"
         @click="deletePortfolio"
-        class="primary-button deleteButton"
         data-test="portfolio-dialog-delete-button"
         title="Delete the selected Portfolio"
       />
@@ -88,6 +89,8 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 
@@ -125,6 +128,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+const dialog = useDialog();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -181,6 +185,19 @@ async function addCompanies(): Promise<void> {
   } finally {
     isCompaniesLoading.value = false;
   }
+}
+
+/**
+ * Function to open the help dialog
+ */
+function openHelpDialog(): void {
+  dialog.open(GetHelpDialog, {
+    props: {
+      header: 'Request of Support',
+      modal: true,
+      style: { width: '22rem' },
+    },
+  });
 }
 
 /**
@@ -297,6 +314,15 @@ function processCompanyInputString(): string[] {
   margin-top: 1em;
   margin-left: auto;
   justify-content: end;
+}
+
+.button-col {
+  margin-top: var(--spacing-lg);
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
 }
 
 ul {
