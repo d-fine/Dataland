@@ -12,7 +12,7 @@ local.file_match "system" {
 
 loki.source.file "system" {
 	targets               = local.file_match.system.targets
-	forward_to            = [loki.process.add_labels.receiver]
+	forward_to            = [loki.process.normalize_levels.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ loki.process "extract_container_label" {
         }
     }
 
-    forward_to = [loki.process.add_labels.receiver]
+    forward_to = [loki.process.normalize_levels.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -88,41 +88,47 @@ discovery.relabel "default" {
 loki.source.docker "default" {
     host       = "unix:///var/run/docker.sock"
     targets    = discovery.relabel.default.output
-    forward_to = [loki.process.add_labels.receiver]
+    forward_to = [loki.process.normalize_levels.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-// add more labels from container logs
-// container label needs to be handled before, due to different methods
+// Normalize log levels from different formats
+// Handles both "level=info" pattern and standalone "INFO" pattern
 // ---------------------------------------------------------------------------------------------------------------------
 
-loki.process "add_labels" {
-    // Process docker container logs
-    forward_to = [loki.process.extract_level.receiver]
-}
-
-// Extract level field if present (handles both quoted and unquoted values)
-loki.process "extract_level" {
+loki.process "normalize_levels" {
+    // First try to extract level from logfmt format (level=value)
     stage.regex {
-        expression = ".*level=(\"(?P<level_quoted>[^\"]+)\"|(?P<level_unquoted>[^\\s]+)).*"
+        expression = ".*level=(\"(?P<logfmt_level>[^\"]+)\"|(?P<logfmt_level_unquoted>[^\\s]+)).*"
     }
 
+    // Then try to extract standalone log level keywords
+    stage.regex {
+        expression = ".*\\b(?P<standalone_level>TRACE|DEBUG|INFO|WARN|WARNING|ERROR|FATAL|PANIC)\\b.*"
+    }
+
+    // Combine the extracted values and normalize to lowercase
     stage.template {
-        source = "extracted_level"
-        template = "{{ or .level_quoted .level_unquoted }}"
+        source = "normalized_level"
+        template = "{{ or .logfmt_level .logfmt_level_unquoted .standalone_level | ToLower }}"
     }
 
+    // Apply the normalized level as a label
     stage.labels {
         values = {
-            level = "extracted_level",
+            level = "normalized_level",
         }
     }
 
-    forward_to = [loki.process.extract_status.receiver]
+    forward_to = [loki.process.extract_other_fields.receiver]
 }
 
-// Extract status field if present (handles both quoted and unquoted values)
-loki.process "extract_status" {
+// ---------------------------------------------------------------------------------------------------------------------
+// Extract other fields (status, httpStatus) if present
+// ---------------------------------------------------------------------------------------------------------------------
+
+loki.process "extract_other_fields" {
+    // Extract status field if present
     stage.regex {
         expression = ".*status=(\"(?P<status_quoted>[^\"]+)\"|(?P<status_unquoted>[^\\s]+)).*"
     }
@@ -138,11 +144,7 @@ loki.process "extract_status" {
         }
     }
 
-    forward_to = [loki.process.extract_httpstatus.receiver]
-}
-
-// Extract httpStatus field if present (handles both quoted and unquoted values)
-loki.process "extract_httpstatus" {
+    // Extract httpStatus field if present
     stage.regex {
         expression = ".*httpStatus=(\"(?P<httpStatus_quoted>[^\"]+)\"|(?P<httpStatus_unquoted>[^\\s]+)).*"
     }
