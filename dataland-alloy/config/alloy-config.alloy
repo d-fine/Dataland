@@ -97,33 +97,64 @@ loki.source.docker "default" {
 // ---------------------------------------------------------------------------------------------------------------------
 
 loki.process "add_labels" {
-    // Only process lines from docker containers that contain our specific fields
-    stage.match {
-        selector = "{job=\"docker_containers\"}"
-        pipeline_name = "extract_known_fields"
+    // Process docker container logs
+    forward_to = [loki.process.extract_level.receiver]
+}
 
-        // Only process if we see one of our expected field names
-        stage.regex {
-            expression = ".*(level=|status=|httpStatus=).*"
+// Extract level field if present (handles both quoted and unquoted values)
+loki.process "extract_level" {
+    stage.regex {
+        expression = ".*level=(\"(?P<level_quoted>[^\"]+)\"|(?P<level_unquoted>[^\\s]+)).*"
+    }
+
+    stage.template {
+        source = "extracted_level"
+        template = "{{ or .level_quoted .level_unquoted }}"
+    }
+
+    stage.labels {
+        values = {
+            level = "extracted_level",
         }
+    }
 
-        // Extract the value of the desired labels from the log line
-        stage.logfmt {
-            // Mapping fields from your logs
-            mapping = {
-               "extracted_level" = "level",
-               "extracted_status" = "status",
-               "extracted_httpStatus" = "httpStatus",
-            }
+    forward_to = [loki.process.extract_status.receiver]
+}
+
+// Extract status field if present (handles both quoted and unquoted values)
+loki.process "extract_status" {
+    stage.regex {
+        expression = ".*status=(\"(?P<status_quoted>[^\"]+)\"|(?P<status_unquoted>[^\\s]+)).*"
+    }
+
+    stage.template {
+        source = "extracted_status"
+        template = "{{ or .status_quoted .status_unquoted }}"
+    }
+
+    stage.labels {
+        values = {
+            status = "extracted_status",
         }
+    }
 
-        stage.labels {
-            // Use the extracted values as the labels
-            values = {
-               "level" = "extracted_level",
-               "status" = "extracted_status",
-               "httpStatus" = "extracted_httpStatus",
-            }
+    forward_to = [loki.process.extract_httpstatus.receiver]
+}
+
+// Extract httpStatus field if present (handles both quoted and unquoted values)
+loki.process "extract_httpstatus" {
+    stage.regex {
+        expression = ".*httpStatus=(\"(?P<httpStatus_quoted>[^\"]+)\"|(?P<httpStatus_unquoted>[^\\s]+)).*"
+    }
+
+    stage.template {
+        source = "extracted_httpStatus"
+        template = "{{ or .httpStatus_quoted .httpStatus_unquoted }}"
+    }
+
+    stage.labels {
+        values = {
+            httpStatus = "extracted_httpStatus",
         }
     }
 
