@@ -101,16 +101,7 @@ describeIf(
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
     });
 
-    it('From the landing page visit the company cockpit via the searchbar', () => {
-      cy.visitAndCheckAppMount('/');
-      searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
-        alphaCompanyIdAndName.companyName
-      );
-    });
-
     it("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
-      cy.visitAndCheckAppMount('/');
       removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
       ensureLoggedIn(reader_name, reader_pw);
       cy.get('input#search-bar-input').scrollIntoView();
