@@ -15,7 +15,7 @@ import java.util.UUID.randomUUID
 class PortfolioBulkDataRequestService
     @Autowired
     constructor(
-        private val publisher: MessageQueuePublisher,
+        private val publisher: MessageQueuePublisherService,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
     ) {
         companion object {
