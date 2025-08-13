@@ -7,20 +7,20 @@
           style="
             font-size: var(--font-size-xxl);
             font-weight: var(--font-weight-bold);
-            color: var(--p-surface-900);
+            color: var(--text-color);
             margin-bottom: var(--spacing-md);
           "
         >
           {{ framework?.name || 'Framework' }} Documentation
         </h1>
-        <p style="font-size: var(--font-size-lg); color: var(--p-surface-600)">
+        <p style="font-size: var(--font-size-lg); color: var(--text-color-secondary)">
           This page displays information about the {{ frameworkId }} framework used within the Dataland platform.
         </p>
       </div>
 
       <div v-if="isLoading" style="text-align: center; padding: var(--spacing-xl) 0">
         <ProgressSpinner />
-        <p style="margin-top: var(--spacing-md); color: var(--p-surface-600)">Loading framework...</p>
+        <p style="margin-top: var(--spacing-md); color: var(--text-color-secondary)">Loading framework...</p>
       </div>
 
       <div v-else-if="error" style="text-align: center; padding: var(--spacing-xl) 0">
@@ -119,7 +119,7 @@ onMounted(() => {
 <style scoped>
 .frameworks-page {
   min-height: calc(100vh - 4rem);
-  background-color: var(--p-surface-ground);
+  background-color: var(--surface-ground);
   padding-top: var(--spacing-xl);
 }
 

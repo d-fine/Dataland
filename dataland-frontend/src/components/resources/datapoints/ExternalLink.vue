@@ -56,10 +56,11 @@ const removeUnderline = (event: MouseEvent) => {
 }
 
 .internal-link {
-  color: var(--p-primary-color);
+  color: var(--primary-color);
 }
 
 .internal-link:hover {
-  color: var(--p-primary-700);
+  color: var(--primary-color);
+  filter: brightness(0.9);
 }
 </style>

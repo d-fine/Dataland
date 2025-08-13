@@ -7,20 +7,20 @@
           style="
             font-size: var(--font-size-xxl);
             font-weight: var(--font-weight-bold);
-            color: var(--p-surface-900);
+            color: var(--text-color);
             margin-bottom: var(--spacing-md);
           "
         >
           Documentation
         </h1>
-        <p style="font-size: var(--font-size-lg); color: var(--p-surface-600)">
+        <p style="font-size: var(--font-size-lg); color: var(--text-color-secondary)">
           Welcome to the Dataland documentation. This page provides an overview of the available frameworks and resources on the platform.
         </p>
       </div>
 
       <div v-if="isLoading" style="text-align: center; padding: var(--spacing-xl) 0">
         <ProgressSpinner />
-        <p style="margin-top: var(--spacing-md); color: var(--p-surface-600)">Loading frameworks...</p>
+        <p style="margin-top: var(--spacing-md); color: var(--text-color-secondary)">Loading frameworks...</p>
       </div>
 
       <div v-else-if="error" style="text-align: center; padding: var(--spacing-xl) 0">
@@ -35,13 +35,13 @@
             style="
               font-size: var(--font-size-xl);
               font-weight: var(--font-weight-semibold);
-              color: var(--p-surface-900);
+              color: var(--text-color);
               margin-bottom: var(--spacing-md);
             "
           >
             Available Frameworks
           </h2>
-          <p style="font-size: var(--font-size-base); color: var(--p-surface-600); margin-bottom: var(--spacing-md)">
+          <p style="font-size: var(--font-size-base); color: var(--text-color-secondary); margin-bottom: var(--spacing-md)">
             Below is a list of all available data frameworks on the Dataland platform:
           </p>
         </div>
@@ -67,16 +67,16 @@
                   style="
                     font-size: var(--font-size-lg);
                     font-weight: var(--font-weight-semibold);
-                    color: var(--p-surface-900);
+                    color: var(--text-color);
                     margin-bottom: var(--spacing-sm);
                   "
                 >
                   {{ framework.name }}
                 </h3>
-                <p style="color: var(--p-surface-600); margin-bottom: var(--spacing-sm)">
+                <p style="color: var(--text-color-secondary); margin-bottom: var(--spacing-sm)">
                   Framework ID: {{ framework.framework.id }}
                 </p>
-                <p style="color: var(--p-surface-500); font-size: var(--font-size-sm)">
+                <p style="color: var(--text-color-third); font-size: var(--font-size-sm)">
                   Click to view detailed documentation for this framework
                 </p>
               </div>
@@ -122,7 +122,7 @@ const loadFrameworks = async () => {
     error.value = null;
 
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const response = await apiClientProvider.apiClients.specificationController.getFrameworks();
+    const response = await apiClientProvider.apiClients.specificationController.listFrameworkSpecifications()
     frameworks.value = response.data;
   } catch (err) {
     console.error('Error loading frameworks:', err);
@@ -144,7 +144,7 @@ onMounted(() => {
 <style scoped>
 .documentation-page {
   min-height: calc(100vh - 4rem);
-  background-color: var(--p-surface-ground);
+  background-color: var(--surface-ground);
   padding-top: var(--spacing-xl);
 }
 
@@ -153,6 +153,6 @@ onMounted(() => {
 }
 
 .p-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 </style>
