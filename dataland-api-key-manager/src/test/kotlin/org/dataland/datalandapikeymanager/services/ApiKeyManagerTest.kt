@@ -47,7 +47,7 @@ class ApiKeyManagerTest(
             responseMessage,
             "The expired api key was unexpectedly validated.",
         )
-        Mockito.verify(mockKeycloakUserService, Mockito.times(1)).getUserRoleNames(keycloakUserId)
+        Mockito.verify(mockKeycloakUserService, Mockito.times(1)).getCompositeUserRoleNames(keycloakUserId)
     }
 
     @Test
@@ -58,6 +58,6 @@ class ApiKeyManagerTest(
             "The API key you provided was successfully validated.",
             responseMessage,
         )
-        Mockito.verify(mockKeycloakUserService, Mockito.times(1)).getUserRoleNames(keycloakUserId)
+        Mockito.verify(mockKeycloakUserService, Mockito.times(1)).getCompositeUserRoleNames(keycloakUserId)
     }
 }
