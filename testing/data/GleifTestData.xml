@@ -14,6 +14,9 @@
                 <lei:OtherEntityNames>
                     <lei:OtherEntityName xml:lang="en" type="PREVIOUS_LEGAL_NAME">FIDELITY ADVISOR SERIES I - Fidelity Advisor Leveraged Company Stock Fund</lei:OtherEntityName>
                 </lei:OtherEntityNames>
+                <lei:TransliteratedOtherEntityNames>
+                    <lei:TransliteratedOtherEntityName xml:lang="lb" type="PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME">GE Financing (Luxembourg) S.a r.l.</lei:TransliteratedOtherEntityName>
+                </lei:TransliteratedOtherEntityNames>
                 <lei:LegalAddress xml:lang="en">
                     <lei:FirstAddressLine>245 SUMMER STREET</lei:FirstAddressLine>
                     <lei:City>BOSTON</lei:City>AA

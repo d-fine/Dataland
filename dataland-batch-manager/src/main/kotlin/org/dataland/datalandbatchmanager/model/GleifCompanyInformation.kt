@@ -2,6 +2,7 @@ package org.dataland.datalandbatchmanager.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
 /**
  * Data class containing the relevant information from the GLEIF xml files
@@ -9,7 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class GleifLEIData(
-    @JacksonXmlProperty(localName = "LEIRecords")
+    @field:JacksonXmlProperty(localName = "LEIRecords")
     val leiRecords: List<LEIRecord>,
 )
 
@@ -18,9 +19,9 @@ data class GleifLEIData(
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class LEIRecord(
-    @JacksonXmlProperty(localName = "LEI")
+    @field:JacksonXmlProperty(localName = "LEI")
     val lei: String,
-    @JacksonXmlProperty(localName = "Entity")
+    @field:JacksonXmlProperty(localName = "Entity")
     val entity: Entity,
 )
 
@@ -29,10 +30,27 @@ data class LEIRecord(
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Entity(
-    @JacksonXmlProperty(localName = "LegalName")
+    @field:JacksonXmlProperty(localName = "LegalName")
     val legalName: String,
-    @JacksonXmlProperty(localName = "HeadquartersAddress")
+    @field:JacksonXmlProperty(localName = "HeadquartersAddress")
     val headquartersAddress: HeadquartersAddress,
+    @field:JacksonXmlProperty(localName = "OtherEntityNames")
+    val otherEntityNames: List<AlternativeEntityName>? = null,
+    @field:JacksonXmlProperty(localName = "TransliteratedOtherEntityNames")
+    val transliteratedOtherEntityNames: List<AlternativeEntityName>? = null,
+)
+
+/**
+ * Data class containing the relevant alternative entity names from the GLEIF xml files
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class AlternativeEntityName(
+    @field:JacksonXmlProperty(isAttribute = true, localName = "type")
+    val type: String? = null,
+    @field:JacksonXmlProperty(isAttribute = true, localName = "lang")
+    val lang: String? = null,
+    @field:JacksonXmlText
+    val name: String? = null,
 )
 
 /**
@@ -40,12 +58,10 @@ data class Entity(
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class HeadquartersAddress(
-    @JacksonXmlProperty(localName = "City")
+    @field:JacksonXmlProperty(localName = "City")
     val city: String,
-    @JacksonXmlProperty(localName = "PostalCode")
+    @field:JacksonXmlProperty(localName = "PostalCode")
     val postalCode: String,
-    @JacksonXmlProperty(localName = "Country")
+    @field:JacksonXmlProperty(localName = "Country")
     val country: String,
-   /* @JacksonXmlProperty(localName = "lang", isAttribute = true)
-    val lang: String? = null,*/
 )
