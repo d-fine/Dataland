@@ -2,6 +2,7 @@ package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbatchmanager.model.AlternativeEntityName
 import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.HeadquartersAddress
@@ -26,6 +27,47 @@ class GleifMappingTest {
                             city = "CompanyCity",
                             postalCode = "CompanyPostalCode",
                             country = "CompanyCountry",
+                        ),
+                    otherEntityNames =
+                        listOf(
+                            AlternativeEntityName(
+                                name = "Dummy english alternative language legal name 1",
+                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                lang = "en",
+                            ),
+                            AlternativeEntityName(
+                                name = "Dummy english alternative language legal name 2",
+                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                lang = "en",
+                            ),
+                            AlternativeEntityName(
+                                name = "Dummy non-english alternative language legal name",
+                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                lang = "zh",
+                            ),
+                            AlternativeEntityName(
+                                name = "Dummy previous legal name",
+                                type = "PREVIOUS_LEGAL_NAME",
+                                lang = "en",
+                            ),
+                            AlternativeEntityName(
+                                name = "Dummy trading or operating name",
+                                type = "TRADING_OR_OPERATING_NAME",
+                                lang = "en",
+                            ),
+                        ),
+                    transliteratedOtherEntityNames =
+                        listOf(
+                            AlternativeEntityName(
+                                name = "Dummy preferred ascii transliterated legal name",
+                                type = "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                lang = "en",
+                            ),
+                            AlternativeEntityName(
+                                name = "Dummy auto ascii transliterated legal name",
+                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                lang = "en",
+                            ),
                         ),
                 ),
         )

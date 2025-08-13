@@ -12,57 +12,27 @@
             <lei:Entity>
                 <lei:LegalName xml:lang="en">CompanyName</lei:LegalName>
                 <lei:OtherEntityNames>
-                    <lei:OtherEntityName xml:lang="en" type="PREVIOUS_LEGAL_NAME">FIDELITY ADVISOR SERIES I - Fidelity Advisor Leveraged Company Stock Fund</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="ALTERNATIVE_LANGUAGE_LEGAL_NAME">Dummy english alternative language legal name 1</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="ALTERNATIVE_LANGUAGE_LEGAL_NAME">Dummy english alternative language legal name 2</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="zh" type="ALTERNATIVE_LANGUAGE_LEGAL_NAME">Dummy non-english alternative language legal name</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="PREVIOUS_LEGAL_NAME">Dummy previous legal name</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="TRADING_OR_OPERATING_NAME">Dummy trading or operating name</lei:OtherEntityName>
                 </lei:OtherEntityNames>
                 <lei:TransliteratedOtherEntityNames>
-                    <lei:TransliteratedOtherEntityName xml:lang="lb" type="PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME">GE Financing (Luxembourg) S.a r.l.</lei:TransliteratedOtherEntityName>
+                    <lei:TransliteratedOtherEntityName xml:lang="en" type="PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME">Dummy preferred ascii transliterated legal name</lei:TransliteratedOtherEntityName>
+                    <lei:TransliteratedOtherEntityName xml:lang="en" type="AUTO_ASCII_TRANSLITERATED_LEGAL_NAME">Dummy auto ascii transliterated legal name</lei:TransliteratedOtherEntityName>
                 </lei:TransliteratedOtherEntityNames>
-                <lei:LegalAddress xml:lang="en">
-                    <lei:FirstAddressLine>245 SUMMER STREET</lei:FirstAddressLine>
-                    <lei:City>BOSTON</lei:City>AA
-                    <lei:Region>US-MA</lei:Region>
-                    <lei:Country>US</lei:Country>
-                    <lei:PostalCode>02210</lei:PostalCode>
-                </lei:LegalAddress>
                 <lei:HeadquartersAddress xml:lang="en">
-                    <lei:FirstAddressLine>C/O FIDELITY MANAGEMENT &amp; RESEARCH COMPANY LLC</lei:FirstAddressLine>
-                    <lei:AdditionalAddressLine>CORPORATION TRUST CENTER</lei:AdditionalAddressLine>
-                    <lei:AdditionalAddressLine>1209 ORANGE ST</lei:AdditionalAddressLine>
                     <lei:City>CompanyCity</lei:City>
-                    <lei:Region>US-MA</lei:Region>
+                    <lei:Region>non-used-field</lei:Region>
                     <lei:Country>CompanyCountry</lei:Country>
                     <lei:PostalCode>CompanyPostalCode</lei:PostalCode>
                 </lei:HeadquartersAddress>
                 <lei:RegistrationAuthority>
-                    <lei:RegistrationAuthorityID>RA000665</lei:RegistrationAuthorityID>
-                    <lei:RegistrationAuthorityEntityID>S000005113</lei:RegistrationAuthorityEntityID>
+                    <lei:RegistrationAuthorityID>non-used-field</lei:RegistrationAuthorityID>
+                    <lei:RegistrationAuthorityEntityID>non-used-field</lei:RegistrationAuthorityEntityID>
                 </lei:RegistrationAuthority>
-                <lei:LegalJurisdiction>US</lei:LegalJurisdiction>
-                <lei:EntityCategory>FUND</lei:EntityCategory>
-                <lei:LegalForm>
-                    <lei:EntityLegalFormCode>8888</lei:EntityLegalFormCode>
-                    <lei:OtherLegalForm>FUND</lei:OtherLegalForm>
-                </lei:LegalForm>
-                <lei:EntityStatus>ACTIVE</lei:EntityStatus>
-                <lei:EntityCreationDate>2012-11-29T00:00:00.000Z</lei:EntityCreationDate>
             </lei:Entity>
-            <lei:Registration>
-                <lei:InitialRegistrationDate>2012-11-29T16:33:00.000Z</lei:InitialRegistrationDate>
-                <lei:LastUpdateDate>2025-04-19T13:30:05.472Z</lei:LastUpdateDate>
-                <lei:RegistrationStatus>LAPSED</lei:RegistrationStatus>
-                <lei:NextRenewalDate>2025-04-18T15:48:53.604Z</lei:NextRenewalDate>
-                <lei:ManagingLOU>5493001KJTIIGC8Y1R12</lei:ManagingLOU>
-                <lei:ValidationSources>FULLY_CORROBORATED</lei:ValidationSources>
-                <lei:ValidationAuthority>
-                    <lei:ValidationAuthorityID>RA000665</lei:ValidationAuthorityID>
-                    <lei:ValidationAuthorityEntityID>S000005113</lei:ValidationAuthorityEntityID>
-                </lei:ValidationAuthority>
-            </lei:Registration>
-            <lei:Extension>
-                <gleif:conformity>
-                    <gleif:conformityflag>NON_CONFORMING</gleif:conformityflag>
-                </gleif:conformity>
-            </lei:Extension>
         </lei:LEIRecord>
 </lei:LEIRecords>
         </lei:LEIData>
