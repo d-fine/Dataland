@@ -41,7 +41,7 @@ describe('check that the document link component works and is displayed correctl
           fileReference: 'dummyFileReference',
           dataType: DataTypeEnum.Lksg,
         },
-        showIcon: true
+        showIcon: true,
       },
     }).then((mounted) => {
       validateNoIcons();
@@ -49,8 +49,7 @@ describe('check that the document link component works and is displayed correctl
       mounted.wrapper.vm.percentCompleted = 50;
 
       cy.get('[data-test="spinner-icon"]').should('exist');
-      cy.get("[data-test='percentage-text']").should('exist').should('have.text', " (50%) ");
-
+      cy.get("[data-test='percentage-text']").should('exist').should('have.text', ' (50%) ');
     });
   });
 
