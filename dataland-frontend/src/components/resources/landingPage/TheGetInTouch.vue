@@ -13,7 +13,6 @@
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
         <Button
           label="GET IN TOUCH"
-          buttonType="button-component getintouch__text-button"
           ariaLabel="Get In Touch"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
         />
@@ -96,11 +95,6 @@ const getInTouchSection = computed(() => {
 
     &-text {
       color: var(--p-primary-color);
-    }
-
-    &-button {
-      margin-top: 32px;
-      width: fit-content;
     }
   }
 }
