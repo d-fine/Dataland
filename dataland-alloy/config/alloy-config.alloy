@@ -98,8 +98,9 @@ loki.source.docker "default" {
 
 loki.process "normalize_levels" {
     // First try to extract level from logfmt format (level=value)
+    // This captures the value without quotes or trailing punctuation
     stage.regex {
-        expression = ".*level=(\"(?P<logfmt_level>[^\"]+)\"|(?P<logfmt_level_unquoted>[^\\s]+)).*"
+        expression = ".*level=[\"'`]?(?P<logfmt_level>[a-zA-Z]+)[\"'`]?[,\\s]?.*"
     }
 
     // Then try to extract standalone log level keywords
@@ -107,13 +108,13 @@ loki.process "normalize_levels" {
         expression = ".*\\b(?P<standalone_level>TRACE|DEBUG|INFO|WARN|WARNING|ERROR|FATAL|PANIC)\\b.*"
     }
 
-    // Combine the extracted values and normalize to lowercase
+    // Combine the extracted values, normalize to lowercase, and clean up
     stage.template {
         source = "normalized_level"
-        template = "{{ or .logfmt_level .logfmt_level_unquoted .standalone_level | ToLower }}"
+        template = "{{ or .logfmt_level .standalone_level | ToLower | TrimSpace | TrimPrefix \"\\\"\" | TrimSuffix \"\\\"\" | TrimPrefix \"'\" | TrimSuffix \"'\" | TrimPrefix \"`\" | TrimSuffix \"`\" | TrimSuffix \",\" }}"
     }
 
-    // Apply the normalized level as a label
+    // Apply the normalized level as a label only if we found a value
     stage.labels {
         values = {
             level = "normalized_level",
@@ -128,14 +129,14 @@ loki.process "normalize_levels" {
 // ---------------------------------------------------------------------------------------------------------------------
 
 loki.process "extract_other_fields" {
-    // Extract status field if present
+    // Extract status field if present - capture only alphanumeric and common status characters
     stage.regex {
-        expression = ".*status=(\"(?P<status_quoted>[^\"]+)\"|(?P<status_unquoted>[^\\s]+)).*"
+        expression = ".*status=[\"'`]?(?P<status_value>[a-zA-Z0-9_-]+)[\"'`]?[,\\s]?.*"
     }
 
     stage.template {
         source = "extracted_status"
-        template = "{{ or .status_quoted .status_unquoted }}"
+        template = "{{ .status_value | TrimSpace }}"
     }
 
     stage.labels {
@@ -144,14 +145,14 @@ loki.process "extract_other_fields" {
         }
     }
 
-    // Extract httpStatus field if present
+    // Extract httpStatus field if present - capture only numeric status codes
     stage.regex {
-        expression = ".*httpStatus=(\"(?P<httpStatus_quoted>[^\"]+)\"|(?P<httpStatus_unquoted>[^\\s]+)).*"
+        expression = ".*httpStatus=[\"'`]?(?P<httpStatus_value>[0-9]+)[\"'`]?[,\\s]?.*"
     }
 
     stage.template {
         source = "extracted_httpStatus"
-        template = "{{ or .httpStatus_quoted .httpStatus_unquoted }}"
+        template = "{{ .httpStatus_value | TrimSpace }}"
     }
 
     stage.labels {
