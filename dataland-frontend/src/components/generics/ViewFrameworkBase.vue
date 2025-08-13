@@ -40,7 +40,7 @@
             <PrimeButton
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
               label="Reject"
-              data-test="qaApproveButton"
+              data-test="qaRejectButton"
               icon="pi pi-times"
               variant="outlined"
               @click="setQaStatusTo('Rejected')"

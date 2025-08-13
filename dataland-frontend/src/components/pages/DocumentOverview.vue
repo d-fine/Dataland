@@ -67,7 +67,7 @@
                   ? `DOWNLOAD (${percentCompleted}%)`
                   : 'DOWNLOAD'
               "
-              data-test="downloadDocumentButton"
+              data-test="document-download-button"
               @click="
                 handleDocumentDownload({
                   fileReference: tableRow.data.documentId,
