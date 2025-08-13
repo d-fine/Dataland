@@ -12,22 +12,17 @@
         {{ aboutIntroSection.text[2] }}
       </h2>
     </div>
-    <ButtonComponent
-      :label="aboutIntroSection.title"
-      buttonType="button-component quotes__button"
-      :aria-label="aboutIntroSection.title"
-      @click="register"
-    />
+    <Button label="START YOUR DATALAND JOURNEY" @click="register" />
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 import type { Section } from '@/types/ContentTypes';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
+import Button from 'primevue/button';
 
 const props = defineProps<{ sections?: Section[] }>();
 

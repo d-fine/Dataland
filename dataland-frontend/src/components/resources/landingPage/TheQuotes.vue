@@ -57,12 +57,7 @@
         </span>
       </h3>
     </transition>
-    <ButtonComponent
-      :label="quotesSection.text[0]"
-      buttonType="button-component quotes__button"
-      ariaLabel="Start your Dataland Journey"
-      @click="register"
-    />
+    <Button :label="quotesSection.text[0]" ariaLabel="Start your Dataland Journey" @click="register" />
   </section>
 </template>
 
@@ -72,8 +67,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import type { Section } from '@/types/ContentTypes';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import SlideShow from '@/components/general/SlideShow.vue';
+import Button from 'primevue/button';
 
 interface YouTubeEvent {
   target?: {
@@ -368,24 +363,6 @@ const register = (): void => {
       }
     }
   }
-  &__button {
-    padding: 14px 32px;
-    border-radius: 32px;
-    background-color: var(--p-primary-color);
-    color: var(--default-neutral-white);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
-    border: 2px solid var(--p-primary-color);
-    cursor: pointer;
-    &:hover {
-      background-color: var(--default-neutral-white);
-      color: var(--p-highlight-color);
-    }
-  }
 }
 .disabled {
   opacity: 0.5;
@@ -408,11 +385,6 @@ const register = (): void => {
     }
     &__arrows {
       order: 1;
-    }
-    &__button {
-      display: none;
-      margin: 32px 16px 0;
-      order: 2;
     }
   }
 }

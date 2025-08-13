@@ -7,13 +7,12 @@
         >{{ joinCampaignSection.text[2] }}
       </h2>
       <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
-      <ButtonComponent
-        label="I am interested"
-        buttonType="button-component joincampaign__button"
+      <Button
+        label="I AM INTERESTED"
         ariaLabel="Indicate interest by opening email client"
         @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
+        class="button-component joincampaign__button"
       />
-
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
         <tr v-for="(card, index) in joinCampaignSection.cards" :key="index" class="joincampaign__row">
           <td class="joincampaign__cell joincampaign__cell--icon">
@@ -32,7 +31,7 @@
 import { computed, type ComputedRef } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import { openEmailClient } from '@/utils/Email';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
+import Button from 'primevue/button';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const findSection = (title: string): ComputedRef<Section | null> => {
@@ -86,24 +85,8 @@ const getInTouchSection = findSection('Get in touch');
     margin: 0;
   }
   &__button {
-    padding: 14px 32px;
-    border-radius: 32px;
-    background-color: var(--p-primary-color);
-    color: var(--default-neutral-white);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
-    border: 2px solid var(--p-primary-color);
-    cursor: pointer;
-    grid-column: 1 / -1;
     width: fit-content;
-    &:hover {
-      background-color: var(--default-neutral-white);
-      color: var(--p-highlight-color);
-    }
+    white-space: nowrap;
   }
 
   &__grid {
