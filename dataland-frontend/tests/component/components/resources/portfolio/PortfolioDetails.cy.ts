@@ -115,12 +115,11 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'Edit Monitoring');
+        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'Activate Monitoring');
       });
     });
   });
-
-  it('Check Monitoring Button for premium user', function (): void {
+  it('Check Monitoring Button and Not Monitored Tag for premium user', function (): void {
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
     // @ts-ignore
     cy.mountWithPlugins(PortfolioDetails, {
@@ -130,7 +129,31 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'Edit Monitoring').click();
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'Activate Monitoring');
+        cy.get('[data-test="is-monitored-tag"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio not actively monitored');
+      });
+    });
+  });
+  it('Check Monitored Tag for premium user', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', {
+      ...portfolioFixture,
+      isMonitored: true,
+      startingMonitoringPeiod: '2024',
+      monitoredFrameworks: new Set('sfdr'),
+    }).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({
+        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
+      }),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="is-monitored-tag"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio actively monitored');
       });
     });
   });
