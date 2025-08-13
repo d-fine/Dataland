@@ -98,15 +98,33 @@
 </template>
 
 <script setup lang="ts">
+// Vue & Types
 import { ref, reactive, computed, watch, onMounted, inject, unref } from 'vue';
 import type { Ref } from 'vue';
-import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+
+//Router
+import { useRouter } from 'vue-router';
+
+//Local Components
+import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
+import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
+
+// PrimeVue
+import PrimeButton from 'primevue/button';
+import Card from 'primevue/card';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
+
+// Services, Utils, Constants
 import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
@@ -116,6 +134,8 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { documentNameOrId, documentPublicationDateOrEmpty, getPluralCategory } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
+
+// API Client Types
 import type { AggregatedFrameworkDataSummary, DataTypeEnum } from '@clients/backend';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import {
@@ -123,19 +143,10 @@ import {
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
-import PrimeButton from 'primevue/button';
-import Card from 'primevue/card';
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import TabPanels from 'primevue/tabpanels';
-import TabPanel from 'primevue/tabpanel';
-import { useRouter } from 'vue-router';
-import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
 
+// Props & Injections
 const props = defineProps<{ companyId: string }>();
 
-// Injected dependencies
 import type Keycloak from 'keycloak-js';
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<Ref<boolean>>('authenticated', ref(false));
@@ -143,41 +154,47 @@ const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | u
   'companyRoleAssignments',
   ref([])
 );
+const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 
 // State
 const router = useRouter();
 const activeTab = ref<'datasets' | 'users'>('datasets');
 const showTabs = ref(true);
 
+// API data
 type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
-
 const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
+
+//Frameworks
 const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
 const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
+const showAllFrameworks = ref(false);
+
+// Permissions
 const isUserCompanyOwnerOrUploader = ref(false);
 const isUserKeycloakUploader = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
-const showAllFrameworks = ref(false);
+
+// Latest documents
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
   latestDocuments[`latest${category}`] = [];
 });
-const chunkSize = 3;
 
+//Misc
+const chunkSize = 3;
 const companyRoles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.CompanyOwner, CompanyRole.DataUploader];
 
 // Computed
-const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
 const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
+const base = `/companies/${props.companyId}`;
 
 // Helpers
 /**
  * Returns the document data array for a given category.
- * @param category - The document category key.
- * @returns An array of DocumentMetaInfoResponse objects.
  */
 const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategoryEnum): DocumentMetaInfoResponse[] => {
   return latestDocuments[`latest${category}`] || [];
@@ -214,8 +231,6 @@ function routeToDocuments(): void {
 
 /**
  * Determines if the user is allowed to upload for a given framework.
- * @param framework - The framework data type.
- * @returns True if the user can upload, false otherwise.
  */
 function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
   return isUserCompanyOwnerOrUploader.value || (isFrameworkPublic(framework) && isUserKeycloakUploader.value);
@@ -227,19 +242,23 @@ function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
  */
 async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
+
   const assignments = unref(companyRoleAssignmentsRef) ?? [];
   console.debug('[CompanyCockpitPage] Company role assignments for %s:', props.companyId, assignments);
-  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
 
+  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
   const userRolesNames = roles.map((role) => (CompanyRole as never)[role] ?? role);
+
   console.debug('[CompanyCockpitPage] User roles for %s:', props.companyId, roles, userRolesNames);
+
   isUserCompanyOwnerOrUploader.value =
     roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
   console.debug('[CompanyCockpitPage] isUserCompanyOwnerOrUploader %s:', props.companyId, isUserCompanyOwnerOrUploader);
-  isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
 
+  isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   isUserCompanyMember.value = roles.length > 0;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+
   showTabs.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }
 
@@ -254,11 +273,10 @@ function toggleShowAll(): void {
 watch(
   () => props.companyId,
   async (newId, oldId) => {
-    if (newId !== oldId) {
-      await getAggregatedFrameworkDataSummary();
-      await getMetaInfoForLatestDocuments();
-      await setUserRights();
-    }
+    if (newId == oldId) return;
+    await getAggregatedFrameworkDataSummary();
+    await getMetaInfoForLatestDocuments();
+    await setUserRights();
   }
 );
 
@@ -271,16 +289,17 @@ watch(showTabs, (val) => {
 });
 
 watch(activeTab, (val) => {
-  const base = `/companies/${props.companyId}`;
   void router.replace({ path: val === 'users' ? `${base}/users` : base });
 });
 
 // Lifecycle
 onMounted(async () => {
   console.debug('[CompanyCockpitPage] Mounted with AssignmentRef:', companyRoleAssignmentsRef.value);
+
   await setUserRights();
   await getAggregatedFrameworkDataSummary();
   await getMetaInfoForLatestDocuments();
+
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !showTabs.value) {
     activeTab.value = 'datasets';

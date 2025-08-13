@@ -1,10 +1,9 @@
 <template>
   <Card
     data-test="company-roles-card"
-    class="mb-4"
     :pt="{
       root: {
-        style: 'width: 70%; margin: 0 auto; margin-top: 2rem; margin-bottom: 2rem;',
+        style: 'width: 70%; margin: 0 auto; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);',
       },
     }"
   >
@@ -14,7 +13,15 @@
     </template>
 
     <template #subtitle>
-      <Message severity="info" closable>
+      <Message
+        severity="info"
+        closable
+        :pt="{
+          root: {
+            style: 'margin-top: var(--spacing-xs);',
+          },
+        }"
+      >
         {{ group?.info }}
       </Message>
     </template>
@@ -51,9 +58,7 @@ const props = defineProps<{
 
 // Injected dependencies
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
 const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
 
 const roleGroups = [
