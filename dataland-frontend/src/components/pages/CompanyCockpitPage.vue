@@ -190,7 +190,6 @@ const companyRoles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.C
 // Computed
 const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
 const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
-const base = `/companies/${props.companyId}`;
 
 // Helpers
 /**
@@ -289,6 +288,7 @@ watch(showTabs, (val) => {
 });
 
 watch(activeTab, (val) => {
+  const base = `/companies/${props.companyId}`;
   void router.replace({ path: val === 'users' ? `${base}/users` : base });
 });
 

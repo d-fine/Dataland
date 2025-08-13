@@ -8,7 +8,7 @@ import {
   uploader_pw,
 } from '@e2e/utils/Cypress';
 import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
-import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
+import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -59,7 +59,7 @@ describeIf(
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
       visitCockpitForCompanyAlpha();
-      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}`).as(
+      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
@@ -101,10 +101,18 @@ describeIf(
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
     });
 
+    it('From the landing page visit the company cockpit via the searchbar', () => {
+      cy.visitAndCheckAppMount('/');
+      searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
+      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+        alphaCompanyIdAndName.companyName
+      );
+    });
+
     it("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
-      logout();
+      cy.visitAndCheckAppMount('/');
       removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
-      login(reader_name, reader_pw);
+      ensureLoggedIn(reader_name, reader_pw);
       cy.get('input#search-bar-input').scrollIntoView();
       cy.get('input#search-bar-input').type(alphaCompanyIdAndName.companyName);
       cy.get('[data-pc-section="list"]').contains(alphaCompanyIdAndName.companyName).click();
