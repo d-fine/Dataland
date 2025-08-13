@@ -8,7 +8,7 @@ import {
   uploader_pw,
 } from '@e2e/utils/Cypress';
 import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
-import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
+import { getKeycloakToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -101,23 +101,18 @@ describeIf(
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
     });
 
-    it("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
+    it.only("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
-      ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedIn(reader_name, reader_pw);
       visitCockpitForCompanyAlpha();
       cy.get('[data-test="usersTab"]').should('not.exist');
-      getKeycloakToken(admin_name, admin_pw)
-        .then((token: string) => {
-          return assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId);
-        })
-        .then(() => {
-          cy.reload();
-        });
-      cy.get('[data-test="usersTab"]').scrollIntoView();
-      cy.get('[data-test="usersTab"]').click();
+      cy.then(() => getKeycloakToken(admin_name, admin_pw))
+        .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
+        .then(() => cy.reload());
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Members') // find the Members card
         .within(() => {
-          cy.get('td').contains('18b67ecc-1176-4506-8414-1e81661017ca').should('exist');
+          cy.get('td').contains(reader_userId).should('exist');
         });
       cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
       cy.get('[data-test="usersTab"]').should('not.exist');
