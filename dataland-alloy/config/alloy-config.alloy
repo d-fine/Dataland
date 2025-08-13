@@ -94,21 +94,16 @@ loki.source.docker "default" {
 // ---------------------------------------------------------------------------------------------------------------------
 // add more labels from container logs
 // container label needs to be handled before, due to different methods
-//
-// Note: This generates error logs for alloy of type 'logfmt syntax error'
-//       for log messages containing the label keywords in the text but not as labels.
-//       However this does not affect the functionality for other logs, containing the label keywords as labels.
 // ---------------------------------------------------------------------------------------------------------------------
 
 loki.process "add_labels" {
     // Only process lines that contain valid logfmt patterns
     stage.match {
         selector = "{job=\"docker_containers\"}"
-        // Match lines that contain key=value patterns (basic logfmt check)
         pipeline_name = "logfmt_lines"
 
         stage.regex {
-            expression = ".*\\w+=\\w+.*"
+            expression = "^.*[a-zA-Z_][a-zA-Z0-9_]*=(\"[^\"]*\"|[^\\s]+).*$"
         }
 
         // Extract the value of the desired labels from the log line
@@ -117,7 +112,7 @@ loki.process "add_labels" {
             mapping = {
                "extracted_level" = "level",
                "extracted_status" = "status",
-               "extracted_httpStatus" ="httpStatus",
+               "extracted_httpStatus" = "httpStatus",
             }
         }
 
@@ -129,6 +124,19 @@ loki.process "add_labels" {
                "httpStatus" = "extracted_httpStatus",
             }
         }
+    }
+
+    // Add a separate pipeline for non-logfmt lines to pass them through
+    stage.match {
+        selector = "{job=\"docker_containers\"}"
+        pipeline_name = "non_logfmt_lines"
+
+        // Match lines that don't contain logfmt patterns
+        stage.regex {
+            expression = "^(?!.*[a-zA-Z_][a-zA-Z0-9_]*=(\"[^\"]*\"|[^\\s]+)).*$"
+        }
+
+        // These lines pass through without logfmt processing
     }
 
     forward_to = [loki.write.local_loki.receiver]
