@@ -93,50 +93,66 @@ loki.source.docker "default" {
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Normalize log levels from different formats
-// Handles both "level=info" pattern and standalone "INFO" pattern
 // ---------------------------------------------------------------------------------------------------------------------
 
 loki.process "normalize_levels" {
-    // First try to extract level from logfmt format (level=value)
-    // This captures the value without quotes or trailing punctuation
+    // Try multiple patterns for level extraction
+
+    // Pattern 1: level=value (with or without quotes)
     stage.regex {
-        expression = ".*level=[\"'`]?(?P<logfmt_level>[a-zA-Z]+)[\"'`]?[,\\s]?.*"
+        expression = "level=\"(?P<level_quoted>[^\"]+)\""
     }
 
-    // Then try to extract standalone log level keywords
+    // Pattern 2: level=value (unquoted)
     stage.regex {
-        expression = ".*\\b(?P<standalone_level>TRACE|DEBUG|INFO|WARN|WARNING|ERROR|FATAL|PANIC)\\b.*"
+        expression = "level=(?P<level_unquoted>[a-zA-Z]+)"
     }
 
-    // Combine the extracted values, normalize to lowercase, and clean up
+    // Pattern 3: level with backticks
+    stage.regex {
+        expression = "level=`(?P<level_backtick>[^`]+)`"
+    }
+
+    // Pattern 4: Standalone uppercase levels
+    stage.regex {
+        expression = "\\b(?P<standalone_level>TRACE|DEBUG|INFO|WARN|WARNING|ERROR|FATAL|PANIC)\\b"
+    }
+
+    // Combine all possible matches and normalize
     stage.template {
         source = "normalized_level"
-        template = "{{ or .logfmt_level .standalone_level | ToLower | TrimSpace | TrimPrefix \"\\\"\" | TrimSuffix \"\\\"\" | TrimPrefix \"'\" | TrimSuffix \"'\" | TrimPrefix \"`\" | TrimSuffix \"`\" | TrimSuffix \",\" }}"
+        template = "{{ or .level_quoted .level_unquoted .level_backtick .standalone_level | ToLower }}"
     }
 
-    // Apply the normalized level as a label only if we found a value
+    // Only set label if we found a value
     stage.labels {
         values = {
             level = "normalized_level",
         }
     }
 
-    forward_to = [loki.process.extract_other_fields.receiver]
+    forward_to = [loki.process.extract_status.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Extract other fields (status, httpStatus) if present
+// Extract status field
 // ---------------------------------------------------------------------------------------------------------------------
 
-loki.process "extract_other_fields" {
-    // Extract status field if present - capture only alphanumeric and common status characters
+loki.process "extract_status" {
+    // Pattern 1: status="value"
     stage.regex {
-        expression = ".*status=[\"'`]?(?P<status_value>[a-zA-Z0-9_-]+)[\"'`]?[,\\s]?.*"
+        expression = "status=\"(?P<status_quoted>[^\"]+)\""
     }
 
+    // Pattern 2: status=value (unquoted, stops at space or comma)
+    stage.regex {
+        expression = "status=(?P<status_unquoted>[^\\s,]+)"
+    }
+
+    // Combine matches
     stage.template {
         source = "extracted_status"
-        template = "{{ .status_value | TrimSpace }}"
+        template = "{{ or .status_quoted .status_unquoted }}"
     }
 
     stage.labels {
@@ -145,14 +161,28 @@ loki.process "extract_other_fields" {
         }
     }
 
-    // Extract httpStatus field if present - capture only numeric status codes
+    forward_to = [loki.process.extract_httpstatus.receiver]
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Extract httpStatus field
+// ---------------------------------------------------------------------------------------------------------------------
+
+loki.process "extract_httpstatus" {
+    // Pattern 1: httpStatus="value"
     stage.regex {
-        expression = ".*httpStatus=[\"'`]?(?P<httpStatus_value>[0-9]+)[\"'`]?[,\\s]?.*"
+        expression = "httpStatus=\"(?P<httpstatus_quoted>[^\"]+)\""
     }
 
+    // Pattern 2: httpStatus=value (unquoted)
+    stage.regex {
+        expression = "httpStatus=(?P<httpstatus_unquoted>[0-9]+)"
+    }
+
+    // Combine matches
     stage.template {
         source = "extracted_httpStatus"
-        template = "{{ .httpStatus_value | TrimSpace }}"
+        template = "{{ or .httpstatus_quoted .httpstatus_unquoted }}"
     }
 
     stage.labels {
