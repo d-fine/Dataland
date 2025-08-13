@@ -97,13 +97,14 @@ loki.source.docker "default" {
 // ---------------------------------------------------------------------------------------------------------------------
 
 loki.process "add_labels" {
-    // Only process lines that contain valid logfmt patterns
+    // Only process lines from docker containers that contain our specific fields
     stage.match {
         selector = "{job=\"docker_containers\"}"
-        pipeline_name = "logfmt_lines"
+        pipeline_name = "extract_known_fields"
 
+        // Only process if we see one of our expected field names
         stage.regex {
-            expression = "^.*[a-zA-Z_][a-zA-Z0-9_]*=(\"[^\"]*\"|[^\\s]+).*$"
+            expression = ".*(level=|status=|httpStatus=).*"
         }
 
         // Extract the value of the desired labels from the log line
@@ -124,19 +125,6 @@ loki.process "add_labels" {
                "httpStatus" = "extracted_httpStatus",
             }
         }
-    }
-
-    // Add a separate pipeline for non-logfmt lines to pass them through
-    stage.match {
-        selector = "{job=\"docker_containers\"}"
-        pipeline_name = "non_logfmt_lines"
-
-        // Match lines that don't contain logfmt patterns
-        stage.regex {
-            expression = "^(?!.*[a-zA-Z_][a-zA-Z0-9_]*=(\"[^\"]*\"|[^\\s]+)).*$"
-        }
-
-        // These lines pass through without logfmt processing
     }
 
     forward_to = [loki.write.local_loki.receiver]
