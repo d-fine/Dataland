@@ -101,7 +101,7 @@ describeIf(
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
     });
 
-    it.only("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
+    it("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       visitCockpitForCompanyAlpha();
