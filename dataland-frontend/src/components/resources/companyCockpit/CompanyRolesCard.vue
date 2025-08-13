@@ -31,10 +31,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, ref, computed, onMounted, inject } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { ref, computed, onMounted, inject } from 'vue';
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';

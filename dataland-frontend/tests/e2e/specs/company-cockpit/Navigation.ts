@@ -1,9 +1,19 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import {
+  admin_name,
+  admin_pw,
+  reader_name,
+  reader_pw,
+  reader_userId,
+  uploader_name,
+  uploader_pw,
+} from '@e2e/utils/Cypress';
 import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
+import { assignCompanyRole, removeAllCompanyRole } from '@e2e/utils/CompanyRolesUtils.ts';
+import { CompanyRole } from '@clients/communitymanager';
 
 describeIf(
   'As a user, I want the navigation around the company cockpit to work as expected',
@@ -13,6 +23,7 @@ describeIf(
   () => {
     let alphaCompanyIdAndName: CompanyIdAndName;
     let betaCompanyIdAndName: CompanyIdAndName;
+    let tokenForAdminUser: string;
 
     before(() => {
       getKeycloakToken(reader_name, reader_pw)
@@ -39,6 +50,39 @@ describeIf(
       cy.intercept('https://googleads.g.doubleclick.net/**', []);
     });
 
+    it("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
+      cy.visitAndCheckAppMount('/');
+      removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
+      login(reader_name, reader_pw);
+      cy.get('input#search-bar-input').scrollIntoView();
+      cy.get('input#search-bar-input').type(alphaCompanyIdAndName.companyName);
+      cy.get('[data-pc-section="list"]').contains(alphaCompanyIdAndName.companyName).click();
+      cy.get('[data-test="usersTab"]').should('not.exist');
+      getKeycloakToken(admin_name, admin_pw)
+        .then((token: string) => {
+          tokenForAdminUser = token;
+        })
+        .then(() => {
+          return assignCompanyRole(
+            tokenForAdminUser,
+            CompanyRole.Member,
+            alphaCompanyIdAndName.companyId,
+            reader_userId
+          );
+        })
+        .then(() => {
+          cy.reload();
+        });
+      cy.get('[data-test="usersTab"]').scrollIntoView();
+      cy.get('[data-test="usersTab"]').click();
+      cy.contains('[data-test="company-roles-card"]', 'Members') // find the Members card
+        .within(() => {
+          cy.get('td').contains('18b67ecc-1176-4506-8414-1e81661017ca').should('exist');
+        });
+      cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
+      cy.get('[data-test="usersTab"]').should('not.exist');
+    });
+
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
       searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
@@ -49,7 +93,7 @@ describeIf(
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
       visitCockpitForCompanyAlpha();
-      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
@@ -122,6 +166,23 @@ describeIf(
       cy.get('input#company_search_bar_standard').scrollIntoView();
       cy.get('input#company_search_bar_standard').type(searchTerm);
       cy.get('[data-pc-section="list"]').contains(searchTerm).click();
+    }
+
+    /**
+     * Removes all roles associated with a specific user for a given company.
+     * Uses an admin token to perform the operation.
+     *
+     * @param companyId - The ID of the company whose roles are being removed.
+     * @param userId - The ID of the user whose roles are being removed.
+     */
+    function removeCompanyRoles(companyId: string, userId: string): void {
+      getKeycloakToken(admin_name, admin_pw)
+        .then((token: string) => {
+          tokenForAdminUser = token;
+        })
+        .then(() => {
+          return removeAllCompanyRole(tokenForAdminUser, companyId, userId);
+        });
     }
   }
 );
