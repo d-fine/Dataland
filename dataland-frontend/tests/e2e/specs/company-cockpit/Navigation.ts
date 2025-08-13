@@ -104,9 +104,7 @@ describeIf(
     it("When navigating to the company cockpit as a basic data reader who is also a company member sees the users page of the company of which it is a member and doesn't see the users page of a company of which it has no company affiliation", () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
       ensureLoggedIn(reader_name, reader_pw);
-      cy.get('input#search-bar-input').scrollIntoView();
-      cy.get('input#search-bar-input').type(alphaCompanyIdAndName.companyName);
-      cy.get('[data-pc-section="list"]').contains(alphaCompanyIdAndName.companyName).click();
+      visitCockpitForCompanyAlpha();
       cy.get('[data-test="usersTab"]').should('not.exist');
       getKeycloakToken(admin_name, admin_pw)
         .then((token: string) => {
