@@ -31,13 +31,24 @@ data class LEIRecord(
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Entity(
     @field:JacksonXmlProperty(localName = "LegalName")
-    val legalName: String,
+    val legalName: LegalName,
     @field:JacksonXmlProperty(localName = "HeadquartersAddress")
     val headquartersAddress: HeadquartersAddress,
     @field:JacksonXmlProperty(localName = "OtherEntityNames")
     val otherEntityNames: List<AlternativeEntityName>? = null,
     @field:JacksonXmlProperty(localName = "TransliteratedOtherEntityNames")
     val transliteratedOtherEntityNames: List<AlternativeEntityName>? = null,
+)
+
+/**
+ * Data class containing the company name from the GLEIF xml files
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class LegalName(
+    @field:JacksonXmlProperty(isAttribute = true, localName = "lang")
+    val lang: String? = null,
+    @field:JacksonXmlText
+    val name: String = "",
 )
 
 /**
@@ -50,7 +61,7 @@ data class AlternativeEntityName(
     @field:JacksonXmlProperty(isAttribute = true, localName = "lang")
     val lang: String? = null,
     @field:JacksonXmlText
-    val name: String? = null,
+    val name: String = "",
 )
 
 /**

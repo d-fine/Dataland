@@ -5,6 +5,7 @@ import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.HeadquartersAddress
 import org.dataland.datalandbatchmanager.model.LEIRecord
+import org.dataland.datalandbatchmanager.model.LegalName
 import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
@@ -75,7 +76,7 @@ class GleifGoldenCopyIngestorTest {
                 lei = "",
                 entity =
                     Entity(
-                        legalName = "",
+                        LegalName(name = ""),
                         headquartersAddress =
                             HeadquartersAddress(
                                 city = "",

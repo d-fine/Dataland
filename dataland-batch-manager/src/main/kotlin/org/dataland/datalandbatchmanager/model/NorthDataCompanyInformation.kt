@@ -61,7 +61,10 @@ data class NorthDataCompanyInformation(
      * Transform the North Data company information to a PATCH object that can be used to update the information of the
      * company using the Dataland API
      */
-    override fun toCompanyPatch(conflictingIdentifiers: Set<String?>?): CompanyInformationPatch? {
+    override fun toCompanyPatch(
+        conflictingIdentifiers: Set<String?>?,
+        existingAlternativeNames: Set<String>?,
+    ): CompanyInformationPatch? {
         var returnFullPatch = false
 
         if (conflictingIdentifiers != null) {

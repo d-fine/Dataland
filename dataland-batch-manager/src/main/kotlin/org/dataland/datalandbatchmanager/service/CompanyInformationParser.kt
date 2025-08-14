@@ -97,8 +97,8 @@ class CompanyInformationParser {
         }
 
     /**
-     * Transforms the streamed CSV content into an iterable of objects of class T
-     * @param bufferedReader the input stream read from the csv file
+     * Transforms the streamed xml content into an object of class T
+     * @param bufferedReader the input stream read from the xml file
      * @return An iterable of the corresponding T objects
      */
     private final inline fun <reified T> readXmlDataFromBufferedReader(bufferedReader: BufferedReader): T {

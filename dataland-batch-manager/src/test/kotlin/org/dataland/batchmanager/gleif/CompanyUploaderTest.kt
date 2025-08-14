@@ -17,6 +17,7 @@ import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.HeadquartersAddress
 import org.dataland.datalandbatchmanager.model.LEIRecord
+import org.dataland.datalandbatchmanager.model.LegalName
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -225,7 +226,7 @@ class CompanyUploaderTest {
                     lei = "DummyLei1",
                     entity =
                         Entity(
-                            legalName = "CompanyName1",
+                            LegalName(name = "CompanyName1", lang = "en"),
                             headquartersAddress =
                                 HeadquartersAddress(
                                     city = "CompanyCity",
@@ -242,7 +243,7 @@ class CompanyUploaderTest {
                     lei = "DummyLei2",
                     entity =
                         Entity(
-                            legalName = "CompanyName2",
+                            LegalName(name = "CompanyName2", lang = "en"),
                             headquartersAddress =
                                 HeadquartersAddress(
                                     city = "CompanyCity",

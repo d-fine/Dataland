@@ -7,6 +7,7 @@ import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.HeadquartersAddress
 import org.dataland.datalandbatchmanager.model.LEIRecord
+import org.dataland.datalandbatchmanager.model.LegalName
 import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -21,7 +22,7 @@ class GleifMappingTest {
             lei = "DummyLei",
             entity =
                 Entity(
-                    legalName = "CompanyName",
+                    LegalName(name = "CompanyName", lang = "en"),
                     headquartersAddress =
                         HeadquartersAddress(
                             city = "CompanyCity",
@@ -74,7 +75,7 @@ class GleifMappingTest {
 
     private val expectedCompanyInformation =
         CompanyInformation(
-            companyName = expectedGleifRecord.entity.legalName,
+            companyName = expectedGleifRecord.entity.legalName.name,
             companyContactDetails = null,
             companyAlternativeNames = null,
             companyLegalForm = null,
