@@ -249,8 +249,6 @@ watch(activeTab, (val) => {
 });
 
 onMounted(async () => {
-  console.debug('[CompanyCockpitPage] Mounted with AssignmentRef:', companyRoleAssignmentsRef.value);
-
   await setUserRights();
   await getAggregatedFrameworkDataSummary();
   await getMetaInfoForLatestDocuments();
