@@ -1,7 +1,7 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.batchmanager.utils.ZipFileCreator
-import org.dataland.datalandbatchmanager.service.CsvParser
+import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -48,8 +48,8 @@ bb,dd,IS_FEEDER_TO"""
         val zipFile = File("zip.zip")
         ZipFileCreator.createZipFile(zipFile, testFileContent)
 
-        val bufferedReader = CsvParser().getCsvStreamFromZip(zipFile)
-        val iterable = CsvParser().readGleifRelationshipDataFromBufferedReader(bufferedReader)
+        val bufferedReader = CompanyInformationParser().getCsvStreamFromZip(zipFile)
+        val iterable = CompanyInformationParser().readGleifRelationshipDataFromBufferedReader(bufferedReader)
 
         assert(relationshipExtractor.prepareFinalParentMapping(iterable) == finalMap)
     }

@@ -5,8 +5,8 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.AppenderBase
 import org.apache.commons.io.FileUtils
+import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
-import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
@@ -43,7 +43,7 @@ class ProcessDataUpdatesTest {
     private val mockGleifGoldenCopyIngestorTest = mock(GleifGoldenCopyIngestor::class.java)
     private val mockNorthDataAccessor = mock(NorthDataAccessor::class.java)
     private val mockNorthDataIngestorTest = mock(NorthdataDataIngestor::class.java)
-    private val mockCsvParser = mock(CsvParser::class.java)
+    private val mockCompanyInformationParser = mock(CompanyInformationParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
     private val mockRelationshipExtractor = mock(RelationshipExtractor::class.java)
@@ -97,7 +97,7 @@ class ProcessDataUpdatesTest {
     @BeforeEach
     fun setupTest() {
         reset(mockGleifApiAccessor)
-        reset(mockCsvParser)
+        reset(mockCompanyInformationParser)
         reset(mockBackendActuatorApi)
         reset(mockGleifGoldenCopyIngestorTest)
     }
@@ -160,9 +160,9 @@ class ProcessDataUpdatesTest {
 
         val numberOfDownloadedFiles = 3
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
-        verify(mockCsvParser, times(1)).readGleifCompanyDataFromBufferedReader((any() ?: emptyBufferedReader))
-        verify(mockCsvParser, times(1)).readGleifRelationshipDataFromBufferedReader((any() ?: emptyBufferedReader))
-        verify(mockCsvParser, times(1)).readNorthDataFromBufferedReader((any() ?: emptyBufferedReader))
+        verify(mockCompanyInformationParser, times(1)).readGleifCompanyDataFromBufferedReader((any() ?: emptyBufferedReader))
+        verify(mockCompanyInformationParser, times(1)).readGleifRelationshipDataFromBufferedReader((any() ?: emptyBufferedReader))
+        verify(mockCompanyInformationParser, times(1)).readNorthDataFromBufferedReader((any() ?: emptyBufferedReader))
         mockStaticFile.close()
         mockFileUtils.close()
     }
@@ -184,12 +184,12 @@ class ProcessDataUpdatesTest {
 
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockGleifApiAccessor, mockCompanyInformationParser, mockCompanyUploader, mockIsinDeltaBuilder,
                 mockRelationshipExtractor,
                 File.createTempFile("tesd", ".csv"),
             )
 
-        companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
+        companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCompanyInformationParser)
 
         processDataUpdates =
             ProcessDataUpdates(

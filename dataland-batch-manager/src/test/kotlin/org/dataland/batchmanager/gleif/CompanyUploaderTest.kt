@@ -12,9 +12,12 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyId
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.HeadquartersAddress
+import org.dataland.datalandbatchmanager.model.LEIRecord
+import org.dataland.datalandbatchmanager.model.LegalName
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -219,23 +222,35 @@ class CompanyUploaderTest {
     companion object {
         private val dummyGleifCompanyInformation1 =
             GleifCompanyCombinedInformation(
-                GleifCompanyInformation(
-                    companyName = "CompanyName1",
-                    countryCode = "CompanyCountry",
-                    headquarters = "CompanyCity",
-                    headquartersPostalCode = "CompanyPostalCode",
+                LEIRecord(
                     lei = "DummyLei1",
+                    entity =
+                        Entity(
+                            LegalName(name = "CompanyName1", lang = "en"),
+                            headquartersAddress =
+                                HeadquartersAddress(
+                                    city = "CompanyCity",
+                                    postalCode = "CompanyPostalCode",
+                                    country = "CompanyCountry",
+                                ),
+                        ),
                 ),
             )
 
         private val dummyGleifCompanyInformation2 =
             GleifCompanyCombinedInformation(
-                GleifCompanyInformation(
-                    companyName = "CompanyName2",
-                    countryCode = "CompanyCountry",
-                    headquarters = "CompanyCity",
-                    headquartersPostalCode = "CompanyPostalCode",
+                LEIRecord(
                     lei = "DummyLei2",
+                    entity =
+                        Entity(
+                            LegalName(name = "CompanyName2", lang = "en"),
+                            headquartersAddress =
+                                HeadquartersAddress(
+                                    city = "CompanyCity",
+                                    postalCode = "CompanyPostalCode",
+                                    country = "CompanyCountry",
+                                ),
+                        ),
                 ),
             )
 
