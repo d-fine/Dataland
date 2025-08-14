@@ -157,6 +157,8 @@ const showAllFrameworks = ref(false);
 const isUserCompanyOwnerOrUploader = ref(false);
 const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
+const isUserCompanyMember = ref(false);
+const isUserDatalandAdmin = ref(false);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
@@ -166,9 +168,6 @@ const chunkSize = 3;
 const companyRoles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.CompanyOwner, CompanyRole.DataUploader];
 const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
 const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
-
-const assignments = unref(companyRoleAssignmentsRef) ?? [];
-const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
 
 /**
  * Returns the document data array for a given category.
@@ -219,11 +218,24 @@ function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
  */
 async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
+
+  const assignments = unref(companyRoleAssignmentsRef) ?? [];
+  console.debug('[CompanyCockpitPage] Company role assignments for %s:', props.companyId, assignments);
+
+  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
+  const userRolesNames = roles.map((role) => (CompanyRole as never)[role] ?? role);
+
+  console.debug('[CompanyCockpitPage] User roles for %s:', props.companyId, roles, userRolesNames);
+
   isUserCompanyOwnerOrUploader.value =
     roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+  console.debug('[CompanyCockpitPage] isUserCompanyOwnerOrUploader %s:', props.companyId, isUserCompanyOwnerOrUploader);
+
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isCompanyMemberOrAdmin.value =
-    roles.length > 0 || (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
+  isUserCompanyMember.value = roles.length > 0;
+  isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+
+  isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }
 
 /**
