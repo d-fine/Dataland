@@ -465,7 +465,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="company-roles-card"]').should('not.be.visible');
   });
 
-  it.only('Users are being displayed correctly in the Users Page', () => {
+  it('Users are being displayed correctly in the Users Page', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
     cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
       const q = req.query as Record<string, string | undefined>;
