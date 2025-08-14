@@ -166,7 +166,8 @@ class CompanyUploader(
         companyInformation: ExternalCompanyInformation,
         conflictingIdentifiers: Set<String?>?,
     ) {
-        val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
+        val existingAlternativeNames = companyDataControllerApi.getCompanyById(companyId).companyInformation.companyAlternativeNames
+        val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers, existingAlternativeNames) ?: return
         executeWithRetryAndThrottling {
             logger.info("Patching single company data for ${companyInformation.getNameAndIdentifier()}")
             companyDataControllerApi.patchCompanyById(companyId, companyPatch)

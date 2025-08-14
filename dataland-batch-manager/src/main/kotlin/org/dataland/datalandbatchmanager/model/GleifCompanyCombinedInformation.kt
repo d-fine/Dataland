@@ -42,7 +42,7 @@ data class GleifCompanyCombinedInformation(
      */
     override fun toCompanyPatch(
         conflictingIdentifiers: Set<String?>?,
-        existingAlternativeNames: Set<String>?,
+        existingAlternativeNames: List<String>?,
     ): CompanyInformationPatch? {
         // When updating from GLEIF data, the only conflicting identifier must always be the Lei
         if ((conflictingIdentifiers != null) &&
@@ -50,7 +50,7 @@ data class GleifCompanyCombinedInformation(
         ) {
             return null
         }
-
+        val gleifCompanyAlternativeNames = getGleifCompanyAlternativeNames()
         return CompanyInformationPatch(
             companyName = companyName,
             countryCode = gleifLeiRecord.entity.headquartersAddress.country,
@@ -61,6 +61,11 @@ data class GleifCompanyCombinedInformation(
                     "Lei" to listOf(gleifLeiRecord.lei),
                 ),
             parentCompanyLei = finalParentLei,
+            companyAlternativeNames =
+                (existingAlternativeNames ?: emptyList()) + (
+                    gleifCompanyAlternativeNames
+                        ?: emptyList()
+                ),
         )
     }
 

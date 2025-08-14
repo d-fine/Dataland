@@ -22,7 +22,7 @@ interface ExternalCompanyInformation {
      */
     fun toCompanyPatch(
         conflictingIdentifiers: Set<String?>? = null,
-        existingAlternativeNames: Set<String>? = null,
+        existingAlternativeNames: List<String>? = null,
     ): CompanyInformationPatch?
 
     /**

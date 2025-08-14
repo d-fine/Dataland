@@ -63,7 +63,7 @@ data class NorthDataCompanyInformation(
      */
     override fun toCompanyPatch(
         conflictingIdentifiers: Set<String?>?,
-        existingAlternativeNames: Set<String>?,
+        existingAlternativeNames: List<String>?,
     ): CompanyInformationPatch? {
         var returnFullPatch = false
 
