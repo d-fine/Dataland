@@ -33,6 +33,7 @@ describe('Component test for the company cockpit', () => {
   const dummyReportingPeriods = ['2025', '2024', '2023'];
   const dummyUserId = 'mock-user-id';
   const dummyFirstName = 'mock-first-name';
+  const dummyLastName = 'mock-last-name';
   const dummyEmail = 'mock@Company.com';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
@@ -462,5 +463,46 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="datasetsTab"]').click();
     cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
     cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+  });
+
+  it.only('Users are being displayed correctly in the Users Page', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+      const q = req.query as Record<string, string | undefined>;
+      if (q.role === CompanyRole.Member) {
+        req.reply({
+          statusCode: 200,
+          body: [
+            {
+              companyRole: 'Member',
+              companyId: dummyCompanyId,
+              userId: dummyUserId,
+              email: dummyEmail,
+              firstName: dummyFirstName,
+              lastName: dummyLastName,
+            },
+          ],
+        });
+      } else {
+        req.reply({ statusCode: 200, body: [] });
+      }
+    }).as('roleFetch');
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.get('[data-test="usersTab"]').click();
+    cy.contains('[data-test="company-roles-card"]', 'Members') // find the Members card
+      .within(() => {
+        cy.get('td').contains(dummyFirstName).should('exist');
+        cy.get('td').contains(dummyLastName).should('exist');
+        cy.get('td').contains(dummyEmail).should('exist');
+        cy.get('td').contains(dummyUserId).should('exist');
+      });
+    cy.contains('[data-test="company-roles-card"]', 'Admins') // find the Members card
+      .within(() => {
+        cy.get('td').contains(dummyFirstName).should('not.exist');
+        cy.get('td').contains(dummyLastName).should('not.exist');
+        cy.get('td').contains(dummyEmail).should('not.exist');
+        cy.get('td').contains(dummyUserId).should('not.exist');
+      });
   });
 });

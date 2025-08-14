@@ -110,7 +110,7 @@ async function getCompanyUserInformation(): Promise<void> {
   try {
     const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
     const data = await companyRolesControllerApi.getExtendedCompanyRoleAssignments(
-      undefined,
+      props.role,
       props.companyId,
       undefined
     );
