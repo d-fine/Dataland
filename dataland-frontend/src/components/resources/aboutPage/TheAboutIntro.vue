@@ -12,7 +12,7 @@
         {{ aboutIntroSection.text[2] }}
       </h2>
     </div>
-    <Button :label= "aboutIntroSection.title" @click="register" rounded/>
+    <Button :label="aboutIntroSection.title" @click="register" rounded />
   </section>
 </template>
 

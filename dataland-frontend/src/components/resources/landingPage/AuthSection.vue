@@ -13,7 +13,7 @@
 
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
-      <Button label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
+      <Button label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" rounded />
     </div>
   </template>
   <template v-else>

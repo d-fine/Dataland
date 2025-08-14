@@ -57,7 +57,7 @@
         </span>
       </h3>
     </transition>
-    <Button :label="quotesSection.text[0]" data-test="quotesButton" @click="register" rounded/>
+    <Button :label="quotesSection.text[0]" data-test="quotesButton" @click="register" rounded />
   </section>
 </template>
 

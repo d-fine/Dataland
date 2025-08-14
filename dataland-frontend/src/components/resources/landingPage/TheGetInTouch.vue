@@ -14,6 +14,7 @@
         <Button
           label="GET IN TOUCH"
           ariaLabel="Get In Touch"
+          data-test="get-in-touch-button"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
           rounded
           style="width: fit-content"
