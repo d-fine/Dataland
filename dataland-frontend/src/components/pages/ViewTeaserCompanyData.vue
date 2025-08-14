@@ -31,7 +31,6 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import BackButton from '@/components/general/BackButton.vue';
 import { type DataTypeEnum } from '@clients/backend';
-import Button from 'primevue/button';
 
 export default defineComponent({
   name: 'ViewTeaserCompanyData',

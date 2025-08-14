@@ -497,10 +497,6 @@ function downloadData(): void {
   gap: var(--spacing-sm);
 }
 
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
 .vertical-middle {
   display: flex;
   align-items: center;
