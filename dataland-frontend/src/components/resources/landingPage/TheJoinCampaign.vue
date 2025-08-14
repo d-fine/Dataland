@@ -12,6 +12,7 @@
         ariaLabel="Indicate interest by opening email client"
         @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
         class="button-component joincampaign__button"
+        rounded
       />
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
         <tr v-for="(card, index) in joinCampaignSection.cards" :key="index" class="joincampaign__row">

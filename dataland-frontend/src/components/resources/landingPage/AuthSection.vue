@@ -13,7 +13,7 @@
 
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
-      <Button label="SIGN UP" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
+      <Button label="Sign up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
     </div>
   </template>
   <template v-else>
@@ -22,15 +22,17 @@
         label="Log in"
         buttonType="login-button"
         ariaLabel="Login to account"
-        name="login_dataland_button"
+        data-test="login-dataland-button"
         @click="login"
+        rounded
       />
       <Button
         label="Sign Up"
         buttonType="registration-button"
         ariaLabel="Sign up to account"
-        name="signup_dataland_button"
+        data-test="signup-dataland-button"
         @click="register"
+        rounded
       />
     </div>
   </template>
@@ -82,7 +84,7 @@ onMounted(() => {
 });
 
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated) and logs in otherwise
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()

@@ -10,7 +10,7 @@ describe('Check that the Landing Page to work properly', () => {
     cy.url().should('include', '/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations');
     cy.get("span:contains('HOME')").click();
 
-    cy.get('button.quotes__button').click();
+    cy.get("[data-test='quotesButton']").click();
     cy.url().should('include', '/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations');
     cy.get("span:contains('HOME')").click();
 

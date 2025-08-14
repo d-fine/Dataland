@@ -3,7 +3,7 @@
     <h3>COMPANY DATA SAMPLE</h3>
     <h4>Try Dataland with other people to access all the data.</h4>
     <div class="col-4 col-offset-4">
-      <JoinDatalandButton />
+      <Button label="Start your Dataland Journey" @click="register" rounded />
     </div>
     <ViewFrameworkData
       :view-in-preview-mode="true"
@@ -29,15 +29,14 @@ import type Keycloak from 'keycloak-js';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import JoinDatalandButton from '@/components/general/JoinDatalandButton.vue';
 import BackButton from '@/components/general/BackButton.vue';
 import { type DataTypeEnum } from '@clients/backend';
+import Button from 'primevue/button';
 
 export default defineComponent({
   name: 'ViewTeaserCompanyData',
   components: {
     ViewFrameworkData,
-    JoinDatalandButton,
     BackButton,
   },
   setup() {
@@ -88,6 +87,22 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+    /**
+     * Redirects the user to the dataland registration page
+     */
+    register() {
+      assertDefined(this.getKeycloakPromise)()
+        .then(async (keycloak) => {
+          if (!keycloak.authenticated) {
+            const baseUrl = window.location.origin;
+            const url = await keycloak.createRegisterUrl({
+              redirectUri: `${baseUrl}/companies`,
+            });
+            location.assign(url);
+          }
+        })
+        .catch((error) => console.log(error));
     },
   },
 });

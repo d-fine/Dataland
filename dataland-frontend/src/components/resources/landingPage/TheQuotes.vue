@@ -57,14 +57,14 @@
         </span>
       </h3>
     </transition>
-    <Button :label="quotesSection.text[0]" ariaLabel="Start your Dataland Journey" @click="register" />
+    <Button :label="quotesSection.text[0]" data-test="quotesButton" @click="register" rounded/>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, watch, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import type { Section } from '@/types/ContentTypes';
 import SlideShow from '@/components/general/SlideShow.vue';
@@ -202,13 +202,18 @@ onUnmounted(() => {
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated already) and to the portfolio page else.
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
         void registerAndRedirectToSearchPage(keycloak);
+      }
+      if (window.location.pathname == '/') {
+        void loginAndRedirectToSearchPage(keycloak);
+      } else {
+        keycloak.login().catch((error) => console.error(error));
       }
     })
     .catch((error) => console.log(error));

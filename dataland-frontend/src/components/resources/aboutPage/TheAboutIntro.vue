@@ -12,7 +12,7 @@
         {{ aboutIntroSection.text[2] }}
       </h2>
     </div>
-    <Button label="START YOUR DATALAND JOURNEY" @click="register" />
+    <Button :label= "aboutIntroSection.title" @click="register" rounded/>
   </section>
 </template>
 

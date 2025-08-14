@@ -15,6 +15,8 @@
           label="GET IN TOUCH"
           ariaLabel="Get In Touch"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
+          rounded
+          style="width: fit-content"
         />
       </div>
     </div>
