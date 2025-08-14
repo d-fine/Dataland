@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="6">
+    <DatasetsTabMenu :initialTabIndex="6">
       <TheContent class="min-h-screen relative">
         <div class="search-container">
           <IconField class="search-bar">

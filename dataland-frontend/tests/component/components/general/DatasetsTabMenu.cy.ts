@@ -4,6 +4,7 @@ import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/commun
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import { ref } from 'vue';
+import router from '@/router';
 
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
   enum AlwaysVisibleTabs {
@@ -127,5 +128,11 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
 
     isTabVisible(RoleBasedTabs.Qa, true);
     isTabVisible(RoleBasedTabs.AllDataRequests, true);
+  });
+  it('Validate if route navigation leads to correct route when tab is changed', () => {
+    cy.spy(router, 'push').as('routerPush');
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
+    cy.get('[data-pc-name="tablist"]').contains('MY DATASETS').click();
+    cy.get('@routerPush').should('have.been.calledWith', '/datasets');
   });
 });
