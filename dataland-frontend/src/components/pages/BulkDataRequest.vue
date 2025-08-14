@@ -166,9 +166,7 @@
                     </BasicFormSection>
                   </div>
                   <div class="col-12 flex justify-content-end">
-                    <PrimeButton type="submit" label="Submit" class="align-self-end" name="submit_request_button">
-                      NEXT
-                    </PrimeButton>
+                    <PrimeButton type="submit" label="SUBMIT" class="align-self-end" name="submit_request_button"/>
                   </div>
                 </div>
               </div>

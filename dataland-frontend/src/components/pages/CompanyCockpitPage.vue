@@ -59,18 +59,13 @@
             :data-test="`${framework}-summary-panel`"
           />
         </div>
-        <div
-          class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
-          @click="toggleShowAll"
-          style="margin-left: auto"
-        >
-          <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
-            {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
-          </span>
-          <i class="material-icons text-primary">
-            {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
-          </i>
-        </div>
+
+        <PrimeButton
+        :label="showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL'"
+        @click="toggleShowAll"
+        :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
+        style="margin-left: auto"
+        />
       </div>
     </div>
   </TheContent>
