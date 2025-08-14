@@ -63,7 +63,7 @@
           <template #body="tableRow">
             <PrimeButton
               :label="
-                activeDownloadId === tableRow.data.documentId && percentCompleted! > 0
+                activeDownloadId === tableRow.data.documentId && percentCompleted > 0
                   ? `DOWNLOAD (${percentCompleted}%)`
                   : 'DOWNLOAD'
               "
@@ -113,7 +113,7 @@ import {
 import type Keycloak from 'keycloak-js';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, type Ref, ref, watch } from 'vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import PrimeButton from 'primevue/button';
 import {
@@ -148,7 +148,7 @@ watch(selectedDocumentType, () => {
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 
-const percentCompleted = createNewPercentCompletedRef() ?? ref(0);
+const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
 const activeDownloadId = ref<string | null>(null);
 
 /**
