@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="0">
+    <DatasetsTabMenu :initialTabIndex="0">
       <TheContent class="min-h-screen relative">
         <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
           <FrameworkDataSearchBar

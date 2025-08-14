@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="5">
+    <DatasetsTabMenu :initialTabIndex="5">
       <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div class="search-bar-and-filters-container">
