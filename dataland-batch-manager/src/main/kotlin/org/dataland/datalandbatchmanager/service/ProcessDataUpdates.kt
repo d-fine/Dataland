@@ -114,7 +114,7 @@ class ProcessDataUpdates
 
         // ToDo remove before merge
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 30 06 * * *")
+        @Scheduled(cron = "0 0 7-12 * * *")
         private fun testIsinLeiMapping() {
             processUpdates()
         }
