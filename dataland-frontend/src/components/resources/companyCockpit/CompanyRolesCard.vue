@@ -66,25 +66,25 @@ const roleGroups = [
     role: CompanyRole.MemberAdmin,
     title: 'Admins',
     icon: 'pi pi-shield',
-    info: 'The User Admin has the power to add or remove other user admins and members. Admins are managing other users and can control who has access to what data or features within the platform.',
+    info: 'The User Admin has the rights to add or remove other user admins and members. Admins manage other users and can control who has access to what data or features within Dataland.',
   },
   {
     role: CompanyRole.Member,
     title: 'Members',
     icon: 'pi pi-users',
-    info: 'Members have the ability to request unlimited data. They are key users of the platform, utilising the data available to make informed decisions or produce reports.',
+    info: 'Members have the ability to request unlimited data. They are key users on Dataland, utilising the data available to make informed decisions or produce reports.',
   },
   {
     role: CompanyRole.CompanyOwner,
     title: 'Company Owners',
     icon: 'pi pi-crown',
-    info: "Company onwers have the most power and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland. The company owner is also the one accountable for the KYC process.",
+    info: "Company owners have the highest level of access and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland. The company owner is also the one accountable for the KYC process.",
   },
   {
     role: CompanyRole.DataUploader,
     title: 'Uploaders',
     icon: 'pi pi-cloud-upload',
-    info: 'Uploaders are tasked with the provision of ESG data for the company. Uploaders have the responsibility of ensuring all relevant ESG data is uploaded to the platform for analysis and interpretation.',
+    info: 'Uploaders have the responsibility of ensuring all relevant data is uploaded to the platform for analysis and interpretation.',
   },
 ] as const;
 
@@ -116,7 +116,7 @@ async function getCompanyUserInformation(): Promise<void> {
     );
     companyUserInformation.value = data.data;
   } catch (error) {
-    console.error(error);
+    console.error('Failed to load company users:', error);
   }
 }
 
