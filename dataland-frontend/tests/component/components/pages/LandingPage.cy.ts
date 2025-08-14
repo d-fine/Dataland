@@ -26,7 +26,7 @@ describe('Component test for the landing page', () => {
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');
       cy.get('button.joincampaign__button').should('exist');
-      cy.get('button.getintouch__text-button').should('exist');
+      cy.get('[data-test="get-in-touch-button"]').should('exist');
       checkFooter();
 
       setMobileDeviceViewport();

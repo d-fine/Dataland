@@ -13,24 +13,26 @@
 
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
-      <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
+      <Button label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" rounded />
     </div>
   </template>
   <template v-else>
     <div class="header__authsection">
-      <ButtonComponent
+      <Button
         label="Log in"
         buttonType="login-button"
         ariaLabel="Login to account"
-        name="login_dataland_button"
+        data-test="login-dataland-button"
         @click="login"
+        rounded
       />
-      <ButtonComponent
+      <Button
         label="Sign Up"
         buttonType="registration-button"
         ariaLabel="Sign up to account"
-        name="signup_dataland_button"
+        data-test="signup-dataland-button"
         @click="register"
+        rounded
       />
     </div>
   </template>
@@ -40,7 +42,6 @@
 import { inject, onMounted, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { useRouter } from 'vue-router';
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import Button from 'primevue/button';
@@ -83,7 +84,7 @@ onMounted(() => {
 });
 
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated) and logs in otherwise
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()

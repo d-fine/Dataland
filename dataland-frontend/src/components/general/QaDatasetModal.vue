@@ -17,7 +17,16 @@
         message="The resource you tried to access is not available. Please close the data pop-up."
         :closable="false"
       />
-      <PrimeButton @click="closeTheDialog()" label="CLOSE" />
+      <PrimeButton
+        @click="closeTheDialog()"
+        label="CLOSE"
+        :pt="{
+          root: {
+            class: 'mx-auto block',
+            style: 'width: fit-content;',
+          },
+        }"
+      />
     </div>
   </MiddleCenterDiv>
 </template>
@@ -107,9 +116,5 @@ export default defineComponent({
   gap: var(--spacing-lg);
   margin: var(--spacing-md);
   width: 100%;
-}
-
-.submit-message .p-button {
-  align-self: center; /* Centers just the button */
 }
 </style>

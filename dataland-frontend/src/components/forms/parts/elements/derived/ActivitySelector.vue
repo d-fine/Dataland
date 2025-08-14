@@ -10,7 +10,7 @@
     <PrimeButton
       data-test="dataTestChooseActivityButton"
       :label="selectedActivities?.name ? 'Change Activity' : 'Choose Activity'"
-      class="p-button-text p-0 m-0"
+      variant="text"
       :icon="selectedActivities ? 'pi pi-pencil' : 'pi pi-list'"
       @focus="inputFocused"
     />

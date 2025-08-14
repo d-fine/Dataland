@@ -18,7 +18,7 @@
       <PrimeButton
         :data-test="dataTestAddButton"
         :label="labelAddButton"
-        class="p-button-text"
+        variant="text"
         icon="pi pi-plus"
         @click="addItem"
       />

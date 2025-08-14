@@ -246,13 +246,12 @@
                   Once a data request is withdrawn, it will be removed from your data request list. The company owner
                   will not be notified anymore.<br />
                   <br />
-                  <a
-                    class="link"
-                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
+                  <PrimeButton
+                    data-test="withdrawRequestButton"
+                    variant="link"
+                    label="Withdraw request"
                     @click="withdrawRequest()"
-                  >
-                    Withdraw request</a
-                  >
+                  />
                 </div>
               </div>
             </div>

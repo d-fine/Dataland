@@ -55,7 +55,6 @@
                 :data-test="'remove-' + storedReport.fileName"
                 @click="removeReportFromStoredReports(index)"
                 icon="pi pi-times"
-                class="p-button-edit-reports"
               />
             </div>
           </div>

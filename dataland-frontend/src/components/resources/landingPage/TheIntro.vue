@@ -38,11 +38,12 @@
       }"
     />
 
-    <ButtonComponent
+    <Button
       :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
       buttonType="button-component about__button"
       aria-label="About Page"
       @click="router.push('/about')"
+      style="display: none"
     />
   </section>
 </template>
@@ -51,8 +52,8 @@
 import { computed, ref, watch, onUnmounted } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import router from '@/router';
+import Button from 'primevue/button';
 
 const props = defineProps<{ sections?: Section[] }>();
 

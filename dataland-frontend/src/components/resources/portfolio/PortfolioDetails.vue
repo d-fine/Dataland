@@ -10,11 +10,11 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <Button @click="openEditModal()" data-test="edit-portfolio" label="Edit Portfolio" icon="pi pi-pencil" />
+      <Button @click="openEditModal()" data-test="edit-portfolio" label="EDIT PORTFOLIO" icon="pi pi-pencil" />
       <Button
         @click="openDownloadModal()"
         data-test="download-portfolio"
-        label="Download Portfolio"
+        label="DOWNLOAD PORTFOLIO"
         icon="pi pi-download"
       />
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
@@ -23,18 +23,17 @@
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
           icon="pi pi-bell"
-          label="Activate Monitoring"
+          label="ACTIVATE MONITORING"
         />
       </div>
 
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
 
       <Button
-        class="reset-button-align-right"
         data-test="reset-filter"
         @click="resetFilters()"
         variant="text"
-        label="RESET"
+        label="RESET FILTER"
       />
     </div>
 
@@ -579,7 +578,4 @@ a:after {
   background-color: white;
 }
 
-.reset-button-align-right {
-  margin-left: auto;
-}
 </style>

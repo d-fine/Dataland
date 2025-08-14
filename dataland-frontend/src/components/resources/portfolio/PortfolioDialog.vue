@@ -27,14 +27,15 @@
         </p>
         <div class="button-col">
           <PrimeButton
-            label="Add Companies"
+            label="ADD COMPANIES"
             icon="pi pi-plus"
             :loading="isCompaniesLoading"
             @click="addCompanies"
             data-test="portfolio-dialog-add-companies"
+            :pt="{ label: { style: { whiteSpace: 'nowrap' } } }"
             fluid
           />
-          <PrimeButton label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
+          <PrimeButton label="GET HELP" icon="pi pi-question" @click="openHelpDialog" fluid />
         </div>
       </div>
     </div>
@@ -56,14 +57,14 @@
     <div class="buttonbar">
       <PrimeButton
         v-if="portfolioId"
-        label="Delete Portfolio"
+        label="DELETE PORTFOLIO"
         icon="pi pi-trash"
         @click="deletePortfolio"
         data-test="portfolio-dialog-delete-button"
         title="Delete the selected Portfolio"
       />
       <PrimeButton
-        label="Save Portfolio"
+        label="SAVE PORTFOLIO"
         icon="pi pi-save"
         :disabled="!isValidPortfolioUpload"
         :loading="isPortfolioSaving"

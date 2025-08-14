@@ -18,14 +18,21 @@
       <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
       <span class="pr-2">
         <i
-          v-if="showIcon"
+          v-if="showIcon && (percentCompleted === 0 || percentCompleted === undefined)"
           class="pi pi-download pl-1"
           data-test="download-icon"
-          aria-hidden="true"
-          style="font-size: 12px; margin: auto"
-        />
+        ></i>
+        <i
+          v-else-if="showIcon && percentCompleted > 0 && percentCompleted < 100"
+          class="pi pi-spin pi-spinner"
+          data-test="spinner-icon"
+          style="margin-left: var(--spacing-xs)"
+        ></i>
+
+        <span v-if="percentCompleted > 0 && percentCompleted < 100" data-test="percentage-text">
+          ({{ percentCompleted }}%)
+        </span>
       </span>
-      <DownloadProgressSpinner :percent-completed="percentCompleted" />
     </a>
     <span
       v-else
@@ -46,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, type Ref, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import {
@@ -55,12 +62,11 @@ import {
   downloadIsInProgress,
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const percentCompleted = createNewPercentCompletedRef();
+const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
 
 const isUserLoggedIn = ref<undefined | boolean>(undefined);
 

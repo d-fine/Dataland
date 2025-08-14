@@ -70,10 +70,9 @@
           <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
           <PrimeButton
             :disabled="waitingForData"
-            name="trigger-filtering-requests"
             data-test="trigger-filtering-requests"
             @click="getAllRequestsForFilters"
-            label="Filter Requests"
+            label="FILTER REQUESTS "
           />
         </div>
         <div class="message-container">

@@ -42,10 +42,9 @@
                       <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
 
                       <PrimeButton
-                        type="button"
                         @click="goToMyRequests()"
                         label="TO MY DATA REQUESTS"
-                        class="uppercase p-button-outlined"
+                        variant="outlined"
                         data-test="go-to-my-requests-button"
                       />
                     </div>
@@ -166,9 +165,7 @@
                     </BasicFormSection>
                   </div>
                   <div class="col-12 flex justify-content-end">
-                    <PrimeButton type="submit" label="Submit" class="align-self-end" name="submit_request_button">
-                      NEXT
-                    </PrimeButton>
+                    <PrimeButton type="submit" label="SUBMIT" class="align-self-end" name="submit_request_button"/>
                   </div>
                 </div>
               </div>
