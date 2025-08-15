@@ -228,6 +228,7 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
 import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
@@ -247,6 +248,7 @@ export default defineComponent({
     IconField,
     InputText,
     InputIcon,
+    Message,
   },
 
   setup() {

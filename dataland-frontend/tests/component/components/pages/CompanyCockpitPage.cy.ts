@@ -8,10 +8,11 @@ import {
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import {
+  KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
@@ -32,6 +33,7 @@ describe('Component test for the company cockpit', () => {
   const dummyReportingPeriods = ['2025', '2024', '2023'];
   const dummyUserId = 'mock-user-id';
   const dummyFirstName = 'mock-first-name';
+  const dummyLastName = 'mock-last-name';
   const dummyEmail = 'mock@Company.com';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
@@ -153,7 +155,7 @@ describe('Component test for the company cockpit', () => {
       global: {
         provide: {
           useMobileView: computed((): boolean => isMobile),
-          companyRoleAssignments: companyRoleAssignments,
+          companyRoleAssignments: ref(companyRoleAssignments),
         },
       },
       props: {
@@ -242,9 +244,9 @@ describe('Component test for the company cockpit', () => {
         frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
       if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0 && !isMobileViewActive) {
-        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('exist');
+        cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('exist');
       } else {
-        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('not.exist');
+        cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('not.exist');
       }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
@@ -435,5 +437,71 @@ describe('Component test for the company cockpit', () => {
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
+  });
+
+  it('Users Page has to be visible for Dataland Admins', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
+    cy.get('[data-test="usersTab"]').should('be.visible').click();
+  });
+
+  it('Users Page is not visible for non Dataland Admins', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
+    cy.get('[data-test="usersTab"]').should('not.exist');
+  });
+
+  it('Users Page is visible for a CompanyOwner', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test=sfdr-summary-panel]').should('not.be.visible');
+    cy.get('[data-test="company-roles-card"]').should('be.visible');
+    cy.get('[data-test="datasetsTab"]').click();
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+  });
+
+  it('Users are being displayed correctly in the Users Page', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+      const q = req.query as Record<string, string | undefined>;
+      if (q.role === CompanyRole.Member) {
+        req.reply({
+          statusCode: 200,
+          body: [
+            {
+              companyRole: 'Member',
+              companyId: dummyCompanyId,
+              userId: dummyUserId,
+              email: dummyEmail,
+              firstName: dummyFirstName,
+              lastName: dummyLastName,
+            },
+          ],
+        });
+      } else {
+        req.reply({ statusCode: 200, body: [] });
+      }
+    }).as('roleFetch');
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.wait('@roleFetch');
+    cy.get('[data-test="usersTab"]').click();
+    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('td').contains(dummyFirstName).should('exist');
+      cy.get('td').contains(dummyLastName).should('exist');
+      cy.get('td').contains(dummyEmail).should('exist');
+      cy.get('td').contains(dummyUserId).should('exist');
+    });
+    cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+      cy.get('td').contains(dummyFirstName).should('not.exist');
+      cy.get('td').contains(dummyLastName).should('not.exist');
+      cy.get('td').contains(dummyEmail).should('not.exist');
+      cy.get('td').contains(dummyUserId).should('not.exist');
+    });
   });
 });
