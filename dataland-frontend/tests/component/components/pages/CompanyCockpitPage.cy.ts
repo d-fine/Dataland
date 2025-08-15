@@ -489,20 +489,19 @@ describe('Component test for the company cockpit', () => {
     }).as('roleFetch');
     mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.wait('@roleFetch');
     cy.get('[data-test="usersTab"]').click();
-    cy.contains('[data-test="company-roles-card"]', 'Members') // find the Members card
-      .within(() => {
-        cy.get('td').contains(dummyFirstName).should('exist');
-        cy.get('td').contains(dummyLastName).should('exist');
-        cy.get('td').contains(dummyEmail).should('exist');
-        cy.get('td').contains(dummyUserId).should('exist');
-      });
-    cy.contains('[data-test="company-roles-card"]', 'Admins') // find the Members card
-      .within(() => {
-        cy.get('td').contains(dummyFirstName).should('not.exist');
-        cy.get('td').contains(dummyLastName).should('not.exist');
-        cy.get('td').contains(dummyEmail).should('not.exist');
-        cy.get('td').contains(dummyUserId).should('not.exist');
-      });
+    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('td').contains(dummyFirstName).should('exist');
+      cy.get('td').contains(dummyLastName).should('exist');
+      cy.get('td').contains(dummyEmail).should('exist');
+      cy.get('td').contains(dummyUserId).should('exist');
+    });
+    cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+      cy.get('td').contains(dummyFirstName).should('not.exist');
+      cy.get('td').contains(dummyLastName).should('not.exist');
+      cy.get('td').contains(dummyEmail).should('not.exist');
+      cy.get('td').contains(dummyUserId).should('not.exist');
+    });
   });
 });

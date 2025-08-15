@@ -110,10 +110,9 @@ describeIf(
         .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
         .then(() => cy.reload());
       cy.get('[data-test="usersTab"]').should('be.visible').click();
-      cy.contains('[data-test="company-roles-card"]', 'Members') // find the Members card
-        .within(() => {
-          cy.get('td').contains(reader_userId).should('exist');
-        });
+      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+        cy.get('td').contains(reader_userId).should('exist');
+      });
       cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
       cy.get('[data-test="usersTab"]').should('not.exist');
     });
