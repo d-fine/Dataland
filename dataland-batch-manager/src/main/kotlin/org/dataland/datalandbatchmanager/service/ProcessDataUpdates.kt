@@ -122,13 +122,6 @@ class ProcessDataUpdates
             }
         }
 
-        // TODO: to be removed before merging
-        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 * * * *")
-        private fun triggerUpdateHourlyForTesting() {
-            processUpdates()
-        }
-
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 0 3 ? * SUN")
         private fun processUpdates() {
