@@ -6,14 +6,13 @@
     style="min-height: 2rem"
   >
     <span class="flex-1 text-center">{{ warningMessage }}</span>
-    <router-link
+    <PrimeButton
       v-if="existsAcceptedVersion && link"
-      :to="link"
-      class="no-underline"
-      data-test="datasetDisplayStatusLink"
-    >
-      <PrimeButton :label="buttonLabel" icon="pi pi-stopwatch" />
-    </router-link>
+      :label="buttonLabel"
+      icon="pi pi-stopwatch"
+      @click="link()"
+      data-test="datasetDisplayStatusButton"
+    />
   </div>
 </template>
 
@@ -22,6 +21,7 @@ import { defineComponent, type PropType } from 'vue';
 import { type DataMetaInformation, QaStatus } from '@clients/backend';
 import PrimeButton from 'primevue/button';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import router from '@/router';
 export default defineComponent({
   name: 'DatasetDisplayStatusIndicator',
   components: { PrimeButton },
@@ -36,6 +36,15 @@ export default defineComponent({
     isMultiview: {
       type: Boolean,
       default: false,
+    },
+  },
+  methods: {
+    /**
+     * Link to the dataset based on its status.
+     */
+    link() {
+      if (!this.linkURL) return;
+      void router.push(this.linkURL);
     },
   },
   computed: {
@@ -55,14 +64,14 @@ export default defineComponent({
     },
     buttonLabel(): string {
       if (this.displayedDataset?.qaStatus === QaStatus.Pending || this.displayedDataset?.currentlyActive === false) {
-        return 'View Active';
+        return 'VIEW ACTIVE';
       } else if (this.areMoreDatasetsViewableSimultaneously) {
-        return 'View All';
+        return 'VIEW ALL';
       } else {
         return 'ERROR';
       }
     },
-    link(): string | undefined {
+    linkURL(): string | undefined {
       if (
         (this.displayedDataset?.qaStatus && this.displayedDataset.qaStatus !== QaStatus.Accepted) ||
         this.displayedDataset?.currentlyActive === false

@@ -29,12 +29,7 @@
 
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
 
-      <Button
-        data-test="reset-filter"
-        @click="resetFilters()"
-        variant="text"
-        label="RESET FILTER"
-      />
+      <Button data-test="reset-filter" @click="resetFilters()" variant="text" label="RESET FILTER" />
     </div>
 
     <DataTable
@@ -577,5 +572,4 @@ a:after {
   transform: translate(-50%, -50%);
   background-color: white;
 }
-
 </style>

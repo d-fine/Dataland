@@ -61,11 +61,11 @@
         </div>
 
         <PrimeButton
-        :label="showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL'"
-        @click="toggleShowAll"
-        :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
-        style="margin-left: auto"
-        variant="link"
+          :label="showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL'"
+          @click="toggleShowAll"
+          :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
+          style="margin-left: auto"
+          variant="link"
         />
       </div>
     </div>

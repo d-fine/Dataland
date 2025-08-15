@@ -45,12 +45,7 @@
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body>
-          <PrimeButton
-            label="VIEW"
-            iconPos="right"
-            icon="pi pi-angle-right"
-            variant="link"
-          />
+          <PrimeButton label="VIEW" iconPos="right" icon="pi pi-angle-right" variant="link" />
         </template>
       </Column>
     </DataTable>

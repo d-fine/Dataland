@@ -41,15 +41,15 @@
           </IconField>
         </template>
         <template #body="{ data }">
-            <div class="text-right">
-              <PrimeButton
-                  label="VIEW"
-                  iconPos="right"
-                  icon="pi pi-angle-right"
-                  variant="link"
-                  @click="goToDataset(data)"
-              />
-            </div>
+          <div class="text-right">
+            <PrimeButton
+              label="VIEW"
+              iconPos="right"
+              icon="pi pi-angle-right"
+              variant="link"
+              @click="goToDataset(data)"
+            />
+          </div>
         </template>
       </Column>
     </DataTable>
@@ -80,7 +80,6 @@ import DatalandTag from '@/components/general/DatalandTag.vue';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import PrimeButton from 'primevue/button';
-
 
 export default defineComponent({
   name: 'DatasetOverviewTable',

@@ -39,7 +39,7 @@
           <div class="button-container">
             <PrimeButton
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
-              label="Reject"
+              label="REJECT"
               data-test="qaRejectButton"
               icon="pi pi-times"
               variant="outlined"
@@ -48,7 +48,7 @@
 
             <PrimeButton
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
-              label="Approve"
+              label="APPROVE"
               data-test="qaApproveButton"
               icon="pi pi-check"
               @click="setQaStatusTo('Accepted')"
@@ -76,13 +76,14 @@
               "
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
-            <router-link
+            <PrimeButton
               v-if="hasUserUploaderRights"
-              :to="targetLinkForAddingNewDataset"
+              aria-label="New Dataset"
+              icon="pi pi-plus"
+              label="NEW DATASET"
               data-test="gotoNewDatasetButton"
-            >
-              <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
-            </router-link>
+              @click="linkToNewDataset"
+            />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SimpleReportingPeriodSelectorDialog
@@ -261,6 +262,13 @@ onMounted(async () => {
   }
   await setViewPageAttributesForUser();
 });
+
+/**
+ * Navigates to the new dataset creation page
+ */
+function linkToNewDataset(): void {
+  void router.push(targetLinkForAddingNewDataset.value);
+}
 
 /**
  * Sets dataset quality status to the given status

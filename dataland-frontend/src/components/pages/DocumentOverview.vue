@@ -20,7 +20,7 @@
         filter-placeholder="Search by document type"
         style="margin: 0 1rem"
       />
-      <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
+      <PrimeButton label="RESET" data-test="reset-filter" variant="link" @click="resetFilter()" />
     </div>
 
     <TheContent class="flex flex-col p-3">
@@ -54,9 +54,17 @@
         <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
         <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
           <template #body="tableRow">
-            <a class="tertiary-button" @click="openMetaInfoDialog(tableRow.data.documentId)">
-              VIEW DETAILS <span class="material-icons">arrow_forward_ios</span>
-            </a>
+            <PrimeButton
+              label="VIEW DETAILS"
+              data-test="reset-filter"
+              icon="pi pi-angle-right"
+              iconPos="right"
+              variant="link"
+              :pt="{
+                root: { style: { whiteSpace: 'nowrap' } },
+              }"
+              @click="openMetaInfoDialog(tableRow.data.documentId)"
+            />
           </template>
         </Column>
         <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
@@ -307,19 +315,6 @@ onMounted(() => {
   align-items: start;
 }
 
-.styled-box {
-  padding: 0.5rem 0.75rem;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #5a4f36;
-  border-radius: 8px;
-  margin-left: 15px;
-  margin-top: 5px;
-  background: #5a4f36;
-  color: white;
-  width: 200px;
-}
-
 .text-content-wrapper {
   margin: 4rem;
   text-align: center;
@@ -339,54 +334,5 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-}
-
-.tertiary-button {
-  padding: 0 var(--spacing-md);
-  height: 2.25rem;
-  color: var(--main-color);
-  background: none;
-  border: none;
-  white-space: nowrap;
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  min-width: 10em;
-  width: fit-content;
-  justify-content: center;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: bottom;
-  flex-direction: row;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-  transition: all 0.2s;
-  border-radius: 0;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-
-  &:enabled:hover {
-    color: white;
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 20));
-  }
-
-  &:enabled:active {
-    background: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-    border-color: hsl(from var(--btn-primary-bg) h s calc(l - 10));
-  }
-
-  &:disabled {
-    background-color: transparent;
-    border: 0;
-    color: var(--btn-disabled-color);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
 }
 </style>
