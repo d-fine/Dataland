@@ -14,20 +14,28 @@
         rows="5"
         class="no-resize"
         fluid
+        @focus="showIdentifierError = false"
       />
+      <div v-if="showIdentifierError">
+        <Message severity="error" data-test="invalidIdentifierErrorMessage" variant="simple" size="small">
+          Identifiers left in the dialog couldn't be added to the portfolio.
+        </Message>
+      </div>
       <div class="company-info-container">
         <p class="dataland-info-text small">
           Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
         </p>
-        <PrimeButton
-          type="button"
-          label="Add Companies"
-          icon="pi pi-plus"
-          :loading="isCompaniesLoading"
-          @click="addCompanies"
-          data-test="portfolio-dialog-add-companies"
-          fluid
-        />
+        <div class="button-col">
+          <PrimeButton
+            label="Add Companies"
+            icon="pi pi-plus"
+            :loading="isCompaniesLoading"
+            @click="addCompanies"
+            data-test="portfolio-dialog-add-companies"
+            fluid
+          />
+          <PrimeButton label="Get help" icon="pi pi-question" @click="openHelpDialog" fluid />
+        </div>
       </div>
     </div>
     <div>
@@ -51,7 +59,6 @@
         label="Delete Portfolio"
         icon="pi pi-trash"
         @click="deletePortfolio"
-        class="primary-button deleteButton"
         data-test="portfolio-dialog-delete-button"
         title="Delete the selected Portfolio"
       />
@@ -82,6 +89,8 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 
@@ -99,6 +108,7 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const companyIdentifiersInput = ref('');
+const showIdentifierError = ref(false);
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
@@ -118,6 +128,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+const dialog = useDialog();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -149,6 +160,7 @@ async function addCompanies(): Promise<void> {
     const companyValidationResults = (
       await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
+
     const validIdentifiers: CompanyIdAndName[] = companyValidationResults
       .filter((validationResult) => validationResult.companyInformation)
       .map((validEntry): CompanyIdAndName => {
@@ -161,14 +173,31 @@ async function addCompanies(): Promise<void> {
       .filter((validationResult) => !validationResult.companyInformation)
       .map((it) => it.identifier);
 
+    if (invalidIdentifiers.length > 0) {
+      showIdentifierError.value = true;
+    }
+
+    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
     portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
   } finally {
     isCompaniesLoading.value = false;
-    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
   }
+}
+
+/**
+ * Function to open the help dialog
+ */
+function openHelpDialog(): void {
+  dialog.open(GetHelpDialog, {
+    props: {
+      header: 'Request of Support',
+      modal: true,
+      style: { width: '22rem' },
+    },
+  });
 }
 
 /**
@@ -285,6 +314,15 @@ function processCompanyInputString(): string[] {
   margin-top: 1em;
   margin-left: auto;
   justify-content: end;
+}
+
+.button-col {
+  margin-top: var(--spacing-lg);
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
 }
 
 ul {
