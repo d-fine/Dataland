@@ -41,11 +41,18 @@
       </Column>
       <Column field="sector" header="SECTOR" :sortable="false" class="d-bg-white w-2" />
       <Column field="headquarters" header="LOCATION" :sortable="false" class="d-bg-white w-2">
-        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }} </template>
+        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }}</template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body>
-          <PrimeButton label="VIEW" iconPos="right" icon="pi pi-angle-right" variant="link" data-test="viewButton" />
+        <template #body="{ data }">
+          <PrimeButton
+            label="VIEW"
+            iconPos="right"
+            icon="pi pi-angle-right"
+            variant="link"
+            data-test="viewButton"
+            @click="goToCompanyCockpit({ data })"
+          />
         </template>
       </Column>
     </DataTable>

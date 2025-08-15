@@ -17,7 +17,14 @@
           data-test="get-in-touch-button"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
           rounded
-          style="width: fit-content"
+          :pt="{
+            root: {
+              style: {
+                width: 'fit-content',
+                marginTop: 'var(--spacing-sm)',
+              },
+            },
+          }"
         />
       </div>
     </div>
