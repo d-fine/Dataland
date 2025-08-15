@@ -33,6 +33,10 @@ const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/component
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+const DataPointsPage = (): Promise<RouteComponent> => import('@/components/pages/DataPointsPage.vue');
+const DataPointBaseTypesPage = (): Promise<RouteComponent> => import('@/components/pages/DataPointBaseTypesPage.vue');
+const FrameworksPage = (): Promise<RouteComponent> => import('@/components/pages/FrameworksPage.vue');
+const DocumentationPage = (): Promise<RouteComponent> => import('@/components/pages/DocumentationPage.vue');
 
 const routes = [
   {
@@ -184,6 +188,29 @@ const routes = [
     path: '/imprint',
     name: 'LandingImprint',
     component: TheImprint,
+  },
+  {
+    path: '/documentation',
+    name: 'Documentation',
+    component: DocumentationPage,
+  },
+  {
+    path: '/documentation/data-point-types/:dataPointTypeId',
+    name: 'DataPointsPage',
+    component: DataPointsPage,
+    props: true,
+  },
+  {
+    path: '/documentation/data-point-base-types/:dataPointBaseTypeId',
+    name: 'DataPointBaseTypesPage',
+    component: DataPointBaseTypesPage,
+    props: true,
+  },
+  {
+    path: '/documentation/frameworks/:frameworkId',
+    name: 'FrameworksPage',
+    component: FrameworksPage,
+    props: true,
   },
   {
     path: '/nocontent',
