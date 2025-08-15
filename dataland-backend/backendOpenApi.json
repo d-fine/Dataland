@@ -2423,15 +2423,17 @@
           {
             "name": "lei",
             "in": "query",
+            "description": "The LEI for which the associated ISINs are requested.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved all ISINs for the provided LEI.",
+            "description": "Successfully retrieved all ISINs associated with the provided LEI.",
             "content": {
               "application/json": {
                 "schema": {
