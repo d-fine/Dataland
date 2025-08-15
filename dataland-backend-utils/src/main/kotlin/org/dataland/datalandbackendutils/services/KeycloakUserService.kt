@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackendutils.model.KeycloakMappingsRepresentation
+import org.dataland.datalandbackendutils.model.KeycloakRoleRepresentation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -115,6 +116,21 @@ class KeycloakUserService(
             return mappingsRepresentation.realmMappings.map {
                 it.roleName
             }
+        } catch (e: JacksonException) {
+            logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
+            return emptyList()
+        }
+    }
+
+    /**
+     * Get effective keycloak roles for a user by their userId. This will recurse all composite roles to get the result.
+     */
+    fun getCompositeUserRoleNames(userId: String): List<String> {
+        val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId/role-mappings/realm/composite"
+        val response = getKeycloakResponse(url)
+
+        try {
+            return objectMapper.readValue(response, object : TypeReference<List<KeycloakRoleRepresentation>>() {}).map { it.roleName }
         } catch (e: JacksonException) {
             logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
             return emptyList()
