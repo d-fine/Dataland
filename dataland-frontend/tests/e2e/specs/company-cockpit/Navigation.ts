@@ -12,7 +12,7 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
-import { assignCompanyRole, removeAllCompanyRole } from '@e2e/utils/CompanyRolesUtils.ts';
+import { assignCompanyRole, removeAllCompanyRoles } from '@e2e/utils/CompanyRolesUtils.ts';
 import { CompanyRole } from '@clients/communitymanager';
 
 describeIf(
@@ -160,7 +160,7 @@ describeIf(
      */
     function removeCompanyRoles(companyId: string, userId: string): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return removeAllCompanyRole(token, companyId, userId);
+        return removeAllCompanyRoles(token, companyId, userId);
       });
     }
   }

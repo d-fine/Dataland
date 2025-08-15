@@ -5,7 +5,7 @@ import {
   CompanyRole,
 } from '@clients/communitymanager';
 import { admin_userId } from '@e2e/utils/Cypress';
-import { type AxiosError, isAxiosError } from 'axios';
+import { type AxiosError, type HttpStatusCode, isAxiosError } from 'axios';
 
 /**
  * Method that assigns a company role for a specified company to a user
@@ -35,7 +35,7 @@ export async function assignCompanyRole(
  * @param companyId of the company for which the role shall be assigned to the user
  * @param userId of the user
  */
-export async function removeAllCompanyRole(token: string, companyId: string, userId: string): Promise<void> {
+export async function removeAllCompanyRoles(token: string, companyId: string, userId: string): Promise<void> {
   const api = new CompanyRolesControllerApi(new Configuration({ accessToken: token }));
   const roles = Object.values(CompanyRole) as CompanyRole[];
 
@@ -56,7 +56,7 @@ export async function removeAllCompanyRole(token: string, companyId: string, use
  * @param code The HTTP status code to compare against.
  * @returns True if the error is an AxiosError with the provided status code, false otherwise.
  */
-function isHttpStatus(err: unknown, code: number): err is AxiosError {
+function isHttpStatus(err: unknown, code: HttpStatusCode): err is AxiosError {
   return isAxiosError(err) && err.response?.status === code;
 }
 

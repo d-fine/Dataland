@@ -260,7 +260,7 @@ onMounted(async () => {
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';
-    void router.replace({ path: `/companies/${props.companyId}` });
+    await router.replace({ path: `/companies/${props.companyId}` });
   } else {
     activeTab.value = path.endsWith('/users') ? 'users' : 'datasets';
   }
