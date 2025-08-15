@@ -56,7 +56,6 @@
           <template #body="tableRow">
             <PrimeButton
               label="VIEW DETAILS"
-              data-test="reset-filter"
               icon="pi pi-angle-right"
               iconPos="right"
               variant="link"

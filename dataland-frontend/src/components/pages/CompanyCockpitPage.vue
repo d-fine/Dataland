@@ -62,9 +62,12 @@
 
         <PrimeButton
           :label="showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL'"
+          data-test="toggleShowAll"
           @click="toggleShowAll"
           :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
-          style="margin-left: auto"
+          :pt="{
+            root: { style: 'margin-left: auto' },
+          }"
           variant="link"
         />
       </div>

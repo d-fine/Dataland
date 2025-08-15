@@ -4,6 +4,7 @@ import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRole
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { DataTypeEnum } from '@clients/backend';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import router from '@/router';
 
 describe('Component test for DatasetOverviewTable', () => {
   const nameOfCompanyAlpha = 'Imaginary-Corporate';
@@ -13,6 +14,8 @@ describe('Component test for DatasetOverviewTable', () => {
   const nameOfCompanyBeta = 'Dream-Insurance';
   const dataTypeOfDatasetForBeta = DataTypeEnum.EutaxonomyFinancials;
   const datasetTableInfoMockForBeta = createDatasetTableInfoMock(nameOfCompanyBeta, dataTypeOfDatasetForBeta);
+
+
 
   /**
    * Creates a DatasetTableInfo-object based on the inputs
@@ -59,6 +62,8 @@ describe('Component test for DatasetOverviewTable', () => {
       '2023',
       'Accepted',
     ];
+    const routerPushMock = cy.stub();
+    cy.stub(router, 'push').callsFake(routerPushMock);
     cy.get('tbody td').should((elements) => {
       expect(elements.length).to.equal(6);
     });
@@ -71,11 +76,14 @@ describe('Component test for DatasetOverviewTable', () => {
         expect(element.text()).to.contain('VIEW');
       }
     });
-    cy.get('tbody td a').should(
-      'have.attr',
-      'href',
-      `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
-    );
+    cy.get('tbody td button')
+      .contains('VIEW')
+      .click()
+      .then(() => {
+        expect(routerPushMock).to.have.been.calledWith(
+          `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
+        );
+      });
   });
 
   it('Validates the layout of the table header', () => {

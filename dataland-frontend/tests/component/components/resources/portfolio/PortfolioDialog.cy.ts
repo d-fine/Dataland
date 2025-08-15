@@ -18,7 +18,7 @@ describe('Check the portfolio dialog', function (): void {
     }).then(() => {
       cy.get('[data-test="portfolio-name-input"]').should('have.value', '');
       cy.get('[data-test="company-identifiers-input"]').should('have.value', '');
-      cy.get('[data-test="portfolio-dialog-save-button"]').should('contain.text', 'Save').and('be.disabled');
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('contain.text', 'SAVE PORTFOLIO').and('be.disabled');
     });
   });
 
@@ -42,7 +42,7 @@ describe('Check the portfolio dialog', function (): void {
       portfolioFixture.entries.forEach((entry) => {
         cy.get('[id="existing-company-identifiers"]').should('contain', entry.companyName);
       });
-      cy.get('[data-test="portfolio-dialog-save-button"]').should('contain.text', 'Save').and('not.be.disabled');
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('contain.text', 'SAVE PORTFOLIO').and('not.be.disabled');
     });
   });
 

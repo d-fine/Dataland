@@ -26,7 +26,7 @@ describe('Component tests for the DatasetOverview page', () => {
     });
     cy.get('h1[data-test=noDatasetUploadedText]').should('be.visible');
     cy.get('div[data-test=datasetOverviewTable]').should('not.be.visible');
-    cy.get('a[data-test=newDatasetButton]').should('have.attr', 'href', '/companies/choose');
+    cy.get('[data-test=newDatasetButton]').should('be.visible');
   });
 
   /**

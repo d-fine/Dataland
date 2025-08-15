@@ -11,7 +11,7 @@
       :label="buttonLabel"
       icon="pi pi-stopwatch"
       @click="link()"
-      data-test="datasetDisplayStatusButton"
+      data-test="datasetDisplayStatusLink"
     />
   </div>
 </template>
