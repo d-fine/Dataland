@@ -1,15 +1,10 @@
 <template>
   <div>
-    <ContentBox
-      v-for="(item, index) in usedBy"
-      :key="item.id"
-      theme="cyan"
-      :style="{ marginTop: index > 0 ? 'var(--spacing-sm)' : '0' }"
-    >
+    <ContentBox v-for="item in usedBy" :key="item.id" theme="cyan">
       <div><strong>Data Point Type ID:</strong> {{ item.id }}</div>
-      <div v-if="item.ref" style="margin-top: var(--spacing-xxxs)">
+      <div v-if="item.ref">
         <strong>Reference:</strong>
-        <ExternalLink :href="item.ref">{{ item.ref }}</ExternalLink>
+        <ExternalLink :href="item.ref" />
       </div>
     </ContentBox>
   </div>

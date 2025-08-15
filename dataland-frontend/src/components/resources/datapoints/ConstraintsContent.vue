@@ -1,11 +1,7 @@
 <template>
   <ContentBox theme="orange">
-    <ul style="list-style: disc; list-style-position: inside">
-      <li
-        v-for="(constraint, index) in constraints"
-        :key="constraint"
-        :style="{ marginTop: index > 0 ? 'var(--spacing-xxxs)' : '0' }"
-      >
+    <ul>
+      <li v-for="constraint in constraints" :key="constraint">
         {{ constraint }}
       </li>
     </ul>

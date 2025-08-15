@@ -14,15 +14,17 @@
         </div>
         <div v-if="data.ref" class="data-point-field">
           <strong>Reference:</strong>
-          <router-link
+          <a
             v-if="isInternalRoute(data.ref)"
-            :to="convertToDocumentationRoute(data.ref)"
+            :href="convertToDocumentationRoute(data.ref)"
+            target="_blank"
+            rel="noopener noreferrer"
             class="data-point-link internal-link"
             @mouseover="($event.target as HTMLElement).style.textDecoration = 'underline'"
             @mouseout="($event.target as HTMLElement).style.textDecoration = 'none'"
           >
-            {{ convertToDocumentationRoute(data.ref) }}
-          </router-link>
+            {{ convertToDocumentationUrl(data.ref) }}
+          </a>
           <a
             v-else
             :href="data.ref"
@@ -67,7 +69,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { convertSpecificationUrlToDocumentationRoute, isSpecificationServiceUrl } from '@/utils/DocumentationUrlConverter';
+import {
+  convertSpecificationUrlToDocumentationRoute,
+  convertSpecificationUrlToDocumentationUrl,
+  isSpecificationServiceUrl,
+} from '@/utils/DocumentationUrlConverter';
 
 interface Props {
   data: any;
@@ -119,127 +125,42 @@ const isInternalRoute = (url: string) => {
 const convertToDocumentationRoute = (url: string) => {
   return convertSpecificationUrlToDocumentationRoute(url);
 };
+
+const convertToDocumentationUrl = (url: string) => {
+  return convertSpecificationUrlToDocumentationUrl(url);
+};
 </script>
 
 <style scoped>
-.schema-node {
-  margin-bottom: var(--spacing-xs);
-}
-
-/* Data Point Retractable Header Styling */
-.data-point-header-clickable {
-  display: flex;
-  align-items: center;
-  padding: var(--spacing-sm);
-  cursor: pointer;
-  background-color: var(--p-indigo-200);
-  border: 1px solid var(--p-indigo-300);
-  border-radius: var(--p-border-radius-xs);
-  margin-bottom: var(--spacing-xs);
-  transition: background-color 0.15s ease-in-out;
-  font-size: var(--font-size-sm);
-}
-
-.data-point-header-clickable:hover {
-  background-color: var(--p-indigo-250);
-}
-
-.data-point-title {
-  color: var(--p-indigo-900);
-}
-
-.data-point-content-expandable {
-  background-color: var(--p-indigo-100);
-  border: 1px solid var(--p-indigo-300);
-  border-radius: var(--p-border-radius-xs);
-  padding: var(--spacing-sm);
-  margin-bottom: var(--spacing-xs);
-  margin-left: var(--spacing-md);
-  border-left: 2px solid var(--p-indigo-300);
-}
-
-.data-point-field {
-  margin-bottom: var(--spacing-xs);
-  font-size: var(--font-size-sm);
-  color: var(--p-indigo-800);
-}
-
-.data-point-field:last-child {
-  margin-bottom: 0;
-}
-
-.data-point-field code {
-  background-color: var(--p-indigo-50);
-  padding: var(--spacing-xxxs) var(--spacing-xs);
-  border-radius: var(--p-border-radius-xs);
-  font-family: monospace;
-  font-size: var(--font-size-xs);
-  margin-left: var(--spacing-xs);
-}
-
-.data-point-link {
-  color: var(--p-indigo-700);
-  margin-left: var(--spacing-xs);
-  word-break: break-all;
-  font-size: var(--font-size-xs);
-  transition: color 0.15s ease-in-out;
-}
-
-.data-point-link:hover {
-  color: var(--p-indigo-900);
-}
-
-.data-point-link.internal-link {
-  color: var(--p-indigo-700);
-}
-
-.data-point-link.internal-link:hover {
-  color: var(--p-indigo-900);
-}
-
-/* Schema Section Styling */
+/* Card-like structure for schema nodes */
+.data-point-header-clickable,
 .schema-section-header {
   display: flex;
   align-items: center;
-  padding: var(--spacing-sm);
   cursor: pointer;
-  background-color: var(--p-indigo-100);
-  border: 1px solid var(--p-indigo-200);
-  border-radius: var(--p-border-radius-xs);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--table-border);
+  border-radius: 4px;
+  background-color: var(--card-background);
   margin-bottom: var(--spacing-xs);
-  transition: background-color 0.15s ease-in-out;
-  font-size: var(--font-size-sm);
 }
 
+.data-point-header-clickable:hover,
 .schema-section-header:hover {
-  background-color: var(--p-indigo-150);
+  background-color: var(--table-background-hover-color);
 }
 
-.chevron-icon {
-  font-size: var(--font-size-sm);
-  color: var(--p-indigo-600);
-  margin-right: var(--spacing-sm);
-  flex-shrink: 0;
-  line-height: 1;
-  width: var(--spacing-md);
-  text-align: center;
-}
-
-.section-title {
-  color: var(--p-indigo-900);
-  margin-right: var(--spacing-sm);
-  flex-grow: 1;
-}
-
-.item-count {
-  color: var(--p-indigo-600);
-  font-size: var(--font-size-xs);
-  font-weight: normal;
+/* Card-like expandable content */
+.data-point-content-expandable {
+  margin-left: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--table-border);
+  border-radius: 4px;
+  background-color: var(--tables-headers-bg);
+  margin-bottom: var(--spacing-xs);
 }
 
 .schema-section-content {
   margin-left: var(--spacing-md);
-  border-left: 2px solid var(--p-indigo-200);
-  padding-left: var(--spacing-sm);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <p style="line-height: 1.625; color: var(--p-surface-700)">
+  <p>
     {{ businessDefinition }}
   </p>
 </template>

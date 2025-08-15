@@ -1,9 +1,9 @@
 <template>
-  <div style="font-size: var(--font-size-sm)">
+  <div>
     <div><strong>ID:</strong> {{ typeInfo.id }}</div>
-    <div v-if="typeInfo.ref" style="margin-top: var(--spacing-xs)">
+    <div v-if="typeInfo.ref">
       <strong>Reference:</strong>
-      <ExternalLink :href="typeInfo.ref" style="color: var(--p-primary-color)">{{ typeInfo.ref }}</ExternalLink>
+      <ExternalLink :href="typeInfo.ref" />
     </div>
   </div>
 </template>

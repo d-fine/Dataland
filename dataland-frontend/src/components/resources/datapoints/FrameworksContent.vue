@@ -1,15 +1,10 @@
 <template>
   <div>
-    <ContentBox
-      v-for="(framework, index) in frameworks"
-      :key="framework.id"
-      theme="blue"
-      :style="{ marginTop: index > 0 ? 'var(--spacing-sm)' : '0' }"
-    >
+    <ContentBox v-for="framework in frameworks" :key="framework.id" theme="blue">
       <div><strong>Framework ID:</strong> {{ framework.id }}</div>
-      <div v-if="framework.ref" style="margin-top: var(--spacing-xxxs)">
+      <div v-if="framework.ref">
         <strong>Reference:</strong>
-        <ExternalLink :href="framework.ref">{{ framework.ref }}</ExternalLink>
+        <ExternalLink :href="framework.ref" />
       </div>
     </ContentBox>
   </div>

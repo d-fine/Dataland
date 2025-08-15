@@ -111,3 +111,16 @@ export class ApiClientProvider {
     };
   }
 }
+
+/**
+ * Unauthenticated API client provider for services that don't require authentication
+ */
+export class UnauthenticatedApiClientProvider {
+  readonly axiosInstance: AxiosInstance;
+  readonly specificationController: SpecificationControllerApi;
+
+  constructor() {
+    this.axiosInstance = axios.create({});
+    this.specificationController = new SpecificationControllerApi(undefined, '/specifications', this.axiosInstance);
+  }
+}

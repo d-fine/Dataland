@@ -1,42 +1,33 @@
 <template>
   <TheHeader />
   <div class="datapoint-basetypes-page">
-    <div class="container mx-auto" style="padding: var(--spacing-lg) var(--spacing-md)">
-      <div style="margin-bottom: var(--spacing-lg)">
-        <h1
-          style="
-            font-size: var(--font-size-xxl);
-            font-weight: var(--font-weight-bold);
-            color: var(--text-color);
-            margin-bottom: var(--spacing-md);
-          "
-        >
-          {{ dataPointBaseType?.name || 'Data Point Base Type' }} Documentation
-        </h1>
-        <p style="font-size: var(--font-size-lg); color: var(--text-color-secondary)">
+    <div class="container mx-auto">
+      <div>
+        <h1>{{ dataPointBaseType?.name || 'Data Point Base Type' }} Documentation</h1>
+        <p>
           This page displays information about the {{ dataPointBaseTypeId }} data point base type used within the
           Dataland platform.
         </p>
       </div>
 
-      <div v-if="isLoading" style="text-align: center; padding: var(--spacing-xl) 0">
+      <div v-if="isLoading">
         <ProgressSpinner />
-        <p style="margin-top: var(--spacing-md); color: var(--text-color-secondary)">Loading data point base type...</p>
+        <p>Loading data point base type...</p>
       </div>
 
-      <div v-else-if="error" style="text-align: center; padding: var(--spacing-xl) 0">
+      <div v-else-if="error">
         <Message severity="error" :closable="false">
           <p>Error loading data point base type: {{ error }}</p>
         </Message>
       </div>
 
-      <div v-else-if="!dataPointBaseType" style="text-align: center; padding: var(--spacing-xl) 0">
+      <div v-else-if="!dataPointBaseType">
         <Message severity="info" :closable="false">
           <p>Data point base type not found.</p>
         </Message>
       </div>
 
-      <div v-else style="display: flex; flex-direction: column; gap: var(--spacing-xs)">
+      <div v-else>
         <DataPointBaseTypeCard :base-type="dataPointBaseType">
           <ExpandableSection
             v-if="dataPointBaseType.businessDefinition"
@@ -81,12 +72,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject } from 'vue';
+import { ref, onMounted } from 'vue';
 import Message from 'primevue/message';
 import ProgressSpinner from 'primevue/progressspinner';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
+import { UnauthenticatedApiClientProvider } from '@/services/ApiClients';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import DataPointBaseTypeCard from '@/components/resources/datapoints/DataPointBaseTypeCard.vue';
@@ -136,8 +125,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
 const dataPointBaseType = ref<DataPointBaseTypeData | null>(null);
 const isLoading = ref(true);
 const error = ref<string | null>(null);
@@ -148,10 +135,8 @@ const loadDataPointBaseType = async () => {
     isLoading.value = true;
     error.value = null;
 
-    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const data = await apiClientProvider.apiClients.specificationController.getDataPointBaseType(
-      props.dataPointBaseTypeId
-    );
+    const apiClientProvider = new UnauthenticatedApiClientProvider();
+    const data = await apiClientProvider.specificationController.getDataPointBaseType(props.dataPointBaseTypeId);
     dataPointBaseType.value = data.data;
   } catch (err) {
     console.error('Error loading data point base type:', err);

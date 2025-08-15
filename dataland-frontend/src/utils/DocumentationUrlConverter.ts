@@ -1,39 +1,55 @@
 /**
+ * Internal helper to convert specification paths to documentation paths
+ */
+function convertSpecificationPath(path: string): string | null {
+  // Match patterns like /specifications/frameworks/{id}
+  const frameworkMatch = path.match(/\/specifications\/frameworks\/(.+)/);
+  if (frameworkMatch) {
+    return `/documentation/frameworks/${frameworkMatch[1]}`;
+  }
+
+  // Match patterns like /specifications/data-point-types/{id}
+  const dataPointMatch = path.match(/\/specifications\/data-point-types\/(.+)/);
+  if (dataPointMatch) {
+    return `/documentation/data-point-types/${dataPointMatch[1]}`;
+  }
+
+  // Match patterns like /specifications/data-point-base-types/{id}
+  const baseTypeMatch = path.match(/\/specifications\/data-point-base-types\/(.+)/);
+  if (baseTypeMatch) {
+    return `/documentation/data-point-base-types/${baseTypeMatch[1]}`;
+  }
+
+  return null;
+}
+
+/**
  * Utility function to convert specification service URLs to documentation routes
  */
 export function convertSpecificationUrlToDocumentationRoute(url: string): string {
   if (!url) return url;
 
-  // Parse the URL to extract the path and components
   try {
     const urlObj = new URL(url);
-    const path = urlObj.pathname;
-
-    // Match patterns like /specifications/frameworks/{id}
-    const frameworkMatch = path.match(/\/specifications\/frameworks\/(.+)/);
-    if (frameworkMatch) {
-      const frameworkId = frameworkMatch[1];
-      return `/documentation/frameworks/${frameworkId}`;
-    }
-
-    // Match patterns like /specifications/data-point-types/{id}
-    const dataPointMatch = path.match(/\/specifications\/data-point-types\/(.+)/);
-    if (dataPointMatch) {
-      const dataPointId = dataPointMatch[1];
-      return `/documentation/data-point-types/${dataPointId}`;
-    }
-
-    // Match patterns like /specifications/data-point-base-types/{id}
-    const baseTypeMatch = path.match(/\/specifications\/data-point-base-types\/(.+)/);
-    if (baseTypeMatch) {
-      const baseTypeId = baseTypeMatch[1];
-      return `/documentation/data-point-base-types/${baseTypeId}`;
-    }
-
-    // If no pattern matches, return the original URL
-    return url;
+    const documentationPath = convertSpecificationPath(urlObj.pathname);
+    return documentationPath || url;
   } catch (error) {
-    // If URL parsing fails, return the original URL
+    console.warn('Failed to parse specification URL:', url, error);
+    return url;
+  }
+}
+
+/**
+ * Utility function to convert specification service URLs to full documentation URLs for display
+ */
+export function convertSpecificationUrlToDocumentationUrl(url: string): string {
+  if (!url) return url;
+
+  try {
+    const urlObj = new URL(url);
+    const documentationPath = convertSpecificationPath(urlObj.pathname);
+    return documentationPath ? `${window.location.origin}${documentationPath}` : url;
+  } catch (error) {
     console.warn('Failed to parse specification URL:', url, error);
     return url;
   }

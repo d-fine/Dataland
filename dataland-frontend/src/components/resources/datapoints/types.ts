@@ -44,7 +44,7 @@ export interface DataPointBaseType {
   name: string;
   businessDefinition?: string;
   validatedBy?: string;
-  example?: Example;
+  example?: Example | string | number | boolean;
   usedBy?: UsedByItem[];
 }
 
