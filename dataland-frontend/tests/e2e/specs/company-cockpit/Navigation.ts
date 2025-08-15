@@ -109,11 +109,20 @@ describeIf(
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
         .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
         .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`));
+      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+        'fetchAggregatedFrameworkSummaryForAlpha'
+      );
+      cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`);
+      cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
       cy.get('[data-test="usersTab"]').click();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td').contains(reader_userId).should('exist');
       });
+      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+        'fetchAggregatedFrameworkSummaryForBeta'
+      );
       cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
+      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
       cy.get('[data-test="usersTab"]').should('not.exist');
     });
 
