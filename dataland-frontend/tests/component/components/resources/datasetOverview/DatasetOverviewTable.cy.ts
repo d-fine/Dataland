@@ -15,8 +15,6 @@ describe('Component test for DatasetOverviewTable', () => {
   const dataTypeOfDatasetForBeta = DataTypeEnum.EutaxonomyFinancials;
   const datasetTableInfoMockForBeta = createDatasetTableInfoMock(nameOfCompanyBeta, dataTypeOfDatasetForBeta);
 
-
-
   /**
    * Creates a DatasetTableInfo-object based on the inputs
    * @param companyName The company name that the DatasetTableInfo-object shall have

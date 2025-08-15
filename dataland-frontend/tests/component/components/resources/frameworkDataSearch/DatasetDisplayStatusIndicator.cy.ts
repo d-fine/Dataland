@@ -18,7 +18,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
   beforeEach(() => {
     routerPushMock = cy.stub();
     cy.stub(router, 'push').callsFake(routerPushMock);
-  })
+  });
 
   it('Should display a superseded warning message when the dataset is superseded', () => {
     const supersededDataset = structuredClone(acceptedAndActiveDataset);
@@ -37,7 +37,9 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
     });
 
     cy.get('div[data-test=datasetDisplayStatusContainer]').contains('superseded').should('exist');
-    cy.get('[data-test=datasetDisplayStatusLink]').contains('VIEW ACTIVE').click()
+    cy.get('[data-test=datasetDisplayStatusLink]')
+      .contains('VIEW ACTIVE')
+      .click()
       .then(() => {
         expect(routerPushMock).to.have.been.calledWith(
           `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`
@@ -82,7 +84,9 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
     });
 
     cy.get('div[data-test=datasetDisplayStatusContainer]').contains('single').should('exist');
-    cy.get('[data-test=datasetDisplayStatusLink]').contains('VIEW ALL').click()
+    cy.get('[data-test=datasetDisplayStatusLink]')
+      .contains('VIEW ALL')
+      .click()
       .then(() => {
         expect(routerPushMock).to.have.been.calledWith(
           `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`

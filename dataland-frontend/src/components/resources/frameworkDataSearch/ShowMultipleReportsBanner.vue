@@ -17,7 +17,7 @@
       @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
       data-test="previousReportsLinkToModal"
       :pt="{ root: { style: 'margin-left: auto;' } }"
-      />
+    />
   </div>
 </template>
 
