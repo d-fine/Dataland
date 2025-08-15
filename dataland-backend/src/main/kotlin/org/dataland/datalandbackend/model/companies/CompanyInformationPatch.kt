@@ -72,7 +72,7 @@ data class CompanyInformationPatch(
         description = BackendOpenApiDescriptionsAndExamples.SECTOR_CODE_WZ_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.SECTOR_CODE_WZ_EXAMPLE,
     )
-    val sectorCodeWz: String?,
+    val sectorCodeWz: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,

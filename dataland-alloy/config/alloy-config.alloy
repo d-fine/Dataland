@@ -12,7 +12,7 @@ local.file_match "system" {
 
 loki.source.file "system" {
 	targets               = local.file_match.system.targets
-	forward_to            = [loki.process.add_labels.receiver]
+	forward_to            = [loki.process.normalize_levels.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ loki.process "extract_container_label" {
         }
     }
 
-    forward_to = [loki.process.add_labels.receiver]
+    forward_to = [loki.process.normalize_levels.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -88,35 +88,106 @@ discovery.relabel "default" {
 loki.source.docker "default" {
     host       = "unix:///var/run/docker.sock"
     targets    = discovery.relabel.default.output
-    forward_to = [loki.process.add_labels.receiver]
+    forward_to = [loki.process.normalize_levels.receiver]
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-// add more labels from container logs
-// container label needs to be handled before, due to different methods
-//
-// Note: This generates error logs for alloy of type 'logfmt syntax error'
-//       for log messages containing the label keywords in the text but not as labels.
-//       However this does not affect the functionality for other logs, containing the label keywords as labels.
+// Normalize log levels from different formats
 // ---------------------------------------------------------------------------------------------------------------------
 
-loki.process "add_labels" {
-    // Extract the value of the desired labels from the log line
-    stage.logfmt {
-        // Mapping fields from your logs
-        mapping = {
-           "extracted_level" = "level",
-           "extracted_status" = "status",
-           "extracted_httpStatus" ="httpStatus",
+loki.process "normalize_levels" {
+    // Try multiple patterns for level extraction
+
+    // Pattern 1: level=value (with or without quotes)
+    stage.regex {
+        expression = "level=\"(?P<level_quoted>[^\"]+)\""
+    }
+
+    // Pattern 2: level=value (unquoted)
+    stage.regex {
+        expression = "level=(?P<level_unquoted>[a-zA-Z]+)"
+    }
+
+    // Pattern 3: level with backticks
+    stage.regex {
+        expression = "level=`(?P<level_backtick>[^`]+)`"
+    }
+
+    // Pattern 4: Standalone uppercase levels
+    stage.regex {
+        expression = "\\b(?P<standalone_level>TRACE|DEBUG|INFO|WARN|WARNING|ERROR|FATAL|PANIC)\\b"
+    }
+
+    // Combine all possible matches and normalize
+    stage.template {
+        source = "normalized_level"
+        template = "{{ or .level_quoted .level_unquoted .level_backtick .standalone_level | ToLower }}"
+    }
+
+    // Only set label if we found a value
+    stage.labels {
+        values = {
+            level = "normalized_level",
         }
     }
 
+    forward_to = [loki.process.extract_status.receiver]
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Extract status field
+// ---------------------------------------------------------------------------------------------------------------------
+
+loki.process "extract_status" {
+    // Pattern 1: status="value"
+    stage.regex {
+        expression = "status=\"(?P<status_quoted>[^\"]+)\""
+    }
+
+    // Pattern 2: status=value (unquoted, stops at space or comma)
+    stage.regex {
+        expression = "status=(?P<status_unquoted>[^\\s,]+)"
+    }
+
+    // Combine matches
+    stage.template {
+        source = "extracted_status"
+        template = "{{ or .status_quoted .status_unquoted }}"
+    }
+
     stage.labels {
-        // Use the extracted values as the labels
         values = {
-           "level" = "extracted_level",
-           "status" = "extracted_status",
-           "httpStatus" = "extracted_httpStatus",
+            status = "extracted_status",
+        }
+    }
+
+    forward_to = [loki.process.extract_httpstatus.receiver]
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Extract httpStatus field
+// ---------------------------------------------------------------------------------------------------------------------
+
+loki.process "extract_httpstatus" {
+    // Pattern 1: httpStatus="value"
+    stage.regex {
+        expression = "httpStatus=\"(?P<httpstatus_quoted>[^\"]+)\""
+    }
+
+    // Pattern 2: httpStatus=value (unquoted)
+    stage.regex {
+        expression = "httpStatus=(?P<httpstatus_unquoted>[0-9]+)"
+    }
+
+    // Combine matches
+    stage.template {
+        source = "extracted_httpStatus"
+        template = "{{ or .httpstatus_quoted .httpstatus_unquoted }}"
+    }
+
+    stage.labels {
+        values = {
+            httpStatus = "extracted_httpStatus",
         }
     }
 
