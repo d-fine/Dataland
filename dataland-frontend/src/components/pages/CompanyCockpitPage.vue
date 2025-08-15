@@ -89,7 +89,7 @@
           </div>
         </TabPanel>
         <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
-          <CompanyRolesCard v-for="role in companyRoles" :key="role" :companyId="companyId" :role="role" />
+          <UsersPage :company-id="companyId" />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -109,7 +109,7 @@ import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
-import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
+import UsersPage from '@/components/resources/companyCockpit/UsersPage.vue';
 
 import PrimeButton from 'primevue/button';
 import Card from 'primevue/card';
@@ -165,7 +165,6 @@ Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
   latestDocuments[`latest${category}`] = [];
 });
 const chunkSize = 3;
-const companyRoles = [CompanyRole.MemberAdmin, CompanyRole.Member, CompanyRole.CompanyOwner, CompanyRole.DataUploader];
 const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
 const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
 
