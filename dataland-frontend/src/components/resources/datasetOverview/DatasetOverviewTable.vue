@@ -47,6 +47,7 @@
               iconPos="right"
               icon="pi pi-angle-right"
               variant="link"
+              data-test="view-dataset-button"
               @click="goToDataset(data)"
             />
           </div>

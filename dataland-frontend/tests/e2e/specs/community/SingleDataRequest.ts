@@ -119,7 +119,7 @@ describeIf(
 
       verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
       cy.get('[data-test="notifyMeImmediatelyInput"]').click();
-      cy.reload(); // Check if the data was persisted in the backend
+      cy.reload();
       cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
     }
 

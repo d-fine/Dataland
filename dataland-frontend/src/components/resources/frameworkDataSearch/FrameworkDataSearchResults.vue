@@ -45,7 +45,7 @@
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body>
-          <PrimeButton label="VIEW" iconPos="right" icon="pi pi-angle-right" variant="link" />
+          <PrimeButton label="VIEW" iconPos="right" icon="pi pi-angle-right" variant="link" data-test="viewButton" />
         </template>
       </Column>
     </DataTable>
@@ -136,10 +136,6 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.text-primary {
-  color: var(--main-color);
 }
 
 .lei-column-header {
