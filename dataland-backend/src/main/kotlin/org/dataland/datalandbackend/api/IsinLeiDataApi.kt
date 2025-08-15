@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.model.IsinLeiMappingData
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -27,21 +27,21 @@ interface IsinLeiDataApi {
      * @return updated ISIN-LEI mapping data
      */
     @Operation(
-        summary = "Update ISIN-LEI mapping entirely",
-        description = "Replace all ISIN-LEI mappings with the given mappings.",
+        summary = "Post a new ISIN-LEI mapping.",
+        description = "Replaces all ISIN-LEI mappings with the given mappings.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully updated ISIN-LEI mapping."),
         ],
     )
-    @PutMapping(
-        value = ["/update"],
+    @PostMapping(
+        value = ["/"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun putIsinLeiMapping(
+    fun postIsinLeiMapping(
         @Valid @RequestBody
         isinLeiMappingData: List<IsinLeiMappingData>,
     ): ResponseEntity<Map<String?, String?>?>

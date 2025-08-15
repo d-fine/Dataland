@@ -107,7 +107,7 @@ class GleifGoldenCopyIngestorTest {
         ingestorSpy.processIsinMappingFile()
 
         verify(mockGleifApiAccessor, times(1)).getFullIsinMappingFile(any())
-        verify(mockIsinLeiDataControllerApi, times(1)).putIsinLeiMapping(any())
+        verify(mockIsinLeiDataControllerApi, times(1)).postIsinLeiMapping(any())
         verify(ingestorSpy, times(1)).extractIsinLeiMapping(any())
 
         assertFalse(capturedFile.exists(), "The mapping file should be deleted after processing")

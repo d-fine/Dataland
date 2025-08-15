@@ -16,8 +16,8 @@ import java.util.Collections
 class IsinLeiDataController(
     @Autowired private val isinLeiManager: IsinLeiManager,
 ) : IsinLeiDataApi {
-    override fun putIsinLeiMapping(isinLeiMappingData: List<IsinLeiMappingData>): ResponseEntity<Map<String?, String?>?> {
-        isinLeiManager.putIsinLeiMapping(isinLeiMappingData)
+    override fun postIsinLeiMapping(isinLeiMappingData: List<IsinLeiMappingData>): ResponseEntity<Map<String?, String?>?> {
+        isinLeiManager.postIsinLeiMapping(isinLeiMappingData)
         return ResponseEntity.ok(Collections.singletonMap("message", "Successfully received ISIN-LEI mapping data"))
     }
 

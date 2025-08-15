@@ -98,14 +98,14 @@ class IsinLeiManagerTest(
 
     @Test
     fun `add sample ISIN LEI mapping to empty database and check if it is there`() {
-        isinLeiManager.putIsinLeiMapping(payload)
+        isinLeiManager.postIsinLeiMapping(payload)
 
         val result = isinLeiRepository.findAll().toList().sortedBy { it.isin }
         assertEquals(2, result.size)
         assertEquals(dummyIsin1, result[0].isin)
-        assertEquals(dummyCompany1.companyId, result[0].company?.companyId)
+        assertEquals(dummyCompany1.companyId, result[0].company.companyId)
         assertEquals(dummyIsin2, result[1].isin)
-        assertEquals(dummyCompany2.companyId, result[1].company?.companyId)
+        assertEquals(dummyCompany2.companyId, result[1].company.companyId)
     }
 
     @Test
@@ -118,13 +118,13 @@ class IsinLeiManagerTest(
         assertEquals("123", resultBefore[0].isin)
         assertEquals("456", resultBefore[1].isin)
 
-        isinLeiManager.putIsinLeiMapping(payload)
+        isinLeiManager.postIsinLeiMapping(payload)
 
         val result = isinLeiRepository.findAll().toList().sortedBy { it.isin }
         assertEquals(2, result.size)
         assertEquals(dummyIsin1, result[0].isin)
-        assertEquals(dummyCompany1.companyId, result[0].company?.companyId)
+        assertEquals(dummyCompany1.companyId, result[0].company.companyId)
         assertEquals(dummyIsin2, result[1].isin)
-        assertEquals(dummyCompany2.companyId, result[1].company?.companyId)
+        assertEquals(dummyCompany2.companyId, result[1].company.companyId)
     }
 }

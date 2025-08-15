@@ -120,7 +120,7 @@ class GleifGoldenCopyIngestor(
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
                 val isinLeiMappingData = extractIsinLeiMapping(newMappingFile)
                 logger.info("Extracted ${isinLeiMappingData.size} ISIN-LEI mappings from file $newMappingFile.")
-                isinLeiDataControllerApi.putIsinLeiMapping(isinLeiMappingData)
+                isinLeiDataControllerApi.postIsinLeiMapping(isinLeiMappingData)
                 if (!newMappingFile.delete()) {
                     logger.error("failed to delete temporary mapping file $newMappingFile")
                 }
