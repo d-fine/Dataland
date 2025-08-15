@@ -10,14 +10,14 @@
         </a>
       </span>
     </div>
-    <span
+    <PrimeButton
       v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
-      class="link font-semibold underline mr-0 ml-auto"
+      label="Previous years reports"
+      variant="text"
       @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
       data-test="previousReportsLinkToModal"
-    >
-      Previous years reports
-    </span>
+      :pt="{ root: { style: 'margin-left: auto;' } }"
+      />
   </div>
 </template>
 
@@ -26,9 +26,13 @@ import { defineComponent, type PropType } from 'vue';
 import PreviousReportsModal from '@/components/resources/frameworkDataSearch/PreviousReportsModal.vue';
 import type { CompanyReport } from '@clients/backend';
 import { openReportDataTableModal } from '@/utils/ReferencedReportsUtil';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'ShowMultipleReportsBanner',
+  components: {
+    PrimeButton,
+  },
   data() {
     return {
       indexOfNewestReportingPeriod: -1 as number,

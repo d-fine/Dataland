@@ -28,8 +28,13 @@
       </div>
 
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
-
-      <Button data-test="reset-filter" @click="resetFilters()" variant="text" label="RESET FILTER" />
+      <Button
+        class="reset-button-align-right"
+        data-test="reset-filter"
+        @click="resetFilters()"
+        variant="text"
+        label="RESET"
+      />
     </div>
 
     <DataTable
@@ -571,5 +576,8 @@ a:after {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
+}
+.reset-button-align-right {
+  margin-left: auto;
 }
 </style>

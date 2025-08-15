@@ -244,12 +244,12 @@
                 <div class="card__separator" />
                 <div>
                   Once a data request is withdrawn, it will be removed from your data request list. The company owner
-                  will not be notified anymore.<br />
+                  will not be notified anymore. <br />
                   <br />
                   <PrimeButton
                     data-test="withdrawRequestButton"
-                    variant="link"
-                    label="Withdraw request"
+                    icon="pi pi-trash"
+                    label="WITHDRAW REQUEST"
                     @click="withdrawRequest()"
                   />
                 </div>
