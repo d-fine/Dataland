@@ -23,7 +23,6 @@
         :pt="{
           root: {
             class: 'mx-auto block',
-            style: 'width: fit-content;',
           },
         }"
       />

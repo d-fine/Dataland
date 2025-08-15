@@ -202,13 +202,11 @@
                   <div class="col-12 flex align-items-end">
                     <PrimeButton
                       type="submit"
-                      label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
+                      label ="SUBMIT DATA REQUEST"
                       name="submit_request_button"
                       @click="checkPreSubmitConditions"
-                    >
-                      SUBMIT DATA REQUEST
-                    </PrimeButton>
+                    />
                   </div>
                 </div>
               </div>
