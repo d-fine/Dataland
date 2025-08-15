@@ -108,8 +108,8 @@ describeIf(
       cy.get('[data-test="usersTab"]').should('not.exist');
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
         .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
-        .then(() => cy.reload());
-      cy.get('[data-test="usersTab"]').should('be.visible').click();
+        .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`));
+      cy.get('[data-test="usersTab"]').click();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td').contains(reader_userId).should('exist');
       });
