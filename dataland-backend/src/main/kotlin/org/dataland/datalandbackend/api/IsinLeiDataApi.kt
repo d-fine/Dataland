@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.IsinLeiMappingData
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -57,7 +59,7 @@ interface IsinLeiDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved all ISINs for the provided LEI."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved all ISINs associated with the provided LEI."),
         ],
     )
     @GetMapping(
@@ -66,7 +68,12 @@ interface IsinLeiDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getIsinsByLei(
-        @RequestParam("lei")
-        lei: String,
+        @Parameter(
+            name = "lei",
+            description = "The LEI for which the associated ISINs are requested.",
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE,
+            required = true,
+        )
+        @RequestParam("lei") lei: String,
     ): ResponseEntity<List<String>>
 }

@@ -114,7 +114,7 @@ class ProcessDataUpdates
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 0 * * * *")
-        private fun checkForManualTrigger() {
+        private fun processManualTrigger() {
             val manualTrigger = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
             if (manualTrigger?.exists() == true) {
                 logger.info("Found flag file for full update of Gleif data outside the regular update schedule. Initiating process.")
