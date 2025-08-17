@@ -127,9 +127,8 @@ describeIf(
      * Withdraw the request and check that it succeeded.
      */
     function withDrawRequestAndCheckThatItsWithdrawn(): void {
-      cy.get('a:contains("WITHDRAW REQUEST")').scrollIntoView();
-      cy.get('a:contains("WITHDRAW REQUEST")').click();
-      cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
+      cy.get('[data-test="withdrawRequestButton"]').scrollIntoView();
+      cy.get('[data-test="withdrawRequestButton"]').click();  cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
       cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
       cy.get('[data-test="back-button"]').scrollIntoView();
       cy.get('[data-test="back-button"]').click();

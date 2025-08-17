@@ -8,9 +8,8 @@ export function verifyOnSingleRequestPage(company: string, emailChecked: boolean
   cy.get(`div.card__data:contains("${company}")`).scrollIntoView();
   cy.get(`div.card__data:contains("${company}")`).should('be.visible');
   cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Openand Access is:Public since');
-  if (emailChecked) {
-    cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
-  } else {
-    cy.get('[data-test="notifyMeImmediatelyInput"]').should('not.have.class', 'p-toggleswitch-checked');
-  }
+  cy.get('[data-test="notifyMeImmediatelyInput"]').should(
+    (emailChecked ? '' : 'not.') + 'have.class',
+    'p-toggleswitch-checked'
+  );
 }
