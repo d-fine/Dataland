@@ -209,17 +209,13 @@ const register = (): void => {
     .then((keycloak) => {
       if (!keycloak.authenticated) {
         void registerAndRedirectToSearchPage(keycloak);
-      }
-      if (window.location.pathname == '/') {
-        void loginAndRedirectToSearchPage(keycloak);
       } else {
-        keycloak.login().catch((error) => console.error(error));
+        void loginAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
 };
 </script>
-
 <style lang="scss">
 .quotes {
   margin: 0 auto 120px;
