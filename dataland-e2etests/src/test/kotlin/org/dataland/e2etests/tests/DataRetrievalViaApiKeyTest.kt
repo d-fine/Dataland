@@ -62,8 +62,8 @@ class DataRetrievalViaApiKeyTest {
         val expectedRolesForUserType = technicalUser.roles
         val rolesInReceivedApiKeyMetaInfo = receivedApiKeyMetaInfoFromValidation.keycloakRoles
         assertEquals(
-            expectedRolesForUserType,
-            rolesInReceivedApiKeyMetaInfo,
+            expectedRolesForUserType.sorted(),
+            rolesInReceivedApiKeyMetaInfo?.sorted(),
             "The Keycloak roles in the received API key meta info were $rolesInReceivedApiKeyMetaInfo and " +
                 "do not equal the expected Keycloak roles $expectedRolesForUserType for the technical" +
                 "user type $technicalUser",
@@ -325,8 +325,8 @@ class DataRetrievalViaApiKeyTest {
             val apiKeyAndMetaInfo = apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(userType)
             val apiKeyMetaInfoFromEndpoint = apiKeyHelper.getApiKeyMetaInformationForTechnicalUser(userType)
             assertEquals(
-                apiKeyAndMetaInfo.apiKeyMetaInfo,
-                apiKeyMetaInfoFromEndpoint,
+                apiKeyAndMetaInfo.apiKeyMetaInfo.copy(keycloakRoles = apiKeyAndMetaInfo.apiKeyMetaInfo.keycloakRoles?.sorted()),
+                apiKeyMetaInfoFromEndpoint.copy(keycloakRoles = apiKeyMetaInfoFromEndpoint.keycloakRoles?.sorted()),
                 "The API key meta info from the generation process does not equal the API key meta info that is " +
                     "returned for the respective keycloak user.",
             )
