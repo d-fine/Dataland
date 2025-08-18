@@ -24,7 +24,12 @@
                     />
                     <div v-if="isAdmin">
                       <span>Can't find the company? </span>
-                      <PrimeButton label="Add it." @click="autoScrollToCreateACompanyForm" variant="text" />
+                      <PrimeButton
+                        label="Add it."
+                        @click="autoScrollToCreateACompanyForm"
+                        variant="text"
+                        data-test="add-it-button"
+                      />
                     </div>
                   </div>
                 </div>
