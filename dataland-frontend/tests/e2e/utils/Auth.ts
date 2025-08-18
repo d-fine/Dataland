@@ -10,7 +10,7 @@ export function logout(): void {
   cy.get("[data-test='user-profile-toggle']").click();
   cy.get('.p-menu-item-link').contains('LOG OUT').click();
   cy.url().should('eq', getBaseUrl() + '/');
-  cy.get("a[aria-label='Login to account']").should('exist').should('be.visible');
+  cy.get("button[aria-label='Login to account']").should('exist').should('be.visible');
 }
 
 let globalJwt = '';

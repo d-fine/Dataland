@@ -41,7 +41,7 @@ describe('Component test for the landing page', () => {
 function validateTheHeader(): void {
   checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
   checkButton('signup_dataland_button', 'SIGN UP');
-  checkAnchorByContent('Login');
+  checkButton('login_dataland_button', 'LOGIN');
 }
 
 /**
