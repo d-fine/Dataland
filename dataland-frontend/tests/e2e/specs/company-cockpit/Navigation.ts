@@ -118,7 +118,7 @@ describeIf(
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td').contains(reader_userId).should('exist');
       });
-      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
       cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
