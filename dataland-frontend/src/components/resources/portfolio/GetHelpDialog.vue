@@ -62,7 +62,7 @@ const emailSendingMessage = ref('');
 const selectedTopic = ref();
 const availableTopics = ref([{ name: 'Find company identifiers' }, { name: 'Other topic' }]);
 
-const isValidForm = computed(() => message.value && selectedTopic.value.name);
+const isValidForm = computed(() => message.value && selectedTopic.value?.name);
 /**
  * Send an email to request support
  */
