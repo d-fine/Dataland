@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, inject, unref, onBeforeMount } from 'vue';
+import { ref, reactive, computed, watch, onMounted, inject, unref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -252,12 +252,7 @@ watch(activeTab, (val) => {
   void router.replace({ path: val === 'users' ? `${base}/users` : base });
 });
 
-onBeforeMount(() => {
-  isCompanyMemberOrAdmin.value = false;
-});
-
 onMounted(async () => {
-  isCompanyMemberOrAdmin.value = false;
   await setUserRights();
   await getAggregatedFrameworkDataSummary();
   await getMetaInfoForLatestDocuments();
