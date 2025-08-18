@@ -16,7 +16,7 @@
         label="LOGIN"
         ariaLabel="Login to account"
         name="login_dataland_button"
-        buttonType="login-button"
+        data-test="login-button"
         @click="login"
         icon="pi pi-user"
         variant="text"
@@ -48,7 +48,6 @@
         ariaLabel="Sign up to account"
         data-test="signup-dataland-button"
         @click="register"
-        rounded
       />
     </div>
   </template>

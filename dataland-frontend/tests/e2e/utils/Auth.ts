@@ -26,9 +26,8 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept({ times: 1, url: '/api/companies*' }).as('getCompanies');
   cy.intercept({ times: 1, url: '/api/companies/numberOfCompanies**' }).as('numberOfCompanies');
 
-  cy.visitAndCheckAppMount('/')
-  cy.get("button[aria-label='Login to account']", { timeout: Cypress.env('long_timeout_in_ms') as number })
-    .click();
+  cy.visitAndCheckAppMount('/');
+  cy.get("button[aria-label='Login to account']", { timeout: Cypress.env('long_timeout_in_ms') as number }).click();
 
   loginWithCredentials(username, password);
 

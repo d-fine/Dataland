@@ -82,7 +82,7 @@
                 })
               "
               icon="pi pi-download"
-              style="width: 12rem"
+              :pt="{ root: { style: 'width: 12rem;' } }"
             />
           </template>
         </Column>
