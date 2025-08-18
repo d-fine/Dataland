@@ -232,7 +232,7 @@ export const DatalandPreset = definePreset(Aura, {
         bottom: '0',
         height: '0',
       },
-      css: () => `.p-tabs .p-tab { font-size: var(--font-size-base) }`,
+      css: () => `.p-tab { font-size: var(--font-size-base) }`,
     },
     paginator: {
       navButton: {
