@@ -1,7 +1,6 @@
 <template>
   <Tag
     v-if="severity"
-    :severity="severity"
     :dt="{ colorScheme: { light: { primary: designToken } } }"
     :pt="{
       root: {
