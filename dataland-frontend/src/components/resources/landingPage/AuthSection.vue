@@ -12,7 +12,15 @@
     </div>
 
     <div v-if="isUserLoggedIn == false" class="header__authsection">
-      <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
+      <Button
+        label="LOGIN"
+        ariaLabel="Login to account"
+        name="login_dataland_button"
+        buttonType="login-button"
+        @click="login"
+        icon="pi pi-user"
+        rounded
+      />
       <Button label="SIGN UP" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" rounded />
     </div>
   </template>
@@ -100,50 +108,6 @@ const register = (): void => {
 };
 </script>
 <style scoped lang="scss">
-.header {
-  &__authsection {
-    display: flex;
-    gap: 32px;
-    align-items: baseline;
-
-    &-login {
-      position: relative;
-      text-decoration: none;
-      color: var(--p-highlight-color);
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 20px;
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-
-      &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -20px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 16px;
-        height: 16px;
-        background-image: url('/static/icons/User.svg');
-        background-size: cover;
-      }
-
-      &:hover {
-        border-bottom: 2px solid var(--p-primary-color);
-        color: var(--p-primary-color);
-
-        &::before {
-          background-image: url('/static/icons/User-hover.svg');
-        }
-      }
-    }
-  }
-}
-
 @media only screen and (max-width: 768px) {
   .header {
     background-color: var(--p-pink-300);

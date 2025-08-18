@@ -30,7 +30,7 @@
       >Please choose a topic and enter a message to us.
     </Message>
     <PrimeButton
-      label="Send"
+      label="SEND"
       icon="pi pi-send"
       class="send-button"
       @click="sendEmail"
