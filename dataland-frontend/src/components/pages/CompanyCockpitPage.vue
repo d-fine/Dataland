@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, inject, unref } from 'vue';
+import { ref, reactive, computed, watch, onMounted, inject, unref, onBeforeMount } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -148,7 +148,7 @@ const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 const router = useRouter();
 
 const activeTab = ref<'datasets' | 'users'>('datasets');
-const isCompanyMemberOrAdmin = ref(true);
+const isCompanyMemberOrAdmin = ref(false);
 type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
 const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
 const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
@@ -252,7 +252,12 @@ watch(activeTab, (val) => {
   void router.replace({ path: val === 'users' ? `${base}/users` : base });
 });
 
+onBeforeMount(() => {
+  isCompanyMemberOrAdmin.value = false;
+});
+
 onMounted(async () => {
+  isCompanyMemberOrAdmin.value = false;
   await setUserRights();
   await getAggregatedFrameworkDataSummary();
   await getMetaInfoForLatestDocuments();
