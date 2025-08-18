@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.entities
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -29,7 +30,8 @@ data class CompanyIdentifierEntity(
     val identifierType: IdentifierType,
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id")
-    var company: StoredCompanyEntity?,
+    @JsonBackReference
+    var company: StoredCompanyEntity,
     @Transient
     private var isNew: Boolean = false,
 ) : Persistable<CompanyIdentifierEntityId> {
