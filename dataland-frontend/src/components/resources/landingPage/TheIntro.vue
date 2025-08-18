@@ -41,7 +41,6 @@
     <Button
       :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
       buttonType="button-component about__button"
-      aria-label="About Page"
       @click="router.push('/about')"
       style="display: none"
     />

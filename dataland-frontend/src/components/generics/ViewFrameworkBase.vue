@@ -55,7 +55,6 @@
             />
 
             <PrimeButton
-              aria-label="Download data"
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
@@ -65,7 +64,6 @@
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
-              aria-label="Edit data"
               @click="editDataset"
               data-test="editDatasetButton"
               label="EDIT DATA"
@@ -78,7 +76,6 @@
             />
             <PrimeButton
               v-if="hasUserUploaderRights"
-              aria-label="New Dataset"
               icon="pi pi-plus"
               label="NEW DATASET"
               data-test="gotoNewDatasetButton"
@@ -207,7 +204,6 @@ const isEditableByCurrentUser = computed(
       props.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
 );
 
-const targetLinkForAddingNewDataset = computed(() => `/companies/${props.companyID}/frameworks/upload`);
 const reportingPeriodsPerFramework = computed(() =>
   groupReportingPeriodsPerFrameworkForCompany(
     dataMetaInformation.value.map((meta) => ({
@@ -267,12 +263,11 @@ onMounted(async () => {
  * Navigates to the new dataset creation page
  */
 function linkToNewDataset(): void {
-  void router.push(targetLinkForAddingNewDataset.value);
+  void router.push(`/companies/${props.companyID}/frameworks/upload`);
 }
 
 /**
  * Sets dataset quality status to the given status
- * @param event the click event
  * @param qaStatus the QA status to be assigned
  */
 function setQaStatusTo(qaStatus: QaStatus): void {

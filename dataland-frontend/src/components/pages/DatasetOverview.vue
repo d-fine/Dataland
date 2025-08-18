@@ -6,7 +6,6 @@
         <div>
           <PrimeButton
             v-if="hasUserUploaderRights"
-            aria-label="New Dataset"
             icon="pi pi-plus"
             label="NEW DATASET"
             data-test="newDatasetButton"

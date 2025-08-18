@@ -108,15 +108,13 @@
                       <div class="button-container">
                         <PrimeButton
                           icon="pi pi-check"
-                          class="uppercase p-button p-button-sm"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                          label="Grant"
+                          label="GRANT"
                         />
                         <PrimeButton
                           icon="pi pi-times"
-                          class="uppercase p-button-outlined p-button-sm mr-3"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                          label="Decline"
+                          label="DECLINE"
                         />
                       </div>
                     </div>
@@ -127,9 +125,8 @@
                       <div class="button-container">
                         <PrimeButton
                           icon="pi pi-ban"
-                          class="uppercase p-button-outlined p-button-sm mr-3"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                          label="Revoke"
+                          label="REVOKE"
                         />
                       </div>
                     </div>
@@ -422,10 +419,6 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
 }
 
 .text-primary {

@@ -29,7 +29,7 @@
           You have successfully withdrawn your request.
         </div>
         <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="successModalIsVisible = false" outlined />
+          <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
         </div>
       </PrimeDialog>
       <PrimeDialog
@@ -111,7 +111,7 @@
           You have successfully reopened your data request.
         </div>
         <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" outlined />
+          <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
         </div>
       </PrimeDialog>
 
@@ -248,9 +248,9 @@
                   <br />
                   <PrimeButton
                     data-test="withdrawRequestButton"
-                    icon="pi pi-trash"
                     label="WITHDRAW REQUEST"
                     @click="withdrawRequest()"
+                    variant="link"
                   />
                 </div>
               </div>

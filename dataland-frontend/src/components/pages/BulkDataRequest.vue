@@ -43,6 +43,7 @@
 
                       <PrimeButton
                         @click="goToMyRequests()"
+                        type="button"
                         label="TO MY DATA REQUESTS"
                         variant="outlined"
                         data-test="go-to-my-requests-button"
@@ -165,7 +166,7 @@
                     </BasicFormSection>
                   </div>
                   <div class="col-12 flex justify-content-end">
-                    <PrimeButton type="submit" label="SUBMIT" class="align-self-end" name="submit_request_button" />
+                    <PrimeButton type="submit" label="SUBMIT" class="align-self-end" />
                   </div>
                 </div>
               </div>
@@ -285,7 +286,7 @@ export default defineComponent({
       this.selectedReportingPeriodsError = !this.selectedReportingPeriods.length;
       this.selectedFrameworksError = !this.selectedFrameworks.length;
       this.identifierError = !this.identifiers.length;
-      return this.selectedReportingPeriodsError && this.selectedFrameworksError && this.identifierError;
+      return this.selectedReportingPeriodsError || this.selectedFrameworksError || this.identifierError;
     },
 
     /**

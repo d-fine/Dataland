@@ -200,12 +200,7 @@
                   </PrimeDialog>
 
                   <div class="col-12 flex align-items-end">
-                    <PrimeButton
-                      type="submit"
-                      label="SUBMIT DATA REQUEST"
-                      name="submit_request_button"
-                      @click="checkPreSubmitConditions"
-                    />
+                    <PrimeButton type="submit" label="SUBMIT DATA REQUEST" @click="checkPreSubmitConditions" />
                   </div>
                 </div>
               </div>
