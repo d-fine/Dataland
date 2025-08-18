@@ -92,11 +92,12 @@ describe('Component tests for the DatasetOverview page', () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept('**/api/companies?**', []);
     cy.spy(router, 'push').as('routerPush');
-
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
       router: router,
     }).then(() => {
+      void router.push('/datasets');
+      void router.isReady();
       validateTabBar(1);
       cy.wait(100);
       cy.get('[data-pc-section="tablist"]').children().eq(0).click();

@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="3">
+    <DatasetsTabMenu :initialTabIndex="3">
       <TheContent class="min-h-screen relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
           <div class="container">

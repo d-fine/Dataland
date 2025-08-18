@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="2">
+    <DatasetsTabMenu :initialTabIndex="2">
       <TheContent class="min-h-screen relative">
         <Tabs
           :value="currentPortfolioId || 'no-portfolios-available'"

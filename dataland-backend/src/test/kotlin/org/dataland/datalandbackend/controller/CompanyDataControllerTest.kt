@@ -9,10 +9,10 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
+import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -53,7 +53,7 @@ import kotlin.reflect.jvm.javaMethod
 internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
-    @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
+    @Autowired val companyIdentifierManager: CompanyIdentifierManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
     @Autowired private val dataPointUtils: DataPointUtils,
 ) {
@@ -70,7 +70,7 @@ internal class CompanyDataControllerTest(
             CompanyDataController(
                 companyAlterationManager,
                 companyQueryManager,
-                companyIdentifierRepositoryInterface,
+                companyIdentifierManager,
                 companyBaseManager,
                 dataPointUtils,
             )
