@@ -107,6 +107,7 @@ class FrameworkTestDataProvider<T>(
                     identifiers =
                         mapOf(
                             IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
+                            IdentifierType.Lei.value to listOf(UUID.randomUUID().toString()),
                         ),
                 )
             }

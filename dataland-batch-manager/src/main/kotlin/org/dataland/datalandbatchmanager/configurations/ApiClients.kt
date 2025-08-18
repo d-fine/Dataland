@@ -2,6 +2,7 @@ package org.dataland.datalandbatchmanager.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -45,4 +46,12 @@ class ApiClients(
      */
     @Bean
     fun getCommunityManagerActuatorApi(): CommunityActuatorApi = CommunityActuatorApi(communityManagerBaseUrl)
+
+    /**
+     * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
+     */
+    @Bean
+    fun getIsinLeiDataControllerApi(
+        @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
+    ): IsinLeiDataControllerApi = IsinLeiDataControllerApi(backendBaseUrl, patientAuthenticatedOkHttpClient)
 }
