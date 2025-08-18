@@ -19,7 +19,15 @@
         buttonType="login-button"
         @click="login"
         icon="pi pi-user"
-        rounded
+        variant="text"
+        :pt="{
+          root: {
+            style: 'color: var(--p-orange-950);',
+          },
+          icon: {
+            style: 'color: var(--p-orange-950);',
+          },
+        }"
       />
       <Button label="SIGN UP" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" rounded />
     </div>
@@ -32,7 +40,7 @@
         ariaLabel="Login to account"
         data-test="login-dataland-button"
         @click="login"
-        rounded
+        variant="outlined"
       />
       <Button
         label="SIGN UP"
