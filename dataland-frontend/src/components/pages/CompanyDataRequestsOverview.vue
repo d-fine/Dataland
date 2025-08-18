@@ -107,19 +107,17 @@
                     >
                       <div class="button-container">
                         <PrimeButton
+                          icon="pi pi-check"
                           class="uppercase p-button p-button-sm"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                        >
-                          <i class="material-icons"> done </i>
-                          <span class="d-letters pl-2"> Grant </span>
-                        </PrimeButton>
+                          label="Grant"
+                        />
                         <PrimeButton
+                          icon="pi pi-times"
                           class="uppercase p-button-outlined p-button-sm mr-3"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                        >
-                          <i class="material-icons"> clear </i>
-                          <span class="d-letters pl-2"> Decline </span>
-                        </PrimeButton>
+                          label="Decline"
+                        />
                       </div>
                     </div>
                     <div
@@ -128,12 +126,11 @@
                     >
                       <div class="button-container">
                         <PrimeButton
+                          icon="pi pi-ban"
                           class="uppercase p-button-outlined p-button-sm mr-3"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                        >
-                          <i class="material-icons"> clear </i>
-                          <span class="d-letters pl-2"> Revoke </span>
-                        </PrimeButton>
+                          label="Revoke"
+                        />
                       </div>
                     </div>
                   </template>

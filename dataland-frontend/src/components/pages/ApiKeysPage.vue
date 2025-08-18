@@ -127,7 +127,7 @@
           data-test="regenerateApiKeyCancelButton"
           label="CANCEL"
           @click="regenerateConfirmToggle"
-          class="p-button-outlined"
+          outlined
         />
         <PrimeButton
           data-test="regenerateApiKeyConfirmButton"
