@@ -103,7 +103,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
 
         cy.get('button').contains('NEW DATASET').click({ force: true });
         cy.url().should('eq', getBaseUrl() + '/companies/choose');
-        cy.get('div[id=option1Container]').find("[data-test='createDatasetButton']").click();
+        cy.get('div[id=option1Container]').find("[data-test='add-it-button']").click();
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('medium_timeout_in_ms') as number });
