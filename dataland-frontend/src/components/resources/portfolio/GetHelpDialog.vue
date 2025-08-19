@@ -105,5 +105,4 @@ async function sendEmail(): Promise<void> {
 .header-styling {
   font-weight: var(--font-weight-bold);
 }
-
 </style>

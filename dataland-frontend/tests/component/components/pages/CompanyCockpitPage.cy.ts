@@ -325,8 +325,7 @@ describe('Component test for the company cockpit', () => {
         });
 
       for (let i = 1; i <= 3; i++) {
-        cy.get('[data-test="download-link-test_' + category + `_${i}"]`)
-          .should('exist');
+        cy.get('[data-test="download-link-test_' + category + `_${i}"]`).should('exist');
       }
     }
   });

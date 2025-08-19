@@ -1,6 +1,7 @@
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import { DataTypeEnum, QaStatus, type DataMetaInformation } from '@clients/backend';
 import router from '@/router';
+
 describe('Component Tests for DatasetDisplayStatusIndicator', () => {
   const acceptedAndActiveDataset: DataMetaInformation = {
     dataId: 'mock-data-id',
@@ -36,15 +37,14 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').contains('superseded').should('exist');
-    cy.get('[data-test=datasetDisplayStatusLink]')
-      .contains('VIEW ACTIVE')
-      .click()
-      .then(() => {
-        expect(routerPushMock).to.have.been.calledWith(
-          `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`
-        );
-      });
+    cy.get('[data-test=datasetDisplayStatusContainer]').contains('superseded').should('exist');
+    cy.get('[data-test=datasetDisplayStatusLink]').contains('VIEW ACTIVE').click();
+
+    cy.then(() => {
+      expect(routerPushMock).to.have.been.calledWith(
+        `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`
+      );
+    });
   });
 
   it('Should display a QA-Pending warning message when the dataset is pending QA', () => {
@@ -62,7 +62,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').contains('pending').should('exist');
+    cy.get('[data-test=datasetDisplayStatusContainer]').contains('pending').should('exist');
     cy.get('[data-test=datasetDisplayStatusLink]').should('not.exist');
   });
 
@@ -83,15 +83,14 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').contains('single').should('exist');
-    cy.get('[data-test=datasetDisplayStatusLink]')
-      .contains('VIEW ALL')
-      .click()
-      .then(() => {
-        expect(routerPushMock).to.have.been.calledWith(
-          `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`
-        );
-      });
+    cy.get('[data-test=datasetDisplayStatusContainer]').contains('single').should('exist');
+    cy.get('[data-test=datasetDisplayStatusLink]').contains('VIEW ALL').click();
+
+    cy.then(() => {
+      expect(routerPushMock).to.have.been.calledWith(
+        `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`
+      );
+    });
   });
 
   it('Should not display anything when only one active dataset is viewed when singleview and multiple are available', () => {
@@ -110,7 +109,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').should('not.exist');
+    cy.get('[data-test=datasetDisplayStatusContainer]').should('not.exist');
     cy.get('[data-test=datasetDisplayStatusLink]').should('not.exist');
   });
 
@@ -127,7 +126,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').should('not.exist');
+    cy.get('[data-test=datasetDisplayStatusContainer]').should('not.exist');
     cy.get('[data-test=datasetDisplayStatusLink]').should('not.exist');
   });
 
@@ -148,7 +147,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').should('contain.text', 'rejected');
+    cy.get('[data-test=datasetDisplayStatusContainer]').should('contain.text', 'rejected');
     cy.get('[data-test=datasetDisplayStatusLink]').should('exist');
   });
 
@@ -167,7 +166,7 @@ describe('Component Tests for DatasetDisplayStatusIndicator', () => {
       },
     });
 
-    cy.get('div[data-test=datasetDisplayStatusContainer]').should('contain.text', 'rejected');
+    cy.get('[data-test=datasetDisplayStatusContainer]').should('contain.text', 'rejected');
     cy.get('[data-test=datasetDisplayStatusLink]').should('not.exist');
   });
 });

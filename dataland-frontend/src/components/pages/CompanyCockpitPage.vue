@@ -56,32 +56,32 @@
               </Card>
             </div>
 
-      <div class="right-pane">
-        <div v-if="isClaimPanelVisible" class="claim-pane">
-          <ClaimOwnershipPanel :company-id="companyId" />
-        </div>
-        <div class="frameworks-grid" data-test="summaryPanels">
-          <FrameworkSummaryPanel
-            v-for="framework of frameworksToDisplay"
-            :key="framework"
-            :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
-            :company-id="companyId"
-            :framework="framework"
-            :number-of-provided-reporting-periods="
-              aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
-            "
-            :data-test="`${framework}-summary-panel`"
-          />
-        </div>
+            <div class="right-pane">
+              <div v-if="isClaimPanelVisible" class="claim-pane">
+                <ClaimOwnershipPanel :company-id="companyId" />
+              </div>
+              <div class="frameworks-grid" data-test="summaryPanels">
+                <FrameworkSummaryPanel
+                  v-for="framework of frameworksToDisplay"
+                  :key="framework"
+                  :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+                  :company-id="companyId"
+                  :framework="framework"
+                  :number-of-provided-reporting-periods="
+                    aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+                  "
+                  :data-test="`${framework}-summary-panel`"
+                />
+              </div>
 
-        <PrimeButton
+              <PrimeButton
                 :label="showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL'"
                 data-test="toggleShowAll"
-          @click="toggleShowAll"
-          :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
+                @click="toggleShowAll"
+                :icon="showAllFrameworks ? 'pi pi-angle-up' : 'pi pi-angle-down'"
                 :pt="{
-            root: { style: 'margin-left: auto' },
-          }"
+                  root: { style: 'margin-left: auto' },
+                }"
                 variant="link"
               />
             </div>

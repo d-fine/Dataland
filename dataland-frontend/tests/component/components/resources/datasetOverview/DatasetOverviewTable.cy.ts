@@ -74,9 +74,7 @@ describe('Component test for DatasetOverviewTable', () => {
         expect(element.text()).to.contain('VIEW');
       }
     });
-    cy.get('[data-test="view-dataset-button"]')
-      .contains('VIEW')
-      .click();
+    cy.get('[data-test="view-dataset-button"]').contains('VIEW').click();
 
     cy.then(() => {
       expect(routerPushMock).to.have.been.calledWith(

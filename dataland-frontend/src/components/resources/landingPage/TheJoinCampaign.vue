@@ -13,13 +13,13 @@
         ariaLabel="Indicate interest by opening email client"
         @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
         :pt="{
-            root: {
-              style: {
-                width: 'fit-content',
-                whiteSpace: 'nowrap',
-              },
+          root: {
+            style: {
+              width: 'fit-content',
+              whiteSpace: 'nowrap',
             },
-          }"
+          },
+        }"
         rounded
       />
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">

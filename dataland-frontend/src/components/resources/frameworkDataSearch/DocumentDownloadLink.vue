@@ -92,5 +92,4 @@ div {
   white-space: nowrap;
   max-width: 100%;
 }
-
 </style>
