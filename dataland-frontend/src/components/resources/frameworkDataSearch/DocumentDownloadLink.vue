@@ -33,7 +33,6 @@
       :data-test="'download-text-' + documentDownloadInfo.downloadName"
     >
       <span
-        class="pl-1"
         style="overflow: hidden; text-overflow: ellipsis"
         :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
         >{{ label ?? documentDownloadInfo.downloadName }}</span
