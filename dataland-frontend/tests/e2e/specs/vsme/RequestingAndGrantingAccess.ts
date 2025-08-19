@@ -75,7 +75,7 @@ describeIf(
      */
     function validateSubmitButton(isExpectedToBeEnabled: boolean): Cypress.Chainable {
       const check = isExpectedToBeEnabled ? 'be.enabled' : 'be.disabled';
-      return cy.get('button[data-test="requestAccessButton"]').should(check);
+      return cy.get('[data-test="requestAccessButton"]').should(check);
     }
 
     /**

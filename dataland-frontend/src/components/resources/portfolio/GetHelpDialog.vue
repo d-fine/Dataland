@@ -32,6 +32,7 @@
     <PrimeButton
       label="SEND"
       icon="pi pi-send"
+      data-test="send-help-request-button"
       @click="sendEmail"
       :loading="isSendingMail"
       :disabled="!isValidForm || emailSendingSuccess || isSendingMail"
