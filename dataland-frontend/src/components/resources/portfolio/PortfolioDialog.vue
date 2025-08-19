@@ -35,7 +35,13 @@
             :pt="{ label: { style: { whiteSpace: 'nowrap' } } }"
             fluid
           />
-          <PrimeButton label="GET HELP" icon="pi pi-question" @click="openHelpDialog" fluid />
+          <PrimeButton
+            label="REQUEST SUPPORT"
+            icon="pi pi-question"
+            @click="openHelpDialog"
+            fluid
+            :pt="{ label: { style: { whiteSpace: 'nowrap' } } }"
+          />
         </div>
       </div>
     </div>

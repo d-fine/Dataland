@@ -23,7 +23,7 @@
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
           icon="pi pi-bell"
-          label="ACTIVATE MONITORING"
+          label="ACTIVE MONITORING"
         />
       </div>
 
