@@ -13,7 +13,6 @@
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
         <Button
           label="GET IN TOUCH"
-          ariaLabel="Get In Touch"
           data-test="get-in-touch-button"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
           rounded

@@ -61,7 +61,6 @@
         icon="pi pi-trash"
         @click="deletePortfolio"
         data-test="portfolio-dialog-delete-button"
-        title="Delete the selected Portfolio"
       />
       <PrimeButton
         label="SAVE PORTFOLIO"

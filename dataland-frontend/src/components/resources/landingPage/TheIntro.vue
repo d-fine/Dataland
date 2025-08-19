@@ -40,7 +40,6 @@
 
     <Button
       :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
-      buttonType="button-component about__button"
       @click="router.push('/about')"
       style="display: none"
     />
@@ -138,10 +137,6 @@ const handleInputBlur = (): void => {
       margin-top: 80px;
     }
   }
-
-  .button-component.about__button {
-    display: none;
-  }
 }
 
 @media only screen and (max-width: 1440px) {
@@ -230,19 +225,6 @@ const handleInputBlur = (): void => {
         height: 16px;
         background-image: url(/static/icons/Arrow--right.svg);
         transform: rotateY(180deg) translateY(-50%);
-      }
-    }
-
-    .button-component.about__button {
-      display: block;
-      background-color: transparent;
-      margin: 3em auto;
-      color: var(--p-highlight-color);
-      border-color: var(--p-primary-contrast-color);
-
-      &:hover {
-        border-color: var(--p-primary-color);
-        color: var(--p-primary-color);
       }
     }
 

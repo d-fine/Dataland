@@ -25,7 +25,7 @@ describe('Component test for the landing page', () => {
       assertFrameworkPanelExists('LkSG');
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');
-      cy.get('button.joincampaign__button').should('exist');
+      cy.get('[data-test="join-campaign-button"]').should('exist');
       cy.get('[data-test="get-in-touch-button"]').should('exist');
       checkFooter();
 
@@ -40,8 +40,8 @@ describe('Component test for the landing page', () => {
  */
 function validateTheHeader(): void {
   checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  checkButton('signup_dataland_button', 'SIGN UP');
-  checkButton('login_dataland_button', 'LOGIN');
+  checkButton('signup-dataland-button', 'SIGN UP');
+  checkButton('login-dataland-button', 'LOGIN');
 }
 
 /**

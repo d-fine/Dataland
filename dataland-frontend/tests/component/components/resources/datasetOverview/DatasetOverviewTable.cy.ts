@@ -74,14 +74,15 @@ describe('Component test for DatasetOverviewTable', () => {
         expect(element.text()).to.contain('VIEW');
       }
     });
-    cy.get('tbody td button')
+    cy.get('[data-test="view-dataset-button"]')
       .contains('VIEW')
-      .click()
-      .then(() => {
-        expect(routerPushMock).to.have.been.calledWith(
-          `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
-        );
-      });
+      .click();
+
+    cy.then(() => {
+      expect(routerPushMock).to.have.been.calledWith(
+        `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
+      );
+    });
   });
 
   it('Validates the layout of the table header', () => {

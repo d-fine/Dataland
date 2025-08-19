@@ -6,7 +6,7 @@ describe('Check that the Landing Page to work properly', () => {
     cy.url().should('include', '/keycloak/realms/datalandsecurity/protocol/openid-connect/auth');
     cy.get("span:contains('HOME')").click();
 
-    cy.get(`button[name="signup_dataland_button"]`).click();
+    cy.get(`[data-test="signup-dataland-button"]`).click();
     cy.url().should('include', '/keycloak/realms/datalandsecurity/protocol/openid-connect/registrations');
     cy.get("span:contains('HOME')").click();
 

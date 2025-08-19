@@ -106,7 +106,4 @@ async function sendEmail(): Promise<void> {
   font-weight: var(--font-weight-bold);
 }
 
-.send-button {
-  align-self: end;
-}
 </style>

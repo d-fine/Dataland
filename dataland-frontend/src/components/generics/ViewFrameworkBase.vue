@@ -78,7 +78,7 @@
               v-if="hasUserUploaderRights"
               icon="pi pi-plus"
               label="NEW DATASET"
-              data-test="gotoNewDatasetButton"
+              data-test="goToNewDatasetButton"
               @click="linkToNewDataset"
             />
           </div>

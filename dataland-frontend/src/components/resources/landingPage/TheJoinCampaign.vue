@@ -9,9 +9,17 @@
       <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
       <Button
         label="I AM INTERESTED"
+        data-test="join-campaign-button"
         ariaLabel="Indicate interest by opening email client"
         @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
-        class="button-component joincampaign__button"
+        :pt="{
+            root: {
+              style: {
+                width: 'fit-content',
+                whiteSpace: 'nowrap',
+              },
+            },
+          }"
         rounded
       />
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
@@ -84,10 +92,6 @@ const getInTouchSection = findSection('Get in touch');
     grid-column: 1 / -1;
     text-align: left;
     margin: 0;
-  }
-  &__button {
-    width: fit-content;
-    white-space: nowrap;
   }
 
   &__grid {

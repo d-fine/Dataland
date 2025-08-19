@@ -1,22 +1,14 @@
 <template>
   <div data-test="download-link-component">
-    <a
+    <PrimeButton
       v-if="isUserLoggedIn"
+      variant="link"
       @click="handleDocumentDownload()"
-      class="cursor-pointer text-primary"
-      :class="fontStyle"
-      :title="documentDownloadInfo.downloadName"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
-      style="display: grid; grid-template-columns: fit-content(100%) max-content max-content 1.5em"
     >
-      <span
-        class="underline pl-1"
-        style="overflow: hidden; text-overflow: ellipsis"
-        :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
-        >{{ label ?? documentDownloadInfo.downloadName }}</span
-      >
-      <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
-      <span class="pr-2">
+      <span>{{ label ?? documentDownloadInfo.downloadName }}</span>
+      <span>{{ suffix ?? '' }}</span>
+      <span>
         <i
           v-if="showIcon && (percentCompleted === 0 || percentCompleted === undefined)"
           class="pi pi-download pl-1"
@@ -33,13 +25,12 @@
           ({{ percentCompleted }}%)
         </span>
       </span>
-    </a>
+    </PrimeButton>
     <span
       v-else
       :class="fontStyle"
       :title="documentDownloadInfo.downloadName"
       :data-test="'download-text-' + documentDownloadInfo.downloadName"
-      style="display: grid; grid-template-columns: fit-content(100%) max-content"
     >
       <span
         class="pl-1"
@@ -47,7 +38,7 @@
         :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
-      <span class="ml-1 pl-1">{{ suffix ?? '' }}</span>
+      <span>{{ suffix ?? '' }}</span>
     </span>
   </div>
 </template>
@@ -63,6 +54,7 @@ import {
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import PrimeButton from 'primevue/button';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -101,7 +93,4 @@ div {
   max-width: 100%;
 }
 
-.text-primary {
-  color: var(--main-color);
-}
 </style>

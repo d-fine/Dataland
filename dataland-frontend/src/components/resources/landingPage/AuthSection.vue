@@ -14,9 +14,7 @@
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <Button
         label="LOGIN"
-        ariaLabel="Login to account"
-        name="login_dataland_button"
-        data-test="login-button"
+        data-test="login-dataland-button"
         @click="login"
         icon="pi pi-user"
         variant="text"
@@ -29,26 +27,13 @@
           },
         }"
       />
-      <Button label="SIGN UP" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" rounded />
+      <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" rounded />
     </div>
   </template>
   <template v-else>
     <div class="header__authsection">
-      <Button
-        label="Log in"
-        buttonType="login-button"
-        ariaLabel="Login to account"
-        data-test="login-dataland-button"
-        @click="login"
-        variant="outlined"
-      />
-      <Button
-        label="SIGN UP"
-        buttonType="registration-button"
-        ariaLabel="Sign up to account"
-        data-test="signup-dataland-button"
-        @click="register"
-      />
+      <Button label="Log in" data-test="login-dataland-button" @click="login" variant="outlined" />
+      <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" />
     </div>
   </template>
 </template>
@@ -122,39 +107,6 @@ const register = (): void => {
     margin: 0;
     width: 100%;
     border-radius: 0;
-  }
-}
-</style>
-
-<style lang="scss">
-.login-button {
-  padding: 10px 38px;
-  border-radius: 0;
-  color: var(--p-primary-color);
-  background-color: var(--p-highlight-background);
-  border: 2px solid var(--p-primary-color);
-  text-transform: uppercase;
-  cursor: pointer;
-
-  &:hover {
-    border: 2px solid var(--default-neutral-white);
-    background-color: var(--p-highlight-background);
-    color: var(--default-neutral-white);
-  }
-}
-
-.registration-button {
-  padding: 10px 38px;
-  border-radius: 0;
-  background-color: var(--p-primary-color);
-  color: var(--default-neutral-white);
-  border: 2px solid var(--p-primary-color);
-  text-transform: uppercase;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--p-highlight-color);
-    background-color: var(--default-neutral-white);
   }
 }
 </style>
