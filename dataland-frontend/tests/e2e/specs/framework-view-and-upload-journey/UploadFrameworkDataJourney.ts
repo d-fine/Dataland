@@ -169,7 +169,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
         dataIdOfLksgDataset: string
       ): void {
-        cy.get('div[id=eutaxonomyDataSetsContainer')
+        cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(0)
           .click({ force: true });
@@ -181,7 +181,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=eutaxonomyDataSetsContainer')
+        cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(1)
           .click({ force: true });
@@ -193,7 +193,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=lksgContainer').find(`a.text-primary:contains(LkSG)`).click({ force: true });
+        cy.get('div[id=lksgContainer]').find(`a.text-primary:contains(LkSG)`).click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
           .url()
           .should(

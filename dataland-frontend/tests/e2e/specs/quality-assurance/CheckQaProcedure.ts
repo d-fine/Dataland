@@ -108,7 +108,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   cy.get('.p-toggleswitch-slider').should('exist');
   cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-toggleswitch-checked');
 
-  cy.get('[data-test="qaApproveButton"').should('exist').click();
+  cy.get('[data-test="qaApproveButton"]').should('exist').click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
@@ -139,7 +139,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   cy.contains('td', dataMetaInfo.dataId).click();
 
   validateThatViewPageIsInReviewMode();
-  cy.get('[data-test="qaRejectButton"').should('exist').click();
+  cy.get('[data-test="qaRejectButton"]').should('exist').click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
