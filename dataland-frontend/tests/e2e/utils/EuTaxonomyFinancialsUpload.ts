@@ -46,7 +46,7 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
 export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
   cy.intercept('**/documents/*').as('documentDownload');
-  const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
+  const downloadLinkSelector = `span[data-test="download-link-${TEST_PDF_FILE_NAME}"]`;
   cy.get(`[data-test="report-link-${TEST_PDF_FILE_NAME}"]`).click();
   cy.get(downloadLinkSelector).click();
   cy.wait('@documentDownload');

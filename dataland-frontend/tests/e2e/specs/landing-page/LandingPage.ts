@@ -2,7 +2,7 @@ describe('Check that the Landing Page to work properly', () => {
   it('Check the links and buttons', () => {
     cy.visitAndCheckAppMount('/');
 
-    cy.get("button[aria-label='Login to account']").click();
+    cy.get("[data-test='login-dataland-button']").click();
     cy.url().should('include', '/keycloak/realms/datalandsecurity/protocol/openid-connect/auth');
     cy.get("span:contains('HOME')").click();
 

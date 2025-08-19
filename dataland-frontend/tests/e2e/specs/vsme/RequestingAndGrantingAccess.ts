@@ -195,7 +195,7 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/companyrequests');
 
-      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'Grant');
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'GRANT');
       validateAccessRequestForReportingPeriodTableHasBadgeWithText(
         reportingPeriodToBeGranted,
         'badge-light-green',

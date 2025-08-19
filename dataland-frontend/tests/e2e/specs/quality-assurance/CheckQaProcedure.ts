@@ -201,5 +201,5 @@ function safeLogout(): void {
   cy.get('[data-test="user-profile-toggle"]').click();
   cy.get('a:contains("LOG OUT")').click();
   cy.url().should('eq', getBaseUrl() + '/');
-  cy.get('[data-test="login-button"]').should('exist');
+  cy.get("[data-test='login-dataland-button']").should('exist');
 }
