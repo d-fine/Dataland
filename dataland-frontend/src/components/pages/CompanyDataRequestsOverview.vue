@@ -1,3 +1,4 @@
+
 <template>
   <AuthenticationWrapper>
     <TheHeader />
@@ -105,8 +106,9 @@
                       v-if="slotProps.data.accessStatus == AccessStatus.Pending"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <div class="button-container">
+                      <div>
                         <PrimeButton
+                          class="button-container"
                           icon="pi pi-check"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
                           label="GRANT"
