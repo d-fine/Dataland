@@ -21,7 +21,7 @@ describe('check that the document link component works and is displayed correctl
       },
     }).then(() => {
       validateNoIcons();
-      cy.get("[data-test='Report-Download-Test']").click();
+      cy.get("[data-test='download-link-Test']").click();
       cy.wait('@downloadComplete').then(() => {
         validateNoIcons();
       });
@@ -142,8 +142,8 @@ describe('check that the document link component works and is displayed correctl
         };
       },
     }).then(() => {
-      cy.get("[data-test='Report-Download-FileName']").should('contain', 'FileName');
-      cy.get("[data-test='Report-Download-FileName']").should('not.contain', 'page');
+      cy.get("[data-test='download-link-FileName']").should('contain', 'FileName');
+      cy.get("[data-test='download-link-FileName']").should('not.contain', 'page');
     });
   });
 });
