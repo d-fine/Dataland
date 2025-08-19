@@ -59,15 +59,21 @@ const message = ref('');
 const emailSendingError = ref<boolean>();
 const emailSendingSuccess = ref<boolean>();
 const emailSendingMessage = ref('');
-const selectedTopic = ref();
 const availableTopics = ref([{ name: 'Find company identifiers' }, { name: 'Other topic' }]);
+const selectedTopic = ref<{name: string} | undefined>();
 
-const isValidForm = computed(() => message.value && selectedTopic.value?.name);
+const isValidForm = computed(() =>
+  message.value && selectedTopic.value?.name
+);
+
 /**
  * Send an email to request support
  */
 async function sendEmail(): Promise<void> {
-  const supportRequest: SupportRequestData = { topic: selectedTopic.value.name, message: message.value };
+  if (!selectedTopic.value?.name || !message.value) {
+    return;
+  }
+  const supportRequest: SupportRequestData = { topic: selectedTopic.value?.name, message: message.value };
   try {
     isSendingMail.value = true;
     await apiClientProvider.apiClients.portfolioController.postSupportRequest(supportRequest);
