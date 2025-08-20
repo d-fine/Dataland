@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="4">
+    <DatasetsTabMenu :initialTabIndex="4">
       <TheContent class="min-h-screen relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div class="container">

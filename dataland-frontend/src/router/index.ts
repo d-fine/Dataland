@@ -103,6 +103,12 @@ const routes = [
     component: DocumentOverview,
   },
   {
+    path: `/companies/:companyId/users`,
+    props: true,
+    name: 'CompanyCockpitPage',
+    component: CompanyCockpitPage,
+  },
+  {
     path: '/requestoverview',
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,

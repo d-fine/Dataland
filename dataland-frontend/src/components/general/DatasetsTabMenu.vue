@@ -1,5 +1,5 @@
 <template>
-  <Tabs :value="initialTabIndex">
+  <Tabs :value="currentTabIndex" @update:value="onTabChange">
     <TabList>
       <Tab
         v-for="tab in tabs"
@@ -16,7 +16,7 @@
           },
         }"
       >
-        <router-link :to="tab.route" class="tab-as-router-link">{{ tab.label }}</router-link>
+        {{ tab.label }}
       </Tab>
     </TabList>
     <TabPanels>
@@ -26,7 +26,7 @@
         :value="tabs.indexOf(tab)"
         :disabled="!(tabs.indexOf(tab) == currentTabIndex || (tab.isVisible ?? true))"
       >
-        <slot v-if="tabs.indexOf(tab) == initialTabIndex" />
+        <slot v-if="tabs.indexOf(tab) == currentTabIndex" />
       </TabPanel>
     </TabPanels>
   </Tabs>
@@ -43,6 +43,7 @@ import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
 import { inject, onMounted, ref, type Ref, watchEffect } from 'vue';
+import router from '@/router';
 
 interface TabInfo {
   label: string;
@@ -50,15 +51,14 @@ interface TabInfo {
   isVisible: boolean;
 }
 
-const { initialTabIndex } = defineProps<{
-  initialTabIndex: number;
-}>();
-
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const currentTabIndex = ref<number>(0);
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
 const companyRoleAssignments = inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments');
-const currentTabIndex = ref<number>(0);
+const { initialTabIndex } = defineProps<{
+  initialTabIndex: number;
+}>();
 
 const tabs = ref<Array<TabInfo>>([
   { label: 'COMPANIES', route: '/companies', isVisible: true },
@@ -74,9 +74,23 @@ onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
+  currentTabIndex.value = initialTabIndex ?? 0;
 });
 
-watchEffect(setVisibilityForTabWithAccessRequestsForMyCompanies);
+watchEffect(() => {
+  setVisibilityForTabWithAccessRequestsForMyCompanies();
+});
+
+/**
+ * Handles the tab change event.
+ */
+function onTabChange(newIndex: number | string): void {
+  const route = tabs.value[newIndex as number].route;
+  router.push(route).catch((err) => {
+    console.error('Navigation error when changing tabs:', err);
+  });
+}
+
 /**
  * Sets the visibility of the tab for Quality Assurance.
  * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
@@ -115,13 +129,3 @@ function setVisibilityForAdminTab(): void {
     .catch((error) => console.log(error));
 }
 </script>
-
-<style scoped>
-.tab-as-router-link {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-base);
-  color: inherit;
-  text-decoration: inherit;
-  padding: var(--p-tabs-tab-padding);
-}
-</style>

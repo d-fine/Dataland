@@ -4,31 +4,29 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.AppenderBase
-import org.apache.commons.io.FileUtils
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
-import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.dataland.datalandbatchmanager.service.ProcessDataUpdates
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
-import org.mockito.MockedStatic
-import org.mockito.Mockito.any
-import org.mockito.Mockito.anyString
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader
@@ -39,77 +37,26 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as Co
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
-    private val mockGleifApiAccessor = mock(GleifApiAccessor::class.java)
-    private val mockGleifGoldenCopyIngestorTest = mock(GleifGoldenCopyIngestor::class.java)
-    private val mockNorthDataAccessor = mock(NorthDataAccessor::class.java)
-    private val mockNorthDataIngestorTest = mock(NorthdataDataIngestor::class.java)
-    private val mockCompanyInformationParser = mock(CompanyInformationParser::class.java)
-    private val mockCompanyUploader = mock(CompanyUploader::class.java)
-    private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
-    private val mockRelationshipExtractor = mock(RelationshipExtractor::class.java)
-    private val mockBackendActuatorApi = mock(BackendActuatorApi::class.java)
-    private val mockRequestPriorityUpdater = mock(RequestPriorityUpdater::class.java)
-    private val mockCommunityActuatorApi = mock(CommunityActuatorApi::class.java)
+    private val mockIsinLeiDataControllerApi = mock<IsinLeiDataControllerApi>()
+    private val mockGleifApiAccessor = mock<GleifApiAccessor>()
+    private val mockGleifGoldenCopyIngestorTest = mock<GleifGoldenCopyIngestor>()
+    private val mockNorthDataAccessor = mock<NorthDataAccessor>()
+    private val mockNorthDataIngestorTest = mock<NorthdataDataIngestor>()
+    private val mockCompanyInformationParser = mock<CompanyInformationParser>()
+    private val mockCompanyUploader = mock<CompanyUploader>()
+    private val mockRelationshipExtractor = mock<RelationshipExtractor>()
+    private val mockBackendActuatorApi = mock<BackendActuatorApi>()
+    private val mockRequestPriorityUpdater = mock<RequestPriorityUpdater>()
+    private val mockCommunityActuatorApi = mock<CommunityActuatorApi>()
+    private val mockFile = mock<File>()
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
     private lateinit var companyIngestorNorthData: NorthdataDataIngestor
 
-    private lateinit var oldFile: File
-    private lateinit var newFile: File
-
-    private val oldContent = """
-            LEI,ISIN
-            1000,1111
-            1000,1112
-            2000,2222
-            3000,3333
-            3000,3334
-            4000,4444
-            6000,6666
-            6000,6667
-        """
-
-    private val newContent = """
-            LEI,ISIN
-            1000,1111
-            1000,1112
-            1000,1113
-            2000,2222
-            3000,3333
-            4000, 
-            5000,5555
-            6000,6666
-            6000,6667
-        """
-
-    @BeforeEach
-    fun setupFiles() {
-        oldFile = writeTextToTemporaryFile("oldFile.csv", oldContent)
-        newFile = writeTextToTemporaryFile("newFile.csv", newContent)
-    }
-
-    @AfterAll
-    fun cleanup() {
-        oldFile.deleteOnExit()
-        newFile.deleteOnExit()
-    }
-
     @BeforeEach
     fun setupTest() {
-        reset(mockGleifApiAccessor)
-        reset(mockCompanyInformationParser)
-        reset(mockBackendActuatorApi)
-        reset(mockGleifGoldenCopyIngestorTest)
+        reset(mockGleifApiAccessor, mockCompanyInformationParser, mockBackendActuatorApi, mockGleifGoldenCopyIngestorTest)
     }
-
-    private fun writeTextToTemporaryFile(
-        fileName: String,
-        content: String,
-    ): File =
-        File(fileName).apply {
-            writeText(content.trimIndent())
-            deleteOnExit()
-        }
 
     private fun initProcessDataUpdates(
         flagFileGleif: String? = null,
@@ -117,7 +64,6 @@ class ProcessDataUpdatesTest {
         flagFileNorthData: String? = null,
         forceIngestGleif: Boolean = false,
         forceIngestNorth: Boolean = false,
-        isinFile: File = oldFile,
     ) {
         processDataUpdates =
             ProcessDataUpdates(
@@ -133,7 +79,6 @@ class ProcessDataUpdatesTest {
                 flagFileGleif,
                 flagFileGleifUpdate,
                 flagFileNorthData,
-                isinFile,
             )
     }
 
@@ -148,58 +93,56 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `test ingestion performs successfully if a file is provided`() {
-        val (emptyBufferedReader, mockStaticFile) = mockFileIngestion(oldFile)
-        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
-
-        val mockFileUtils = mockStatic(FileUtils::class.java)
-
-        `when`(mockBackendActuatorApi.health()).thenThrow(ConnectException()).thenReturn(true)
-        mock(Thread::class.java)
-
-        processDataUpdates.processExternalCompanyDataIfEnabled()
-
-        val numberOfDownloadedFiles = 3
-        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
-        verify(mockCompanyInformationParser, times(1)).readGleifCompanyDataFromBufferedReader((any() ?: emptyBufferedReader))
-        verify(mockCompanyInformationParser, times(1)).readGleifRelationshipDataFromBufferedReader((any() ?: emptyBufferedReader))
-        verify(mockCompanyInformationParser, times(1)).readNorthDataFromBufferedReader((any() ?: emptyBufferedReader))
-        mockStaticFile.close()
-        mockFileUtils.close()
-    }
-
-    @Test
-    fun `test error when mapping file still exists`() {
-        val mockOldIsinFile = mock(File::class.java)
-        mockFileIngestion(mockOldIsinFile)
-        `when`(mockOldIsinFile.exists()).thenReturn(true)
-        `when`(mockOldIsinFile.delete()).thenReturn(false)
-        assertThrows<FileSystemException> { processDataUpdates.processFullGoldenCopyFileIfEnabled() }
-    }
-
-    private fun mockFileIngestion(isinMappingFile: File): Pair<BufferedReader, MockedStatic<File>> {
         val flagFileGleif = File.createTempFile("test", ".csv")
         val flagFileGleifUpdate = File.createTempFile("test1", ".csv")
         val flagFileNorthdata = File.createTempFile("test2", ".csv")
-        val bufferedReader = BufferedReader(BufferedReader.nullReader())
+
+        val staticMock = mockStatic(File::class.java)
+        staticMock
+            .`when`<File> {
+                File.createTempFile(any(), any())
+            }.thenReturn(mockFile)
 
         companyIngestor =
             GleifGoldenCopyIngestor(
-                mockGleifApiAccessor, mockCompanyInformationParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockIsinLeiDataControllerApi,
+                mockGleifApiAccessor,
+                mockCompanyInformationParser,
+                mockCompanyUploader,
                 mockRelationshipExtractor,
-                File.createTempFile("tesd", ".csv"),
             )
-
+        val ingestorSpy = spy(companyIngestor)
+        doNothing()
+            .whenever(
+                ingestorSpy,
+            ).processIsinMappingFile()
         companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCompanyInformationParser)
 
         processDataUpdates =
             ProcessDataUpdates(
-                mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
+                mockGleifApiAccessor, ingestorSpy, mockNorthDataAccessor,
                 companyIngestorNorthData, mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockCommunityActuatorApi, allGleifCompaniesForceIngest = false, allNorthDataCompaniesForceIngest = false,
-                flagFileGleif.absolutePath, flagFileGleifUpdate.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
+                flagFileGleif.absolutePath, flagFileGleifUpdate.absolutePath, flagFileNorthdata.absolutePath,
             )
-        return Pair(bufferedReader, mockStatic(File::class.java))
+
+        val bufferedReader = BufferedReader(BufferedReader.nullReader())
+
+        doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromZip(any())
+        doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromNorthDataZipFile(any())
+
+        doThrow(ConnectException()).doReturn(true).whenever(mockBackendActuatorApi).health()
+
+        processDataUpdates.processExternalCompanyDataIfEnabled()
+
+        val numberOfDownloadedFiles = 2
+        staticMock.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
+        verify(mockCompanyInformationParser, times(1)).readGleifCompanyDataFromBufferedReader(any())
+        verify(mockCompanyInformationParser, times(1)).readGleifRelationshipDataFromBufferedReader(any())
+        verify(mockCompanyInformationParser, times(1)).readNorthDataFromBufferedReader(any())
+
+        staticMock.close()
     }
 
     @Test
@@ -232,16 +175,15 @@ class ProcessDataUpdatesTest {
     @Test
     fun `processUpdates does not trigger full update if flag file is missing`() {
         val missingFlag = File("nonexistent.flag")
-        val dummyIsin = File.createTempFile("dummy", ".csv")
 
-        initProcessDataUpdates(flagFileGleifUpdate = missingFlag.absolutePath, isinFile = dummyIsin)
+        initProcessDataUpdates(flagFileGleifUpdate = missingFlag.absolutePath)
 
         val method = processDataUpdates.javaClass.getDeclaredMethod("processUpdates")
         method.isAccessible = true
         method.invoke(processDataUpdates)
 
         verify(mockGleifGoldenCopyIngestorTest, times(1)).prepareGleifDeltaFile(false)
-        verify(mockGleifGoldenCopyIngestorTest, times(1)).processIsinMappingFile(false)
+        verify(mockGleifGoldenCopyIngestorTest, times(1)).processIsinMappingFile()
         verify(mockGleifGoldenCopyIngestorTest, times(1)).processRelationshipFile(false)
     }
 
@@ -252,10 +194,7 @@ class ProcessDataUpdatesTest {
 
         assert(flagFile.exists())
 
-        val dummyIsin = File.createTempFile("dummy_isin", ".csv")
-        dummyIsin.writeText("LEI,ISIN\n1000,1111")
-
-        initProcessDataUpdates(flagFileGleifUpdate = flagFile.absolutePath, isinFile = dummyIsin)
+        initProcessDataUpdates(flagFileGleifUpdate = flagFile.absolutePath)
 
         val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
         val appender = TestLogAppender()
@@ -267,7 +206,7 @@ class ProcessDataUpdatesTest {
         method.invoke(processDataUpdates)
 
         verify(mockGleifGoldenCopyIngestorTest).prepareGleifDeltaFile(true)
-        verify(mockGleifGoldenCopyIngestorTest).processIsinMappingFile(true)
+        verify(mockGleifGoldenCopyIngestorTest).processIsinMappingFile()
         verify(mockGleifGoldenCopyIngestorTest).processRelationshipFile(true)
 
         assert(!flagFile.exists())

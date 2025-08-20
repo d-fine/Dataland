@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress';
-import { getKeycloakToken, login } from '@e2e/utils/Auth';
+import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { FRAMEWORKS_WITH_UPLOAD_FORM } from '@/utils/Constants';
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
@@ -43,7 +43,7 @@ describeIf(
     });
 
     it('Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user', () => {
-      login(reader_name, reader_pw);
+      ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount('/companies/' + storedCompany.companyId);
       cy.get('h1').should('contain', testCompanyName);
       cy.get('[data-test=toggleShowAll]').scrollIntoView();

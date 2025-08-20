@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="6">
+    <DatasetsTabMenu :initialTabIndex="6">
       <TheContent class="min-h-screen relative">
         <div class="search-container">
           <IconField class="search-bar">
@@ -228,6 +228,7 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
 import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
@@ -247,6 +248,7 @@ export default defineComponent({
     IconField,
     InputText,
     InputIcon,
+    Message,
   },
 
   setup() {

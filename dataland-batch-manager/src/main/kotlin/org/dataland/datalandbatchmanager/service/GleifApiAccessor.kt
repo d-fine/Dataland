@@ -58,12 +58,12 @@ class GleifApiAccessor(
     }
 
     private fun downloadFileFromGleif(
-        urlSuffx: String,
+        urlSuffix: String,
         targetFile: File,
         fileDescription: String,
     ) {
         logger.info("Starting download of $fileDescription.")
-        val downloadUrl = URI("$gleifBaseUrl/$urlSuffx").toURL()
+        val downloadUrl = URI("$gleifBaseUrl/$urlSuffix").toURL()
         externalFileDownload.downloadFile(downloadUrl, targetFile)
         logger.info("Download of $fileDescription completed.")
     }
