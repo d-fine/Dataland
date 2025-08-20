@@ -105,16 +105,18 @@
                       v-if="slotProps.data.accessStatus == AccessStatus.Pending"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <div>
+                      <div class="button-container">
                         <PrimeButton
                           icon="pi pi-check"
+                          class="uppercase p-button p-button-sm"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                          label="GRANT"
+                          label="Grant"
                         />
                         <PrimeButton
                           icon="pi pi-times"
+                          class="uppercase p-button-outlined p-button-sm mr-3"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                          label="DECLINE"
+                          label="Decline"
                         />
                       </div>
                     </div>
@@ -122,11 +124,12 @@
                       v-if="slotProps.data.accessStatus == AccessStatus.Granted"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <div>
+                      <div class="button-container">
                         <PrimeButton
                           icon="pi pi-ban"
+                          class="uppercase p-button-outlined p-button-sm mr-3"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                          label="REVOKE"
+                          label="Revoke"
                         />
                       </div>
                     </div>
@@ -419,6 +422,10 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
 }
 
 .text-primary {

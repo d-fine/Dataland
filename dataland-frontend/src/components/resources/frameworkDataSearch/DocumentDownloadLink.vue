@@ -2,7 +2,7 @@
   <div data-test="download-link-component">
     <PrimeButton
       v-if="isUserLoggedIn"
-      variant="link"
+      variant="text"
       @click="handleDocumentDownload()"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
     >

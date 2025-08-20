@@ -75,14 +75,14 @@ describeIf(
      */
     function validateSubmitButton(isExpectedToBeEnabled: boolean): Cypress.Chainable {
       const check = isExpectedToBeEnabled ? 'be.enabled' : 'be.disabled';
-      return cy.get('[data-test="requestAccessButton"]').should(check);
+      return cy.get('button[data-test="requestAccessButton"]').should(check);
     }
 
     /**
      * Clicks the button to submit data access requests.
      */
     function clickSubmitButton(): void {
-      validateSubmitButton(true).first().click();
+      validateSubmitButton(true).click();
     }
 
     /**
@@ -195,14 +195,14 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/companyrequests');
 
-      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'GRANT');
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'Grant');
       validateAccessRequestForReportingPeriodTableHasBadgeWithText(
         reportingPeriodToBeGranted,
         'badge-light-green',
         'Granted'
       );
 
-      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeDeclined, 'DECLNE');
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeDeclined, 'Decline');
       validateAccessRequestForReportingPeriodTableHasBadgeWithText(
         reportingPeriodToBeDeclined,
         'badge-brown',
