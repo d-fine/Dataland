@@ -37,12 +37,6 @@
         },
       }"
     />
-
-    <Button
-      :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
-      @click="router.push('/about')"
-      style="display: none"
-    />
   </section>
 </template>
 
@@ -51,16 +45,11 @@ import { computed, ref, watch, onUnmounted } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 import router from '@/router';
-import Button from 'primevue/button';
 
 const props = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
   return props.sections?.find((section) => section.title === 'Intro') ?? null;
-});
-
-const aboutIntroSection = computed(() => {
-  return props.sections?.find((section) => section.title === 'START YOUR DATALAND JOURNEY') ?? null;
 });
 
 const isMobile = ref(window.innerWidth < 768);

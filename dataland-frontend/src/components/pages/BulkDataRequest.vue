@@ -165,15 +165,8 @@
                       </span>
                     </BasicFormSection>
                   </div>
-                  <div class="col-12 flex justify-content-end">
-                    <PrimeButton
-                      type="submit"
-                      label="SUBMIT"
-                      class="align-self-end"
-                      data-test="submit-request-button"
-                    />
-                  </div>
                 </div>
+                <PrimeButton class="submit-button" type="submit" label="SUBMIT" data-test="submit-request-button" />
               </div>
             </template>
           </div>
@@ -426,6 +419,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.submit-button {
+  display: block;
+  margin-left: auto;
+}
+
 .header {
   width: 100%;
   text-align: left;

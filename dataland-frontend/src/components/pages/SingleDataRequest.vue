@@ -198,11 +198,13 @@
                       />
                     </div>
                   </PrimeDialog>
-
-                  <div class="col-12 flex align-items-end">
-                    <PrimeButton type="submit" label="SUBMIT DATA REQUEST" @click="checkPreSubmitConditions" />
-                  </div>
                 </div>
+                <PrimeButton
+                  type="submit"
+                  label="SUBMIT DATA REQUEST"
+                  @click="checkPreSubmitConditions"
+                  class="submit-button"
+                />
               </div>
             </div>
           </div>
@@ -568,6 +570,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.submit-button {
+  display: block;
+  margin-left: auto;
+}
+
 .header-styling {
   text-align: left;
 }

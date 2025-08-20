@@ -18,14 +18,7 @@
         @click="login"
         icon="pi pi-user"
         variant="text"
-        :pt="{
-          root: {
-            style: 'color: var(--p-orange-950);',
-          },
-          icon: {
-            style: 'color: var(--p-orange-950);',
-          },
-        }"
+        severity="secondary"
       />
       <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" rounded />
     </div>
