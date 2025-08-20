@@ -93,9 +93,9 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `test ingestion performs successfully if a file is provided`() {
-        val flagFileGleif = File.createTempFile("test", ".csv")
-        val flagFileGleifUpdate = File.createTempFile("test1", ".csv")
-        val flagFileNorthdata = File.createTempFile("test2", ".csv")
+        val flagFileGleif = File.createTempFile("test", ".flag")
+        val flagFileGleifUpdate = File.createTempFile("test1", ".flag")
+        val flagFileNorthdata = File.createTempFile("test2", ".flag")
 
         val staticMock = mockStatic(File::class.java)
         staticMock
@@ -129,7 +129,7 @@ class ProcessDataUpdatesTest {
 
         val bufferedReader = BufferedReader(BufferedReader.nullReader())
 
-        doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromZip(any())
+        doReturn(bufferedReader).whenever(mockCompanyInformationParser).getXmlStreamFromZip(any())
         doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromNorthDataZipFile(any())
 
         doThrow(ConnectException()).doReturn(true).whenever(mockBackendActuatorApi).health()

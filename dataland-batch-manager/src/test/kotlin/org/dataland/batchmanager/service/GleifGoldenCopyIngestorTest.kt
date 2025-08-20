@@ -64,14 +64,14 @@ class GleifGoldenCopyIngestorTest {
 
     @Test
     fun `test GLEIF LEI file update process`() {
-        val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
+        val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
         val staticMock = mockStatic(File::class.java)
         staticMock
             .`when`<File> {
                 File.createTempFile(any(), any())
             }.thenReturn(mockFile)
 
-        doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromZip(mockFile)
+        doReturn(bufferedReader).whenever(mockCompanyInformationParser).getXmlStreamFromZip(mockFile)
         doReturn(CompanyInformationParser().readGleifCompanyDataFromBufferedReader(bufferedReader))
             .whenever(
                 mockCompanyInformationParser,

@@ -16,7 +16,7 @@ import kotlin.time.measureTime
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
- * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * @param gleifParser reads in the xml file from GLEIF and creates GleifCompanyInformation objects
  */
 @Suppress("LongParameterList")
 @Component
@@ -114,7 +114,7 @@ class GleifGoldenCopyIngestor(
     @Synchronized
     fun processIsinMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
-        val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
+        val newMappingFile = File.createTempFile("gleif_mapping_update", ".xml")
         val duration =
             measureTime {
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)

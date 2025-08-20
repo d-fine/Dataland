@@ -159,9 +159,9 @@ class SelectionLogicTest {
         assertEquals("Lollapalooza", companyInformation.companyName)
     }
 
-    // Case 8: LegalName in "ko" with two Trading or Operating Names in "en"
+// Case 8: LegalName in "ko" with two Trading or Operating Names in "en"
     @Test
-    fun `should select first Trading or Operating Name in en`() {
+    fun `should select the first Trading or Operating Name in en`() {
         val legalName = LegalName(name = "로부부", lang = "ko")
         val otherEntityNames =
             listOf(
@@ -171,225 +171,206 @@ class SelectionLogicTest {
         val entity =
             Entity(
                 legalName = legalName,
-                headquartersAddress = HeadquartersAddress("KR", "Busan", "61200"),
+                headquartersAddress = HeadquartersAddress(country = "KR", city = "Seoul", postalCode = "04524"),
                 transliteratedOtherEntityNames = emptyList(),
                 otherEntityNames = otherEntityNames,
             )
-        val gleifLeiRecord = LEIRecord(entity = entity, lei = "KR5678904321")
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "KR1234567890")
         val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
         val companyInformation = combinedInfo.toCompanyPost()
         assertEquals("Robubu Family", companyInformation.companyName)
     }
-}
-
-// Case 8: LegalName in "ko" with two Trading or Operating Names in "en"
-@Test
-fun `should select the first Trading or Operating Name in en`() {
-    val legalName = LegalName(name = "로부부", lang = "ko")
-    val otherEntityNames =
-        listOf(
-            AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "Robubu Family", lang = "en"),
-            AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "Robubu Company", lang = "en"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "KR", city = "Seoul", postalCode = "04524"),
-            transliteratedOtherEntityNames = emptyList(),
-            otherEntityNames = otherEntityNames,
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "KR1234567890")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
-
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("Robubu Family", companyInformation.companyName)
-}
 
 // Case 9: LegalName in "pl" with three Trading or Operating Names in "en", "en-US", and "es"
-@Test
-fun `should prioritize the first Trading or Operating Name in en`() {
-    val legalName = LegalName(name = "해방하다", lang = "pl")
-    val otherEntityNames =
-        listOf(
-            AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "LIBORT Tradings", lang = "en"),
-            AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "LIBORT LTD", lang = "en-US"),
-            AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "LIBORT SA", lang = "es"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "PL", city = "Warsaw", postalCode = "00-001"),
-            transliteratedOtherEntityNames = emptyList(),
-            otherEntityNames = otherEntityNames,
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL9876543210")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should prioritize the first Trading or Operating Name in en`() {
+        val legalName = LegalName(name = "해방하다", lang = "pl")
+        val otherEntityNames =
+            listOf(
+                AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "LIBORT Tradings", lang = "en"),
+                AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "LIBORT LTD", lang = "en-US"),
+                AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "LIBORT SA", lang = "es"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "PL", city = "Warsaw", postalCode = "00-001"),
+                transliteratedOtherEntityNames = emptyList(),
+                otherEntityNames = otherEntityNames,
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL9876543210")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("LIBORT Tradings", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
+        assertEquals("LIBORT Tradings", companyInformation.companyName)
+    }
 
 // Case 10: LegalName in "pl" with an Alternative Legal Name in "en" and an AUTO ASCII Name in "en"
-@Test
-fun `should prioritize Alternative Legal Name over AUTO ASCII Name`() {
-    val legalName = LegalName(name = "SPS S.A.", lang = "pl")
-    val otherEntityNames =
-        listOf(
-            AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "SPS LLC", lang = "en"),
-        )
-    val transliteratedNames =
-        listOf(
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "SPS SA", lang = "en"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "PL", city = "Krakow", postalCode = "31-000"),
-            transliteratedOtherEntityNames = transliteratedNames,
-            otherEntityNames = otherEntityNames,
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL1239876543")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should prioritize Alternative Legal Name over AUTO ASCII Name`() {
+        val legalName = LegalName(name = "SPS S.A.", lang = "pl")
+        val otherEntityNames =
+            listOf(
+                AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "SPS LLC", lang = "en"),
+            )
+        val transliteratedNames =
+            listOf(
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "SPS SA", lang = "en"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "PL", city = "Krakow", postalCode = "31-000"),
+                transliteratedOtherEntityNames = transliteratedNames,
+                otherEntityNames = otherEntityNames,
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL1239876543")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("SPS LLC", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
+        assertEquals("SPS LLC", companyInformation.companyName)
+    }
 
 // Case 11: LegalName in "pl" with two Alternative Legal Names in "en"
-@Test
-fun `should select the first Alternative Legal Name in en`() {
-    val legalName = LegalName(name = "Tietzy S.A.", lang = "pl")
-    val otherEntityNames =
-        listOf(
-            AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Tietzy LLC", lang = "en"),
-            AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Tietzy Ltd", lang = "en"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "PL", city = "Gdansk", postalCode = "80-001"),
-            transliteratedOtherEntityNames = emptyList(),
-            otherEntityNames = otherEntityNames,
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL6543210987")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should select the first Alternative Legal Name in en`() {
+        val legalName = LegalName(name = "Tietzy S.A.", lang = "pl")
+        val otherEntityNames =
+            listOf(
+                AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Tietzy LLC", lang = "en"),
+                AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Tietzy Ltd", lang = "en"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "PL", city = "Gdansk", postalCode = "80-001"),
+                transliteratedOtherEntityNames = emptyList(),
+                otherEntityNames = otherEntityNames,
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL6543210987")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("Tietzy LLC", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
+        assertEquals("Tietzy LLC", companyInformation.companyName)
+    }
 
 // Case 12: LegalName in "pl" with three Alternative Legal Names in multiple languages
-@Test
-fun `should prioritize Alternative Legal Name in en over other languages`() {
-    val legalName = LegalName(name = "Auron S.A.", lang = "pl")
-    val otherEntityNames =
-        listOf(
-            AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Auron Ltd", lang = "en"),
-            AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Auron GmbH", lang = "de"),
-            AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Auron SL", lang = "es"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "PL", city = "Lodz", postalCode = "90-001"),
-            transliteratedOtherEntityNames = emptyList(),
-            otherEntityNames = otherEntityNames,
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL8901234567")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should prioritize Alternative Legal Name in en over other languages`() {
+        val legalName = LegalName(name = "Auron S.A.", lang = "pl")
+        val otherEntityNames =
+            listOf(
+                AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Auron Ltd", lang = "en"),
+                AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Auron GmbH", lang = "de"),
+                AlternativeEntityName(type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME", name = "Auron SL", lang = "es"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "PL", city = "Lodz", postalCode = "90-001"),
+                transliteratedOtherEntityNames = emptyList(),
+                otherEntityNames = otherEntityNames,
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "PL8901234567")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("Auron Ltd", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
+        assertEquals("Auron Ltd", companyInformation.companyName)
+    }
 
 // Case 13: LegalName in "da" with two AUTO ASCII Names in "en"
-@Test
-fun `should select the first AUTO ASCII Name in en`() {
-    val legalName = LegalName(name = "Høksve A/S", lang = "da")
-    val transliteratedNames =
-        listOf(
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "Hoksve AS", lang = "en"),
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "Hoksve as", lang = "en"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "DK", city = "Copenhagen", postalCode = "1000"),
-            transliteratedOtherEntityNames = transliteratedNames,
-            otherEntityNames = emptyList(),
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "DK1234567890")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should select the first AUTO ASCII Name in en`() {
+        val legalName = LegalName(name = "Høksve A/S", lang = "da")
+        val transliteratedNames =
+            listOf(
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "Hoksve AS", lang = "en"),
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "Hoksve as", lang = "en"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "DK", city = "Copenhagen", postalCode = "1000"),
+                transliteratedOtherEntityNames = transliteratedNames,
+                otherEntityNames = emptyList(),
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "DK1234567890")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("Hoksve AS", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
+        assertEquals("Hoksve AS", companyInformation.companyName)
+    }
 
 // Case 14: LegalName in "da" with AUTO ASCII Name in "en" and "fr"
-@Test
-fun `should select AUTO ASCII Name in en over fr`() {
-    val legalName = LegalName(name = "JVR A/S", lang = "da")
-    val transliteratedNames =
-        listOf(
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR AS", lang = "en"),
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR a.s.", lang = "fr"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "DK", city = "Aarhus", postalCode = "8000"),
-            transliteratedOtherEntityNames = transliteratedNames,
-            otherEntityNames = emptyList(),
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "DK5678901234")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should select AUTO ASCII Name in en over fr`() {
+        val legalName = LegalName(name = "JVR A/S", lang = "da")
+        val transliteratedNames =
+            listOf(
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR AS", lang = "en"),
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR a.s.", lang = "fr"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "DK", city = "Aarhus", postalCode = "8000"),
+                transliteratedOtherEntityNames = transliteratedNames,
+                otherEntityNames = emptyList(),
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "DK5678901234")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("JVR AS", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
+        assertEquals("JVR AS", companyInformation.companyName)
+    }
 
 // Case 15: LegalName in "da" with AUTO ASCII Names in "fr" and "pl"
-@Test
-fun `should fallback to LegalName if no AUTO ASCII Name in en exists`() {
-    val legalName = LegalName(name = "JVR A/S", lang = "da")
-    val transliteratedNames =
-        listOf(
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR a.s.", lang = "fr"),
-            AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR AS", lang = "pl"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "DK", city = "Odense", postalCode = "5000"),
-            transliteratedOtherEntityNames = transliteratedNames,
-            otherEntityNames = emptyList(),
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "DK8901234567")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+    @Test
+    fun `should choose the first AUTO ASCII Name that is not en if no en exists`() {
+        val legalName = LegalName(name = "JVR A/S", lang = "da")
+        val transliteratedNames =
+            listOf(
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR a.s.", lang = "fr"),
+                AlternativeEntityName(type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", name = "JVR AS", lang = "pl"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "DK", city = "Odense", postalCode = "5000"),
+                transliteratedOtherEntityNames = transliteratedNames,
+                otherEntityNames = emptyList(),
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "DK8901234567")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("JVR A/S", companyInformation.companyName)
-}
+        val companyInformation = combinedInfo.toCompanyPost()
 
-// Case 16: LegalName in "ar" with one non-English Trading or Operating Name in "ar"
-@Test
-fun `should fallback to LegalName if no valid Trading or Operating Name exists`() {
-    val legalName = LegalName(name = "سوكاما", lang = "ar")
-    val otherEntityNames =
-        listOf(
-            AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "سوكاما SA", lang = "ar"),
-        )
-    val entity =
-        Entity(
-            legalName = legalName,
-            headquartersAddress = HeadquartersAddress(country = "EG", city = "Cairo", postalCode = "11511"),
-            transliteratedOtherEntityNames = emptyList(),
-            otherEntityNames = otherEntityNames,
-        )
-    val gleifLeiRecord = LEIRecord(entity = entity, lei = "EG1234567890")
-    val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+        // Corrected assertion: The first non-"en" AUTO ASCII Name ("JVR a.s." in "fr") should be chosen
+        assertEquals("JVR a.s.", companyInformation.companyName)
+    }
 
-    val companyInformation = combinedInfo.toCompanyPost()
-    assertEquals("سوكاما", companyInformation.companyName)
+    // Case 16: LegalName in "ar" with one non-English Trading or Operating Name in "ar"
+    @Test
+    fun `should fallback to LegalName if no valid other or transliterated name exists`() {
+        val legalName = LegalName(name = "سوكاما", lang = "ar")
+        val otherEntityNames =
+            listOf(
+                AlternativeEntityName(type = "TRADING_OR_OPERATING_NAME", name = "سوكاما SA", lang = "ar"),
+            )
+        val entity =
+            Entity(
+                legalName = legalName,
+                headquartersAddress = HeadquartersAddress(country = "EG", city = "Cairo", postalCode = "11511"),
+                transliteratedOtherEntityNames = emptyList(),
+                otherEntityNames = otherEntityNames,
+            )
+        val gleifLeiRecord = LEIRecord(entity = entity, lei = "EG1234567890")
+        val combinedInfo = GleifCompanyCombinedInformation(gleifLeiRecord)
+
+        val companyInformation = combinedInfo.toCompanyPost()
+
+        // Expectation: Fallback to LegalName because no valid transliterated or "en" operating name exists
+        assertEquals("سوكاما", companyInformation.companyName)
+    }
 }

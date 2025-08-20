@@ -77,7 +77,16 @@ class GleifMappingTest {
         CompanyInformation(
             companyName = expectedGleifRecord.entity.legalName.name,
             companyContactDetails = null,
-            companyAlternativeNames = null,
+            companyAlternativeNames =
+                listOf(
+                    "Dummy preferred ascii transliterated legal name",
+                    "Dummy auto ascii transliterated legal name",
+                    "Dummy english alternative language legal name 1",
+                    "Dummy english alternative language legal name 2",
+                    "Dummy non-english alternative language legal name",
+                    "Dummy previous legal name",
+                    "Dummy trading or operating name",
+                ),
             companyLegalForm = null,
             countryCode = expectedGleifRecord.entity.headquartersAddress.country,
             headquarters = expectedGleifRecord.entity.headquartersAddress.city,
@@ -101,12 +110,12 @@ class GleifMappingTest {
         Assertions.assertEquals(
             expectedGleifRecord,
             gleifRecord,
-            "The gleifCompanyInformation created based on the test csv file is not as expected.",
+            "The gleifCompanyInformation created based on the test xml file is not as expected.",
         )
         Assertions.assertEquals(
             expectedCompanyInformation,
             companyInformation,
-            "The companyInformation created based on the test csv file is not as expected.",
+            "The companyInformation created based on the test xml file is not as expected.",
         )
     }
 }
