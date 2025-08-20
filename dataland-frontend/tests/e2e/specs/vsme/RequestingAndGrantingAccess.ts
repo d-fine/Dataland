@@ -82,7 +82,7 @@ describeIf(
      * Clicks the button to submit data access requests.
      */
     function clickSubmitButton(): void {
-      validateSubmitButton(true).click();
+      validateSubmitButton(true).first().click();
     }
 
     /**
