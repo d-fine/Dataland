@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="relative">
-      <DatasetsTabMenu :initial-tab-index="1">
+      <DatasetsTabMenu :initialTabIndex="1">
         <div>
           <PrimeButton
             v-if="hasUserUploaderRights"

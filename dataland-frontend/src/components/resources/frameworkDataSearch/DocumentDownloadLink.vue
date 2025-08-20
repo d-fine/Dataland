@@ -11,7 +11,7 @@
       <span>
         <i
           v-if="showIcon && (percentCompleted === 0 || percentCompleted === undefined)"
-          class="pi pi-download pl-1"
+          class="pi pi-download"
           data-test="download-icon"
         ></i>
         <i

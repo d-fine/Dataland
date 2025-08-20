@@ -1,4 +1,3 @@
-import { checkButton, checkImage } from '@ct/testUtils/ExistenceChecks';
 import LandingPage from '@/components/pages/LandingPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
@@ -40,8 +39,8 @@ describe('Component test for the landing page', () => {
  */
 function validateTheHeader(): void {
   checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  checkButton('signup-dataland-button', 'SIGN UP');
-  checkButton('login-dataland-button', 'LOGIN');
+  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP')
+  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN')
 }
 
 /**
@@ -68,6 +67,19 @@ function validateBrandsSection(): void {
     checkImage(`Brand ${index + 1}`, filename);
   });
 }
+
+/**
+ * Checks if an image is present
+ * @param alternativeText the "alt" identifier of the image
+ * @param fileName the file the image is expected to display
+ */
+function checkImage(alternativeText: string, fileName: string): void {
+  cy.get(`img[alt="${alternativeText}"]`)
+    .should('be.visible')
+    .should('have.attr', 'src')
+    .should('match', new RegExp(`.*/${fileName}$`));
+}
+
 
 /**
  * Gets the section of the landing page with the specified title

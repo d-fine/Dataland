@@ -21,7 +21,7 @@ describe('check that the document link component works and is displayed correctl
       },
     }).then(() => {
       validateNoIcons();
-      cy.get("[data-test='download-link-Test']").click();
+      cy.get('[data-test="download-link-Test"]').click();
       cy.wait('@downloadComplete').then(() => {
         validateNoIcons();
       });
@@ -49,7 +49,7 @@ describe('check that the document link component works and is displayed correctl
       mounted.wrapper.vm.percentCompleted = 50;
 
       cy.get('[data-test="spinner-icon"]').should('exist');
-      cy.get("[data-test='percentage-text']").should('exist').should('have.text', ' (50%) ');
+      cy.get('[data-test="percentage-text"]').should('exist').should('have.text', ' (50%) ');
     });
   });
 
@@ -72,7 +72,7 @@ describe('check that the document link component works and is displayed correctl
       mounted.wrapper.vm.percentCompleted = 100;
 
       cy.get('[data-test="spinner-icon"]').should('not.exist');
-      cy.get("[data-test='percentage-text']").should('not.exist');
+      cy.get('[data-test="percentage-text"]').should('not.exist');
     });
   });
 
@@ -142,8 +142,8 @@ describe('check that the document link component works and is displayed correctl
         };
       },
     }).then(() => {
-      cy.get("[data-test='download-link-FileName']").should('contain', 'FileName');
-      cy.get("[data-test='download-link-FileName']").should('not.contain', 'page');
+      cy.get('[data-test="download-link-FileName"]').should('contain', 'FileName');
+      cy.get('[data-test="download-link-FileName"]').should('not.contain', 'page');
     });
   });
 });
@@ -153,5 +153,5 @@ describe('check that the document link component works and is displayed correctl
  */
 function validateNoIcons(): void {
   cy.get('[data-test="spinner-icon"]').should('not.exist');
-  cy.get("[data-test='percentage-text']").should('not.exist');
+  cy.get('[data-test="percentage-text"]').should('not.exist');
 }

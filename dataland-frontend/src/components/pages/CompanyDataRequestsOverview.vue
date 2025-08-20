@@ -107,7 +107,6 @@
                     >
                       <div>
                         <PrimeButton
-                          class="button-container"
                           icon="pi pi-check"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
                           label="GRANT"
@@ -123,7 +122,7 @@
                       v-if="slotProps.data.accessStatus == AccessStatus.Granted"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <div class="button-container">
+                      <div>
                         <PrimeButton
                           icon="pi pi-ban"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"

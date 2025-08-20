@@ -28,7 +28,7 @@
         <div class="text-block" style="margin: 15px; white-space: pre">
           You have successfully withdrawn your request.
         </div>
-        <div style="margin: 10px">
+        <div>
           <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
         </div>
       </PrimeDialog>
@@ -110,7 +110,7 @@
         <div class="text-block" style="margin: 15px; white-space: pre">
           You have successfully reopened your data request.
         </div>
-        <div style="margin: 10px">
+        <div>
           <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
         </div>
       </PrimeDialog>
