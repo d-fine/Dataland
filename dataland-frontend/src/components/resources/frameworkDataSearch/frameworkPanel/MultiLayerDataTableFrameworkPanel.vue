@@ -24,8 +24,9 @@
       v-if="metaInfoOfAvailableButInaccessibleDataset.length > 0"
       @click="openModalToDisplayInaccessibleDatasets"
       class="mb-4"
-      >REQUEST ACCESS TO MORE DATASETS</PrimeButton
-    >
+      data-test="requestAccessButton"
+      label="REQUEST ACCESS TO MORE DATASETS"
+    />
     <MultiLayerDataTable
       :dataAndMetaInfo="sortedDataAndMetaInfo"
       :inReviewMode="inReviewMode"
