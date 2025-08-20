@@ -125,7 +125,8 @@ data class GleifCompanyCombinedInformation(
     private fun getGleifCompanyAlternativeNames(): List<String>? {
         val transliteratedNames = gleifLeiRecord.entity.transliteratedOtherEntityNames?.map { it.name } ?: emptyList()
         val otherNames = gleifLeiRecord.entity.otherEntityNames?.map { it.name } ?: emptyList()
+        val allCompanyNames = transliteratedNames + otherNames + listOf(gleifLeiRecord.entity.legalName.name)
 
-        return (transliteratedNames + otherNames).takeIf { it.isNotEmpty() }
+        return allCompanyNames.filter { it != companyName }.takeIf { it.isNotEmpty() }
     }
 }
