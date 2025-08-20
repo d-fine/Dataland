@@ -7,16 +7,15 @@ import org.dataland.datalandbatchmanager.model.CompanyNameSelectionStaticValues.
 import org.dataland.datalandbatchmanager.model.CompanyNameSelectionStaticValues.noCompanyNameReplacementLanguageWhiteList
 
 /**
- * Data class combining the information found in the GLEIF LEI and RR files
+ * Combines GLEIF company information, including the LEI record and optional parent LEI,
+ * and provides methods to generate standardized `CompanyInformation` objects.
+ * Determines the display name following prioritization rules for name types and languages.
  */
+
 data class GleifCompanyCombinedInformation(
     val gleifLeiRecord: LEIRecord,
     val finalParentLei: String? = null,
 ) : ExternalCompanyInformation {
-    /**
-     * function to transform a company information object from GLEIF to the corresponding Dataland object.
-     * @return the Dataland companyInformation object with the information of the corresponding GLEIF object
-     */
     override fun toCompanyPost(): CompanyInformation =
         CompanyInformation(
             companyName = companyName,
@@ -36,15 +35,10 @@ data class GleifCompanyCombinedInformation(
             parentCompanyLei = finalParentLei,
         )
 
-    /**
-     * Transform the GLEIF company information to a PATCH object that can be used to update the information of the
-     * company using the Dataland API
-     */
     override fun toCompanyPatch(
         conflictingIdentifiers: Set<String?>?,
         existingAlternativeNames: List<String>?,
     ): CompanyInformationPatch? {
-        // When updating from GLEIF data, the only conflicting identifier must always be the Lei
         if ((conflictingIdentifiers != null) &&
             !(conflictingIdentifiers.size == 1 && conflictingIdentifiers.contains(IdentifierType.Lei.value))
         ) {
@@ -73,67 +67,65 @@ data class GleifCompanyCombinedInformation(
         "${gleifLeiRecord.entity.legalName} " +
             " (LEI: ${gleifLeiRecord.lei})"
 
-    private val companyName = determineCompanyName()
+    internal val companyName = determineCompanyName()
+
+    /**
+     * Determines the company name to display based on priority rules.
+     * Returns the legal name if whitelisted or no other names exist.
+     * Otherwise, selects a name based on type and language.
+     */
 
     private fun determineCompanyName(): String {
-        val preferredASCIITransliteratedLegalName =
-            gleifLeiRecord.entity.transliteratedOtherEntityNames
-                ?.firstOrNull { it.type == "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME" }
-                ?.name
-        val alternativeLanguageLegalName =
-            findShortestEnglishName(fieldName = "ALTERNATIVE_LANGUAGE_LEGAL_NAME")
+        val legalName = gleifLeiRecord.entity.legalName.name
+        val transliterated = gleifLeiRecord.entity.transliteratedOtherEntityNames
+        val otherNames = gleifLeiRecord.entity.otherEntityNames
 
-        val tradingOrOperatingName =
-            findShortestEnglishName(fieldName = "TRADING_OR_OPERATING_NAME")
-
-        val autoASCIITransliteratedLegalName =
-            gleifLeiRecord.entity.transliteratedOtherEntityNames
-                ?.firstOrNull { it.type == "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME" }
-                ?.name
-
-        return if (noCompanyNameReplacementLanguageWhiteList.any {
+        val isWhitelisted =
+            noCompanyNameReplacementLanguageWhiteList.any {
                 gleifLeiRecord.entity.legalName.lang
-                    ?.startsWith(it)
-                    ?: false
+                    ?.startsWith(it) ?: false
             }
-        ) {
-            gleifLeiRecord.entity.legalName.name
-        } else {
-            preferredASCIITransliteratedLegalName
-                ?: (
-                    alternativeLanguageLegalName
-                        ?: (
-                            tradingOrOperatingName
-                                ?: (autoASCIITransliteratedLegalName ?: gleifLeiRecord.entity.legalName.name)
-                        )
+
+        return when {
+            isWhitelisted -> legalName
+            transliterated.isNullOrEmpty() && otherNames.isNullOrEmpty() -> legalName
+            else ->
+                selectNameByPriority(
+                    legalName = legalName,
+                    transliteratedNames = transliterated,
+                    otherNames = otherNames,
                 )
         }
     }
 
-    private fun findShortestEnglishName(fieldName: String): String? =
-        gleifLeiRecord.entity.otherEntityNames
-            ?.filter {
-                it.type == fieldName &&
-                    it.lang?.startsWith(
-                        ENGLISH_LANGUAGE_STRING_GLEIF,
-                    ) == true
-            }?.minByOrNull { it.name.length }
-            ?.name
+    private fun selectNameByPriority(
+        legalName: String,
+        transliteratedNames: List<AlternativeEntityName>?,
+        otherNames: List<AlternativeEntityName>?,
+    ): String {
+        fun selectName(
+            entityNames: List<AlternativeEntityName>?,
+            type: String,
+            allowNonEnglish: Boolean,
+        ): String? =
+            entityNames
+                ?.filter { it.type == type }
+                ?.partition { it.lang?.startsWith(ENGLISH_LANGUAGE_STRING_GLEIF) == true }
+                ?.let { (englishNames, otherNames) ->
+                    englishNames.firstOrNull()?.name ?: if (allowNonEnglish) otherNames.firstOrNull()?.name else null
+                }
+
+        return selectName(transliteratedNames, "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME", true)
+            ?: selectName(otherNames, "TRADING_OR_OPERATING_NAME", false)
+            ?: selectName(otherNames, "ALTERNATIVE_LANGUAGE_LEGAL_NAME", false)
+            ?: selectName(transliteratedNames, "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", true)
+            ?: legalName
+    }
 
     private fun getGleifCompanyAlternativeNames(): List<String>? {
-        val alternativeGleifNames =
-            gleifLeiRecord.entity.otherEntityNames
-                ?.map { it.name }
-                ?.plus(
-                    (
-                        gleifLeiRecord.entity.transliteratedOtherEntityNames?.map { it.name }
-                            ?: emptyList()
-                    ),
-                )
-        return if (companyName == gleifLeiRecord.entity.legalName.name) {
-            alternativeGleifNames
-        } else {
-            alternativeGleifNames?.filterNot { it == companyName }?.plus(gleifLeiRecord.entity.legalName.name)
-        }
+        val transliteratedNames = gleifLeiRecord.entity.transliteratedOtherEntityNames?.map { it.name } ?: emptyList()
+        val otherNames = gleifLeiRecord.entity.otherEntityNames?.map { it.name } ?: emptyList()
+
+        return (transliteratedNames + otherNames).takeIf { it.isNotEmpty() }
     }
 }
