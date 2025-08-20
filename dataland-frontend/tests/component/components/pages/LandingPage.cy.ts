@@ -39,8 +39,8 @@ describe('Component test for the landing page', () => {
  */
 function validateTheHeader(): void {
   checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP')
-  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN')
+  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP');
+  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN');
 }
 
 /**
@@ -79,7 +79,6 @@ function checkImage(alternativeText: string, fileName: string): void {
     .should('have.attr', 'src')
     .should('match', new RegExp(`.*/${fileName}$`));
 }
-
 
 /**
  * Gets the section of the landing page with the specified title
