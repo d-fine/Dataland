@@ -16,80 +16,10 @@
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
-          <div class="card-container">
-            <div class="left-pane">
-              <Card>
-                <template #title>Latest Documents</template>
-                <template #content>
-                  <div class="card__separator" />
-                  <div
-                    v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum"
-                    :key="category"
-                    :data-test="category"
-                  >
-                    <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
-                    <div v-if="getDocumentData(category).length === 0">-</div>
-                    <div v-else>
-                      <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                        <DocumentDownloadLink
-                          :document-download-info="{
-                            downloadName: documentNameOrId(document),
-                            fileReference: document.documentId,
-                          }"
-                          :label="documentNameOrId(document)"
-                          :suffix="documentPublicationDateOrEmpty(document)"
-                          show-icon
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </template>
-                <template #footer>
-                  <PrimeButton
-                    label="VIEW ALL DOCUMENTS"
-                    variant="text"
-                    icon="pi pi-chevron-right"
-                    icon-pos="right"
-                    @click="routeToDocuments"
-                  />
-                </template>
-              </Card>
-            </div>
-
-            <div class="right-pane">
-              <div v-if="isClaimPanelVisible" class="claim-pane">
-                <ClaimOwnershipPanel :company-id="companyId" />
-              </div>
-              <div class="frameworks-grid" data-test="summaryPanels">
-                <FrameworkSummaryPanel
-                  v-for="framework of frameworksToDisplay"
-                  :key="framework"
-                  :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
-                  :company-id="companyId"
-                  :framework="framework"
-                  :number-of-provided-reporting-periods="
-                    aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
-                  "
-                  :data-test="`${framework}-summary-panel`"
-                />
-              </div>
-              <div
-                class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
-                @click="toggleShowAll"
-                style="margin-left: auto"
-              >
-                <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
-                  {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
-                </span>
-                <i class="material-icons text-primary">
-                  {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
-                </i>
-              </div>
-            </div>
-          </div>
+          <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
         <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
-          <UsersPage :company-id="companyId" />
+          <CompanyRolesCard v-for="role in roles" :key="role" :companyId="companyId" :role="role" />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -98,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, inject, unref } from 'vue';
+import { ref, reactive, watch, onMounted, inject, unref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -106,35 +36,20 @@ import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
-import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
-import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
-import UsersPage from '@/components/resources/companyCockpit/UsersPage.vue';
+import CompanyDatasetsPane from '@/components/resources/companyCockpit/CompanyDatasetsPane.vue';
+import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
 
-import PrimeButton from 'primevue/button';
-import Card from 'primevue/card';
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 
-import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
-import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
-import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { documentNameOrId, documentPublicationDateOrEmpty, getPluralCategory } from '@/utils/StringFormatter';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { isCompanyIdValid } from '@/utils/ValidationUtils';
-import type { AggregatedFrameworkDataSummary, DataTypeEnum } from '@clients/backend';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import {
-  DocumentMetaInfoDocumentCategoryEnum,
-  type DocumentMetaInfoResponse,
-  SearchForDocumentMetaInformationDocumentCategoriesEnum,
-} from '@clients/documentmanager';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 
 const props = defineProps<{ companyId: string }>();
@@ -149,11 +64,6 @@ const router = useRouter();
 
 const activeTab = ref<'datasets' | 'users'>('datasets');
 const isCompanyMemberOrAdmin = ref(false);
-type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
-const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
-const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
-const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
-const showAllFrameworks = ref(false);
 const isUserCompanyOwnerOrUploader = ref(false);
 const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
@@ -164,52 +74,13 @@ const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({})
 Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
   latestDocuments[`latest${category}`] = [];
 });
-const chunkSize = 3;
-const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
-const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
 
-/**
- * Returns the document data array for a given category.
- */
-const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategoryEnum): DocumentMetaInfoResponse[] => {
-  return latestDocuments[`latest${category}`] || [];
-};
-
-/**
- * Fetches the aggregated framework data summary for the current company.
- * Updates the aggregatedFrameworkDataSummary ref with the response.
- */
-async function getAggregatedFrameworkDataSummary(): Promise<void> {
-  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.companyDataController;
-  const response = await api.getAggregatedFrameworkDataSummary(props.companyId);
-  aggregatedFrameworkDataSummary.value = response.data as SummaryByType;
-}
-
-/**
- * Fetches the latest document meta-information for each document category.
- * Populates the latestDocuments reactive object with the results.
- */
-async function getMetaInfoForLatestDocuments(): Promise<void> {
-  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.documentController;
-  for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
-    const result = await api.searchForDocumentMetaInformation(props.companyId, new Set([value]), undefined, chunkSize);
-    latestDocuments[`latest${value}`] = result.data;
-  }
-}
-
-/**
- * Navigates to the document overview page for the current company.
- */
-function routeToDocuments(): void {
-  void router.push({ path: `/companies/${props.companyId}/documents` });
-}
-
-/**
- * Determines if the user is allowed to upload for a given framework.
- */
-function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-  return isUserCompanyOwnerOrUploader.value || (isFrameworkPublic(framework) && isUserKeycloakUploader.value);
-}
+const roles = [
+  CompanyRole.MemberAdmin,
+  CompanyRole.Member,
+  CompanyRole.CompanyOwner,
+  CompanyRole.DataUploader,
+] as const;
 
 /**
  * Sets user rights and roles for the current company.
@@ -229,19 +100,10 @@ async function setUserRights(): Promise<void> {
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }
 
-/**
- * Toggles the display of all frameworks.
- */
-function toggleShowAll(): void {
-  showAllFrameworks.value = !showAllFrameworks.value;
-}
-
 watch(
   () => props.companyId,
   async (newId, oldId) => {
     if (newId == oldId) return;
-    await getAggregatedFrameworkDataSummary();
-    await getMetaInfoForLatestDocuments();
     await setUserRights();
   }
 );
@@ -253,8 +115,6 @@ watch(activeTab, (val) => {
 
 onMounted(async () => {
   await setUserRights();
-  await getAggregatedFrameworkDataSummary();
-  await getMetaInfoForLatestDocuments();
 
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
