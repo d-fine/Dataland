@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyId
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -43,15 +44,27 @@ import java.util.stream.Stream
 class CompanyUploaderTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var companyUploader: CompanyUploader
-    private lateinit var mockStoredCompany: StoredCompany
     lateinit var logAppender: TestLogAppender
     lateinit var logger: Logger
+
+    private val mockStoredCompany =
+        StoredCompany(
+            companyId = "violating-company-id",
+            companyInformation =
+                CompanyInformation(
+                    companyName = "",
+                    headquarters = "",
+                    identifiers = emptyMap(),
+                    countryCode = "",
+                    companyAlternativeNames = emptyList(),
+                ),
+            dataRegisteredByDataland = emptyList(),
+        )
 
     @BeforeEach
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper())
-        mockStoredCompany = mock()
     }
 
     @BeforeEach
@@ -212,6 +225,10 @@ class CompanyUploaderTest {
     ) {
         whenever(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
+        )
+
+        whenever(mockCompanyDataControllerApi.getCompanyById("violating-company-id")).thenReturn(
+            mockStoredCompany,
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
 
