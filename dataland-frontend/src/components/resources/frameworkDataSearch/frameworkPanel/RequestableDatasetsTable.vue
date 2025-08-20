@@ -15,9 +15,8 @@
         @click="submitDataRequestsForSelection"
         :class="selectedOptions.length > 0 ? 'mt-2' : 'button-disabled mt-2'"
         data-test="requestAccessButton"
-      >
-        <span class="d-letters pl-2"> Request Access </span>
-      </PrimeButton>
+        label="REQUEST ACCESS"
+      />
       <FailMessage
         v-if="isAccessRequestFailed"
         message="Request failed. Please try again later or contact the Dataland team."
