@@ -195,14 +195,14 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/companyrequests');
 
-      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'Grant');
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'GRANT');
       validateAccessRequestForReportingPeriodTableHasBadgeWithText(
         reportingPeriodToBeGranted,
         'badge-light-green',
         'Granted'
       );
 
-      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeDeclined, 'Decline');
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeDeclined, 'DECLNE');
       validateAccessRequestForReportingPeriodTableHasBadgeWithText(
         reportingPeriodToBeDeclined,
         'badge-brown',
