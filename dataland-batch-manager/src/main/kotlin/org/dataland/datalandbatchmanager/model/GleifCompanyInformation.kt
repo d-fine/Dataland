@@ -72,7 +72,7 @@ data class HeadquartersAddress(
     @field:JacksonXmlProperty(localName = "City")
     val city: String,
     @field:JacksonXmlProperty(localName = "PostalCode")
-    val postalCode: String,
+    val postalCode: String? = null,
     @field:JacksonXmlProperty(localName = "Country")
     val country: String,
 )
