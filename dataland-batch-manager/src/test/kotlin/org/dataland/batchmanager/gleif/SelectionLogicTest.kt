@@ -24,14 +24,15 @@ class SelectionLogicTest {
         @JvmStatic
         fun provideCompanyCases() =
             listOf(
-                *group1Cases().toTypedArray(),
-                *group2Cases().toTypedArray(),
+                *group1and2Cases().toTypedArray(),
                 *group3Cases().toTypedArray(),
                 *group4Cases().toTypedArray(),
+                *group5aCases().toTypedArray(),
+                *group5bCases().toTypedArray(),
             )
 
-        // Group 1: Simple cases, such as whitelisted and no alternatives
-        private fun group1Cases() =
+        // Group 1 and 2 combined: Simple and whitelisted cases
+        private fun group1and2Cases() =
             listOf(
                 Case(
                     description = "Not whitelisted (ar), no transliterated or other names",
@@ -58,8 +59,8 @@ class SelectionLogicTest {
                 ),
             )
 
-        // Group 2: Cases involving transliterations and alternative names
-        private fun group2Cases() =
+        // Group 3: Cases involving transliterations and ASCII strings
+        private fun group3Cases() =
             listOf(
                 Case(
                     description = "Not whitelisted (sv) with Preferred ASCII in en + Alternative in en-US",
@@ -107,8 +108,8 @@ class SelectionLogicTest {
                 ),
             )
 
-        // Group 3: AUTO ASCII transliterations
-        private fun group3Cases() =
+        // Group 4: AUTO ASCII transliterations
+        private fun group4Cases() =
             listOf(
                 Case(
                     description = "Not whitelisted (da) with AUTO ASCII in en + fr",
@@ -153,8 +154,8 @@ class SelectionLogicTest {
                 ),
             )
 
-        // Group 4: Handling multiple alternatives
-        private fun group4Cases() =
+        // Group 5a: Cases with alternatives in a single language
+        private fun group5aCases() =
             listOf(
                 Case(
                     description = "Not whitelisted (pl) with Alternative in en + AUTO ASCII",
@@ -182,6 +183,11 @@ class SelectionLogicTest {
                         ),
                     expected = "SPS LLC",
                 ),
+            )
+
+        // Group 5b: Cases with alternatives in multiple languages
+        private fun group5bCases() =
+            listOf(
                 Case(
                     description = "Not whitelisted (pl) with Alternatives in en, de, es",
                     legalName = LegalName(lang = "pl", name = "Auron S.A."),

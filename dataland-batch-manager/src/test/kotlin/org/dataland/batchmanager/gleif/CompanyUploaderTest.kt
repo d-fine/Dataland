@@ -49,7 +49,7 @@ class CompanyUploaderTest {
 
     private val mockStoredCompany =
         StoredCompany(
-            companyId = "violating-company-id",
+            companyId = VIOLATING_COMPANY_ID,
             companyInformation =
                 CompanyInformation(
                     companyName = "",
@@ -227,16 +227,18 @@ class CompanyUploaderTest {
             readAndPrepareBadRequestClientException(responseFilePath),
         )
 
-        whenever(mockCompanyDataControllerApi.getCompanyById("violating-company-id")).thenReturn(
+        whenever(mockCompanyDataControllerApi.getCompanyById(VIOLATING_COMPANY_ID)).thenReturn(
             mockStoredCompany,
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
 
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
-            .patchCompanyById("violating-company-id", expectedPatch)
+            .patchCompanyById(VIOLATING_COMPANY_ID, expectedPatch)
     }
 
     companion object {
+        private const val VIOLATING_COMPANY_ID = "violating-company-id"
+
         private val dummyGleifCompanyInformation1 =
             GleifCompanyCombinedInformation(
                 LEIRecord(
