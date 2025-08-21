@@ -7,6 +7,8 @@ import org.dataland.datalandbatchmanager.model.HeadquartersAddress
 import org.dataland.datalandbatchmanager.model.LEIRecord
 import org.dataland.datalandbatchmanager.model.LegalName
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
@@ -230,5 +232,60 @@ class SelectionLogicTest {
 
         val result = combinedInfo.toCompanyPost().companyName
         assertEquals(case.expected, result, "Failed case: ${case.description}")
+    }
+
+    @Test
+    fun `getGleifCompanyAlternativeNames includes all names except companyName and returns null if empty`() {
+        // Arrange: Common setup data
+        val legalName = LegalName(name = "Main Company Name", lang = "en") // This will also serve as `companyName`.
+        val headquarters = HeadquartersAddress(country = "XX", city = "City", postalCode = "12345")
+
+        val testCases =
+            listOf(
+                // Case 1: All names included except `companyName`
+                Triple(
+                    listOf("Transliterated Name 1", "Transliterated Name 2"),
+                    listOf("Other Name 1", "Other Name 2"),
+                    listOf("Transliterated Name 1", "Transliterated Name 2", "Other Name 1", "Other Name 2"), // Expected
+                ),
+                // Case 2: `companyName` excluded
+                Triple(
+                    listOf("Main Company Name"), // Same as companyName, so it must be excluded
+                    listOf("Other Name 1"),
+                    listOf("Other Name 1"), // Expected
+                ),
+                // Case 3: No alternatives remain (should return null)
+                Triple(
+                    emptyList(), // No transliterated names
+                    emptyList(), // No other names
+                    null, // Expected
+                ),
+            )
+
+        testCases.forEach { (transliterated, other, expected) ->
+            val entity =
+                Entity(
+                    legalName = legalName,
+                    headquartersAddress = headquarters,
+                    transliteratedOtherEntityNames = transliterated.map { AlternativeEntityName(name = it) },
+                    otherEntityNames = other.map { AlternativeEntityName(name = it) },
+                )
+            val gleifLeiRecord = LEIRecord(entity = entity, lei = "LEI12345")
+
+            // Act: Instantiate the tested class and call the method
+            val combinedInfo =
+                GleifCompanyCombinedInformation(
+                    gleifLeiRecord = gleifLeiRecord,
+                    finalParentLei = null,
+                )
+            val result = combinedInfo.toCompanyPost().companyAlternativeNames
+
+            // Assert: Validate the result
+            if (expected == null) {
+                assertNull(result)
+            } else {
+                assertEquals(expected, result)
+            }
+        }
     }
 }
