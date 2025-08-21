@@ -87,22 +87,20 @@
       <PrimeButton label="CLOSE" @click="closeSuccessModal(dialogIsSuccess)" class="p-button-outlined" />
     </div>
   </PrimeDialog>
-  <div>
+  <div class="button-bar">
     <PrimeButton
-      class="uppercase p-button-outlined p-button p-button-sm d-letters"
-      aria-label="RESOLVE REQUEST"
       @click="resolveRequest"
       data-test="resolveRequestButton"
+      label="RESOLVE REQUEST"
+      variant="outlined"
     >
-      <span class="px-2">RESOLVE REQUEST</span>
     </PrimeButton>
     <PrimeButton
-      class="uppercase p-button p-button-sm d-letters"
       aria-label="REOPEN REQUEST"
       @click="reOpenRequest"
       data-test="reOpenRequestButton"
+      label="REOPEN REQUEST"
     >
-      <span class="px-2">REOPEN REQUEST</span>
     </PrimeButton>
   </div>
 </template>
@@ -295,6 +293,13 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+
+.button-bar{
+  margin-left: var(--spacing-xs);
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
 .no-line-height {
   line-height: 0;
 }
