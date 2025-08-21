@@ -1,10 +1,5 @@
 <template>
   <section v-if="aboutIntroSection" class="about-intro" role="region" aria-label="About Intro Statement">
-    <div class="about-intro__wrap-backlink">
-      <router-link to="/" class="about-intro__backlink">
-        {{ aboutIntroSection.text[3] }}
-      </router-link>
-    </div>
     <div class="about-intro__wrapper">
       <h2 id="about-intro-heading" aria-labelledby="about-intro-heading">
         {{ aboutIntroSection.text[0] }}

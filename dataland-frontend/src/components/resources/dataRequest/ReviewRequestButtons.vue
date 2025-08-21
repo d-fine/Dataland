@@ -88,12 +88,7 @@
     </div>
   </PrimeDialog>
   <div class="button-bar">
-    <PrimeButton
-      @click="resolveRequest"
-      data-test="resolveRequestButton"
-      label="RESOLVE REQUEST"
-      variant="outlined"
-    >
+    <PrimeButton @click="resolveRequest" data-test="resolveRequestButton" label="RESOLVE REQUEST" variant="outlined">
     </PrimeButton>
     <PrimeButton
       aria-label="REOPEN REQUEST"
@@ -293,8 +288,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-
-.button-bar{
+.button-bar {
   margin-left: var(--spacing-xs);
   display: flex;
   gap: var(--spacing-xs);
