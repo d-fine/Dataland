@@ -23,6 +23,8 @@ class SelectionLogicTest {
     )
 
     companion object {
+        private const val OTHER_NAME_1 = "Other Name 1"
+
         @JvmStatic
         fun provideCompanyCases() =
             listOf(
@@ -245,14 +247,14 @@ class SelectionLogicTest {
                 // Case 1: All names included except `companyName`
                 Triple(
                     listOf("Transliterated Name 1", "Transliterated Name 2"),
-                    listOf("Other Name 1", "Other Name 2"),
-                    listOf("Transliterated Name 1", "Transliterated Name 2", "Other Name 1", "Other Name 2"), // Expected
+                    listOf(OTHER_NAME_1, "Other Name 2"),
+                    listOf("Transliterated Name 1", "Transliterated Name 2", OTHER_NAME_1, "Other Name 2"), // Expected
                 ),
                 // Case 2: `companyName` excluded
                 Triple(
                     listOf("Main Company Name"), // Same as companyName, so it must be excluded
-                    listOf("Other Name 1"),
-                    listOf("Other Name 1"), // Expected
+                    listOf(OTHER_NAME_1),
+                    listOf(OTHER_NAME_1), // Expected
                 ),
                 // Case 3: No alternatives remain (should return null)
                 Triple(
