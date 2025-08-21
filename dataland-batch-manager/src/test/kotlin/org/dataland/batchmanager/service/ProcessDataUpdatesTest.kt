@@ -31,6 +31,7 @@ import org.mockito.kotlin.whenever
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
 import java.net.ConnectException
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
@@ -134,9 +135,15 @@ class ProcessDataUpdatesTest {
                     flagFileNorthdata.absolutePath,
                 )
 
-            val bufferedReader = BufferedReader(BufferedReader.nullReader())
+            val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
 
             doReturn(bufferedReader).whenever(mockCompanyInformationParser).getXmlStreamFromZip(any())
+            doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromZip(any())
+            doReturn(CompanyInformationParser().readGleifCompanyDataFromBufferedReader(bufferedReader))
+                .whenever(
+                    mockCompanyInformationParser,
+                ).readGleifCompanyDataFromBufferedReader(bufferedReader)
+
             doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromNorthDataZipFile(any())
 
             doThrow(ConnectException()).doReturn(true).whenever(mockBackendActuatorApi).health()
