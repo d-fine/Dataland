@@ -144,4 +144,8 @@ export default defineComponent({
   transform: translate(-50%, -50%);
   background-color: white;
 }
+
+.lei-column-header {
+  font-weight: var(--p-datatable-column-title-font-weight);
+}
 </style>
