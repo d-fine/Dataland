@@ -122,7 +122,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
         cy.contains('td', assertDefined(humanizeStringOrNumber(gammaCapexTotalAmount.quality))).should('exist');
         cy.contains('td', assertDefined(gammaCapexTotalAmount.comment).toString()).should('exist');
-        cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
+        cy.get(`[data-test="download-link-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
           'exist'
         );
       });
@@ -185,7 +185,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
             cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportingPeriodOfDataset})`);
             for (const reportKey in reportsForDataset) {
               cy.get(`[data-test='report-link-${reportKey}']`).first().click();
-              cy.get(`[data-test='Report-Download-${reportKey}']`).contains(reportKey);
+              cy.get(`[data-test='download-link-${reportKey}']`).contains(reportKey);
               cy.get('button.p-dialog-close-button').last().click();
             }
           }

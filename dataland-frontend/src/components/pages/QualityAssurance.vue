@@ -302,7 +302,7 @@ export default defineComponent({
      */
     goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
       const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      void this.$router.push(qaUri);
+      void router.push(qaUri);
     },
 
     /**

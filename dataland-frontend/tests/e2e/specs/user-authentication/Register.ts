@@ -11,7 +11,7 @@ describe('As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, '0')).join('');
 
   it('Checks that the Dataland password-policy gets respected', () => {
-    cy.visitAndCheckAppMount('/').get("button[name='signup_dataland_button']").click();
+    cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
     cy.get('#email').should('exist').type(email, { force: true });
 
     const typePasswordAndExpectError = (password: string, errorMessageSubstring: string): void => {
@@ -35,7 +35,7 @@ describe('As a user I want to be able to register for an account and be able to 
   it('Checks that registering works', () => {
     cy.task('setEmail', email);
     cy.task('setPassword', randomHexPassword);
-    cy.visitAndCheckAppMount('/').get("button[name='signup_dataland_button']").click();
+    cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
     cy.get('#email').should('exist').type(email, { force: true });
     cy.get('#firstName').should('exist').type(firstName, { force: true });
     cy.get('#lastName').should('exist').type(lastName, { force: true });

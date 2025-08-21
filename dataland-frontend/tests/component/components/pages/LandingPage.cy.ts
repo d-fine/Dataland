@@ -1,4 +1,3 @@
-import { checkButton, checkImage, checkAnchorByContent } from '@ct/testUtils/ExistenceChecks';
 import LandingPage from '@/components/pages/LandingPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
@@ -25,8 +24,8 @@ describe('Component test for the landing page', () => {
       assertFrameworkPanelExists('LkSG');
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');
-      cy.get('button.joincampaign__button').should('exist');
-      cy.get('button.getintouch__text-button').should('exist');
+      cy.get('[data-test="join-campaign-button"]').should('exist');
+      cy.get('[data-test="get-in-touch-button"]').should('exist');
       checkFooter();
 
       setMobileDeviceViewport();
@@ -40,8 +39,8 @@ describe('Component test for the landing page', () => {
  */
 function validateTheHeader(): void {
   checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  checkButton('signup_dataland_button', 'Sign Up');
-  checkAnchorByContent('Login');
+  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP');
+  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN');
 }
 
 /**
@@ -67,6 +66,18 @@ function validateBrandsSection(): void {
     const filename = image.split('/').slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
   });
+}
+
+/**
+ * Checks if an image is present
+ * @param alternativeText the "alt" identifier of the image
+ * @param fileName the file the image is expected to display
+ */
+function checkImage(alternativeText: string, fileName: string): void {
+  cy.get(`img[alt="${alternativeText}"]`)
+    .should('be.visible')
+    .should('have.attr', 'src')
+    .should('match', new RegExp(`.*/${fileName}$`));
 }
 
 /**

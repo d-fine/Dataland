@@ -1,10 +1,5 @@
 <template>
   <section v-if="aboutIntroSection" class="about-intro" role="region" aria-label="About Intro Statement">
-    <div class="about-intro__wrap-backlink">
-      <router-link to="/" class="about-intro__backlink">
-        {{ aboutIntroSection.text[3] }}
-      </router-link>
-    </div>
     <div class="about-intro__wrapper">
       <h2 id="about-intro-heading" aria-labelledby="about-intro-heading">
         {{ aboutIntroSection.text[0] }}
@@ -12,22 +7,17 @@
         {{ aboutIntroSection.text[2] }}
       </h2>
     </div>
-    <ButtonComponent
-      :label="aboutIntroSection.title"
-      buttonType="button-component quotes__button"
-      :aria-label="aboutIntroSection.title"
-      @click="register"
-    />
+    <Button :label="aboutIntroSection.title" @click="register" rounded />
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 import type { Section } from '@/types/ContentTypes';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
+import Button from 'primevue/button';
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils.ts';
 
 const props = defineProps<{ sections?: Section[] }>();
 
@@ -36,14 +26,17 @@ const aboutIntroSection = computed(() => {
 });
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated already) and to the portfolio page else.
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
         void registerAndRedirectToSearchPage(keycloak);
+      } else {
+        void loginAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
@@ -57,10 +50,6 @@ const register = (): void => {
   align-items: center;
   padding: 187px 0 243px;
   gap: 75px;
-
-  &__backlink {
-    display: none;
-  }
 
   &__wrapper {
     display: grid;
@@ -109,51 +98,6 @@ const register = (): void => {
 
     button {
       display: none;
-    }
-
-    &__wrap-backlink {
-      background-color: white;
-      width: 100%;
-      padding: 2em;
-      text-align: left;
-      margin: -2em auto;
-    }
-
-    &__backlink {
-      color: var(--p-primary-contrast-color);
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 24px; /* 150% */
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      display: block;
-      cursor: pointer;
-      text-decoration: none;
-      position: relative;
-      border-bottom: 2px solid transparent;
-      width: fit-content;
-
-      &::before {
-        content: '';
-        position: absolute;
-        transform: translateY(-50%) rotate(180deg);
-        left: -20px;
-        top: 50%;
-        width: 16px;
-        height: 16px;
-        background-image: url('/static/icons/Arrow--right.svg');
-        background-size: cover;
-      }
-
-      &:hover {
-        border-bottom: 2px solid var(--p-primary-color);
-        color: var(--p-primary-color);
-
-        &::before {
-          filter: invert(44%) sepia(83%) saturate(1846%) hue-rotate(351deg) brightness(101%) contrast(101%);
-        }
-      }
     }
 
     &__wrapper {
