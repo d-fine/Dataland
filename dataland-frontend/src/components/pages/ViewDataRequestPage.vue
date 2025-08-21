@@ -28,7 +28,7 @@
         <div class="text-block" style="margin: 15px; white-space: pre">
           You have successfully withdrawn your request.
         </div>
-          <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
+        <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
       </PrimeDialog>
       <PrimeDialog
         :dismissableMask="true"
@@ -108,7 +108,7 @@
         <div class="text-block" style="margin: 15px; white-space: pre">
           You have successfully reopened your data request.
         </div>
-          <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
+        <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
       </PrimeDialog>
 
       <div class="py-4">
