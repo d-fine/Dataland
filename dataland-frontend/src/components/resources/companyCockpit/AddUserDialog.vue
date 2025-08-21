@@ -2,7 +2,7 @@
   <div class="add-member-dialog">
     <div class="content-wrapper">
       <div class="search-section">
-        <label>Search for any Dataland user to add</label>
+        <b>Search for any Dataland user to add</b>
         <div class="search-container">
           <InputText
             v-model="searchQuery"
@@ -57,40 +57,18 @@ import { ref, computed, inject } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type Keycloak from 'keycloak-js';
 
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject('dialogRef');
+
 
 const searchQuery = ref('');
 const isSearching = ref(false);
-const selectedUsers = ref([
-  {
-    id: 1,
-    name: 'Stella Stevens',
-    email: 'stella.stevens@deutsche-bank.de',
-    initials: 'SS',
-  },
-]);
-
-const mockUsers = ref([
-  {
-    id: 2,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    initials: 'JD',
-  },
-  {
-    id: 3,
-    name: 'Jane Smith',
-    email: 'jane.smith@company.com',
-    initials: 'JS',
-  },
-  {
-    id: 4,
-    name: 'Mike Johnson',
-    email: 'mike.johnson@corp.com',
-    initials: 'MJ',
-  },
-]);
+const selectedUsers = ref([]);
 
 const canSelect = computed(() => {
   return searchQuery.value.trim().length > 0 && !isSearching.value;
@@ -125,18 +103,34 @@ const handleSearchInput = () => {
   console.log('Searching for:', searchQuery.value);
 };
 
+/** * Placeholder function to simulate fetching users.
+ * In a real application, this would call an API to get user data.
+ */
+function getUsers() {
+
+  try {
+    // Backend-Aufruf für E-Mail-Validation
+    const response = await apiClientProvider.apiClients.UserValidationController.postEmailAddressValidation({
+      email: searchTerm.toLowerCase()
+    });
+
+
+
+
+}
+
 const selectUser = async () => {
   if (!canSelect.value) return;
 
   isSearching.value = true;
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const response = await
 
     const searchTerm = searchQuery.value.trim().toLowerCase();
-    let foundUser = mockUsers.value.find(
-      (user) => user.name.toLowerCase().includes(searchTerm) || user.email.toLowerCase().includes(searchTerm)
-    );
+
 
     if (!foundUser) {
       foundUser = {
@@ -144,7 +138,6 @@ const selectUser = async () => {
         name: searchQuery.value.trim(),
         email: `${searchQuery.value.toLowerCase().replace(/\s+/g, '.')}@example.com`,
         initials: generateInitials(searchQuery.value.trim()),
-        color: generateUserColor(),
       };
     }
 
