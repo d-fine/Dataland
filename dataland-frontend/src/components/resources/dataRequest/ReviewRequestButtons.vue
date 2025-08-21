@@ -29,9 +29,8 @@
         @click="updateRequest()"
         style="width: 100%; justify-content: center"
         data-test="updateRequestButton"
-      >
-        <span class="d-letters pl-2" style="text-align: center"> UPDATE REQUEST </span>
-      </PrimeButton>
+        label="UPDATE REQUEST"
+      />
     </div>
     <div v-if="activeTab === 'message history'" data-test="viewHistoryModal">
       <div v-for="message in messageHistory" :key="message.creationTimestamp">

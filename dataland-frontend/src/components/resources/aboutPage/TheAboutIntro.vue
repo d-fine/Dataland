@@ -51,10 +51,6 @@ const register = (): void => {
   padding: 187px 0 243px;
   gap: 75px;
 
-  &__backlink {
-    display: none;
-  }
-
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -102,51 +98,6 @@ const register = (): void => {
 
     button {
       display: none;
-    }
-
-    &__wrap-backlink {
-      background-color: white;
-      width: 100%;
-      padding: 2em;
-      text-align: left;
-      margin: -2em auto;
-    }
-
-    &__backlink {
-      color: var(--p-primary-contrast-color);
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 24px; /* 150% */
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      display: block;
-      cursor: pointer;
-      text-decoration: none;
-      position: relative;
-      border-bottom: 2px solid transparent;
-      width: fit-content;
-
-      &::before {
-        content: '';
-        position: absolute;
-        transform: translateY(-50%) rotate(180deg);
-        left: -20px;
-        top: 50%;
-        width: 16px;
-        height: 16px;
-        background-image: url('/static/icons/Arrow--right.svg');
-        background-size: cover;
-      }
-
-      &:hover {
-        border-bottom: 2px solid var(--p-primary-color);
-        color: var(--p-primary-color);
-
-        &::before {
-          filter: invert(44%) sepia(83%) saturate(1846%) hue-rotate(351deg) brightness(101%) contrast(101%);
-        }
-      }
     }
 
     &__wrapper {
