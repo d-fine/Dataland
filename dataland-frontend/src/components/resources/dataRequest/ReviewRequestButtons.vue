@@ -288,9 +288,9 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .button-bar {
-  margin-left: var(--spacing-xs);
   display: flex;
-  gap: var(--spacing-xs);
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
 .no-line-height {
