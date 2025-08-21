@@ -114,9 +114,6 @@ class CompanyInformationParser {
     fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifRelationshipInformation> =
         readCsVDataFromBufferedReader(bufferedReader)
 
-    /*fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifCompanyInformation> =
-        readCsVDataFromBufferedReader(bufferedReader)*/
-
     /**
      * Transforms the streamed xml content into an GleifLEIData object
      * @param bufferedReader the input stream read from the xml file
