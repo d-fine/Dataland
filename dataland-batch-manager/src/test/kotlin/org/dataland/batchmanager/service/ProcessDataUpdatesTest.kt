@@ -60,26 +60,26 @@ class ProcessDataUpdatesTest {
     }
 
     private fun initProcessDataUpdates(
+        gleifGoldenCopyIngestorTest: GleifGoldenCopyIngestor = mockGleifGoldenCopyIngestorTest,
+        nothDataIngestorTest: NorthdataDataIngestor = mockNorthDataIngestorTest,
         flagFileGleif: String? = null,
         flagFileGleifUpdate: String? = null,
         flagFileNorthData: String? = null,
-        forceIngestGleif: Boolean = false,
-        forceIngestNorth: Boolean = false,
     ) {
         processDataUpdates =
             ProcessDataUpdates(
                 mockGleifApiAccessor,
-                mockGleifGoldenCopyIngestorTest,
+                gleifGoldenCopyIngestorTest,
                 mockNorthDataAccessor,
-                mockNorthDataIngestorTest,
+                nothDataIngestorTest,
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockCommunityActuatorApi,
-                forceIngestGleif,
-                forceIngestNorth,
-                flagFileGleif,
-                flagFileGleifUpdate,
-                flagFileNorthData,
+                allGleifCompaniesForceIngest = false,
+                allNorthDataCompaniesForceIngest = false,
+                allGleifCompaniesIngestFlagFilePath = flagFileGleif,
+                allGleifCompaniesIngestManualUpdateFlagFilePath = flagFileGleifUpdate,
+                allNorthDataCompaniesIngestFlagFilePath = flagFileNorthData,
             )
     }
 
@@ -119,21 +119,13 @@ class ProcessDataUpdatesTest {
                 ).processIsinMappingFile()
             companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCompanyInformationParser)
 
-            processDataUpdates =
-                ProcessDataUpdates(
-                    mockGleifApiAccessor,
-                    ingestorSpy,
-                    mockNorthDataAccessor,
-                    companyIngestorNorthData,
-                    mockBackendActuatorApi,
-                    mockRequestPriorityUpdater,
-                    mockCommunityActuatorApi,
-                    allGleifCompaniesForceIngest = false,
-                    allNorthDataCompaniesForceIngest = false,
-                    flagFileGleif.absolutePath,
-                    flagFileGleifUpdate.absolutePath,
-                    flagFileNorthdata.absolutePath,
-                )
+            initProcessDataUpdates(
+                gleifGoldenCopyIngestorTest = ingestorSpy,
+                nothDataIngestorTest = companyIngestorNorthData,
+                flagFileGleif = flagFileGleif.absolutePath,
+                flagFileGleifUpdate = flagFileGleifUpdate.absolutePath,
+                flagFileNorthData = flagFileNorthdata.absolutePath,
+            )
 
             val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
 
@@ -173,7 +165,7 @@ class ProcessDataUpdatesTest {
         // Set up logger and attach test appender
         val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
         val appender = TestLogAppender()
-        initProcessDataUpdates(forceIngestNorth = false, flagFileNorthData = null)
+        initProcessDataUpdates()
         appender.start()
         logger.addAppender(appender)
 
