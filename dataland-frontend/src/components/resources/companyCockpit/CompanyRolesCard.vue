@@ -66,7 +66,7 @@
         icon="pi pi-plus"
         variant="text"
         :label="`Add ${group?.title}`"
-        @click="showAddUserDialog = true"
+        @click="openAddUserDialog()"
         :pt="{
           root: {
             style: 'display:flex; margin: var(--spacing-xs) auto 0;',
@@ -75,9 +75,6 @@
       />
     </template>
   </Card>
-
-  <Dialog v-model:visible="showAddUserDialog" :header="`Add ${group?.title}`" :modal="true" :closable="true" />
-
   <Dialog v-model:visible="showChangeRoleDialog" header="Change User’s Role" :modal="true" :closable="true">
     <span>Change role for: {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}, {{ selectedUser?.email }}</span>
 
@@ -139,6 +136,9 @@ import { CompanyRole } from '@clients/communitymanager';
 
 import Card from 'primevue/card';
 import Message from 'primevue/message';
+import DownloadData from '@/components/general/DownloadData.vue';
+import { useDialog } from 'primevue/usedialog';
+import AddUserDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
 type Group = {
   role: CompanyRole;
@@ -147,6 +147,8 @@ type Group = {
   info: string;
   description: string;
 };
+
+const dialog = useDialog()
 
 const props = defineProps<{
   companyId: string;
@@ -310,4 +312,29 @@ async function getCompanyUserInformation(): Promise<void> {
 onMounted(async () => {
   await getCompanyUserInformation();
 });
+
+
+/**
+ * Opens the PortfolioDownload with the current portfolio's data for downloading.
+ * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ */
+function openAddUserDialog(): void {
+  dialog.open(AddUserDialog, {
+    props: {
+      modal: true,
+      header: 'Add Members',
+      pt: {
+        title: {
+          style: {
+            maxWidth: '15em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
+      },
+    },
+  });
+}
+
 </script>
