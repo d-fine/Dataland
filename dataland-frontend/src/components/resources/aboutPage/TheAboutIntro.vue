@@ -15,9 +15,9 @@
 import { computed, inject } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils.ts';
 
 const props = defineProps<{ sections?: Section[] }>();
 
@@ -26,14 +26,17 @@ const aboutIntroSection = computed(() => {
 });
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated already) and to the portfolio page else.
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
         void registerAndRedirectToSearchPage(keycloak);
+      } else {
+        void loginAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
