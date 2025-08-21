@@ -1,7 +1,6 @@
 <template>
   <div class="add-member-dialog">
     <div class="content-wrapper">
-      <!-- Search Section -->
       <div class="search-section">
         <label>Search for any Dataland user to add</label>
         <div class="search-container">
@@ -35,12 +34,7 @@
               <b>{{ user.name }}</b>
               <div class="email-row">
                 <span>{{ user.email }}</span>
-                <Button
-                  icon="pi pi-times"
-                  variant="text"
-                  @click="removeUser(user.id)"
-                  rounded
-                />
+                <Button icon="pi pi-times" variant="text" @click="removeUser(user.id)" rounded />
               </div>
             </div>
           </div>
@@ -51,8 +45,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Dialog Actions -->
     <div class="dialog-actions">
       <Button label="CANCEL" class="p-button-text cancel-button" @click="handleCancel" />
       <Button label="ADD MEMBER" class="add-button" :disabled="!canAddMembers" @click="handleAddMembers" />
@@ -66,10 +58,8 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
-// Inject dialog reference
 const dialogRef = inject('dialogRef');
 
-// Reactive state
 const searchQuery = ref('');
 const isSearching = ref(false);
 const selectedUsers = ref([
@@ -81,7 +71,6 @@ const selectedUsers = ref([
   },
 ]);
 
-// Mock data for demonstration
 const mockUsers = ref([
   {
     id: 2,
@@ -103,7 +92,6 @@ const mockUsers = ref([
   },
 ]);
 
-// Computed properties
 const canSelect = computed(() => {
   return searchQuery.value.trim().length > 0 && !isSearching.value;
 });
@@ -133,7 +121,6 @@ const isUserAlreadySelected = (email) => {
   return selectedUsers.value.some((user) => user.email.toLowerCase() === email.toLowerCase());
 };
 
-// Search functionality
 const handleSearchInput = () => {
   console.log('Searching for:', searchQuery.value);
 };
@@ -175,12 +162,10 @@ const selectUser = async () => {
   }
 };
 
-// User management
 const removeUser = (userId) => {
   selectedUsers.value = selectedUsers.value.filter((user) => user.id !== userId);
 };
 
-// Dialog actions
 const handleAddMembers = () => {
   dialogRef.value.close({
     selectedUsers: selectedUsers.value,
@@ -227,7 +212,7 @@ const handleCancel = () => {
 
 .content-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* links Suche, rechts User */
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
@@ -240,13 +225,13 @@ const handleCancel = () => {
 .search-container {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Abstand zwischen Input und Button */
+  gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
 .search-input {
-  flex: 1; /* Input nimmt die volle Breite */
-  height: 40px; /* gleiche Höhe wie Button */
+  flex: 1;
+  height: 40px;
 }
 
 .select-button {

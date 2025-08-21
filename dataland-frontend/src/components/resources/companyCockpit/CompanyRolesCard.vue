@@ -148,7 +148,7 @@ type Group = {
   description: string;
 };
 
-const dialog = useDialog()
+const dialog = useDialog();
 
 const props = defineProps<{
   companyId: string;
@@ -313,7 +313,6 @@ onMounted(async () => {
   await getCompanyUserInformation();
 });
 
-
 /**
  * Opens the PortfolioDownload with the current portfolio's data for downloading.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
@@ -336,5 +335,4 @@ function openAddUserDialog(): void {
     },
   });
 }
-
 </script>
