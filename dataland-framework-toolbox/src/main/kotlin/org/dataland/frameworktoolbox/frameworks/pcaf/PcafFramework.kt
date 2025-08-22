@@ -49,6 +49,18 @@ class PcafFramework :
                     }
                 }
             }
+            edit<ComponentGroup>("company") {
+                edit<SingleSelectComponent>("mainPcafSector") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "customEnumPcafMainSector",
+                            dataPointTypeIdOverwrite = "customEnumPcafMainSector",
+                        )
+                    }
+                }
+            }
         }
     }
 
