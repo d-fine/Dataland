@@ -29,5 +29,5 @@ data class PcafCompanyvalueUnlistedCompany(
     } """,
     )
     @field:Valid()
-    val totalEquityAndDebt: ExtendedDataPoint<BigDecimal?>? = null,
+    val totalEquityAndDebtInEUR: ExtendedDataPoint<BigDecimal?>? = null,
 )

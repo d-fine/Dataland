@@ -29,7 +29,7 @@ data class PcafCompanyvalueListedCompany(
     } """,
     )
     @field:Valid()
-    val marketCapitalization: ExtendedDataPoint<BigDecimal?>? = null,
+    val marketCapitalizationInEUR: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -47,7 +47,7 @@ data class PcafCompanyvalueListedCompany(
     } """,
     )
     @field:Valid()
-    val bookValueOfDebt: ExtendedDataPoint<BigDecimal?>? = null,
+    val bookValueOfDebtInEUR: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -65,5 +65,5 @@ data class PcafCompanyvalueListedCompany(
     } """,
     )
     @field:Valid()
-    val minoritiesInterest: ExtendedDataPoint<BigDecimal?>? = null,
+    val minoritiesInterestInEUR: ExtendedDataPoint<BigDecimal?>? = null,
 )

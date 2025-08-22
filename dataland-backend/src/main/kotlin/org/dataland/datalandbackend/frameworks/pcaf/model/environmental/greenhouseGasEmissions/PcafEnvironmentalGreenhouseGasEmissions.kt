@@ -29,7 +29,7 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     } """,
     )
     @field:Valid()
-    val scope1GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -47,7 +47,7 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     } """,
     )
     @field:Valid()
-    val scope2GhgEmissionsLocationBased: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -65,7 +65,7 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     } """,
     )
     @field:Valid()
-    val scope2GhgEmissionsMarketBased: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -83,5 +83,5 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     } """,
     )
     @field:Valid()
-    val scope3GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 )

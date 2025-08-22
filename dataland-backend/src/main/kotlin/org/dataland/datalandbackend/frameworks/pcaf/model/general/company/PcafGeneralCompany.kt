@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.frameworks.pcaf.model.general.company
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyCompanyExchangeStatusOptions
 import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyMainPcafSectorOptions
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the Company section
@@ -31,9 +31,9 @@ data class PcafGeneralCompany(
     val mainPcafSector: ExtendedDataPoint<PcafGeneralCompanyMainPcafSectorOptions?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the company listed on an exchange?""",
+        description = """"Listed" if the company is listed on an exchange - otherwise "Unlisted"""",
         example = """{
-      "value" :  "Yes" , 
+      "value" :  "Option 1" , 
       "quality" : "Reported",
       "comment" : "The value is reported by the company."
       "dataSource" : {
@@ -45,5 +45,5 @@ data class PcafGeneralCompany(
     } """,
     )
     @field:Valid()
-    val companyExchangeStatus: ExtendedDataPoint<YesNo?>? = null,
+    val companyExchangeStatus: ExtendedDataPoint<PcafGeneralCompanyCompanyExchangeStatusOptions?>? = null,
 )

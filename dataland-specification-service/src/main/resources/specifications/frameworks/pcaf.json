@@ -1,0 +1,36 @@
+{
+  "id" : "pcaf",
+  "name" : "PCAF",
+  "businessDefinition" : "Partnership for Carbon Accounting Financials",
+  "referencedReportJsonPath" : null,
+  "schema" : {
+    "general" : {
+      "general" : {
+        "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "plainDateFiscalYearEnd"
+      },
+      "company" : {
+        "mainPcafSector" : "customEnumPcafMainSector",
+        "companyExchangeStatus" : "customEnumCompanyExchangeStatus"
+      }
+    },
+    "companyValue" : {
+      "listedCompany" : {
+        "marketCapitalizationInEUR" : "extendedDecimalMarketCapitalizationInEUR",
+        "bookValueOfDebtInEUR" : "extendedDecimalBookValueOfDebtInEUR",
+        "minoritiesInterestInEUR" : "extendedDecimalMinoritiesInterestInEUR"
+      },
+      "unlistedCompany" : {
+        "totalEquityAndDebtInEUR" : "extendedDecimalTotalEquityAndDebtInEUR"
+      }
+    },
+    "environmental" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "extendedDecimalScope1GhgEmissionsInTonnes",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes",
+        "scope3GhgEmissionsInTonnes" : "extendedDecimalScope3GhgEmissionsInTonnes"
+      }
+    }
+  }
+}
