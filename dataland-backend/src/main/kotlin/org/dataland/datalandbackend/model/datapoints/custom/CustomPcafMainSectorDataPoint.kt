@@ -2,9 +2,9 @@ package org.dataland.datalandbackend.model.datapoints.custom
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyMainPcafSectorOptions
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackend.model.enums.pcaf.MainPcafSector
 
 /**
  * --- API model ---
@@ -12,8 +12,8 @@ import org.dataland.datalandbackend.model.enums.pcaf.MainPcafSector
  */
 data class CustomPcafMainSectorDataPoint(
     @field:JsonProperty(required = true)
-    override val value: MainPcafSector,
+    override val value: PcafGeneralCompanyMainPcafSectorOptions,
     @field:Valid()
     override val dataSource: ExtendedDocumentReference? = null,
     val provider: String? = null,
-) : BaseDataPoint<MainPcafSector>
+) : BaseDataPoint<PcafGeneralCompanyMainPcafSectorOptions>
