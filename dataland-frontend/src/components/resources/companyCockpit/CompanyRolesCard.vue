@@ -15,7 +15,7 @@
         icon="pi pi-plus"
         variant="text"
         :label="`Add ${group?.title}`"
-        @click="showAddUserDialog = true"
+        @click="openAddUserDialog()"
         :pt="{
           root: {
             style: 'float:right;',
@@ -136,7 +136,6 @@ import { CompanyRole } from '@clients/communitymanager';
 
 import Card from 'primevue/card';
 import Message from 'primevue/message';
-import DownloadData from '@/components/general/DownloadData.vue';
 import { useDialog } from 'primevue/usedialog';
 import AddUserDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
@@ -333,6 +332,11 @@ function openAddUserDialog(): void {
         },
       },
     },
+    data: {
+      companyId: props.companyId,
+      role: props.role,
+      existingUsers: rowsForRole.value
+    }
   });
 }
 </script>
