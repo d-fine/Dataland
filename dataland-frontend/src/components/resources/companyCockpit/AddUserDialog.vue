@@ -14,7 +14,6 @@
             label="SELECT"
             class="select-button"
             @click="selectUser"
-            :loading="isSearching"
           />
         </div>
         <div v-if="errorMessage" class="error-message">
@@ -41,7 +40,7 @@
                 <Button
                   icon="pi pi-times"
                   variant="text"
-                  @click="removeUser(user.ident)"
+                  @click="handleRemoveUser(user.ident)"
                   rounded
                 />
               </div>
@@ -67,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, type Ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
@@ -75,18 +74,20 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { type CompanyRole } from '@clients/communitymanager';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const dialogRef = inject('dialogRef');
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const companyId = computed(() => dialogRef.value.data.companyId as string);
-const role = computed(() => dialogRef.value.data.role as CompanyRole);
-const existingUsers: User[] = dialogRef.value.data.existingUsers || [];
+const companyId = computed(() => dialogRef?.value.data.companyId as string);
+const role = computed(() => dialogRef?.value.data.role as CompanyRole);
+const existingUsers: User[] = dialogRef?.value.data.existingUsers || [];
+const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
 
 interface User {
   email: string;
-  ident: number;
+  ident: string;
   firstName?: string;
   lastName?: string;
   name: string;
@@ -123,10 +124,6 @@ const isUserAlreadySelected = (email: string) =>
   selectedUsers.value.some((user) => user.email.toLowerCase() === email.toLowerCase());
 
 const validateAndAddUser = async (email: string) => {
-  if (!apiClientProvider) {
-    errorMessage.value = 'API client not initialized';
-    return;
-  }
   if (isUserAlreadySelected(email)) {
     errorMessage.value = 'User is already selected';
     return;
@@ -159,6 +156,10 @@ const handleSearchInput = () => {
   if (errorMessage.value) errorMessage.value = '';
 };
 
+/**
+ * Handles the selection of a user based on the search query.
+ * It validates the email and adds the user to the selected users list.
+ */
 async function selectUser() {
   const user = await validateAndAddUser(searchQuery.value.trim());
   if (user) {
@@ -168,23 +169,41 @@ async function selectUser() {
   }
 }
 
-const removeUser = (userId: number) => {
-  selectedUsers.value = selectedUsers.value.filter((user) => user.id !== userId);
-};
+/**
+ * Handles the removal of a user from the selected users list.
+ * The actual API call will happen when "SAVE CHANGES" is clicked.
+ * @param userId - The user ID to remove from the selection
+ */
+function handleRemoveUser(userId: string): void {
+  selectedUsers.value = selectedUsers.value.filter(user => user.ident !== userId);
+}
 
+/**
+ * Handles the addition of selected users to the company role.
+ * It iterates over the selected users and assigns the specified role to each user.
+ */
 async function handleAddMembers(): Promise<void> {
   try {
-    const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
-    for (const user of selectedUsers.value) {
+    const originalUserIds = new Set(existingUsers.map(user => user.ident));
+    const currentUserIds = new Set(selectedUsers.value.map(user => user.ident));
+    const usersToAdd = selectedUsers.value.filter(user => !originalUserIds.has(user.ident));
+    const usersToRemove = existingUsers.filter(user => !currentUserIds.has(user.ident));
+
+    for (const user of usersToAdd) {
       await companyRolesControllerApi.assignCompanyRole(role.value, companyId.value, user.ident.toString());
     }
-    dialogRef.value.close({ selectedUsers: selectedUsers.value });
+
+    for (const user of usersToRemove) {
+      await companyRolesControllerApi.removeCompanyRole(role.value, companyId.value, user.ident.toString());
+    }
+
+    dialogRef?.value.close({ selectedUsers: selectedUsers.value });
   } catch {
-    errorMessage.value = 'Failed to add users. Please try again.';
+    errorMessage.value = 'Failed to save changes. Please try again.';
   }
 }
 
-const handleCancel = () => dialogRef.value.close();
+const handleCancel = () => dialogRef?.value.close();
 
 </script>
 
