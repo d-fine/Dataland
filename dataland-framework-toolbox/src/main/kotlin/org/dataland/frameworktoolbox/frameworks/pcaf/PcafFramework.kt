@@ -2,12 +2,14 @@ package org.dataland.frameworktoolbox.frameworks.pcaf
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.sfdr.SfdrComponentGenerationUtils
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
+import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -36,6 +38,8 @@ class PcafFramework :
         overwriteDataPointSpecificationForEnums(framework.root)
     }
 
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils = SfdrComponentGenerationUtils()
+
     private fun overwriteDataPointSpecificationForEnums(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("general") {
@@ -57,6 +61,16 @@ class PcafFramework :
                             "Enum",
                             "customEnumPcafMainSector",
                             dataPointTypeIdOverwrite = "customEnumPcafMainSector",
+                        )
+                    }
+                }
+                edit<SingleSelectComponent>("companyExchangeStatus") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "customEnumCompanyExchangeStatus",
+                            dataPointTypeIdOverwrite = "customEnumCompanyExchangeStatus",
                         )
                     }
                 }

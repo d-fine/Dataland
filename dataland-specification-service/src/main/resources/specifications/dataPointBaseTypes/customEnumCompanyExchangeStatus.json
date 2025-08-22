@@ -1,0 +1,30 @@
+{
+  "id" : "customEnumCompanyExchangeStatus",
+  "name" : "Company exchange status data point with an extended source",
+  "businessDefinition" : "Data point with an extended document reference as source storing the exchange status of the company.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.custom.CustomCompanyExchangeStatusDataPoint",
+  "schema" : {
+    "value" : "String",
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
+  "example" : {
+    "value" : "Unlisted",
+    "quality" : "Reported",
+    "comment" : "The value is reported by the company.",
+    "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
+      "publicationDate" : "2020-04-01"
+    }
+  }
+}
