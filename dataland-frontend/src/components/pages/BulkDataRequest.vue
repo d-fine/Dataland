@@ -42,10 +42,10 @@
                       <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
 
                       <PrimeButton
-                        type="button"
                         @click="goToMyRequests()"
+                        type="button"
                         label="TO MY DATA REQUESTS"
-                        class="uppercase p-button-outlined"
+                        variant="outlined"
                         data-test="go-to-my-requests-button"
                       />
                     </div>
@@ -165,12 +165,8 @@
                       </span>
                     </BasicFormSection>
                   </div>
-                  <div class="col-12 flex justify-content-end">
-                    <PrimeButton type="submit" label="Submit" class="align-self-end" name="submit_request_button">
-                      NEXT
-                    </PrimeButton>
-                  </div>
                 </div>
+                <PrimeButton class="submit-button" type="submit" label="SUBMIT" data-test="submit-request-button" />
               </div>
             </template>
           </div>
@@ -288,7 +284,7 @@ export default defineComponent({
       this.selectedReportingPeriodsError = !this.selectedReportingPeriods.length;
       this.selectedFrameworksError = !this.selectedFrameworks.length;
       this.identifierError = !this.identifiers.length;
-      return this.selectedReportingPeriodsError && this.selectedFrameworksError && this.identifierError;
+      return this.selectedReportingPeriodsError || this.selectedFrameworksError || this.identifierError;
     },
 
     /**
@@ -423,6 +419,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.submit-button {
+  display: block;
+  margin-left: auto;
+}
+
 .header {
   width: 100%;
   text-align: left;

@@ -37,27 +37,36 @@
           </div>
 
           <div class="button-container">
-            <QualityAssuranceButtons
+            <PrimeButton
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
-              :meta-info="singleDataMetaInfoToDisplay"
-              :company-name="fetchedCompanyInformation.companyName"
+              label="REJECT"
+              data-test="qaRejectButton"
+              icon="pi pi-times"
+              variant="outlined"
+              @click="setQaStatusTo('Rejected')"
             />
 
             <PrimeButton
-              aria-label="Download data"
+              v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
+              label="APPROVE"
+              data-test="qaApproveButton"
+              icon="pi pi-check"
+              @click="setQaStatusTo('Accepted')"
+            />
+
+            <PrimeButton
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
-              label="Download Data"
+              label="DOWNLOAD DATA"
               icon="pi pi-download"
             />
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
-              aria-label="Edit data"
               @click="editDataset"
               data-test="editDatasetButton"
-              label="Edit Data"
+              label="EDIT DATA"
               :icon="
                 availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
                   ? 'pi pi-chevron-down'
@@ -65,13 +74,13 @@
               "
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
-            <router-link
+            <PrimeButton
               v-if="hasUserUploaderRights"
-              :to="targetLinkForAddingNewDataset"
-              data-test="gotoNewDatasetButton"
-            >
-              <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="New Dataset" />
-            </router-link>
+              icon="pi pi-plus"
+              label="NEW DATASET"
+              data-test="goToNewDatasetButton"
+              @click="linkToNewDataset"
+            />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SimpleReportingPeriodSelectorDialog
@@ -101,7 +110,6 @@ import TheContent from '@/components/generics/TheContent.vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
@@ -115,7 +123,13 @@ import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum, ExportFileType } from '@clients/backend';
+import {
+  type CompanyInformation,
+  type DataMetaInformation,
+  type DataTypeEnum,
+  ExportFileType,
+  type QaStatus,
+} from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -128,6 +142,7 @@ import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
 import { useDialog } from 'primevue/usedialog';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import QaDatasetModal from '@/components/general/QaDatasetModal.vue';
 
 const props = defineProps<{
   companyID: string;
@@ -189,7 +204,6 @@ const isEditableByCurrentUser = computed(
       props.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
 );
 
-const targetLinkForAddingNewDataset = computed(() => `/companies/${props.companyID}/frameworks/upload`);
 const reportingPeriodsPerFramework = computed(() =>
   groupReportingPeriodsPerFrameworkForCompany(
     dataMetaInformation.value.map((meta) => ({
@@ -244,6 +258,38 @@ onMounted(async () => {
   }
   await setViewPageAttributesForUser();
 });
+
+/**
+ * Navigates to the new dataset creation page
+ */
+function linkToNewDataset(): void {
+  void router.push(`/companies/${props.companyID}/frameworks/upload`);
+}
+
+/**
+ * Sets dataset quality status to the given status
+ * @param qaStatus the QA status to be assigned
+ */
+function setQaStatusTo(qaStatus: QaStatus): void {
+  const { dataId, dataType, reportingPeriod } = props.singleDataMetaInfoToDisplay || {};
+  const message = `${qaStatus} ${dataType} data for ${fetchedCompanyInformation.value.companyName} for the reporting period ${reportingPeriod}.`;
+
+  dialog.open(QaDatasetModal, {
+    props: {
+      header: qaStatus,
+      modal: true,
+      dismissableMask: false,
+    },
+    data: {
+      dataId,
+      qaStatus,
+      message,
+    },
+    onClose: () => {
+      void router.push('/qualityassurance');
+    },
+  });
+}
 
 /**
  * Retrieves all data meta data available for current company
@@ -452,10 +498,6 @@ function downloadData(): void {
 .button-container {
   display: flex;
   gap: var(--spacing-sm);
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
 }
 
 .vertical-middle {

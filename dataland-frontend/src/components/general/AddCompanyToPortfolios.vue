@@ -27,7 +27,6 @@
     </Message>
 
     <PrimeButton
-      aria-label="Add Company"
       :disabled="selectedPortfolios.length === 0 || isLoading"
       :loading="isLoading"
       @click="handleCompanyAddition"

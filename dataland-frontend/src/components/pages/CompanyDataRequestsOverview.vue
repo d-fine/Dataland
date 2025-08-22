@@ -107,33 +107,28 @@
                     >
                       <div class="button-container">
                         <PrimeButton
-                          class="uppercase p-button p-button-sm"
+                          icon="pi pi-check"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                        >
-                          <i class="material-icons"> done </i>
-                          <span class="d-letters pl-2"> Grant </span>
-                        </PrimeButton>
+                          label="Grant"
+                        />
                         <PrimeButton
-                          class="uppercase p-button-outlined p-button-sm mr-3"
+                          icon="pi pi-times"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                        >
-                          <i class="material-icons"> clear </i>
-                          <span class="d-letters pl-2"> Decline </span>
-                        </PrimeButton>
+                          label="Decline"
+                        />
                       </div>
                     </div>
                     <div
                       v-if="slotProps.data.accessStatus == AccessStatus.Granted"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <div class="button-container">
+                      <div>
                         <PrimeButton
-                          class="uppercase p-button-outlined p-button-sm mr-3"
+                          class="button-container"
+                          icon="pi pi-ban"
                           @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                        >
-                          <i class="material-icons"> clear </i>
-                          <span class="d-letters pl-2"> Revoke </span>
-                        </PrimeButton>
+                          label="Revoke"
+                        />
                       </div>
                     </div>
                   </template>
@@ -425,10 +420,6 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
 }
 
 .text-primary {
