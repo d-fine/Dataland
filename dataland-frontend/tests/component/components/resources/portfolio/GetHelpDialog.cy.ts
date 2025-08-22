@@ -63,13 +63,16 @@ describe('Check the Get Help form', () => {
     cy.get('.p-message-error').should('contain.text', 'Request failed with status code 500');
   });
 
-  it('Should not close the modal after typing text in textare first', () => {
-    cy.get('#get-help-message').type('This is a test message.');
-    cy.get('.p-dialog').should('be.visible');
+  it('Should not throw console errors when typing text before selecting a topic', () => {
+    cy.window().then((win) => {
+      cy.stub(win.console, 'error').as('consoleError');
+    });
+    cy.get('#get-help-message').type('I need help with finding identifiers.');
+    cy.get('#get-help-message').should('have.value', 'I need help with finding identifiers.');
+    cy.get('@consoleError').should('not.have.been.called');
     cy.get('#get-help-topic').click();
-    cy.contains('Other topic').click();
-    cy.get('.send-button').click();
-    cy.wait('@sendSupportRequest');
-    cy.get('.p-message-success').should('contain.text', 'Thank you for contacting us. We have received your request.');
+    cy.contains('Find company identifiers').click();
+    cy.get('.send-button').should('not.be.disabled');
+    cy.get('@consoleError').should('not.have.been.called');
   });
 });
