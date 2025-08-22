@@ -28,9 +28,7 @@
         <div class="text-block" style="margin: 15px; white-space: pre">
           You have successfully withdrawn your request.
         </div>
-        <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="successModalIsVisible = false" class="p-button-outlined" />
-        </div>
+        <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
       </PrimeDialog>
       <PrimeDialog
         :dismissableMask="true"
@@ -110,9 +108,7 @@
         <div class="text-block" style="margin: 15px; white-space: pre">
           You have successfully reopened your data request.
         </div>
-        <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" class="p-button-outlined" />
-        </div>
+        <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
       </PrimeDialog>
 
       <div class="py-4">
@@ -244,15 +240,14 @@
                 <div class="card__separator" />
                 <div>
                   Once a data request is withdrawn, it will be removed from your data request list. The company owner
-                  will not be notified anymore.<br />
+                  will not be notified anymore. <br />
                   <br />
-                  <a
-                    class="link"
-                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
+                  <PrimeButton
+                    data-test="withdrawRequestButton"
+                    label="WITHDRAW REQUEST"
                     @click="withdrawRequest()"
-                  >
-                    Withdraw request</a
-                  >
+                    variant="link"
+                  />
                 </div>
               </div>
             </div>

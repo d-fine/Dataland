@@ -57,23 +57,18 @@
         </span>
       </h3>
     </transition>
-    <ButtonComponent
-      :label="quotesSection.text[0]"
-      buttonType="button-component quotes__button"
-      ariaLabel="Start your Dataland Journey"
-      @click="register"
-    />
+    <Button :label="quotesSection.text[0]" data-test="quotesButton" @click="register" rounded />
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, watch, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import type { Section } from '@/types/ContentTypes';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import SlideShow from '@/components/general/SlideShow.vue';
+import Button from 'primevue/button';
 
 interface YouTubeEvent {
   target?: {
@@ -207,19 +202,20 @@ onUnmounted(() => {
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated already) and to the portfolio page else.
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
         void registerAndRedirectToSearchPage(keycloak);
+      } else {
+        void loginAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
 };
 </script>
-
 <style lang="scss">
 .quotes {
   margin: 0 auto 120px;
@@ -368,24 +364,6 @@ const register = (): void => {
       }
     }
   }
-  &__button {
-    padding: 14px 32px;
-    border-radius: 32px;
-    background-color: var(--p-primary-color);
-    color: var(--default-neutral-white);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
-    border: 2px solid var(--p-primary-color);
-    cursor: pointer;
-    &:hover {
-      background-color: var(--default-neutral-white);
-      color: var(--p-highlight-color);
-    }
-  }
 }
 .disabled {
   opacity: 0.5;
@@ -408,11 +386,6 @@ const register = (): void => {
     }
     &__arrows {
       order: 1;
-    }
-    &__button {
-      display: none;
-      margin: 32px 16px 0;
-      order: 2;
     }
   }
 }

@@ -41,12 +41,16 @@
           </IconField>
         </template>
         <template #body="{ data }">
-          <router-link :to="getTableRowLinkTarget(data)" class="text-primary no-underline font-bold">
-            <div class="text-right">
-              <span>VIEW</span>
-              <span class="ml-3">></span>
-            </div>
-          </router-link>
+          <div class="text-right">
+            <PrimeButton
+              label="VIEW"
+              iconPos="right"
+              icon="pi pi-angle-right"
+              variant="link"
+              data-test="view-dataset-button"
+              @click="goToDataset(data)"
+            />
+          </div>
         </template>
       </Column>
     </DataTable>
@@ -76,6 +80,7 @@ import router from '@/router';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'DatasetOverviewTable',
@@ -83,6 +88,7 @@ export default defineComponent({
     this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
   },
   components: {
+    PrimeButton,
     IconField,
     InputIcon,
     DatalandTag,
@@ -122,6 +128,15 @@ export default defineComponent({
      */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
       return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
+    },
+    /**
+     * Navigates to the specified dataset's details page based on the provided dataset information.
+     *
+     * @param {DatasetTableInfo} datasetTableInfo - Object containing information about the dataset table to navigate to.
+     * @return {void} Does not return a value.
+     */
+    goToDataset(datasetTableInfo: DatasetTableInfo) {
+      void router.push(this.getTableRowLinkTarget(datasetTableInfo));
     },
 
     /**

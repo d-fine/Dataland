@@ -22,7 +22,6 @@
             icon="pi pi-plus"
             label="ADD TO PORTFOLIO"
             @click="openPortfolioModal"
-            aria-label="Add company to your portfolios"
             data-test="addCompanyToPortfoliosButton"
           />
           <PrimeButton
@@ -30,7 +29,6 @@
             icon="pi pi-file"
             label="REQUEST DATA"
             @click="handleSingleDataRequest"
-            aria-label="Request data for this company"
             data-test="singleDataRequestButton"
           />
         </div>

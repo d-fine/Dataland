@@ -262,8 +262,8 @@ describe('Component tests for the view data request page', function (): void {
         'Once a data request is withdrawn, it will be removed from your data request list.' +
           ' The company owner will not be notified anymore.'
       ).should('exist');
-      cy.contains('Withdraw Request').should('exist');
-      cy.contains('Withdraw request').click();
+      cy.contains('WITHDRAW REQUEST').should('exist');
+      cy.contains('WITHDRAW REQUEST').click();
     });
     cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
     cy.get('[data-test="successModal"]').should('not.exist');

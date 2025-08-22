@@ -30,9 +30,9 @@
       >Please choose a topic and enter a message to us.
     </Message>
     <PrimeButton
-      label="Send"
+      label="SEND"
       icon="pi pi-send"
-      class="send-button"
+      data-test="send-help-request-button"
       @click="sendEmail"
       :loading="isSendingMail"
       :disabled="!isValidForm || emailSendingSuccess || isSendingMail"
@@ -104,9 +104,5 @@ async function sendEmail(): Promise<void> {
 
 .header-styling {
   font-weight: var(--font-weight-bold);
-}
-
-.send-button {
-  align-self: end;
 }
 </style>
