@@ -6,13 +6,23 @@
       "sections": [
         {
           "title": "Welcome to Dataland",
-          "text": ["This is the main introduction of our homepage."],
-          "image": ["/static/logos/gfx_logo_dataland_orange_S.svg"]
+          "text": [
+            "This is the main introduction of our homepage."
+          ],
+          "image": [
+            "/static/logos/gfx_logo_dataland_orange_S.svg"
+          ]
         },
         {
           "title": "Intro",
-          "text": ["Liberate Data - ", "Empower Autonomy.  ", "The alternative to data monopolies."],
-          "image": ["/static/logos/gfx_logo_d_orange_S.svg"],
+          "text": [
+            "Liberate Data - ",
+            "Empower Autonomy.  ",
+            "The alternative to data monopolies."
+          ],
+          "image": [
+            "/static/logos/gfx_logo_d_orange_S.svg"
+          ],
           "cards": [
             {
               "icon": "/static/icons/Search.svg",
@@ -22,7 +32,9 @@
         },
         {
           "title": "Quotes",
-          "text": ["START YOUR DATALAND JOURNEY"],
+          "text": [
+            "START YOUR DATALAND JOURNEY"
+          ],
           "cards": [
             {
               "icon": "BzUkAtdcKvg",
@@ -100,7 +112,10 @@
         },
         {
           "title": "Brands",
-          "text": ["Already a trusted partner ", "for top companies"],
+          "text": [
+            "Already a trusted partner ",
+            "for top companies"
+          ],
           "image": [
             "/static/logos/img_Atlas_Metrics.png",
             "/static/logos/img_bantleon.png",
@@ -139,7 +154,10 @@
         },
         {
           "title": "Struggle",
-          "text": ["Dataland aims to fix", " four main data issues"],
+          "text": [
+            "Dataland aims to fix",
+            " four main data issues"
+          ],
           "cards": [
             {
               "icon": "/static/icons/Diagram.svg",
@@ -165,7 +183,9 @@
         },
         {
           "title": "How it works",
-          "text": ["How does Dataland work?"],
+          "text": [
+            "How does Dataland work?"
+          ],
           "cards": [
             {
               "title": "Search",
@@ -187,7 +207,11 @@
         },
         {
           "title": "Claim",
-          "text": ["In Dataland, ", "you", " have the power."]
+          "text": [
+            "In Dataland, ",
+            "you",
+            " have the power."
+          ]
         },
         {
           "title": "Join a campaign",
@@ -214,12 +238,18 @@
             {
               "title": "SFDR",
               "text": "SFDR helps investors to properly assess how sustainability risks are integrated in the investment decision process."
+            },
+            {
+              "title": "PCAF",
+              "text": "The PCAF standard provides guidance on how to classify, calculate, and report financed emissions."
             }
           ]
         },
         {
           "title": "Get in touch",
-          "text": ["Get in touch"],
+          "text": [
+            "Get in touch"
+          ],
           "cards": [
             {
               "icon": "Email",
@@ -261,7 +291,9 @@
         },
         {
           "title": "Our principles",
-          "text": ["Our principles"],
+          "text": [
+            "Our principles"
+          ],
           "cards": [
             {
               "title": "Integrity",
