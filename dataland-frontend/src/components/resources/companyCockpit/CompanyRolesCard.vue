@@ -304,6 +304,7 @@ async function confirmChangeRole(): Promise<void> {
     await api.assignCompanyRole(selectedRole.value, props.companyId, selectedUser.value.userId);
     showChangeRoleDialog.value = false;
     await getCompanyUserInformation();
+    emit('users-changed');
   } catch (err) {
     console.error('Failed to change role:', err);
   }
@@ -323,6 +324,8 @@ async function confirmRemoveUser(): Promise<void> {
     console.error('Failed to remove user:', err);
   }
 }
+
+const emit = defineEmits<{ (e: 'users-changed'): void }>();
 
 /**
  * Opens the Add User dialog for the current role and company.
@@ -347,6 +350,9 @@ function openAddUserDialog(): void {
       companyId: props.companyId,
       role: props.role,
       existingUsers: rowsForRole.value,
+    },
+    onClose: () => {
+      emit('users-changed'); // notify parent to refresh all cards
     },
   });
 }

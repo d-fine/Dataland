@@ -21,10 +21,11 @@
         <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
           <CompanyRolesCard
             v-for="role in roles"
-            :key="role"
+            :key="`${String(role)}-${refreshAllCards}`"
             :companyId="companyId"
             :role="role"
             :userRole="userRole"
+            @users-changed="handleUsersChanged"
           />
         </TabPanel>
       </TabPanels>
@@ -88,6 +89,16 @@ const roles = [
   CompanyRole.CompanyOwner,
   CompanyRole.DataUploader,
 ] as const;
+
+const refreshAllCards = ref(0);
+
+/**
+ * Handler for user changes in company roles.
+ * Triggers refresh of all role cards by incrementing the refresh counter.
+ */
+function handleUsersChanged(): void {
+  refreshAllCards.value++;
+}
 
 /**
  * Sets user rights and roles for the current company.
