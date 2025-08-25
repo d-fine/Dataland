@@ -19,7 +19,13 @@
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
         <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
-          <CompanyRolesCard v-for="role in roles" :key="role" :companyId="companyId" :role="role" />
+          <CompanyRolesCard
+            v-for="role in roles"
+            :key="role"
+            :companyId="companyId"
+            :role="role"
+            :userRole="userRole"
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -69,6 +75,7 @@ const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
+const userRole = ref<CompanyRole | undefined>(undefined);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
@@ -90,12 +97,11 @@ async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
 
   const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
-
+  const userRole = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
   isUserCompanyOwnerOrUploader.value =
-    roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+    userRole.includes(CompanyRole.CompanyOwner) || userRole.includes(CompanyRole.DataUploader);
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isUserCompanyMember.value = roles.length > 0;
+  isUserCompanyMember.value = userRole.length > 0;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }
@@ -115,7 +121,7 @@ watch(activeTab, (val) => {
 
 onMounted(async () => {
   await setUserRights();
-
+  console.debug('CompanyCockpitPage - userRole', userRole.value);
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';

@@ -1,11 +1,7 @@
 <template>
   <Card
     data-test="company-roles-card"
-    :pt="{
-      root: {
-        style: 'width: 70%; margin: 0 auto; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);',
-      },
-    }"
+    style="width: 70%; margin: 0 auto; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl)"
   >
     <template #title>
       <i :class="group?.icon" />
@@ -16,35 +12,28 @@
         variant="text"
         :label="`Add ${group?.title}`"
         @click="openAddUserDialog()"
-        :pt="{
-          root: {
-            style: 'float:right;',
-          },
-        }"
+        style="float: right"
       />
     </template>
 
     <template #subtitle>
-      <Message
-        severity="info"
-        closable
-        :pt="{
-          root: {
-            style: 'margin-top: var(--spacing-xs);',
-          },
-        }"
-      >
+      <Message severity="info" closable style="margin-top: var(--spacing-xs)">
         {{ group?.info }}
       </Message>
     </template>
 
     <template #content>
-      <DataTable v-if="roleHasUsers" :value="rowsForRole" tableStyle="min-width: 50rem;">
+      <DataTable
+        v-if="roleHasUsers"
+        :key="allowedToEditRoles ? 'edit-on' : 'edit-off'"
+        :value="rowsForRole"
+        tableStyle="min-width: 50rem;"
+      >
         <Column field="firstName" header="First Name" style="width: 20%" sortable />
         <Column field="lastName" header="Last Name" style="width: 20%" sortable />
-        <Column field="email" header="Email" style="width: 25%" />
+        <Column field="email" header="Email" :style="{ width: allowedToEditRoles ? '25%' : '30%' }" />
         <Column field="userId" header="User ID" style="width: 30%" />
-        <Column :exportable="false" header="" style="width: 5%; text-align: right">
+        <Column v-if="allowedToEditRoles" :exportable="false" header="" style="width: 5%; text-align: right">
           <template #body="slotProps">
             <Button
               icon="pi pi-ellipsis-v"
@@ -67,41 +56,42 @@
         variant="text"
         :label="`Add ${group?.title}`"
         @click="openAddUserDialog()"
-        :pt="{
-          root: {
-            style: 'display:flex; margin: var(--spacing-xs) auto 0;',
-          },
-        }"
+        style="display: flex; margin: var(--spacing-xs) auto 0"
       />
     </template>
   </Card>
-  <Dialog v-model:visible="showChangeRoleDialog" header="Change User’s Role" :modal="true" :closable="true">
-    <span>Change role for: {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}, {{ selectedUser?.email }}</span>
 
-    <!-- Role options -->
-    <div class="space-y-2">
-      <div
-        v-for="opt in groups"
-        :key="opt.role"
-        class="p-3 border rounded-md flex items-start justify-between gap-3"
-        :class="selectedRole === opt.role ? 'border-orange-400' : 'border-surface-300'"
-        @click="selectedRole = opt.role"
-        style="cursor: pointer"
-        data-test="change-role-option"
-      >
-        <div class="flex items-start gap-3">
-          <i :class="opt.icon" class="mt-1"></i>
+  <!-- Change Role Modal -->
+  <Dialog
+    v-model:visible="showChangeRoleDialog"
+    v-if="allowedToEditRoles"
+    header="Change User’s Role"
+    :modal="true"
+    :closable="true"
+  >
+    <span>
+      Change role for:
+      <span style="font-weight: var(--font-weight-medium)">
+        {{ roleTargetText }}
+      </span>
+    </span>
+    <Listbox
+      v-model="selectedRole"
+      :options="roleOptions"
+      optionLabel="title"
+      optionValue="role"
+      style="margin-top: var(--spacing-md)"
+    >
+      <template #option="{ option }">
+        <div style="display: flex; align-items: center; gap: 12px">
+          <i :class="option.icon" style="font-size: 1.25rem; line-height: 1"></i>
           <div>
-            <div class="font-medium">{{ opt.title }}</div>
-            <div class="text-sm opacity-80">{{ opt.description }}</div>
+            <div style="font-weight: var(--font-weight-medium)">{{ option.title }}</div>
+            <div style="font-size: var(--font-size-sm); opacity: 0.8">{{ option.description }}</div>
           </div>
         </div>
-
-        <RadioButton :inputId="`rb-${opt.role}`" name="role" :value="opt.role" v-model="selectedRole" />
-      </div>
-    </div>
-
-    <!-- Footer actions -->
+      </template>
+    </Listbox>
     <template #footer>
       <Button label="Back" variant="outlined" @click="showChangeRoleDialog = false" />
       <Button
@@ -111,6 +101,8 @@
       />
     </template>
   </Dialog>
+
+  <!-- Remove User Modal -->
   <Dialog
     v-model:visible="showRemoveUserDialog"
     :header="`Remove Company Role ${selectedUser?.firstName} ${selectedUser?.lastName}`"
@@ -120,13 +112,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed, onMounted, inject } from 'vue';
+import { defineProps, ref, computed, onMounted, inject, type Ref, unref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Menu from 'primevue/menu';
-import RadioButton from 'primevue/radiobutton';
+import Listbox from 'primevue/listbox';
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -138,6 +130,8 @@ import Card from 'primevue/card';
 import Message from 'primevue/message';
 import { useDialog } from 'primevue/usedialog';
 import AddUserDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
 type Group = {
   role: CompanyRole;
@@ -152,14 +146,19 @@ const dialog = useDialog();
 const props = defineProps<{
   companyId: string;
   role: CompanyRole;
+  userRole?: CompanyRole;
 }>();
 
 // Injected dependencies
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
+const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
+  'companyRoleAssignments',
+  ref([])
+);
+const allowedToEditRoles = ref(false);
 
-const showAddUserDialog = ref(false);
 const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
 
@@ -213,7 +212,21 @@ const groups = [
   },
 ] as const;
 
+const roleTargetText = computed(() => {
+  const u = selectedUser.value;
+  if (!u) return '';
+  const first = u.firstName?.trim();
+  const last = u.lastName?.trim();
+  if (first && last) return `${first} ${last}, ${u.email}`;
+  return u.email ?? '';
+});
+
+const currentUserIsOwner = ref(false);
 const group = computed<Group | undefined>(() => groups.find((g) => g.role === props.role));
+// Hide owner entirely (filter) — or keep all and use optionDisabled (see below)
+const roleOptions = computed(() =>
+  currentUserIsOwner.value ? groups : groups.filter((o) => o.role !== CompanyRole.CompanyOwner)
+);
 
 /**
  * No content
@@ -310,11 +323,16 @@ async function getCompanyUserInformation(): Promise<void> {
 
 onMounted(async () => {
   await getCompanyUserInformation();
+  const assignments = unref(companyRoleAssignmentsRef) ?? [];
+  allowedToEditRoles.value =
+    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)) ||
+    props.userRole.includes(CompanyRole.CompanyOwner) ||
+    props.userRole.includes(CompanyRole.MemberAdmin);
+  console.debug('Allowed to edit roles:', companyRoleAssignmentsRef.value, assignments, allowedToEditRoles.value);
 });
 
 /**
- * Opens the PortfolioDownload with the current portfolio's data for downloading.
- * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ * Opens the dialog to add a new user to the current company with the current role.
  */
 function openAddUserDialog(): void {
   dialog.open(AddUserDialog, {
@@ -335,8 +353,8 @@ function openAddUserDialog(): void {
     data: {
       companyId: props.companyId,
       role: props.role,
-      existingUsers: rowsForRole.value
-    }
+      existingUsers: rowsForRole.value,
+    },
   });
 }
 </script>
