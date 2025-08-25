@@ -11,7 +11,7 @@
         icon="pi pi-plus"
         variant="text"
         :label="`Add ${group?.title}`"
-        @click="openAddUserDialog()"
+        @click="openAddUserDialog"
         style="float: right"
       />
     </template>
@@ -31,7 +31,7 @@
       >
         <Column field="firstName" header="First Name" style="width: 20%" sortable />
         <Column field="lastName" header="Last Name" style="width: 20%" sortable />
-        <Column field="email" header="Email" :style="{ width: allowedToEditRoles ? '25%' : '30%' }" />
+        <Column field="email" header="Email" :style="{ width: emailColumnWidth }" />
         <Column field="userId" header="User ID" style="width: 30%" />
         <Column v-if="allowedToEditRoles" :exportable="false" header="" style="width: 5%; text-align: right">
           <template #body="slotProps">
@@ -55,7 +55,7 @@
         icon="pi pi-plus"
         variant="text"
         :label="`Add ${group?.title}`"
-        @click="openAddUserDialog()"
+        @click="openAddUserDialog"
         style="display: flex; margin: var(--spacing-xs) auto 0"
       />
     </template>
@@ -103,33 +103,36 @@
   </Dialog>
 
   <!-- Remove User Modal -->
-  <Dialog
-    v-model:visible="showRemoveUserDialog"
-    :header="`Remove Company Role ${selectedUser?.firstName} ${selectedUser?.lastName}`"
-    :modal="true"
-    :closable="true"
-  />
+  <Dialog v-model:visible="showRemoveUserDialog" :header="`Remove Company Role`" :modal="true" :closable="true">
+    <span>You're about to remove the user:</span><br />
+    <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
+    <template #footer>
+      <Button label="Back" variant="outlined" @click="showRemoveUserDialog = false" />
+      <Button label="Remove User" @click="confirmRemoveUser" />
+    </template>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed, onMounted, inject, type Ref, unref } from 'vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import Menu from 'primevue/menu';
-import Listbox from 'primevue/listbox';
+import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
 
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Dialog from 'primevue/dialog';
+import Listbox from 'primevue/listbox';
+import Menu from 'primevue/menu';
+import Message from 'primevue/message';
+import { useDialog } from 'primevue/usedialog';
+
 import type Keycloak from 'keycloak-js';
 import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { CompanyRole } from '@clients/communitymanager';
 
-import Card from 'primevue/card';
-import Message from 'primevue/message';
-import { useDialog } from 'primevue/usedialog';
 import AddUserDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
@@ -141,53 +144,38 @@ type Group = {
   description: string;
 };
 
-const dialog = useDialog();
+type TableRow = { userId: string; email: string; firstName: string; lastName: string };
+type RowMenuRef = InstanceType<typeof Menu> | null;
+type MenuItem = { label: string; command: () => void };
 
 const props = defineProps<{
   companyId: string;
   role: CompanyRole;
-  userRole?: CompanyRole;
+  userRole?: CompanyRole | null;
 }>();
 
-// Injected dependencies
+const dialog = useDialog();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
 const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
-const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
-  'companyRoleAssignments',
-  ref([])
-);
-const allowedToEditRoles = ref(false);
 
 const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
 
-const rowsForRole = computed(() =>
-  companyUserInformation.value
-    .filter((u) => u.companyId === props.companyId && u.companyRole === props.role)
-    .map((u) => ({
-      firstName: u.firstName ?? '',
-      lastName: u.lastName ?? '',
-      email: u.email,
-      userId: u.userId,
-    }))
-);
-
-const roleHasUsers = computed(() => rowsForRole.value.length > 0);
-
-type RowMenuRef = InstanceType<typeof Menu> | null;
-const rowMenus = ref<Record<string, RowMenuRef>>({});
-
-const selectedUser = ref<{ userId: string; email: string; firstName: string; lastName: string } | null>(null);
+const selectedUser = ref<TableRow | null>(null);
 const selectedRole = ref<CompanyRole | null>(null);
 
-const groups = [
+const rowMenus = ref<Record<string, RowMenuRef>>({});
+const isGlobalAdmin = ref(false);
+
+const groups: readonly Group[] = [
   {
     role: CompanyRole.MemberAdmin,
     title: 'Admins',
     icon: 'pi pi-shield',
     info: 'The User Admin has the rights to add or remove other user admins and members. Admins manage other users and can control who has access to what data or features within Dataland.',
-    description: 'NO TEXT YET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
+    description: 'Manage users and roles.',
   },
   {
     role: CompanyRole.Member,
@@ -212,55 +200,73 @@ const groups = [
   },
 ] as const;
 
+const group = computed(() => groups.find((g) => g.role === props.role));
+
+const rowsForRole = computed<TableRow[]>(() =>
+  companyUserInformation.value
+    .filter((u) => u.companyId === props.companyId && u.companyRole === props.role)
+    .map((u) => ({
+      firstName: u.firstName ?? '',
+      lastName: u.lastName ?? '',
+      email: u.email,
+      userId: u.userId,
+    }))
+);
+
+const roleHasUsers = computed(() => rowsForRole.value.length > 0);
+
+const viewerRole = computed<CompanyRole | null>(() => props.userRole ?? null);
+const currentUserIsOwner = computed(() => viewerRole.value === CompanyRole.CompanyOwner);
+
+const allowedToEditRoles = computed(
+  () =>
+    isGlobalAdmin.value || viewerRole.value === CompanyRole.CompanyOwner || viewerRole.value === CompanyRole.MemberAdmin
+);
+
+const roleOptions = computed(() =>
+  currentUserIsOwner.value ? groups : groups.filter((o) => o.role !== CompanyRole.CompanyOwner)
+);
+
+const emailColumnWidth = computed(() => (allowedToEditRoles.value ? '25%' : '30%'));
+
 const roleTargetText = computed(() => {
   const u = selectedUser.value;
   if (!u) return '';
   const first = u.firstName?.trim();
   const last = u.lastName?.trim();
-  if (first && last) return `${first} ${last}, ${u.email}`;
-  return u.email ?? '';
+  return first && last ? `${first} ${last}, ${u.email}` : (u.email ?? '');
 });
 
-const currentUserIsOwner = ref(false);
-const group = computed<Group | undefined>(() => groups.find((g) => g.role === props.role));
-// Hide owner entirely (filter) — or keep all and use optionDisabled (see below)
-const roleOptions = computed(() =>
-  currentUserIsOwner.value ? groups : groups.filter((o) => o.role !== CompanyRole.CompanyOwner)
-);
-
 /**
- * No content
- * @param id
- * @param el
+ * Sets the Menu ref for a specific row by user ID.
+ * @param id - The user ID.
+ * @param el - The Menu ref instance.
  */
 function setRowMenuRef(id: string, el: RowMenuRef): void {
   if (el) rowMenus.value[id] = el;
 }
 
 /**
- * No content
- * @param event
- * @param id
+ * Toggles the row menu for a specific user.
+ * @param event - The mouse event triggering the menu.
+ * @param id - The user ID.
  */
 function toggleRowMenu(event: MouseEvent, id: string): void {
   rowMenus.value[id]?.toggle(event);
 }
 
 /**
- * No content
- * @param row
+ * Returns the menu items for a given table row.
+ * @param row - The table row representing a user.
+ * @returns An array of menu items.
  */
-function menuItemsFor(row: {
-  userId: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-}): { label: string; command: () => void }[] {
+function menuItemsFor(row: TableRow): MenuItem[] {
   return [
     {
       label: 'Change User’s Role',
       command: (): void => {
         selectedUser.value = row;
+        selectedRole.value = props.role; // preselect current role
         showChangeRoleDialog.value = true;
       },
     },
@@ -275,64 +281,51 @@ function menuItemsFor(row: {
 }
 
 /**
- * No content
+ * Fetches the company user information for the current role and company.
+ */
+async function getCompanyUserInformation(): Promise<void> {
+  if (!props.companyId) return;
+  try {
+    const api = apiClientProvider.apiClients.companyRolesController;
+    const res = await api.getExtendedCompanyRoleAssignments(props.role, props.companyId, undefined);
+    companyUserInformation.value = res.data;
+  } catch (error) {
+    console.error('Failed to load company users:', error);
+  }
+}
+
+/**
+ * Confirms and processes the role change for the selected user.
  */
 async function confirmChangeRole(): Promise<void> {
   if (!selectedUser.value || selectedRole.value == null) return;
   try {
-    // TODO: replace with your real API call
-    // Example shape (adjust to your SDK):
-    // await apiClientProvider.apiClients.companyRolesController.changeCompanyRole({
-    //   companyId: props.companyId,
-    //   userId: selectedUser.value.userId,
-    //   newRole: selectedRole.value,
-    // });
-
-    // For now, just log and pretend success:
-    console.log('Change role', {
-      companyId: props.companyId,
-      userId: selectedUser.value.userId,
-      newRole: selectedRole.value,
-    });
-
+    const api = apiClientProvider.apiClients.companyRolesController;
+    await api.assignCompanyRole(selectedRole.value, props.companyId, selectedUser.value.userId);
     showChangeRoleDialog.value = false;
-    await getCompanyUserInformation(); // refresh table so the user moves to the other role group
+    await getCompanyUserInformation();
   } catch (err) {
     console.error('Failed to change role:', err);
   }
 }
 
 /**
- * Uses the dataland API to retrieve information about the company users identified by the local
- * companyId object.
+ * Confirms and processes the removal of the selected user from the role.
  */
-async function getCompanyUserInformation(): Promise<void> {
-  if (!props.companyId) return;
+async function confirmRemoveUser(): Promise<void> {
+  if (!selectedUser.value) return;
   try {
-    const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
-    const data = await companyRolesControllerApi.getExtendedCompanyRoleAssignments(
-      props.role,
-      props.companyId,
-      undefined
-    );
-    companyUserInformation.value = data.data;
-  } catch (error) {
-    console.error('Failed to load company users:', error);
+    const api = apiClientProvider.apiClients.companyRolesController;
+    await api.removeCompanyRole(props.role, props.companyId, selectedUser.value.userId);
+    showRemoveUserDialog.value = false;
+    await getCompanyUserInformation();
+  } catch (err) {
+    console.error('Failed to remove user:', err);
   }
 }
 
-onMounted(async () => {
-  await getCompanyUserInformation();
-  const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  allowedToEditRoles.value =
-    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)) ||
-    props.userRole.includes(CompanyRole.CompanyOwner) ||
-    props.userRole.includes(CompanyRole.MemberAdmin);
-  console.debug('Allowed to edit roles:', companyRoleAssignmentsRef.value, assignments, allowedToEditRoles.value);
-});
-
 /**
- * Opens the dialog to add a new user to the current company with the current role.
+ * Opens the Add User dialog for the current role and company.
  */
 function openAddUserDialog(): void {
   dialog.open(AddUserDialog, {
@@ -357,4 +350,13 @@ function openAddUserDialog(): void {
     },
   });
 }
+
+watch([(): string => props.companyId, (): CompanyRole => props.role], async function () {
+  await getCompanyUserInformation();
+});
+
+onMounted(async () => {
+  isGlobalAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  await getCompanyUserInformation();
+});
 </script>
