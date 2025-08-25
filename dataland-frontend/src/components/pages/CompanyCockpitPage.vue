@@ -25,6 +25,7 @@
             :companyId="companyId"
             :role="role"
             :companyRoleAssignments="companyRoleAssignments"
+            :userRole="userRole"
             @refresh-users="loadUsersForRole"
           />
         </TabPanel>
@@ -78,6 +79,7 @@ const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
+const userRole = ref<CompanyRole | undefined>(undefined);
 const companyRoleAssignments = ref<CompanyRoleAssignmentExtended[]>([]);
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -101,13 +103,13 @@ async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
 
   const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
   companyRoleAssignments.value = assignments.filter(assignment => assignment.companyId === props.companyId);
 
+  const userRole = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
   isUserCompanyOwnerOrUploader.value =
-    roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+    userRole.includes(CompanyRole.CompanyOwner) || userRole.includes(CompanyRole.DataUploader);
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isUserCompanyMember.value = roles.length > 0;
+  isUserCompanyMember.value = userRole.length > 0;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }

@@ -12,26 +12,21 @@
     </div>
 
     <div v-if="isUserLoggedIn == false" class="header__authsection">
-      <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
-      <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
+      <Button
+        label="LOGIN"
+        data-test="login-dataland-button"
+        @click="login"
+        icon="pi pi-user"
+        variant="text"
+        severity="secondary"
+      />
+      <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" rounded />
     </div>
   </template>
   <template v-else>
     <div class="header__authsection">
-      <ButtonComponent
-        label="Log in"
-        buttonType="login-button"
-        ariaLabel="Login to account"
-        name="login_dataland_button"
-        @click="login"
-      />
-      <ButtonComponent
-        label="Sign Up"
-        buttonType="registration-button"
-        ariaLabel="Sign up to account"
-        name="signup_dataland_button"
-        @click="register"
-      />
+      <Button label="Log in" data-test="login-dataland-button" @click="login" variant="outlined" />
+      <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" />
     </div>
   </template>
 </template>
@@ -40,7 +35,6 @@
 import { inject, onMounted, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import { useRouter } from 'vue-router';
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import Button from 'primevue/button';
@@ -83,7 +77,7 @@ onMounted(() => {
 });
 
 /**
- * Sends the user to the keycloak register page (if not authenticated already)
+ * Sends the user to the keycloak register page (if not authenticated) and logs in otherwise
  */
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
@@ -99,50 +93,6 @@ const register = (): void => {
 };
 </script>
 <style scoped lang="scss">
-.header {
-  &__authsection {
-    display: flex;
-    gap: 32px;
-    align-items: baseline;
-
-    &-login {
-      position: relative;
-      text-decoration: none;
-      color: var(--p-highlight-color);
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 20px;
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-
-      &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: -20px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 16px;
-        height: 16px;
-        background-image: url('/static/icons/User.svg');
-        background-size: cover;
-      }
-
-      &:hover {
-        border-bottom: 2px solid var(--p-primary-color);
-        color: var(--p-primary-color);
-
-        &::before {
-          background-image: url('/static/icons/User-hover.svg');
-        }
-      }
-    }
-  }
-}
-
 @media only screen and (max-width: 768px) {
   .header {
     background-color: var(--p-pink-300);
@@ -150,39 +100,6 @@ const register = (): void => {
     margin: 0;
     width: 100%;
     border-radius: 0;
-  }
-}
-</style>
-
-<style lang="scss">
-.login-button {
-  padding: 10px 38px;
-  border-radius: 0;
-  color: var(--p-primary-color);
-  background-color: var(--p-highlight-background);
-  border: 2px solid var(--p-primary-color);
-  text-transform: uppercase;
-  cursor: pointer;
-
-  &:hover {
-    border: 2px solid var(--default-neutral-white);
-    background-color: var(--p-highlight-background);
-    color: var(--default-neutral-white);
-  }
-}
-
-.registration-button {
-  padding: 10px 38px;
-  border-radius: 0;
-  background-color: var(--p-primary-color);
-  color: var(--default-neutral-white);
-  border: 2px solid var(--p-primary-color);
-  text-transform: uppercase;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--p-highlight-color);
-    background-color: var(--default-neutral-white);
   }
 }
 </style>

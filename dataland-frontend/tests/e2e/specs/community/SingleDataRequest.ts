@@ -119,7 +119,7 @@ describeIf(
 
       verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
       cy.get('[data-test="notifyMeImmediatelyInput"]').click();
-      cy.reload(); // Check if the data was persisted in the backend
+      cy.reload();
       cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
     }
 
@@ -127,8 +127,8 @@ describeIf(
      * Withdraw the request and check that it succeeded.
      */
     function withDrawRequestAndCheckThatItsWithdrawn(): void {
-      cy.get('a:contains("Withdraw request")').scrollIntoView();
-      cy.get('a:contains("Withdraw request")').click();
+      cy.get('[data-test="withdrawRequestButton"]').scrollIntoView();
+      cy.get('[data-test="withdrawRequestButton"]').click();
       cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
       cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
       cy.get('[data-test="back-button"]').scrollIntoView();

@@ -3,7 +3,7 @@ describe('As a user I expect api key link will be visible in the menu', () => {
     cy.ensureLoggedIn();
 
     cy.visitAndCheckAppMount('/bulkdatarequest');
-    cy.get('button[name="submit_request_button"]').should('be.visible');
+    cy.get('[data-test="submit-request-button"]').should('be.visible');
 
     cy.get('div.user-menu-container').click();
     cy.get('[data-test="profileMenu"]').should('be.visible');

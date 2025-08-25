@@ -103,7 +103,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
 
         cy.get('button').contains('NEW DATASET').click({ force: true });
         cy.url().should('eq', getBaseUrl() + '/companies/choose');
-        cy.get('div[id=option1Container').find('a:contains(Add it)').click({ force: true });
+        cy.get('div[id=option1Container]').find("[data-test='add-it-button']").click();
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('medium_timeout_in_ms') as number });
@@ -169,7 +169,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
         dataIdOfLksgDataset: string
       ): void {
-        cy.get('div[id=eutaxonomyDataSetsContainer')
+        cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(0)
           .click({ force: true });
@@ -181,7 +181,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=eutaxonomyDataSetsContainer')
+        cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(1)
           .click({ force: true });
@@ -193,7 +193,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=lksgContainer').find(`a.text-primary:contains(LkSG)`).click({ force: true });
+        cy.get('div[id=lksgContainer]').find(`a.text-primary:contains(LkSG)`).click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
           .url()
           .should(

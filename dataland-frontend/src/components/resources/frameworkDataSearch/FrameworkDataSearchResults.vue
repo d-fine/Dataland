@@ -41,11 +41,18 @@
       </Column>
       <Column field="sector" header="SECTOR" :sortable="false" class="d-bg-white w-2" />
       <Column field="headquarters" header="LOCATION" :sortable="false" class="d-bg-white w-2">
-        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }} </template>
+        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }}</template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body>
-          <span class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span> </span>
+        <template #body="{ data }">
+          <PrimeButton
+            label="VIEW"
+            iconPos="right"
+            icon="pi pi-angle-right"
+            variant="link"
+            data-test="viewButton"
+            @click="goToCompanyCockpit({ data })"
+          />
         </template>
       </Column>
     </DataTable>
@@ -67,10 +74,11 @@ import Tag from 'primevue/tag';
 import { defineComponent, type PropType } from 'vue';
 import { type BasicCompanyInformation } from '@clients/backend';
 import router from '@/router';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'FrameworkDataSearchResults',
-  components: { DataTable, Column, Tag },
+  components: { DataTable, Column, Tag, PrimeButton },
   emits: ['page-update'],
   directives: {
     tooltip: Tooltip,
@@ -135,10 +143,6 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.text-primary {
-  color: var(--main-color);
 }
 
 .lei-column-header {

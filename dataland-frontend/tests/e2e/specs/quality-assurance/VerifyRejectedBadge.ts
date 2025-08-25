@@ -48,9 +48,8 @@ describeIf(
           cy.visit(`/datasets`);
           cy.wait('@getMyDatasets');
           cy.pause();
-          cy.get(`a[href="/companies/${uploadIds.companyId}/frameworks/lksg/${uploadIds.dataId}"]`)
+          cy.get(`[data-test="view-dataset-button"]`)
             .parents('tr[role=row]')
-            .find('td[role=cell]')
             .find('[data-test="qa-status"]')
             .should('exist')
             .should('contain', 'Rejected');

@@ -3,10 +3,15 @@
     <TheHeader />
     <TheContent class="relative">
       <DatasetsTabMenu :initialTabIndex="1">
-        <div class="col-12 flex flex-row justify-content-between align-items-end">
-          <router-link v-if="hasUserUploaderRights" to="/companies/choose" data-test="newDatasetButton">
-            <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
-          </router-link>
+        <div>
+          <PrimeButton
+            v-if="hasUserUploaderRights"
+            icon="pi pi-plus"
+            label="NEW DATASET"
+            data-test="newDatasetButton"
+            @click="linkToNewDataSet()"
+            :pt="{ root: { style: 'display: flex; margin:var(--spacing-sm)' } }"
+          />
         </div>
         <DatasetOverviewTable
           data-test="datasetOverviewTable"
@@ -41,6 +46,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { defineComponent, inject } from 'vue';
+import router from '@/router';
 
 export default defineComponent({
   name: 'DatasetOverview',
@@ -75,6 +81,12 @@ export default defineComponent({
     this.requestDataMetaDataForCurrentUser().catch((error) => console.log(error));
   },
   methods: {
+    /**
+     * Links the current instance or context to a new dataset, establishing a connection or association with it.
+     */
+    linkToNewDataSet() {
+      void router.push('/companies/choose');
+    },
     /**
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */
