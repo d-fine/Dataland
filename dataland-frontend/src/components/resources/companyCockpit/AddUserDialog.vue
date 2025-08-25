@@ -7,7 +7,16 @@
           <div class="search-container">
             <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
             <Button label="SELECT" @click="selectUser" />
-            <Message v-if="unknownUserError" severity="error">
+            <Message
+              v-if="unknownUserError"
+              severity="error"
+              data-test="unknown-user-error"
+              :pt="{
+                root: {
+                  style: 'margin-top: var(--spacing-xxs); width: 20em; word-wrap: break-word;',
+                },
+              }"
+            >
               {{ unknownUserError }}
             </Message>
           </div>
@@ -38,7 +47,13 @@
       </Card>
     </div>
     <div class="dialog-actions">
-      <Button label="ADD SELECTED USERS" icon="pi pi-plus" class="add-button" @click="handleAddUser" data-test="save-changes-button"/>
+      <Button
+        label="ADD SELECTED USERS"
+        icon="pi pi-plus"
+        class="add-button"
+        @click="handleAddUser"
+        data-test="save-changes-button"
+      />
     </div>
   </div>
 </template>
@@ -118,14 +133,13 @@ async function validateAndAddUser(email: string): Promise<void> {
       userId: response.data.id,
     };
 
-    // const alreadySelected =
-    //   selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
-    //
-    //
-    // if (alreadySelected) {
-    //   unknownUserError.value = 'This user has already been selected.';
-    //   return;
-    // }
+    const alreadySelected =
+      selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
+
+    if (alreadySelected) {
+      unknownUserError.value = 'This user has already been selected.';
+      return;
+    }
 
     selectedUsers.value.push(user);
     searchQuery.value = '';
@@ -184,17 +198,20 @@ async function handleAddUser(): Promise<void> {
     dialogRef?.value.close({ selectedUsers: selectedUsers.value });
   }
 }
-
 </script>
 
 <style scoped>
-
 .selected-users-header {
+  position: sticky;
+  top: 0;
+  background-color: var(--p-surface-0); /* Gleiche Farbe wie Container */
+  z-index: 1;
+  padding: var(--spacing-xs);
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 0.1em solid var(--p-surface-300);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs); /* Margin entfernen */
 }
 
 .user-row {
