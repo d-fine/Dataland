@@ -1,9 +1,9 @@
 <template>
   <div class="add-member-dialog">
-    <div class="add-member-dialog">
-      <div class="add-member-dialog">
+    <div class="content-wrapper">
+      <div class="search-section">
         <b>Add user by email address</b>
-        <div class="add-member-dialog">
+        <div class="search-container">
           <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
           <Button label="SELECT" @click="selectUser" :pt="{ root: { style: 'margin-left: var(--spacing-xxs);' } }" />
           <Message
@@ -20,15 +20,15 @@
           </Message>
         </div>
       </div>
-      <div class="add-member-dialog">
-        <div class="add-member-dialog">
+      <div class="selected-users-section">
+        <div class="selected-users-header">
           <h3>Selected Users</h3>
           <Tag :value="userCountText" severity="secondary" />
         </div>
         <div v-if="hasSelectedUsers">
           <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
             <Tag :value="user.initials" />
-            <div class="add-member-dialog">
+            <div class="user-info">
               <b>{{ user.name }}</b>
               <div class="email-row">
                 <span>{{ user.email }}</span>
