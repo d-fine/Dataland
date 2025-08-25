@@ -39,7 +39,6 @@
         </div>
       </div>
     </div>
-
     <div class="dialog-actions">
       <Button label="CANCEL" variant="outlined" @click="handleCancel" />
       <Button label="SAVE CHANGES" icon="pi pi-save" class="add-button" @click="handleAddMembers" />
@@ -76,6 +75,8 @@ interface User {
   initials: string;
 }
 
+const selectedUsers = ref<User[]>([]);
+const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
 const searchQuery = ref('');
 const isSearching = ref(false);
 const generateInitials = (name: string) =>
@@ -85,35 +86,27 @@ const generateInitials = (name: string) =>
     .join('')
     .substring(0, 2);
 
-const selectedUsers = ref<User[]>(
-    existingUsers.length > 0
-        ? existingUsers.map((user) => ({
-          ...user,
-          userId: user.userId,
-          name: `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || user.email,
-          initials: generateInitials(`${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || user.email),
-        }))
-        : []
-);
 const errorMessage = ref('');
 
-const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
 const userCountText = computed(() => {
-  const count = selectedUsers.value.length;
+  const count = selectedUsers.value?.length;
   return `${count} User${count !== 1 ? 's' : ''}`;
 });
 
 const isUserAlreadySelected = (email: string) =>
-  selectedUsers.value.some((user) => user.email.toLowerCase() === email.toLowerCase());
+  selectedUsers.value?.some((user) => user.email.toLowerCase() === email.toLowerCase());
 
 const validateAndAddUser = async (email: string) => {
   if (isUserAlreadySelected(email)) {
     errorMessage.value = 'User is already selected';
     return;
   }
+
   try {
+    isSearching.value = true;
     const userValidationControllerApi = apiClientProvider.apiClients.userValidationController;
     const response = await userValidationControllerApi.postEmailAddressValidation({ email });
+
     if (response.data) {
       const user = {
         email,
@@ -122,13 +115,15 @@ const validateAndAddUser = async (email: string) => {
         ...response.data,
         userId: response.data.id,
       };
+
       selectedUsers.value.push(user);
       searchQuery.value = '';
       errorMessage.value = '';
     } else {
       errorMessage.value = 'User not found';
     }
-  } catch {
+  } catch (error) {
+    console.error('User validation error:', error);
     errorMessage.value = 'User not found or email validation failed';
   } finally {
     isSearching.value = false;
@@ -143,13 +138,8 @@ const handleSearchInput = () => {
  * Handles the selection of a user based on the search query.
  * It validates the email and adds the user to the selected users list.
  */
-async function selectUser() {
-  const user = await validateAndAddUser(searchQuery.value.trim());
-  if (user) {
-    selectedUsers.value.push(user);
-    searchQuery.value = '';
-    errorMessage.value = '';
-  }
+async function selectUser(): Promise<void> {
+  await validateAndAddUser(searchQuery.value.trim());
 }
 
 /**
@@ -174,14 +164,10 @@ async function handleAddMembers(): Promise<void> {
     const usersToAdd = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
     const usersToRemove = existingUsers.filter((user) => !currentUserIds.has(user.userId));
 
-    console.log("I GOT HERE")
-
     if (usersToAdd.length === 0 && usersToRemove.length === 0) {
       dialogRef?.value.close({ selectedUsers: selectedUsers.value });
       return;
     }
-
-    console.log("I GOT HERE 2")
 
       for (const user of usersToAdd) {
         await companyRolesControllerApi.assignCompanyRole(role.value, companyId.value, user.userId.toString());
@@ -192,8 +178,6 @@ async function handleAddMembers(): Promise<void> {
         await companyRolesControllerApi.removeCompanyRole(role.value, companyId.value, user.userId.toString());
 
       }
-
-    console.log("USERS TO REMOVE", usersToRemove);
 
     dialogRef?.value.close({ selectedUsers: selectedUsers.value });
   } catch {
