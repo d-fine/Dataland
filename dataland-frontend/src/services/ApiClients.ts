@@ -16,7 +16,6 @@ import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';
 import { UserValidationControllerApi } from '@clients/communitymanager';
 
-
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
@@ -32,7 +31,7 @@ interface ApiClients {
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
-  userValidationController: UserValidationControllerApi
+  userValidationController: UserValidationControllerApi;
 }
 
 type ApiClientConstructor<T> = new (

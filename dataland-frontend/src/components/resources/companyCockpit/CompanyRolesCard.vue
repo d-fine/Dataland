@@ -152,6 +152,7 @@ const dialog = useDialog();
 const props = defineProps<{
   companyId: string;
   role: CompanyRole;
+  companyRoleAssignments: CompanyRoleAssignmentExtended[];
 }>();
 
 // Injected dependencies
@@ -164,15 +165,19 @@ const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
 
 const rowsForRole = computed(() =>
-  companyUserInformation.value
-    .filter((u) => u.companyId === props.companyId && u.companyRole === props.role)
-    .map((u) => ({
-      firstName: u.firstName ?? '',
-      lastName: u.lastName ?? '',
-      email: u.email,
-      userId: u.userId,
+  props.companyRoleAssignments
+    .filter(user => user.companyId === props.companyId && user.companyRole === props.role)
+    .map(user => ({
+      firstName: user.firstName ?? '',
+      lastName: user.lastName ?? '',
+      email: user.email,
+      userId: user.userId,
     }))
 );
+
+const emit = defineEmits<{
+  (e: 'refresh-users'): void;
+}>();
 
 const roleHasUsers = computed(() => rowsForRole.value.length > 0);
 
@@ -320,7 +325,7 @@ function openAddUserDialog(): void {
   dialog.open(AddUserDialog, {
     props: {
       modal: true,
-      header: 'Add Members',
+      header: `Add ${group.value?.title}`,
       pt: {
         title: {
           style: {
@@ -335,8 +340,11 @@ function openAddUserDialog(): void {
     data: {
       companyId: props.companyId,
       role: props.role,
-      existingUsers: rowsForRole.value
-    }
+      existingUsers: rowsForRole.value,
+    },
+    onClose() {
+        emit('refresh-users');
+    },
   });
 }
 </script>
