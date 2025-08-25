@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="dialog-actions">
-      <Button label="SAVE CHANGES" icon="pi pi-save" class="add-button" @click="handleAddUser" data-test="save-changes-button"/>
+      <Button label="ADD SELECTED USERS" icon="pi pi-plus" class="add-button" @click="handleAddUser" data-test="save-changes-button"/>
     </div>
   </div>
 </template>

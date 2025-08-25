@@ -7,6 +7,7 @@ describe('AddMemberDialog Component Tests', function () {
   ];
 
   beforeEach(function () {
+    // Mount the component with the necessary providers
     // @ts-ignore
     cy.mountWithPlugins(AddMemberDialog, {
       keycloak: minimalKeycloakMock({}),
@@ -26,31 +27,55 @@ describe('AddMemberDialog Component Tests', function () {
         },
       },
     });
+
+    // Mock the user validation API for different test emails
+    cy.intercept('POST', '**/userValidationController/emailAddressValidation', (req) => {
+      const email = req.body.email;
+      if (email === 'invalid@test.com') {
+        req.reply({
+          statusCode: 400,
+          body: { errors: [{ message: 'There is no registered Dataland user with this email address.' }] },
+        });
+      } else if (email === 'existing@test.com') {
+        req.reply({
+          statusCode: 200,
+          body: { id: '1', firstName: 'Existing', lastName: 'User', email },
+        });
+      } else if (email === 'john@doe.com') {
+        req.reply({
+          statusCode: 200,
+          body: { id: '2', firstName: 'John', lastName: 'Doe', email },
+        });
+      } else if (email === 'jane@doe.com') {
+        req.reply({
+          statusCode: 200,
+          body: { id: '3', firstName: 'Jane', lastName: 'Doe', email },
+        });
+      } else {
+        req.reply({
+          statusCode: 400,
+          body: { errors: [{ message: 'Unknown email' }] },
+        });
+      }
+    });
   });
 
-  it('should render empty state initially', function () {
+  it('renders empty state initially', function () {
     cy.contains('No users selected').should('be.visible');
     cy.get('[data-test="user-count-tag"]').should('contain', '0 Users');
   });
 
-  it('should show error when API rejects validation', function () {
-    cy.intercept('POST', '**/userValidationController/emailAddressValidation', {
-      statusCode: 400,
-      body: { errors: [{ message: 'Invalid email' }] },
-    });
-
+  it('shows error when API rejects validation', function () {
     cy.get('.search-input').type('invalid@test.com');
     cy.get('[data-test="select-user-button"]').click();
 
-    cy.get('[data-test="unknown-user-error"]').should('contain', 'Invalid email');
+    cy.get('[data-test="unknown-user-error"]').should(
+      'contain',
+      'There is no registered Dataland user with this email address.'
+    );
   });
 
-  it('should add a valid user after validation', function () {
-    cy.intercept('POST', '**/userValidationController/emailAddressValidation', {
-      statusCode: 200,
-      body: { id: '2', firstName: 'John', lastName: 'Doe', email: 'john@doe.com' },
-    });
-
+  it('adds a valid user with first and last name', function () {
     cy.get('.search-input').type('john@doe.com');
     cy.get('[data-test="select-user-button"]').click();
 
@@ -59,24 +84,14 @@ describe('AddMemberDialog Component Tests', function () {
     cy.get('[data-test="user-count-tag"]').should('contain', '1 User');
   });
 
-  it('should not add duplicate users', function () {
-    cy.intercept('POST', '**/userValidationController/emailAddressValidation', {
-      statusCode: 200,
-      body: { id: '1', firstName: 'Existing', lastName: 'User', email: 'existing@test.com' },
-    });
-
+  it('does not add duplicate users', function () {
     cy.get('.search-input').type('existing@test.com');
     cy.get('[data-test="select-user-button"]').click();
 
     cy.get('[data-test="unknown-user-error"]').should('contain', 'already been selected');
   });
 
-  it('should remove a user', function () {
-    cy.intercept('POST', '**/userValidationController/emailAddressValidation', {
-      statusCode: 200,
-      body: { id: '2', firstName: 'John', lastName: 'Doe', email: 'john@doe.com' },
-    });
-
+  it('removes a user', function () {
     cy.get('.search-input').type('john@doe.com');
     cy.get('[data-test="select-user-button"]').click();
 
@@ -85,11 +100,20 @@ describe('AddMemberDialog Component Tests', function () {
     cy.get('[data-test="user-count-tag"]').should('contain', '0 Users');
   });
 
-  it('should call API and close dialog on save', function () {
-    cy.intercept('POST', '**/userValidationController/emailAddressValidation', {
-      statusCode: 200,
-      body: { id: '2', firstName: 'John', lastName: 'Doe', email: 'john@doe.com' },
+  it('adds multiple valid users', function () {
+    const emails = ['john@doe.com', 'jane@doe.com'];
+
+    emails.forEach((email) => {
+      cy.get('.search-input').clear().type(email);
+      cy.get('[data-test="select-user-button"]').click();
     });
+
+    cy.contains('John Doe').should('be.visible');
+    cy.contains('Jane Doe').should('be.visible');
+    cy.get('[data-test="user-count-tag"]').should('contain', '2 Users');
+  });
+
+  it('calls API and closes dialog on save', function () {
     cy.intercept('POST', '**/companyRolesController/assignCompanyRole', {
       statusCode: 200,
     }).as('assignRole');
