@@ -1,46 +1,41 @@
 <template>
   <div class="add-member-dialog">
     <div class="content-wrapper">
-      <div class="search-section">
-        <b>Add user by email address</b>
-        <div class="search-container">
-          <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
-          <Button label="SELECT" @click="selectUser" :pt="{ root: { style: 'margin-left: var(--spacing-xxs);' } }" data-test="select-user-button"/>
-          <Message
-            v-if="unknownUserError"
-            severity="error"
-            data-test="unknown-user-error"
-            :pt="{
-              root: {
-                style: 'margin-top: var(--spacing-xxs); max-width: 20em; word-wrap: break-word;',
-              },
-            }"
-          >
-            {{ unknownUserError }}
-          </Message>
-        </div>
-      </div>
-      <div class="selected-users-section">
-        <div class="selected-users-header">
-          <h3>Selected Users</h3>
-          <Tag :value="userCountText" severity="secondary" data-test="user-count-tag"/>
-        </div>
-        <div v-if="hasSelectedUsers">
-          <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
-            <Tag :value="user.initials" />
-            <div class="user-info">
-              <b>{{ user.name }}</b>
-              <div>
-                <span class="email-row">{{ user.email }}</span>
-                <Button icon="pi pi-times" variant="text" @click="handleRemoveUser(user.userId)" rounded />
+      <Card class="search-section">
+        <template #content>
+          <b>Add user by email address</b>
+          <div class="search-container">
+            <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
+            <Button label="SELECT" @click="selectUser" />
+            <Message v-if="unknownUserError" severity="error">
+              {{ unknownUserError }}
+            </Message>
+          </div>
+        </template>
+      </Card>
+      <Card class="selected-users-section">
+        <template #content>
+          <div class="selected-users-header">
+            <h3>Selected Users</h3>
+            <Tag :value="userCountText" severity="secondary" />
+          </div>
+          <div v-if="hasSelectedUsers">
+            <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
+              <Tag :value="user.initials" />
+              <div class="user-info">
+                <b>{{ user.name }}</b>
+                <div>
+                  <span class="email-row">{{ user.email }}</span>
+                  <Button icon="pi pi-times" variant="text" @click="handleRemoveUser(user.userId)" rounded />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div v-else>
-          <p>No users selected</p>
-        </div>
-      </div>
+          <div v-else>
+            <p>No users selected</p>
+          </div>
+        </template>
+      </Card>
     </div>
     <div class="dialog-actions">
       <Button label="ADD SELECTED USERS" icon="pi pi-plus" class="add-button" @click="handleAddUser" data-test="save-changes-button"/>
@@ -60,6 +55,7 @@ import { type CompanyRole } from '@clients/communitymanager';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { AxiosError } from 'axios';
 import Message from 'primevue/message';
+import Card from 'primevue/card';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -122,15 +118,15 @@ async function validateAndAddUser(email: string): Promise<void> {
       userId: response.data.id,
     };
 
-    const alreadySelected =
-      selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
+    // const alreadySelected =
+    //   selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
     //
     //
     // if (alreadySelected) {
     //   unknownUserError.value = 'This user has already been selected.';
     //   return;
     // }
-    //
+
     selectedUsers.value.push(user);
     searchQuery.value = '';
   } catch (error) {
@@ -212,19 +208,13 @@ async function handleAddUser(): Promise<void> {
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
-}
-
-.search-section {
-  padding: var(--spacing-lg);
-  box-shadow: var(--p-card-shadow);
+  padding: var(--spacing-xs);
 }
 
 .selected-users-section {
-  background-color: var(--p-surface-0);
-  padding: var(--spacing-lg);
   height: 20em;
   overflow-y: auto;
-  box-shadow: var(--p-card-shadow);
+  position: relative;
 }
 
 .search-container {
@@ -234,6 +224,7 @@ async function handleAddUser(): Promise<void> {
 
 .search-input {
   width: 20em;
+  margin-right: var(--spacing-xs);
 }
 
 .dialog-actions {
