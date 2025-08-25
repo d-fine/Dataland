@@ -5,7 +5,7 @@
         <b>Add user by email address</b>
         <div class="search-container">
           <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
-          <Button label="SELECT" @click="selectUser" :pt="{ root: { style: 'margin-left: var(--spacing-xxs);' } }" />
+          <Button label="SELECT" @click="selectUser" :pt="{ root: { style: 'margin-left: var(--spacing-xxs);' } }" data-test="select-user-button"/>
           <Message
             v-if="unknownUserError"
             severity="error"
@@ -23,27 +23,27 @@
       <div class="selected-users-section">
         <div class="selected-users-header">
           <h3>Selected Users</h3>
-          <Tag :value="userCountText" severity="secondary" />
+          <Tag :value="userCountText" severity="secondary" data-test="user-count-tag"/>
         </div>
         <div v-if="hasSelectedUsers">
           <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
             <Tag :value="user.initials" />
             <div class="user-info">
               <b>{{ user.name }}</b>
-              <div class="email-row">
-                <span>{{ user.email }}</span>
+              <div>
+                <span class="email-row">{{ user.email }}</span>
                 <Button icon="pi pi-times" variant="text" @click="handleRemoveUser(user.userId)" rounded />
               </div>
             </div>
           </div>
         </div>
-        <div class="empty-state" v-else>
-          <p class="empty-message">No users selected</p>
+        <div v-else>
+          <p>No users selected</p>
         </div>
       </div>
     </div>
     <div class="dialog-actions">
-      <Button label="SAVE CHANGES" icon="pi pi-save" class="add-button" @click="handleAddUser" />
+      <Button label="SAVE CHANGES" icon="pi pi-save" class="add-button" @click="handleAddUser" data-test="save-changes-button"/>
     </div>
   </div>
 </template>
@@ -124,12 +124,13 @@ async function validateAndAddUser(email: string): Promise<void> {
 
     const alreadySelected =
       selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
-
-    if (alreadySelected) {
-      unknownUserError.value = 'This user has already been selected.';
-      return;
-    }
-
+    //
+    //
+    // if (alreadySelected) {
+    //   unknownUserError.value = 'This user has already been selected.';
+    //   return;
+    // }
+    //
     selectedUsers.value.push(user);
     searchQuery.value = '';
   } catch (error) {
@@ -191,16 +192,13 @@ async function handleAddUser(): Promise<void> {
 </script>
 
 <style scoped>
-.add-member-dialog {
-  background-color: var(--p-surface-100);
-  padding: var(--spacing-lg);
-  max-height: 30em;
-}
 
 .selected-users-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 0.1em solid var(--p-surface-300);
+  margin-bottom: var(--spacing-xs);
 }
 
 .user-row {
@@ -217,16 +215,16 @@ async function handleAddUser(): Promise<void> {
 }
 
 .search-section {
-  background-color: var(--p-surface-0);
   padding: var(--spacing-lg);
-  border-radius: 8px;
+  box-shadow: var(--p-card-shadow);
 }
 
 .selected-users-section {
   background-color: var(--p-surface-0);
   padding: var(--spacing-lg);
-  border-radius: 8px;
-  min-height: 20em;
+  height: 20em;
+  overflow-y: auto;
+  box-shadow: var(--p-card-shadow);
 }
 
 .search-container {
