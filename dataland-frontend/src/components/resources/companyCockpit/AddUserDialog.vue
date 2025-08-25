@@ -1,7 +1,7 @@
 <template>
-  <div class="add-member-dialog">
+  <div>
     <div class="content-wrapper">
-      <Card class="search-section">
+      <Card>
         <template #content>
           <b>Add user by email address</b>
           <div class="search-container">
@@ -33,11 +33,9 @@
               <Tag :value="user.initials" />
               <div class="user-info">
                 <b>{{ user.name }}</b>
-                <div>
-                  <span class="email-row">{{ user.email }}</span>
-                  <Button icon="pi pi-times" variant="text" @click="handleRemoveUser(user.userId)" rounded />
-                </div>
+                <span class="email-row">{{ user.email }}</span>
               </div>
+              <Button icon="pi pi-times" variant="text" @click="handleRemoveUser(user.userId)" rounded />
             </div>
           </div>
           <div v-else>
@@ -107,7 +105,6 @@ function generateInitials(name: string): string {
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase())
     .join('')
-    .substring(0, 2);
 }
 
 /**
@@ -130,13 +127,13 @@ async function validateAndAddUser(email: string): Promise<void> {
       userId: response.data.id,
     };
 
-    const alreadySelected =
-      selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
-
-    if (alreadySelected) {
-      unknownUserError.value = 'This user has already been selected.';
-      return;
-    }
+    // const alreadySelected =
+    //   selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
+    //
+    // if (alreadySelected) {
+    //   unknownUserError.value = 'This user has already been selected.';
+    //   return;
+    // }
 
     selectedUsers.value.push(user);
     searchQuery.value = '';
@@ -196,13 +193,11 @@ async function handleAddUser(): Promise<void> {
 </script>
 
 <style scoped>
-
 .selected-users-header {
   position: sticky;
   top: 0;
   background-color: var(--p-surface-0);
   z-index: 1;
-  padding: var(--spacing-xs);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -212,16 +207,22 @@ async function handleAddUser(): Promise<void> {
 
 .user-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .content-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
 }
 
 .selected-users-section {
@@ -231,7 +232,6 @@ async function handleAddUser(): Promise<void> {
 }
 
 .search-container {
-  display: block;
   margin-top: var(--spacing-sm);
 }
 
