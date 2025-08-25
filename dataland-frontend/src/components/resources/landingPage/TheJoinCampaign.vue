@@ -96,7 +96,7 @@ const getInTouchSection = findSection('Get in touch');
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     align-self: flex-end;
     gap: 32px;
     grid-column: 1 / -1;
