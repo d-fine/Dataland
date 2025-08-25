@@ -82,7 +82,6 @@ const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesContr
 const selectedUsers = ref<User[]>([]);
 const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
 const searchQuery = ref('');
-const isSearching = ref(false);
 const unknownUserError = ref('');
 const userCountText = computed(() => {
   const count = selectedUsers.value?.length;
@@ -117,8 +116,6 @@ function generateInitials(name: string): string {
  */
 async function validateAndAddUser(email: string): Promise<void> {
   if (!email) return;
-
-  isSearching.value = true;
   unknownUserError.value = '';
 
   try {
@@ -151,8 +148,6 @@ async function validateAndAddUser(email: string): Promise<void> {
       unknownUserError.value = 'An unknown error occurred while validating the user.';
       console.error(error);
     }
-  } finally {
-    isSearching.value = false;
   }
 }
 
@@ -201,17 +196,18 @@ async function handleAddUser(): Promise<void> {
 </script>
 
 <style scoped>
+
 .selected-users-header {
   position: sticky;
   top: 0;
-  background-color: var(--p-surface-0); /* Gleiche Farbe wie Container */
+  background-color: var(--p-surface-0);
   z-index: 1;
   padding: var(--spacing-xs);
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 0.1em solid var(--p-surface-300);
-  margin-bottom: var(--spacing-xs); /* Margin entfernen */
+  margin-bottom: var(--spacing-xs);
 }
 
 .user-row {

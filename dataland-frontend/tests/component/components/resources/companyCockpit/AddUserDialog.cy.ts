@@ -2,12 +2,9 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddMemberDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
 describe('AddMemberDialog Component Tests', function () {
-  const existingUsers = [
-    { userId: '1', email: 'existing@test.com', name: 'Existing User', initials: 'EU' },
-  ];
+  const existingUsers = [{ userId: '1', email: 'existing@test.com', name: 'Existing User', initials: 'EU' }];
 
   beforeEach(function () {
-    // Mount the component with the necessary providers
     // @ts-ignore
     cy.mountWithPlugins(AddMemberDialog, {
       keycloak: minimalKeycloakMock({}),
@@ -17,7 +14,7 @@ describe('AddMemberDialog Component Tests', function () {
             value: {
               data: {
                 companyId: 'company-123',
-                role: 'ADMIN',
+                role: 'admin',
                 existingUsers,
               },
               close: cy.stub().as('dialogClose'),
@@ -28,34 +25,39 @@ describe('AddMemberDialog Component Tests', function () {
       },
     });
 
-    // Mock the user validation API for different test emails
-    cy.intercept('POST', '**/userValidationController/emailAddressValidation', (req) => {
+    cy.intercept('POST', '**/user-validation/email', (req) => {
       const email = req.body.email;
-      if (email === 'invalid@test.com') {
-        req.reply({
-          statusCode: 400,
-          body: { errors: [{ message: 'There is no registered Dataland user with this email address.' }] },
-        });
-      } else if (email === 'existing@test.com') {
-        req.reply({
-          statusCode: 200,
-          body: { id: '1', firstName: 'Existing', lastName: 'User', email },
-        });
-      } else if (email === 'john@doe.com') {
-        req.reply({
-          statusCode: 200,
-          body: { id: '2', firstName: 'John', lastName: 'Doe', email },
-        });
-      } else if (email === 'jane@doe.com') {
-        req.reply({
-          statusCode: 200,
-          body: { id: '3', firstName: 'Jane', lastName: 'Doe', email },
-        });
-      } else {
-        req.reply({
-          statusCode: 400,
-          body: { errors: [{ message: 'Unknown email' }] },
-        });
+
+      switch (email) {
+        case 'invalid@test.com':
+          req.reply({
+            statusCode: 400,
+            body: { errors: [{ message: 'There is no registered Dataland user with this email address.' }] },
+          });
+          break;
+        case 'existing@test.com':
+          req.reply({
+            statusCode: 200,
+            body: { id: '1', firstName: 'Existing', lastName: 'User', email },
+          });
+          break;
+        case 'john@doe.com':
+          req.reply({
+            statusCode: 200,
+            body: { id: '2', firstName: 'John', lastName: 'Doe', email },
+          });
+          break;
+        case 'jane@doe.com':
+          req.reply({
+            statusCode: 200,
+            body: { id: '3', firstName: 'Jane', lastName: 'Doe', email },
+          });
+          break;
+        default:
+          req.reply({
+            statusCode: 400,
+            body: { errors: [{ message: 'Unknown email' }] },
+          });
       }
     });
   });
@@ -114,9 +116,7 @@ describe('AddMemberDialog Component Tests', function () {
   });
 
   it('calls API and closes dialog on save', function () {
-    cy.intercept('POST', '**/companyRolesController/assignCompanyRole', {
-      statusCode: 200,
-    }).as('assignRole');
+    cy.intercept('POST', '**/company-role-assignments/*/*/*', { statusCode: 200 }).as('assignRole');
 
     cy.get('.search-input').type('john@doe.com');
     cy.get('[data-test="select-user-button"]').click();

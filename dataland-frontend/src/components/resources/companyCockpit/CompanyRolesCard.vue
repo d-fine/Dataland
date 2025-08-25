@@ -7,7 +7,7 @@
       <i :class="group?.icon" />
       {{ group?.title }}
       <Button
-        v-if="roleHasUsers"
+        v-if="roleHasUsers && allowedToEditRoles"
         icon="pi pi-plus"
         variant="text"
         :label="`Add ${group?.title}`"
@@ -51,7 +51,7 @@
         </Column>
       </DataTable>
       <Button
-        v-else
+        v-else-if="allowedToEditRoles"
         icon="pi pi-plus"
         variant="text"
         :label="`Add ${group?.title}`"
@@ -335,6 +335,11 @@ function openAddUserDialog(): void {
       modal: true,
       header: `Add ${group.value?.title}`,
       pt: {
+        root: {
+          style: {
+            backgroundColor: 'var(--p-surface-50)',
+          },
+        },
         title: {
           style: {
             maxWidth: '15em',
@@ -351,7 +356,7 @@ function openAddUserDialog(): void {
       existingUsers: rowsForRole.value,
     },
     onClose: () => {
-      emit('users-changed'); // notify parent to refresh all cards
+      emit('users-changed');
     },
   });
 }
