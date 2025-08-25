@@ -16,7 +16,7 @@
     }
   },
   "example" : {
-    "value" : "Health Care",
+    "value" : "HealthCare",
     "quality" : "Reported",
     "comment" : "The value is reported by the company.",
     "dataSource" : {
