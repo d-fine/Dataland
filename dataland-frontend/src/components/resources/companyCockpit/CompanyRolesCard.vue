@@ -152,7 +152,6 @@ const props = defineProps<{
   companyId: string;
   role: CompanyRole;
   userRole?: CompanyRole | null;
-  companyRoleAssignments: CompanyRoleAssignmentExtended[];
 }>();
 
 const dialog = useDialog();
@@ -164,9 +163,6 @@ const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
 const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
 
-const emit = defineEmits<{
-  (e: 'refresh-users'): void;
-}>();
 const selectedUser = ref<TableRow | null>(null);
 const selectedRole = ref<CompanyRole | null>(null);
 
@@ -270,6 +266,7 @@ function menuItemsFor(row: TableRow): MenuItem[] {
       label: 'Change User’s Role',
       command: (): void => {
         selectedUser.value = row;
+        selectedRole.value = props.role; // preselect current role
         showChangeRoleDialog.value = true;
       },
     },
@@ -327,6 +324,8 @@ async function confirmRemoveUser(): Promise<void> {
   }
 }
 
+const emit = defineEmits<{ (e: 'users-changed'): void }>();
+
 /**
  * Opens the Add User dialog for the current role and company.
  */
@@ -351,8 +350,8 @@ function openAddUserDialog(): void {
       role: props.role,
       existingUsers: rowsForRole.value,
     },
-    onClose() {
-      emit('refresh-users');
+    onClose: () => {
+      emit('users-changed'); // notify parent to refresh all cards
     },
   });
 }

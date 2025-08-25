@@ -21,12 +21,11 @@
         <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
           <CompanyRolesCard
             v-for="role in roles"
-            :key="role"
+            :key="`${String(role)}-${refreshAllCards}`"
             :companyId="companyId"
             :role="role"
-            :companyRoleAssignments="companyRoleAssignments"
             :userRole="userRole"
-            @refresh-users="loadUsersForRole"
+            @users-changed="handleUsersChanged"
           />
         </TabPanel>
       </TabPanels>
@@ -59,8 +58,6 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const props = defineProps<{ companyId: string }>();
 
@@ -80,8 +77,6 @@ const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | undefined>(undefined);
-const companyRoleAssignments = ref<CompanyRoleAssignmentExtended[]>([]);
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
@@ -95,6 +90,16 @@ const roles = [
   CompanyRole.DataUploader,
 ] as const;
 
+const refreshAllCards = ref(0);
+
+/**
+ * Handler for user changes in company roles.
+ * Triggers refresh of all role cards by incrementing the refresh counter.
+ */
+function handleUsersChanged(): void {
+  refreshAllCards.value++;
+}
+
 /**
  * Sets user rights and roles for the current company.
  * Updates isAnyCompanyOwnerExisting, isUserCompanyOwnerOrUploader, and isUserKeycloakUploader.
@@ -103,8 +108,6 @@ async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
 
   const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  companyRoleAssignments.value = assignments.filter(assignment => assignment.companyId === props.companyId);
-
   const userRole = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
   isUserCompanyOwnerOrUploader.value =
     userRole.includes(CompanyRole.CompanyOwner) || userRole.includes(CompanyRole.DataUploader);
@@ -112,20 +115,6 @@ async function setUserRights(): Promise<void> {
   isUserCompanyMember.value = userRole.length > 0;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
-}
-
-/**
- * Loads users assigned to roles for the current company.
- * Updates companyRoleAssignments with the fetched data.
- */
-async function loadUsersForRole(): Promise<void> {
-  try {
-    const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
-    const data = await companyRolesControllerApi.getExtendedCompanyRoleAssignments(undefined, props.companyId);
-    companyRoleAssignments.value = data.data;
-  } catch (err) {
-    console.error('Failed to load company users:', err);
-  }
 }
 
 watch(
@@ -143,8 +132,7 @@ watch(activeTab, (val) => {
 
 onMounted(async () => {
   await setUserRights();
-  await loadUsersForRole();
-
+  console.debug('CompanyCockpitPage - userRole', userRole.value);
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';
