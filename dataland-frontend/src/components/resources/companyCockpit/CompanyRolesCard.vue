@@ -18,7 +18,7 @@
         v-if="roleHasUsers && allowedToEditRoles"
         icon="pi pi-plus"
         variant="text"
-        :label="`Add ${group?.title}`"
+        :label="`ADD ${group?.title.toUpperCase()}`"
         @click="openAddUserDialog"
         style="float: right"
       />
@@ -68,7 +68,7 @@
         v-else-if="allowedToEditRoles"
         icon="pi pi-plus"
         variant="text"
-        :label="`Add ${group?.title}`"
+        :label="`ADD ${group?.title.toUpperCase()}`"
         @click="openAddUserDialog"
         style="display: flex; margin: var(--spacing-xs) auto 0"
       />
@@ -91,10 +91,16 @@
     </span>
     <Listbox
       v-model="selectedRole"
-      :options="roleOptions"
+      :options="groups"
       optionLabel="title"
       optionValue="role"
+      :optionDisabled="isOptionDisabled"
       style="margin-top: var(--spacing-md)"
+      :pt="{
+        listContainer: {
+          style: 'max-height: unset;',
+        },
+      }"
     >
       <template #option="{ option }">
         <div style="display: flex; align-items: center; gap: 12px">
@@ -107,12 +113,7 @@
       </template>
     </Listbox>
     <template #footer>
-      <Button label="Back" variant="outlined" @click="showChangeRoleDialog = false" />
-      <Button
-        label="Change Role"
-        :disabled="selectedRole === props.role || selectedRole === null"
-        @click="confirmChangeRole"
-      />
+      <Button label="Change Role" :disabled="selectedRole === null" @click="confirmChangeRole" />
     </template>
   </Dialog>
 
@@ -121,7 +122,6 @@
     <span>You're about to remove the user:</span><br />
     <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
     <template #footer>
-      <Button label="Back" variant="outlined" @click="showRemoveUserDialog = false" />
       <Button label="Remove User" @click="confirmRemoveUser" />
     </template>
   </Dialog>
@@ -185,7 +185,7 @@ const rowMenus = ref<Record<string, RowMenuRef>>({});
 const isGlobalAdmin = ref(false);
 const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
 
-const groups: readonly Group[] = [
+const groups: Group[] = [
   {
     role: CompanyRole.MemberAdmin,
     title: 'Admins',
@@ -214,7 +214,7 @@ const groups: readonly Group[] = [
     info: 'Uploaders have the responsibility of ensuring all relevant data is uploaded to the platform for analysis and interpretation.',
     description: "Responsible for providing company's datasets.",
   },
-] as const;
+];
 
 const group = computed(() => groups.find((g) => g.role === props.role));
 
@@ -231,16 +231,8 @@ const rowsForRole = computed<TableRow[]>(() =>
 
 const roleHasUsers = computed(() => rowsForRole.value.length > 0);
 
-const viewerRole = computed<CompanyRole | null>(() => props.userRole ?? null);
-const currentUserIsOwner = computed(() => viewerRole.value === CompanyRole.CompanyOwner);
-
 const allowedToEditRoles = computed(
-  () =>
-    isGlobalAdmin.value || viewerRole.value === CompanyRole.CompanyOwner || viewerRole.value === CompanyRole.MemberAdmin
-);
-
-const roleOptions = computed(() =>
-  currentUserIsOwner.value ? groups : groups.filter((o) => o.role !== CompanyRole.CompanyOwner)
+  () => isGlobalAdmin.value || props.userRole === CompanyRole.CompanyOwner || props.userRole === CompanyRole.MemberAdmin
 );
 
 const emailColumnWidth = computed(() => (allowedToEditRoles.value ? '25%' : '30%'));
@@ -252,6 +244,17 @@ const roleTargetText = computed(() => {
   const last = u.lastName?.trim();
   return first && last ? `${first} ${last}, ${u.email}` : (u.email ?? '');
 });
+
+/**
+ * Determines if a role option should be disabled in the role selection list.
+ * @param opt - The role option to check, containing a CompanyRole.
+ */
+function isOptionDisabled(opt: { role: CompanyRole }): boolean {
+  return (
+    opt.role === props.role ||
+    (props.userRole !== CompanyRole.CompanyOwner && !isGlobalAdmin.value && opt.role === CompanyRole.CompanyOwner)
+  );
+}
 
 /**
  * Hides the info box
@@ -269,8 +272,6 @@ function showInfoBox(): void {
 
 /**
  * Sets the Menu ref for a specific row by user ID.
- * @param id - The user ID.
- * @param el - The Menu ref instance.
  */
 function setRowMenuRef(id: string, el: RowMenuRef): void {
   if (el) rowMenus.value[id] = el;
@@ -278,8 +279,6 @@ function setRowMenuRef(id: string, el: RowMenuRef): void {
 
 /**
  * Toggles the row menu for a specific user.
- * @param event - The mouse event triggering the menu.
- * @param id - The user ID.
  */
 function toggleRowMenu(event: MouseEvent, id: string): void {
   rowMenus.value[id]?.toggle(event);
@@ -287,7 +286,6 @@ function toggleRowMenu(event: MouseEvent, id: string): void {
 
 /**
  * Returns the menu items for a given table row.
- * @param row - The table row representing a user.
  * @returns An array of menu items.
  */
 function menuItemsFor(row: TableRow): MenuItem[] {
@@ -296,7 +294,7 @@ function menuItemsFor(row: TableRow): MenuItem[] {
       label: 'Change User’s Role',
       command: (): void => {
         selectedUser.value = row;
-        selectedRole.value = props.role; // preselect current role
+        selectedRole.value = null; // preselect current role
         showChangeRoleDialog.value = true;
       },
     },
