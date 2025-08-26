@@ -19,6 +19,7 @@ import {
   KEYCLOAK_ROLES,
 } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
@@ -501,5 +502,29 @@ describe('Component test for the company cockpit', () => {
       cy.get('td').contains(dummyEmail).should('not.exist');
       cy.get('td').contains(dummyUserId).should('not.exist');
     });
+  });
+  it.only('should hide and show info box', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN]);
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test="info-message"]').should('be.visible');
+    cy.get('[data-test="info-message"]').first()
+      .find('button')
+      .click();
+    cy.get('[data-test="info-icon"]').should('be.visible');
+    cy.get('[data-test="info-icon"]').first().click();
+    cy.get('[data-test="info-message"]').should('be.visible');
+  });
+  it.only('should hid and show info box', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN]);
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test="info-message"]').should('be.visible');
+    cy.get('[data-test="info-message"]').first()
+      .find('button')
+      .click();
+    cy.get('[data-test="info-icon"]').should('be.visible');
+    cy.get('[data-test="info-icon"]').first().click();
+    cy.get('[data-test="info-message"]').should('be.visible');
   });
 });

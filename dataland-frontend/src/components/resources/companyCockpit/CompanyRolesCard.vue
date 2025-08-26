@@ -10,6 +10,7 @@
         v-if="!showInfoMessage"
         icon="pi pi-info-circle"
         variant="text"
+        data-test="info-icon"
         rounded
         @click="showInfoBox"
         title="Show Info"
@@ -31,6 +32,7 @@
         :closable="true"
         @close="hideInfoBox"
         style="margin-top: var(--spacing-xs)"
+        data-test="info-message"
       >
         {{ group?.info }}
       </Message>
