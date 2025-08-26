@@ -34,7 +34,7 @@
               @click="addCompanyAlternativeName"
               name="addAlternativeName"
               label="Add"
-              class="p-button-text"
+              variant="text"
               icon="pi pi-plus"
             ></PrimeButton>
           </div>
@@ -197,7 +197,6 @@
             placeholder="Please choose"
             :options="gicsSectors.map((it) => ({ value: it, label: it }))"
           />
-
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
@@ -456,9 +455,6 @@ export default defineComponent({
   .form-field-label {
     display: flex;
     align-self: center;
-    button {
-      margin-left: auto;
-    }
     h5 {
       margin: 0.5rem 0;
     }

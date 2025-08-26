@@ -35,9 +35,13 @@
                 @click="routeToBulkDataRequest()"
                 icon="pi pi-file"
               />
-              <router-link v-if="hasUserUploaderRights" to="/companies/choose" data-test="newDatasetButton">
-                <PrimeButton aria-label="New Dataset" icon="pi pi-plus" label="NEW DATASET" />
-              </router-link>
+              <PrimeButton
+                v-if="hasUserUploaderRights"
+                icon="pi pi-plus"
+                label="NEW DATASET"
+                @click="linkToNewDatasetPage()"
+                data-test="newDatasetButton"
+              />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -192,7 +196,12 @@ export default defineComponent({
     routeToBulkDataRequest() {
       void router.push('/bulkdatarequest');
     },
-
+    /**
+     * Redirects to the new dataset page
+     */
+    linkToNewDatasetPage() {
+      void router.push('/companies/choose');
+    },
     /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update

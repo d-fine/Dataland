@@ -7,7 +7,7 @@
         @click="addNewItems()"
         :data-test="dataTestAddButton"
         label="Add"
-        class="p-button-text"
+        variant="text"
         icon="pi pi-plus"
       />
     </div>

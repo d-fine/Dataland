@@ -50,7 +50,7 @@
                 data-test="files-to-upload-remove"
                 icon="pi pi-times"
                 @click="removeDocumentsFromDocumentsToUpload([index])"
-                class="p-button-rounded"
+                rounded
               />
             </div>
           </div>

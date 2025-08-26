@@ -317,7 +317,7 @@ describe('Component test for the company cockpit', () => {
         .should('exist')
         .and('contain', 'test_' + category)
         .find('div[data-test=download-link-component]')
-        .children('a')
+        .children('button, span')
         .then((children) => {
           expect(children[0]).to.contain('(2025-02-25)');
           expect(children[1]).to.contain('(2024-01-13)');
@@ -325,9 +325,7 @@ describe('Component test for the company cockpit', () => {
         });
 
       for (let i = 1; i <= 3; i++) {
-        cy.get('[data-test="download-link-test_' + category + `_${i}"]`)
-          .should('exist')
-          .and('have.attr', 'title', 'test_' + category + `_${i}`);
+        cy.get('[data-test="download-link-test_' + category + `_${i}"]`).should('exist');
       }
     }
   });

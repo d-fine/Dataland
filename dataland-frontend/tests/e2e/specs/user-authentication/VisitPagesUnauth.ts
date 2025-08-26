@@ -26,7 +26,7 @@ describe('As an unauthenticated user I expect to be redirected to the page I sta
   pages.forEach((page) => {
     it(`Test Login Redirect to ${page}`, () => {
       cy.visitAndCheckAppMount(page);
-      cy.get('button.login-button[name="login_dataland_button"]').should('exist').click();
+      cy.get("[data-test='login-dataland-button']").should('exist').click();
 
       loginWithCredentials();
 
@@ -36,7 +36,7 @@ describe('As an unauthenticated user I expect to be redirected to the page I sta
 
     it(`Test Register Redirect to ${page}`, () => {
       cy.visitAndCheckAppMount(page);
-      cy.get('button.registration-button[name="signup_dataland_button"]').should('exist').click();
+      cy.get("[data-test='signup-dataland-button']").should('exist').click();
 
       cy.contains('button', 'LOGIN TO ACCOUNT').should('exist').should('be.visible').click();
 
